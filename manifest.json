@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "more-weather",
+  "name": "More Weather",
+  "version": "2.0.0",
+  "description": "Weather with official warnings, rain nowcast, radar, wind map, air quality and a standalone app",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "BarWidget.qml"
+  },
+  "barWidget": {
+    "displayName": "More Weather",
+    "description": "Weather with official warnings, rain nowcast, radar, wind map, air quality and a standalone app",
+    "category": "Info",
+    "allowMultiple": false,
+    "settingsForm": "weatherSettings",
+    "defaultSection": "right"
+  },
+  "omarchy": {
+    "clonedFrom": "omarchy.weather"
+  },
+  "author": "T-The-Coder"
+}

@@ -1,0 +1,131 @@
+#!/bin/bash
+# More Weather standalone app launcher.
+#
+#   more-weather                         open the app (raises a running instance)
+#   more-weather --install-desktop-entry add the app to the app launcher
+#   more-weather --remove-desktop-entry  remove the app from the app launcher
+#
+# The app is a separate Quickshell process that runs this plugin's panel in a
+# normal window. Quickshell expects the Omarchy shell's Commons and Ui modules
+# next to its shell.qml, and plugin folders may not contain symlinks, so the
+# launcher assembles that layout in the user's runtime directory.
+
+set -u
+
+plugin_dir=$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)
+omarchy_shell="${OMARCHY_PATH:-/usr/share/omarchy}/shell"
+runtime_base="${XDG_RUNTIME_DIR:-$HOME/.cache}"
+config_dir="$runtime_base/more-weather-app"
+data_home="${XDG_DATA_HOME:-$HOME/.local/share}"
+desktop_file="$data_home/applications/more-weather.desktop"
+icon_dir="$data_home/icons/hicolor/scalable/apps"
+icon_file="$icon_dir/more-weather.svg"
+theme_colors="$HOME/.local/state/omarchy/current/theme/colors.toml"
+
+# Creates or corrects one symlink and leaves a correct one alone: rewriting a
+# link under a running instance would make Quickshell reload it.
+link() {
+  [[ $(readlink "$2" 2>/dev/null) == "$1" ]] || ln -sfn "$1" "$2"
+}
+
+prepare_config() {
+  if [[ ! -d $omarchy_shell/Commons || ! -d $omarchy_shell/Ui ]]; then
+    echo "more-weather: Omarchy shell not found at $omarchy_shell" >&2
+    exit 1
+  fi
+  mkdir -p "$config_dir"
+  chmod 700 "$config_dir"
+  link "$omarchy_shell/Commons" "$config_dir/Commons"
+  link "$omarchy_shell/Ui" "$config_dir/Ui"
+  link "$plugin_dir" "$config_dir/Weather"
+  link "$plugin_dir/app/shell.qml" "$config_dir/shell.qml"
+}
+
+theme_color() {
+  local value
+  value=$(grep -m1 -E "^[[:space:]]*$1[[:space:]]*=" "$theme_colors" 2>/dev/null |
+    sed -E 's/^[^=]*=[[:space:]]*"?(#[0-9A-Fa-f]{6,8})"?.*/\1/')
+  if [[ $value =~ ^#[0-9A-Fa-f]{6,8}$ ]]; then echo "$value"; else echo "$2"; fi
+}
+
+# The launcher icon is drawn in the current theme's colors.
+write_icon() {
+  local tile edge cloud sun tmp
+  tile=$(theme_color background "#2c2525")
+  edge=$(theme_color lighter_background "#3d2f2a")
+  cloud=$(theme_color foreground "#e6d9db")
+  sun=$(theme_color accent "#f38d70")
+  mkdir -p "$icon_dir"
+  tmp=$(mktemp "$icon_dir/.more-weather.XXXXXX")
+  cat >"$tmp" <<SVG
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-22 -88 114 114">
+  <rect x="-20" y="-86" width="110" height="110" rx="26" fill="$tile" stroke="$edge" stroke-width="3"/>
+  <path fill="$cloud" d="M 0 -16.765625 C 0 -14.421875 0.570312 -12.242188 1.71875 -10.234375 C 2.875 -8.234375 4.429688 -6.664062 6.390625 -5.53125 C 8.359375 -4.40625 10.515625 -3.84375 12.859375 -3.84375 L 41.15625 -3.84375 C 43.5 -3.84375 45.660156 -4.40625 47.640625 -5.53125 C 49.628906 -6.664062 51.195312 -8.234375 52.34375 -10.234375 C 53.5 -12.242188 54.078125 -14.421875 54.078125 -16.765625 C 54.078125 -18.515625 53.710938 -20.265625 52.984375 -22.015625 C 54.992188 -24.441406 56 -27.320312 56 -30.65625 C 56 -32.53125 55.632812 -34.3125 54.90625 -36 C 54.1875 -37.6875 53.207031 -39.132812 51.96875 -40.34375 C 50.726562 -41.5625 49.265625 -42.535156 47.578125 -43.265625 C 45.898438 -43.992188 44.140625 -44.359375 42.296875 -44.359375 C 38.421875 -44.359375 35.050781 -42.820312 32.1875 -39.75 C 30.144531 -40.894531 27.78125 -41.46875 25.09375 -41.46875 C 21.414062 -41.46875 18.171875 -40.328125 15.359375 -38.046875 C 12.546875 -35.765625 10.734375 -32.851562 9.921875 -29.3125 C 7.015625 -28.625 4.632812 -27.117188 2.78125 -24.796875 C 0.925781 -22.472656 0 -19.796875 0 -16.765625 Z M 4.484375 -16.765625 C 4.484375 -18.941406 5.207031 -20.828125 6.65625 -22.421875 C 8.101562 -24.023438 9.914062 -24.957031 12.09375 -25.21875 L 13.4375 -25.28125 C 13.78125 -25.28125 13.953125 -25.453125 13.953125 -25.796875 L 14.078125 -27.140625 C 14.460938 -29.953125 15.695312 -32.316406 17.78125 -34.234375 C 19.875 -36.160156 22.3125 -37.125 25.09375 -37.125 C 27.945312 -37.125 30.441406 -36.160156 32.578125 -34.234375 C 34.710938 -32.316406 35.90625 -29.953125 36.15625 -27.140625 L 36.359375 -25.65625 C 36.441406 -25.363281 36.628906 -25.21875 36.921875 -25.21875 L 41.15625 -25.21875 C 43.457031 -25.21875 45.425781 -24.382812 47.0625 -22.71875 C 48.707031 -21.050781 49.53125 -19.066406 49.53125 -16.765625 C 49.53125 -14.378906 48.707031 -12.351562 47.0625 -10.6875 C 45.425781 -9.019531 43.457031 -8.1875 41.15625 -8.1875 L 12.859375 -8.1875 C 10.597656 -8.1875 8.632812 -9.03125 6.96875 -10.71875 C 5.3125 -12.40625 4.484375 -14.421875 4.484375 -16.765625 Z"/>
+  <path fill="$sun" d="M 22.59375 -50.4375 C 22.164062 -50.007812 21.953125 -49.472656 21.953125 -48.828125 C 21.953125 -48.191406 22.164062 -47.640625 22.59375 -47.171875 L 24.3125 -45.5 C 25 -44.988281 25.554688 -44.773438 25.984375 -44.859375 C 26.535156 -44.859375 27.015625 -45.082031 27.421875 -45.53125 C 27.828125 -45.976562 28.03125 -46.519531 28.03125 -47.15625 C 28.03125 -47.800781 27.816406 -48.335938 27.390625 -48.765625 L 25.796875 -50.4375 C 25.328125 -50.863281 24.789062 -51.078125 24.1875 -51.078125 C 23.550781 -51.078125 23.019531 -50.863281 22.59375 -50.4375 Z M 35.90625 -37.3125 C 37.695312 -39.0625 39.828125 -39.9375 42.296875 -39.9375 C 44.859375 -39.9375 47.046875 -39.03125 48.859375 -37.21875 C 50.671875 -35.40625 51.578125 -33.21875 51.578125 -30.65625 C 51.578125 -29.03125 51.128906 -27.410156 50.234375 -25.796875 C 47.679688 -28.304688 44.65625 -29.5625 41.15625 -29.5625 L 40.3125 -29.5625 C 39.632812 -32.46875 38.164062 -35.050781 35.90625 -37.3125 Z M 40.125 -51.078125 C 40.125 -50.390625 40.328125 -49.84375 40.734375 -49.4375 C 41.140625 -49.03125 41.660156 -48.828125 42.296875 -48.828125 C 42.984375 -48.828125 43.519531 -49.03125 43.90625 -49.4375 C 44.289062 -49.84375 44.484375 -50.390625 44.484375 -51.078125 L 44.484375 -56.390625 C 44.484375 -57.023438 44.28125 -57.546875 43.875 -57.953125 C 43.46875 -58.359375 42.941406 -58.5625 42.296875 -58.5625 C 41.660156 -58.5625 41.140625 -58.359375 40.734375 -57.953125 C 40.328125 -57.546875 40.125 -57.023438 40.125 -56.390625 Z M 54.53125 -45.0625 C 54.53125 -44.375 54.722656 -43.835938 55.109375 -43.453125 C 55.660156 -43.023438 56.191406 -42.8125 56.703125 -42.8125 C 57.171875 -42.8125 57.703125 -43.023438 58.296875 -43.453125 L 62.015625 -47.171875 C 62.441406 -47.640625 62.65625 -48.191406 62.65625 -48.828125 C 62.65625 -49.472656 62.441406 -50.007812 62.015625 -50.4375 C 61.585938 -50.863281 61.078125 -51.078125 60.484375 -51.078125 C 59.835938 -51.078125 59.347656 -50.863281 59.015625 -50.4375 L 55.109375 -46.65625 C 54.722656 -46.1875 54.53125 -45.65625 54.53125 -45.0625 Z M 57.25 -15.75 C 56.84375 -15.320312 56.640625 -14.796875 56.640625 -14.171875 C 56.640625 -13.554688 56.851562 -13.015625 57.28125 -12.546875 L 59.015625 -10.875 C 59.390625 -10.445312 59.882812 -10.234375 60.5 -10.234375 C 61.125 -10.234375 61.640625 -10.445312 62.046875 -10.875 C 62.453125 -11.300781 62.65625 -11.859375 62.65625 -12.546875 C 62.65625 -13.140625 62.441406 -13.628906 62.015625 -14.015625 L 60.359375 -15.75 C 59.929688 -16.175781 59.414062 -16.390625 58.8125 -16.390625 C 58.175781 -16.390625 57.65625 -16.175781 57.25 -15.75 Z M 61.09375 -32.21875 C 60.644531 -31.769531 60.421875 -31.238281 60.421875 -30.625 C 60.421875 -30.007812 60.65625 -29.507812 61.125 -29.125 C 61.550781 -28.695312 62.082031 -28.484375 62.71875 -28.484375 L 68.03125 -28.484375 C 68.625 -28.484375 69.125 -28.6875 69.53125 -29.09375 C 69.9375 -29.5 70.140625 -30.007812 70.140625 -30.625 C 70.140625 -31.238281 69.9375 -31.769531 69.53125 -32.21875 C 69.125 -32.664062 68.625 -32.890625 68.03125 -32.890625 L 62.71875 -32.890625 C 62.082031 -32.890625 61.539062 -32.664062 61.09375 -32.21875 Z"/>
+</svg>
+SVG
+  chmod 644 "$tmp"
+  if cmp -s "$tmp" "$icon_file"; then
+    rm -f "$tmp"
+  else
+    mv -f "$tmp" "$icon_file"
+    if command -v gtk-update-icon-cache >/dev/null; then
+      gtk-update-icon-cache -q -f "$data_home/icons/hicolor" 2>/dev/null || true
+    fi
+  fi
+}
+
+install_desktop_entry() {
+  mkdir -p "$(dirname "$desktop_file")"
+  write_icon
+  cat >"$desktop_file" <<DESKTOP
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=More Weather
+Comment=Weather, warnings, rain radar and wind map
+Exec=$plugin_dir/app/more-weather
+Icon=more-weather
+Terminal=false
+Categories=Utility;
+Keywords=Weather;Forecast;Radar;Rain;Wind;
+StartupNotify=true
+DESKTOP
+  echo "Added More Weather to the app launcher: $desktop_file"
+}
+
+remove_desktop_entry() {
+  rm -f "$desktop_file" "$icon_file"
+  echo "Removed More Weather from the app launcher."
+}
+
+case "${1:-}" in
+--install-desktop-entry)
+  install_desktop_entry
+  exit 0
+  ;;
+--remove-desktop-entry)
+  remove_desktop_entry
+  exit 0
+  ;;
+-h | --help)
+  sed -n '4,6p' "$0" | sed 's/^#   /  /'
+  exit 0
+  ;;
+"") ;;
+*)
+  echo "more-weather: unknown option: $1" >&2
+  exit 1
+  ;;
+esac
+
+prepare_config
+# Keeps an installed launcher icon in step with theme changes.
+[[ -f $desktop_file ]] && write_icon
+
+export QS_APP_ID="more-weather"
+if timeout 2s qs ipc -n -p "$config_dir" call -- more-weather open >/dev/null 2>&1; then
+  exit 0
+fi
+exec qs -n -d -p "$config_dir"
