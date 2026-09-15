@@ -20,6 +20,7 @@ data_home="${XDG_DATA_HOME:-$HOME/.local/share}"
 desktop_file="$data_home/applications/more-weather.desktop"
 icon_dir="$data_home/icons/hicolor/scalable/apps"
 icon_file="$icon_dir/more-weather.svg"
+entry_script="$data_home/more-weather/launch"
 theme_colors="$HOME/.local/state/omarchy/current/theme/colors.toml"
 
 # Creates or corrects one symlink and leaves a correct one alone: rewriting a
@@ -76,17 +77,39 @@ SVG
   fi
 }
 
+# The entry outlives the plugin: `omarchy plugin remove` only deletes the
+# plugin folder, and Quickshell's app list ignores TryExec. The entry therefore
+# starts a small script next to it that opens the app while the plugin is
+# installed and otherwise removes the entry, the icon and itself.
 install_desktop_entry() {
-  mkdir -p "$(dirname "$desktop_file")"
+  local launcher="$plugin_dir/app/more-weather"
+  if [[ $launcher$entry_script == *[[:space:]\"\'\$\\\`]* ]]; then
+    echo "more-weather: unsupported characters in the install path" >&2
+    exit 1
+  fi
+  mkdir -p "$(dirname "$desktop_file")" "$(dirname "$entry_script")"
   write_icon
+  cat >"$entry_script" <<SCRIPT
+#!/bin/sh
+# Written by More Weather's --install-desktop-entry.
+if [ -x "$launcher" ]; then
+  exec "$launcher"
+fi
+rm -f "$desktop_file" "$icon_file" "$entry_script"
+rmdir "$(dirname "$entry_script")" 2>/dev/null
+notify-send "More Weather" "The plugin is no longer installed, so its app launcher entry was removed."
+SCRIPT
+  chmod 755 "$entry_script"
   cat >"$desktop_file" <<DESKTOP
 [Desktop Entry]
 Type=Application
 Version=1.0
 Name=More Weather
 Comment=Weather, warnings, rain radar and wind map
-Exec=$plugin_dir/app/more-weather
+TryExec=$launcher
+Exec=$entry_script
 Icon=more-weather
+StartupWMClass=more-weather
 Terminal=false
 Categories=Utility;
 Keywords=Weather;Forecast;Radar;Rain;Wind;
@@ -96,7 +119,8 @@ DESKTOP
 }
 
 remove_desktop_entry() {
-  rm -f "$desktop_file" "$icon_file"
+  rm -f "$desktop_file" "$icon_file" "$entry_script"
+  rmdir "$(dirname "$entry_script")" 2>/dev/null
   echo "Removed More Weather from the app launcher."
 }
 

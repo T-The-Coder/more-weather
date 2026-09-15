@@ -9,7 +9,15 @@ Rectangle {
   property string title: ""
   property bool emphasized: false
   property bool rowEnabled: true
-  readonly property bool checked: panel.settingsDisplaySetting(settingKey, true)
+  // Rows without a settingKey show `switchState` and report clicks through
+  // `toggled` instead of writing a display option.
+  property bool switchState: false
+  // Card rows sit indented below their card title; a row among other
+  // controls (General) lines up with them instead.
+  property bool indented: !emphasized
+  signal toggled(bool value)
+  readonly property bool checked: settingKey !== ""
+    ? panel.settingsDisplaySetting(settingKey, true) : switchState
 
   width: parent ? parent.width : 0
   height: Style.space(34)
@@ -22,7 +30,7 @@ Rectangle {
 
   Text {
     anchors.left: parent.left
-    anchors.leftMargin: parent.emphasized ? 0 : Style.space(12)
+    anchors.leftMargin: parent.indented ? Style.space(12) : 0
     anchors.right: displaySettingToggle.left
     anchors.rightMargin: Style.space(8)
     anchors.verticalCenter: parent.verticalCenter
@@ -64,6 +72,9 @@ Rectangle {
     enabled: parent.rowEnabled
     hoverEnabled: true
     cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
-    onClicked: panel.displayOptionsStore.setSettingsDisplaySetting(parent.settingKey, !parent.checked)
+    onClicked: {
+      if (parent.settingKey !== "") panel.displayOptionsStore.setSettingsDisplaySetting(parent.settingKey, !parent.checked)
+      else parent.toggled(!parent.checked)
+    }
   }
 }

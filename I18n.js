@@ -158,6 +158,8 @@ var catalog = {
     shortcutMouseOpenApp: "Symbol or temperature in the widget: open the app",
     language: "Language",
     languageAuto: "Automatic ({language})",
+    appLauncherEntry: "Show in app launcher",
+    appLauncherEntryHint: "Adds the More Weather app to the app launcher. If the plugin is removed, the entry deletes itself when it is next opened.",
     notifications: "Notifications",
     settingsPageDisplay: "Display",
     settingsPageShortcuts: "Shortcuts",
@@ -384,6 +386,8 @@ var catalog = {
     shortcutMouseOpenApp: "Symbol oder Temperatur im Widget: App öffnen",
     language: "Sprache",
     languageAuto: "Automatisch ({language})",
+    appLauncherEntry: "Im App-Starter anzeigen",
+    appLauncherEntryHint: "Fügt die More-Weather-App dem App-Starter hinzu. Wird das Plugin entfernt, löscht sich der Eintrag beim nächsten Öffnen selbst.",
     notifications: "Benachrichtigungen",
     settingsPageDisplay: "Anzeige",
     settingsPageShortcuts: "Tastenkürzel",
@@ -4547,6 +4551,36 @@ addCatalogEntries("hi", {"language": "भाषा", "languageAuto": "स्व�
 addCatalogEntries("id", {"language": "Bahasa", "languageAuto": "Otomatis ({language})"})
 addCatalogEntries("vi", {"language": "Ngôn ngữ", "languageAuto": "Tự động ({language})"})
 addCatalogEntries("th", {"language": "ภาษา", "languageAuto": "อัตโนมัติ ({language})"})
+
+// App launcher entry switch in the general settings.
+addCatalogEntries("es", {"appLauncherEntry": "Mostrar en el lanzador de aplicaciones", "appLauncherEntryHint": "Añade la aplicación More Weather al lanzador. Si se elimina el plugin, la entrada se borra sola la próxima vez que se abra."})
+addCatalogEntries("fr", {"appLauncherEntry": "Afficher dans le lanceur d’applications", "appLauncherEntryHint": "Ajoute l’application More Weather au lanceur. Si le plugin est supprimé, l’entrée s’efface d’elle-même à sa prochaine ouverture."})
+addCatalogEntries("pt", {"appLauncherEntry": "Mostrar no lançador de aplicativos", "appLauncherEntryHint": "Adiciona o app More Weather ao lançador. Se o plugin for removido, a entrada se apaga sozinha na próxima vez que for aberta."})
+addCatalogEntries("ru", {"appLauncherEntry": "Показывать в меню приложений", "appLauncherEntryHint": "Добавляет приложение More Weather в меню приложений. Если плагин удалён, запись удалит себя при следующем открытии."})
+addCatalogEntries("uk", {"appLauncherEntry": "Показувати в меню застосунків", "appLauncherEntryHint": "Додає застосунок More Weather до меню застосунків. Якщо плагін видалено, запис видалить себе під час наступного відкриття."})
+addCatalogEntries("pl", {"appLauncherEntry": "Pokaż w programie uruchamiającym", "appLauncherEntryHint": "Dodaje aplikację More Weather do programu uruchamiającego. Po usunięciu wtyczki wpis usunie się sam przy następnym otwarciu."})
+addCatalogEntries("it", {"appLauncherEntry": "Mostra nel launcher delle app", "appLauncherEntryHint": "Aggiunge l’app More Weather al launcher. Se il plugin viene rimosso, la voce si elimina da sola alla successiva apertura."})
+addCatalogEntries("nl", {"appLauncherEntry": "Tonen in de app-starter", "appLauncherEntryHint": "Voegt de More Weather-app toe aan de app-starter. Als de plug-in is verwijderd, verwijdert het item zichzelf bij de volgende keer openen."})
+addCatalogEntries("tr", {"appLauncherEntry": "Uygulama başlatıcıda göster", "appLauncherEntryHint": "More Weather uygulamasını başlatıcıya ekler. Eklenti kaldırılırsa girdi bir sonraki açılışta kendini siler."})
+addCatalogEntries("cs", {"appLauncherEntry": "Zobrazit ve spouštěči aplikací", "appLauncherEntryHint": "Přidá aplikaci More Weather do spouštěče. Pokud je plugin odebrán, položka se při dalším otevření sama smaže."})
+addCatalogEntries("sv", {"appLauncherEntry": "Visa i appstartaren", "appLauncherEntryHint": "Lägger till More Weather-appen i appstartaren. Om pluginet tas bort raderar posten sig själv nästa gång den öppnas."})
+addCatalogEntries("fi", {"appLauncherEntry": "Näytä sovelluskäynnistimessä", "appLauncherEntryHint": "Lisää More Weather -sovelluksen käynnistimeen. Jos laajennus poistetaan, merkintä poistaa itsensä, kun se avataan seuraavan kerran."})
+addCatalogEntries("nb", {"appLauncherEntry": "Vis i appstarteren", "appLauncherEntryHint": "Legger More Weather-appen til i appstarteren. Hvis programtillegget fjernes, sletter oppføringen seg selv neste gang den åpnes."})
+addCatalogEntries("da", {"appLauncherEntry": "Vis i appstarteren", "appLauncherEntryHint": "Tilføjer More Weather-appen til appstarteren. Hvis pluginet fjernes, sletter posten sig selv, næste gang den åbnes."})
+addCatalogEntries("ro", {"appLauncherEntry": "Afișează în lansatorul de aplicații", "appLauncherEntryHint": "Adaugă aplicația More Weather în lansator. Dacă pluginul este eliminat, intrarea se șterge singură la următoarea deschidere."})
+addCatalogEntries("hu", {"appLauncherEntry": "Megjelenítés az alkalmazásindítóban", "appLauncherEntryHint": "Hozzáadja a More Weather alkalmazást az indítóhoz. Ha a bővítményt eltávolítják, a bejegyzés a következő megnyitáskor törli magát."})
+addCatalogEntries("el", {"appLauncherEntry": "Εμφάνιση στην εκκίνηση εφαρμογών", "appLauncherEntryHint": "Προσθέτει την εφαρμογή More Weather στην εκκίνηση εφαρμογών. Αν αφαιρεθεί το πρόσθετο, η καταχώριση διαγράφεται μόνη της στο επόμενο άνοιγμα."})
+addCatalogEntries("zh_CN", {"appLauncherEntry": "在应用启动器中显示", "appLauncherEntryHint": "将 More Weather 应用添加到应用启动器。如果插件已被移除，该条目会在下次打开时自行删除。"})
+addCatalogEntries("zh_TW", {"appLauncherEntry": "在應用程式啟動器中顯示", "appLauncherEntryHint": "將 More Weather 應用程式加入啟動器。如果外掛已移除，此項目會在下次開啟時自行刪除。"})
+addCatalogEntries("ja", {"appLauncherEntry": "アプリランチャーに表示", "appLauncherEntryHint": "More Weather アプリをランチャーに追加します。プラグインを削除した場合、次に開いたときに項目が自動で削除されます。"})
+addCatalogEntries("ko", {"appLauncherEntry": "앱 실행기에 표시", "appLauncherEntryHint": "More Weather 앱을 앱 실행기에 추가합니다. 플러그인이 제거되면 다음에 열 때 항목이 스스로 삭제됩니다."})
+addCatalogEntries("ar", {"appLauncherEntry": "إظهار في مشغّل التطبيقات", "appLauncherEntryHint": "يضيف تطبيق More Weather إلى مشغّل التطبيقات. إذا أُزيلت الإضافة، يحذف الإدخال نفسه عند فتحه في المرة التالية."})
+addCatalogEntries("he", {"appLauncherEntry": "הצגה במפעיל היישומים", "appLauncherEntryHint": "מוסיף את היישום More Weather למפעיל היישומים. אם התוסף הוסר, הרשומה תמחק את עצמה בפתיחה הבאה."})
+addCatalogEntries("fa", {"appLauncherEntry": "نمایش در اجراکننده برنامه‌ها", "appLauncherEntryHint": "برنامه More Weather را به اجراکننده برنامه‌ها اضافه می‌کند. اگر افزونه حذف شود، این مورد دفعه بعد که باز شود خودش را پاک می‌کند."})
+addCatalogEntries("hi", {"appLauncherEntry": "ऐप लॉन्चर में दिखाएँ", "appLauncherEntryHint": "More Weather ऐप को ऐप लॉन्चर में जोड़ता है। प्लगइन हटाए जाने पर प्रविष्टि अगली बार खोलने पर स्वयं हट जाती है।"})
+addCatalogEntries("id", {"appLauncherEntry": "Tampilkan di peluncur aplikasi", "appLauncherEntryHint": "Menambahkan aplikasi More Weather ke peluncur aplikasi. Jika plugin dihapus, entri akan menghapus dirinya saat dibuka berikutnya."})
+addCatalogEntries("vi", {"appLauncherEntry": "Hiển thị trong trình khởi chạy ứng dụng", "appLauncherEntryHint": "Thêm ứng dụng More Weather vào trình khởi chạy. Nếu plugin bị gỡ, mục này sẽ tự xóa vào lần mở tiếp theo."})
+addCatalogEntries("th", {"appLauncherEntry": "แสดงในตัวเปิดแอป", "appLauncherEntryHint": "เพิ่มแอป More Weather ลงในตัวเปิดแอป หากลบปลั๊กอินแล้ว รายการจะลบตัวเองเมื่อเปิดครั้งถัดไป"})
 
 // Notifications card title.
 addCatalogEntries("es", { "notifications": "Notificaciones" })

@@ -1805,7 +1805,12 @@ Panel {
   function openApp() {
     if (standaloneMode) return
     close()
-    Quickshell.execDetached([decodeURIComponent(String(Qt.resolvedUrl("app/more-weather")).replace(/^file:\/\//, ""))])
+    Quickshell.execDetached([appLauncherPath()])
+  }
+
+  // The app launcher script inside this plugin folder.
+  function appLauncherPath() {
+    return decodeURIComponent(String(Qt.resolvedUrl("app/more-weather")).replace(/^file:\/\//, ""))
   }
 
   function refreshWithFeedback() {
@@ -2741,6 +2746,7 @@ Panel {
   property WeatherSharedLiveData sharedLive: WeatherSharedLiveData { panel: root }
   property WeatherDisplayOptionsStore displayOptionsStore: WeatherDisplayOptionsStore { panel: root }
   property WeatherAirQuality airQuality: WeatherAirQuality { panel: root }
+  property WeatherAppLauncherEntry appLauncherEntry: WeatherAppLauncherEntry { panel: root }
 
   IpcHandler {
     target: root.ipcTarget

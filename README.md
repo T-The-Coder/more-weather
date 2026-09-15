@@ -106,15 +106,18 @@ or temperature in the popup, or run:
 ~/.config/omarchy/plugins/more-weather/app/more-weather
 ```
 
-To add More Weather to the app launcher (this creates a desktop entry and an icon in
-the colors of your theme):
+To add the app to the app launcher, turn on **Settings → Display → General → Show in
+app launcher**. This creates a desktop entry and an icon in your theme's colors; turning
+the switch off removes them again. Nothing is added to the launcher unless you turn the
+switch on. The same works from a terminal:
 
 ```bash
 ~/.config/omarchy/plugins/more-weather/app/more-weather --install-desktop-entry
+~/.config/omarchy/plugins/more-weather/app/more-weather --remove-desktop-entry
 ```
 
-The desktop entry and icon are only created when you run this command. The app and
-the bar widget share their data, so running both does not double the requests.
+The app and the bar widget share their data, so running both does not double the
+requests.
 
 ## Updating
 
@@ -124,11 +127,8 @@ omarchy plugin update more-weather
 
 ## Removal
 
-1. If you added the app to the launcher, remove that entry first:
-
-   ```bash
-   ~/.config/omarchy/plugins/more-weather/app/more-weather --remove-desktop-entry
-   ```
+1. If you added the app to the launcher, turn off **Show in app launcher** first. If
+   you forget, the leftover entry deletes itself the next time you open it.
 
 2. Remove the plugin:
 
@@ -152,6 +152,7 @@ Omarchy's built-in weather widget and is left in place.
 | `~/.local/state/omarchy/settings/weather.json` | Location (shared with Omarchy, written via `omarchy-weather-location`) |
 | `~/.local/state/omarchy/settings/more-weather-*.json` | Display settings, favorites, cache, data shared between bar and app |
 | `$XDG_RUNTIME_DIR/more-weather-app/` | Temporary app configuration (links to the plugin and the Omarchy shell) |
+| `~/.local/share/applications/more-weather.desktop`, `~/.local/share/more-weather/launch`, `~/.local/share/icons/hicolor/scalable/apps/more-weather.svg` | App launcher entry, only while **Show in app launcher** is on |
 
 ## License
 

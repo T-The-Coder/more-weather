@@ -208,6 +208,26 @@ Rectangle {
             onChanged: function(value) { panel.displayOptionsStore.setGeneralSetting("language", value) }
           }
 
+          // Adds the standalone app to the app launcher. Off by default: the
+          // plugin writes nothing outside its own settings without consent.
+          WeatherSwitchRow {
+            panel: settingsView.panel
+            title: panel.i18n("appLauncherEntry")
+            switchState: panel.appLauncherEntry.installed
+            indented: false
+            rowEnabled: !panel.appLauncherEntry.busy
+            onToggled: function(value) { panel.appLauncherEntry.setInstalled(value) }
+          }
+
+          Text {
+            width: parent.width
+            text: panel.i18n("appLauncherEntryHint")
+            color: panel.mutedText
+            font.family: panel.fontFamily
+            font.pixelSize: Style.font.caption
+            wrapMode: Text.WordWrap
+          }
+
         }
       }
 
