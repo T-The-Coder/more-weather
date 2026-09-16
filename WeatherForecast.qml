@@ -41,8 +41,7 @@ Column {
         : Providers.forecastLink(panel.precipitationTab === 2
             ? panel.windActiveProviderId : panel.displayForecastProviderId)
       text: panel.precipitationTab === 0
-        ? (panel.mosmixReport ? panel.i18n("sourceMosmix")
-          : panel.i18n(Providers.forecastLabelKey(panel.displayForecastProviderId)))
+        ? panel.rainNowcastSourceLabel
         : (panel.precipitationTab === 1
           ? panel.i18n(Providers.radarLabelKey(panel.radarActiveProviderId))
           : panel.i18n(Providers.forecastLabelKey(panel.windActiveProviderId)))

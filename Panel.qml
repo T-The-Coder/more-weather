@@ -486,7 +486,16 @@ Panel {
   readonly property var computedHourlyForecast: Model.mergeCachedWeatherSeries(displayedLiveHourlyForecast,
     (cacheFallbackActive || displayedLiveHourlyForecast.length > 0) && cachedWeatherSnapshot
       ? cachedWeatherSnapshot.hourly : [], "time", cacheWindowStartMs, 6)
-  readonly property var liveRainNowcast: Model.rainNowcastSeries(mosmixReport, dailyForecastReport, nowDate, 9)
+  readonly property var liveRainNowcast: Model.rainNowcastSeries(mosmixReport, dailyForecastReport, nowDate, 9, radarReport)
+  // Source label for the rain tab: the radar supplies amounts wherever it
+  // reaches, the forecast the probability and anything beyond.
+  readonly property string rainNowcastSourceLabel: {
+    var forecast = mosmixReport ? i18n("sourceMosmix")
+      : i18n(Providers.forecastLabelKey(displayForecastProviderId))
+    for (var i = 0; i < rainNowcast.length; ++i)
+      if (rainNowcast[i].precipitationSource === "radar") return i18n("sourceRadar") + " + " + forecast
+    return forecast
+  }
   readonly property var displayedLiveRainNowcast: cacheFallbackActive ? [] : liveRainNowcast
   readonly property var computedRainNowcast: Model.mergeCachedWeatherSeries(displayedLiveRainNowcast,
     (cacheFallbackActive || displayedLiveRainNowcast.length > 0) && cachedWeatherSnapshot

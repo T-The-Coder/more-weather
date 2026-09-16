@@ -37,18 +37,16 @@ Image {
   // and each step used to request a picture for a half-updated extent, which
   // DWD answers with an error document instead of a PNG. When that hit a
   // radar frame, the whole radar switched to RainViewer.
-  property bool requestPending: false
+  // A zero-interval Timer rather than Qt.callLater: it dies with the item, so
+  // an image a Repeater removes in the same event never runs a stale call.
   property bool pendingRetry: false
 
   function scheduleRequest(retry) {
     pendingRetry = pendingRetry || !!retry
-    if (requestPending) return
-    requestPending = true
-    Qt.callLater(flushRequest)
+    if (!requestTimer.running) requestTimer.start()
   }
 
   function flushRequest() {
-    requestPending = false
     var retry = pendingRetry
     pendingRetry = false
     requestPicture(retry)
@@ -86,6 +84,12 @@ Image {
   onStatusChanged: {
     // A file that passed the header check but does not decode.
     if (status === Image.Error && !retrying) noteFailure()
+  }
+
+  Timer {
+    id: requestTimer
+    interval: 0
+    onTriggered: remoteImage.flushRequest()
   }
 
   Timer {

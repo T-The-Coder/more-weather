@@ -965,6 +965,26 @@ function hybridForecastDays(mosmixReport, openMeteoReport, todayString, uvReport
   return days
 }
 
+// Rain at the place in one Bright Sky radar frame, in 0.01 mm per 5 minutes:
+// the mean of the 3 x 3 km grid around it rather than the single 1 km cell,
+// so a shower edge a few hundred metres off does not flip the reading, and
+// the nowcast's position error (growing with lead time) is softened.
+function radarFrameAmount(frame) {
+  var grid = frame && frame.precipitation_5 ? frame.precipitation_5 : []
+  var centerRow = Math.floor(grid.length / 2)
+  var sum = 0
+  var count = 0
+  for (var r = Math.max(0, centerRow - 1); r <= Math.min(grid.length - 1, centerRow + 1); ++r) {
+    var row = grid[r] || []
+    var centerColumn = Math.floor(row.length / 2)
+    for (var c = Math.max(0, centerColumn - 1); c <= Math.min(row.length - 1, centerColumn + 1); ++c) {
+      var value = parseFloat(row[c])
+      if (!isNaN(value)) { sum += value; count++ }
+    }
+  }
+  return count ? sum / count : NaN
+}
+
 function radarNextHourAmount(report, now) {
   var rows = report && report.radar ? report.radar : []
   if (!rows.length) return ""
@@ -975,19 +995,21 @@ function radarNextHourAmount(report, now) {
   for (var i = 0; i < rows.length; ++i) {
     var stamp = new Date(rows[i].timestamp).getTime()
     if (isNaN(stamp) || stamp <= start || stamp > end) continue
-    var grid = rows[i].precipitation_5 || []
-    var centerRow = grid[Math.floor(grid.length / 2)] || []
-    var value = parseFloat(centerRow[Math.floor(centerRow.length / 2)])
+    var value = radarFrameAmount(rows[i])
     if (!isNaN(value)) { totalHundredths += value; count++ }
   }
   return count ? (totalHundredths / 100).toFixed(1) : ""
 }
 
 // Compact two-hour series for the panel's rain tabs. Open-Meteo Best Match
-// supplies the worldwide 15-minute time axis. In the DWD region, MOSMIX rain
-// values refine it; elsewhere the selected regional/global model is used.
-// Precipitation remains an intensity in mm/h.
-function rainNowcastSeries(mosmixReport, report, now, limit) {
+// supplies the worldwide 15-minute time axis. In the DWD region the rain
+// amount comes from the DWD radar nowcast (RV, via Bright Sky) wherever it
+// reaches: observed rain moved along its track, which times a shower far
+// better than any model in the first two hours. The probability, and the
+// amount beyond the radar, come from MOSMIX; elsewhere from the selected
+// regional/global model. Precipitation remains an intensity in mm/h, and
+// `precipitationSource` says which of the two supplied it.
+function rainNowcastSeries(mosmixReport, report, now, limit, radarReport) {
   var data = report && report.minutely_15 ? report.minutely_15 : null
   if (!data || !data.time) return []
   var weather = mosmixReport && mosmixReport.weather ? mosmixReport.weather : []
@@ -1015,15 +1037,39 @@ function rainNowcastSeries(mosmixReport, report, now, limit) {
     return beforeValue + (afterValue - beforeValue) * fraction
   }
 
+  // Radar frames by time. A frame's 5-minute sum is taken to end at its
+  // timestamp (the RADOLAN convention), so the slot starting at 15:30 holds
+  // the frames of 15:35, 15:40 and 15:45.
+  var radarFrames = radarReport && radarReport.radar ? radarReport.radar : []
+  var radarByTime = {}
+  for (var f = 0; f < radarFrames.length; ++f) {
+    var frameStamp = new Date(radarFrames[f].timestamp).getTime()
+    if (!isNaN(frameStamp)) radarByTime[frameStamp] = radarFrames[f]
+  }
+  function radarSlotIntensity(slotStart) {
+    var sum = 0
+    var frames = 0
+    for (var step = 1; step <= 3; ++step) {
+      var value = radarFrameAmount(radarByTime[slotStart + step * 5 * 60 * 1000])
+      if (!isNaN(value)) { sum += value; frames++ }
+    }
+    // Two of three frames still describe the quarter hour; the in-progress
+    // slot at the start of a report can lack its first.
+    return frames >= 2 ? sum / frames * 12 / 100 : null
+  }
+
   for (var i = 0; i < data.time.length && result.length < max; ++i) {
     var stamp = new Date(data.time[i]).getTime()
     if (isNaN(stamp) || stamp + 15 * 60 * 1000 < start) continue
     var probability = mosmixAt(stamp, "precipitation_probability", true)
     var precipitation = mosmixAt(stamp, "precipitation", false)
+    var radarIntensity = radarSlotIntensity(stamp)
     result.push({
       time: data.time[i],
       probability: probability === null ? numericValue(data.precipitation_probability, i) : probability,
-      precipitation: precipitation === null ? numericValue(data.precipitation, i) * 4 : precipitation,
+      precipitation: radarIntensity !== null ? Math.round(radarIntensity * 100) / 100
+        : (precipitation === null ? numericValue(data.precipitation, i) * 4 : precipitation),
+      precipitationSource: radarIntensity !== null ? "radar" : "forecast",
       windSpeed: numericValue(data.wind_speed_10m, i),
       windDirection: numericValue(data.wind_direction_10m, i),
       windGust: numericValue(data.wind_gusts_10m, i)
@@ -1043,7 +1089,9 @@ function upcomingRainStart(series, now) {
   for (var i = 0; i < rows.length; ++i) {
     var amount = Number(rows[i].precipitation)
     var probability = rows[i].probability
-    var likely = probability === "" || probability === null || probability === undefined
+    // Radar amounts are rain already on its way, not a chance of it.
+    var likely = rows[i].precipitationSource === "radar"
+      || probability === "" || probability === null || probability === undefined
       || !isFinite(Number(probability)) || Number(probability) >= 50
     if (isFinite(amount) && amount >= 0.1 && likely) { start = i; break }
   }
@@ -1708,9 +1756,7 @@ function rainViewerTimeline(report, now, hours) {
 function radarCurrentIntensity(report, now) {
   var snapshot = radarSnapshot(report, now)
   if (!snapshot) return ""
-  var grid = snapshot.grid
-  var centerRow = grid[Math.floor(grid.length / 2)] || []
-  var value = parseFloat(centerRow[Math.floor(centerRow.length / 2)])
+  var value = radarFrameAmount({ precipitation_5: snapshot.grid })
   if (isNaN(value)) return ""
   return (value * 12 / 100).toFixed(1)
 }
@@ -2069,6 +2115,7 @@ function compactMosmixReport(report) {
 if (typeof module !== "undefined") {
   module.exports = {
     rainDriftAt: rainDriftAt,
+    radarFrameAmount: radarFrameAmount,
     mapLatitudeRadiusKm: mapLatitudeRadiusKm,
     mapViewport: mapViewport,
     mapPoint: mapPoint,

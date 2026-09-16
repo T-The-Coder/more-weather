@@ -49,9 +49,7 @@ Column {
     },
     {
       title: "sourceGroupNowcast", details: "sourceGroupNowcastDetails",
-      inUse: panel.rainNowcast.length > 0
-        ? (panel.mosmixReport ? label("sourceMosmix")
-          : label(Providers.forecastLabelKey(panel.displayForecastProviderId))) : "",
+      inUse: panel.rainNowcast.length > 0 ? panel.rainNowcastSourceLabel : "",
       links: [["DWD / Bright Sky", "https://brightsky.dev/"], ["Open-Meteo", "https://open-meteo.com/"],
         ["MET Norway", "https://api.met.no/"]]
     },
