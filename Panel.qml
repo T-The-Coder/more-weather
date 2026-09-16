@@ -2742,6 +2742,7 @@ Panel {
   property WeatherNotifications notifications: WeatherNotifications { panel: root }
   property WeatherSavedLocationCache savedLocationCache: WeatherSavedLocationCache { panel: root }
   property WeatherWindGrid windGridLoader: WeatherWindGrid { panel: root }
+  property WeatherImageStore mapImages: WeatherImageStore {}
   property WeatherMapPrefetch mapPrefetch: WeatherMapPrefetch { panel: root }
   property WeatherRadarPlaces radarPlaces: WeatherRadarPlaces { panel: root }
   property WeatherSharedLiveData sharedLive: WeatherSharedLiveData { panel: root }

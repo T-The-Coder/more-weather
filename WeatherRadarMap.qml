@@ -17,13 +17,11 @@ Item {
   height: Style.space(230)
   clip: true
 
-  Image {
+  WeatherRemoteImage {
     anchors.fill: parent
     visible: panel.radarActiveProviderId !== "dwd"
-    fillMode: Image.PreserveAspectCrop
-    asynchronous: true
-    cache: true
-    source: Providers.calmContextMapUrl(panel.mapBbox, 480, 250)
+    store: panel.mapImages
+    remoteUrl: Providers.calmContextMapUrl(panel.mapBbox, 480, 250)
   }
 
   // Keep every frame as a live Image item and only change which one
@@ -31,9 +29,10 @@ Item {
   // at each step, so playback never flashes a loading message.
   Repeater {
     model: panel.radarFrames
-    WeatherRadarFrameImage {
+    WeatherRemoteImage {
       anchors.fill: parent
-      frameUrl: panel.radarFrameUrl(modelData)
+      store: panel.mapImages
+      remoteUrl: panel.radarFrameUrl(modelData)
       load: panel.radarFrameLoadAllowed(index)
       visible: index === panel.radarDisplayedFrameIndex && status === Image.Ready
       onStatusChanged: if (status !== Image.Error) panel.updateRadarFrameStatus(index, status, modelData)

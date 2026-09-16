@@ -21,13 +21,11 @@ Item {
     color: Color.popups.background
   }
 
-  Image {
+  WeatherRemoteImage {
     id: windMapBackground
     anchors.fill: parent
-    fillMode: Image.PreserveAspectCrop
-    asynchronous: true
-    cache: true
-    source: Providers.calmContextMapUrl(panel.mapBbox, 480, 250)
+    store: panel.mapImages
+    remoteUrl: Providers.calmContextMapUrl(panel.mapBbox, 480, 250)
   }
 
   Canvas {

@@ -140,6 +140,7 @@ omarchy plugin update more-weather
 
    ```bash
    rm -f ~/.local/state/omarchy/settings/more-weather-*.json
+   rm -rf ~/.cache/more-weather
    ```
 
 `~/.local/state/omarchy/settings/weather.json` holds the location shared with
@@ -151,6 +152,7 @@ Omarchy's built-in weather widget and is left in place.
 |---|---|
 | `~/.local/state/omarchy/settings/weather.json` | Location (shared with Omarchy, written via `omarchy-weather-location`) |
 | `~/.local/state/omarchy/settings/more-weather-*.json` | Display settings, favorites, cache, data shared between bar and app |
+| `~/.cache/more-weather/map-images/` | Downloaded radar and map pictures, removed after three hours |
 | `$XDG_RUNTIME_DIR/more-weather-app/` | Temporary app configuration (links to the plugin and the Omarchy shell) |
 | `~/.local/share/applications/more-weather.desktop`, `~/.local/share/more-weather/launch`, `~/.local/share/icons/hicolor/scalable/apps/more-weather.svg` | App launcher entry, only while **Show in app launcher** is on |
 
