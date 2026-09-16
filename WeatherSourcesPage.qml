@@ -18,6 +18,15 @@ Column {
         + label(Providers.forecastLabelKey(panel.displayForecastProviderId))
       : "")
 
+  // Source of the radar drift arrow for the frame on screen (Model.rainDriftAt).
+  readonly property string driftInUse: {
+    var drift = panel.radarDrift
+    if (!drift || (!panel.radarFrames.length && !panel.radarUsesModelFallback)) return ""
+    if (drift.source === "radar") return "DWD RADAR"
+    if (drift.source === "steering") return "OPEN-METEO · 700 HPA"
+    return label(Providers.forecastLabelKey(panel.displayForecastProviderId))
+  }
+
   readonly property string placeInUse: {
     var source = panel.placeReport ? String(panel.placeReport._placeSource || "") : ""
     if (source === "reverse") return "NOMINATIM"
@@ -53,6 +62,11 @@ Column {
       links: [["DWD", "https://www.dwd.de/"], ["NWS", "https://radar.weather.gov/"],
         ["ECCC", "https://geo.weather.gc.ca/geomet/"], ["RainViewer", "https://www.rainviewer.com/"],
         ["Open-Meteo", "https://open-meteo.com/"], ["MET Norway", "https://api.met.no/"]]
+    },
+    {
+      title: "sourceGroupDrift", details: "sourceGroupDriftDetails",
+      inUse: driftInUse,
+      links: [["DWD / Bright Sky", "https://brightsky.dev/"], ["Open-Meteo", "https://open-meteo.com/"]]
     },
     {
       title: "sourceGroupWind", details: "sourceGroupWindDetails",
