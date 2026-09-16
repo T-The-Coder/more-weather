@@ -441,7 +441,8 @@ Panel {
   // the minute tick like the temperature beside it; assigned once per
   // response, it used to keep the sky of the fetch time for 15 minutes.
   readonly property string label: Model.currentIcon(
-    Model.radarAdjustedCondition(liveCurrent, observedRadarIntensity), "", nowDate)
+    Model.radarAdjustedCondition(liveCurrent, observedRadarIntensity, thunderstormConfirmed), "", nowDate)
+  readonly property bool thunderstormConfirmed: Model.thunderstormConfirmed(alertReport, mosmixReport, nowDate)
 
   readonly property bool hasConfiguredCoordinates: !isNaN(parseFloat(String(configuredLocationState.latitude))) && !isNaN(parseFloat(String(configuredLocationState.longitude)))
   readonly property var openMeteoCurrent: Model.openMeteoCurrentCondition(dailyForecastReport)
@@ -462,7 +463,7 @@ Panel {
   // night; null by day and for clear or overcast skies. The bar and the
   // hourly strip keep single glyphs, which stay legible at small sizes.
   readonly property var heroNightSymbol: Model.nightCompositeSymbol(
-    Model.radarAdjustedCondition(current, observedRadarIntensity), nowDate, mapCenterLatitude)
+    Model.radarAdjustedCondition(current, observedRadarIntensity, thunderstormConfirmed), nowDate, mapCenterLatitude)
   // Moon phase glyphs are drawn as seen from the northern hemisphere; views
   // mirror them for places south of the equator.
   readonly property bool moonMirrored: Model.moonMirroredAt(mapCenterLatitude)

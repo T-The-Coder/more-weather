@@ -262,7 +262,12 @@ Item {
       }
       ctx.fillStyle = fg
       ctx.font = panel.canvasFont(Style.font.bodySmall, false, sourceUsesCache)
-      var labels = [0, Math.floor((points.length - 1) / 2), points.length - 1]
+      // Start, end and every half hour between them.
+      var labels = []
+      for (var quarter = 0; quarter <= 4; ++quarter) {
+        var labelIndex = Math.round((points.length - 1) * quarter / 4)
+        if (labels.indexOf(labelIndex) < 0) labels.push(labelIndex)
+      }
       for (i = 0; i < labels.length; ++i) {
         var idx = labels[i]
         ctx.textAlign = i === 0 ? "left" : (i === labels.length - 1 ? "right" : "center")

@@ -2125,9 +2125,9 @@ function rainViewerTile(radiusKm, latitude) {
 // thunderstorm at 16:09 while the radar was dry until 16:15. The sky (clear,
 // cloudy, fog) stays the forecast's; whether it rains is the radar's.
 // Dry radar turns precipitation and thunderstorms into overcast; wet radar
-// turns a dry sky into light or moderate rain by intensity, and keeps snow
-// and thunderstorms the forecast already names.
-function radarAdjustedCondition(current, radarIntensity) {
+// shows light or moderate rain by intensity, keeps snow the forecast names,
+// and shows a thunderstorm only when one is confirmed (thunderstormConfirmed).
+function radarAdjustedCondition(current, radarIntensity, thunderConfirmed) {
   if (!current || radarIntensity === "" || radarIntensity === null || radarIntensity === undefined) return current
   if (current.openMeteoWeatherCode === undefined || current.openMeteoWeatherCode === null) return current
   var intensity = parseFloat(radarIntensity)
@@ -2139,7 +2139,9 @@ function radarAdjustedCondition(current, radarIntensity) {
   var next = code
   if (intensity < 0.1) {
     if (precipitating) next = 3
-  } else if (!snow && !thunder) {
+  } else if (thunderConfirmed && !snow) {
+    next = 95
+  } else if (!snow) {
     next = intensity < 0.5 ? 61 : 63
   }
   if (next === code) return current
@@ -2147,6 +2149,38 @@ function radarAdjustedCondition(current, radarIntensity) {
   for (var key in current) adjusted[key] = current[key]
   adjusted.openMeteoWeatherCode = next
   return adjusted
+}
+
+// Whether a thunderstorm is confirmed at the place rather than only forecast:
+// an official warning naming thunderstorms that is in force or starts within
+// 30 minutes, or a station observation of one in the last 90 minutes (a
+// Bright Sky row whose source is not a forecast). MOSMIX often names a
+// thunderstorm as the hour's most significant weather on merely showery
+// days, which put a lightning bolt on plain rain.
+function thunderstormConfirmed(alertReport, mosmixReport, now) {
+  var nowMs = (now instanceof Date ? now : new Date(now || Date.now())).getTime()
+  var alerts = alertReport && alertReport.alerts ? alertReport.alerts : []
+  for (var i = 0; i < alerts.length; ++i) {
+    var alert = alerts[i] || {}
+    if (alert.status && alert.status !== "actual") continue
+    var names = String(alert.event_en || "") + " " + String(alert.event_de || "")
+    if (!/thunder|gewitter/i.test(names)) continue
+    var onset = new Date(alert.onset || alert.effective || 0).getTime()
+    var expires = alert.expires ? new Date(alert.expires).getTime() : Infinity
+    if ((isNaN(onset) || onset <= nowMs + 30 * 60 * 1000) && (isNaN(expires) || expires > nowMs)) return true
+  }
+  var rows = mosmixReport && mosmixReport.weather ? mosmixReport.weather : []
+  var sourceTypes = {}
+  var sources = mosmixReport && mosmixReport.sources ? mosmixReport.sources : []
+  for (var s = 0; s < sources.length; ++s) sourceTypes[sources[s].id] = sources[s].observation_type
+  for (var r = 0; r < rows.length; ++r) {
+    var type = sourceTypes[rows[r].source_id]
+    if (!type || type === "forecast") continue
+    var stamp = new Date(rows[r].timestamp).getTime()
+    if (isNaN(stamp) || stamp > nowMs || nowMs - stamp > 90 * 60 * 1000) continue
+    if (rows[r].icon === "thunderstorm" || rows[r].condition === "thunderstorm") return true
+  }
+  return false
 }
 
 // DWD's radar colour scale ("Niederschlagsradar" legend, mm/h intervals),
@@ -2254,7 +2288,7 @@ function rainDriftAt(motion, forecastReport, nowcast, time) {
 //      responses through a watched file that both processes re-parse on
 //      every write, so only fields some view actually reads are kept.
 var SHARED_MOSMIX_FIELDS = ["timestamp", "temperature", "precipitation",
-  "precipitation_probability", "wind_speed", "relative_humidity", "icon"]
+  "precipitation_probability", "wind_speed", "relative_humidity", "icon", "source_id"]
 
 function pickFields(source, fields) {
   var result = {}
@@ -2268,7 +2302,13 @@ function compactMosmixReport(report) {
   var rows = []
   for (var i = 0; i < report.weather.length; ++i)
     rows.push(pickFields(report.weather[i], SHARED_MOSMIX_FIELDS))
-  return { weather: rows }
+  // Which rows are station observations rather than forecast
+  // (thunderstormConfirmed).
+  var sources = []
+  var reportSources = Array.isArray(report.sources) ? report.sources : []
+  for (var j = 0; j < reportSources.length; ++j)
+    sources.push(pickFields(reportSources[j], ["id", "observation_type"]))
+  return { weather: rows, sources: sources }
 }
 
 
@@ -2278,6 +2318,7 @@ if (typeof module !== "undefined") {
     radarFrameAmount: radarFrameAmount,
     radarAdjustedCondition: radarAdjustedCondition,
     dwdRadarColor: dwdRadarColor,
+    thunderstormConfirmed: thunderstormConfirmed,
     radarCurrentIntensity: radarCurrentIntensity,
     mapLatitudeRadiusKm: mapLatitudeRadiusKm,
     mapViewport: mapViewport,
