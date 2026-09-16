@@ -140,3 +140,53 @@ export function radarMotionSeries(report) {
   }
   return result
 }
+
+// Radii in km of the neighbourhoods around the place for radarWetFractions.
+var RADAR_WET_RADII_KM = [1, 3, 5, 7, 10]
+
+// How much of the surroundings is wet in each frame of a Bright Sky radar
+// report: { radiiKm, frames: [{ time (ms), fractions }] }, one fraction per
+// radius for the share of cells within that distance of the place with rain
+// (at least 0.01 mm in 5 minutes). Model.rainNowcastSeries turns these into
+// a probability; a wider neighbourhood stands for the nowcast's growing
+// position error at longer lead times.
+export function radarWetFractions(report) {
+  var frames = report && report.radar ? report.radar : []
+  var first = frames.length && frames[0].precipitation_5 ? frames[0].precipitation_5 : null
+  if (!first || !first.length) return null
+  var rows = first.length
+  var cols = first[0].length
+  var geometry = radarGridGeometry(report, rows, cols)
+  var centerRow = Math.floor(rows / 2)
+  var centerCol = Math.floor(cols / 2)
+  // Offsets per radius, computed once for all frames.
+  var rings = RADAR_WET_RADII_KM.map(function(radiusKm) {
+    var reach = radiusKm / geometry.cellKm
+    var cells = []
+    for (var dy = -Math.ceil(reach); dy <= Math.ceil(reach); ++dy)
+      for (var dx = -Math.ceil(reach); dx <= Math.ceil(reach); ++dx)
+        if (dx * dx + dy * dy <= reach * reach) cells.push([dy, dx])
+    return cells
+  })
+  var result = []
+  for (var f = 0; f < frames.length; ++f) {
+    var stamp = new Date(frames[f].timestamp).getTime()
+    var grid = frames[f].precipitation_5
+    if (isNaN(stamp) || !grid) continue
+    var fractions = rings.map(function(cells) {
+      var wet = 0
+      var count = 0
+      for (var c = 0; c < cells.length; ++c) {
+        var row = grid[centerRow + cells[c][0]]
+        var value = row ? row[centerCol + cells[c][1]] : undefined
+        if (value === undefined || value === null) continue
+        count++
+        if (Number(value) >= 1) wet++
+      }
+      return count ? Math.round(wet / count * 1000) / 1000 : 0
+    })
+    result.push({ time: stamp, fractions: fractions })
+  }
+  return { radiiKm: RADAR_WET_RADII_KM.slice(0), frames: result }
+}
+

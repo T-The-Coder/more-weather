@@ -813,7 +813,10 @@ function brightSkyCurrentCondition(report, fallback, now) {
   }
 }
 
-function hybridHourlyForecast(mosmixReport, dailyForecastReport, uvReport, radarReport, now, limit) {
+// `nowcast` is rainNowcastSeries' output: for the hours its radar slots cover,
+// their probability and amount replace the hourly forecast's, so the hourly
+// strip and the rain tab agree for the next two hours.
+function hybridHourlyForecast(mosmixReport, dailyForecastReport, uvReport, radarReport, now, limit, nowcast) {
   // Two separate Open-Meteo fallbacks, not one: dailyForecastReport's
   // hourly query carries rain fields but no UV, uvReport's carries UV but
   // no rain fields (see the two separate curl calls in Panel.qml). Merging
@@ -869,6 +872,7 @@ function hybridHourlyForecast(mosmixReport, dailyForecastReport, uvReport, radar
   if (result.length) {
     var radarAmount = radarNextHourAmount(radarReport, now)
     if (radarAmount !== "") result[0].rainAmount = radarAmount
+    applyNowcastToHours(result, nowcast)
     // Both MOSMIX and Open-Meteo can leave precipitation_probability empty
     // specifically for the current, still-in-progress hour (it's not a
     // data-source outage — the same gap shows up in both independently).
@@ -965,6 +969,72 @@ function hybridForecastDays(mosmixReport, openMeteoReport, todayString, uvReport
   return days
 }
 
+// Radar-backed nowcast slots override an hour's rain probability (the highest
+// of its slots) and amount (their mean intensity over the hour) when at least
+// two of the hour's four quarter hours are covered. The hour in progress takes
+// the probability of its remaining slots; its amount stays the radar's next
+// sixty minutes (radarNextHourAmount).
+function applyNowcastToHours(hours, nowcast) {
+  var slots = Array.isArray(nowcast) ? nowcast : []
+  for (var h = 0; h < hours.length; ++h) {
+    var hourStart = new Date(hours[h].time).getTime()
+    if (isNaN(hourStart)) continue
+    var probability = null
+    var probabilitySlots = 0
+    var intensity = 0
+    var amountSlots = 0
+    for (var s = 0; s < slots.length; ++s) {
+      var slotStart = new Date(slots[s].time).getTime()
+      if (isNaN(slotStart) || slotStart < hourStart || slotStart >= hourStart + 60 * 60 * 1000) continue
+      if (slots[s].probabilitySource === "radar") {
+        probability = Math.max(probability === null ? 0 : probability, Number(slots[s].probability) || 0)
+        probabilitySlots++
+      }
+      if (slots[s].precipitationSource === "radar") {
+        intensity += Number(slots[s].precipitation) || 0
+        amountSlots++
+      }
+    }
+    var inProgress = h === 0
+    if (probability !== null && (probabilitySlots >= 2 || inProgress)) hours[h].rainProbability = String(Math.round(probability))
+    if (amountSlots >= 2 && !inProgress)
+      hours[h].rainAmount = String(Math.round(intensity / amountSlots * 10) / 10)
+  }
+}
+
+// Share of the 3 x 3 km around the place with rain in one radar frame; the
+// stand-in when the wide grid's neighbourhoods are missing.
+function radarFrameWetShare(frame) {
+  var grid = frame && frame.precipitation_5 ? frame.precipitation_5 : []
+  var centerRow = Math.floor(grid.length / 2)
+  var wet = 0
+  var count = 0
+  for (var r = Math.max(0, centerRow - 1); r <= Math.min(grid.length - 1, centerRow + 1); ++r) {
+    var row = grid[r] || []
+    var centerColumn = Math.floor(row.length / 2)
+    for (var c = Math.max(0, centerColumn - 1); c <= Math.min(row.length - 1, centerColumn + 1); ++c) {
+      var value = parseFloat(row[c])
+      if (isNaN(value)) continue
+      count++
+      if (value >= 1) wet++
+    }
+  }
+  return count ? wet / count : null
+}
+
+// Rain probability in % from the radar's wet share and the forecast's
+// probability. The radar weighs fully now and less with every minute of
+// lead time (0.6 at one hour, 0.2 from two hours on), since it cannot see
+// showers that have yet to form; the forecast covers the rest. Without a
+// forecast probability the radar share stands alone.
+function rainProbabilityBlend(wetShare, forecastProbability, leadMinutes) {
+  var radar = Math.max(0, Math.min(1, Number(wetShare))) * 100
+  var forecast = Number(forecastProbability)
+  if (forecastProbability === null || forecastProbability === "" || !isFinite(forecast)) return Math.round(radar)
+  var weight = Math.max(0.2, Math.min(1, 1 - Number(leadMinutes) / 150))
+  return Math.round(weight * radar + (1 - weight) * forecast)
+}
+
 // Rain at the place in one Bright Sky radar frame, in 0.01 mm per 5 minutes:
 // the mean of the 3 x 3 km grid around it rather than the single 1 km cell,
 // so a shower edge a few hundred metres off does not flip the reading, and
@@ -1005,11 +1075,18 @@ function radarNextHourAmount(report, now) {
 // supplies the worldwide 15-minute time axis. In the DWD region the rain
 // amount comes from the DWD radar nowcast (RV, via Bright Sky) wherever it
 // reaches: observed rain moved along its track, which times a shower far
-// better than any model in the first two hours. The probability, and the
-// amount beyond the radar, come from MOSMIX; elsewhere from the selected
-// regional/global model. Precipitation remains an intensity in mm/h, and
-// `precipitationSource` says which of the two supplied it.
-function rainNowcastSeries(mosmixReport, report, now, limit, radarReport) {
+// better than any model in the first two hours. The amount beyond the radar
+// comes from MOSMIX; elsewhere from the selected regional/global model.
+// Precipitation remains an intensity in mm/h, and `precipitationSource` says
+// which of the two supplied it.
+//
+// The probability blends both (rainProbabilityBlend): MOSMIX alone gives the
+// chance of rain in the hour from models and does not know that the sky is
+// dry right now, so a dry radar used to sit beside 55 %. `radarWet` holds the
+// wet share around the place per frame (RadarMotion.mjs); without it the
+// 3 x 3 km grid of `radarReport` stands in. `probabilitySource` is "radar"
+// where the radar took part.
+function rainNowcastSeries(mosmixReport, report, now, limit, radarReport, radarWet) {
   var data = report && report.minutely_15 ? report.minutely_15 : null
   if (!data || !data.time) return []
   var weather = mosmixReport && mosmixReport.weather ? mosmixReport.weather : []
@@ -1058,15 +1135,46 @@ function rainNowcastSeries(mosmixReport, report, now, limit, radarReport) {
     return frames >= 2 ? sum / frames * 12 / 100 : null
   }
 
+  var wetByTime = {}
+  var wetRadii = radarWet && radarWet.radiiKm ? radarWet.radiiKm : []
+  var wetFrames = radarWet && radarWet.frames ? radarWet.frames : []
+  for (var w = 0; w < wetFrames.length; ++w) wetByTime[wetFrames[w].time] = wetFrames[w].fractions
+  // Share of the surroundings with rain in the slot's wettest frame, for a
+  // neighbourhood that widens with the lead time: about 1 km now, 10 km in
+  // two hours.
+  function radarSlotWetShare(slotStart, leadMinutes) {
+    var wanted = 1 + leadMinutes * 9 / 120
+    var radiusIndex = wetRadii.length - 1
+    for (var r = 0; r < wetRadii.length; ++r) if (wetRadii[r] >= wanted - 0.001) { radiusIndex = r; break }
+    var share = null
+    for (var step = 1; step <= 3; ++step) {
+      var frameTime = slotStart + step * 5 * 60 * 1000
+      var fractions = wetByTime[frameTime]
+      var value = null
+      if (fractions && radiusIndex >= 0) {
+        value = Number(fractions[radiusIndex])
+      } else if (radarByTime[frameTime]) {
+        value = radarFrameWetShare(radarByTime[frameTime])
+      }
+      if (value !== null && !isNaN(value)) share = share === null ? value : Math.max(share, value)
+    }
+    return share
+  }
+
   for (var i = 0; i < data.time.length && result.length < max; ++i) {
     var stamp = new Date(data.time[i]).getTime()
     if (isNaN(stamp) || stamp + 15 * 60 * 1000 < start) continue
     var probability = mosmixAt(stamp, "precipitation_probability", true)
     var precipitation = mosmixAt(stamp, "precipitation", false)
     var radarIntensity = radarSlotIntensity(stamp)
+    var forecastProbability = probability === null ? numericValue(data.precipitation_probability, i) : probability
+    var leadMinutes = Math.max(0, (stamp + 7.5 * 60 * 1000 - start) / 60000)
+    var wetShare = radarSlotWetShare(stamp, leadMinutes)
     result.push({
       time: data.time[i],
-      probability: probability === null ? numericValue(data.precipitation_probability, i) : probability,
+      probability: wetShare === null ? forecastProbability
+        : rainProbabilityBlend(wetShare, forecastProbability, leadMinutes),
+      probabilitySource: wetShare === null ? "forecast" : "radar",
       precipitation: radarIntensity !== null ? Math.round(radarIntensity * 100) / 100
         : (precipitation === null ? numericValue(data.precipitation, i) * 4 : precipitation),
       precipitationSource: radarIntensity !== null ? "radar" : "forecast",

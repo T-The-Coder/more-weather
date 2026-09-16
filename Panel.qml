@@ -179,6 +179,9 @@ Panel {
   // Rain drift read from a wider DWD radar grid (RadarMotion.mjs);
   // the grid itself is not kept.
   property var radarMotion: []
+  // Wet share around the place per radar frame (RadarMotion.mjs), for the
+  // rain probability of the next two hours.
+  property var radarWet: null
   property var rainViewerReport: null
   property var windGridReport: null
   // Recent wind grids by map extent. Each grid costs Open-Meteo 35 calls, so
@@ -240,6 +243,7 @@ Panel {
     mosmixReport = null
     radarReport = null
     radarMotion = []
+    radarWet = null
     rainViewerReport = null
     regionalRadarFrames = []
     regionalRadarProviderId = ""
@@ -476,7 +480,7 @@ Panel {
       ? (cachedWeatherSnapshot.daily || []).filter(function(day) { return String(day && day.date || "") >= todayDate })
       : [], "date", 0, 7)
   readonly property var liveHourlyForecast: Model.hybridHourlyForecast(mosmixReport,
-    dailyForecastReport, uvReport, radarReport, nowDate, 6)
+    dailyForecastReport, uvReport, radarReport, nowDate, 6, liveRainNowcast)
   readonly property double cacheWindowStartMs: {
     var start = new Date(relativeTimeNowMs)
     start.setMinutes(0, 0, 0)
@@ -486,7 +490,7 @@ Panel {
   readonly property var computedHourlyForecast: Model.mergeCachedWeatherSeries(displayedLiveHourlyForecast,
     (cacheFallbackActive || displayedLiveHourlyForecast.length > 0) && cachedWeatherSnapshot
       ? cachedWeatherSnapshot.hourly : [], "time", cacheWindowStartMs, 6)
-  readonly property var liveRainNowcast: Model.rainNowcastSeries(mosmixReport, dailyForecastReport, nowDate, 9, radarReport)
+  readonly property var liveRainNowcast: Model.rainNowcastSeries(mosmixReport, dailyForecastReport, nowDate, 9, radarReport, radarWet)
   // Source label for the rain tab: the radar supplies amounts wherever it
   // reaches, the forecast the probability and anything beyond.
   readonly property string rainNowcastSourceLabel: {
@@ -1331,7 +1335,7 @@ Panel {
       alertProviderId: alertActiveProviderId,
       current: liveCurrent,
       hourly: Model.hybridHourlyForecast(mosmixReport, dailyForecastReport,
-        uvReport || dailyForecastReport, radarReport, new Date(), 72),
+        uvReport || dailyForecastReport, radarReport, new Date(), 72, liveRainNowcast),
       daily: liveForecastDays.slice(0, 3),
       nowcast: liveRainNowcast,
       alerts: liveActiveWeatherAlerts
@@ -1613,6 +1617,7 @@ Panel {
       mosmixReport = null
       radarReport = null
       radarMotion = []
+      radarWet = null
     }
 
     startRainViewerRequest()
@@ -2643,6 +2648,7 @@ Panel {
         return
       }
       root.radarMotion = message.motion
+      root.radarWet = message.wet
       console.info("weather: radar drift tracked for", message.motion.length, "of 8 steps")
       root.scheduleWeatherCachePersist()
     }

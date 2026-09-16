@@ -179,15 +179,44 @@ Item {
         var fraction = Math.min(100, Math.max(0, Number(value) || 0)) / 100
         return top + plotH * (1 - fraction)
       }
+      // A monotone cubic through every point (Fritsch-Carlson): the curve
+      // passes through the plotted values and never swings above 100 % or
+      // below 0 % between them. The former midpoint smoothing cut corners,
+      // which the radar's sharp steps (2 % to 95 % within a quarter hour)
+      // turned into a visible miss.
       function probabilityPath(series) {
+        var count = series.length
+        var xs = []
+        var ys = []
+        for (var p = 0; p < count; ++p) { xs.push(pointX(p)); ys.push(probabilityY(series[p])) }
         ctx.beginPath()
-        ctx.moveTo(pointX(0), probabilityY(series[0]))
-        for (var n = 1; n < series.length - 1; ++n) {
-          var nx = pointX(n + 1)
-          var ny = probabilityY(series[n + 1])
-          ctx.quadraticCurveTo(pointX(n), probabilityY(series[n]), (pointX(n) + nx) / 2, (probabilityY(series[n]) + ny) / 2)
+        ctx.moveTo(xs[0], ys[0])
+        if (count < 3) {
+          for (p = 1; p < count; ++p) ctx.lineTo(xs[p], ys[p])
+          return
         }
-        ctx.lineTo(pointX(series.length - 1), probabilityY(series[series.length - 1]))
+        var slopes = []
+        for (p = 0; p < count - 1; ++p) slopes.push((ys[p + 1] - ys[p]) / (xs[p + 1] - xs[p]))
+        var tangents = [slopes[0]]
+        for (p = 1; p < count - 1; ++p)
+          tangents.push(slopes[p - 1] * slopes[p] <= 0 ? 0 : (slopes[p - 1] + slopes[p]) / 2)
+        tangents.push(slopes[count - 2])
+        for (p = 0; p < count - 1; ++p) {
+          if (slopes[p] === 0) { tangents[p] = 0; tangents[p + 1] = 0; continue }
+          var a = tangents[p] / slopes[p]
+          var b = tangents[p + 1] / slopes[p]
+          var h = a * a + b * b
+          if (h > 9) {
+            var t = 3 / Math.sqrt(h)
+            tangents[p] = t * a * slopes[p]
+            tangents[p + 1] = t * b * slopes[p]
+          }
+        }
+        for (p = 0; p < count - 1; ++p) {
+          var dx = (xs[p + 1] - xs[p]) / 3
+          ctx.bezierCurveTo(xs[p] + dx, ys[p] + tangents[p] * dx,
+            xs[p + 1] - dx, ys[p + 1] - tangents[p + 1] * dx, xs[p + 1], ys[p + 1])
+        }
       }
 
       // Nine sample timestamps delimit exactly eight 15-minute bars.
