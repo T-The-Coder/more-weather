@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "more-weather",
   "name": "More Weather",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Weather with official warnings, rain nowcast, radar, wind map, air quality and a standalone app",
   "kinds": [
     "bar-widget"
