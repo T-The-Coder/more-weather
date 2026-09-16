@@ -30,6 +30,8 @@ window.
 - **Rain radar:**
   - Animated frames with play/pause, stepping and zoom.
   - City labels, plus a drift arrow that shows where rain is heading in one and two hours.
+    It follows the frame on screen and is tracked from the radar itself in the DWD area;
+    elsewhere it uses the model wind at about 3 km (700 hPa).
 - **Wind map:** An animated particle field from a 35-point model grid over the
   visible map area.
 - **Locations:** Search for places, keep a list of favorites or detect your location

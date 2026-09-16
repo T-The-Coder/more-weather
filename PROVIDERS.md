@@ -18,6 +18,9 @@ This separation keeps the widget and standalone app on the same policy.
   free terms require. The field uses the Open-Meteo grid when
   available and otherwise the active point forecast (including MET Norway),
   always with explicit model-fallback attribution.
+- Radar drift arrow: motion tracked in a 100 x 100 km DWD RADOLAN RV grid
+  (Bright Sky, DWD area) -> Open-Meteo 700 hPa wind -> surface wind of the
+  active forecast.
 - Warnings: DWD -> MeteoAlarm in Germany; NWS in the United States; ECCC
   (api.weather.gc.ca weather-alerts) in Canada; MeteoAlarm Atom feed -> the
   MeteoAlarm JSON API in its 39 European countries. Last-good warnings

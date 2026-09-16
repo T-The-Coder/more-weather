@@ -81,6 +81,7 @@ Item {
     if (reports.uvReport) panel.uvReport = reports.uvReport
     if (reports.mosmixReport) panel.mosmixReport = reports.mosmixReport
     if (reports.radarReport) panel.radarReport = reports.radarReport
+    if (reports.radarMotion) panel.radarMotion = reports.radarMotion
     if (reports.rainViewerReport) panel.rainViewerReport = reports.rainViewerReport
     if (reports.alertReport) {
       panel.alertReport = reports.alertReport
@@ -211,6 +212,7 @@ Item {
         uvReport: panel.uvReport,
         mosmixReport: Model.compactMosmixReport(panel.mosmixReport),
         radarReport: panel.radarReport,
+        radarMotion: panel.radarMotion,
         rainViewerReport: panel.rainViewerReport,
         alertReport: panel.alertReport,
         alertActiveProviderId: panel.alertActiveProviderId

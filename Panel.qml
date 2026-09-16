@@ -176,6 +176,9 @@ Panel {
   property var uvReport: null
   property var mosmixReport: null
   property var radarReport: null
+  // Rain drift read from a wider DWD radar grid (RadarMotion.mjs);
+  // the grid itself is not kept.
+  property var radarMotion: []
   property var rainViewerReport: null
   property var windGridReport: null
   // Recent wind grids by map extent. Each grid costs Open-Meteo 35 calls, so
@@ -236,6 +239,7 @@ Panel {
     providerCountry = ""
     mosmixReport = null
     radarReport = null
+    radarMotion = []
     rainViewerReport = null
     regionalRadarFrames = []
     regionalRadarProviderId = ""
@@ -726,6 +730,15 @@ Panel {
       : (displayForecastProviderId === "met-no" ? "met-no-model" : "open-meteo-model"))
   property int radarFrameIndex: 0
   property int radarDisplayedFrameIndex: 0
+  // Drift for the radar frame on screen, so the arrow follows playback.
+  readonly property double radarDisplayedFrameMs: {
+    var frame = radarFrames.length
+      ? radarFrames[Math.max(0, Math.min(radarDisplayedFrameIndex, radarFrames.length - 1))] : null
+    var stamp = frame ? new Date(frame.timestamp).getTime() : NaN
+    return isNaN(stamp) ? relativeTimeNowMs : stamp
+  }
+  readonly property var radarDrift: Model.rainDriftAt(cacheFallbackActive ? [] : radarMotion,
+    cacheFallbackActive ? null : dailyForecastReport, rainNowcast, radarDisplayedFrameMs)
   property var radarFrameReady: []
   property bool radarHasDisplayedFrame: false
   property bool radarPlaying: false
@@ -1575,8 +1588,10 @@ Panel {
     } else {
       mosmixProc.running = false
       radarProc.running = false
+      radarMotionProc.running = false
       mosmixReport = null
       radarReport = null
+      radarMotion = []
     }
 
     startRainViewerRequest()
@@ -1598,6 +1613,24 @@ Panel {
     // ~1.3 MB for the full two-hour window.
     radarProc.request = { url: radarUrl, timeoutMs: 8000, maxBytes: 16 * 1024 * 1024 }
     radarProc.running = true
+    startRadarMotionRequest(lat, lon, radarStartMs)
+  }
+
+  // The same nowcast window over 100 x 100 km, wide enough to follow rain
+  // for 15 minutes at any plausible speed (~0.5 MB, ~90 KB compressed).
+  // Only the drift computed from it is kept.
+  function startRadarMotionRequest(lat, lon, startMs) {
+    if (radarMotionProc.running) return
+    radarMotionProc.request = {
+      url: "https://api.brightsky.dev/radar"
+        + "?lat=" + encodeURIComponent(String(lat))
+        + "&lon=" + encodeURIComponent(String(lon))
+        + "&distance=50000&format=plain"
+        + "&date=" + encodeURIComponent(new Date(startMs).toISOString())
+        + "&last_date=" + encodeURIComponent(new Date(startMs + 2 * 60 * 60 * 1000).toISOString()),
+      timeoutMs: 10000
+    }
+    radarMotionProc.running = true
   }
 
   // RainViewer supplies observed radar frames across more than 150
@@ -2556,6 +2589,33 @@ Panel {
           root.scheduleWeatherCachePersist()
         }
       } catch (e) { }
+    }
+  }
+
+  WeatherRequest {
+    id: radarMotionProc
+    // A failed request keeps the last drift; rainDriftAt ignores steps that
+    // no longer match the frame on screen and falls back to the model wind.
+    onFinished: function(text) {
+      var raw = String(text || "").trim()
+      if (!raw) return
+      radarMotionWorker.sendMessage({ token: root.locationQuery, text: raw })
+    }
+  }
+
+  WorkerScript {
+    id: radarMotionWorker
+    source: "RadarMotionWorker.mjs"
+    onMessage: function(message) {
+      // A result for a location the user has since left is dropped.
+      if (message.token !== root.locationQuery) return
+      if (!message.motion) {
+        console.warn("weather: radar motion response unreadable")
+        return
+      }
+      root.radarMotion = message.motion
+      console.info("weather: radar drift tracked for", message.motion.length, "of 8 steps")
+      root.scheduleWeatherCachePersist()
     }
   }
 

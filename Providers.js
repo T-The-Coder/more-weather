@@ -145,6 +145,8 @@ function openMeteoForecastUrl(latitude, longitude) {
     + "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_sum,wind_speed_10m_max,sunrise,sunset,uv_index_max"
     + "&current=temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,weather_code,is_day"
     + "&hourly=temperature_2m,precipitation_probability,precipitation,weather_code,is_day,wind_speed_10m,uv_index"
+    // Steering wind for the radar drift arrow where radar motion is unavailable.
+    + ",wind_speed_700hPa,wind_direction_700hPa"
     + "&minutely_15=precipitation,precipitation_probability,wind_speed_10m,wind_direction_10m,wind_gusts_10m"
     + "&forecast_minutely_15=16&forecast_days=8&timezone=auto"
 }

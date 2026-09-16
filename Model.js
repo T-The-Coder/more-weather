@@ -1906,6 +1906,61 @@ function iconForCode(code, night, date) {
   }
 }
 
+// ---- Rain drift. The radar arrow shows where rain moves, which follows the
+//      wind a few kilometres up rather than the surface wind: on 2026-09-16
+//      the 10 m wind came from 316° while the rain moved from 236°.
+//
+//      In the DWD region the motion is read from the radar itself
+//      (RadarMotion.mjs, run by RadarMotionWorker.mjs off the GUI thread).
+//      Elsewhere, or with too little rain to track, the 700 hPa model wind
+//      stands in, and only without that (MET Norway) the surface wind.
+
+// Drift for one moment, normally the radar frame on screen:
+// { directionFrom, speedKmh, source: "radar" | "steering" | "surface" } or null.
+function rainDriftAt(motion, forecastReport, nowcast, time) {
+  var target = time instanceof Date ? time.getTime() : Number(time)
+  if (isNaN(target)) target = Date.now()
+  var best = null
+  var bestDistance = Infinity
+  for (var i = 0; motion && i < motion.length; ++i) {
+    // A step describes the 15 minutes that follow its time.
+    var distance = Math.abs(motion[i].time + 7.5 * 60 * 1000 - target)
+    if (distance < bestDistance) { best = motion[i]; bestDistance = distance }
+  }
+  if (best && bestDistance <= 15 * 60 * 1000)
+    return { directionFrom: best.directionFrom, speedKmh: best.speedKmh, source: "radar" }
+
+  var hourly = forecastReport && forecastReport.hourly
+  if (hourly && hourly.time && hourly.wind_direction_700hPa && hourly.wind_speed_700hPa) {
+    var hourIndex = -1
+    var hourDistance = Infinity
+    for (var h = 0; h < hourly.time.length; ++h) {
+      var hourStamp = new Date(hourly.time[h]).getTime()
+      var delta = Math.abs(hourStamp + 30 * 60 * 1000 - target)
+      if (!isNaN(hourStamp) && delta < hourDistance) { hourIndex = h; hourDistance = delta }
+    }
+    if (hourIndex >= 0 && hourDistance <= 90 * 60 * 1000) {
+      var direction = Number(hourly.wind_direction_700hPa[hourIndex])
+      var speed = Number(hourly.wind_speed_700hPa[hourIndex])
+      if (hourly.wind_direction_700hPa[hourIndex] !== null && hourly.wind_speed_700hPa[hourIndex] !== null
+          && !isNaN(direction) && !isNaN(speed))
+        return { directionFrom: direction, speedKmh: speed, source: "steering" }
+    }
+  }
+
+  if (nowcast && nowcast.length) {
+    var slot = nowcast[0]
+    var slotDistance = Infinity
+    for (var n = 0; n < nowcast.length; ++n) {
+      var slotDelta = Math.abs(new Date(nowcast[n].time).getTime() - target)
+      if (slotDelta < slotDistance) { slot = nowcast[n]; slotDistance = slotDelta }
+    }
+    if (slot.windDirection !== undefined && slot.windDirection !== null)
+      return { directionFrom: Number(slot.windDirection) || 0, speedKmh: Number(slot.windSpeed) || 0, source: "surface" }
+  }
+  return null
+}
+
 // ---- Shared live data. The bar widget and the app hand each other their raw
 //      responses through a watched file that both processes re-parse on
 //      every write, so only fields some view actually reads are kept.
@@ -1930,6 +1985,7 @@ function compactMosmixReport(report) {
 
 if (typeof module !== "undefined") {
   module.exports = {
+    rainDriftAt: rainDriftAt,
     compactMosmixReport: compactMosmixReport,
     parseLocationFile: parseLocationFile,
     parseSavedLocations: parseSavedLocations,

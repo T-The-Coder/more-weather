@@ -251,7 +251,7 @@ Item {
   Canvas {
     id: frontArrowCanvas
     anchors.fill: parent
-    property var motionData: panel.rainNowcast
+    property var motionData: panel.radarDrift
     property color arrowColor: panel.foreground
     property real mapZoomScale: Math.pow(1.5, panel.mapZoomLevel)
     onMotionDataChanged: requestPaint()
@@ -262,19 +262,28 @@ Item {
     onPaint: {
       var ctx = getContext("2d")
       ctx.clearRect(0, 0, width, height)
-      if (!panel.rainNowcast.length) return
+      var drift = motionData
+      if (!drift) return
 
-      var speed = Number(panel.rainNowcast[0].windSpeed || 0)
-      var direction = Number(panel.rainNowcast[0].windDirection || 0)
-      // Meteorological direction denotes where air comes from. The
-      // arrow points along the flow and ends at the selected place.
+      // Radar-tracked where possible, else the 700 hPa or surface wind
+      // (Model.rainDriftAt), for the time of the frame on screen.
+      var speed = Number(drift.speedKmh || 0)
+      var direction = Number(drift.directionFrom || 0)
+      // Meteorological direction denotes where rain comes from. The
+      // arrow points along the drift and ends at the selected place.
       var angle = (direction + 90) * Math.PI / 180
       var dx = Math.cos(angle)
       var dy = Math.sin(angle)
       // A wind displacement covers more screen pixels when the map
       // is zoomed in and fewer when zoomed out. Keep a small minimum
       // so calm wind remains legible.
-      var length = Math.max(18, Math.min(width * 0.38, speed * 10 * mapZoomScale))
+      // The tail and its +2h label must stay on the map, which is far
+      // wider than tall: bound the length along both axes, not just the
+      // width, or a southerly or northerly drift leaves the picture.
+      var reach = width * 0.38
+      if (Math.abs(dx) > 0.001) reach = Math.min(reach, (width / 2 - 40) / Math.abs(dx))
+      if (Math.abs(dy) > 0.001) reach = Math.min(reach, (height / 2 - 26) / Math.abs(dy))
+      var length = Math.max(18, Math.min(reach, speed * 10 * mapZoomScale))
       var headX = width / 2
       var headY = height / 2
       var tailX = headX - dx * length
