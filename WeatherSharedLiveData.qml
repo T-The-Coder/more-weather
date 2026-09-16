@@ -86,7 +86,6 @@ Item {
       panel.alertReport = reports.alertReport
       panel.alertActiveProviderId = reports.alertActiveProviderId || panel.alertActiveProviderId
     }
-    if (reports.label) panel.label = reports.label
     panel.sharedLiveAppliedPublishedAt = publishedAt
     panel.recordForecastRefreshSuccess(fetchedAt)
     panel.relativeTimeNowMs = Date.now()
@@ -214,8 +213,7 @@ Item {
         radarReport: panel.radarReport,
         rainViewerReport: panel.rainViewerReport,
         alertReport: panel.alertReport,
-        alertActiveProviderId: panel.alertActiveProviderId,
-        label: panel.label
+        alertActiveProviderId: panel.alertActiveProviderId
       }
     })
   }

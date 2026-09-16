@@ -225,7 +225,6 @@ Panel {
     placeResolvedKey = ""
     dailyForecastReport = null
     uvReport = null
-    label = ""
     lastSuccessfulUpdateMs = 0
     lastRefreshAttemptMs = 0
     lastForecastFailureMs = 0
@@ -422,7 +421,10 @@ Panel {
   onUpcomingRainChanged: notifications.scheduleAlertNotifications()
 
   // Shared hero/bar icon state, updated with each successful weather response.
-  property string label: ""
+  // The current-conditions symbol. Derived from liveCurrent, so it follows
+  // the minute tick like the temperature beside it; assigned once per
+  // response, it used to keep the sky of the fetch time for 15 minutes.
+  readonly property string label: Model.currentIcon(liveCurrent, "", nowDate)
 
   readonly property bool hasConfiguredCoordinates: !isNaN(parseFloat(String(configuredLocationState.latitude))) && !isNaN(parseFloat(String(configuredLocationState.longitude)))
   readonly property var openMeteoCurrent: Model.openMeteoCurrentCondition(dailyForecastReport)
@@ -2516,17 +2518,9 @@ Panel {
         if (!parsed || !parsed.current || !parsed.daily || !parsed.hourly)
           throw new Error("incomplete forecast response")
         parsed._providerId = root.forecastRequestProviderId
-        var parsedCurrent = Model.openMeteoCurrentCondition(parsed)
         root.dailyForecastReport = parsed
         root.forecastProviderId = root.forecastRequestProviderId
         console.info("weather: forecast provider active:", root.forecastProviderId)
-        // Same source priority as liveCurrent: where MOSMIX has answered,
-        // its condition owns the symbol, so a later forecast response
-        // cannot swap in a different sky than the rest of the hero shows.
-        var iconCurrent = root.mosmixReport
-          ? Model.brightSkyCurrentCondition(root.mosmixReport, parsedCurrent, new Date())
-          : parsedCurrent
-        root.label = Model.currentIcon(iconCurrent, root.label)
         root.recordForecastRefreshSuccess(Date.now())
         root.dailyForecastRetries = 0
         root.scheduleWeatherCachePersist()
@@ -2546,7 +2540,6 @@ Panel {
         var parsed = JSON.parse(String(text || ""))
         if (!parsed.weather || !parsed.weather.length) return
         root.mosmixReport = parsed
-        root.label = Model.currentIcon(Model.brightSkyCurrentCondition(parsed, root.openMeteoCurrent, new Date()), root.label)
         root.scheduleWeatherCachePersist()
       } catch (e) { }
     }

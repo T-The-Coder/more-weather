@@ -770,25 +770,34 @@ function brightSkyIsDay(icon) {
   return String(icon || "").indexOf("night") >= 0 ? 0 : 1
 }
 
-function nearestBrightSkyRecord(report, now) {
+// The row for the hour that has already begun, not the nearest one: from
+// half past, the nearest row is next hour's MOSMIX forecast, while earlier
+// rows are replaced by station observations once the hour is over. Taking
+// the nearest row showed forecast rain under a sky that was observed dry.
+// Falls back to the nearest row when no row has begun within two hours
+// (a report that starts later, or a gap).
+function currentBrightSkyRecord(report, now) {
   var rows = report && report.weather ? report.weather : []
   if (!rows.length) return null
   var target = now instanceof Date ? now.getTime() : new Date(now || Date.now()).getTime()
-  var best = null
+  var begun = null
+  var begunStamp = -Infinity
+  var nearest = null
   var distance = Infinity
   for (var i = 0; i < rows.length; ++i) {
     var stamp = new Date(rows[i].timestamp).getTime()
     if (isNaN(stamp)) continue
+    if (stamp <= target && stamp > begunStamp) { begun = rows[i]; begunStamp = stamp }
     var delta = Math.abs(stamp - target)
-    if (delta < distance) { best = rows[i]; distance = delta }
+    if (delta < distance) { nearest = rows[i]; distance = delta }
   }
-  return best
+  return begun && target - begunStamp <= 2 * 60 * 60 * 1000 ? begun : nearest
 }
 
 // MOSMIX supplies temperature/wind and the condition. Open-Meteo fills
 // fields MOSMIX does not expose here (apparent temperature and humidity).
 function brightSkyCurrentCondition(report, fallback, now) {
-  var row = nearestBrightSkyRecord(report, now)
+  var row = currentBrightSkyRecord(report, now)
   if (!row || row.temperature === undefined || row.temperature === null) return fallback || null
   var base = fallback || {}
   return {
