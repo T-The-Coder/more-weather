@@ -218,7 +218,7 @@ function mergeCachedWeatherSeries(live, cached, identityKey, minimumTime, limit)
     if (!fallbackIdentity || present[fallbackIdentity]) continue
     present[fallbackIdentity] = true
     var fallbackRow = cachedOnlyWeatherObject(cachedRows[k])
-    if (byInstant && /Z$|[+-]\d\d:?\d\d$/.test(String(fallbackRow.time || "")))
+    if (byInstant && /Z$/.test(String(fallbackRow.time || "")))
       fallbackRow.time = localIsoMinute(Number(fallbackIdentity))
     result.push(fallbackRow)
   }
@@ -590,14 +590,47 @@ function metNoWeatherCode(symbolCode) {
   return 3
 }
 
-// "yyyy-MM-ddTHH:mm" in this machine's local time, the timestamp shape
-// Open-Meteo returns for timezone=auto. Views slice hours and dates out of
-// these strings, so UTC stamps would show up shifted by the UTC offset.
+// "yyyy-MM-ddTHH:mm+hh:mm" in this machine's local time, the shape
+// withPlaceOffsets gives Open-Meteo's timestamps. Views slice hours and dates
+// out of these strings, so UTC stamps would show up shifted by the UTC
+// offset; the offset keeps the instant exact for comparisons.
 function localIsoMinute(ms) {
   var date = new Date(ms)
   if (isNaN(date.getTime())) return ""
   return date.getFullYear() + "-" + pad2(date.getMonth() + 1) + "-" + pad2(date.getDate())
     + "T" + pad2(date.getHours()) + ":" + pad2(date.getMinutes())
+    + offsetSuffix(-date.getTimezoneOffset() * 60)
+}
+
+// "+02:00" for 7200 seconds east of UTC.
+function offsetSuffix(seconds) {
+  var minutes = Math.round(Number(seconds) / 60)
+  var sign = minutes < 0 ? "-" : "+"
+  minutes = Math.abs(minutes)
+  return sign + pad2(Math.floor(minutes / 60)) + ":" + pad2(minutes % 60)
+}
+
+// Open-Meteo answers timezone=auto with the place's wall-clock times and no
+// offset ("2026-09-16T13:00"). JavaScript reads those as this machine's local
+// time, which shifted every hourly and 15-minute series by the difference:
+// New York's forecast started at 20:00 and its rain tab stayed empty. The
+// place's offset (utc_offset_seconds) is appended here once, on arrival, so
+// labels that slice "HH:mm" still show the place's time and every comparison
+// with now uses the right instant. Dates (daily.time) stay as they are.
+function withPlaceOffsets(report) {
+  if (!report || typeof report !== "object" || !isFinite(Number(report.utc_offset_seconds))) return report
+  var suffix = offsetSuffix(report.utc_offset_seconds)
+  function stamped(value) {
+    var text = String(value || "")
+    return /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(text) ? text + suffix : value
+  }
+  var series = ["hourly", "minutely_15"]
+  for (var i = 0; i < series.length; ++i) {
+    var block = report[series[i]]
+    if (block && Array.isArray(block.time)) block.time = block.time.map(stamped)
+  }
+  if (report.current && report.current.time) report.current.time = stamped(report.current.time)
+  return report
 }
 
 function pad2(value) {
@@ -814,9 +847,11 @@ function brightSkyCurrentCondition(report, fallback, now) {
 }
 
 // `nowcast` is rainNowcastSeries' output: for the hours its radar slots cover,
-// their probability and amount replace the hourly forecast's, so the hourly
-// strip and the rain tab agree for the next two hours.
-function hybridHourlyForecast(mosmixReport, dailyForecastReport, uvReport, radarReport, now, limit, nowcast) {
+// their probability, amount and precipitation symbol replace the hourly
+// forecast's, so the hourly strip and the rain tab agree for the next two
+// hours. `thunderConfirmed` (thunderstormConfirmed) applies to the hour in
+// progress only.
+function hybridHourlyForecast(mosmixReport, dailyForecastReport, uvReport, radarReport, now, limit, nowcast, thunderConfirmed) {
   // Two separate Open-Meteo fallbacks, not one: dailyForecastReport's
   // hourly query carries rain fields but no UV, uvReport's carries UV but
   // no rain fields (see the two separate curl calls in Panel.qml). Merging
@@ -872,7 +907,7 @@ function hybridHourlyForecast(mosmixReport, dailyForecastReport, uvReport, radar
   if (result.length) {
     var radarAmount = radarNextHourAmount(radarReport, now)
     if (radarAmount !== "") result[0].rainAmount = radarAmount
-    applyNowcastToHours(result, nowcast)
+    applyNowcastToHours(result, nowcast, thunderConfirmed)
     // Both MOSMIX and Open-Meteo can leave precipitation_probability empty
     // specifically for the current, still-in-progress hour (it's not a
     // data-source outage — the same gap shows up in both independently).
@@ -884,7 +919,8 @@ function hybridHourlyForecast(mosmixReport, dailyForecastReport, uvReport, radar
   }
   var futureFallback = []
   for (var k = 0; k < rainFallback.length && futureFallback.length < max; ++k) {
-    if (new Date(rainFallback[k].time).getTime() >= start) {
+    // From the hour in progress, as the MOSMIX branch above does.
+    if (new Date(rainFallback[k].time).getTime() >= hourStartMs) {
       var fbEntry = rainFallback[k]
       var fbUv = uvByHour[String(fbEntry.time).slice(0, 13)] || {}
       futureFallback.push({
@@ -974,7 +1010,7 @@ function hybridForecastDays(mosmixReport, openMeteoReport, todayString, uvReport
 // two of the hour's four quarter hours are covered. The hour in progress takes
 // the probability of its remaining slots; its amount stays the radar's next
 // sixty minutes (radarNextHourAmount).
-function applyNowcastToHours(hours, nowcast) {
+function applyNowcastToHours(hours, nowcast, thunderConfirmed) {
   var slots = Array.isArray(nowcast) ? nowcast : []
   for (var h = 0; h < hours.length; ++h) {
     var hourStart = new Date(hours[h].time).getTime()
@@ -983,6 +1019,7 @@ function applyNowcastToHours(hours, nowcast) {
     var probabilitySlots = 0
     var intensity = 0
     var amountSlots = 0
+    var strongest = 0
     for (var s = 0; s < slots.length; ++s) {
       var slotStart = new Date(slots[s].time).getTime()
       if (isNaN(slotStart) || slotStart < hourStart || slotStart >= hourStart + 60 * 60 * 1000) continue
@@ -992,6 +1029,7 @@ function applyNowcastToHours(hours, nowcast) {
       }
       if (slots[s].precipitationSource === "radar") {
         intensity += Number(slots[s].precipitation) || 0
+        strongest = Math.max(strongest, Number(slots[s].precipitation) || 0)
         amountSlots++
       }
     }
@@ -999,6 +1037,13 @@ function applyNowcastToHours(hours, nowcast) {
     if (probability !== null && (probabilitySlots >= 2 || inProgress)) hours[h].rainProbability = String(Math.round(probability))
     if (amountSlots >= 2 && !inProgress)
       hours[h].rainAmount = String(Math.round(intensity / amountSlots * 10) / 10)
+    // The symbol follows the hour's strongest radar quarter hour, by the same
+    // rule as the current symbol (radarAdjustedCondition).
+    if (amountSlots >= 2 || (inProgress && amountSlots > 0)) {
+      var adjusted = radarAdjustedCondition({ openMeteoWeatherCode: hours[h].weatherCode },
+        strongest.toFixed(2), inProgress && thunderConfirmed)
+      if (adjusted) hours[h].weatherCode = adjusted.openMeteoWeatherCode
+    }
   }
 }
 
@@ -1167,7 +1212,10 @@ function rainNowcastSeries(mosmixReport, report, now, limit, radarReport, radarW
     var probability = mosmixAt(stamp, "precipitation_probability", true)
     var precipitation = mosmixAt(stamp, "precipitation", false)
     var radarIntensity = radarSlotIntensity(stamp)
-    var forecastProbability = probability === null ? numericValue(data.precipitation_probability, i) : probability
+    // null when the source has no probability (MET Norway's 15-minute data),
+    // so the chart can leave the line out instead of drawing 0 %.
+    var rawProbability = data.precipitation_probability ? parseFloat(data.precipitation_probability[i]) : NaN
+    var forecastProbability = probability !== null ? probability : (isNaN(rawProbability) ? null : rawProbability)
     var leadMinutes = Math.max(0, (stamp + 7.5 * 60 * 1000 - start) / 60000)
     var wetShare = radarSlotWetShare(stamp, leadMinutes)
     result.push({
@@ -2315,6 +2363,7 @@ function compactMosmixReport(report) {
 if (typeof module !== "undefined") {
   module.exports = {
     rainDriftAt: rainDriftAt,
+    withPlaceOffsets: withPlaceOffsets,
     radarFrameAmount: radarFrameAmount,
     radarAdjustedCondition: radarAdjustedCondition,
     dwdRadarColor: dwdRadarColor,

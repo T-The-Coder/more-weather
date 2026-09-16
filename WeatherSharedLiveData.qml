@@ -77,10 +77,11 @@ Item {
     if (reports.providerCountry) panel.providerCountry = reports.providerCountry
     if (reports.placeName) panel.placeName = reports.placeName
     if (reports.dailyForecastReport) {
-      panel.dailyForecastReport = reports.dailyForecastReport
+      // An instance running older code may still publish offset-less times.
+      panel.dailyForecastReport = Model.withPlaceOffsets(reports.dailyForecastReport)
       panel.forecastProviderId = reports.forecastProviderId || panel.forecastProviderId
     }
-    if (reports.uvReport) panel.uvReport = reports.uvReport
+    if (reports.uvReport) panel.uvReport = Model.withPlaceOffsets(reports.uvReport)
     if (reports.mosmixReport) panel.mosmixReport = reports.mosmixReport
     // Radar parts only when newer than what the five-minute updates brought.
     var radarAt = Number(reports.radarFetchedAt || fetchedAt)

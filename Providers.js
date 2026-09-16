@@ -225,7 +225,9 @@ function radarMapUrl(providerId, bbox, width, height, timestamp) {
     + "&width=" + encodeURIComponent(String(width || 480))
     + "&height=" + encodeURIComponent(String(height || 250))
     + "&srs=EPSG:4326&format=image/png&transparent=true"
-  if (timestamp) url += "&time=" + encodeURIComponent(String(timestamp))
+  // ECCC's GeoMet answers "…:00.000Z" with an XML error and only takes
+  // "…:00Z", so the Canadian radar always fell back to RainViewer.
+  if (timestamp) url += "&time=" + encodeURIComponent(String(timestamp).replace(/\.\d{3}Z$/, "Z"))
   return url
 }
 

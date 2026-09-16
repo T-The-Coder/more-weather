@@ -85,7 +85,7 @@ Item {
       try {
         var response = JSON.parse(String(text || ""))
         var provider = providerChain[panel.savedCacheProviderIndex]
-        var parsed = provider && provider.id === "met-no" ? Model.metNoToOpenMeteo(response) : response
+        var parsed = provider && provider.id === "met-no" ? Model.metNoToOpenMeteo(response) : Model.withPlaceOffsets(response)
         if (!parsed || !parsed.current || !parsed.daily || !parsed.hourly) return
         panel.storeWeatherSnapshot(active,
           panel.weatherSnapshotFromReport(parsed, active.name, provider && provider.id), false)

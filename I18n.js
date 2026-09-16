@@ -235,7 +235,7 @@ var catalog = {
     sourceGroupMoon: "Moon phase",
     sourceGroupMoonDetails: "Calculated locally (Meeus); mirrored for places south of the equator.",
     sourceLocalCalculation: "LOCAL CALCULATION",
-    sourceRefreshInfo: "Refreshed every {minutes} min, shared between widget and app. Last update: {updated}."
+    sourceRefreshInfo: "Refreshed every {minutes} min, the DWD radar every 5 min, shared between widget and app. Last update: {updated}."
   },
   de: {
     weather: "Wetter",
@@ -466,7 +466,7 @@ var catalog = {
     sourceGroupMoon: "Mondphase",
     sourceGroupMoonDetails: "Lokal berechnet (Meeus); südlich des Äquators gespiegelt.",
     sourceLocalCalculation: "LOKALE BERECHNUNG",
-    sourceRefreshInfo: "Aktualisierung alle {minutes} min, gemeinsam für Widget und App. Letzte Aktualisierung: {updated}."
+    sourceRefreshInfo: "Aktualisierung alle {minutes} min, das DWD-Radar alle 5 min, gemeinsam für Widget und App. Letzte Aktualisierung: {updated}."
   }
 }
 
@@ -837,7 +837,7 @@ addCatalogEntries("es", {
   "sourceGroupMoon": "Fase lunar",
   "sourceGroupMoonDetails": "Calculada localmente (Meeus); reflejada para lugares al sur del ecuador.",
   "sourceLocalCalculation": "CÁLCULO LOCAL",
-  "sourceRefreshInfo": "Se actualiza cada {minutes} min, compartido entre el widget y la aplicación. Última actualización: {updated}."
+  "sourceRefreshInfo": "Se actualiza cada {minutes} min, el radar del DWD cada 5 min, compartido entre el widget y la aplicación. Última actualización: {updated}."
 })
 
 addCatalogEntries("fr", {
@@ -915,7 +915,7 @@ addCatalogEntries("fr", {
   "sourceGroupMoon": "Phase de la Lune",
   "sourceGroupMoonDetails": "Calculée localement (Meeus) ; inversée pour les lieux au sud de l’équateur.",
   "sourceLocalCalculation": "CALCUL LOCAL",
-  "sourceRefreshInfo": "Actualisation toutes les {minutes} min, partagée entre le widget et l’application. Dernière mise à jour : {updated}."
+  "sourceRefreshInfo": "Actualisation toutes les {minutes} min, le radar DWD toutes les 5 min, partagée entre le widget et l’application. Dernière mise à jour : {updated}."
 })
 
 addCatalogEntries("pt", {
@@ -993,7 +993,7 @@ addCatalogEntries("pt", {
   "sourceGroupMoon": "Fase da Lua",
   "sourceGroupMoonDetails": "Calculada localmente (Meeus); espelhada para locais ao sul do equador.",
   "sourceLocalCalculation": "CÁLCULO LOCAL",
-  "sourceRefreshInfo": "Atualizado a cada {minutes} min, compartilhado entre widget e aplicativo. Última atualização: {updated}."
+  "sourceRefreshInfo": "Atualizado a cada {minutes} min, o radar do DWD a cada 5 min, compartilhado entre widget e aplicativo. Última atualização: {updated}."
 })
 
 addCatalogEntries("ru", {
@@ -1071,7 +1071,7 @@ addCatalogEntries("ru", {
   "sourceGroupMoon": "Фаза Луны",
   "sourceGroupMoonDetails": "Рассчитывается локально (Меус); зеркально для мест к югу от экватора.",
   "sourceLocalCalculation": "ЛОКАЛЬНЫЙ РАСЧЁТ",
-  "sourceRefreshInfo": "Обновление каждые {minutes} мин, общее для виджета и приложения. Последнее обновление: {updated}."
+  "sourceRefreshInfo": "Обновление каждые {minutes} мин, радар DWD каждые 5 мин, общее для виджета и приложения. Последнее обновление: {updated}."
 })
 
 addCatalogEntries("uk", {
@@ -1149,7 +1149,7 @@ addCatalogEntries("uk", {
   "sourceGroupMoon": "Фаза Місяця",
   "sourceGroupMoonDetails": "Обчислюється локально (Меус); дзеркально для місць на південь від екватора.",
   "sourceLocalCalculation": "ЛОКАЛЬНИЙ РОЗРАХУНОК",
-  "sourceRefreshInfo": "Оновлення кожні {minutes} хв, спільне для віджета й застосунку. Останнє оновлення: {updated}."
+  "sourceRefreshInfo": "Оновлення кожні {minutes} хв, радар DWD кожні 5 хв, спільне для віджета й застосунку. Останнє оновлення: {updated}."
 })
 
 addCatalogEntries("pl", {
@@ -1227,7 +1227,7 @@ addCatalogEntries("pl", {
   "sourceGroupMoon": "Faza Księżyca",
   "sourceGroupMoonDetails": "Obliczana lokalnie (Meeus); odbita dla miejsc na południe od równika.",
   "sourceLocalCalculation": "OBLICZENIE LOKALNE",
-  "sourceRefreshInfo": "Odświeżanie co {minutes} min, wspólne dla widżetu i aplikacji. Ostatnia aktualizacja: {updated}."
+  "sourceRefreshInfo": "Odświeżanie co {minutes} min, radar DWD co 5 min, wspólne dla widżetu i aplikacji. Ostatnia aktualizacja: {updated}."
 })
 
 addCatalogEntries("it", {
@@ -1305,7 +1305,7 @@ addCatalogEntries("it", {
   "sourceGroupMoon": "Fase lunare",
   "sourceGroupMoonDetails": "Calcolata localmente (Meeus); speculare per i luoghi a sud dell’equatore.",
   "sourceLocalCalculation": "CALCOLO LOCALE",
-  "sourceRefreshInfo": "Aggiornamento ogni {minutes} min, condiviso tra widget e app. Ultimo aggiornamento: {updated}."
+  "sourceRefreshInfo": "Aggiornamento ogni {minutes} min, il radar DWD ogni 5 min, condiviso tra widget e app. Ultimo aggiornamento: {updated}."
 })
 
 addCatalogEntries("nl", {
@@ -1383,7 +1383,7 @@ addCatalogEntries("nl", {
   "sourceGroupMoon": "Maanfase",
   "sourceGroupMoonDetails": "Lokaal berekend (Meeus); gespiegeld voor plaatsen ten zuiden van de evenaar.",
   "sourceLocalCalculation": "LOKALE BEREKENING",
-  "sourceRefreshInfo": "Elke {minutes} min ververst, gedeeld tussen widget en app. Laatste update: {updated}."
+  "sourceRefreshInfo": "Elke {minutes} min ververst, de DWD-radar elke 5 min, gedeeld tussen widget en app. Laatste update: {updated}."
 })
 
 addCatalogEntries("tr", {
@@ -1461,7 +1461,7 @@ addCatalogEntries("tr", {
   "sourceGroupMoon": "Ay evresi",
   "sourceGroupMoonDetails": "Yerel olarak hesaplanır (Meeus); ekvatorun güneyindeki yerler için ayna görüntüsü.",
   "sourceLocalCalculation": "YEREL HESAPLAMA",
-  "sourceRefreshInfo": "Her {minutes} dakikada bir yenilenir, bileşen ve uygulama arasında paylaşılır. Son güncelleme: {updated}."
+  "sourceRefreshInfo": "Her {minutes} dakikada bir yenilenir, DWD radarı her 5 dakikada bir; bileşen ve uygulama arasında paylaşılır. Son güncelleme: {updated}."
 })
 
 addCatalogEntries("cs", {
@@ -1539,7 +1539,7 @@ addCatalogEntries("cs", {
   "sourceGroupMoon": "Fáze Měsíce",
   "sourceGroupMoonDetails": "Počítána lokálně (Meeus); pro místa jižně od rovníku zrcadlově.",
   "sourceLocalCalculation": "MÍSTNÍ VÝPOČET",
-  "sourceRefreshInfo": "Aktualizace každých {minutes} min, společně pro widget a aplikaci. Poslední aktualizace: {updated}."
+  "sourceRefreshInfo": "Aktualizace každých {minutes} min, radar DWD každých 5 min, společně pro widget a aplikaci. Poslední aktualizace: {updated}."
 })
 
 addCatalogEntries("sv", {
@@ -1617,7 +1617,7 @@ addCatalogEntries("sv", {
   "sourceGroupMoon": "Månfas",
   "sourceGroupMoonDetails": "Beräknas lokalt (Meeus); spegelvänd för platser söder om ekvatorn.",
   "sourceLocalCalculation": "LOKAL BERÄKNING",
-  "sourceRefreshInfo": "Uppdateras var {minutes}:e min, gemensamt för widget och app. Senaste uppdatering: {updated}."
+  "sourceRefreshInfo": "Uppdateras var {minutes}:e min, DWD-radarn var 5:e min, gemensamt för widget och app. Senaste uppdatering: {updated}."
 })
 
 addCatalogEntries("fi", {
@@ -1695,7 +1695,7 @@ addCatalogEntries("fi", {
   "sourceGroupMoon": "Kuun vaihe",
   "sourceGroupMoonDetails": "Lasketaan paikallisesti (Meeus); peilattuna päiväntasaajan eteläpuolisille paikoille.",
   "sourceLocalCalculation": "PAIKALLINEN LASKENTA",
-  "sourceRefreshInfo": "Päivitys {minutes} min välein, yhteinen pienoissovellukselle ja sovellukselle. Viimeisin päivitys: {updated}."
+  "sourceRefreshInfo": "Päivitys {minutes} min välein, DWD-tutka 5 min välein, yhteinen pienoissovellukselle ja sovellukselle. Viimeisin päivitys: {updated}."
 })
 
 addCatalogEntries("nb", {
@@ -1773,7 +1773,7 @@ addCatalogEntries("nb", {
   "sourceGroupMoon": "Månefase",
   "sourceGroupMoonDetails": "Beregnet lokalt (Meeus); speilvendt for steder sør for ekvator.",
   "sourceLocalCalculation": "LOKAL BEREGNING",
-  "sourceRefreshInfo": "Oppdateres hver {minutes}. min, felles for miniprogram og app. Siste oppdatering: {updated}."
+  "sourceRefreshInfo": "Oppdateres hver {minutes}. min, DWD-radaren hver 5. min, felles for miniprogram og app. Siste oppdatering: {updated}."
 })
 
 addCatalogEntries("da", {
@@ -1851,7 +1851,7 @@ addCatalogEntries("da", {
   "sourceGroupMoon": "Månefase",
   "sourceGroupMoonDetails": "Beregnet lokalt (Meeus); spejlvendt for steder syd for ækvator.",
   "sourceLocalCalculation": "LOKAL BEREGNING",
-  "sourceRefreshInfo": "Opdateres hver {minutes}. min, fælles for widget og app. Seneste opdatering: {updated}."
+  "sourceRefreshInfo": "Opdateres hver {minutes}. min, DWD-radaren hver 5. min, fælles for widget og app. Seneste opdatering: {updated}."
 })
 
 addCatalogEntries("ro", {
@@ -1929,7 +1929,7 @@ addCatalogEntries("ro", {
   "sourceGroupMoon": "Faza Lunii",
   "sourceGroupMoonDetails": "Calculată local (Meeus); în oglindă pentru locurile de la sud de ecuator.",
   "sourceLocalCalculation": "CALCUL LOCAL",
-  "sourceRefreshInfo": "Actualizare la fiecare {minutes} min, comună pentru widget și aplicație. Ultima actualizare: {updated}."
+  "sourceRefreshInfo": "Actualizare la fiecare {minutes} min, radarul DWD la fiecare 5 min, comună pentru widget și aplicație. Ultima actualizare: {updated}."
 })
 
 addCatalogEntries("hu", {
@@ -2007,7 +2007,7 @@ addCatalogEntries("hu", {
   "sourceGroupMoon": "Holdfázis",
   "sourceGroupMoonDetails": "Helyben számolva (Meeus); az Egyenlítőtől délre fekvő helyeken tükrözve.",
   "sourceLocalCalculation": "HELYI SZÁMÍTÁS",
-  "sourceRefreshInfo": "Frissítés {minutes} percenként, közösen a minialkalmazás és az alkalmazás számára. Utolsó frissítés: {updated}."
+  "sourceRefreshInfo": "Frissítés {minutes} percenként, a DWD-radar 5 percenként, közösen a minialkalmazás és az alkalmazás számára. Utolsó frissítés: {updated}."
 })
 
 addCatalogEntries("el", {
@@ -2085,7 +2085,7 @@ addCatalogEntries("el", {
   "sourceGroupMoon": "Φάση της Σελήνης",
   "sourceGroupMoonDetails": "Υπολογίζεται τοπικά (Meeus)· κατοπτρισμένη για τοποθεσίες νότια του ισημερινού.",
   "sourceLocalCalculation": "ΤΟΠΙΚΟΣ ΥΠΟΛΟΓΙΣΜΟΣ",
-  "sourceRefreshInfo": "Ανανέωση κάθε {minutes} λεπτά, κοινή για γραφικό στοιχείο και εφαρμογή. Τελευταία ενημέρωση: {updated}."
+  "sourceRefreshInfo": "Ανανέωση κάθε {minutes} λεπτά, το ραντάρ του DWD κάθε 5 λεπτά, κοινή για γραφικό στοιχείο και εφαρμογή. Τελευταία ενημέρωση: {updated}."
 })
 
 addCatalogEntries("zh_CN", {
@@ -2163,7 +2163,7 @@ addCatalogEntries("zh_CN", {
   "sourceGroupMoon": "月相",
   "sourceGroupMoonDetails": "本地计算（Meeus）；赤道以南的地点镜像显示。",
   "sourceLocalCalculation": "本地计算",
-  "sourceRefreshInfo": "每 {minutes} 分钟刷新一次，小组件和应用共享。上次更新：{updated}。"
+  "sourceRefreshInfo": "每 {minutes} 分钟刷新一次，DWD 雷达每 5 分钟一次，小组件和应用共享。上次更新：{updated}。"
 })
 
 addCatalogEntries("zh_TW", {
@@ -2241,7 +2241,7 @@ addCatalogEntries("zh_TW", {
   "sourceGroupMoon": "月相",
   "sourceGroupMoonDetails": "本機計算（Meeus）；赤道以南的地點鏡像顯示。",
   "sourceLocalCalculation": "本機計算",
-  "sourceRefreshInfo": "每 {minutes} 分鐘重新整理一次，小工具與應用程式共用。上次更新：{updated}。"
+  "sourceRefreshInfo": "每 {minutes} 分鐘重新整理一次，DWD 雷達每 5 分鐘一次，小工具與應用程式共用。上次更新：{updated}。"
 })
 
 addCatalogEntries("ja", {
@@ -2319,7 +2319,7 @@ addCatalogEntries("ja", {
   "sourceGroupMoon": "月の満ち欠け",
   "sourceGroupMoonDetails": "ローカルで計算（Meeus）。赤道より南の場所では左右反転。",
   "sourceLocalCalculation": "ローカル計算",
-  "sourceRefreshInfo": "{minutes} 分ごとに更新、ウィジェットとアプリで共有。最終更新：{updated}。"
+  "sourceRefreshInfo": "{minutes} 分ごとに更新（DWD レーダーは 5 分ごと）、ウィジェットとアプリで共有。最終更新：{updated}。"
 })
 
 addCatalogEntries("ko", {
@@ -2397,7 +2397,7 @@ addCatalogEntries("ko", {
   "sourceGroupMoon": "달의 위상",
   "sourceGroupMoonDetails": "로컬에서 계산(Meeus). 적도 남쪽 장소에서는 좌우 반전.",
   "sourceLocalCalculation": "로컬 계산",
-  "sourceRefreshInfo": "{minutes}분마다 새로 고침, 위젯과 앱이 공유. 마지막 업데이트: {updated}."
+  "sourceRefreshInfo": "{minutes}분마다 새로 고침(DWD 레이더는 5분마다), 위젯과 앱이 공유. 마지막 업데이트: {updated}."
 })
 
 addCatalogEntries("ar", {
@@ -2475,7 +2475,7 @@ addCatalogEntries("ar", {
   "sourceGroupMoon": "طور القمر",
   "sourceGroupMoonDetails": "يُحسب محليًا (Meeus)؛ معكوس للأماكن الواقعة جنوب خط الاستواء.",
   "sourceLocalCalculation": "حساب محلي",
-  "sourceRefreshInfo": "يُحدَّث كل {minutes} دقيقة، ويُشارك بين الأداة والتطبيق. آخر تحديث: {updated}."
+  "sourceRefreshInfo": "يُحدَّث كل {minutes} دقيقة، ورادار DWD كل 5 دقائق، ويُشارك بين الأداة والتطبيق. آخر تحديث: {updated}."
 })
 
 addCatalogEntries("he", {
@@ -2553,7 +2553,7 @@ addCatalogEntries("he", {
   "sourceGroupMoon": "מופע הירח",
   "sourceGroupMoonDetails": "מחושב מקומית (Meeus); משוקף למקומות מדרום לקו המשווה.",
   "sourceLocalCalculation": "חישוב מקומי",
-  "sourceRefreshInfo": "מתרענן כל {minutes} דק׳, משותף ליישומון וליישום. עדכון אחרון: {updated}."
+  "sourceRefreshInfo": "מתרענן כל {minutes} דק׳, מכ״ם DWD כל 5 דק׳, משותף ליישומון וליישום. עדכון אחרון: {updated}."
 })
 
 addCatalogEntries("fa", {
@@ -2631,7 +2631,7 @@ addCatalogEntries("fa", {
   "sourceGroupMoon": "اهلهٔ ماه",
   "sourceGroupMoonDetails": "محاسبهٔ محلی (Meeus)؛ برای مکان‌های جنوب استوا قرینه.",
   "sourceLocalCalculation": "محاسبهٔ محلی",
-  "sourceRefreshInfo": "هر {minutes} دقیقه به‌روز می‌شود و میان ویجت و برنامه مشترک است. آخرین به‌روزرسانی: {updated}."
+  "sourceRefreshInfo": "هر {minutes} دقیقه به‌روز می‌شود و رادار DWD هر 5 دقیقه؛ میان ویجت و برنامه مشترک است. آخرین به‌روزرسانی: {updated}."
 })
 
 addCatalogEntries("hi", {
@@ -2709,7 +2709,7 @@ addCatalogEntries("hi", {
   "sourceGroupMoon": "चंद्र कला",
   "sourceGroupMoonDetails": "स्थानीय रूप से गणना (Meeus); भूमध्य रेखा के दक्षिण के स्थानों के लिए दर्पण-प्रतिबिंबित।",
   "sourceLocalCalculation": "स्थानीय गणना",
-  "sourceRefreshInfo": "हर {minutes} मिनट में रीफ़्रेश, विजेट और ऐप के बीच साझा। अंतिम अपडेट: {updated}."
+  "sourceRefreshInfo": "हर {minutes} मिनट में रीफ़्रेश, DWD रडार हर 5 मिनट में, विजेट और ऐप के बीच साझा। अंतिम अपडेट: {updated}."
 })
 
 addCatalogEntries("id", {
@@ -2787,7 +2787,7 @@ addCatalogEntries("id", {
   "sourceGroupMoon": "Fase bulan",
   "sourceGroupMoonDetails": "Dihitung secara lokal (Meeus); dicerminkan untuk tempat di selatan khatulistiwa.",
   "sourceLocalCalculation": "PERHITUNGAN LOKAL",
-  "sourceRefreshInfo": "Diperbarui setiap {minutes} menit, dibagikan antara widget dan aplikasi. Pembaruan terakhir: {updated}."
+  "sourceRefreshInfo": "Diperbarui setiap {minutes} menit, radar DWD setiap 5 menit, dibagikan antara widget dan aplikasi. Pembaruan terakhir: {updated}."
 })
 
 addCatalogEntries("vi", {
@@ -2865,7 +2865,7 @@ addCatalogEntries("vi", {
   "sourceGroupMoon": "Tuần trăng",
   "sourceGroupMoonDetails": "Tính cục bộ (Meeus); lật gương cho địa điểm ở phía nam xích đạo.",
   "sourceLocalCalculation": "TÍNH CỤC BỘ",
-  "sourceRefreshInfo": "Làm mới mỗi {minutes} phút, dùng chung cho tiện ích và ứng dụng. Cập nhật lần cuối: {updated}."
+  "sourceRefreshInfo": "Làm mới mỗi {minutes} phút, radar DWD mỗi 5 phút, dùng chung cho tiện ích và ứng dụng. Cập nhật lần cuối: {updated}."
 })
 
 addCatalogEntries("th", {
@@ -2943,7 +2943,7 @@ addCatalogEntries("th", {
   "sourceGroupMoon": "ข้างขึ้นข้างแรม",
   "sourceGroupMoonDetails": "คำนวณในเครื่อง (Meeus) กลับด้านสำหรับสถานที่ใต้เส้นศูนย์สูตร",
   "sourceLocalCalculation": "คำนวณในเครื่อง",
-  "sourceRefreshInfo": "รีเฟรชทุก {minutes} นาที ใช้ร่วมกันระหว่างวิดเจ็ตและแอป อัปเดตล่าสุด: {updated}"
+  "sourceRefreshInfo": "รีเฟรชทุก {minutes} นาที เรดาร์ DWD ทุก 5 นาที ใช้ร่วมกันระหว่างวิดเจ็ตและแอป อัปเดตล่าสุด: {updated}"
 })
 
 // Restore-defaults button on the display settings page.

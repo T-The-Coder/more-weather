@@ -21,7 +21,12 @@ Item {
     property color accentColor: Color.accent
     property color probabilityColor: "#5aa9ff"
     property bool showIntensitySeries: panel.showForecastIntensity
+    // Only when the series has probabilities: MET Norway supplies none, and a
+    // line at 0 % read as "no rain" beside rain bars.
     property bool showProbabilitySeries: panel.showForecastProbability
+      && panel.rainNowcast.some(function(point) {
+        return point.probability !== null && point.probability !== undefined && point.probability !== ""
+      })
     property bool showTotalLabel: panel.showForecastTotal
     property bool sourceUsesCache: Model.weatherSeriesUsesCache(panel.rainNowcast)
     property string rainStartTime: panel.upcomingRainTime

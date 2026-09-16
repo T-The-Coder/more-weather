@@ -24,14 +24,18 @@ window.
 - **Air quality and pollen:** European or US AQI, PM2.5, PM10, ozone and the pollen
   types that currently count.
 - **Hourly forecast:** Weather symbol, temperature, rain probability and amount, UV
-  index and wind.
+  index and wind. Where the DWD radar reaches, the symbol shows the rain it measures, and a
+  thunderstorm only when a warning or a station confirms one.
 - **7-day forecast:** Min/max temperature, rain, UV, wind, sunrise and sunset.
 - **Rain nowcast:** Intensity in 15-minute steps and probability over the next two hours.
+  In the DWD area both come from the DWD radar nowcast, renewed every five minutes: rain
+  already falling, moved along its track, blended with DWD MOSMIX for the probability. The
+  bars take the DWD radar colours, and the hourly forecast uses the same values.
 - **Rain radar:**
   - Animated frames with play/pause, stepping and zoom.
-  - City labels, plus a drift arrow that shows where rain is heading in one and two hours.
-    It follows the frame on screen and is tracked from the radar itself in the DWD area;
-    elsewhere it uses the model wind at about 3 km (700 hPa).
+  - City labels, plus a drift arrow at the map's true scale, marked in 15-minute steps up to
+    two hours. It follows the frame on screen and is tracked from the radar itself in the
+    DWD area; elsewhere it uses the model wind at about 3 km (700 hPa).
 - **Wind map:** An animated particle field from a 35-point model grid over the
   visible map area.
 - **Locations:** Search for places, keep a list of favorites or detect your location

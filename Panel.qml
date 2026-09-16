@@ -503,7 +503,7 @@ Panel {
       ? (cachedWeatherSnapshot.daily || []).filter(function(day) { return String(day && day.date || "") >= todayDate })
       : [], "date", 0, 7)
   readonly property var liveHourlyForecast: Model.hybridHourlyForecast(mosmixReport,
-    dailyForecastReport, uvReport, radarReport, nowDate, 6, liveRainNowcast)
+    dailyForecastReport, uvReport, radarReport, nowDate, 6, liveRainNowcast, thunderstormConfirmed)
   readonly property double cacheWindowStartMs: {
     var start = new Date(relativeTimeNowMs)
     start.setMinutes(0, 0, 0)
@@ -1365,7 +1365,7 @@ Panel {
       alertProviderId: alertActiveProviderId,
       current: liveCurrent,
       hourly: Model.hybridHourlyForecast(mosmixReport, dailyForecastReport,
-        uvReport || dailyForecastReport, radarReport, new Date(), 72, liveRainNowcast),
+        uvReport || dailyForecastReport, radarReport, new Date(), 72, liveRainNowcast, thunderstormConfirmed),
       daily: liveForecastDays.slice(0, 3),
       nowcast: liveRainNowcast,
       alerts: liveActiveWeatherAlerts
@@ -2648,7 +2648,7 @@ Panel {
       try {
         var response = JSON.parse(raw)
         var parsed = root.forecastRequestProviderId === "met-no"
-          ? Model.metNoToOpenMeteo(response) : response
+          ? Model.metNoToOpenMeteo(response) : Model.withPlaceOffsets(response)
         if (!parsed || !parsed.current || !parsed.daily || !parsed.hourly)
           throw new Error("incomplete forecast response")
         parsed._providerId = root.forecastRequestProviderId
@@ -2684,7 +2684,7 @@ Panel {
     onExited: function(exitCode) { if (exitCode !== 0) root.noteOpenMeteoResponse(uvProc) }
     onFinished: function(text) {
       try {
-        var parsed = JSON.parse(String(text || ""))
+        var parsed = Model.withPlaceOffsets(JSON.parse(String(text || "")))
         if (parsed.daily && parsed.daily.uv_index_max) {
           root.uvReport = parsed
           root.scheduleWeatherCachePersist()
