@@ -32,6 +32,28 @@ Image {
   fillMode: Image.PreserveAspectCrop
   source: load && !retrying && fetchState === "ready" ? store.localUrl(remoteUrl) : ""
 
+  // Requests wait for the end of the current event: the map extent is several
+  // bindings (centre, zoom, south, north...) that update one after another,
+  // and each step used to request a picture for a half-updated extent, which
+  // DWD answers with an error document instead of a PNG. When that hit a
+  // radar frame, the whole radar switched to RainViewer.
+  property bool requestPending: false
+  property bool pendingRetry: false
+
+  function scheduleRequest(retry) {
+    pendingRetry = pendingRetry || !!retry
+    if (requestPending) return
+    requestPending = true
+    Qt.callLater(flushRequest)
+  }
+
+  function flushRequest() {
+    requestPending = false
+    var retry = pendingRetry
+    pendingRetry = false
+    requestPicture(retry)
+  }
+
   function requestPicture(retry) {
     if (!load || retrying || !store || !remoteUrl) return
     // Failed before this item asked (another copy, or the prefetch): count it
@@ -51,13 +73,13 @@ Image {
     }
   }
 
-  Component.onCompleted: requestPicture(false)
+  Component.onCompleted: scheduleRequest(false)
   onRemoteUrlChanged: {
     attempts = 0
-    requestPicture(false)
+    scheduleRequest(false)
   }
-  onLoadChanged: requestPicture(false)
-  onStoreChanged: requestPicture(false)
+  onLoadChanged: scheduleRequest(false)
+  onStoreChanged: scheduleRequest(false)
   onFetchStateChanged: {
     if (fetchState === "failed" && !retrying) noteFailure()
   }
@@ -70,7 +92,7 @@ Image {
     id: retryTimer
     onTriggered: {
       remoteImage.retrying = false
-      remoteImage.requestPicture(true)
+      remoteImage.scheduleRequest(true)
     }
   }
 }

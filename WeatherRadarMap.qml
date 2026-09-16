@@ -27,7 +27,7 @@ Item {
     anchors.fill: parent
     visible: panel.radarActiveProviderId !== "dwd"
     store: panel.mapImages
-    remoteUrl: Providers.calmContextMapUrl(panel.mapBbox, panel.mapImageWidth, panel.mapImageHeight)
+    remoteUrl: panel.mapBasemapUrl
   }
 
   // Keep every frame as a live Image item and only change which one

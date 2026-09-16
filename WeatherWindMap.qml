@@ -29,7 +29,7 @@ Item {
     id: windMapBackground
     anchors.fill: parent
     store: panel.mapImages
-    remoteUrl: Providers.calmContextMapUrl(panel.mapBbox, panel.mapImageWidth, panel.mapImageHeight)
+    remoteUrl: panel.mapBasemapUrl
   }
 
   Canvas {

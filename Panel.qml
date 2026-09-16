@@ -858,6 +858,12 @@ Panel {
   readonly property real mapSouth: mapCenterLatitude - mapLatitudeRadius
   readonly property real mapNorth: mapCenterLatitude + mapLatitudeRadius
   readonly property string mapBbox: mapWest.toFixed(4) + "," + mapSouth.toFixed(4) + "," + mapEast.toFixed(4) + "," + mapNorth.toFixed(4)
+  // No map pictures before the place is known: the extent around 0/0 is
+  // meaningless and only costs requests.
+  readonly property bool mapExtentKnown: isFinite(mapCenterLatitude) && isFinite(mapCenterLongitude)
+    && !(mapCenterLatitude === 0 && mapCenterLongitude === 0)
+  readonly property string mapBasemapUrl: mapExtentKnown
+    ? Providers.calmContextMapUrl(mapBbox, mapImageWidth, mapImageHeight) : ""
   readonly property var radarPlaceCandidates: Model.radarPlaceCandidates(
     radarPlaceCache.places || [], mapCenterLatitude, mapCenterLongitude,
     mapRadiusKm, mapZoomLevel, reportLocation)
@@ -2347,6 +2353,7 @@ Panel {
   }
 
   function radarFrameUrl(frame) {
+    if (!mapExtentKnown) return ""
     if (frame && frame.wmsProvider)
       return Providers.radarMapUrl(frame.wmsProvider, root.mapBbox, mapImageWidth, mapImageHeight, frame.timestamp)
     if (frame && frame.rainViewer) {
