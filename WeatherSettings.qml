@@ -208,6 +208,38 @@ Rectangle {
             onChanged: function(value) { panel.displayOptionsStore.setGeneralSetting("language", value) }
           }
 
+          Text {
+            text: panel.i18n("barPosition")
+            color: panel.mutedText
+            font.family: panel.fontFamily
+            font.pixelSize: Style.font.bodySmall
+          }
+
+          // The widget's section in Omarchy's bar, moved by Omarchy itself.
+          Dropdown {
+            width: Math.min(parent.width, Style.space(280))
+            showLabel: false
+            fontFamily: panel.fontFamily
+            enabled: panel.barPlacement.section !== "" && !panel.barPlacement.busy
+            opacity: enabled ? 1 : 0.5
+            value: panel.barPlacement.section
+            options: [
+              { value: "left", label: panel.i18n(panel.barPlacement.verticalBar ? "barPositionTop" : "barPositionLeft") },
+              { value: "center", label: panel.i18n("barPositionCenter") },
+              { value: "right", label: panel.i18n(panel.barPlacement.verticalBar ? "barPositionBottom" : "barPositionRight") }
+            ]
+            onChanged: function(value) { panel.barPlacement.moveTo(value) }
+          }
+
+          Text {
+            width: parent.width
+            text: panel.i18n(panel.barPlacement.section !== "" ? "barPositionHint" : "barPositionMissing")
+            color: panel.mutedText
+            font.family: panel.fontFamily
+            font.pixelSize: Style.font.caption
+            wrapMode: Text.WordWrap
+          }
+
           // Adds the standalone app to the app launcher. Off by default: the
           // plugin writes nothing outside its own settings without consent.
           WeatherSwitchRow {

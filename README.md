@@ -46,7 +46,8 @@ window.
 **Everywhere**
 - **30 interface languages,** including right-to-left scripts, plus metric or
   US/imperial units, both chosen automatically or by hand.
-- **Separate display settings** for the bar, the popup and the app.
+- **Separate display settings** for the bar, the popup and the app, and the widget's
+  position in the bar (left, center or right).
 - **Offline cache:** When a service or the network is down, the last data (up to
   three days old) stays visible, marked in italics.
 - **Full keyboard control;** every shortcut is listed under Settings → Shortcuts.
@@ -157,6 +158,7 @@ Omarchy's built-in weather widget and is left in place.
 | Path | Content |
 |---|---|
 | `~/.local/state/omarchy/settings/weather.json` | Location (shared with Omarchy, written via `omarchy-weather-location`) |
+| `~/.config/omarchy/shell.json` | Omarchy's bar layout; changed only through `omarchy-bar move` when you pick a position under Settings → General |
 | `~/.local/state/omarchy/settings/more-weather-*.json` | Display settings, favorites, cache, data shared between bar and app |
 | `~/.cache/more-weather/map-images/` | Downloaded radar and map pictures, removed after three hours |
 | `$XDG_RUNTIME_DIR/more-weather-app/` | Temporary app configuration (links to the plugin and the Omarchy shell) |

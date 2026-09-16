@@ -2912,6 +2912,7 @@ Panel {
   property WeatherDisplayOptionsStore displayOptionsStore: WeatherDisplayOptionsStore { panel: root }
   property WeatherAirQuality airQuality: WeatherAirQuality { panel: root }
   property WeatherAppLauncherEntry appLauncherEntry: WeatherAppLauncherEntry { panel: root }
+  property WeatherBarPlacement barPlacement: WeatherBarPlacement { panel: root }
 
   IpcHandler {
     target: root.ipcTarget
