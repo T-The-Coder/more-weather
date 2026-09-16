@@ -1915,6 +1915,89 @@ function iconForCode(code, night, date) {
 //      Elsewhere, or with too little rain to track, the 700 hPa model wind
 //      stands in, and only without that (MET Norway) the surface wind.
 
+// ---- Map geometry. Every map picture is requested at MAP_IMAGE_WIDTH x
+//      MAP_IMAGE_HEIGHT for an extent with the same proportions in km, so one
+//      kilometre is equally long east-west and north-south. Views show the
+//      picture with Image.PreserveAspectCrop; overlays place points with
+//      mapViewport so they land where the picture puts them.
+
+var MAP_IMAGE_WIDTH = 480
+var MAP_IMAGE_HEIGHT = 250
+
+// North-south half extent in km for an east-west half extent.
+function mapLatitudeRadiusKm(radiusKm) {
+  return radiusKm * MAP_IMAGE_HEIGHT / MAP_IMAGE_WIDTH
+}
+
+// Where the cropped map picture lies in a view of the given size.
+function mapViewport(viewWidth, viewHeight, radiusKm) {
+  var scale = Math.max(viewWidth / MAP_IMAGE_WIDTH, viewHeight / MAP_IMAGE_HEIGHT)
+  var renderedWidth = MAP_IMAGE_WIDTH * scale
+  var renderedHeight = MAP_IMAGE_HEIGHT * scale
+  return {
+    renderedWidth: renderedWidth,
+    renderedHeight: renderedHeight,
+    offsetX: (viewWidth - renderedWidth) / 2,
+    offsetY: (viewHeight - renderedHeight) / 2,
+    pixelsPerKm: renderedWidth / Math.max(0.001, 2 * radiusKm)
+  }
+}
+
+function mapPoint(viewport, latitude, longitude, west, east, south, north) {
+  return {
+    x: viewport.offsetX + (Number(longitude) - west) / Math.max(0.000001, east - west) * viewport.renderedWidth,
+    y: viewport.offsetY + (north - Number(latitude)) / Math.max(0.000001, north - south) * viewport.renderedHeight
+  }
+}
+
+// RainViewer's 512 px coordinate tile at zoom z spans 40075 km * cos(lat) / 2^z
+// (checked against DWD radar: 0.80 km/px measured, 0.814 expected at z 6).
+// The zoom is rounded down so the tile always covers the map's width; it is
+// drawn at tileKm * pixelsPerKm instead of being stretched over the view.
+function rainViewerTile(radiusKm, latitude) {
+  var circumference = 40075 * Math.max(0.2, Math.cos(Number(latitude) * Math.PI / 180))
+  var zoom = Math.floor(Math.log(circumference / Math.max(1, radiusKm * 2)) / Math.LN2)
+  zoom = Math.max(1, Math.min(7, zoom))
+  return { zoom: zoom, sizeKm: circumference / Math.pow(2, zoom) }
+}
+
+// Label for a drift time in 15-minute steps: "+45 min", "+1h", "+1h 30".
+function driftTimeLabel(minutes) {
+  if (minutes < 60) return "+" + minutes + " min"
+  var hours = Math.floor(minutes / 60)
+  var rest = minutes % 60
+  return "+" + hours + "h" + (rest ? " " + rest : "")
+}
+
+// The drift arrow in view pixels, ending at the view centre. Its tail is
+// where the rain was `minutes` earlier than it reaches the place, at the true
+// map scale: the longest 15-minute step up to two hours that still fits,
+// with a middle mark when half of it is a 15-minute step too. Returns null
+// without a drift; `minutes` is 0 when not even 15 minutes fit (no labels).
+function driftArrow(drift, pixelsPerKm, viewWidth, viewHeight, marginX, marginY) {
+  if (!drift) return null
+  var speed = Math.max(0, Number(drift.speedKmh) || 0)
+  var toward = ((Number(drift.directionFrom) || 0) + 180) * Math.PI / 180
+  var dx = Math.sin(toward)
+  var dy = -Math.cos(toward)
+  var reach = Infinity
+  if (Math.abs(dx) > 0.001) reach = Math.min(reach, (viewWidth / 2 - marginX) / Math.abs(dx))
+  if (Math.abs(dy) > 0.001) reach = Math.min(reach, (viewHeight / 2 - marginY) / Math.abs(dy))
+  reach = Math.max(0, reach)
+  var perMinute = speed / 60 * pixelsPerKm
+  var minutes = 0
+  for (var step = 120; step >= 15; step -= 15) {
+    if (perMinute * step <= reach) { minutes = step; break }
+  }
+  var length = minutes ? perMinute * minutes : reach
+  var marks = []
+  if (minutes) {
+    marks.push({ minutes: minutes, fraction: 1 })
+    if (minutes % 30 === 0) marks.push({ minutes: minutes / 2, fraction: 0.5 })
+  }
+  return { dx: dx, dy: dy, length: length, minutes: minutes, marks: marks }
+}
+
 // Drift for one moment, normally the radar frame on screen:
 // { directionFrom, speedKmh, source: "radar" | "steering" | "surface" } or null.
 function rainDriftAt(motion, forecastReport, nowcast, time) {
@@ -1986,6 +2069,12 @@ function compactMosmixReport(report) {
 if (typeof module !== "undefined") {
   module.exports = {
     rainDriftAt: rainDriftAt,
+    mapLatitudeRadiusKm: mapLatitudeRadiusKm,
+    mapViewport: mapViewport,
+    mapPoint: mapPoint,
+    rainViewerTile: rainViewerTile,
+    driftTimeLabel: driftTimeLabel,
+    driftArrow: driftArrow,
     compactMosmixReport: compactMosmixReport,
     parseLocationFile: parseLocationFile,
     parseSavedLocations: parseSavedLocations,

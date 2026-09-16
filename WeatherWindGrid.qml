@@ -1,4 +1,5 @@
 import QtQuick
+import "Model.js" as Model
 
 // The 5x7 Best Match wind grid behind the wind map, fetched for the map's
 // current extent at startup, hourly in the background and on a manual
@@ -16,8 +17,10 @@ Item {
   // Time of the last manual refresh: grids older than this are not reused.
   property double forceSinceMs: 0
 
+  // The "f" marks grids spread over the flat map extent; square grids cached
+  // before the map was unsquashed no longer match.
   function extentKey(latitude, longitude, radiusKm) {
-    return Number(latitude).toFixed(3) + "," + Number(longitude).toFixed(3) + "," + Math.round(radiusKm)
+    return Number(latitude).toFixed(3) + "," + Number(longitude).toFixed(3) + "," + Math.round(radiusKm) + ",f"
   }
 
   function rememberWindGrid(key, report, at) {
@@ -128,7 +131,8 @@ Item {
     var windLongitudes = []
     var windRows = 5
     var windColumns = 7
-    var latRadius = radiusKm / 111.32
+    // Spread over the map picture's extent, which is flatter than it is wide.
+    var latRadius = Model.mapLatitudeRadiusKm(radiusKm) / 111.32
     var lonRadius = radiusKm / (111.32 * Math.max(0.2, Math.cos(lat * Math.PI / 180)))
     for (var windRow = 0; windRow < windRows; ++windRow) {
       var gridLat = lat + latRadius - 2 * latRadius * windRow / (windRows - 1)

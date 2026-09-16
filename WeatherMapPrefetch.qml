@@ -19,7 +19,7 @@ Item {
   // one the views use (PreserveAspectCrop), so they find these copies.
   WeatherRemoteImage {
     store: prefetch.panel.mapImages
-    remoteUrl: Providers.calmContextMapUrl(prefetch.panel.mapBbox, 480, 250)
+    remoteUrl: Providers.calmContextMapUrl(prefetch.panel.mapBbox, prefetch.panel.mapImageWidth, prefetch.panel.mapImageHeight)
   }
 
   Repeater {

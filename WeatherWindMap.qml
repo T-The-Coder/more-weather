@@ -2,6 +2,7 @@ import QtQuick
 import qs.Commons
 import qs.Ui
 import "Providers.js" as Providers
+import "Model.js" as Model
 
 // Animated Best Match wind field for the map extent. Loaded only while the
 // wind tab is shown; the grid and the basemap are fetched in the background
@@ -13,8 +14,11 @@ Item {
   LayoutMirroring.enabled: false
   LayoutMirroring.childrenInherit: true
   width: parent.width
-  height: Style.space(230)
+  height: panel.mapViewHeight(width)
   clip: true
+
+  // Where the cropped map picture lies in this view; the wind overlay uses it.
+  readonly property var viewport: Model.mapViewport(width, height, panel.mapRadiusKm)
 
   Rectangle {
     anchors.fill: parent
@@ -25,7 +29,7 @@ Item {
     id: windMapBackground
     anchors.fill: parent
     store: panel.mapImages
-    remoteUrl: Providers.calmContextMapUrl(panel.mapBbox, 480, 250)
+    remoteUrl: Providers.calmContextMapUrl(panel.mapBbox, panel.mapImageWidth, panel.mapImageHeight)
   }
 
   Canvas {
@@ -54,12 +58,12 @@ Item {
         var speed = Number(sample.windSpeed || 0)
         var angle = (direction + 90) * Math.PI / 180
         var dx = Math.cos(angle), dy = Math.sin(angle)
-        var anchorX = grid.length > 1
-          ? (Number(sample.longitude) - panel.mapWest) / (panel.mapEast - panel.mapWest) * width
-          : (s * 79 % width)
-        var anchorY = grid.length > 1
-          ? (panel.mapNorth - Number(sample.latitude)) / (panel.mapNorth - panel.mapSouth) * height
-          : (s * 47 % height)
+        var anchor = grid.length > 1
+          ? Model.mapPoint(windMapItem.viewport, sample.latitude, sample.longitude,
+            panel.mapWest, panel.mapEast, panel.mapSouth, panel.mapNorth)
+          : null
+        var anchorX = anchor ? anchor.x : (s * 79 % width)
+        var anchorY = anchor ? anchor.y : (s * 47 % height)
         var jitterX = ((s * 37) % 61) - 30
         var jitterY = ((s * 53) % 45) - 22
         // Drift roughly proportional to the real wind: about 5 px/s at
@@ -83,8 +87,10 @@ Item {
           var item = grid[g]
           var itemAngle = (Number(item.windDirection || 0) + 90) * Math.PI / 180
           var itemDx = Math.cos(itemAngle), itemDy = Math.sin(itemAngle)
-          var itemX = (Number(item.longitude) - panel.mapWest) / (panel.mapEast - panel.mapWest) * width
-          var itemY = (panel.mapNorth - Number(item.latitude)) / (panel.mapNorth - panel.mapSouth) * height
+          var itemPoint = Model.mapPoint(windMapItem.viewport, item.latitude, item.longitude,
+            panel.mapWest, panel.mapEast, panel.mapSouth, panel.mapNorth)
+          var itemX = itemPoint.x
+          var itemY = itemPoint.y
           var arrowLength = 7 + Math.min(12, Number(item.windSpeed || 0) / 2)
           var tipX = itemX + itemDx * arrowLength
           var tipY = itemY + itemDy * arrowLength
@@ -158,8 +164,8 @@ Item {
         ctx.globalAlpha = 1
       }
 
-      var sourceWidth = 480
-      var sourceHeight = 250
+      var sourceWidth = panel.mapImageWidth
+      var sourceHeight = panel.mapImageHeight
       var imageScale = Math.max(width / sourceWidth, height / sourceHeight)
       var renderedWidth = sourceWidth * imageScale
       var renderedHeight = sourceHeight * imageScale

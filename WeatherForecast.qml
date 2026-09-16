@@ -112,7 +112,7 @@ Column {
 
   Loader {
     width: parent.width
-    height: Style.space(230)
+    height: forecastSection.panel.mapViewHeight(width)
     visible: active
     active: forecastSection.panel.opened && forecastSection.panel.precipitationTab === 1
     onActiveChanged: if (!active) forecastSection.panel.resetRadarDisplay()
@@ -121,7 +121,7 @@ Column {
 
   Loader {
     width: parent.width
-    height: Style.space(230)
+    height: forecastSection.panel.mapViewHeight(width)
     visible: active
     active: forecastSection.panel.opened && forecastSection.panel.precipitationTab === 2
     sourceComponent: Component { WeatherWindMap { panel: forecastSection.panel } }

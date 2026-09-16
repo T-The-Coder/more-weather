@@ -844,8 +844,14 @@ Panel {
       || activeWeatherCacheEntryValue("longitude", 0)))
   // Level 0 is the former ±150 km view. Each step changes the physical
   // extent by a factor of 1.5 while retaining the location at the center.
+  // mapRadiusKm is the east-west half extent; north-south follows the
+  // picture's proportions (Model.mapLatitudeRadiusKm), so the map is not
+  // squashed: it used to span as many km north-south as east-west in a
+  // picture half as tall.
   readonly property real mapRadiusKm: 150 / Math.pow(1.5, mapZoomLevel)
-  readonly property real mapLatitudeRadius: mapRadiusKm / 111.32
+  readonly property int mapImageWidth: Model.MAP_IMAGE_WIDTH
+  readonly property int mapImageHeight: Model.MAP_IMAGE_HEIGHT
+  readonly property real mapLatitudeRadius: Model.mapLatitudeRadiusKm(mapRadiusKm) / 111.32
   readonly property real mapLongitudeRadius: mapRadiusKm / (111.32 * Math.max(0.2, Math.cos(mapCenterLatitude * Math.PI / 180)))
   readonly property real mapWest: mapCenterLongitude - mapLongitudeRadius
   readonly property real mapEast: mapCenterLongitude + mapLongitudeRadius
@@ -2312,6 +2318,14 @@ Panel {
     mapZoomLevel = nextLevel
   }
 
+  // Height of the radar and wind maps: the picture's own proportions where
+  // the view is narrow (the popup), taller maps in a wide window up to a cap,
+  // beyond which the picture is cropped top and bottom.
+  function mapViewHeight(viewWidth) {
+    return Math.round(Math.max(Style.space(230),
+      Math.min(Style.space(400), viewWidth * mapImageHeight / mapImageWidth)))
+  }
+
   function mapScaleDistanceKm(targetPixels, mapWidthPixels) {
     // Keep the initial scale label deterministic across the popup and the
     // wider standalone window: 20 km over the ±100 km default extent, with a
@@ -2334,13 +2348,12 @@ Panel {
 
   function radarFrameUrl(frame) {
     if (frame && frame.wmsProvider)
-      return Providers.radarMapUrl(frame.wmsProvider, root.mapBbox, 480, 250, frame.timestamp)
+      return Providers.radarMapUrl(frame.wmsProvider, root.mapBbox, mapImageWidth, mapImageHeight, frame.timestamp)
     if (frame && frame.rainViewer) {
       // RainViewer's coordinate-tile form is explicitly intended for small
-      // embedded maps. Its maximum supported zoom is 7.
-      var circumference = 40075 * Math.max(0.2, Math.cos(root.mapCenterLatitude * Math.PI / 180))
-      var idealZoom = Math.round(Math.log(circumference / Math.max(1, root.mapRadiusKm * 2)) / Math.LN2)
-      var zoom = Math.max(1, Math.min(7, idealZoom))
+      // embedded maps. Its maximum supported zoom is 7; the view draws the
+      // tile at its own scale (Model.rainViewerTile).
+      var zoom = Model.rainViewerTile(root.mapRadiusKm, root.mapCenterLatitude).zoom
       return String(frame.rainViewerHost || "") + String(frame.rainViewerPath || "")
         + "/512/" + zoom
         + "/" + Number(root.mapCenterLatitude).toFixed(5)
@@ -2349,7 +2362,7 @@ Panel {
     }
     var url = "https://maps.dwd.de/geoserver/dwd/ows?service=WMS&version=1.1.1&request=GetMap"
       + "&layers=dwd:bluemarble,dwd:Niederschlagsradar&styles=,"
-      + "&bbox=" + root.mapBbox + "&width=480&height=250&srs=EPSG:4326"
+      + "&bbox=" + root.mapBbox + "&width=" + mapImageWidth + "&height=" + mapImageHeight + "&srs=EPSG:4326"
       + "&format=image/png&transparent=false"
     if (!frame || !frame.timestamp) return url
     var frameTime = new Date(frame.timestamp)

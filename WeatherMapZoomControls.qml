@@ -22,8 +22,11 @@ BorderSurface {
       id: mapScale
       width: Style.space(68)
       height: Style.space(19)
-      readonly property real distanceKm: panel.mapScaleDistanceKm(Style.space(56), mapItem.width)
-      readonly property real barPixelWidth: distanceKm * mapItem.width / Math.max(1, panel.mapRadiusKm * 2)
+      // Measured on the map picture, which may be wider than the view when
+      // the view is cropped left and right.
+      readonly property real renderedMapWidth: mapItem.viewport ? mapItem.viewport.renderedWidth : mapItem.width
+      readonly property real distanceKm: panel.mapScaleDistanceKm(Style.space(56), renderedMapWidth)
+      readonly property real barPixelWidth: distanceKm * renderedMapWidth / Math.max(1, panel.mapRadiusKm * 2)
 
       Column {
         anchors.centerIn: parent

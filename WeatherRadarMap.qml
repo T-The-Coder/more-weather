@@ -2,6 +2,7 @@ import QtQuick
 import qs.Commons
 import qs.Ui
 import "Providers.js" as Providers
+import "Model.js" as Model
 
 // Radar frames over the context basemap with place labels, the wind-drift
 // arrow and playback controls. Loaded only while the radar tab is shown; the
@@ -14,14 +15,19 @@ Item {
   LayoutMirroring.enabled: false
   LayoutMirroring.childrenInherit: true
   width: parent.width
-  height: Style.space(230)
+  height: panel.mapViewHeight(width)
   clip: true
+
+  // Where the cropped map picture lies in this view; every overlay uses it.
+  readonly property var viewport: Model.mapViewport(width, height, panel.mapRadiusKm)
+  readonly property real rainViewerTilePixels:
+    Model.rainViewerTile(panel.mapRadiusKm, panel.mapCenterLatitude).sizeKm * viewport.pixelsPerKm
 
   WeatherRemoteImage {
     anchors.fill: parent
     visible: panel.radarActiveProviderId !== "dwd"
     store: panel.mapImages
-    remoteUrl: Providers.calmContextMapUrl(panel.mapBbox, 480, 250)
+    remoteUrl: Providers.calmContextMapUrl(panel.mapBbox, panel.mapImageWidth, panel.mapImageHeight)
   }
 
   // Keep every frame as a live Image item and only change which one
@@ -30,7 +36,14 @@ Item {
   Repeater {
     model: panel.radarFrames
     WeatherRemoteImage {
-      anchors.fill: parent
+      // A RainViewer tile has its own scale and is square: it is drawn at
+      // that scale around the centre instead of being stretched over the
+      // view. Map pictures fill the view like the basemap.
+      readonly property bool tile: !!modelData.rainViewer
+      width: tile ? radarMapItem.rainViewerTilePixels : radarMapItem.width
+      height: tile ? radarMapItem.rainViewerTilePixels : radarMapItem.height
+      x: (radarMapItem.width - width) / 2
+      y: (radarMapItem.height - height) / 2
       store: panel.mapImages
       remoteUrl: panel.radarFrameUrl(modelData)
       load: panel.radarFrameLoadAllowed(index)
@@ -75,13 +88,17 @@ Item {
         }
         return
       }
-      var cellWidth = width / 6 * 1.08
-      var cellHeight = height / 4 * 1.08
+      // The 5x7 grid spans the map picture, which may be cropped.
+      var viewport = radarMapItem.viewport
+      var cellWidth = viewport.renderedWidth / 6 * 1.08
+      var cellHeight = viewport.renderedHeight / 4 * 1.08
       for (var i = 0; i < grid.length; ++i) {
         var amount = Math.max(0, Number(grid[i].precipitation || 0))
         if (amount < 0.02) continue
-        var x = (Number(grid[i].longitude) - panel.mapWest) / (panel.mapEast - panel.mapWest) * width
-        var y = (panel.mapNorth - Number(grid[i].latitude)) / (panel.mapNorth - panel.mapSouth) * height
+        var point = Model.mapPoint(viewport, grid[i].latitude, grid[i].longitude,
+          panel.mapWest, panel.mapEast, panel.mapSouth, panel.mapNorth)
+        var x = point.x
+        var y = point.y
         ctx.fillStyle = amount >= 40 ? "rgba(188,46,219,0.82)"
           : (amount >= 4 ? "rgba(227,67,55,0.76)"
             : (amount >= 0.5 ? "rgba(246,183,52,0.70)" : "rgba(58,151,224,0.62)"))
@@ -179,10 +196,10 @@ Item {
         return rect
       }
 
-      // Match Image.PreserveAspectCrop for the 480×250 WMS source,
-      // including the vertical crop in the wide radar viewport.
-      var sourceWidth = 480
-      var sourceHeight = 250
+      // Match Image.PreserveAspectCrop for the WMS source, including the
+      // vertical crop in the wide radar viewport.
+      var sourceWidth = panel.mapImageWidth
+      var sourceHeight = panel.mapImageHeight
       var imageScale = Math.max(width / sourceWidth, height / sourceHeight)
       var renderedWidth = sourceWidth * imageScale
       var renderedHeight = sourceHeight * imageScale
@@ -253,37 +270,25 @@ Item {
     anchors.fill: parent
     property var motionData: panel.radarDrift
     property color arrowColor: panel.foreground
-    property real mapZoomScale: Math.pow(1.5, panel.mapZoomLevel)
+    property real pixelsPerKm: radarMapItem.viewport.pixelsPerKm
     onMotionDataChanged: requestPaint()
     onArrowColorChanged: requestPaint()
-    onMapZoomScaleChanged: requestPaint()
+    onPixelsPerKmChanged: requestPaint()
     onWidthChanged: requestPaint()
     onHeightChanged: requestPaint()
     onPaint: {
       var ctx = getContext("2d")
       ctx.clearRect(0, 0, width, height)
-      var drift = motionData
-      if (!drift) return
-
       // Radar-tracked where possible, else the 700 hPa or surface wind
-      // (Model.rainDriftAt), for the time of the frame on screen.
-      var speed = Number(drift.speedKmh || 0)
-      var direction = Number(drift.directionFrom || 0)
-      // Meteorological direction denotes where rain comes from. The
-      // arrow points along the drift and ends at the selected place.
-      var angle = (direction + 90) * Math.PI / 180
-      var dx = Math.cos(angle)
-      var dy = Math.sin(angle)
-      // A wind displacement covers more screen pixels when the map
-      // is zoomed in and fewer when zoomed out. Keep a small minimum
-      // so calm wind remains legible.
-      // The tail and its +2h label must stay on the map, which is far
-      // wider than tall: bound the length along both axes, not just the
-      // width, or a southerly or northerly drift leaves the picture.
-      var reach = width * 0.38
-      if (Math.abs(dx) > 0.001) reach = Math.min(reach, (width / 2 - 40) / Math.abs(dx))
-      if (Math.abs(dy) > 0.001) reach = Math.min(reach, (height / 2 - 26) / Math.abs(dy))
-      var length = Math.max(18, Math.min(reach, speed * 10 * mapZoomScale))
+      // (Model.rainDriftAt), for the time of the frame on screen. Drawn at
+      // the map's true scale: the tail is where the rain was the labelled
+      // time before it reaches the place (Model.driftArrow).
+      var arrow = Model.driftArrow(motionData, pixelsPerKm, width, height, 46, 22)
+      if (!arrow) return
+      var dx = arrow.dx
+      var dy = arrow.dy
+      // Slow rain still gets a visible arrow; its labels are dropped below.
+      var length = Math.max(18, arrow.length)
       var headX = width / 2
       var headY = height / 2
       var tailX = headX - dx * length
@@ -311,45 +316,43 @@ Item {
       ctx.lineTo(tailX - normalX * 11, tailY - normalY * 11)
       ctx.stroke()
 
-      // One-hour waypoint: exactly halfway along the two-hour
-      // displacement, with a shorter crossbar than the origin.
-      var oneHourX = tailX + dx * length * 0.5
-      var oneHourY = tailY + dy * length * 0.5
-      ctx.beginPath()
-      ctx.moveTo(oneHourX + normalX * 7, oneHourY + normalY * 7)
-      ctx.lineTo(oneHourX - normalX * 7, oneHourY - normalY * 7)
-      ctx.stroke()
+      // Middle waypoint with a shorter crossbar than the origin.
+      var middle = null
+      for (var m = 0; m < arrow.marks.length; ++m) if (arrow.marks[m].fraction < 1) middle = arrow.marks[m]
+      if (middle) {
+        var middleX = headX - dx * length * middle.fraction
+        var middleY = headY - dy * length * middle.fraction
+        ctx.beginPath()
+        ctx.moveTo(middleX + normalX * 7, middleY + normalY * 7)
+        ctx.lineTo(middleX - normalX * 7, middleY - normalY * 7)
+        ctx.stroke()
+      }
 
-      // In near-calm air the arrow is too short to separate its time
-      // labels from the place marker and name; the crossbars alone still
-      // show the drift then.
-      if (length < 48) return
+      // In near-calm air, or when not even 15 minutes fit, the arrow is too
+      // short for honest time labels; the crossbars alone show the drift.
+      if (!arrow.minutes || arrow.length < 48) return
 
-      // Anchor each label to the center of its own crossbar and move
-      // both equally outward on opposite sides of the arrow.
-      var labelX = tailX - normalX * 34
-      var labelY = tailY - normalY * 34
-      var timeLabelWidth = 36
-      var timeLabelHeight = 20
       ctx.font = panel.canvasFont(Style.font.bodySmall, true)
       ctx.textAlign = "center"
       ctx.textBaseline = "middle"
-      var label = "+2h"
-      ctx.fillStyle = "rgba(244,246,248,0.90)"
-      ctx.fillRect(labelX - timeLabelWidth / 2, labelY - timeLabelHeight / 2, timeLabelWidth, timeLabelHeight)
-      ctx.fillStyle = "#111820"
-      ctx.fillText(label, labelX, labelY + 1)
-
-      // Put +1h on the opposite side of the line from +2h. This
-      // prevents the labels merging when winds make the arrow short.
-      var oneHourLabelX = oneHourX + normalX * 34
-      var oneHourLabelY = oneHourY + normalY * 34
-      ctx.font = panel.canvasFont(Style.font.bodySmall, true)
-      var oneHourLabel = "+1h"
-      ctx.fillStyle = "rgba(244,246,248,0.90)"
-      ctx.fillRect(oneHourLabelX - timeLabelWidth / 2, oneHourLabelY - timeLabelHeight / 2, timeLabelWidth, timeLabelHeight)
-      ctx.fillStyle = "#111820"
-      ctx.fillText(oneHourLabel, oneHourLabelX, oneHourLabelY + 1)
+      function drawTimeLabel(text, x, y) {
+        var labelWidth = ctx.measureText(text).width + 12
+        var labelHeight = 20
+        var left = Math.max(2, Math.min(width - labelWidth - 2, x - labelWidth / 2))
+        var top = Math.max(2, Math.min(height - labelHeight - 2, y - labelHeight / 2))
+        ctx.fillStyle = "rgba(244,246,248,0.90)"
+        ctx.fillRect(left, top, labelWidth, labelHeight)
+        ctx.fillStyle = "#111820"
+        ctx.fillText(text, left + labelWidth / 2, top + labelHeight / 2 + 1)
+      }
+      // The two labels sit on opposite sides of the line so they cannot
+      // merge when the arrow is short.
+      drawTimeLabel(Model.driftTimeLabel(arrow.minutes), tailX - normalX * 34, tailY - normalY * 34)
+      if (middle) {
+        var middleLabelX = headX - dx * length * middle.fraction + normalX * 34
+        var middleLabelY = headY - dy * length * middle.fraction + normalY * 34
+        drawTimeLabel(Model.driftTimeLabel(middle.minutes), middleLabelX, middleLabelY)
+      }
     }
   }
 
