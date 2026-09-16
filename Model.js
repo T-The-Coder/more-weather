@@ -1864,6 +1864,10 @@ function rainViewerTimeline(report, now, hours) {
 function radarCurrentIntensity(report, now) {
   var snapshot = radarSnapshot(report, now)
   if (!snapshot) return ""
+  // A frame far from now (a report that could not be renewed) says nothing
+  // about whether it rains at the moment.
+  var target = (now instanceof Date ? now : new Date(now || Date.now())).getTime()
+  if (Math.abs(new Date(snapshot.timestamp).getTime() - target) > 10 * 60 * 1000) return ""
   var value = radarFrameAmount({ precipitation_5: snapshot.grid })
   if (isNaN(value)) return ""
   return (value * 12 / 100).toFixed(1)
@@ -2115,6 +2119,54 @@ function rainViewerTile(radiusKm, latitude) {
   return { zoom: zoom, sizeKm: circumference / Math.pow(2, zoom) }
 }
 
+// The current condition with its precipitation checked against the radar
+// (radarCurrentIntensity, mm/h, "" without a fresh frame). The symbol's row
+// is often still MOSMIX's forecast for the hour: on 2026-09-16 it showed a
+// thunderstorm at 16:09 while the radar was dry until 16:15. The sky (clear,
+// cloudy, fog) stays the forecast's; whether it rains is the radar's.
+// Dry radar turns precipitation and thunderstorms into overcast; wet radar
+// turns a dry sky into light or moderate rain by intensity, and keeps snow
+// and thunderstorms the forecast already names.
+function radarAdjustedCondition(current, radarIntensity) {
+  if (!current || radarIntensity === "" || radarIntensity === null || radarIntensity === undefined) return current
+  if (current.openMeteoWeatherCode === undefined || current.openMeteoWeatherCode === null) return current
+  var intensity = parseFloat(radarIntensity)
+  if (isNaN(intensity)) return current
+  var code = Number(current.openMeteoWeatherCode)
+  var snow = [71, 73, 75, 77, 85, 86].indexOf(code) >= 0
+  var thunder = code >= 95
+  var precipitating = (code >= 51 && code <= 67) || (code >= 80 && code <= 82) || snow || thunder
+  var next = code
+  if (intensity < 0.1) {
+    if (precipitating) next = 3
+  } else if (!snow && !thunder) {
+    next = intensity < 0.5 ? 61 : 63
+  }
+  if (next === code) return current
+  var adjusted = {}
+  for (var key in current) adjusted[key] = current[key]
+  adjusted.openMeteoWeatherCode = next
+  return adjusted
+}
+
+// DWD's radar colour scale ("Niederschlagsradar" legend, mm/h intervals),
+// so a rain chart bar has the colour the same intensity has on the DWD radar
+// map. Below 0.1 mm/h the radar shows nothing: "".
+var DWD_RADAR_COLORS = [
+  [0.1, "#33FFFF"], [0.2, "#1ACC9A"], [0.4, "#019934"], [1, "#4DB31B"],
+  [2, "#99CC01"], [3, "#CCE601"], [5, "#FFFF01"], [7.5, "#FFC401"],
+  [10, "#FF8901"], [15, "#FF4501"], [30, "#FE0000"], [45, "#E5004C"],
+  [75, "#CC0098"], [100, "#6600CB"], [150, "#0000FE"]
+]
+
+function dwdRadarColor(mmPerHour) {
+  var value = Number(mmPerHour)
+  if (!isFinite(value) || value < 0.1) return ""
+  var color = DWD_RADAR_COLORS[0][1]
+  for (var i = 0; i < DWD_RADAR_COLORS.length; ++i) if (value >= DWD_RADAR_COLORS[i][0]) color = DWD_RADAR_COLORS[i][1]
+  return color
+}
+
 // Label for a drift time in 15-minute steps: "+45 min", "+1h", "+1h 30".
 function driftTimeLabel(minutes) {
   if (minutes < 60) return "+" + minutes + " min"
@@ -2224,6 +2276,9 @@ if (typeof module !== "undefined") {
   module.exports = {
     rainDriftAt: rainDriftAt,
     radarFrameAmount: radarFrameAmount,
+    radarAdjustedCondition: radarAdjustedCondition,
+    dwdRadarColor: dwdRadarColor,
+    radarCurrentIntensity: radarCurrentIntensity,
     mapLatitudeRadiusKm: mapLatitudeRadiusKm,
     mapViewport: mapViewport,
     mapPoint: mapPoint,

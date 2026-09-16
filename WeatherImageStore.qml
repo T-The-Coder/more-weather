@@ -19,7 +19,9 @@ QtObject {
   readonly property int maxBytes: 4 * 1024 * 1024
   // Real frames are 480x250 (WMS) and 512x512 (RainViewer).
   readonly property int maxDimension: 2048
-  readonly property int maxParallel: 6
+  // DWD's GeoServer answers bursts with 502/503; the film now renews every few
+  // minutes, so stay at three.
+  readonly property int maxParallel: 3
   readonly property int timeoutSeconds: 20
   readonly property string userAgent: "more-weather/2.0 (+https://github.com/T-The-Coder/more-weather)"
   readonly property string cacheDir: (Quickshell.env("XDG_CACHE_HOME") || (Quickshell.env("HOME") + "/.cache"))
@@ -28,16 +30,18 @@ QtObject {
   // Bumped whenever a picture's state changes; consumers bind to it.
   property int revision: 0
 
-  // url -> { state: "queued" | "loading" | "ready" | "failed", path, generation }
+  // url -> { state: "queued" | "loading" | "ready" | "failed", path, generation, reuse }
   property var records: ({})
   property var queue: []
   property int active: 0
 
-  // argv: url, target file, byte ceiling, dimension ceiling, timeout, user agent.
+  // argv: url, target file, byte ceiling, dimension ceiling, timeout, user
+  // agent, reuse (1: an existing file for this URL is used as it is).
   // Exit codes are curl's, plus 65 for a file that is not an acceptable PNG.
   // The trap passes a cancel on to curl and head (Process only signals bash).
   readonly property string script: "set -o pipefail\n"
-    + "url=$1 out=$2 max=$3 dim=$4 secs=$5 ua=$6\n"
+    + "url=$1 out=$2 max=$3 dim=$4 secs=$5 ua=$6 reuse=$7\n"
+    + "if [ \"$reuse\" = 1 ] && [ -s \"$out\" ]; then touch \"$out\"; exit 0; fi\n"
     + "tmp=\"$out.$$.part\"\n"
     + "trap 'pkill -TERM -P $$; rm -f \"$tmp\"; exit 143' TERM\n"
     + "mkdir -p \"${out%/*}\" || exit 73\n"
@@ -77,11 +81,22 @@ QtObject {
     records[url] = {
       state: "queued",
       path: cacheDir + "/" + Qt.md5(url) + ".png",
-      generation: record ? record.generation + 1 : 0
+      generation: record ? record.generation + 1 : 0,
+      reuse: !retry && reusableUrl(url)
     }
     queue.push(url)
     revision++
     pump()
+  }
+
+  // Pictures whose URL pins their content: radar frames by time (DWD, NWS and
+  // ECCC carry time=, RainViewer paths carry the run) and the static basemap.
+  // Their files are taken from the cache when present, so the bar widget and
+  // the app, which each run a store, download a frame only once. Frames
+  // without a time and retries after a bad picture always download.
+  function reusableUrl(url) {
+    return url.indexOf("time=") >= 0 || url.indexOf("rainviewer.com") >= 0
+      || url.indexOf("layers=dwd:bluemarble&") >= 0
   }
 
   function pump() {
@@ -94,7 +109,8 @@ QtObject {
       fetchComponent.createObject(store, {
         url: url,
         command: ["bash", "-c", script, "more-weather-image", url, record.path,
-          String(maxBytes), String(maxDimension), String(timeoutSeconds), userAgent]
+          String(maxBytes), String(maxDimension), String(timeoutSeconds), userAgent,
+          record.reuse ? "1" : "0"]
       })
     }
   }

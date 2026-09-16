@@ -11,7 +11,8 @@ import "Model.js" as Model
 //
 // The hourly wind grids travel in the same file (windGrids, by map extent,
 // with their own short claim in windGridClaim), independent of the forecast
-// cycle and its location key.
+// cycle and its location key. So does the five-minute DWD radar (radarLive,
+// claimed in radarClaim), which renews more often than the forecast cycle.
 Item {
   required property var panel
 
@@ -53,6 +54,7 @@ Item {
       }
     } else {
       applySharedLiveData()
+      applySharedRadar()
     }
   }
 
@@ -80,7 +82,10 @@ Item {
     }
     if (reports.uvReport) panel.uvReport = reports.uvReport
     if (reports.mosmixReport) panel.mosmixReport = reports.mosmixReport
-    if (reports.radarReport) panel.radarReport = reports.radarReport
+    if (reports.radarReport) {
+      panel.radarReport = reports.radarReport
+      panel.radarFetchedAtMs = Math.max(panel.radarFetchedAtMs, fetchedAt)
+    }
     if (reports.radarMotion) panel.radarMotion = reports.radarMotion
     if (reports.radarWet) panel.radarWet = reports.radarWet
     if (reports.rainViewerReport) panel.rainViewerReport = reports.rainViewerReport
@@ -93,7 +98,56 @@ Item {
     panel.relativeTimeNowMs = Date.now()
     panel.scheduleWeatherCachePersist()
     panel.applyingSharedLive = false
+    // The forecast cycle's radar may be older than a five-minute update.
+    applySharedRadar()
     return true
+  }
+
+  readonly property int radarClaimMs: 60 * 1000
+
+  // Radar the other instance fetched for this place and published.
+  function applySharedRadar() {
+    var live = panel.sharedLiveData && panel.sharedLiveData.radarLive
+    if (!live || live.locationKey !== panel.sharedLiveLocationKey || live.by === sharedInstanceId()) return false
+    var at = Number(live.at || 0)
+    if (at <= panel.radarFetchedAtMs) return false
+    panel.applyingSharedLive = true
+    if (live.radarReport) panel.radarReport = live.radarReport
+    if (live.radarMotion) panel.radarMotion = live.radarMotion
+    if (live.radarWet) panel.radarWet = live.radarWet
+    panel.radarFetchedAtMs = at
+    panel.applyingSharedLive = false
+    return true
+  }
+
+  function radarClaimedByOther() {
+    var claim = panel.sharedLiveData && panel.sharedLiveData.radarClaim
+    return !!claim && claim.locationKey === panel.sharedLiveLocationKey && claim.by !== sharedInstanceId()
+      && Date.now() - Number(claim.at || 0) < radarClaimMs
+  }
+
+  function claimRadar() {
+    if (!panel.sharedLiveLoaded) return
+    var next = sharedDataWithout(["radarClaim"])
+    next.radarClaim = { locationKey: panel.sharedLiveLocationKey, at: Date.now(), by: sharedInstanceId() }
+    writeSharedLiveData(next)
+  }
+
+  // Publishes this instance's radar and releases its claim; called when the
+  // grid arrives and again when the worker has analysed the wide grid.
+  function publishSharedRadar() {
+    if (!panel.sharedLiveLoaded || panel.applyingSharedLive || panel.radarFetchedAtMs <= 0) return
+    var next = sharedDataWithout(["radarLive", "radarClaim"])
+    next.radarLive = {
+      locationKey: panel.sharedLiveLocationKey,
+      at: panel.radarFetchedAtMs,
+      by: sharedInstanceId(),
+      radarReport: panel.radarReport,
+      radarMotion: panel.radarMotion,
+      radarWet: panel.radarWet
+    }
+    next.radarClaim = null
+    writeSharedLiveData(next)
   }
 
   function writeSharedLiveData(next) {
@@ -103,6 +157,8 @@ Item {
     if (current) {
       if (next.windGrids === undefined && current.windGrids) next.windGrids = current.windGrids
       if (next.windGridClaim === undefined && current.windGridClaim) next.windGridClaim = current.windGridClaim
+      if (next.radarLive === undefined && current.radarLive) next.radarLive = current.radarLive
+      if (next.radarClaim === undefined && current.radarClaim) next.radarClaim = current.radarClaim
     }
     panel.sharedLiveData = next
     sharedLiveFile.setText(JSON.stringify(next) + "\n")

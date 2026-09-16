@@ -182,6 +182,13 @@ Panel {
   // Wet share around the place per radar frame (RadarMotion.mjs), for the
   // rain probability of the next two hours.
   property var radarWet: null
+  // When the radar data in use was fetched, here or by the other instance,
+  // and when this instance last asked. The DWD nowcast is renewed every five
+  // minutes, and so is the radar here (radarLiveTimer), independently of the
+  // forecast cycle.
+  property double radarFetchedAtMs: 0
+  property double radarAttemptMs: 0
+  readonly property int radarRefreshMs: 5 * 60 * 1000
   property var rainViewerReport: null
   property var windGridReport: null
   // Recent wind grids by map extent. Each grid costs Open-Meteo 35 calls, so
@@ -244,6 +251,7 @@ Panel {
     radarReport = null
     radarMotion = []
     radarWet = null
+    radarFetchedAtMs = 0
     rainViewerReport = null
     regionalRadarFrames = []
     regionalRadarProviderId = ""
@@ -432,7 +440,8 @@ Panel {
   // The current-conditions symbol. Derived from liveCurrent, so it follows
   // the minute tick like the temperature beside it; assigned once per
   // response, it used to keep the sky of the fetch time for 15 minutes.
-  readonly property string label: Model.currentIcon(liveCurrent, "", nowDate)
+  readonly property string label: Model.currentIcon(
+    Model.radarAdjustedCondition(liveCurrent, observedRadarIntensity), "", nowDate)
 
   readonly property bool hasConfiguredCoordinates: !isNaN(parseFloat(String(configuredLocationState.latitude))) && !isNaN(parseFloat(String(configuredLocationState.longitude)))
   readonly property var openMeteoCurrent: Model.openMeteoCurrentCondition(dailyForecastReport)
@@ -452,7 +461,8 @@ Panel {
   // Moon phase behind the cloud / precipitation glyph for the large symbol at
   // night; null by day and for clear or overcast skies. The bar and the
   // hourly strip keep single glyphs, which stay legible at small sizes.
-  readonly property var heroNightSymbol: Model.nightCompositeSymbol(current, nowDate, mapCenterLatitude)
+  readonly property var heroNightSymbol: Model.nightCompositeSymbol(
+    Model.radarAdjustedCondition(current, observedRadarIntensity), nowDate, mapCenterLatitude)
   // Moon phase glyphs are drawn as seen from the northern hemisphere; views
   // mirror them for places south of the equator.
   readonly property bool moonMirrored: Model.moonMirroredAt(mapCenterLatitude)
@@ -530,9 +540,10 @@ Panel {
     if (!same(activeWeatherAlerts, computedWeatherAlerts)) activeWeatherAlerts = computedWeatherAlerts
   }
 
-  // The radar map shows a snapshot of the timeline that is renewed hourly,
-  // not with every forecast cycle: each new timeline means a new set of frame
-  // images, which are loaded in the background (WeatherMapPrefetch). A manual
+  // The radar map shows a snapshot of the timeline that is renewed on its own
+  // cadence (radarFilmRefreshMs), not with every data update: each new
+  // timeline means a new set of frame images, which are loaded in the
+  // background (WeatherMapPrefetch). A manual
   // refresh, a location or zoom change, startup and the playback controls
   // open a short window in which a new timeline is adopted; so does a change
   // of source (fallback), since the old frames are unusable then.
@@ -540,6 +551,12 @@ Panel {
   // Between renewals the DWD nowcast snapshot is cut at "now" when shown
   // (radarFirstFrameIndex), so it never shows frames that lie in the past.
   property double radarFramesAdoptedMs: 0
+  // With the radar numbers every five minutes, the film follows: with every
+  // DWD run while the radar tab is open, every 15 minutes in the background
+  // so an opened tab starts current. A new film is about 24 x 20 KB of radar
+  // layers, loaded three at a time to spare DWD's GeoServer bursts.
+  readonly property int radarFilmRefreshMs: opened && precipitationTab === 1
+    ? 5 * 60 * 1000 : 15 * 60 * 1000
   property double mapRefreshWindowUntilMs: 0
   readonly property int mapRefreshWindowMs: 60 * 1000
   // Location and zoom changes load new pictures anyway: no staging.
@@ -608,7 +625,7 @@ Panel {
     var now = Date.now()
     var sourceChanged = radarFramesSource(radarFrames) !== radarFramesSource(next)
     var due = sourceChanged
-      || now - radarFramesAdoptedMs >= mapRefreshMs
+      || now - radarFramesAdoptedMs >= radarFilmRefreshMs
       || now < mapRefreshWindowUntilMs
     if (!due) return
     if (sourceChanged || !radarFrames.length || !next.length || now < radarDirectAdoptUntilMs) {
@@ -1628,6 +1645,7 @@ Panel {
 
   function startDwdRadarRequest(lat, lon) {
     if (radarProc.running) return
+    radarAttemptMs = Date.now()
     var radarUrl = "https://api.brightsky.dev/radar"
       + "?lat=" + encodeURIComponent(String(lat))
       + "&lon=" + encodeURIComponent(String(lon))
@@ -1669,6 +1687,38 @@ Panel {
   }
 
   // Only the radar timelines, for the playback controls.
+  // Every 30 s: renews the DWD radar when DWD should have published its next
+  // run, unless the other instance has fresher data or has just claimed the
+  // request. DWD computes a run every five minutes and publishes it about five
+  // minutes after its reference time, so the run after reference R is asked
+  // for from R + 10.5 min; without a known run, five minutes after the last
+  // fetch. Failed or early attempts wait two minutes. Only in the DWD area.
+  function radarLiveTick() {
+    var lat = Number(forecastRequestLatitude || mapCenterLatitude)
+    var lon = Number(forecastRequestLongitude || mapCenterLongitude)
+    if (!isFinite(lat) || !isFinite(lon) || (lat === 0 && lon === 0)) return
+    if (!usesDwdRegionalSources(lat, lon)) return
+    if (radarProc.running || radarMotionProc.running) return
+    sharedLive.applySharedRadar()
+    var now = Date.now()
+    var reference = radarReport && radarReport.radar && radarReport.radar.length
+      ? new Date(radarReferenceTime(radarReport.radar[0])).getTime() : NaN
+    var nextRunMs = isFinite(reference) ? reference + 10.5 * 60 * 1000 : radarFetchedAtMs + radarRefreshMs
+    if (now < nextRunMs && now - radarFetchedAtMs < 2 * radarRefreshMs) return
+    if (now - radarAttemptMs < 2 * 60 * 1000) return
+    if (sharedLive.radarClaimedByOther()) return
+    sharedLive.claimRadar()
+    radarRetries = 0
+    startDwdRadarRequest(lat, lon)
+  }
+
+  property Timer radarLiveTimer: Timer {
+    interval: 30 * 1000
+    repeat: true
+    running: root.sharedLiveLoaded
+    onTriggered: root.radarLiveTick()
+  }
+
   function refreshRadarTimeline() {
     var lat = Number(forecastRequestLatitude || mapCenterLatitude)
     var lon = Number(forecastRequestLongitude || mapCenterLongitude)
@@ -2382,9 +2432,11 @@ Panel {
         + "/2/1_1.png"
     }
     var url = "https://maps.dwd.de/geoserver/dwd/ows?service=WMS&version=1.1.1&request=GetMap"
-      + "&layers=dwd:bluemarble,dwd:Niederschlagsradar&styles=,"
+      // The radar layer alone (about 20 KB instead of 150 KB with the basemap
+      // burnt in) over the basemap picture every frame shares.
+      + "&layers=dwd:Niederschlagsradar&styles="
       + "&bbox=" + root.mapBbox + "&width=" + mapImageWidth + "&height=" + mapImageHeight + "&srs=EPSG:4326"
-      + "&format=image/png&transparent=false"
+      + "&format=image/png&transparent=true"
     if (!frame || !frame.timestamp) return url
     var frameTime = new Date(frame.timestamp)
     if (isNaN(frameTime.getTime())) return url
@@ -2649,6 +2701,7 @@ Panel {
       }
       root.radarMotion = message.motion
       root.radarWet = message.wet
+      root.sharedLive.publishSharedRadar()
       console.info("weather: radar drift tracked for", message.motion.length, "of 8 steps")
       root.scheduleWeatherCachePersist()
     }
@@ -2666,6 +2719,8 @@ Panel {
         var parsed = JSON.parse(raw)
         if (parsed.radar && parsed.radar.length) {
           root.radarReport = parsed
+          root.radarFetchedAtMs = Date.now()
+          root.sharedLive.publishSharedRadar()
           root.radarRetries = 0
           root.regionalRadarFailed = false
           root.scheduleWeatherCachePersist()

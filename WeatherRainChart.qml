@@ -229,6 +229,12 @@ Item {
         for (var b = 0; b < barCount; ++b) {
           var bx = left + b * barStep + (barStep - barWidth) / 2
           var bh = plotH * intensityPosition(intensityValues[b]) / 4
+          // Radar-backed bars take the DWD radar map's colour for their
+          // intensity; forecast bars keep the neutral colour, which also
+          // shows where the radar ends.
+          var radarColor = points[b].precipitationSource === "radar"
+            ? Model.dwdRadarColor(intensityValues[b]) : ""
+          ctx.fillStyle = radarColor || accent
           if (bh > 0) {
             ctx.fillRect(bx, top + plotH - Math.max(2, bh), barWidth, Math.max(2, bh))
           } else {

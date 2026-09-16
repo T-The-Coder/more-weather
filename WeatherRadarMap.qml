@@ -23,9 +23,10 @@ Item {
   readonly property real rainViewerTilePixels:
     Model.rainViewerTile(panel.mapRadiusKm, panel.mapCenterLatitude).sizeKm * viewport.pixelsPerKm
 
+  // The basemap under every radar source; DWD frames are the radar layer
+  // alone since they stopped carrying the basemap themselves.
   WeatherRemoteImage {
     anchors.fill: parent
-    visible: panel.radarActiveProviderId !== "dwd"
     store: panel.mapImages
     remoteUrl: panel.mapBasemapUrl
   }
