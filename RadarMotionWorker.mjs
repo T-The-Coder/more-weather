@@ -12,5 +12,5 @@ WorkerScript.onMessage = function(message) {
   } catch (e) {
     motion = null
   }
-  WorkerScript.sendMessage({ token: message.token, motion: motion, wet: wet })
+  WorkerScript.sendMessage({ token: message.token, at: message.at, motion: motion, wet: wet })
 }

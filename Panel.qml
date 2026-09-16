@@ -187,6 +187,14 @@ Panel {
   // minutes, and so is the radar here (radarLiveTimer), independently of the
   // forecast cycle.
   property double radarFetchedAtMs: 0
+  // When the wide grid behind radarMotion and radarWet was fetched; tracked
+  // apart from radarFetchedAtMs because the worker's results arrive, and are
+  // published, a moment after the place grid.
+  property double radarMotionAtMs: 0
+  // Place and time of the wide-grid request in flight, fixed when it is sent
+  // so a response for a place the user has left is recognised.
+  property string radarMotionRequestToken: ""
+  property double radarMotionRequestAtMs: 0
   property double radarAttemptMs: 0
   readonly property int radarRefreshMs: 5 * 60 * 1000
   property var rainViewerReport: null
@@ -252,6 +260,7 @@ Panel {
     radarMotion = []
     radarWet = null
     radarFetchedAtMs = 0
+    radarMotionAtMs = 0
     rainViewerReport = null
     regionalRadarFrames = []
     regionalRadarProviderId = ""
@@ -266,6 +275,9 @@ Panel {
     Qt.callLater(root.activateWeatherCache)
     if (placeLookup) placeLookup.placeProc.running = false
     dailyForecastProc.running = false
+    // Radar responses for the previous place must not land here.
+    radarProc.running = false
+    radarMotionProc.running = false
     sharedLiveAppliedPublishedAt = 0
     Qt.callLater(function() { root.refreshTick(true) })
   }
@@ -1666,6 +1678,8 @@ Panel {
   // Only the drift computed from it is kept.
   function startRadarMotionRequest(lat, lon, startMs) {
     if (radarMotionProc.running) return
+    radarMotionRequestToken = locationQuery
+    radarMotionRequestAtMs = Date.now()
     radarMotionProc.request = {
       url: "https://api.brightsky.dev/radar"
         + "?lat=" + encodeURIComponent(String(lat))
@@ -2686,7 +2700,11 @@ Panel {
     onFinished: function(text) {
       var raw = String(text || "").trim()
       if (!raw) return
-      radarMotionWorker.sendMessage({ token: root.locationQuery, text: raw })
+      radarMotionWorker.sendMessage({
+        token: root.radarMotionRequestToken,
+        at: root.radarMotionRequestAtMs,
+        text: raw
+      })
     }
   }
 
@@ -2702,6 +2720,7 @@ Panel {
       }
       root.radarMotion = message.motion
       root.radarWet = message.wet
+      root.radarMotionAtMs = Number(message.at) || Date.now()
       root.sharedLive.publishSharedRadar()
       console.info("weather: radar drift tracked for", message.motion.length, "of 8 steps")
       root.scheduleWeatherCachePersist()

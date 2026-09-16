@@ -82,12 +82,18 @@ Item {
     }
     if (reports.uvReport) panel.uvReport = reports.uvReport
     if (reports.mosmixReport) panel.mosmixReport = reports.mosmixReport
-    if (reports.radarReport) {
+    // Radar parts only when newer than what the five-minute updates brought.
+    var radarAt = Number(reports.radarFetchedAt || fetchedAt)
+    if (reports.radarReport && radarAt > panel.radarFetchedAtMs) {
       panel.radarReport = reports.radarReport
-      panel.radarFetchedAtMs = Math.max(panel.radarFetchedAtMs, fetchedAt)
+      panel.radarFetchedAtMs = radarAt
     }
-    if (reports.radarMotion) panel.radarMotion = reports.radarMotion
-    if (reports.radarWet) panel.radarWet = reports.radarWet
+    var motionAt = Number(reports.radarMotionAt || fetchedAt)
+    if ((reports.radarMotion || reports.radarWet) && motionAt > panel.radarMotionAtMs) {
+      if (reports.radarMotion) panel.radarMotion = reports.radarMotion
+      if (reports.radarWet) panel.radarWet = reports.radarWet
+      panel.radarMotionAtMs = motionAt
+    }
     if (reports.rainViewerReport) panel.rainViewerReport = reports.rainViewerReport
     if (reports.alertReport) {
       panel.alertReport = reports.alertReport
@@ -109,13 +115,23 @@ Item {
   function applySharedRadar() {
     var live = panel.sharedLiveData && panel.sharedLiveData.radarLive
     if (!live || live.locationKey !== panel.sharedLiveLocationKey || live.by === sharedInstanceId()) return false
+    // The place grid and the worker's results are published separately (the
+    // worker finishes a moment later) and are taken separately when newer.
     var at = Number(live.at || 0)
-    if (at <= panel.radarFetchedAtMs) return false
+    var motionAt = Number(live.motionAt || 0)
+    var takeReport = !!live.radarReport && at > panel.radarFetchedAtMs
+    var takeMotion = (!!live.radarMotion || !!live.radarWet) && motionAt > panel.radarMotionAtMs
+    if (!takeReport && !takeMotion) return false
     panel.applyingSharedLive = true
-    if (live.radarReport) panel.radarReport = live.radarReport
-    if (live.radarMotion) panel.radarMotion = live.radarMotion
-    if (live.radarWet) panel.radarWet = live.radarWet
-    panel.radarFetchedAtMs = at
+    if (takeReport) {
+      panel.radarReport = live.radarReport
+      panel.radarFetchedAtMs = at
+    }
+    if (takeMotion) {
+      if (live.radarMotion) panel.radarMotion = live.radarMotion
+      if (live.radarWet) panel.radarWet = live.radarWet
+      panel.radarMotionAtMs = motionAt
+    }
     panel.applyingSharedLive = false
     return true
   }
@@ -141,6 +157,7 @@ Item {
     next.radarLive = {
       locationKey: panel.sharedLiveLocationKey,
       at: panel.radarFetchedAtMs,
+      motionAt: panel.radarMotionAtMs,
       by: sharedInstanceId(),
       radarReport: panel.radarReport,
       radarMotion: panel.radarMotion,
@@ -269,8 +286,10 @@ Item {
         uvReport: panel.uvReport,
         mosmixReport: Model.compactMosmixReport(panel.mosmixReport),
         radarReport: panel.radarReport,
+        radarFetchedAt: panel.radarFetchedAtMs,
         radarMotion: panel.radarMotion,
         radarWet: panel.radarWet,
+        radarMotionAt: panel.radarMotionAtMs,
         rainViewerReport: panel.rainViewerReport,
         alertReport: panel.alertReport,
         alertActiveProviderId: panel.alertActiveProviderId
