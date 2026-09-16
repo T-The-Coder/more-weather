@@ -1593,7 +1593,8 @@ Panel {
     var radarStartMs = Math.floor(Date.now() / (5 * 60 * 1000)) * 5 * 60 * 1000
     radarUrl += "&date=" + encodeURIComponent(new Date(radarStartMs).toISOString())
       + "&last_date=" + encodeURIComponent(new Date(radarStartMs + 2 * 60 * 60 * 1000).toISOString())
-    radarProc.request = { url: radarUrl, timeoutMs: 8000 }
+    // ~1.3 MB for the full two-hour window.
+    radarProc.request = { url: radarUrl, timeoutMs: 8000, maxBytes: 16 * 1024 * 1024 }
     radarProc.running = true
   }
 

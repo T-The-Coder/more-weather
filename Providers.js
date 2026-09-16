@@ -150,8 +150,8 @@ function openMeteoForecastUrl(latitude, longitude) {
 }
 
 // Request specs for WeatherRequest.qml: { url, method, headers, body,
-// timeoutMs }. The request component always sends an identifying User-Agent,
-// which MET Norway and the NWS require.
+// timeoutMs, maxBytes }. The request component always sends an identifying
+// User-Agent, which MET Norway and the NWS require.
 function forecastRequest(providerId, latitude, longitude) {
   if (providerId === "met-no") {
     return {
@@ -298,13 +298,17 @@ function alertRequest(provider, latitude, longitude) {
   if (provider.id === "meteoalarm" && provider.slug) {
     return {
       url: "https://feeds.meteoalarm.org/feeds/meteoalarm-legacy-atom-" + provider.slug,
-      timeoutMs: 8000
+      timeoutMs: 8000,
+      // Germany's feed is ~0.8 MB on a quiet day.
+      maxBytes: 16 * 1024 * 1024
     }
   }
   if (provider.id === "meteoalarm-api" && provider.slug) {
     return {
       url: "https://feeds.meteoalarm.org/api/v1/warnings/feeds-" + provider.slug,
-      timeoutMs: 25000
+      timeoutMs: 25000,
+      // Germany's JSON is ~2.4 MB on a quiet day and grows with every warning.
+      maxBytes: 32 * 1024 * 1024
     }
   }
   if (provider.id === "eccc") {
