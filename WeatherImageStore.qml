@@ -23,7 +23,7 @@ QtObject {
   // minutes, so stay at three.
   readonly property int maxParallel: 3
   readonly property int timeoutSeconds: 20
-  readonly property string userAgent: "more-weather/2.0 (+https://github.com/T-The-Coder/more-weather)"
+  readonly property string userAgent: "more-weather/2.1 (+https://github.com/T-The-Coder/more-weather)"
   readonly property string cacheDir: (Quickshell.env("XDG_CACHE_HOME") || (Quickshell.env("HOME") + "/.cache"))
     + "/more-weather/map-images"
 

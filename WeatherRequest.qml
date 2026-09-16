@@ -39,7 +39,7 @@ QtObject {
 
   // Identifies this client to services that require it (MET Norway, NWS,
   // Overpass); harmless everywhere else.
-  readonly property string userAgent: "more-weather/2.0 (+https://github.com/T-The-Coder/more-weather)"
+  readonly property string userAgent: "more-weather/2.1 (+https://github.com/T-The-Coder/more-weather)"
 
   // $1 is the stdout ceiling; the rest are curl's arguments, passed as argv so
   // nothing from a request is ever parsed by the shell. The ceiling leaves room
