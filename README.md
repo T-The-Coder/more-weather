@@ -132,6 +132,8 @@ requests.
 omarchy plugin update more-weather
 ```
 
+See [CHANGELOG.md](CHANGELOG.md) for release notes.
+
 ## Removal
 
 1. If you added the app to the launcher, turn off **Show in app launcher** first. If
