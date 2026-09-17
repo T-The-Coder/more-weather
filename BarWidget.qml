@@ -207,9 +207,7 @@ BarWidget {
         visible: !root.vertical && panelLoader.item
           && panelLoader.item.menubarShowTemperature && text !== ""
         anchors.verticalCenter: parent.verticalCenter
-        text: panelLoader.item && panelLoader.item.menubarReportTempNum !== ""
-          ? panelLoader.item.menubarReportTempNum + "°"
-          : ""
+        text: panelLoader.item ? panelLoader.item.menubarTemperatureText : ""
         color: button.foreground
         font.family: root.bar ? root.bar.fontFamily : Style.font.family
         font.pixelSize: Style.font.body
@@ -253,6 +251,17 @@ BarWidget {
         font.family: root.bar ? root.bar.fontFamily : Style.font.family
         font.pixelSize: Style.font.body
         font.italic: panelLoader.item ? panelLoader.item.menubarHumidityCached : false
+        renderType: Text.NativeRendering
+      }
+
+      Text {
+        visible: !root.vertical && panelLoader.item && panelLoader.item.menubarUvText !== ""
+        anchors.verticalCenter: parent.verticalCenter
+        text: panelLoader.item ? panelLoader.item.menubarUvText : ""
+        color: button.foreground
+        font.family: root.bar ? root.bar.fontFamily : Style.font.family
+        font.pixelSize: Style.font.body
+        font.italic: panelLoader.item ? panelLoader.item.menubarUvCached : false
         renderType: Text.NativeRendering
       }
 

@@ -28,9 +28,16 @@ Rectangle {
     font.pixelSize: Style.font.caption
     text: panel.i18n("showOnHover")
   }
-  readonly property real switchColumnWidth: Math.max(Style.space(44),
-    alwaysHeadingMetrics.advanceWidth + Style.space(8),
-    onHoverHeadingMetrics.advanceWidth + Style.space(8))
+  TextMetrics {
+    id: relevantHeadingMetrics
+    font.family: panel.fontFamily
+    font.pixelSize: Style.font.caption
+    text: panel.i18n("showWhenRelevant")
+  }
+  readonly property real switchColumnWidth: Math.max(Style.space(40),
+    alwaysHeadingMetrics.advanceWidth + Style.space(6),
+    relevantHeadingMetrics.advanceWidth + Style.space(6),
+    onHoverHeadingMetrics.advanceWidth + Style.space(6))
 
   Flickable {
     anchors.fill: parent
@@ -201,7 +208,8 @@ Rectangle {
             options: [
               { value: "auto", label: panel.i18n("autoUnits") + " (" + panel.i18n(panel.useImperial ? "imperialUnits" : "metricUnits") + ")" },
               { value: "metric", label: panel.i18n("metricUnits") + " · " + panel.i18n("metricUnitsSummary") },
-              { value: "imperial", label: panel.i18n("imperialUnits") + " · " + panel.i18n("imperialUnitsSummary") }
+              { value: "imperial", label: panel.i18n("imperialUnits") + " · " + panel.i18n("imperialUnitsSummary") },
+              { value: "kelvin", label: panel.i18n("kelvinUnits") + " · " + panel.i18n("kelvinUnitsSummary") }
             ]
             onChanged: function(value) { panel.displayOptionsStore.setGeneralSetting("unitSystem", value) }
           }
@@ -368,10 +376,12 @@ Rectangle {
               { key: "currentWeatherSymbol", title: panel.i18n("weatherSymbol"), hover: true },
               { key: "currentLocation", title: panel.i18n("location"), hover: true },
               { key: "currentTemperature", title: panel.i18n("temperature"), hover: true },
-              { key: "currentFeelsLike", title: panel.i18n("feelsLikeTemperature"), hover: true },
-              { key: "currentWind", title: panel.i18n("wind"), hover: true },
-              { key: "currentHumidity", title: panel.i18n("humidity"), hover: true }
+              { key: "currentFeelsLike", title: panel.i18n("feelsLikeTemperature"), hover: true, relevant: true },
+              { key: "currentWind", title: panel.i18n("wind"), hover: true, relevant: true },
+              { key: "currentHumidity", title: panel.i18n("humidity"), hover: true },
+              { key: "currentUv", title: panel.i18n("uvIndex"), hover: true, relevant: true }
             ],
+            hint: panel.i18n("menubarRelevantCurrentHint"),
             hasDefaultTab: false
           },
           {
@@ -379,10 +389,11 @@ Rectangle {
             masterKey: "",
             dependsOn: "showCurrent",
             options: [
-              { key: "currentPrecipitation", title: panel.i18n("rainProbability"), hover: true },
-              { key: "currentRainIntensity", title: panel.i18n("rainIntensity"), hover: true },
-              { key: "currentRainStart", title: panel.i18n("rainStartTime"), hover: true }
+              { key: "currentPrecipitation", title: panel.i18n("rainProbability"), hover: true, relevant: true },
+              { key: "currentRainIntensity", title: panel.i18n("rainIntensity"), hover: true, relevant: true },
+              { key: "currentRainStart", title: panel.i18n("rainStartTime"), hover: true, relevant: true }
             ],
+            hint: panel.i18n("menubarRelevantRainHint"),
             hasDefaultTab: false
           },
           {
@@ -390,10 +401,11 @@ Rectangle {
             masterKey: "",
             dependsOn: "showCurrent",
             options: [
-              { key: "currentAirQuality", title: panel.i18n("airQualityIndex"), hover: true },
-              { key: "currentAirQualityColor", title: panel.i18n("airQualityColor"), hover: true },
-              { key: "currentAirQualityAlert", title: panel.i18n("airQualityAlert"), hover: true }
+              { key: "currentAirQuality", title: panel.i18n("airQualityIndex"), hover: true, relevant: true },
+              { key: "currentAirQualityColor", title: panel.i18n("airQualityColor"), hover: true, relevant: true },
+              { key: "currentPollen", title: panel.i18n("pollen"), hover: true, relevant: true }
             ],
+            hint: panel.i18n("menubarRelevantAirHint"),
             hasDefaultTab: false
           },
           {
@@ -412,6 +424,7 @@ Rectangle {
               { key: "openWidgetOnHover", title: panel.i18n("openWidgetOnHover") }
             ],
             hint: panel.i18n("openWidgetOnHoverHint"),
+            hasHoverUnit: true,
             hasDefaultTab: false
           },
           {
@@ -577,7 +590,7 @@ Rectangle {
                 anchors.bottom: parent.bottom
 
                 Repeater {
-                  model: [panel.i18n("showAlways"), panel.i18n("showOnHover")]
+                  model: [panel.i18n("showAlways"), panel.i18n("showWhenRelevant"), panel.i18n("showOnHover")]
 
                   Text {
                     required property string modelData
@@ -602,11 +615,52 @@ Rectangle {
                 width: settingsCardContent.width
                 settingKey: modelData.key
                 title: modelData.title
+                relevantKey: modelData.relevant ? modelData.key + "WhenRelevant" : ""
                 hoverKey: modelData.hover ? modelData.key + "OnHover" : ""
                 columnWidth: settingsView.switchColumnWidth
                 rowEnabled: (settingsCard.groupData.masterKey === ""
                   || panel.settingsDisplaySetting(settingsCard.groupData.masterKey, true))
                   && settingsCard.cardEnabled
+              }
+            }
+
+            // Second unit system for the bar, shown while the pointer rests
+            // on the widget.
+            Column {
+              visible: !!settingsCard.groupData.hasHoverUnit
+              width: parent.width
+              topPadding: Style.space(8)
+              leftPadding: Style.space(12)
+              spacing: Style.space(6)
+
+              Text {
+                text: panel.i18n("hoverUnitSystem")
+                color: panel.foreground
+                font.family: panel.fontFamily
+                font.pixelSize: Style.font.bodySmall
+              }
+
+              Dropdown {
+                width: Math.min(settingsCardContent.width - Style.space(12), Style.space(260))
+                showLabel: false
+                fontFamily: panel.fontFamily
+                value: panel.settingsHoverUnitSystem
+                options: [
+                  { value: "", label: panel.i18n("hoverUnitSystemOff") },
+                  { value: "metric", label: panel.i18n("metricUnits") + " · " + panel.i18n("metricUnitsSummary") },
+                  { value: "imperial", label: panel.i18n("imperialUnits") + " · " + panel.i18n("imperialUnitsSummary") },
+                  { value: "kelvin", label: panel.i18n("kelvinUnits") + " · " + panel.i18n("kelvinUnitsSummary") }
+                ]
+                onChanged: function(value) { panel.displayOptionsStore.setSettingsDisplaySetting("hoverUnitSystem", value) }
+              }
+
+              Text {
+                width: parent.width - Style.space(12)
+                text: panel.i18n("hoverUnitSystemHint")
+                color: panel.mutedText
+                font.family: panel.fontFamily
+                font.pixelSize: Style.font.caption
+                wrapMode: Text.WordWrap
               }
             }
 

@@ -484,6 +484,46 @@ function formatTemp(value, useImperial) {
   return value + "°" + (useImperial ? "F" : "C")
 }
 
+// Temperatures carry their own scale: Kelvin is a choice of its own, while
+// every other value (wind, rain, distance) stays metric with it.
+function temperatureScale(unitOverride, localeName, countryName) {
+  if (normalizedUnit(unitOverride) === "kelvin") return "kelvin"
+  return shouldUseImperial(unitOverride, localeName, countryName) ? "fahrenheit" : "celsius"
+}
+
+function celsiusToKelvin(value) {
+  var n = parseFloat(String(value))
+  return isNaN(n) ? null : Math.round(n + 273.15)
+}
+
+// Bare number for the scale, from a reading that carries °C and °F.
+function tempNumber(celsius, fahrenheit, scale) {
+  var raw = scale === "fahrenheit" ? fahrenheit : celsius
+  if (raw === undefined || raw === null || raw === "") return ""
+  if (scale !== "kelvin") return String(raw)
+  var kelvin = celsiusToKelvin(celsius)
+  return kelvin === null ? "" : String(kelvin)
+}
+
+function tempUnitLabel(scale) {
+  return scale === "kelvin" ? "K" : (scale === "fahrenheit" ? "°F" : "°C")
+}
+
+// Value with its unit ("17°C", "63°F", "290 K").
+function tempWithUnit(celsius, fahrenheit, scale) {
+  var number = tempNumber(celsius, fahrenheit, scale)
+  if (number === "") return ""
+  return scale === "kelvin" ? number + " K" : number + "°" + (scale === "fahrenheit" ? "F" : "C")
+}
+
+// Compact form for the forecast rows: a degree sign carries no scale, so
+// Kelvin spells its unit out.
+function tempBare(celsius, fahrenheit, scale) {
+  var number = tempNumber(celsius, fahrenheit, scale)
+  if (number === "") return ""
+  return scale === "kelvin" ? number + " K" : number + "°"
+}
+
 function normalizedUnit(value) {
   return String(value || "").replace(/^\s+|\s+$/g, "").toLowerCase()
 }
@@ -507,7 +547,8 @@ function countryUsesImperial(countryName) {
 function shouldUseImperial(unitOverride, localeName, countryName) {
   var unit = normalizedUnit(unitOverride)
   if (unit === "imperial") return true
-  if (unit === "metric") return false
+  // Kelvin keeps every other value metric.
+  if (unit === "metric" || unit === "kelvin") return false
 
   var countryPreference = countryUsesImperial(countryName)
   if (countryPreference !== null) return countryPreference
@@ -1921,10 +1962,9 @@ function radarCurrentIntensity(report, now) {
   return (value * 12 / 100).toFixed(1)
 }
 
-function hourlyTemp(hour, useImperial) {
+function hourlyTemp(hour, scale) {
   if (!hour) return ""
-  var value = useImperial ? hour.tempF : hour.tempC
-  return value === undefined || value === null || value === "" ? "" : value + "°"
+  return tempBare(hour.tempC, hour.tempF, scale)
 }
 
 function hourlyIcon(hour) {
@@ -1950,13 +1990,10 @@ function weatherResponseCompletesSave(hasConfiguredCoordinates, source) {
   return hasConfiguredCoordinates ? (source === "open-meteo" || source === "met-no") : source === "place"
 }
 
-function bareTempForDay(day, kind, useImperial) {
+function bareTempForDay(day, kind, scale) {
   if (!day) return ""
-  var v = useImperial
-    ? (kind === "max" ? day.maxtempF : day.mintempF)
-    : (kind === "max" ? day.maxtempC : day.mintempC)
-  if (v === undefined || v === null || v === "") return ""
-  return v + "°"
+  return tempBare(kind === "max" ? day.maxtempC : day.mintempC,
+    kind === "max" ? day.maxtempF : day.mintempF, scale)
 }
 
 function dayIcon(day) {
@@ -2412,6 +2449,11 @@ if (typeof module !== "undefined") {
     localeUsesImperial: localeUsesImperial,
     countryUsesImperial: countryUsesImperial,
     shouldUseImperial: shouldUseImperial,
+    temperatureScale: temperatureScale,
+    tempNumber: tempNumber,
+    tempUnitLabel: tempUnitLabel,
+    tempWithUnit: tempWithUnit,
+    tempBare: tempBare,
     dayName: dayName,
     openMeteoForecastDays: openMeteoForecastDays,
     openMeteoCurrentCondition: openMeteoCurrentCondition,

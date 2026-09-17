@@ -461,7 +461,8 @@ Panel {
   // The bar instance also loads air quality for the menu bar hint.
   readonly property bool airQualityWanted: showAirQualitySection
     || (!standaloneMode && menubarShowCurrent
-      && (menubarEntryConfigured("currentAirQuality") || menubarEntryConfigured("currentAirQualityAlert")))
+      && (menubarEntryConfigured("currentAirQuality") || menubarEntryConfigured("currentPollen")
+        || menubarEntryConfigured("currentAirQualityColor")))
   onAirQualityWantedChanged: if (airQuality) airQuality.refresh()
   readonly property var airQualitySummary: Model.airQualitySummary(airQuality ? airQuality.report : null,
     Providers.countryCode(unitCountry) === "us")
@@ -474,16 +475,18 @@ Panel {
   readonly property int settingsDefaultForecastTab: Math.max(0, Math.min(2,
     Number(settingsDisplaySetting("defaultForecastTab", 0)) || 0))
   readonly property string settingsUnitSystem: String(generalSetting("unitSystem", "auto"))
+  readonly property string settingsHoverUnitSystem: String(settingsDisplaySetting("hoverUnitSystem", ""))
 
   // Set by the bar widget while the pointer rests on it: entries switched to
   // "on hover" join the permanent ones for that time.
   property bool menubarHovered: false
-  // Menu bar entries that can be shown always or only on hover; each has a
-  // companion "<key>OnHover" option.
+  // Menu bar entries. Each is shown always ("<key>"), only when it stands
+  // out ("<key>WhenRelevant") or only under the pointer ("<key>OnHover").
   readonly property var menubarHoverKeys: [
     "currentWeatherSymbol", "currentLocation", "currentTemperature", "currentFeelsLike",
-    "currentWind", "currentHumidity", "currentPrecipitation", "currentRainIntensity", "currentRainStart",
-    "currentAirQuality", "currentAirQualityColor", "currentAirQualityAlert", "currentWarnings"
+    "currentWind", "currentHumidity", "currentUv",
+    "currentPrecipitation", "currentRainIntensity", "currentRainStart",
+    "currentAirQuality", "currentAirQualityColor", "currentPollen", "currentWarnings"
   ]
   readonly property bool menubarShowCurrent: menubarDisplaySetting("showCurrent", true)
   readonly property bool menubarOpenWidgetOnHover: !standaloneMode
@@ -495,7 +498,7 @@ Panel {
     for (var i = 0; i < menubarHoverKeys.length; i++) {
       var key = menubarHoverKeys[i]
       if (key === "currentAirQualityColor") continue
-      if (menubarDisplaySetting(key, false)) return false
+      if (menubarDisplaySetting(key, false) || menubarDisplaySetting(key + "WhenRelevant", false)) return false
       if (menubarDisplaySetting(key + "OnHover", false)) anyHover = true
     }
     return anyHover
@@ -507,6 +510,10 @@ Panel {
   readonly property bool menubarShowFeelsLike: menubarShowCurrent && menubarEntryShown("currentFeelsLike")
   readonly property bool menubarShowWind: menubarShowCurrent && menubarEntryShown("currentWind")
   readonly property bool menubarShowHumidity: menubarShowCurrent && menubarEntryShown("currentHumidity")
+  readonly property bool menubarShowUv: menubarShowCurrent && menubarEntryShown("currentUv")
+  // "UV 6", or a dash while the forecast carries no value (at night).
+  readonly property string menubarUvText: !menubarShowUv ? ""
+    : "UV " + (currentUvIndex !== "" ? localizedNumber(currentUvIndex) : "–")
   readonly property bool menubarShowPrecipitation: menubarShowCurrent && menubarEntryShown("currentPrecipitation")
   readonly property bool menubarShowWarnings: menubarShowCurrent && menubarEntryShown("currentWarnings")
   readonly property bool notifySevereWarnings: menubarDisplaySetting("notifySevereWarnings", true)
@@ -1034,6 +1041,11 @@ Panel {
   // the current Best Match 15-minute model intensity as the graceful fallback.
   readonly property string observedRadarIntensity: cacheFallbackActive
     ? "" : Model.radarCurrentIntensity(radarReport, nowDate)
+  // UV index of the current forecast hour; empty at night and while the
+  // forecast has not arrived.
+  readonly property string currentUvIndex: nextHourForecast
+    && nextHourForecast.uvIndex !== undefined && nextHourForecast.uvIndex !== null
+    ? String(nextHourForecast.uvIndex) : ""
   readonly property string radarCurrentIntensity: observedRadarIntensity !== ""
     ? observedRadarIntensity
     : (rainNowcast.length > 0 ? Number(rainNowcast[0].precipitation || 0).toFixed(1) : "")
@@ -1062,33 +1074,45 @@ Panel {
     || String(cacheFallbackActive ? activeWeatherCacheEntryValue("name", "") : "")
   readonly property bool locationCached: configuredLocation === "" && placeName === ""
     && !areaInfo && cacheFallbackActive && reportLocation !== ""
-  readonly property string reportTempNum:   current ? String(useImperial ? current.temp_F : current.temp_C) : ""
-  readonly property string tempUnit:        "°" + (useImperial ? "F" : "C")
-  readonly property string reportFeels:     current ? formatTemp(useImperial ? current.FeelsLikeF : current.FeelsLikeC) : ""
+  readonly property string tempScale: Model.temperatureScale(
+    generalSetting("unitSystem", "auto"), localeName, unitCountry)
+  readonly property string reportTempNum:   current ? Model.tempNumber(current.temp_C, current.temp_F, tempScale) : ""
+  readonly property string tempUnit:        Model.tempUnitLabel(tempScale)
+  readonly property string reportFeels:     current ? Model.tempWithUnit(current.FeelsLikeC, current.FeelsLikeF, tempScale) : ""
   readonly property string reportWind:      current ? (useImperial ? (localizedNumber(current.windspeedMiles) + " mph") : (localizedNumber(current.windspeedKmph) + " km/h")) : ""
   readonly property string reportHumidity:  current ? (localizedNumber(current.humidity) + "%") : ""
   readonly property bool currentTemperatureCached: currentFieldCached("temp_C", "temp_F")
   readonly property bool currentFeelsCached: currentFieldCached("FeelsLikeC", "FeelsLikeF")
   readonly property bool currentWindCached: currentFieldCached("windspeedKmph", "windspeedMiles")
   readonly property bool currentHumidityCached: cachedField(current, "humidity")
+  // Units in the bar: the general setting, or the second system while the
+  // pointer rests on the widget.
+  readonly property string menubarHoverUnitSystem: String(menubarDisplaySetting("hoverUnitSystem", ""))
+  readonly property string menubarUnitSystem: menubarHovered && menubarHoverUnitSystem !== ""
+    ? menubarHoverUnitSystem : String(generalSetting("unitSystem", "auto"))
   readonly property bool menubarUseImperial: Model.shouldUseImperial(
-    generalSetting("unitSystem", "auto"), localeName, unitCountry)
+    menubarUnitSystem, localeName, unitCountry)
+  readonly property string menubarTempScale: Model.temperatureScale(
+    menubarUnitSystem, localeName, unitCountry)
   readonly property string menubarReportTempNum: current
-    ? String(menubarUseImperial ? current.temp_F : current.temp_C) : ""
+    ? Model.tempNumber(current.temp_C, current.temp_F, menubarTempScale) : ""
+  readonly property string menubarTemperatureText: menubarReportTempNum === "" ? ""
+    : (menubarTempScale === "kelvin" ? menubarReportTempNum + " K" : menubarReportTempNum + "°")
   readonly property string menubarReportFeels: current
-    ? Model.formatTemp(menubarUseImperial ? current.FeelsLikeF : current.FeelsLikeC, menubarUseImperial) : ""
+    ? Model.tempWithUnit(current.FeelsLikeC, current.FeelsLikeF, menubarTempScale) : ""
   readonly property string menubarReportWind: current
     ? (menubarUseImperial
       ? localizedNumber(current.windspeedMiles) + " mph"
       : localizedNumber(current.windspeedKmph) + " km/h") : ""
   readonly property string menubarReportHumidity: current ? localizedNumber(current.humidity) + "%" : ""
   readonly property bool menubarTemperatureCached: cachedField(current,
-    menubarUseImperial ? "temp_F" : "temp_C")
+    menubarTempScale === "fahrenheit" ? "temp_F" : "temp_C")
   readonly property bool menubarFeelsCached: cachedField(current,
-    menubarUseImperial ? "FeelsLikeF" : "FeelsLikeC")
+    menubarTempScale === "fahrenheit" ? "FeelsLikeF" : "FeelsLikeC")
   readonly property bool menubarWindCached: cachedField(current,
     menubarUseImperial ? "windspeedMiles" : "windspeedKmph")
   readonly property bool menubarHumidityCached: cachedField(current, "humidity")
+  readonly property bool menubarUvCached: !!nextHourForecast && cachedField(nextHourForecast, "uvIndex")
   readonly property bool rainBadgeCached: menubarRainBadgeShowsIntensity
     ? ((cacheFallbackActive || radarReport === null) && rainNowcast.length > 0
       && cachedField(rainNowcast[0], "precipitation"))
@@ -1101,19 +1125,18 @@ Panel {
     ? Qt.formatTime(upcomingRain.date, "HH:mm") : ""
   readonly property bool menubarShowAirQuality: menubarShowCurrent
     && menubarEntryShown("currentAirQuality")
-  // The hint shows poor air (EU "poor" / US "unhealthy" and worse) or a high
-  // pollen level, and nothing otherwise.
-  readonly property bool menubarShowAirQualityAlert: menubarShowCurrent
-    && menubarEntryShown("currentAirQualityAlert")
-  // One AQI entry for both: always when switched on, or once the air is poor.
-  readonly property string menubarAirQualityText: airQualitySummary && airQualitySummary.index !== null
-    && (menubarShowAirQuality || (menubarShowAirQualityAlert && airQualitySummary.category >= 3))
+  readonly property string menubarAirQualityText: menubarShowAirQuality
+    && airQualitySummary && airQualitySummary.index !== null
     ? String(airQualitySummary.index) : ""
+  // Strongest pollen of the place, named with its level ("Mugwort high").
+  readonly property var topPollen: airQualitySummary && airQualitySummary.pollen
+    && airQualitySummary.pollen.length ? airQualitySummary.pollen[0] : null
+  readonly property bool menubarShowPollen: menubarShowCurrent && menubarEntryShown("currentPollen")
   readonly property string menubarPollenAlertText: {
-    var top = menubarShowAirQualityAlert && airQualitySummary && airQualitySummary.pollen
-      && airQualitySummary.pollen.length ? airQualitySummary.pollen[0] : null
-    if (!top || top.level < 3) return ""
-    return i18n("pollen" + top.type.charAt(0).toUpperCase() + top.type.slice(1)) + " " + i18n("pollenHigh")
+    if (!menubarShowPollen || !airQualitySummary) return ""
+    if (!topPollen) return i18n("pollenNone")
+    return i18n("pollen" + topPollen.type.charAt(0).toUpperCase() + topPollen.type.slice(1)) + " "
+      + i18n(topPollen.level >= 3 ? "pollenHigh" : (topPollen.level === 2 ? "pollenModerate" : "pollenLow"))
   }
   // The AQI category colours are loud on most themes: mix them into the
   // muted text colour.
@@ -1130,8 +1153,9 @@ Panel {
     ? softAirQualityColor(airQualitySummary.color) : foreground
   readonly property bool menubarShowRainStart: menubarShowCurrent
     && menubarEntryShown("currentRainStart")
-  readonly property string menubarRainStartText: menubarShowRainStart && upcomingRainTime !== ""
-    ? i18n("rainFromTime", { time: upcomingRainTime }) : ""
+  readonly property string menubarRainStartText: !menubarShowRainStart ? ""
+    : (upcomingRainTime !== "" ? i18n("rainFromTime", { time: upcomingRainTime })
+      : (isCurrentlyRaining ? "" : i18n("rainNone")))
   // One rain spot in the bar: the rain start when rain is on its way, the
   // radar intensity (mm/h) while it rains, the next hour's probability (%)
   // otherwise. A shown intensity takes the place of the probability, which
@@ -1139,15 +1163,16 @@ Panel {
   readonly property bool menubarShowRainIntensity: menubarShowCurrent
     && menubarEntryShown("currentRainIntensity")
   readonly property bool menubarRainBadgeShowsIntensity: menubarRainStartText === ""
-    && menubarShowRainIntensity && isCurrentlyRaining
+    && menubarShowRainIntensity
   readonly property string menubarRainBadgeText: menubarRainStartText !== "" ? menubarRainStartText
     : (menubarRainBadgeShowsIntensity
-      ? precipitationTextForUnit(radarCurrentIntensity, true, menubarUseImperial)
+      ? precipitationTextForUnit(radarCurrentIntensity !== "" ? radarCurrentIntensity : "0",
+        true, menubarUseImperial)
       : (menubarShowPrecipitation && nextHourRainProbability !== "" ? nextHourRainProbability + "%" : ""))
   readonly property bool menubarHasVisibleContent: displayLabel !== "" && menubarShowCurrent && (
     menubarShowLocation || menubarShowWeatherSymbol || menubarShowTemperature
       || menubarShowFeelsLike || menubarShowWind || menubarShowHumidity
-      || menubarShowPrecipitation || menubarRainBadgeText !== "" || menubarPollenAlertText !== ""
+      || menubarShowUv || menubarRainBadgeText !== "" || menubarPollenAlertText !== ""
       || menubarAirQualityText !== ""
       || menubarShowWarnings || menubarHoverHandle)
 
@@ -1213,32 +1238,49 @@ Panel {
   function defaultMenubarDisplayOptions() {
     return {
       showCurrent: true,
-      currentLocation: false,
       currentWeatherSymbol: true,
-      currentTemperature: true,
-      currentFeelsLike: false,
-      currentWind: false,
-      currentHumidity: false,
-      currentPrecipitation: true,
-      currentRainIntensity: true,
-      currentWarnings: true,
-      currentRainStart: true,
-      currentAirQuality: false,
-      currentAirQualityColor: false,
-      currentAirQualityAlert: false,
+      currentWeatherSymbolWhenRelevant: false,
       currentWeatherSymbolOnHover: false,
+      currentLocation: false,
+      currentLocationWhenRelevant: false,
       currentLocationOnHover: false,
+      currentTemperature: true,
+      currentTemperatureWhenRelevant: false,
       currentTemperatureOnHover: false,
+      currentFeelsLike: false,
+      currentFeelsLikeWhenRelevant: false,
       currentFeelsLikeOnHover: false,
+      currentWind: false,
+      currentWindWhenRelevant: false,
       currentWindOnHover: false,
+      currentHumidity: false,
+      currentHumidityWhenRelevant: false,
       currentHumidityOnHover: false,
+      currentUv: false,
+      currentUvWhenRelevant: false,
+      currentUvOnHover: false,
+      currentPrecipitation: true,
+      currentPrecipitationWhenRelevant: false,
       currentPrecipitationOnHover: false,
+      currentRainIntensity: false,
+      currentRainIntensityWhenRelevant: true,
       currentRainIntensityOnHover: false,
+      currentRainStart: false,
+      currentRainStartWhenRelevant: true,
       currentRainStartOnHover: false,
+      currentAirQuality: false,
+      currentAirQualityWhenRelevant: false,
       currentAirQualityOnHover: false,
+      currentAirQualityColor: false,
+      currentAirQualityColorWhenRelevant: false,
       currentAirQualityColorOnHover: false,
-      currentAirQualityAlertOnHover: false,
+      currentPollen: false,
+      currentPollenWhenRelevant: false,
+      currentPollenOnHover: false,
+      currentWarnings: true,
+      currentWarningsWhenRelevant: false,
       currentWarningsOnHover: false,
+      hoverUnitSystem: "",
       openWidgetOnHover: false,
       notifySevereWarnings: true,
       notifyRainSoon: true
@@ -1278,12 +1320,36 @@ Panel {
 
   function menubarEntryConfigured(key) {
     return menubarDisplaySetting(key, false) === true
+      || menubarDisplaySetting(key + "WhenRelevant", false) === true
       || menubarDisplaySetting(key + "OnHover", false) === true
   }
 
   function menubarEntryShown(key) {
-    return menubarDisplaySetting(key, false) === true
-      || (menubarHovered && menubarDisplaySetting(key + "OnHover", false) === true)
+    if (menubarDisplaySetting(key, false) === true) return true
+    if (menubarHovered && menubarDisplaySetting(key + "OnHover", false) === true) return true
+    return menubarDisplaySetting(key + "WhenRelevant", false) === true && menubarEntryRelevant(key)
+  }
+
+  // What "when relevant" means per entry: the value stands out enough to be
+  // worth the space. Entries without a rule (symbol, place, temperature,
+  // humidity, warnings) offer the choice greyed out in settings.
+  function menubarEntryRelevant(key) {
+    if (key === "currentFeelsLike")
+      return current && current.FeelsLikeC !== undefined && current.temp_C !== undefined
+        && Math.abs(parseFloat(current.FeelsLikeC) - parseFloat(current.temp_C)) >= 3
+    if (key === "currentWind")
+      return !!current && parseFloat(current.windspeedKmph) >= 20
+    if (key === "currentUv")
+      return currentUvIndex !== "" && parseFloat(currentUvIndex) >= 6
+    if (key === "currentPrecipitation")
+      return nextHourRainProbability !== "" && parseFloat(nextHourRainProbability) >= 30
+    if (key === "currentRainIntensity") return isCurrentlyRaining
+    if (key === "currentRainStart") return upcomingRainTime !== ""
+    if (key === "currentAirQuality" || key === "currentAirQualityColor")
+      return !!airQualitySummary && airQualitySummary.category >= 3
+    if (key === "currentPollen") return !!topPollen && topPollen.level >= 3
+    if (key === "currentWarnings") return hasWeatherAlert
+    return false
   }
 
   function activeWeatherCacheEntryValue(key, fallback) {
@@ -2398,10 +2464,6 @@ Panel {
     geocodeProc.running = true
   }
 
-  function formatTemp(value) {
-    return Model.formatTemp(value, useImperial)
-  }
-
   function dayName(dateString, short) {
     return Model.dayName(dateString, function(date) {
       var weekday = date.getDay()
@@ -2418,7 +2480,7 @@ Panel {
 
   // Bare degree value (no unit letter), used in the forecast row.
   function bareTempForDay(day, kind) {
-    return Model.bareTempForDay(day, kind, useImperial)
+    return Model.bareTempForDay(day, kind, tempScale)
   }
 
   // Representative icon for a forecast day: the hourly entry nearest noon.
@@ -2427,7 +2489,7 @@ Panel {
   }
 
   function hourlyTemp(hour) {
-    return Model.hourlyTemp(hour, useImperial)
+    return Model.hourlyTemp(hour, tempScale)
   }
 
   function hourlyIcon(hour) {

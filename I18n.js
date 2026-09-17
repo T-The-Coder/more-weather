@@ -250,7 +250,16 @@ var catalog = {
     barBehavior: "Behavior",
     openWidgetOnHover: "Open widget on hover",
     openWidgetOnHoverHint: "Opens the widget when the pointer rests on the weather in the bar, and closes it once the pointer moves away. A click keeps it open.",
-    rainIntensity: "Rain intensity"
+    rainIntensity: "Rain intensity",
+    showWhenRelevant: "When relevant",
+    menubarRelevantCurrentHint: "“When relevant” shows an entry only when it stands out: feels-like 3° off the temperature, wind from 20 km/h, UV from 6.",
+    menubarRelevantRainHint: "“When relevant”: probability from 30 %, intensity while it rains, rain start within two hours. The rain start and the intensity take the probability's place.",
+    menubarRelevantAirHint: "“When relevant”: air quality from “poor”, pollen at a high level.",
+    kelvinUnits: "Kelvin",
+    kelvinUnitsSummary: "K · mm · km/h · km",
+    hoverUnitSystem: "Other units on hover",
+    hoverUnitSystemOff: "Off",
+    hoverUnitSystemHint: "While the pointer rests on the widget, the bar switches to this unit system. Kelvin changes temperatures only."
   },
   de: {
     weather: "Wetter",
@@ -496,7 +505,16 @@ var catalog = {
     barBehavior: "Verhalten",
     openWidgetOnHover: "Widget beim Überfahren öffnen",
     openWidgetOnHoverHint: "Öffnet das Widget, wenn der Mauszeiger auf dem Wetter in der Leiste ruht, und schließt es, sobald er sich entfernt. Ein Klick hält es offen.",
-    rainIntensity: "Regenintensität"
+    rainIntensity: "Regenintensität",
+    showWhenRelevant: "Wenn relevant",
+    menubarRelevantCurrentHint: "„Wenn relevant“ zeigt einen Eintrag nur, wenn er auffällt: gefühlte Temperatur 3° neben der Temperatur, Wind ab 20 km/h, UV ab 6.",
+    menubarRelevantRainHint: "„Wenn relevant“: Wahrscheinlichkeit ab 30 %, Intensität solange es regnet, Regenbeginn innerhalb von zwei Stunden. Regenbeginn und Intensität nehmen den Platz der Wahrscheinlichkeit ein.",
+    menubarRelevantAirHint: "„Wenn relevant“: Luftqualität ab „schlecht“, Pollen bei hoher Belastung.",
+    kelvinUnits: "Kelvin",
+    kelvinUnitsSummary: "K · mm · km/h · km",
+    hoverUnitSystem: "Beim Überfahren andere Einheiten",
+    hoverUnitSystemOff: "Aus",
+    hoverUnitSystemHint: "Solange der Mauszeiger auf dem Widget ruht, wechselt die Leiste zu diesem Einheitensystem. Kelvin betrifft nur Temperaturen."
   }
 }
 
@@ -882,7 +900,16 @@ addCatalogEntries("es", {
   "barBehavior": "Comportamiento",
   "openWidgetOnHover": "Abrir el widget al pasar el ratón",
   "openWidgetOnHoverHint": "Abre el widget cuando el puntero se detiene sobre el tiempo en la barra y lo cierra al alejarse. Un clic lo mantiene abierto.",
-  "rainIntensity": "Intensidad de la lluvia"
+  "rainIntensity": "Intensidad de la lluvia",
+  "showWhenRelevant": "Cuando sea relevante",
+  "menubarRelevantCurrentHint": "«Cuando sea relevante» muestra una entrada solo si destaca: sensación térmica a 3° de la temperatura, viento desde 20 km/h, UV desde 6.",
+  "menubarRelevantRainHint": "«Cuando sea relevante»: probabilidad desde 30 %, intensidad mientras llueve, inicio de la lluvia dentro de dos horas. El inicio de la lluvia y la intensidad ocupan el lugar de la probabilidad.",
+  "menubarRelevantAirHint": "«Cuando sea relevante»: calidad del aire desde «mala», polen en nivel alto.",
+  "kelvinUnits": "Kelvin",
+  "kelvinUnitsSummary": "K · mm · km/h · km",
+  "hoverUnitSystem": "Otras unidades al pasar el ratón",
+  "hoverUnitSystemOff": "Desactivado",
+  "hoverUnitSystemHint": "Mientras el puntero está sobre el widget, la barra cambia a este sistema de unidades. Kelvin solo afecta a las temperaturas."
 })
 
 addCatalogEntries("fr", {
@@ -975,7 +1002,16 @@ addCatalogEntries("fr", {
   "barBehavior": "Comportement",
   "openWidgetOnHover": "Ouvrir le widget au survol",
   "openWidgetOnHoverHint": "Ouvre le widget quand le pointeur survole la météo dans la barre et le ferme dès qu’il s’éloigne. Un clic le garde ouvert.",
-  "rainIntensity": "Intensité de la pluie"
+  "rainIntensity": "Intensité de la pluie",
+  "showWhenRelevant": "Si pertinent",
+  "menubarRelevantCurrentHint": "« Si pertinent » n’affiche un élément que s’il se démarque : ressenti à 3° de la température, vent à partir de 20 km/h, UV à partir de 6.",
+  "menubarRelevantRainHint": "« Si pertinent » : probabilité à partir de 30 %, intensité tant qu’il pleut, début de pluie dans les deux heures. Le début de pluie et l’intensité prennent la place de la probabilité.",
+  "menubarRelevantAirHint": "« Si pertinent » : qualité de l’air à partir de « mauvaise », pollen à un niveau élevé.",
+  "kelvinUnits": "Kelvin",
+  "kelvinUnitsSummary": "K · mm · km/h · km",
+  "hoverUnitSystem": "Autres unités au survol",
+  "hoverUnitSystemOff": "Désactivé",
+  "hoverUnitSystemHint": "Tant que le pointeur survole le widget, la barre passe à ce système d’unités. Kelvin ne change que les températures."
 })
 
 addCatalogEntries("pt", {
@@ -1068,7 +1104,16 @@ addCatalogEntries("pt", {
   "barBehavior": "Comportamento",
   "openWidgetOnHover": "Abrir o widget ao passar o mouse",
   "openWidgetOnHoverHint": "Abre o widget quando o ponteiro para sobre o clima na barra e o fecha quando ele se afasta. Um clique o mantém aberto.",
-  "rainIntensity": "Intensidade da chuva"
+  "rainIntensity": "Intensidade da chuva",
+  "showWhenRelevant": "Quando relevante",
+  "menubarRelevantCurrentHint": "“Quando relevante” mostra um item apenas se ele se destacar: sensação a 3° da temperatura, vento a partir de 20 km/h, UV a partir de 6.",
+  "menubarRelevantRainHint": "“Quando relevante”: probabilidade a partir de 30 %, intensidade enquanto chove, início da chuva em até duas horas. O início da chuva e a intensidade ocupam o lugar da probabilidade.",
+  "menubarRelevantAirHint": "“Quando relevante”: qualidade do ar a partir de “ruim”, pólen em nível alto.",
+  "kelvinUnits": "Kelvin",
+  "kelvinUnitsSummary": "K · mm · km/h · km",
+  "hoverUnitSystem": "Outras unidades ao passar o mouse",
+  "hoverUnitSystemOff": "Desligado",
+  "hoverUnitSystemHint": "Enquanto o ponteiro está sobre o widget, a barra muda para este sistema de unidades. Kelvin afeta apenas as temperaturas."
 })
 
 addCatalogEntries("ru", {
@@ -1161,7 +1206,16 @@ addCatalogEntries("ru", {
   "barBehavior": "Поведение",
   "openWidgetOnHover": "Открывать виджет при наведении",
   "openWidgetOnHoverHint": "Открывает виджет, когда указатель задерживается над погодой на панели, и закрывает, когда он уходит. Щелчок оставляет виджет открытым.",
-  "rainIntensity": "Интенсивность дождя"
+  "rainIntensity": "Интенсивность дождя",
+  "showWhenRelevant": "При значимости",
+  "menubarRelevantCurrentHint": "«При значимости» показывает элемент, только когда он выделяется: ощущаемая температура на 3° от фактической, ветер от 20 км/ч, УФ от 6.",
+  "menubarRelevantRainHint": "«При значимости»: вероятность от 30 %, интенсивность пока идёт дождь, начало дождя в ближайшие два часа. Начало дождя и интенсивность занимают место вероятности.",
+  "menubarRelevantAirHint": "«При значимости»: качество воздуха от «плохого», высокий уровень пыльцы.",
+  "kelvinUnits": "Кельвин",
+  "kelvinUnitsSummary": "K · mm · km/h · km",
+  "hoverUnitSystem": "Другие единицы при наведении",
+  "hoverUnitSystemOff": "Выключено",
+  "hoverUnitSystemHint": "Пока указатель находится над виджетом, панель переходит на эту систему единиц. Кельвин меняет только температуры."
 })
 
 addCatalogEntries("uk", {
@@ -1254,7 +1308,16 @@ addCatalogEntries("uk", {
   "barBehavior": "Поведінка",
   "openWidgetOnHover": "Відкривати віджет при наведенні",
   "openWidgetOnHoverHint": "Відкриває віджет, коли вказівник затримується над погодою на панелі, і закриває, коли він відходить. Клацання залишає віджет відкритим.",
-  "rainIntensity": "Інтенсивність дощу"
+  "rainIntensity": "Інтенсивність дощу",
+  "showWhenRelevant": "Коли важливо",
+  "menubarRelevantCurrentHint": "«Коли важливо» показує запис, лише коли він виділяється: відчутна температура за 3° від фактичної, вітер від 20 км/год, УФ від 6.",
+  "menubarRelevantRainHint": "«Коли важливо»: ймовірність від 30 %, інтенсивність поки йде дощ, початок дощу протягом двох годин. Початок дощу та інтенсивність займають місце ймовірності.",
+  "menubarRelevantAirHint": "«Коли важливо»: якість повітря від «поганої», високий рівень пилку.",
+  "kelvinUnits": "Кельвін",
+  "kelvinUnitsSummary": "K · mm · km/h · km",
+  "hoverUnitSystem": "Інші одиниці при наведенні",
+  "hoverUnitSystemOff": "Вимкнено",
+  "hoverUnitSystemHint": "Поки вказівник над віджетом, панель переходить на цю систему одиниць. Кельвін змінює лише температури."
 })
 
 addCatalogEntries("pl", {
@@ -1347,7 +1410,16 @@ addCatalogEntries("pl", {
   "barBehavior": "Zachowanie",
   "openWidgetOnHover": "Otwieraj widżet po najechaniu",
   "openWidgetOnHoverHint": "Otwiera widżet, gdy wskaźnik zatrzyma się nad pogodą na pasku, i zamyka go, gdy się oddali. Kliknięcie pozostawia go otwartym.",
-  "rainIntensity": "Natężenie deszczu"
+  "rainIntensity": "Natężenie deszczu",
+  "showWhenRelevant": "Gdy istotne",
+  "menubarRelevantCurrentHint": "„Gdy istotne” pokazuje pozycję tylko wtedy, gdy się wyróżnia: temperatura odczuwalna 3° od rzeczywistej, wiatr od 20 km/h, UV od 6.",
+  "menubarRelevantRainHint": "„Gdy istotne”: prawdopodobieństwo od 30 %, natężenie gdy pada, początek deszczu w ciągu dwóch godzin. Początek deszczu i natężenie zajmują miejsce prawdopodobieństwa.",
+  "menubarRelevantAirHint": "„Gdy istotne”: jakość powietrza od „złej”, pyłki na wysokim poziomie.",
+  "kelvinUnits": "Kelwin",
+  "kelvinUnitsSummary": "K · mm · km/h · km",
+  "hoverUnitSystem": "Inne jednostki po najechaniu",
+  "hoverUnitSystemOff": "Wyłączone",
+  "hoverUnitSystemHint": "Gdy wskaźnik spoczywa na widżecie, pasek przełącza się na ten układ jednostek. Kelwin zmienia tylko temperatury."
 })
 
 addCatalogEntries("it", {
@@ -1440,7 +1512,16 @@ addCatalogEntries("it", {
   "barBehavior": "Comportamento",
   "openWidgetOnHover": "Apri il widget al passaggio del mouse",
   "openWidgetOnHoverHint": "Apre il widget quando il puntatore si ferma sul meteo nella barra e lo chiude quando si allontana. Un clic lo tiene aperto.",
-  "rainIntensity": "Intensità della pioggia"
+  "rainIntensity": "Intensità della pioggia",
+  "showWhenRelevant": "Quando rilevante",
+  "menubarRelevantCurrentHint": "«Quando rilevante» mostra una voce solo se si distingue: percepita a 3° dalla temperatura, vento da 20 km/h, UV da 6.",
+  "menubarRelevantRainHint": "«Quando rilevante»: probabilità dal 30 %, intensità mentre piove, inizio della pioggia entro due ore. L’inizio della pioggia e l’intensità prendono il posto della probabilità.",
+  "menubarRelevantAirHint": "«Quando rilevante»: qualità dell’aria da «scarsa», polline a livello alto.",
+  "kelvinUnits": "Kelvin",
+  "kelvinUnitsSummary": "K · mm · km/h · km",
+  "hoverUnitSystem": "Altre unità al passaggio",
+  "hoverUnitSystemOff": "Disattivato",
+  "hoverUnitSystemHint": "Mentre il puntatore è sul widget, la barra passa a questo sistema di unità. Kelvin cambia solo le temperature."
 })
 
 addCatalogEntries("nl", {
@@ -1533,7 +1614,16 @@ addCatalogEntries("nl", {
   "barBehavior": "Gedrag",
   "openWidgetOnHover": "Widget openen bij aanwijzen",
   "openWidgetOnHoverHint": "Opent de widget wanneer de aanwijzer op het weer in de balk rust en sluit hem zodra de aanwijzer weggaat. Een klik houdt hem open.",
-  "rainIntensity": "Regenintensiteit"
+  "rainIntensity": "Regenintensiteit",
+  "showWhenRelevant": "Als het opvalt",
+  "menubarRelevantCurrentHint": "‘Als het opvalt’ toont een item alleen als het opvalt: gevoelstemperatuur 3° van de temperatuur, wind vanaf 20 km/u, UV vanaf 6.",
+  "menubarRelevantRainHint": "‘Als het opvalt’: kans vanaf 30 %, intensiteit zolang het regent, begin van de regen binnen twee uur. Het begin van de regen en de intensiteit nemen de plaats van de kans in.",
+  "menubarRelevantAirHint": "‘Als het opvalt’: luchtkwaliteit vanaf ‘slecht’, pollen op een hoog niveau.",
+  "kelvinUnits": "Kelvin",
+  "kelvinUnitsSummary": "K · mm · km/h · km",
+  "hoverUnitSystem": "Andere eenheden bij aanwijzen",
+  "hoverUnitSystemOff": "Uit",
+  "hoverUnitSystemHint": "Zolang de aanwijzer op de widget rust, schakelt de balk over op dit eenhedenstelsel. Kelvin verandert alleen temperaturen."
 })
 
 addCatalogEntries("tr", {
@@ -1626,7 +1716,16 @@ addCatalogEntries("tr", {
   "barBehavior": "Davranış",
   "openWidgetOnHover": "Üzerine gelince bileşeni aç",
   "openWidgetOnHoverHint": "İşaretçi çubuktaki hava durumunun üzerinde durduğunda bileşeni açar, işaretçi ayrıldığında kapatır. Tıklamak açık tutar.",
-  "rainIntensity": "Yağış şiddeti"
+  "rainIntensity": "Yağış şiddeti",
+  "showWhenRelevant": "Önemliyken",
+  "menubarRelevantCurrentHint": "“Önemliyken” bir öğeyi yalnızca dikkat çektiğinde gösterir: hissedilen sıcaklık 3° farklıysa, rüzgâr 20 km/sa’ten, UV 6’dan itibaren.",
+  "menubarRelevantRainHint": "“Önemliyken”: olasılık %30’dan, yağış sürerken şiddet, iki saat içindeki yağış başlangıcı. Yağış başlangıcı ve şiddet, olasılığın yerini alır.",
+  "menubarRelevantAirHint": "“Önemliyken”: hava kalitesi “kötü”den itibaren, polen yüksek düzeyde.",
+  "kelvinUnits": "Kelvin",
+  "kelvinUnitsSummary": "K · mm · km/h · km",
+  "hoverUnitSystem": "Üzerine gelince başka birimler",
+  "hoverUnitSystemOff": "Kapalı",
+  "hoverUnitSystemHint": "İşaretçi bileşenin üzerindeyken çubuk bu birim sistemine geçer. Kelvin yalnızca sıcaklıkları değiştirir."
 })
 
 addCatalogEntries("cs", {
@@ -1719,7 +1818,16 @@ addCatalogEntries("cs", {
   "barBehavior": "Chování",
   "openWidgetOnHover": "Otevřít widget při najetí",
   "openWidgetOnHoverHint": "Otevře widget, když se ukazatel zastaví nad počasím v liště, a zavře ho, jakmile se vzdálí. Kliknutím zůstane otevřený.",
-  "rainIntensity": "Intenzita deště"
+  "rainIntensity": "Intenzita deště",
+  "showWhenRelevant": "Když je to důležité",
+  "menubarRelevantCurrentHint": "„Když je to důležité“ zobrazí položku jen tehdy, když vyčnívá: pocitová teplota 3° od skutečné, vítr od 20 km/h, UV od 6.",
+  "menubarRelevantRainHint": "„Když je to důležité“: pravděpodobnost od 30 %, intenzita po dobu deště, začátek deště do dvou hodin. Začátek deště a intenzita zaujmou místo pravděpodobnosti.",
+  "menubarRelevantAirHint": "„Když je to důležité“: kvalita ovzduší od „špatné“, pyl na vysoké úrovni.",
+  "kelvinUnits": "Kelvin",
+  "kelvinUnitsSummary": "K · mm · km/h · km",
+  "hoverUnitSystem": "Jiné jednotky při najetí",
+  "hoverUnitSystemOff": "Vypnuto",
+  "hoverUnitSystemHint": "Dokud ukazatel spočívá na widgetu, lišta přejde na tuto soustavu jednotek. Kelvin mění jen teploty."
 })
 
 addCatalogEntries("sv", {
@@ -1812,7 +1920,16 @@ addCatalogEntries("sv", {
   "barBehavior": "Beteende",
   "openWidgetOnHover": "Öppna widgeten vid hovring",
   "openWidgetOnHoverHint": "Öppnar widgeten när pekaren vilar på vädret i fältet och stänger den när pekaren flyttas bort. Ett klick håller den öppen.",
-  "rainIntensity": "Regnintensitet"
+  "rainIntensity": "Regnintensitet",
+  "showWhenRelevant": "När det märks",
+  "menubarRelevantCurrentHint": "”När det märks” visar en post bara när den sticker ut: känns som 3° från temperaturen, vind från 20 km/h, UV från 6.",
+  "menubarRelevantRainHint": "”När det märks”: sannolikhet från 30 %, intensitet medan det regnar, regnstart inom två timmar. Regnstarten och intensiteten tar sannolikhetens plats.",
+  "menubarRelevantAirHint": "”När det märks”: luftkvalitet från ”dålig”, pollen på hög nivå.",
+  "kelvinUnits": "Kelvin",
+  "kelvinUnitsSummary": "K · mm · km/h · km",
+  "hoverUnitSystem": "Andra enheter vid hovring",
+  "hoverUnitSystemOff": "Av",
+  "hoverUnitSystemHint": "Medan pekaren vilar på widgeten byter fältet till detta enhetssystem. Kelvin ändrar bara temperaturer."
 })
 
 addCatalogEntries("fi", {
@@ -1905,7 +2022,16 @@ addCatalogEntries("fi", {
   "barBehavior": "Toiminta",
   "openWidgetOnHover": "Avaa pienoissovellus osoitettaessa",
   "openWidgetOnHoverHint": "Avaa pienoissovelluksen, kun osoitin pysähtyy palkin sään päälle, ja sulkee sen, kun osoitin siirtyy pois. Napsautus pitää sen auki.",
-  "rainIntensity": "Sateen voimakkuus"
+  "rainIntensity": "Sateen voimakkuus",
+  "showWhenRelevant": "Kun on oleellista",
+  "menubarRelevantCurrentHint": "”Kun on oleellista” näyttää kohteen vain, kun se erottuu: tuntuu kuin 3° lämpötilasta, tuuli 20 km/h alkaen, UV 6 alkaen.",
+  "menubarRelevantRainHint": "”Kun on oleellista”: todennäköisyys 30 %:sta, voimakkuus sateen ajan, sateen alku kahden tunnin sisällä. Sateen alku ja voimakkuus vievät todennäköisyyden paikan.",
+  "menubarRelevantAirHint": "”Kun on oleellista”: ilmanlaatu ”huonosta” alkaen, siitepöly korkealla tasolla.",
+  "kelvinUnits": "Kelvin",
+  "kelvinUnitsSummary": "K · mm · km/h · km",
+  "hoverUnitSystem": "Muut yksiköt osoitettaessa",
+  "hoverUnitSystemOff": "Pois",
+  "hoverUnitSystemHint": "Kun osoitin on pienoissovelluksen päällä, palkki vaihtaa tähän yksikköjärjestelmään. Kelvin muuttaa vain lämpötilat."
 })
 
 addCatalogEntries("nb", {
@@ -1998,7 +2124,16 @@ addCatalogEntries("nb", {
   "barBehavior": "Oppførsel",
   "openWidgetOnHover": "Åpne miniprogrammet ved peking",
   "openWidgetOnHoverHint": "Åpner miniprogrammet når pekeren hviler på været i linjen, og lukker det når pekeren flyttes bort. Et klikk holder det åpent.",
-  "rainIntensity": "Regnintensitet"
+  "rainIntensity": "Regnintensitet",
+  "showWhenRelevant": "Når det merkes",
+  "menubarRelevantCurrentHint": "«Når det merkes» viser en oppføring bare når den skiller seg ut: føles som 3° fra temperaturen, vind fra 20 km/t, UV fra 6.",
+  "menubarRelevantRainHint": "«Når det merkes»: sannsynlighet fra 30 %, intensitet mens det regner, regnstart innen to timer. Regnstarten og intensiteten tar sannsynlighetens plass.",
+  "menubarRelevantAirHint": "«Når det merkes»: luftkvalitet fra «dårlig», pollen på høyt nivå.",
+  "kelvinUnits": "Kelvin",
+  "kelvinUnitsSummary": "K · mm · km/h · km",
+  "hoverUnitSystem": "Andre enheter ved peking",
+  "hoverUnitSystemOff": "Av",
+  "hoverUnitSystemHint": "Mens pekeren hviler på miniprogrammet, bytter linjen til dette enhetssystemet. Kelvin endrer bare temperaturer."
 })
 
 addCatalogEntries("da", {
@@ -2091,7 +2226,16 @@ addCatalogEntries("da", {
   "barBehavior": "Adfærd",
   "openWidgetOnHover": "Åbn widgetten ved peg",
   "openWidgetOnHoverHint": "Åbner widgetten, når markøren hviler på vejret i linjen, og lukker den, når markøren flyttes væk. Et klik holder den åben.",
-  "rainIntensity": "Regnintensitet"
+  "rainIntensity": "Regnintensitet",
+  "showWhenRelevant": "Når det er relevant",
+  "menubarRelevantCurrentHint": "»Når det er relevant« viser et punkt kun, når det skiller sig ud: føles som 3° fra temperaturen, vind fra 20 km/t, UV fra 6.",
+  "menubarRelevantRainHint": "»Når det er relevant«: sandsynlighed fra 30 %, intensitet mens det regner, regnstart inden for to timer. Regnstarten og intensiteten tager sandsynlighedens plads.",
+  "menubarRelevantAirHint": "»Når det er relevant«: luftkvalitet fra »dårlig«, pollen på højt niveau.",
+  "kelvinUnits": "Kelvin",
+  "kelvinUnitsSummary": "K · mm · km/h · km",
+  "hoverUnitSystem": "Andre enheder ved peg",
+  "hoverUnitSystemOff": "Fra",
+  "hoverUnitSystemHint": "Mens markøren hviler på widgetten, skifter linjen til dette enhedssystem. Kelvin ændrer kun temperaturer."
 })
 
 addCatalogEntries("ro", {
@@ -2184,7 +2328,16 @@ addCatalogEntries("ro", {
   "barBehavior": "Comportament",
   "openWidgetOnHover": "Deschide widgetul la trecerea cursorului",
   "openWidgetOnHoverHint": "Deschide widgetul când cursorul stă pe vremea din bară și îl închide când cursorul se îndepărtează. Un clic îl menține deschis.",
-  "rainIntensity": "Intensitatea ploii"
+  "rainIntensity": "Intensitatea ploii",
+  "showWhenRelevant": "Când contează",
+  "menubarRelevantCurrentHint": "„Când contează” arată un element doar când iese în evidență: temperatura resimțită la 3° de cea reală, vânt de la 20 km/h, UV de la 6.",
+  "menubarRelevantRainHint": "„Când contează”: probabilitate de la 30 %, intensitate cât plouă, începutul ploii în două ore. Începutul ploii și intensitatea iau locul probabilității.",
+  "menubarRelevantAirHint": "„Când contează”: calitatea aerului de la „slabă”, polen la nivel ridicat.",
+  "kelvinUnits": "Kelvin",
+  "kelvinUnitsSummary": "K · mm · km/h · km",
+  "hoverUnitSystem": "Alte unități la trecerea cursorului",
+  "hoverUnitSystemOff": "Oprit",
+  "hoverUnitSystemHint": "Cât timp cursorul stă pe widget, bara trece la acest sistem de unități. Kelvin schimbă doar temperaturile."
 })
 
 addCatalogEntries("hu", {
@@ -2277,7 +2430,16 @@ addCatalogEntries("hu", {
   "barBehavior": "Viselkedés",
   "openWidgetOnHover": "Minialkalmazás megnyitása rámutatáskor",
   "openWidgetOnHoverHint": "Megnyitja a minialkalmazást, amikor a mutató a sáv időjárásán áll, és bezárja, amikor elmozdul. Kattintással nyitva marad.",
-  "rainIntensity": "Eső intenzitása"
+  "rainIntensity": "Eső intenzitása",
+  "showWhenRelevant": "Ha fontos",
+  "menubarRelevantCurrentHint": "A „Ha fontos” csak akkor mutat egy elemet, ha kitűnik: a hőérzet 3°-kal tér el, a szél 20 km/h-tól, az UV 6-tól.",
+  "menubarRelevantRainHint": "„Ha fontos”: valószínűség 30%-tól, intenzitás amíg esik, esőkezdet két órán belül. Az esőkezdet és az intenzitás a valószínűség helyére lép.",
+  "menubarRelevantAirHint": "„Ha fontos”: levegőminőség a „rossz” szinttől, pollen magas szinten.",
+  "kelvinUnits": "Kelvin",
+  "kelvinUnitsSummary": "K · mm · km/h · km",
+  "hoverUnitSystem": "Más mértékegységek rámutatáskor",
+  "hoverUnitSystemOff": "Ki",
+  "hoverUnitSystemHint": "Amíg a mutató a minialkalmazáson áll, a sáv erre a mértékegységrendszerre vált. A Kelvin csak a hőmérsékleteket érinti."
 })
 
 addCatalogEntries("el", {
@@ -2370,7 +2532,16 @@ addCatalogEntries("el", {
   "barBehavior": "Συμπεριφορά",
   "openWidgetOnHover": "Άνοιγμα γραφικού στοιχείου στο πέρασμα",
   "openWidgetOnHoverHint": "Ανοίγει το γραφικό στοιχείο όταν ο δείκτης σταθεί πάνω στον καιρό της γραμμής και το κλείνει όταν απομακρυνθεί. Ένα κλικ το κρατά ανοιχτό.",
-  "rainIntensity": "Ένταση βροχής"
+  "rainIntensity": "Ένταση βροχής",
+  "showWhenRelevant": "Όταν ξεχωρίζει",
+  "menubarRelevantCurrentHint": "Το «Όταν ξεχωρίζει» δείχνει μια καταχώριση μόνο όταν ξεχωρίζει: αίσθηση 3° από τη θερμοκρασία, άνεμος από 20 χλμ/ώρα, UV από 6.",
+  "menubarRelevantRainHint": "«Όταν ξεχωρίζει»: πιθανότητα από 30 %, ένταση όσο βρέχει, έναρξη βροχής μέσα σε δύο ώρες. Η έναρξη της βροχής και η ένταση παίρνουν τη θέση της πιθανότητας.",
+  "menubarRelevantAirHint": "«Όταν ξεχωρίζει»: ποιότητα αέρα από «κακή», γύρη σε υψηλό επίπεδο.",
+  "kelvinUnits": "Κέλβιν",
+  "kelvinUnitsSummary": "K · mm · km/h · km",
+  "hoverUnitSystem": "Άλλες μονάδες στο πέρασμα",
+  "hoverUnitSystemOff": "Ανενεργό",
+  "hoverUnitSystemHint": "Όσο ο δείκτης βρίσκεται πάνω στο γραφικό στοιχείο, η γραμμή αλλάζει σε αυτό το σύστημα μονάδων. Το Κέλβιν αλλάζει μόνο τις θερμοκρασίες."
 })
 
 addCatalogEntries("zh_CN", {
@@ -2463,7 +2634,16 @@ addCatalogEntries("zh_CN", {
   "barBehavior": "行为",
   "openWidgetOnHover": "悬停时打开小组件",
   "openWidgetOnHoverHint": "指针停留在栏中天气上时打开小组件，移开后关闭。单击可保持打开。",
-  "rainIntensity": "降雨强度"
+  "rainIntensity": "降雨强度",
+  "showWhenRelevant": "重要时",
+  "menubarRelevantCurrentHint": "“重要时”只在数值突出时显示：体感与气温相差 3°、风速从 20 km/h 起、紫外线从 6 起。",
+  "menubarRelevantRainHint": "“重要时”：概率从 30 % 起、下雨时显示强度、两小时内的降雨开始时间。降雨开始时间和强度会取代概率。",
+  "menubarRelevantAirHint": "“重要时”：空气质量从“差”起、花粉为高水平。",
+  "kelvinUnits": "开尔文",
+  "kelvinUnitsSummary": "K · mm · km/h · km",
+  "hoverUnitSystem": "悬停时换用其他单位",
+  "hoverUnitSystemOff": "关闭",
+  "hoverUnitSystemHint": "指针停留在小组件上时，栏中切换到该单位制。开尔文只影响温度。"
 })
 
 addCatalogEntries("zh_TW", {
@@ -2556,7 +2736,16 @@ addCatalogEntries("zh_TW", {
   "barBehavior": "行為",
   "openWidgetOnHover": "滑過時開啟小工具",
   "openWidgetOnHoverHint": "指標停留於列中天氣上時開啟小工具，移開後關閉。按一下可保持開啟。",
-  "rainIntensity": "降雨強度"
+  "rainIntensity": "降雨強度",
+  "showWhenRelevant": "重要時",
+  "menubarRelevantCurrentHint": "「重要時」只在數值突出時顯示：體感與氣溫相差 3°、風速從 20 km/h 起、紫外線從 6 起。",
+  "menubarRelevantRainHint": "「重要時」：機率從 30 % 起、下雨時顯示強度、兩小時內的降雨開始時間。降雨開始時間與強度會取代機率。",
+  "menubarRelevantAirHint": "「重要時」：空氣品質從「差」起、花粉為高濃度。",
+  "kelvinUnits": "克耳文",
+  "kelvinUnitsSummary": "K · mm · km/h · km",
+  "hoverUnitSystem": "滑過時改用其他單位",
+  "hoverUnitSystemOff": "關閉",
+  "hoverUnitSystemHint": "指標停留於小工具上時，列中切換為此單位制。克耳文只影響溫度。"
 })
 
 addCatalogEntries("ja", {
@@ -2649,7 +2838,16 @@ addCatalogEntries("ja", {
   "barBehavior": "動作",
   "openWidgetOnHover": "ホバーでウィジェットを開く",
   "openWidgetOnHoverHint": "ポインターがバーの天気の上に留まるとウィジェットを開き、離れると閉じます。クリックすると開いたままになります。",
-  "rainIntensity": "雨の強さ"
+  "rainIntensity": "雨の強さ",
+  "showWhenRelevant": "目立つとき",
+  "menubarRelevantCurrentHint": "「目立つとき」は値が目立つ場合だけ表示します。体感が気温と3°違う、風速20 km/h以上、UV6以上。",
+  "menubarRelevantRainHint": "「目立つとき」: 降水確率30 %以上、雨の間は強さ、2時間以内の降り出し。降り出しと強さは確率の場所を使います。",
+  "menubarRelevantAirHint": "「目立つとき」: 大気質が「悪い」以上、花粉が多いとき。",
+  "kelvinUnits": "ケルビン",
+  "kelvinUnitsSummary": "K · mm · km/h · km",
+  "hoverUnitSystem": "ホバー時は別の単位",
+  "hoverUnitSystemOff": "オフ",
+  "hoverUnitSystemHint": "ポインターがウィジェットの上にある間、バーはこの単位系に切り替わります。ケルビンは気温だけに効きます。"
 })
 
 addCatalogEntries("ko", {
@@ -2742,7 +2940,16 @@ addCatalogEntries("ko", {
   "barBehavior": "동작",
   "openWidgetOnHover": "마우스를 올리면 위젯 열기",
   "openWidgetOnHoverHint": "포인터가 막대의 날씨 위에 머무르면 위젯을 열고, 벗어나면 닫습니다. 클릭하면 열린 상태로 유지됩니다.",
-  "rainIntensity": "강우 강도"
+  "rainIntensity": "강우 강도",
+  "showWhenRelevant": "눈에 띌 때",
+  "menubarRelevantCurrentHint": "‘눈에 띌 때’는 값이 두드러질 때만 표시합니다. 체감이 기온과 3° 차이, 바람 20 km/h 이상, 자외선 6 이상.",
+  "menubarRelevantRainHint": "‘눈에 띌 때’: 확률 30 % 이상, 비가 오는 동안 강도, 두 시간 이내 강우 시작. 강우 시작과 강도가 확률 자리를 차지합니다.",
+  "menubarRelevantAirHint": "‘눈에 띌 때’: 대기질 ‘나쁨’ 이상, 꽃가루 높음.",
+  "kelvinUnits": "켈빈",
+  "kelvinUnitsSummary": "K · mm · km/h · km",
+  "hoverUnitSystem": "마우스를 올리면 다른 단위",
+  "hoverUnitSystemOff": "끔",
+  "hoverUnitSystemHint": "포인터가 위젯 위에 있는 동안 막대가 이 단위계로 바뀝니다. 켈빈은 기온에만 적용됩니다."
 })
 
 addCatalogEntries("ar", {
@@ -2835,7 +3042,16 @@ addCatalogEntries("ar", {
   "barBehavior": "السلوك",
   "openWidgetOnHover": "فتح الأداة عند التمرير",
   "openWidgetOnHoverHint": "يفتح الأداة عندما يستقر المؤشر فوق الطقس في الشريط ويغلقها عند ابتعاده. النقر يبقيها مفتوحة.",
-  "rainIntensity": "شدة المطر"
+  "rainIntensity": "شدة المطر",
+  "showWhenRelevant": "عند الأهمية",
+  "menubarRelevantCurrentHint": "«عند الأهمية» يعرض العنصر فقط عندما يكون لافتًا: الإحساس يبعد 3° عن الحرارة، الرياح من 20 كم/س، الأشعة من 6.",
+  "menubarRelevantRainHint": "«عند الأهمية»: الاحتمال من 30 %، الشدة أثناء المطر، بدء المطر خلال ساعتين. يحل بدء المطر والشدة محل الاحتمال.",
+  "menubarRelevantAirHint": "«عند الأهمية»: جودة الهواء من «سيئة»، حبوب اللقاح بمستوى مرتفع.",
+  "kelvinUnits": "كلفن",
+  "kelvinUnitsSummary": "K · mm · km/h · km",
+  "hoverUnitSystem": "وحدات أخرى عند التمرير",
+  "hoverUnitSystemOff": "معطّل",
+  "hoverUnitSystemHint": "ما دام المؤشر فوق الأداة، يتحول الشريط إلى نظام الوحدات هذا. كلفن يغيّر درجات الحرارة فقط."
 })
 
 addCatalogEntries("he", {
@@ -2928,7 +3144,16 @@ addCatalogEntries("he", {
   "barBehavior": "התנהגות",
   "openWidgetOnHover": "פתיחת היישומון במעבר עכבר",
   "openWidgetOnHoverHint": "פותח את היישומון כשהסמן נח מעל מזג האוויר בסרגל וסוגר אותו כשהוא מתרחק. לחיצה משאירה אותו פתוח.",
-  "rainIntensity": "עוצמת הגשם"
+  "rainIntensity": "עוצמת הגשם",
+  "showWhenRelevant": "כשזה בולט",
+  "menubarRelevantCurrentHint": "„כשזה בולט” מציג פריט רק כשהוא בולט: תחושה במרחק 3° מהטמפרטורה, רוח מ‑20 קמ״ש, UV מ‑6.",
+  "menubarRelevantRainHint": "„כשזה בולט”: סיכוי מ‑30 %, עוצמה כל עוד יורד גשם, תחילת גשם בתוך שעתיים. תחילת הגשם והעוצמה תופסות את מקום הסיכוי.",
+  "menubarRelevantAirHint": "„כשזה בולט”: איכות אוויר מ„גרועה”, אבקנים ברמה גבוהה.",
+  "kelvinUnits": "קלווין",
+  "kelvinUnitsSummary": "K · mm · km/h · km",
+  "hoverUnitSystem": "יחידות אחרות במעבר עכבר",
+  "hoverUnitSystemOff": "כבוי",
+  "hoverUnitSystemHint": "כל עוד הסמן נח על היישומון, הסרגל עובר למערכת היחידות הזו. קלווין משנה רק טמפרטורות."
 })
 
 addCatalogEntries("fa", {
@@ -3021,7 +3246,16 @@ addCatalogEntries("fa", {
   "barBehavior": "رفتار",
   "openWidgetOnHover": "باز کردن ویجت با نگه‌داشتن نشانگر",
   "openWidgetOnHoverHint": "وقتی نشانگر روی آب‌وهوای نوار بماند ویجت را باز می‌کند و با دور شدن آن را می‌بندد. با کلیک باز می‌ماند.",
-  "rainIntensity": "شدت باران"
+  "rainIntensity": "شدت باران",
+  "showWhenRelevant": "هنگام اهمیت",
+  "menubarRelevantCurrentHint": "«هنگام اهمیت» یک مورد را تنها وقتی نشان می‌دهد که برجسته باشد: دمای احساسی ۳° دورتر از دما، باد از ۲۰ کیلومتر بر ساعت، UV از ۶.",
+  "menubarRelevantRainHint": "«هنگام اهمیت»: احتمال از ۳۰ ٪، شدت تا وقتی باران می‌بارد، آغاز باران تا دو ساعت آینده. آغاز باران و شدت جای احتمال را می‌گیرند.",
+  "menubarRelevantAirHint": "«هنگام اهمیت»: کیفیت هوا از «بد»، گرده در سطح بالا.",
+  "kelvinUnits": "کلوین",
+  "kelvinUnitsSummary": "K · mm · km/h · km",
+  "hoverUnitSystem": "واحدهای دیگر هنگام نگه‌داشتن نشانگر",
+  "hoverUnitSystemOff": "خاموش",
+  "hoverUnitSystemHint": "تا وقتی نشانگر روی ویجت بماند، نوار به این نظام واحدها تغییر می‌کند. کلوین فقط دما را تغییر می‌دهد."
 })
 
 addCatalogEntries("hi", {
@@ -3114,7 +3348,16 @@ addCatalogEntries("hi", {
   "barBehavior": "व्यवहार",
   "openWidgetOnHover": "होवर करने पर विजेट खोलें",
   "openWidgetOnHoverHint": "पॉइंटर बार में मौसम पर रुकने पर विजेट खोलता है और हटने पर बंद करता है। क्लिक करने से यह खुला रहता है।",
-  "rainIntensity": "बारिश की तीव्रता"
+  "rainIntensity": "बारिश की तीव्रता",
+  "showWhenRelevant": "जब अहम हो",
+  "menubarRelevantCurrentHint": "“जब अहम हो” किसी प्रविष्टि को तभी दिखाता है जब वह अलग दिखे: महसूस तापमान 3° का अंतर, हवा 20 किमी/घंटा से, UV 6 से।",
+  "menubarRelevantRainHint": "“जब अहम हो”: संभावना 30 % से, बारिश के दौरान तीव्रता, दो घंटे के भीतर बारिश की शुरुआत। बारिश की शुरुआत और तीव्रता संभावना की जगह लेती हैं।",
+  "menubarRelevantAirHint": "“जब अहम हो”: वायु गुणवत्ता “खराब” से, पराग उच्च स्तर पर।",
+  "kelvinUnits": "केल्विन",
+  "kelvinUnitsSummary": "K · mm · km/h · km",
+  "hoverUnitSystem": "होवर करने पर दूसरी इकाइयाँ",
+  "hoverUnitSystemOff": "बंद",
+  "hoverUnitSystemHint": "जब तक पॉइंटर विजेट पर रहता है, बार इस इकाई प्रणाली में बदल जाता है। केल्विन केवल तापमान बदलता है।"
 })
 
 addCatalogEntries("id", {
@@ -3207,7 +3450,16 @@ addCatalogEntries("id", {
   "barBehavior": "Perilaku",
   "openWidgetOnHover": "Buka widget saat diarahkan",
   "openWidgetOnHoverHint": "Membuka widget saat penunjuk berhenti di atas cuaca pada bilah dan menutupnya saat penunjuk menjauh. Klik membuatnya tetap terbuka.",
-  "rainIntensity": "Intensitas hujan"
+  "rainIntensity": "Intensitas hujan",
+  "showWhenRelevant": "Saat menonjol",
+  "menubarRelevantCurrentHint": "“Saat menonjol” hanya menampilkan entri bila nilainya menonjol: terasa 3° dari suhu, angin dari 20 km/jam, UV dari 6.",
+  "menubarRelevantRainHint": "“Saat menonjol”: peluang dari 30 %, intensitas selama hujan, awal hujan dalam dua jam. Awal hujan dan intensitas menggantikan peluang.",
+  "menubarRelevantAirHint": "“Saat menonjol”: kualitas udara dari “buruk”, serbuk sari pada tingkat tinggi.",
+  "kelvinUnits": "Kelvin",
+  "kelvinUnitsSummary": "K · mm · km/h · km",
+  "hoverUnitSystem": "Satuan lain saat diarahkan",
+  "hoverUnitSystemOff": "Mati",
+  "hoverUnitSystemHint": "Selama penunjuk berada di atas widget, bilah beralih ke sistem satuan ini. Kelvin hanya mengubah suhu."
 })
 
 addCatalogEntries("vi", {
@@ -3300,7 +3552,16 @@ addCatalogEntries("vi", {
   "barBehavior": "Hành vi",
   "openWidgetOnHover": "Mở tiện ích khi rê chuột",
   "openWidgetOnHoverHint": "Mở tiện ích khi con trỏ dừng trên thời tiết ở thanh và đóng lại khi con trỏ rời đi. Nhấp chuột để giữ mở.",
-  "rainIntensity": "Cường độ mưa"
+  "rainIntensity": "Cường độ mưa",
+  "showWhenRelevant": "Khi đáng chú ý",
+  "menubarRelevantCurrentHint": "“Khi đáng chú ý” chỉ hiện một mục khi nó nổi bật: cảm giác lệch 3° so với nhiệt độ, gió từ 20 km/h, UV từ 6.",
+  "menubarRelevantRainHint": "“Khi đáng chú ý”: xác suất từ 30 %, cường độ khi đang mưa, thời điểm mưa trong hai giờ tới. Thời điểm mưa và cường độ thay chỗ của xác suất.",
+  "menubarRelevantAirHint": "“Khi đáng chú ý”: chất lượng không khí từ “kém”, phấn hoa ở mức cao.",
+  "kelvinUnits": "Kelvin",
+  "kelvinUnitsSummary": "K · mm · km/h · km",
+  "hoverUnitSystem": "Đơn vị khác khi rê chuột",
+  "hoverUnitSystemOff": "Tắt",
+  "hoverUnitSystemHint": "Khi con trỏ còn trên tiện ích, thanh chuyển sang hệ đơn vị này. Kelvin chỉ đổi nhiệt độ."
 })
 
 addCatalogEntries("th", {
@@ -3393,7 +3654,16 @@ addCatalogEntries("th", {
   "barBehavior": "การทำงาน",
   "openWidgetOnHover": "เปิดวิดเจ็ตเมื่อชี้",
   "openWidgetOnHoverHint": "เปิดวิดเจ็ตเมื่อตัวชี้หยุดบนสภาพอากาศในแถบ และปิดเมื่อตัวชี้ออกไป คลิกเพื่อให้เปิดค้างไว้",
-  "rainIntensity": "ความแรงของฝน"
+  "rainIntensity": "ความแรงของฝน",
+  "showWhenRelevant": "เมื่อสำคัญ",
+  "menubarRelevantCurrentHint": "“เมื่อสำคัญ” จะแสดงรายการเฉพาะเมื่อค่าโดดเด่น เช่น อุณหภูมิที่รู้สึกต่างจากจริง 3° ลมตั้งแต่ 20 กม./ชม. ยูวีตั้งแต่ 6",
+  "menubarRelevantRainHint": "“เมื่อสำคัญ”: โอกาสตั้งแต่ 30 % ความแรงขณะฝนตก และเวลาที่ฝนจะเริ่มภายในสองชั่วโมง เวลาเริ่มฝนและความแรงจะแทนที่โอกาส",
+  "menubarRelevantAirHint": "“เมื่อสำคัญ”: คุณภาพอากาศตั้งแต่ “แย่” และละอองเกสรระดับสูง",
+  "kelvinUnits": "เคลวิน",
+  "kelvinUnitsSummary": "K · mm · km/h · km",
+  "hoverUnitSystem": "ใช้หน่วยอื่นเมื่อชี้",
+  "hoverUnitSystemOff": "ปิด",
+  "hoverUnitSystemHint": "ขณะที่ตัวชี้อยู่บนวิดเจ็ต แถบจะเปลี่ยนไปใช้ระบบหน่วยนี้ เคลวินมีผลกับอุณหภูมิเท่านั้น"
 })
 
 // Restore-defaults button on the display settings page.

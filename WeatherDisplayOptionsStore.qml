@@ -74,24 +74,57 @@ Item {
     var defaults = panel.defaultOptionsFor(surface)
     var source = raw && typeof raw === "object" ? raw : ({})
     var result = ({})
-    // The menu bar's precipitation switch used to cover both probability
-    // and intensity; the intensity switch starts out where it stood.
-    if (surface === "menubar") {
-      if (typeof source.currentRainIntensity !== "boolean" && typeof source.currentPrecipitation === "boolean")
-        source.currentRainIntensity = source.currentPrecipitation
-      if (typeof source.currentRainIntensityOnHover !== "boolean"
-          && typeof source.currentPrecipitationOnHover === "boolean")
-        source.currentRainIntensityOnHover = source.currentPrecipitationOnHover
-    }
+    if (surface === "menubar") source = migratedMenubarOptions(source)
     for (var key in defaults) {
       if (key === "defaultForecastTab") {
         var tab = parseInt(source[key], 10)
         result[key] = isNaN(tab) ? defaults[key] : Math.max(0, Math.min(2, tab))
+      } else if (key === "hoverUnitSystem") {
+        result[key] = normalizedHoverUnitSystem(source[key])
       } else {
         result[key] = typeof source[key] === "boolean" ? source[key] : defaults[key]
       }
     }
     return result
+  }
+
+  // Older menu bar files, brought to the three-way switches without changing
+  // what the bar shows.
+  function migratedMenubarOptions(raw) {
+    var source = ({})
+    for (var key in raw) source[key] = raw[key]
+    // Up to 2.1: one precipitation switch covered probability and intensity.
+    if (typeof source.currentRainIntensity !== "boolean" && typeof source.currentPrecipitation === "boolean")
+      source.currentRainIntensity = source.currentPrecipitation
+    if (typeof source.currentRainIntensityOnHover !== "boolean"
+        && typeof source.currentPrecipitationOnHover === "boolean")
+      source.currentRainIntensityOnHover = source.currentPrecipitationOnHover
+    // Up to 2.2: one alert switch covered poor air and high pollen.
+    if (typeof source.currentAirQualityAlert === "boolean" && typeof source.currentPollen !== "boolean") {
+      source.currentPollen = false
+      source.currentPollenWhenRelevant = source.currentAirQualityAlert
+      if (source.currentAirQualityAlert && source.currentAirQuality !== true) {
+        source.currentAirQuality = false
+        source.currentAirQualityWhenRelevant = true
+      }
+      if (typeof source.currentAirQualityAlertOnHover === "boolean")
+        source.currentPollenOnHover = source.currentAirQualityAlertOnHover
+    }
+    // Up to 2.2: rain start and intensity only ever showed when there was
+    // something to show, which is what "when relevant" means now.
+    var eventKeys = ["currentRainStart", "currentRainIntensity"]
+    for (var i = 0; i < eventKeys.length; i++) {
+      var key = eventKeys[i]
+      if (typeof source[key + "WhenRelevant"] === "boolean") continue
+      source[key + "WhenRelevant"] = source[key] === true
+      source[key] = false
+    }
+    return source
+  }
+
+  function normalizedHoverUnitSystem(value) {
+    var unit = String(value || "").toLowerCase()
+    return unit === "metric" || unit === "imperial" || unit === "kelvin" ? unit : ""
   }
 
   function normalizedLanguage(value) {
@@ -101,7 +134,7 @@ Item {
 
   function normalizedUnitSystem(value) {
     var unit = String(value || "").toLowerCase()
-    return unit === "imperial" || unit === "metric" ? unit : "auto"
+    return unit === "imperial" || unit === "metric" || unit === "kelvin" ? unit : "auto"
   }
 
   function loadDisplayOptionsFor(surface, raw) {
@@ -162,12 +195,14 @@ Item {
     var next = sanitizedDisplayOptions(source, surface)
     next[key] = (key === "defaultForecastTab"
         ? Math.max(0, Math.min(2, Number(value) || 0))
-        : !!value)
-    // A menu bar entry shows either always or on hover: switching one on
-    // switches its counterpart off.
+        : (key === "hoverUnitSystem" ? normalizedHoverUnitSystem(value) : !!value))
+    // A menu bar entry shows always, when relevant, or on hover: switching
+    // one on switches the other two off.
     if (surface === "menubar" && next[key] === true) {
-      var counterpart = /OnHover$/.test(key) ? key.replace(/OnHover$/, "") : key + "OnHover"
-      if (counterpart in next) next[counterpart] = false
+      var base = key.replace(/(WhenRelevant|OnHover)$/, "")
+      var siblings = [base, base + "WhenRelevant", base + "OnHover"]
+      for (var i = 0; i < siblings.length; i++)
+        if (siblings[i] !== key && siblings[i] in next) next[siblings[i]] = false
     }
     if (surface === "app") {
       panel.appDisplayOptions = next
