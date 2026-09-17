@@ -14,6 +14,46 @@ Panel {
   manageIpc: false
   LayoutMirroring.enabled: I18n.isRightToLeft(interfaceLanguage)
   LayoutMirroring.childrenInherit: true
+  // Work for "after this event" goes through defer() rather than Qt.callLater.
+  // The shell rebuilds its panels when a monitor goes away (a lid closed and
+  // opened again within a second), and calls Qt.callLater had queued then ran
+  // against the destroyed panel, where `root` is already null. The Timer dies
+  // with the panel, so its queue does too. Same idea as WeatherRemoteImage.
+  property bool panelAlive: true
+  property var deferredCalls: []
+
+  function defer(fn) {
+    if (!panelAlive || typeof fn !== "function") return
+    // Like Qt.callLater, the same function queued twice runs once.
+    if (deferredCalls.indexOf(fn) >= 0) return
+    deferredCalls = deferredCalls.concat([fn])
+    if (!deferredCallTimer.running) deferredCallTimer.start()
+  }
+
+  function runDeferredCalls() {
+    var calls = deferredCalls
+    deferredCalls = []
+    for (var i = 0; i < calls.length && panelAlive; ++i) {
+      try {
+        calls[i]()
+      } catch (e) {
+        console.warn("more-weather: deferred call failed:", e, e && e.stack)
+      }
+    }
+  }
+
+  Timer {
+    id: deferredCallTimer
+    interval: 0
+    onTriggered: root.runDeferredCalls()
+  }
+
+  Component.onDestruction: {
+    panelAlive = false
+    deferredCalls = []
+    deferredCallTimer.stop()
+  }
+
   Component.onCompleted: {
     // Adopt whatever radar timeline the startup cycle delivers.
     mapRefreshWindowUntilMs = Date.now() + mapRefreshWindowMs * 3
@@ -29,7 +69,7 @@ Panel {
   property bool standaloneMode: false
   onStandaloneModeChanged: {
     settingsTargetSurface = standaloneMode ? "app" : "widget"
-    Qt.callLater(function() {
+    root.defer(function() {
       displayOptionsStore.appDisplayOptionsFile.reload()
       displayOptionsStore.widgetDisplayOptionsFile.reload()
       displayOptionsStore.menubarDisplayOptionsFile.reload()
@@ -108,7 +148,7 @@ Panel {
     // shared flag. Deferring means the panel taking over always wins, while
     // a handoff to a panel that does not manage the flag still leaves it
     // cleared rather than stuck on.
-    Qt.callLater(function() {
+    root.defer(function() {
       if (root.opened) setCenterHoverRevealSuppressed(true)
     })
   }
@@ -166,7 +206,7 @@ Panel {
         && placeReport === null
         && dailyForecastReport === null
         && radarReport === null)
-      Qt.callLater(function() { root.refreshTick(true) })
+      root.defer(function() { root.refreshTick(true) })
   }
 
   // Place for the forecast (name, county, region, country, coordinates) in
@@ -272,14 +312,14 @@ Panel {
     placeRetries = 0
     placeProviderIndex = 0
     dailyForecastRetries = 0
-    Qt.callLater(root.activateWeatherCache)
+    root.defer(root.activateWeatherCache)
     if (placeLookup) placeLookup.placeProc.running = false
     dailyForecastProc.running = false
     // Radar responses for the previous place must not land here.
     radarProc.running = false
     radarMotionProc.running = false
     sharedLiveAppliedPublishedAt = 0
-    Qt.callLater(function() { root.refreshTick(true) })
+    root.defer(function() { root.refreshTick(true) })
   }
 
   property FileView locationFile: FileView {
@@ -330,11 +370,11 @@ Panel {
     onFileChanged: reload()
     onLoaded: {
       root.radarPlaceCache = Model.parseRadarPlaceCache(text())
-      Qt.callLater(root.radarPlaces.ensureRadarPlaces)
+      root.defer(root.radarPlaces.ensureRadarPlaces)
     }
     onLoadFailed: {
       root.radarPlaceCache = Model.parseRadarPlaceCache("")
-      Qt.callLater(root.radarPlaces.ensureRadarPlaces)
+      root.defer(root.radarPlaces.ensureRadarPlaces)
     }
   }
 
@@ -490,7 +530,7 @@ Panel {
       && cachedWeatherSnapshot.alertProviderId || alertActiveProviderId)
   readonly property var areaInfo: placeReport && placeReport.nearest_area && placeReport.nearest_area[0]
     ? placeReport.nearest_area[0] : null
-  onAreaInfoChanged: Qt.callLater(function() {
+  onAreaInfoChanged: root.defer(function() {
     root.activateWeatherCache()
     root.scheduleWeatherCachePersist()
   })
@@ -598,7 +638,7 @@ Panel {
 
   function noteShownRadarFramePrefetched(index) {
     var frames = radarFrames
-    Qt.callLater(function() {
+    root.defer(function() {
       if (frames !== root.radarFrames || root.shownRadarPrefetched[index]) return
       var done = root.shownRadarPrefetched.slice(0)
       done[index] = true
@@ -663,7 +703,7 @@ Panel {
     }
     radarFramesAdoptedMs = Date.now()
     // Released a moment later, once the shown set holds the same pictures.
-    Qt.callLater(function() { root.pendingRadarFrames = [] })
+    root.defer(function() { root.pendingRadarFrames = [] })
   }
 
   // WeatherMapPrefetch reports the pending set's pictures here. Deferred:
@@ -672,7 +712,7 @@ Panel {
   // Quickshell crashes.
   function pendingRadarFrameStatus(index, status) {
     var frames = pendingRadarFrames
-    Qt.callLater(function() { root.applyPendingRadarFrameStatus(frames, index, status) })
+    root.defer(function() { root.applyPendingRadarFrameStatus(frames, index, status) })
   }
 
   function applyPendingRadarFrameStatus(frames, index, status) {
@@ -855,7 +895,7 @@ Panel {
     // Shared reports already carry the alerts for this country; the regional
     // radar timeline is not shared and still has to be loaded here.
     var fromShared = root.applyingSharedLive
-    Qt.callLater(function() {
+    root.defer(function() {
       root.refreshRegionalRadar()
       if (fromShared) return
       root.refreshAlerts()
@@ -911,20 +951,20 @@ Panel {
     radarPlaceCache.places || [], mapCenterLatitude, mapCenterLongitude,
     mapRadiusKm, mapZoomLevel, reportLocation)
   onMapCenterLatitudeChanged: {
-    if (airQuality) Qt.callLater(airQuality.refresh)
+    if (airQuality) root.defer(airQuality.refresh)
     radarPlaces.radarPlacesDebounce.restart()
     windGridRefreshPending = true
     windGridLoader.windGridDebounce.restart()
     openMapRefreshWindow(true)
-    Qt.callLater(function() { root.refreshRegionalRadar() })
+    root.defer(function() { root.refreshRegionalRadar() })
   }
   onMapCenterLongitudeChanged: {
-    if (airQuality) Qt.callLater(airQuality.refresh)
+    if (airQuality) root.defer(airQuality.refresh)
     radarPlaces.radarPlacesDebounce.restart()
     windGridRefreshPending = true
     windGridLoader.windGridDebounce.restart()
     openMapRefreshWindow(true)
-    Qt.callLater(function() { root.refreshRegionalRadar() })
+    root.defer(function() { root.refreshRegionalRadar() })
   }
   onInterfaceLanguageChanged: radarPlaces.radarPlacesDebounce.restart()
   property int precipitationTab: 0
@@ -1829,7 +1869,7 @@ Panel {
     searchFocusSection = "suggestions"
     savedLocationIndex = 0
     locationSearchPristine = !startsWithTypedText
-    Qt.callLater(function() {
+    root.defer(function() {
       locationField.text = startsWithTypedText
         ? typedText : (root.reportLocation || root.configuredLocation)
       if (startsWithTypedText) locationField.cursorPosition = locationField.text.length
@@ -1847,7 +1887,7 @@ Panel {
     searchFocusSection = "suggestions"
     savedLocationIndex = 0
     geocodeDebounce.stop()
-    Qt.callLater(function() { if (keyCatcher) keyCatcher.forceActiveFocus() })
+    root.defer(function() { if (keyCatcher) keyCatcher.forceActiveFocus() })
   }
 
   function savedLocationIndexFor(entry) {
@@ -1887,7 +1927,7 @@ Panel {
   }
 
   function focusCityNameField() {
-    Qt.callLater(function() {
+    root.defer(function() {
       if (!editingLocation) return
       locationField.forceActiveFocus()
       locationField.cursorPosition = locationField.text.length
@@ -2018,7 +2058,7 @@ Panel {
       if (editingLocation) cancelEditingLocation()
       else if (settingsOpen) {
         settingsOpen = false
-        Qt.callLater(function() { keyCatcher.forceActiveFocus() })
+        root.defer(function() { keyCatcher.forceActiveFocus() })
       } else if (showSavedLocations) showSavedLocations = false
       else close()
       event.accepted = true
@@ -2520,7 +2560,7 @@ Panel {
     if (status === Image.Error) {
       // Deferred for the same reason as pendingRadarFrameStatus: the
       // fallback replaces the frames of the Repeater that reported.
-      Qt.callLater(function() { root.noteRadarFrameError(frame) })
+      root.defer(function() { root.noteRadarFrameError(frame) })
       return
     }
     updateRadarFrameReady(index, status === Image.Ready)
@@ -2843,7 +2883,7 @@ Panel {
       root.suggestionIndex = 0
       if (root.savedLocations.length > 0)
         root.savedLocationIndex = Math.min(root.savedLocations.length - 1, root.savedLocationIndex)
-      if (root.geocodePendingQuery !== root.geocodeActiveQuery) Qt.callLater(root.startGeocode)
+      if (root.geocodePendingQuery !== root.geocodeActiveQuery) root.defer(root.startGeocode)
     }
   }
 
@@ -2867,7 +2907,7 @@ Panel {
         root.dailyForecastRetries = 0
         placeLookup.placeProc.running = false
         dailyForecastProc.running = false
-        Qt.callLater(root.refresh)
+        root.defer(root.refresh)
       }
     }
   }
@@ -3009,7 +3049,7 @@ Panel {
 
     onVisibleChanged: {
       if (!visible && root.standaloneMode && root.opened) root.close()
-      else if (visible) Qt.callLater(function() { keyCatcher.forceActiveFocus() })
+      else if (visible) root.defer(function() { keyCatcher.forceActiveFocus() })
     }
 
     Item {

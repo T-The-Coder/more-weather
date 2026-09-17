@@ -61,8 +61,16 @@ BarWidget {
     visible: false
     onLoaded: {
       root.injectPanel()
-      Qt.callLater(root.injectPanel)
+      injectAgainTimer.start()
     }
+  }
+
+  // Once more after this event, from a Timer rather than Qt.callLater so a
+  // widget removed with its monitor never runs the call without its root.
+  Timer {
+    id: injectAgainTimer
+    interval: 0
+    onTriggered: root.injectPanel()
   }
 
   WidgetButton {
