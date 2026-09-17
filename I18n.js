@@ -243,7 +243,14 @@ var catalog = {
     barPositionTop: "Top",
     barPositionBottom: "Bottom",
     barPositionHint: "Moves the widget within Omarchy's bar.",
-    barPositionMissing: "The widget is not on the bar."
+    barPositionMissing: "The widget is not on the bar.",
+    showAlways: "Always",
+    showOnHover: "On hover",
+    menubarHoverHint: "Entries set to “On hover” appear while the pointer rests on the weather in the bar.",
+    barBehavior: "Behavior",
+    openWidgetOnHover: "Open widget on hover",
+    openWidgetOnHoverHint: "Opens the widget when the pointer rests on the weather in the bar, and closes it once the pointer moves away. A click keeps it open.",
+    rainIntensity: "Rain intensity"
   },
   de: {
     weather: "Wetter",
@@ -482,7 +489,14 @@ var catalog = {
     barPositionTop: "Oben",
     barPositionBottom: "Unten",
     barPositionHint: "Verschiebt das Widget innerhalb der Omarchy-Leiste.",
-    barPositionMissing: "Das Widget ist nicht in der Leiste."
+    barPositionMissing: "Das Widget ist nicht in der Leiste.",
+    showAlways: "Immer",
+    showOnHover: "Beim Überfahren",
+    menubarHoverHint: "Einträge mit „Beim Überfahren“ erscheinen, solange der Mauszeiger auf dem Wetter in der Leiste ruht.",
+    barBehavior: "Verhalten",
+    openWidgetOnHover: "Widget beim Überfahren öffnen",
+    openWidgetOnHoverHint: "Öffnet das Widget, wenn der Mauszeiger auf dem Wetter in der Leiste ruht, und schließt es, sobald er sich entfernt. Ein Klick hält es offen.",
+    rainIntensity: "Regenintensität"
   }
 }
 
@@ -861,7 +875,14 @@ addCatalogEntries("es", {
   "barPositionTop": "Arriba",
   "barPositionBottom": "Abajo",
   "barPositionHint": "Mueve el widget dentro de la barra de Omarchy.",
-  "barPositionMissing": "El widget no está en la barra."
+  "barPositionMissing": "El widget no está en la barra.",
+  "showAlways": "Siempre",
+  "showOnHover": "Al pasar el ratón",
+  "menubarHoverHint": "Las entradas con «Al pasar el ratón» aparecen mientras el puntero está sobre el tiempo en la barra.",
+  "barBehavior": "Comportamiento",
+  "openWidgetOnHover": "Abrir el widget al pasar el ratón",
+  "openWidgetOnHoverHint": "Abre el widget cuando el puntero se detiene sobre el tiempo en la barra y lo cierra al alejarse. Un clic lo mantiene abierto.",
+  "rainIntensity": "Intensidad de la lluvia"
 })
 
 addCatalogEntries("fr", {
@@ -947,7 +968,14 @@ addCatalogEntries("fr", {
   "barPositionTop": "Haut",
   "barPositionBottom": "Bas",
   "barPositionHint": "Déplace le widget dans la barre d’Omarchy.",
-  "barPositionMissing": "Le widget n’est pas dans la barre."
+  "barPositionMissing": "Le widget n’est pas dans la barre.",
+  "showAlways": "Toujours",
+  "showOnHover": "Au survol",
+  "menubarHoverHint": "Les éléments « Au survol » apparaissent tant que le pointeur survole la météo dans la barre.",
+  "barBehavior": "Comportement",
+  "openWidgetOnHover": "Ouvrir le widget au survol",
+  "openWidgetOnHoverHint": "Ouvre le widget quand le pointeur survole la météo dans la barre et le ferme dès qu’il s’éloigne. Un clic le garde ouvert.",
+  "rainIntensity": "Intensité de la pluie"
 })
 
 addCatalogEntries("pt", {
@@ -1033,7 +1061,14 @@ addCatalogEntries("pt", {
   "barPositionTop": "Topo",
   "barPositionBottom": "Base",
   "barPositionHint": "Move o widget dentro da barra do Omarchy.",
-  "barPositionMissing": "O widget não está na barra."
+  "barPositionMissing": "O widget não está na barra.",
+  "showAlways": "Sempre",
+  "showOnHover": "Ao passar o mouse",
+  "menubarHoverHint": "Itens com “Ao passar o mouse” aparecem enquanto o ponteiro está sobre o clima na barra.",
+  "barBehavior": "Comportamento",
+  "openWidgetOnHover": "Abrir o widget ao passar o mouse",
+  "openWidgetOnHoverHint": "Abre o widget quando o ponteiro para sobre o clima na barra e o fecha quando ele se afasta. Um clique o mantém aberto.",
+  "rainIntensity": "Intensidade da chuva"
 })
 
 addCatalogEntries("ru", {
@@ -1119,7 +1154,14 @@ addCatalogEntries("ru", {
   "barPositionTop": "Сверху",
   "barPositionBottom": "Снизу",
   "barPositionHint": "Перемещает виджет на панели Omarchy.",
-  "barPositionMissing": "Виджета нет на панели."
+  "barPositionMissing": "Виджета нет на панели.",
+  "showAlways": "Всегда",
+  "showOnHover": "При наведении",
+  "menubarHoverHint": "Элементы «При наведении» появляются, пока указатель находится над погодой на панели.",
+  "barBehavior": "Поведение",
+  "openWidgetOnHover": "Открывать виджет при наведении",
+  "openWidgetOnHoverHint": "Открывает виджет, когда указатель задерживается над погодой на панели, и закрывает, когда он уходит. Щелчок оставляет виджет открытым.",
+  "rainIntensity": "Интенсивность дождя"
 })
 
 addCatalogEntries("uk", {
@@ -1205,7 +1247,14 @@ addCatalogEntries("uk", {
   "barPositionTop": "Угорі",
   "barPositionBottom": "Унизу",
   "barPositionHint": "Переміщує віджет на панелі Omarchy.",
-  "barPositionMissing": "Віджета немає на панелі."
+  "barPositionMissing": "Віджета немає на панелі.",
+  "showAlways": "Завжди",
+  "showOnHover": "При наведенні",
+  "menubarHoverHint": "Елементи «При наведенні» з’являються, поки вказівник над погодою на панелі.",
+  "barBehavior": "Поведінка",
+  "openWidgetOnHover": "Відкривати віджет при наведенні",
+  "openWidgetOnHoverHint": "Відкриває віджет, коли вказівник затримується над погодою на панелі, і закриває, коли він відходить. Клацання залишає віджет відкритим.",
+  "rainIntensity": "Інтенсивність дощу"
 })
 
 addCatalogEntries("pl", {
@@ -1291,7 +1340,14 @@ addCatalogEntries("pl", {
   "barPositionTop": "U góry",
   "barPositionBottom": "U dołu",
   "barPositionHint": "Przenosi widżet w obrębie paska Omarchy.",
-  "barPositionMissing": "Widżetu nie ma na pasku."
+  "barPositionMissing": "Widżetu nie ma na pasku.",
+  "showAlways": "Zawsze",
+  "showOnHover": "Po najechaniu",
+  "menubarHoverHint": "Elementy „Po najechaniu” pojawiają się, gdy wskaźnik znajduje się nad pogodą na pasku.",
+  "barBehavior": "Zachowanie",
+  "openWidgetOnHover": "Otwieraj widżet po najechaniu",
+  "openWidgetOnHoverHint": "Otwiera widżet, gdy wskaźnik zatrzyma się nad pogodą na pasku, i zamyka go, gdy się oddali. Kliknięcie pozostawia go otwartym.",
+  "rainIntensity": "Natężenie deszczu"
 })
 
 addCatalogEntries("it", {
@@ -1377,7 +1433,14 @@ addCatalogEntries("it", {
   "barPositionTop": "In alto",
   "barPositionBottom": "In basso",
   "barPositionHint": "Sposta il widget nella barra di Omarchy.",
-  "barPositionMissing": "Il widget non è nella barra."
+  "barPositionMissing": "Il widget non è nella barra.",
+  "showAlways": "Sempre",
+  "showOnHover": "Al passaggio",
+  "menubarHoverHint": "Le voci «Al passaggio» compaiono mentre il puntatore è sul meteo nella barra.",
+  "barBehavior": "Comportamento",
+  "openWidgetOnHover": "Apri il widget al passaggio del mouse",
+  "openWidgetOnHoverHint": "Apre il widget quando il puntatore si ferma sul meteo nella barra e lo chiude quando si allontana. Un clic lo tiene aperto.",
+  "rainIntensity": "Intensità della pioggia"
 })
 
 addCatalogEntries("nl", {
@@ -1463,7 +1526,14 @@ addCatalogEntries("nl", {
   "barPositionTop": "Boven",
   "barPositionBottom": "Onder",
   "barPositionHint": "Verplaatst de widget binnen de balk van Omarchy.",
-  "barPositionMissing": "De widget staat niet in de balk."
+  "barPositionMissing": "De widget staat niet in de balk.",
+  "showAlways": "Altijd",
+  "showOnHover": "Bij aanwijzen",
+  "menubarHoverHint": "Items met ‘Bij aanwijzen’ verschijnen zolang de aanwijzer op het weer in de balk staat.",
+  "barBehavior": "Gedrag",
+  "openWidgetOnHover": "Widget openen bij aanwijzen",
+  "openWidgetOnHoverHint": "Opent de widget wanneer de aanwijzer op het weer in de balk rust en sluit hem zodra de aanwijzer weggaat. Een klik houdt hem open.",
+  "rainIntensity": "Regenintensiteit"
 })
 
 addCatalogEntries("tr", {
@@ -1549,7 +1619,14 @@ addCatalogEntries("tr", {
   "barPositionTop": "Üst",
   "barPositionBottom": "Alt",
   "barPositionHint": "Bileşeni Omarchy çubuğunda taşır.",
-  "barPositionMissing": "Bileşen çubukta değil."
+  "barPositionMissing": "Bileşen çubukta değil.",
+  "showAlways": "Her zaman",
+  "showOnHover": "Üzerine gelince",
+  "menubarHoverHint": "“Üzerine gelince” öğeleri, işaretçi çubuktaki hava durumunun üzerindeyken görünür.",
+  "barBehavior": "Davranış",
+  "openWidgetOnHover": "Üzerine gelince bileşeni aç",
+  "openWidgetOnHoverHint": "İşaretçi çubuktaki hava durumunun üzerinde durduğunda bileşeni açar, işaretçi ayrıldığında kapatır. Tıklamak açık tutar.",
+  "rainIntensity": "Yağış şiddeti"
 })
 
 addCatalogEntries("cs", {
@@ -1635,7 +1712,14 @@ addCatalogEntries("cs", {
   "barPositionTop": "Nahoře",
   "barPositionBottom": "Dole",
   "barPositionHint": "Přesune widget v rámci lišty Omarchy.",
-  "barPositionMissing": "Widget není na liště."
+  "barPositionMissing": "Widget není na liště.",
+  "showAlways": "Vždy",
+  "showOnHover": "Při najetí",
+  "menubarHoverHint": "Položky „Při najetí“ se zobrazí, dokud je ukazatel nad počasím v liště.",
+  "barBehavior": "Chování",
+  "openWidgetOnHover": "Otevřít widget při najetí",
+  "openWidgetOnHoverHint": "Otevře widget, když se ukazatel zastaví nad počasím v liště, a zavře ho, jakmile se vzdálí. Kliknutím zůstane otevřený.",
+  "rainIntensity": "Intenzita deště"
 })
 
 addCatalogEntries("sv", {
@@ -1721,7 +1805,14 @@ addCatalogEntries("sv", {
   "barPositionTop": "Överst",
   "barPositionBottom": "Nederst",
   "barPositionHint": "Flyttar widgeten i Omarchys fält.",
-  "barPositionMissing": "Widgeten finns inte i fältet."
+  "barPositionMissing": "Widgeten finns inte i fältet.",
+  "showAlways": "Alltid",
+  "showOnHover": "Vid hovring",
+  "menubarHoverHint": "Poster med ”Vid hovring” visas medan pekaren vilar på vädret i fältet.",
+  "barBehavior": "Beteende",
+  "openWidgetOnHover": "Öppna widgeten vid hovring",
+  "openWidgetOnHoverHint": "Öppnar widgeten när pekaren vilar på vädret i fältet och stänger den när pekaren flyttas bort. Ett klick håller den öppen.",
+  "rainIntensity": "Regnintensitet"
 })
 
 addCatalogEntries("fi", {
@@ -1807,7 +1898,14 @@ addCatalogEntries("fi", {
   "barPositionTop": "Ylhäällä",
   "barPositionBottom": "Alhaalla",
   "barPositionHint": "Siirtää pienoissovellusta Omarchyn palkissa.",
-  "barPositionMissing": "Pienoissovellus ei ole palkissa."
+  "barPositionMissing": "Pienoissovellus ei ole palkissa.",
+  "showAlways": "Aina",
+  "showOnHover": "Osoitettaessa",
+  "menubarHoverHint": "”Osoitettaessa”-kohteet näkyvät, kun osoitin on palkin sään päällä.",
+  "barBehavior": "Toiminta",
+  "openWidgetOnHover": "Avaa pienoissovellus osoitettaessa",
+  "openWidgetOnHoverHint": "Avaa pienoissovelluksen, kun osoitin pysähtyy palkin sään päälle, ja sulkee sen, kun osoitin siirtyy pois. Napsautus pitää sen auki.",
+  "rainIntensity": "Sateen voimakkuus"
 })
 
 addCatalogEntries("nb", {
@@ -1893,7 +1991,14 @@ addCatalogEntries("nb", {
   "barPositionTop": "Øverst",
   "barPositionBottom": "Nederst",
   "barPositionHint": "Flytter miniprogrammet i Omarchy-linjen.",
-  "barPositionMissing": "Miniprogrammet er ikke i linjen."
+  "barPositionMissing": "Miniprogrammet er ikke i linjen.",
+  "showAlways": "Alltid",
+  "showOnHover": "Ved peking",
+  "menubarHoverHint": "Oppføringer med «Ved peking» vises mens pekeren hviler på været i linjen.",
+  "barBehavior": "Oppførsel",
+  "openWidgetOnHover": "Åpne miniprogrammet ved peking",
+  "openWidgetOnHoverHint": "Åpner miniprogrammet når pekeren hviler på været i linjen, og lukker det når pekeren flyttes bort. Et klikk holder det åpent.",
+  "rainIntensity": "Regnintensitet"
 })
 
 addCatalogEntries("da", {
@@ -1979,7 +2084,14 @@ addCatalogEntries("da", {
   "barPositionTop": "Øverst",
   "barPositionBottom": "Nederst",
   "barPositionHint": "Flytter widgetten i Omarchys linje.",
-  "barPositionMissing": "Widgetten er ikke i linjen."
+  "barPositionMissing": "Widgetten er ikke i linjen.",
+  "showAlways": "Altid",
+  "showOnHover": "Ved peg",
+  "menubarHoverHint": "Punkter med »Ved peg« vises, mens markøren hviler på vejret i linjen.",
+  "barBehavior": "Adfærd",
+  "openWidgetOnHover": "Åbn widgetten ved peg",
+  "openWidgetOnHoverHint": "Åbner widgetten, når markøren hviler på vejret i linjen, og lukker den, når markøren flyttes væk. Et klik holder den åben.",
+  "rainIntensity": "Regnintensitet"
 })
 
 addCatalogEntries("ro", {
@@ -2065,7 +2177,14 @@ addCatalogEntries("ro", {
   "barPositionTop": "Sus",
   "barPositionBottom": "Jos",
   "barPositionHint": "Mută widgetul în bara Omarchy.",
-  "barPositionMissing": "Widgetul nu este în bară."
+  "barPositionMissing": "Widgetul nu este în bară.",
+  "showAlways": "Mereu",
+  "showOnHover": "La trecere",
+  "menubarHoverHint": "Elementele „La trecere” apar cât timp cursorul stă pe vremea din bară.",
+  "barBehavior": "Comportament",
+  "openWidgetOnHover": "Deschide widgetul la trecerea cursorului",
+  "openWidgetOnHoverHint": "Deschide widgetul când cursorul stă pe vremea din bară și îl închide când cursorul se îndepărtează. Un clic îl menține deschis.",
+  "rainIntensity": "Intensitatea ploii"
 })
 
 addCatalogEntries("hu", {
@@ -2151,7 +2270,14 @@ addCatalogEntries("hu", {
   "barPositionTop": "Fent",
   "barPositionBottom": "Lent",
   "barPositionHint": "Áthelyezi a minialkalmazást az Omarchy sávjában.",
-  "barPositionMissing": "A minialkalmazás nincs a sávban."
+  "barPositionMissing": "A minialkalmazás nincs a sávban.",
+  "showAlways": "Mindig",
+  "showOnHover": "Rámutatáskor",
+  "menubarHoverHint": "A „Rámutatáskor” elemek akkor jelennek meg, amikor a mutató a sáv időjárásán áll.",
+  "barBehavior": "Viselkedés",
+  "openWidgetOnHover": "Minialkalmazás megnyitása rámutatáskor",
+  "openWidgetOnHoverHint": "Megnyitja a minialkalmazást, amikor a mutató a sáv időjárásán áll, és bezárja, amikor elmozdul. Kattintással nyitva marad.",
+  "rainIntensity": "Eső intenzitása"
 })
 
 addCatalogEntries("el", {
@@ -2237,7 +2363,14 @@ addCatalogEntries("el", {
   "barPositionTop": "Πάνω",
   "barPositionBottom": "Κάτω",
   "barPositionHint": "Μετακινεί το γραφικό στοιχείο μέσα στη γραμμή του Omarchy.",
-  "barPositionMissing": "Το γραφικό στοιχείο δεν βρίσκεται στη γραμμή."
+  "barPositionMissing": "Το γραφικό στοιχείο δεν βρίσκεται στη γραμμή.",
+  "showAlways": "Πάντα",
+  "showOnHover": "Στο πέρασμα",
+  "menubarHoverHint": "Τα στοιχεία «Στο πέρασμα» εμφανίζονται όσο ο δείκτης βρίσκεται πάνω στον καιρό της γραμμής.",
+  "barBehavior": "Συμπεριφορά",
+  "openWidgetOnHover": "Άνοιγμα γραφικού στοιχείου στο πέρασμα",
+  "openWidgetOnHoverHint": "Ανοίγει το γραφικό στοιχείο όταν ο δείκτης σταθεί πάνω στον καιρό της γραμμής και το κλείνει όταν απομακρυνθεί. Ένα κλικ το κρατά ανοιχτό.",
+  "rainIntensity": "Ένταση βροχής"
 })
 
 addCatalogEntries("zh_CN", {
@@ -2323,7 +2456,14 @@ addCatalogEntries("zh_CN", {
   "barPositionTop": "顶部",
   "barPositionBottom": "底部",
   "barPositionHint": "在 Omarchy 栏中移动小组件。",
-  "barPositionMissing": "小组件不在栏中。"
+  "barPositionMissing": "小组件不在栏中。",
+  "showAlways": "始终",
+  "showOnHover": "悬停时",
+  "menubarHoverHint": "设为“悬停时”的项目在指针停留在栏中天气上时显示。",
+  "barBehavior": "行为",
+  "openWidgetOnHover": "悬停时打开小组件",
+  "openWidgetOnHoverHint": "指针停留在栏中天气上时打开小组件，移开后关闭。单击可保持打开。",
+  "rainIntensity": "降雨强度"
 })
 
 addCatalogEntries("zh_TW", {
@@ -2409,7 +2549,14 @@ addCatalogEntries("zh_TW", {
   "barPositionTop": "頂部",
   "barPositionBottom": "底部",
   "barPositionHint": "在 Omarchy 列中移動小工具。",
-  "barPositionMissing": "小工具不在列中。"
+  "barPositionMissing": "小工具不在列中。",
+  "showAlways": "永遠",
+  "showOnHover": "滑過時",
+  "menubarHoverHint": "設為「滑過時」的項目會在指標停留於列中天氣上時顯示。",
+  "barBehavior": "行為",
+  "openWidgetOnHover": "滑過時開啟小工具",
+  "openWidgetOnHoverHint": "指標停留於列中天氣上時開啟小工具，移開後關閉。按一下可保持開啟。",
+  "rainIntensity": "降雨強度"
 })
 
 addCatalogEntries("ja", {
@@ -2495,7 +2642,14 @@ addCatalogEntries("ja", {
   "barPositionTop": "上",
   "barPositionBottom": "下",
   "barPositionHint": "Omarchy のバー内でウィジェットを移動します。",
-  "barPositionMissing": "ウィジェットはバーにありません。"
+  "barPositionMissing": "ウィジェットはバーにありません。",
+  "showAlways": "常に",
+  "showOnHover": "ホバー時",
+  "menubarHoverHint": "「ホバー時」の項目は、ポインターがバーの天気の上にある間だけ表示されます。",
+  "barBehavior": "動作",
+  "openWidgetOnHover": "ホバーでウィジェットを開く",
+  "openWidgetOnHoverHint": "ポインターがバーの天気の上に留まるとウィジェットを開き、離れると閉じます。クリックすると開いたままになります。",
+  "rainIntensity": "雨の強さ"
 })
 
 addCatalogEntries("ko", {
@@ -2581,7 +2735,14 @@ addCatalogEntries("ko", {
   "barPositionTop": "위",
   "barPositionBottom": "아래",
   "barPositionHint": "Omarchy 막대 안에서 위젯을 옮깁니다.",
-  "barPositionMissing": "위젯이 막대에 없습니다."
+  "barPositionMissing": "위젯이 막대에 없습니다.",
+  "showAlways": "항상",
+  "showOnHover": "마우스를 올리면",
+  "menubarHoverHint": "‘마우스를 올리면’ 항목은 포인터가 막대의 날씨 위에 있는 동안 표시됩니다.",
+  "barBehavior": "동작",
+  "openWidgetOnHover": "마우스를 올리면 위젯 열기",
+  "openWidgetOnHoverHint": "포인터가 막대의 날씨 위에 머무르면 위젯을 열고, 벗어나면 닫습니다. 클릭하면 열린 상태로 유지됩니다.",
+  "rainIntensity": "강우 강도"
 })
 
 addCatalogEntries("ar", {
@@ -2667,7 +2828,14 @@ addCatalogEntries("ar", {
   "barPositionTop": "أعلى",
   "barPositionBottom": "أسفل",
   "barPositionHint": "ينقل الأداة داخل شريط Omarchy.",
-  "barPositionMissing": "الأداة ليست في الشريط."
+  "barPositionMissing": "الأداة ليست في الشريط.",
+  "showAlways": "دائمًا",
+  "showOnHover": "عند التمرير",
+  "menubarHoverHint": "تظهر العناصر المضبوطة على «عند التمرير» ما دام المؤشر فوق الطقس في الشريط.",
+  "barBehavior": "السلوك",
+  "openWidgetOnHover": "فتح الأداة عند التمرير",
+  "openWidgetOnHoverHint": "يفتح الأداة عندما يستقر المؤشر فوق الطقس في الشريط ويغلقها عند ابتعاده. النقر يبقيها مفتوحة.",
+  "rainIntensity": "شدة المطر"
 })
 
 addCatalogEntries("he", {
@@ -2753,7 +2921,14 @@ addCatalogEntries("he", {
   "barPositionTop": "למעלה",
   "barPositionBottom": "למטה",
   "barPositionHint": "מעביר את היישומון בתוך הסרגל של Omarchy.",
-  "barPositionMissing": "היישומון אינו בסרגל."
+  "barPositionMissing": "היישומון אינו בסרגל.",
+  "showAlways": "תמיד",
+  "showOnHover": "במעבר עכבר",
+  "menubarHoverHint": "פריטים שהוגדרו „במעבר עכבר” מופיעים כל עוד הסמן נמצא מעל מזג האוויר בסרגל.",
+  "barBehavior": "התנהגות",
+  "openWidgetOnHover": "פתיחת היישומון במעבר עכבר",
+  "openWidgetOnHoverHint": "פותח את היישומון כשהסמן נח מעל מזג האוויר בסרגל וסוגר אותו כשהוא מתרחק. לחיצה משאירה אותו פתוח.",
+  "rainIntensity": "עוצמת הגשם"
 })
 
 addCatalogEntries("fa", {
@@ -2839,7 +3014,14 @@ addCatalogEntries("fa", {
   "barPositionTop": "بالا",
   "barPositionBottom": "پایین",
   "barPositionHint": "ویجت را درون نوار Omarchy جابه‌جا می‌کند.",
-  "barPositionMissing": "ویجت در نوار نیست."
+  "barPositionMissing": "ویجت در نوار نیست.",
+  "showAlways": "همیشه",
+  "showOnHover": "هنگام نگه‌داشتن نشانگر",
+  "menubarHoverHint": "موارد «هنگام نگه‌داشتن نشانگر» تا وقتی نشانگر روی آب‌وهوای نوار است نمایش داده می‌شوند.",
+  "barBehavior": "رفتار",
+  "openWidgetOnHover": "باز کردن ویجت با نگه‌داشتن نشانگر",
+  "openWidgetOnHoverHint": "وقتی نشانگر روی آب‌وهوای نوار بماند ویجت را باز می‌کند و با دور شدن آن را می‌بندد. با کلیک باز می‌ماند.",
+  "rainIntensity": "شدت باران"
 })
 
 addCatalogEntries("hi", {
@@ -2925,7 +3107,14 @@ addCatalogEntries("hi", {
   "barPositionTop": "ऊपर",
   "barPositionBottom": "नीचे",
   "barPositionHint": "विजेट को Omarchy बार के भीतर खिसकाता है।",
-  "barPositionMissing": "विजेट बार में नहीं है।"
+  "barPositionMissing": "विजेट बार में नहीं है।",
+  "showAlways": "हमेशा",
+  "showOnHover": "होवर करने पर",
+  "menubarHoverHint": "“होवर करने पर” वाली प्रविष्टियाँ तब दिखती हैं जब पॉइंटर बार में मौसम पर हो।",
+  "barBehavior": "व्यवहार",
+  "openWidgetOnHover": "होवर करने पर विजेट खोलें",
+  "openWidgetOnHoverHint": "पॉइंटर बार में मौसम पर रुकने पर विजेट खोलता है और हटने पर बंद करता है। क्लिक करने से यह खुला रहता है।",
+  "rainIntensity": "बारिश की तीव्रता"
 })
 
 addCatalogEntries("id", {
@@ -3011,7 +3200,14 @@ addCatalogEntries("id", {
   "barPositionTop": "Atas",
   "barPositionBottom": "Bawah",
   "barPositionHint": "Memindahkan widget di dalam bilah Omarchy.",
-  "barPositionMissing": "Widget tidak ada di bilah."
+  "barPositionMissing": "Widget tidak ada di bilah.",
+  "showAlways": "Selalu",
+  "showOnHover": "Saat diarahkan",
+  "menubarHoverHint": "Entri “Saat diarahkan” muncul selama penunjuk berada di atas cuaca pada bilah.",
+  "barBehavior": "Perilaku",
+  "openWidgetOnHover": "Buka widget saat diarahkan",
+  "openWidgetOnHoverHint": "Membuka widget saat penunjuk berhenti di atas cuaca pada bilah dan menutupnya saat penunjuk menjauh. Klik membuatnya tetap terbuka.",
+  "rainIntensity": "Intensitas hujan"
 })
 
 addCatalogEntries("vi", {
@@ -3097,7 +3293,14 @@ addCatalogEntries("vi", {
   "barPositionTop": "Trên",
   "barPositionBottom": "Dưới",
   "barPositionHint": "Di chuyển tiện ích trong thanh Omarchy.",
-  "barPositionMissing": "Tiện ích không có trên thanh."
+  "barPositionMissing": "Tiện ích không có trên thanh.",
+  "showAlways": "Luôn luôn",
+  "showOnHover": "Khi rê chuột",
+  "menubarHoverHint": "Các mục “Khi rê chuột” hiện ra khi con trỏ nằm trên thời tiết ở thanh.",
+  "barBehavior": "Hành vi",
+  "openWidgetOnHover": "Mở tiện ích khi rê chuột",
+  "openWidgetOnHoverHint": "Mở tiện ích khi con trỏ dừng trên thời tiết ở thanh và đóng lại khi con trỏ rời đi. Nhấp chuột để giữ mở.",
+  "rainIntensity": "Cường độ mưa"
 })
 
 addCatalogEntries("th", {
@@ -3183,7 +3386,14 @@ addCatalogEntries("th", {
   "barPositionTop": "บน",
   "barPositionBottom": "ล่าง",
   "barPositionHint": "ย้ายวิดเจ็ตภายในแถบของ Omarchy",
-  "barPositionMissing": "วิดเจ็ตไม่ได้อยู่ในแถบ"
+  "barPositionMissing": "วิดเจ็ตไม่ได้อยู่ในแถบ",
+  "showAlways": "เสมอ",
+  "showOnHover": "เมื่อชี้",
+  "menubarHoverHint": "รายการ “เมื่อชี้” จะแสดงขณะที่ตัวชี้อยู่บนสภาพอากาศในแถบ",
+  "barBehavior": "การทำงาน",
+  "openWidgetOnHover": "เปิดวิดเจ็ตเมื่อชี้",
+  "openWidgetOnHoverHint": "เปิดวิดเจ็ตเมื่อตัวชี้หยุดบนสภาพอากาศในแถบ และปิดเมื่อตัวชี้ออกไป คลิกเพื่อให้เปิดค้างไว้",
+  "rainIntensity": "ความแรงของฝน"
 })
 
 // Restore-defaults button on the display settings page.

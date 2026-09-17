@@ -14,6 +14,24 @@ Rectangle {
 
   MouseArea { anchors.fill: parent }
 
+  // Menu bar entries have two switch columns, "always" and "on hover"; both
+  // columns take the width of the longer heading.
+  TextMetrics {
+    id: alwaysHeadingMetrics
+    font.family: panel.fontFamily
+    font.pixelSize: Style.font.caption
+    text: panel.i18n("showAlways")
+  }
+  TextMetrics {
+    id: onHoverHeadingMetrics
+    font.family: panel.fontFamily
+    font.pixelSize: Style.font.caption
+    text: panel.i18n("showOnHover")
+  }
+  readonly property real switchColumnWidth: Math.max(Style.space(44),
+    alwaysHeadingMetrics.advanceWidth + Style.space(8),
+    onHoverHeadingMetrics.advanceWidth + Style.space(8))
+
   Flickable {
     anchors.fill: parent
     anchors.margins: Style.space(4)
@@ -332,6 +350,7 @@ Rectangle {
         visible: panel.settingsPage === "display"
         width: parent.width
         text: panel.i18n("displaySettingsHint")
+          + (panel.settingsTargetSurface === "menubar" ? " " + panel.i18n("menubarHoverHint") : "")
         color: panel.mutedText
         font.family: panel.fontFamily
         font.pixelSize: Style.font.bodySmall
@@ -346,12 +365,12 @@ Rectangle {
             title: panel.i18n("currentWeather"),
             masterKey: "showCurrent",
             options: [
-              { key: "currentWeatherSymbol", title: panel.i18n("weatherSymbol") },
-              { key: "currentLocation", title: panel.i18n("location") },
-              { key: "currentTemperature", title: panel.i18n("temperature") },
-              { key: "currentFeelsLike", title: panel.i18n("feelsLikeTemperature") },
-              { key: "currentWind", title: panel.i18n("wind") },
-              { key: "currentHumidity", title: panel.i18n("humidity") }
+              { key: "currentWeatherSymbol", title: panel.i18n("weatherSymbol"), hover: true },
+              { key: "currentLocation", title: panel.i18n("location"), hover: true },
+              { key: "currentTemperature", title: panel.i18n("temperature"), hover: true },
+              { key: "currentFeelsLike", title: panel.i18n("feelsLikeTemperature"), hover: true },
+              { key: "currentWind", title: panel.i18n("wind"), hover: true },
+              { key: "currentHumidity", title: panel.i18n("humidity"), hover: true }
             ],
             hasDefaultTab: false
           },
@@ -360,8 +379,9 @@ Rectangle {
             masterKey: "",
             dependsOn: "showCurrent",
             options: [
-              { key: "currentPrecipitation", title: panel.i18n("precipitation") },
-              { key: "currentRainStart", title: panel.i18n("rainStartTime") }
+              { key: "currentPrecipitation", title: panel.i18n("rainProbability"), hover: true },
+              { key: "currentRainIntensity", title: panel.i18n("rainIntensity"), hover: true },
+              { key: "currentRainStart", title: panel.i18n("rainStartTime"), hover: true }
             ],
             hasDefaultTab: false
           },
@@ -370,9 +390,9 @@ Rectangle {
             masterKey: "",
             dependsOn: "showCurrent",
             options: [
-              { key: "currentAirQuality", title: panel.i18n("airQualityIndex") },
-              { key: "currentAirQualityColor", title: panel.i18n("airQualityColor") },
-              { key: "currentAirQualityAlert", title: panel.i18n("airQualityAlert") }
+              { key: "currentAirQuality", title: panel.i18n("airQualityIndex"), hover: true },
+              { key: "currentAirQualityColor", title: panel.i18n("airQualityColor"), hover: true },
+              { key: "currentAirQualityAlert", title: panel.i18n("airQualityAlert"), hover: true }
             ],
             hasDefaultTab: false
           },
@@ -381,8 +401,17 @@ Rectangle {
             masterKey: "",
             dependsOn: "showCurrent",
             options: [
-              { key: "currentWarnings", title: panel.i18n("weatherWarnings") }
+              { key: "currentWarnings", title: panel.i18n("weatherWarnings"), hover: true }
             ],
+            hasDefaultTab: false
+          },
+          {
+            title: panel.upperLabel(panel.i18n("barBehavior")),
+            masterKey: "",
+            options: [
+              { key: "openWidgetOnHover", title: panel.i18n("openWidgetOnHover") }
+            ],
+            hint: panel.i18n("openWidgetOnHoverHint"),
             hasDefaultTab: false
           },
           {
@@ -529,6 +558,41 @@ Rectangle {
               opacity: 0.12
             }
 
+            // Column headings over the "always" and "on hover" switches.
+            Item {
+              readonly property bool hasHoverColumn: {
+                var options = settingsCard.groupData.options
+                for (var i = 0; i < options.length; i++) if (options[i].hover) return true
+                return false
+              }
+              visible: hasHoverColumn
+              width: parent.width
+              height: visible ? Style.space(24) : 0
+              opacity: settingsCard.cardEnabled
+                && (settingsCard.groupData.masterKey === ""
+                  || panel.settingsDisplaySetting(settingsCard.groupData.masterKey, true)) ? 1 : 0.42
+
+              Row {
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+
+                Repeater {
+                  model: [panel.i18n("showAlways"), panel.i18n("showOnHover")]
+
+                  Text {
+                    required property string modelData
+                    width: settingsView.switchColumnWidth
+                    horizontalAlignment: Text.AlignHCenter
+                    text: modelData
+                    color: panel.mutedText
+                    font.family: panel.fontFamily
+                    font.pixelSize: Style.font.caption
+                    elide: Text.ElideRight
+                  }
+                }
+              }
+            }
+
             Repeater {
               model: settingsCard.groupData.options
 
@@ -538,6 +602,8 @@ Rectangle {
                 width: settingsCardContent.width
                 settingKey: modelData.key
                 title: modelData.title
+                hoverKey: modelData.hover ? modelData.key + "OnHover" : ""
+                columnWidth: settingsView.switchColumnWidth
                 rowEnabled: (settingsCard.groupData.masterKey === ""
                   || panel.settingsDisplaySetting(settingsCard.groupData.masterKey, true))
                   && settingsCard.cardEnabled

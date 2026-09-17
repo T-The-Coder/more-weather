@@ -460,7 +460,8 @@ Panel {
   readonly property bool showAirQualitySection: displaySetting("showAirQuality", false)
   // The bar instance also loads air quality for the menu bar hint.
   readonly property bool airQualityWanted: showAirQualitySection
-    || (!standaloneMode && (menubarShowAirQuality || menubarShowAirQualityAlert))
+    || (!standaloneMode && menubarShowCurrent
+      && (menubarEntryConfigured("currentAirQuality") || menubarEntryConfigured("currentAirQualityAlert")))
   onAirQualityWantedChanged: if (airQuality) airQuality.refresh()
   readonly property var airQualitySummary: Model.airQualitySummary(airQuality ? airQuality.report : null,
     Providers.countryCode(unitCountry) === "us")
@@ -474,15 +475,40 @@ Panel {
     Number(settingsDisplaySetting("defaultForecastTab", 0)) || 0))
   readonly property string settingsUnitSystem: String(generalSetting("unitSystem", "auto"))
 
+  // Set by the bar widget while the pointer rests on it: entries switched to
+  // "on hover" join the permanent ones for that time.
+  property bool menubarHovered: false
+  // Menu bar entries that can be shown always or only on hover; each has a
+  // companion "<key>OnHover" option.
+  readonly property var menubarHoverKeys: [
+    "currentWeatherSymbol", "currentLocation", "currentTemperature", "currentFeelsLike",
+    "currentWind", "currentHumidity", "currentPrecipitation", "currentRainIntensity", "currentRainStart",
+    "currentAirQuality", "currentAirQualityColor", "currentAirQualityAlert", "currentWarnings"
+  ]
   readonly property bool menubarShowCurrent: menubarDisplaySetting("showCurrent", true)
-  readonly property bool menubarShowLocation: menubarShowCurrent && menubarDisplaySetting("currentLocation", false)
-  readonly property bool menubarShowWeatherSymbol: menubarShowCurrent && menubarDisplaySetting("currentWeatherSymbol", true)
-  readonly property bool menubarShowTemperature: menubarShowCurrent && menubarDisplaySetting("currentTemperature", true)
-  readonly property bool menubarShowFeelsLike: menubarShowCurrent && menubarDisplaySetting("currentFeelsLike", false)
-  readonly property bool menubarShowWind: menubarShowCurrent && menubarDisplaySetting("currentWind", false)
-  readonly property bool menubarShowHumidity: menubarShowCurrent && menubarDisplaySetting("currentHumidity", false)
-  readonly property bool menubarShowPrecipitation: menubarShowCurrent && menubarDisplaySetting("currentPrecipitation", true)
-  readonly property bool menubarShowWarnings: menubarShowCurrent && menubarDisplaySetting("currentWarnings", true)
+  readonly property bool menubarOpenWidgetOnHover: !standaloneMode
+    && menubarDisplaySetting("openWidgetOnHover", false)
+  // Nothing always shown but something on hover: the weather symbol stays as
+  // the spot to point at.
+  readonly property bool menubarHoverHandle: {
+    var anyHover = false
+    for (var i = 0; i < menubarHoverKeys.length; i++) {
+      var key = menubarHoverKeys[i]
+      if (key === "currentAirQualityColor") continue
+      if (menubarDisplaySetting(key, false)) return false
+      if (menubarDisplaySetting(key + "OnHover", false)) anyHover = true
+    }
+    return anyHover
+  }
+  readonly property bool menubarShowLocation: menubarShowCurrent && menubarEntryShown("currentLocation")
+  readonly property bool menubarShowWeatherSymbol: menubarShowCurrent
+    && (menubarEntryShown("currentWeatherSymbol") || menubarHoverHandle)
+  readonly property bool menubarShowTemperature: menubarShowCurrent && menubarEntryShown("currentTemperature")
+  readonly property bool menubarShowFeelsLike: menubarShowCurrent && menubarEntryShown("currentFeelsLike")
+  readonly property bool menubarShowWind: menubarShowCurrent && menubarEntryShown("currentWind")
+  readonly property bool menubarShowHumidity: menubarShowCurrent && menubarEntryShown("currentHumidity")
+  readonly property bool menubarShowPrecipitation: menubarShowCurrent && menubarEntryShown("currentPrecipitation")
+  readonly property bool menubarShowWarnings: menubarShowCurrent && menubarEntryShown("currentWarnings")
   readonly property bool notifySevereWarnings: menubarDisplaySetting("notifySevereWarnings", true)
   readonly property bool notifyRainSoon: menubarDisplaySetting("notifyRainSoon", true)
   onNotifyRainSoonChanged: notifications.scheduleAlertNotifications()
@@ -1063,7 +1089,7 @@ Panel {
   readonly property bool menubarWindCached: cachedField(current,
     menubarUseImperial ? "windspeedMiles" : "windspeedKmph")
   readonly property bool menubarHumidityCached: cachedField(current, "humidity")
-  readonly property bool rainBadgeCached: isCurrentlyRaining
+  readonly property bool rainBadgeCached: menubarRainBadgeShowsIntensity
     ? ((cacheFallbackActive || radarReport === null) && rainNowcast.length > 0
       && cachedField(rainNowcast[0], "precipitation"))
     : (hourlyForecast.length > 0 && cachedField(hourlyForecast[0], "rainProbability"))
@@ -1074,11 +1100,11 @@ Panel {
   readonly property string upcomingRainTime: upcomingRain
     ? Qt.formatTime(upcomingRain.date, "HH:mm") : ""
   readonly property bool menubarShowAirQuality: menubarShowCurrent
-    && menubarDisplaySetting("currentAirQuality", false)
+    && menubarEntryShown("currentAirQuality")
   // The hint shows poor air (EU "poor" / US "unhealthy" and worse) or a high
   // pollen level, and nothing otherwise.
   readonly property bool menubarShowAirQualityAlert: menubarShowCurrent
-    && menubarDisplaySetting("currentAirQualityAlert", false)
+    && menubarEntryShown("currentAirQualityAlert")
   // One AQI entry for both: always when switched on, or once the air is poor.
   readonly property string menubarAirQualityText: airQualitySummary && airQualitySummary.index !== null
     && (menubarShowAirQuality || (menubarShowAirQualityAlert && airQualitySummary.category >= 3))
@@ -1099,24 +1125,31 @@ Panel {
   }
   // Same softened dot as in the app and widget, switched on separately.
   readonly property bool menubarShowAirQualityColor: menubarAirQualityText !== ""
-    && menubarDisplaySetting("currentAirQualityColor", false)
+    && menubarEntryShown("currentAirQualityColor")
   readonly property color menubarAirQualityColor: airQualitySummary && airQualitySummary.color
     ? softAirQualityColor(airQualitySummary.color) : foreground
   readonly property bool menubarShowRainStart: menubarShowCurrent
-    && menubarDisplaySetting("currentRainStart", true)
+    && menubarEntryShown("currentRainStart")
   readonly property string menubarRainStartText: menubarShowRainStart && upcomingRainTime !== ""
     ? i18n("rainFromTime", { time: upcomingRainTime }) : ""
+  // One rain spot in the bar: the rain start when rain is on its way, the
+  // radar intensity (mm/h) while it rains, the next hour's probability (%)
+  // otherwise. A shown intensity takes the place of the probability, which
+  // says little while it rains; `currentPrecipitation` is the probability.
+  readonly property bool menubarShowRainIntensity: menubarShowCurrent
+    && menubarEntryShown("currentRainIntensity")
+  readonly property bool menubarRainBadgeShowsIntensity: menubarRainStartText === ""
+    && menubarShowRainIntensity && isCurrentlyRaining
   readonly property string menubarRainBadgeText: menubarRainStartText !== "" ? menubarRainStartText
-    : (!menubarShowPrecipitation ? ""
-      : (isCurrentlyRaining
-        ? precipitationTextForUnit(radarCurrentIntensity, true, menubarUseImperial)
-        : (nextHourRainProbability !== "" ? nextHourRainProbability + "%" : "")))
+    : (menubarRainBadgeShowsIntensity
+      ? precipitationTextForUnit(radarCurrentIntensity, true, menubarUseImperial)
+      : (menubarShowPrecipitation && nextHourRainProbability !== "" ? nextHourRainProbability + "%" : ""))
   readonly property bool menubarHasVisibleContent: displayLabel !== "" && menubarShowCurrent && (
     menubarShowLocation || menubarShowWeatherSymbol || menubarShowTemperature
       || menubarShowFeelsLike || menubarShowWind || menubarShowHumidity
-      || menubarShowPrecipitation || menubarRainStartText !== "" || menubarPollenAlertText !== ""
+      || menubarShowPrecipitation || menubarRainBadgeText !== "" || menubarPollenAlertText !== ""
       || menubarAirQualityText !== ""
-      || menubarShowWarnings)
+      || menubarShowWarnings || menubarHoverHandle)
 
   function i18n(key, values) {
     return I18n.text(interfaceLanguage, key, values)
@@ -1187,11 +1220,26 @@ Panel {
       currentWind: false,
       currentHumidity: false,
       currentPrecipitation: true,
+      currentRainIntensity: true,
       currentWarnings: true,
       currentRainStart: true,
       currentAirQuality: false,
       currentAirQualityColor: false,
       currentAirQualityAlert: false,
+      currentWeatherSymbolOnHover: false,
+      currentLocationOnHover: false,
+      currentTemperatureOnHover: false,
+      currentFeelsLikeOnHover: false,
+      currentWindOnHover: false,
+      currentHumidityOnHover: false,
+      currentPrecipitationOnHover: false,
+      currentRainIntensityOnHover: false,
+      currentRainStartOnHover: false,
+      currentAirQualityOnHover: false,
+      currentAirQualityColorOnHover: false,
+      currentAirQualityAlertOnHover: false,
+      currentWarningsOnHover: false,
+      openWidgetOnHover: false,
       notifySevereWarnings: true,
       notifyRainSoon: true
     }
@@ -1226,6 +1274,16 @@ Panel {
 
   function menubarDisplaySetting(key, fallback) {
     return optionValue(menubarDisplayOptions, "menubar", key, fallback)
+  }
+
+  function menubarEntryConfigured(key) {
+    return menubarDisplaySetting(key, false) === true
+      || menubarDisplaySetting(key + "OnHover", false) === true
+  }
+
+  function menubarEntryShown(key) {
+    return menubarDisplaySetting(key, false) === true
+      || (menubarHovered && menubarDisplaySetting(key + "OnHover", false) === true)
   }
 
   function activeWeatherCacheEntryValue(key, fallback) {
@@ -3035,8 +3093,63 @@ Panel {
     Item {
       id: popupContentHost
       anchors.fill: parent
+
+      // The open popup covers the whole screen, bar included, so the bar
+      // widget stops seeing the pointer. These zones follow it instead: one
+      // over the widget's spot in the bar, one spanning widget and card.
+      // They hold only HoverHandlers, which neither take clicks nor keep
+      // hover from the content below.
+      Item {
+        id: popupHoverZones
+        z: 1000
+        // Window position of this host: the card, plus the content holder's
+        // inset within it. Read off the chain so it follows the card's moves.
+        readonly property point hostOrigin: {
+          var holder = popupContentHost.parent
+          var card = holder ? holder.parent : null
+          return card ? Qt.point(card.x + holder.x, card.y + holder.y) : panel.cardOrigin
+        }
+        readonly property rect anchorRect: {
+          if (panel.barPos === "bottom")
+            return Qt.rect(panel.anchorScreenPos.x, panel.screenH - panel.barH, panel.anchorW, panel.barH)
+          if (panel.barPos === "left")
+            return Qt.rect(0, panel.anchorScreenPos.y, panel.barW, panel.anchorH)
+          if (panel.barPos === "right")
+            return Qt.rect(panel.screenW - panel.barW, panel.anchorScreenPos.y, panel.barW, panel.anchorH)
+          return Qt.rect(panel.anchorScreenPos.x, 0, panel.anchorW, panel.barH)
+        }
+        readonly property rect spanRect: {
+          var left = Math.min(anchorRect.x, panel.cardOrigin.x)
+          var top = Math.min(anchorRect.y, panel.cardOrigin.y)
+          var right = Math.max(anchorRect.x + anchorRect.width, panel.cardOrigin.x + panel.contentWidth)
+          var bottom = Math.max(anchorRect.y + anchorRect.height, panel.cardOrigin.y + panel.contentHeight)
+          return Qt.rect(left, top, right - left, bottom - top)
+        }
+
+        Item {
+          x: popupHoverZones.spanRect.x - popupHoverZones.hostOrigin.x
+          y: popupHoverZones.spanRect.y - popupHoverZones.hostOrigin.y
+          width: popupHoverZones.spanRect.width
+          height: popupHoverZones.spanRect.height
+          HoverHandler { id: popupSpanHover }
+        }
+
+        Item {
+          x: popupHoverZones.anchorRect.x - popupHoverZones.hostOrigin.x
+          y: popupHoverZones.anchorRect.y - popupHoverZones.hostOrigin.y
+          width: popupHoverZones.anchorRect.width
+          height: popupHoverZones.anchorRect.height
+          HoverHandler { id: popupAnchorHover }
+        }
+      }
     }
   }
+
+  // Pointer over the popup or the stretch between it and the bar widget, and
+  // over the widget itself, while the popup is open.
+  readonly property bool popupPointerInside: !standaloneMode && opened && popupSpanHover.hovered
+  // Not tied to `opened`: the bar widget reads it while the popup closes.
+  readonly property bool popupPointerOnAnchor: !standaloneMode && popupAnchorHover.hovered
 
   FloatingWindow {
     id: standaloneWindow

@@ -74,6 +74,15 @@ Item {
     var defaults = panel.defaultOptionsFor(surface)
     var source = raw && typeof raw === "object" ? raw : ({})
     var result = ({})
+    // The menu bar's precipitation switch used to cover both probability
+    // and intensity; the intensity switch starts out where it stood.
+    if (surface === "menubar") {
+      if (typeof source.currentRainIntensity !== "boolean" && typeof source.currentPrecipitation === "boolean")
+        source.currentRainIntensity = source.currentPrecipitation
+      if (typeof source.currentRainIntensityOnHover !== "boolean"
+          && typeof source.currentPrecipitationOnHover === "boolean")
+        source.currentRainIntensityOnHover = source.currentPrecipitationOnHover
+    }
     for (var key in defaults) {
       if (key === "defaultForecastTab") {
         var tab = parseInt(source[key], 10)
@@ -154,6 +163,12 @@ Item {
     next[key] = (key === "defaultForecastTab"
         ? Math.max(0, Math.min(2, Number(value) || 0))
         : !!value)
+    // A menu bar entry shows either always or on hover: switching one on
+    // switches its counterpart off.
+    if (surface === "menubar" && next[key] === true) {
+      var counterpart = /OnHover$/.test(key) ? key.replace(/OnHover$/, "") : key + "OnHover"
+      if (counterpart in next) next[counterpart] = false
+    }
     if (surface === "app") {
       panel.appDisplayOptions = next
       appDisplayOptionsFile.setText(JSON.stringify(next) + "\n")

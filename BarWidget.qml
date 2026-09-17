@@ -46,6 +46,89 @@ BarWidget {
     if (panelLoader.item) panelLoader.item.closeForPopoutSwitch()
   }
 
+  // --- hover ------------------------------------------------------------
+  // Entries set to "on hover" show while the pointer rests on the widget,
+  // and the popup can open from hover alone. Once the popup is open it covers
+  // the bar, so the panel's hover zones (widget spot, and the stretch from
+  // it to the card) stand in for the button.
+  readonly property bool pointerOnWidget: button.tooltipHovered
+  // Opened while the pointer was on the widget; holds until the popup's
+  // zones have seen the pointer, since they only learn of it once it moves.
+  property bool hoverLatched: false
+  property bool popupZoneSeen: false
+  property bool openedByHover: false
+  // Closed with the pointer still on the widget: no reopening until it
+  // has left.
+  property bool hoverOpenBlocked: false
+  readonly property bool pointerNear: pointerOnWidget || (opened && !!panelLoader.item
+    && (panelLoader.item.popupPointerInside || (hoverLatched && !popupZoneSeen)))
+
+  onPointerNearChanged: {
+    if (pointerNear) {
+      hoverLeaveTimer.stop()
+      hoverEnterTimer.start()
+    } else {
+      hoverEnterTimer.stop()
+      hoverLeaveTimer.start()
+    }
+  }
+  onPointerOnWidgetChanged: if (!pointerOnWidget && !opened) hoverOpenBlocked = false
+  onOpenedChanged: {
+    if (opened) {
+      hoverLatched = pointerOnWidget || (!!panelLoader.item && panelLoader.item.menubarHovered)
+    } else {
+      hoverOpenBlocked = pointerOnWidget
+        || (!!panelLoader.item && panelLoader.item.popupPointerOnAnchor)
+        || (hoverLatched && !popupZoneSeen)
+      hoverLatched = false
+      openedByHover = false
+    }
+    popupZoneSeen = false
+  }
+
+  Connections {
+    target: panelLoader.item
+    ignoreUnknownSignals: true
+    function onPopupPointerInsideChanged() {
+      if (panelLoader.item.popupPointerInside) root.popupZoneSeen = true
+    }
+  }
+
+  Timer {
+    id: hoverEnterTimer
+    interval: 120
+    onTriggered: if (panelLoader.item) panelLoader.item.menubarHovered = true
+  }
+
+  Timer {
+    id: hoverLeaveTimer
+    interval: 400
+    onTriggered: {
+      var panel = panelLoader.item
+      if (!panel) return
+      panel.menubarHovered = false
+      // A popup opened by hover closes again once the pointer has left it,
+      // unless something in it is being edited.
+      if (root.openedByHover && root.opened && root.popupZoneSeen
+          && !panel.settingsOpen && !panel.editingLocation)
+        panel.close()
+    }
+  }
+
+  Timer {
+    id: hoverOpenTimer
+    interval: 250
+    running: !!panelLoader.item && panelLoader.item.menubarOpenWidgetOnHover
+      && root.pointerOnWidget && !root.opened && !root.hoverOpenBlocked
+    onTriggered: {
+      if (!panelLoader.item || root.opened) return
+      root.openedByHover = true
+      // The hotkey path: the plain open() left the popup without pointer
+      // events while it mapped under the pointer.
+      panelLoader.item.openFromHotkey()
+    }
+  }
+
   visible: panelLoader.item && panelLoader.item.menubarHasVisibleContent
     && (!root.vertical || panelLoader.item.menubarShowWeatherSymbol)
   implicitWidth: button.implicitWidth
@@ -282,6 +365,8 @@ BarWidget {
       if (!root.bar) return
       if (b === Qt.RightButton) root.bar.run("omarchy-notification-send \"$(omarchy-weather-status)\"")
       else if (b === Qt.MiddleButton) root.refresh()
+      // A click on a popup opened by hover keeps it open.
+      else if (root.openedByHover && root.opened) root.openedByHover = false
       else root.togglePanel()
     }
   }
