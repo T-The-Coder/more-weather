@@ -175,198 +175,255 @@ BarWidget {
       anchors.centerIn: parent
       spacing: Style.space(5)
 
-      Text {
-        id: barSymbol
-        visible: panelLoader.item && panelLoader.item.menubarShowWeatherSymbol
-        anchors.verticalCenter: parent.verticalCenter
-        transform: Scale {
-          origin.x: barSymbol.width / 2
-          xScale: panelLoader.item && panelLoader.item.mirrorsGlyph(barSymbol.text) ? -1 : 1
+      // Entries in the order chosen under Settings → Display → Menu bar.
+      Repeater {
+        model: panelLoader.item ? panelLoader.item.menubarEntryOrder : []
+
+        Loader {
+          required property string modelData
+          anchors.verticalCenter: parent.verticalCenter
+          // An entry with nothing to say takes no space in the row. Read
+          // from the entry's own flag: `visible` would report this loader's
+          // state back to itself.
+          visible: item ? item.entryVisible : false
+          active: !!panelLoader.item
+          sourceComponent: modelData === "currentWeatherSymbol" ? symbolEntry
+            : (modelData === "currentSunrise" || modelData === "currentSunset"
+                || modelData === "currentSunNext" ? sunEntry
+            : (modelData === "currentMoon" ? moonEntry
+            : (modelData === "currentRain" ? rainEntry
+              : (modelData === "currentAirQuality" ? airQualityEntry
+                : (modelData === "currentWarnings" ? warningEntry : textEntry)))))
         }
-        text: panelLoader.item ? panelLoader.item.displayLabel : ""
-        color: button.foreground
-        font.family: root.bar ? root.bar.fontFamily : Style.font.family
-        font.pixelSize: Style.bar.iconFont
-        font.italic: panelLoader.item ? panelLoader.item.weatherSymbolCached : false
-        renderType: Text.NativeRendering
       }
 
-      Text {
-        visible: !root.vertical && panelLoader.item
-          && panelLoader.item.menubarShowLocation && text !== ""
-        anchors.verticalCenter: parent.verticalCenter
-        text: panelLoader.item ? panelLoader.item.reportLocation : ""
-        color: button.foreground
-        font.family: root.bar ? root.bar.fontFamily : Style.font.family
-        font.pixelSize: Style.font.body
-        font.italic: panelLoader.item ? panelLoader.item.locationCached : false
-        renderType: Text.NativeRendering
-      }
-
-      Text {
-        visible: !root.vertical && panelLoader.item
-          && panelLoader.item.menubarShowTemperature && text !== ""
-        anchors.verticalCenter: parent.verticalCenter
-        text: panelLoader.item ? panelLoader.item.menubarTemperatureText : ""
-        color: button.foreground
-        font.family: root.bar ? root.bar.fontFamily : Style.font.family
-        font.pixelSize: Style.font.body
-        font.italic: panelLoader.item ? panelLoader.item.menubarTemperatureCached : false
-        renderType: Text.NativeRendering
-      }
-
-      Text {
-        visible: !root.vertical && panelLoader.item
-          && panelLoader.item.menubarShowFeelsLike && panelLoader.item.menubarReportFeels !== ""
-        anchors.verticalCenter: parent.verticalCenter
-        text: panelLoader.item
-          ? panelLoader.item.i18n("feelsLikeShort") + " " + panelLoader.item.menubarReportFeels : ""
-        color: button.foreground
-        font.family: root.bar ? root.bar.fontFamily : Style.font.family
-        font.pixelSize: Style.font.body
-        font.italic: panelLoader.item ? panelLoader.item.menubarFeelsCached : false
-        renderType: Text.NativeRendering
-      }
-
-      Text {
-        visible: !root.vertical && panelLoader.item
-          && panelLoader.item.menubarShowWind && panelLoader.item.menubarReportWind !== ""
-        anchors.verticalCenter: parent.verticalCenter
-        text: panelLoader.item
-          ? panelLoader.item.i18n("wind") + " " + panelLoader.item.menubarReportWind : ""
-        color: button.foreground
-        font.family: root.bar ? root.bar.fontFamily : Style.font.family
-        font.pixelSize: Style.font.body
-        font.italic: panelLoader.item ? panelLoader.item.menubarWindCached : false
-        renderType: Text.NativeRendering
-      }
-
-      Text {
-        visible: !root.vertical && panelLoader.item
-          && panelLoader.item.menubarShowHumidity && panelLoader.item.menubarReportHumidity !== ""
-        anchors.verticalCenter: parent.verticalCenter
-        text: panelLoader.item
-          ? panelLoader.item.i18n("humidity") + " " + panelLoader.item.menubarReportHumidity : ""
-        color: button.foreground
-        font.family: root.bar ? root.bar.fontFamily : Style.font.family
-        font.pixelSize: Style.font.body
-        font.italic: panelLoader.item ? panelLoader.item.menubarHumidityCached : false
-        renderType: Text.NativeRendering
-      }
-
-      Text {
-        visible: !root.vertical && panelLoader.item && panelLoader.item.menubarUvText !== ""
-        anchors.verticalCenter: parent.verticalCenter
-        text: panelLoader.item ? panelLoader.item.menubarUvText : ""
-        color: button.foreground
-        font.family: root.bar ? root.bar.fontFamily : Style.font.family
-        font.pixelSize: Style.font.body
-        font.italic: panelLoader.item ? panelLoader.item.menubarUvCached : false
-        renderType: Text.NativeRendering
-      }
-
-      Row {
-        // Shows the observed radar rate (mm/h) while it's actually raining
-        // at the configured location, falling back to the forecast
-        // probability (%) otherwise — see Panel.rainBadgeText.
-        visible: !root.vertical && panelLoader.item && panelLoader.item.menubarRainBadgeText !== ""
-        anchors.verticalCenter: parent.verticalCenter
-        spacing: Style.space(3)
+      // Every entry that is a plain piece of text, told apart by its key.
+      Component {
+        id: textEntry
 
         Text {
-          anchors.verticalCenter: parent.verticalCenter
-          text: "󰖌"
+          readonly property string entryKey: parent ? parent.modelData : ""
+          property bool entryVisible: !root.vertical && text !== ""
+          visible: entryVisible
+          text: {
+            if (!panelLoader.item) return ""
+            if (entryKey === "currentLocation") return panelLoader.item.menubarShowLocation ? panelLoader.item.reportLocation : ""
+            if (entryKey === "currentTemperature") return panelLoader.item.menubarShowTemperature ? panelLoader.item.menubarTemperatureText : ""
+            if (entryKey === "currentFeelsLike")
+              return panelLoader.item.menubarShowFeelsLike && panelLoader.item.menubarReportFeels !== ""
+                ? panelLoader.item.i18n("feelsLikeShort") + " " + panelLoader.item.menubarReportFeels : ""
+            if (entryKey === "currentWind")
+              return panelLoader.item.menubarShowWind && panelLoader.item.menubarReportWind !== ""
+                ? panelLoader.item.i18n("wind") + " " + panelLoader.item.menubarReportWind : ""
+            if (entryKey === "currentHumidity")
+              return panelLoader.item.menubarShowHumidity && panelLoader.item.menubarReportHumidity !== ""
+                ? panelLoader.item.i18n("humidity") + " " + panelLoader.item.menubarReportHumidity : ""
+            if (entryKey === "currentUv") return panelLoader.item.menubarUvText
+            if (entryKey === "currentDayRange") return panelLoader.item.menubarDayRangeText
+            if (entryKey === "currentRainAmount") return panelLoader.item.menubarRainAmountText
+            if (entryKey === "currentPollen")
+              return panelLoader.item.menubarPollenAlertText !== "" ? "\u{f032a} " + panelLoader.item.menubarPollenAlertText : ""
+            return ""
+          }
           color: button.foreground
           font.family: root.bar ? root.bar.fontFamily : Style.font.family
           font.pixelSize: Style.font.body
-          font.italic: panelLoader.item ? panelLoader.item.rainBadgeCached : false
-          renderType: Text.NativeRendering
-        }
-
-        Text {
-          anchors.verticalCenter: parent.verticalCenter
-          text: panelLoader.item ? panelLoader.item.menubarRainBadgeText : ""
-          color: button.foreground
-          font.family: root.bar ? root.bar.fontFamily : Style.font.family
-          font.pixelSize: Style.font.body
-          font.italic: panelLoader.item ? panelLoader.item.rainBadgeCached : false
+          font.italic: {
+            if (!panelLoader.item) return false
+            if (entryKey === "currentLocation") return panelLoader.item.locationCached
+            if (entryKey === "currentTemperature") return panelLoader.item.menubarTemperatureCached
+            if (entryKey === "currentFeelsLike") return panelLoader.item.menubarFeelsCached
+            if (entryKey === "currentWind") return panelLoader.item.menubarWindCached
+            if (entryKey === "currentHumidity") return panelLoader.item.menubarHumidityCached
+            if (entryKey === "currentUv") return panelLoader.item.menubarUvCached
+            if (entryKey === "currentDayRange")
+              return panelLoader.item.cachedField(panelLoader.item.todayForecast,
+                panelLoader.item.menubarUseImperial ? "maxtempF" : "maxtempC")
+            if (entryKey === "currentRainAmount")
+              return panelLoader.item.cachedField(panelLoader.item.nextHourForecast, "rainAmount")
+            if (entryKey === "currentPollen") return panelLoader.item.airQuality ? panelLoader.item.airQuality.stale : false
+            return false
+          }
           renderType: Text.NativeRendering
         }
       }
 
-      // Air quality index: switched on for the menu bar, or as the hint for poor air.
-      Row {
-        visible: !root.vertical && panelLoader.item && panelLoader.item.menubarAirQualityText !== ""
-        anchors.verticalCenter: parent.verticalCenter
-        spacing: Style.space(3)
-
-        Rectangle {
-          visible: !!panelLoader.item && panelLoader.item.menubarShowAirQualityColor
-          anchors.verticalCenter: parent.verticalCenter
-          width: Style.space(7)
-          height: width
-          radius: width / 2
-          color: panelLoader.item ? panelLoader.item.menubarAirQualityColor : "transparent"
-        }
-
-        // "AQI" as text: the wind-like air glyph read as a wind value.
-        Text {
-          anchors.verticalCenter: parent.verticalCenter
-          text: "AQI"
-          color: button.foreground
-          font.family: root.bar ? root.bar.fontFamily : Style.font.family
-          font.pixelSize: Style.font.body
-          renderType: Text.NativeRendering
-        }
+      Component {
+        id: symbolEntry
 
         Text {
-          anchors.verticalCenter: parent.verticalCenter
-          text: panelLoader.item ? panelLoader.item.menubarAirQualityText : ""
+          id: barSymbol
+          property bool entryVisible: !!panelLoader.item && panelLoader.item.menubarShowWeatherSymbol
+          visible: entryVisible
+          transform: Scale {
+            origin.x: barSymbol.width / 2
+            xScale: panelLoader.item && panelLoader.item.mirrorsGlyph(barSymbol.text) ? -1 : 1
+          }
+          text: panelLoader.item ? panelLoader.item.displayLabel : ""
           color: button.foreground
           font.family: root.bar ? root.bar.fontFamily : Style.font.family
-          font.pixelSize: Style.font.body
-          font.italic: panelLoader.item && panelLoader.item.airQuality ? panelLoader.item.airQuality.stale : false
+          font.pixelSize: Style.bar.iconFont
+          font.italic: panelLoader.item ? panelLoader.item.weatherSymbolCached : false
           renderType: Text.NativeRendering
         }
       }
 
-      // High pollen; hidden otherwise.
-      Row {
-        visible: !root.vertical && panelLoader.item && panelLoader.item.menubarPollenAlertText !== ""
-        anchors.verticalCenter: parent.verticalCenter
-        spacing: Style.space(3)
+      // Sunrise, sunset, or whichever of the two comes next — with the same
+      // drawn arrow as the daily forecast.
+      Component {
+        id: sunEntry
+
+        Row {
+          readonly property string entryKey: parent ? parent.modelData : ""
+          readonly property string time: {
+            if (!panelLoader.item) return ""
+            if (entryKey === "currentSunrise") return panelLoader.item.menubarSunriseText
+            if (entryKey === "currentSunset") return panelLoader.item.menubarSunsetText
+            return panelLoader.item.menubarSunNextText
+          }
+          readonly property bool rising: entryKey === "currentSunrise"
+            || (entryKey === "currentSunNext" && !!panelLoader.item && panelLoader.item.menubarSunNextRising)
+          property bool entryVisible: !root.vertical && time !== ""
+          visible: entryVisible
+          spacing: Style.space(3)
+
+          Canvas {
+            id: sunEventIcon
+            anchors.verticalCenter: parent.verticalCenter
+            // Same 11px drawing as the daily forecast's sun events.
+            width: Style.space(11)
+            height: Style.space(11)
+            property color iconColor: button.foreground
+            property bool rising: parent.rising
+            onIconColorChanged: requestPaint()
+            onRisingChanged: requestPaint()
+            onPaint: if (panelLoader.item) panelLoader.item.paintSunEventIcon(sunEventIcon, rising)
+          }
+
+          Text {
+            anchors.verticalCenter: parent.verticalCenter
+            text: parent.time
+            color: button.foreground
+            font.family: root.bar ? root.bar.fontFamily : Style.font.family
+            font.pixelSize: Style.font.body
+            font.italic: !!panelLoader.item && panelLoader.item.cachedField(panelLoader.item.todayForecast,
+              parent.rising ? "sunrise" : "sunset")
+            renderType: Text.NativeRendering
+          }
+        }
+      }
+
+      // The moon phase, mirrored south of the equator like every other
+      // moon glyph.
+      Component {
+        id: moonEntry
 
         Text {
-          anchors.verticalCenter: parent.verticalCenter
-          text: "\u{f032a}"
+          id: barMoon
+          property bool entryVisible: !root.vertical && !!panelLoader.item
+            && panelLoader.item.menubarMoonText !== ""
+          visible: entryVisible
+          transform: Scale {
+            origin.x: barMoon.width / 2
+            xScale: panelLoader.item && panelLoader.item.mirrorsGlyph(barMoon.text) ? -1 : 1
+          }
+          text: panelLoader.item ? panelLoader.item.menubarMoonText : ""
           color: button.foreground
           font.family: root.bar ? root.bar.fontFamily : Style.font.family
           font.pixelSize: Style.font.body
           renderType: Text.NativeRendering
         }
+      }
 
-        Text {
-          anchors.verticalCenter: parent.verticalCenter
-          text: panelLoader.item ? panelLoader.item.menubarPollenAlertText : ""
-          color: button.foreground
-          font.family: root.bar ? root.bar.fontFamily : Style.font.family
-          font.pixelSize: Style.font.body
-          font.italic: panelLoader.item && panelLoader.item.airQuality ? panelLoader.item.airQuality.stale : false
-          renderType: Text.NativeRendering
+      // The rain spot: the radar rate (mm/h) while it rains at the place,
+      // the rain start when it is on its way, the probability otherwise —
+      // see Panel.menubarRainBadgeText.
+      Component {
+        id: rainEntry
+
+        Row {
+          property bool entryVisible: !root.vertical && !!panelLoader.item
+            && panelLoader.item.menubarRainBadgeText !== ""
+          visible: entryVisible
+          spacing: Style.space(3)
+
+          Text {
+            anchors.verticalCenter: parent.verticalCenter
+            text: "󰖌"
+            color: button.foreground
+            font.family: root.bar ? root.bar.fontFamily : Style.font.family
+            font.pixelSize: Style.font.body
+            font.italic: panelLoader.item ? panelLoader.item.rainBadgeCached : false
+            renderType: Text.NativeRendering
+          }
+
+          Text {
+            anchors.verticalCenter: parent.verticalCenter
+            text: panelLoader.item ? panelLoader.item.menubarRainBadgeText : ""
+            color: button.foreground
+            font.family: root.bar ? root.bar.fontFamily : Style.font.family
+            font.pixelSize: Style.font.body
+            font.italic: panelLoader.item ? panelLoader.item.rainBadgeCached : false
+            renderType: Text.NativeRendering
+          }
         }
       }
 
-      Text {
-        visible: !root.vertical && panelLoader.item
-          && panelLoader.item.menubarShowWarnings && panelLoader.item.hasWeatherAlert
-        anchors.verticalCenter: parent.verticalCenter
-        text: "!"
-        color: panelLoader.item ? panelLoader.item.warningColor : button.foreground
-        font.family: root.bar ? root.bar.fontFamily : Style.font.family
-        font.pixelSize: Style.font.title
-        font.bold: true
-        font.italic: panelLoader.item ? panelLoader.item.warningsCached : false
-        renderType: Text.NativeRendering
+      // Air quality index, with the softened category dot in front of it.
+      Component {
+        id: airQualityEntry
+
+        Row {
+          property bool entryVisible: !root.vertical && !!panelLoader.item
+            && panelLoader.item.menubarAirQualityText !== ""
+          visible: entryVisible
+          spacing: Style.space(3)
+
+          Rectangle {
+            visible: !!panelLoader.item && panelLoader.item.menubarShowAirQualityColor
+            anchors.verticalCenter: parent.verticalCenter
+            width: Style.space(7)
+            height: width
+            radius: width / 2
+            color: panelLoader.item ? panelLoader.item.menubarAirQualityColor : "transparent"
+          }
+
+          Text {
+            anchors.verticalCenter: parent.verticalCenter
+            text: "AQI"
+            color: button.foreground
+            font.family: root.bar ? root.bar.fontFamily : Style.font.family
+            font.pixelSize: Style.font.body
+            renderType: Text.NativeRendering
+          }
+
+          Text {
+            anchors.verticalCenter: parent.verticalCenter
+            text: panelLoader.item ? panelLoader.item.menubarAirQualityText : ""
+            color: button.foreground
+            font.family: root.bar ? root.bar.fontFamily : Style.font.family
+            font.pixelSize: Style.font.body
+            font.italic: panelLoader.item && panelLoader.item.airQuality ? panelLoader.item.airQuality.stale : false
+            renderType: Text.NativeRendering
+          }
+        }
+      }
+
+      Component {
+        id: warningEntry
+
+        Text {
+          property bool entryVisible: !root.vertical && !!panelLoader.item
+            && panelLoader.item.menubarShowWarnings && panelLoader.item.hasWeatherAlert
+          visible: entryVisible
+          text: "!"
+          color: panelLoader.item ? panelLoader.item.warningColor : button.foreground
+          font.family: root.bar ? root.bar.fontFamily : Style.font.family
+          font.pixelSize: Style.font.title
+          font.bold: true
+          font.italic: panelLoader.item ? panelLoader.item.warningsCached : false
+          renderType: Text.NativeRendering
+        }
       }
     }
 

@@ -62,6 +62,8 @@ Panel {
   }
 
   property var anchorItem: null
+  // The daily section, kept from its loader so keyboard scrolling reaches it.
+  property var dailySection: null
   property bool openedFromHotkey: false
   // The same weather controller and view back both surfaces. The bar keeps
   // using KeyboardPanel; the standalone Quickshell config opts into a normal
@@ -484,8 +486,9 @@ Panel {
   // out ("<key>WhenRelevant") or only under the pointer ("<key>OnHover").
   readonly property var menubarHoverKeys: [
     "currentWeatherSymbol", "currentLocation", "currentTemperature", "currentFeelsLike",
-    "currentWind", "currentHumidity", "currentUv",
-    "currentPrecipitation", "currentRainIntensity", "currentRainStart",
+    "currentWind", "currentHumidity", "currentUv", "currentDayRange",
+    "currentPrecipitation", "currentRainIntensity", "currentRainAmount", "currentRainStart",
+    "currentSunrise", "currentSunset", "currentSunNext", "currentMoon",
     "currentAirQuality", "currentAirQualityColor", "currentPollen", "currentWarnings"
   ]
   readonly property bool menubarShowCurrent: menubarDisplaySetting("showCurrent", true)
@@ -511,6 +514,29 @@ Panel {
   readonly property bool menubarShowWind: menubarShowCurrent && menubarEntryShown("currentWind")
   readonly property bool menubarShowHumidity: menubarShowCurrent && menubarEntryShown("currentHumidity")
   readonly property bool menubarShowUv: menubarShowCurrent && menubarEntryShown("currentUv")
+  // Today's forecast row, for the day's range and its sun events.
+  readonly property var todayForecast: forecastDays.length > 0 ? forecastDays[0] : null
+  readonly property string menubarDayRangeText: !menubarShowCurrent
+    || !menubarEntryShown("currentDayRange") || !todayForecast ? ""
+    : (Model.tempBare(todayForecast.maxtempC, todayForecast.maxtempF, menubarTempScale) + " / "
+      + Model.tempBare(todayForecast.mintempC, todayForecast.mintempF, menubarTempScale))
+  readonly property string menubarRainAmountText: !menubarShowCurrent
+    || !menubarEntryShown("currentRainAmount") || !nextHourForecast ? ""
+    : "󰖌 " + precipitationTextForUnit(nextHourForecast.rainAmount, false, menubarUseImperial)
+  readonly property string menubarSunriseText: menubarShowCurrent
+    && menubarEntryShown("currentSunrise") && todayForecast && todayForecast.sunrise
+    ? forecastEventTime(todayForecast.sunrise) : ""
+  readonly property string menubarSunsetText: menubarShowCurrent
+    && menubarEntryShown("currentSunset") && todayForecast && todayForecast.sunset
+    ? forecastEventTime(todayForecast.sunset) : ""
+  // One spot that follows the sun: the next event, with its own arrow.
+  readonly property var menubarSunNextEvent: menubarShowCurrent
+    && menubarEntryShown("currentSunNext") ? nextSunEvent(todayForecast, 0) : null
+  readonly property string menubarSunNextText: menubarSunNextEvent
+    ? forecastEventTime(menubarSunNextEvent.time) : ""
+  readonly property bool menubarSunNextRising: !!menubarSunNextEvent && menubarSunNextEvent.rising
+  readonly property string menubarMoonText: menubarShowCurrent && menubarEntryShown("currentMoon")
+    ? Model.moonPhaseGlyph(nowDate) : ""
   // "UV 6", or a dash while the forecast carries no value (at night).
   readonly property string menubarUvText: !menubarShowUv ? ""
     : "UV " + (currentUvIndex !== "" ? localizedNumber(currentUvIndex) : "–")
@@ -1173,6 +1199,8 @@ Panel {
     menubarShowLocation || menubarShowWeatherSymbol || menubarShowTemperature
       || menubarShowFeelsLike || menubarShowWind || menubarShowHumidity
       || menubarShowUv || menubarRainBadgeText !== "" || menubarPollenAlertText !== ""
+      || menubarDayRangeText !== "" || menubarRainAmountText !== "" || menubarSunriseText !== ""
+      || menubarSunsetText !== "" || menubarSunNextText !== "" || menubarMoonText !== ""
       || menubarAirQualityText !== ""
       || menubarShowWarnings || menubarHoverHandle)
 
@@ -1206,11 +1234,16 @@ Panel {
       dailyUv: true,
       dailyWind: true,
       dailySunEvents: true,
+      dailySunNext: false,
       showForecast: true,
       forecastIntensity: true,
       forecastProbability: true,
       forecastTotal: true,
       showAirQuality: false,
+      heroOrder: defaultHeroOrder(),
+      sectionOrder: defaultSectionOrder(),
+      hourlyOrder: defaultHourlyOrder(),
+      dailyOrder: defaultDailyOrder(),
       airQualityIndex: true,
       airQualityPollen: true,
       airQualityColor: true,
@@ -1274,12 +1307,31 @@ Panel {
       currentAirQualityColor: false,
       currentAirQualityColorWhenRelevant: false,
       currentAirQualityColorOnHover: false,
+      currentDayRange: false,
+      currentDayRangeWhenRelevant: false,
+      currentDayRangeOnHover: false,
+      currentRainAmount: false,
+      currentRainAmountWhenRelevant: false,
+      currentRainAmountOnHover: false,
+      currentSunrise: false,
+      currentSunriseWhenRelevant: false,
+      currentSunriseOnHover: false,
+      currentSunset: false,
+      currentSunsetWhenRelevant: false,
+      currentSunsetOnHover: false,
+      currentSunNext: false,
+      currentSunNextWhenRelevant: false,
+      currentSunNextOnHover: false,
+      currentMoon: false,
+      currentMoonWhenRelevant: false,
+      currentMoonOnHover: false,
       currentPollen: false,
       currentPollenWhenRelevant: false,
       currentPollenOnHover: false,
       currentWarnings: true,
       currentWarningsWhenRelevant: false,
       currentWarningsOnHover: false,
+      entryOrder: defaultMenubarEntryOrder(),
       hoverUnitSystem: "",
       openWidgetOnHover: false,
       notifySevereWarnings: true,
@@ -1314,8 +1366,139 @@ Panel {
     return optionValue(options, surface, key, fallback)
   }
 
+  // Display order per surface. Entries the file does not name keep their
+  // place at the end, so a new entry never disappears.
+  function defaultMenubarEntryOrder() {
+    return ["currentWeatherSymbol", "currentLocation", "currentTemperature", "currentDayRange",
+      "currentFeelsLike", "currentWind", "currentHumidity", "currentUv", "currentRain",
+      "currentRainAmount", "currentSunrise", "currentSunset", "currentSunNext", "currentMoon",
+      "currentAirQuality", "currentPollen", "currentWarnings"]
+  }
+
+  function defaultHeroOrder() {
+    return ["heroFeelsLike", "heroWind", "heroHumidity"]
+  }
+
+  function defaultSectionOrder() {
+    return ["airQuality", "hourly", "daily", "forecast"]
+  }
+
+  function defaultHourlyOrder() {
+    return ["hourlyTime", "hourlyIcon", "hourlyTemperature", "hourlyRainProbability",
+      "hourlyRainAmount", "hourlyUv", "hourlyWind"]
+  }
+
+  function defaultDailyOrder() {
+    return ["dailyDayName", "dailyIcon", "dailyTemperature", "dailyRainProbability",
+      "dailyRainAmount", "dailyUv", "dailyWind", "dailySunEvents", "dailySunNext"]
+  }
+
+  function defaultOrderFor(orderKey) {
+    if (orderKey === "entryOrder") return defaultMenubarEntryOrder()
+    if (orderKey === "heroOrder") return defaultHeroOrder()
+    if (orderKey === "hourlyOrder") return defaultHourlyOrder()
+    if (orderKey === "dailyOrder") return defaultDailyOrder()
+    return defaultSectionOrder()
+  }
+
+  // Which list an entry in the settings belongs to.
+  function orderListKeyForSetting(key) {
+    if (String(key).indexOf("current") === 0 || key === "showCurrent") return "entryOrder"
+    if (String(key).indexOf("hero") === 0) return "heroOrder"
+    if (String(key).indexOf("hourly") === 0 && key !== "showHourly") return "hourlyOrder"
+    if (String(key).indexOf("daily") === 0 && key !== "showDaily") return "dailyOrder"
+    if (key === "showAirQuality" || key === "showHourly" || key === "showDaily" || key === "showForecast")
+      return "sectionOrder"
+    return ""
+  }
+
+  // The stored order, cleaned up against the defaults.
+  function sanitizedOrder(value, orderKey) {
+    var defaults = defaultOrderFor(orderKey)
+    var result = []
+    var list = value && value.length !== undefined ? value : []
+    for (var i = 0; i < list.length; i++) {
+      var key = String(list[i])
+      if (defaults.indexOf(key) >= 0 && result.indexOf(key) < 0) result.push(key)
+    }
+    for (var d = 0; d < defaults.length; d++)
+      if (result.indexOf(defaults[d]) < 0) result.push(defaults[d])
+    return result
+  }
+
+  readonly property var menubarEntryOrder: sanitizedOrder(
+    menubarDisplayOptions ? menubarDisplayOptions.entryOrder : null, "entryOrder")
+  readonly property var displayHeroOrder: sanitizedOrder(displaySetting("heroOrder", null), "heroOrder")
+  readonly property var displaySectionOrder: sanitizedOrder(displaySetting("sectionOrder", null), "sectionOrder")
+  readonly property var displayHourlyOrder: sanitizedOrder(displaySetting("hourlyOrder", null), "hourlyOrder")
+  readonly property var displayDailyOrder: sanitizedOrder(displaySetting("dailyOrder", null), "dailyOrder")
+  readonly property var settingsEntryOrder: sanitizedOrder(settingsDisplaySetting("entryOrder", null), "entryOrder")
+  readonly property var settingsHeroOrder: sanitizedOrder(settingsDisplaySetting("heroOrder", null), "heroOrder")
+  readonly property var settingsSectionOrder: sanitizedOrder(settingsDisplaySetting("sectionOrder", null), "sectionOrder")
+  readonly property var settingsHourlyOrder: sanitizedOrder(settingsDisplaySetting("hourlyOrder", null), "hourlyOrder")
+  readonly property var settingsDailyOrder: sanitizedOrder(settingsDisplaySetting("dailyOrder", null), "dailyOrder")
+
   function menubarDisplaySetting(key, fallback) {
     return optionValue(menubarDisplayOptions, "menubar", key, fallback)
+  }
+
+  // Settings rows that share one spot in the bar move together.
+  function settingsOrderFor(orderKey) {
+    if (orderKey === "entryOrder") return settingsEntryOrder
+    if (orderKey === "heroOrder") return settingsHeroOrder
+    if (orderKey === "hourlyOrder") return settingsHourlyOrder
+    if (orderKey === "dailyOrder") return settingsDailyOrder
+    return settingsSectionOrder
+  }
+
+  // The settings rows and cards follow the order they describe, so the
+  // arrows move an entry where the eye expects it.
+  function sortedByOrder(entries, orderKey, keyOf) {
+    var order = settingsOrderFor(orderKey)
+    var decorated = []
+    for (var i = 0; i < entries.length; i++) {
+      var place = order.indexOf(orderKeyForSetting(keyOf(entries[i])))
+      decorated.push({ entry: entries[i], place: place < 0 ? -1 : place, index: i })
+    }
+    decorated.sort(function(a, b) {
+      if (a.place < 0 || b.place < 0) return a.index - b.index
+      return a.place - b.place || a.index - b.index
+    })
+    var result = []
+    for (var d = 0; d < decorated.length; d++) result.push(decorated[d].entry)
+    return result
+  }
+
+  // Whether the picked view still draws its entries in factory order.
+  readonly property bool settingsOrderIsDefault: settingsTargetSurface === "menubar"
+    ? String(settingsEntryOrder) === String(defaultMenubarEntryOrder())
+    : (String(settingsHeroOrder) === String(defaultHeroOrder())
+      && String(settingsSectionOrder) === String(defaultSectionOrder())
+      && String(settingsHourlyOrder) === String(defaultHourlyOrder())
+      && String(settingsDailyOrder) === String(defaultDailyOrder()))
+
+  // A card's rows all belong to the same list, so the first one names it.
+  function settingsOrderedOptions(options) {
+    var list = options || []
+    var orderKey = list.length > 0 ? orderListKeyForSetting(list[0].key) : ""
+    if (orderKey === "") return list
+    return sortedByOrder(list, orderKey, function(option) { return option.key })
+  }
+
+  function settingsOrderedCards(cards) {
+    if (settingsTargetSurface === "menubar") return cards
+    return sortedByOrder(cards || [], "sectionOrder", function(card) { return card.masterKey })
+  }
+
+  function orderKeyForSetting(key) {
+    if (key === "currentPrecipitation" || key === "currentRainIntensity" || key === "currentRainStart")
+      return "currentRain"
+    if (key === "currentAirQualityColor") return "currentAirQuality"
+    if (key === "showAirQuality") return "airQuality"
+    if (key === "showHourly") return "hourly"
+    if (key === "showDaily") return "daily"
+    if (key === "showForecast") return "forecast"
+    return key
   }
 
   function menubarEntryConfigured(key) {
@@ -1347,6 +1530,16 @@ Panel {
     if (key === "currentRainStart") return upcomingRainTime !== ""
     if (key === "currentAirQuality" || key === "currentAirQualityColor")
       return !!airQualitySummary && airQualitySummary.category >= 3
+    if (key === "currentRainAmount")
+      return !!nextHourForecast && parseFloat(nextHourForecast.rainAmount) > 0
+    // The sun events matter as they come closer: within the hour before them.
+    if (key === "currentSunrise") return sunEventWithinTheHour(todayForecast ? todayForecast.sunrise : "")
+    if (key === "currentSunset") return sunEventWithinTheHour(todayForecast ? todayForecast.sunset : "")
+    if (key === "currentSunNext") {
+      var next = nextSunEvent(todayForecast, 0)
+      return !!next && sunEventWithinTheHour(next.time)
+    }
+    if (key === "currentMoon") return !!heroNightSymbol || isNightNow
     if (key === "currentPollen") return !!topPollen && topPollen.level >= 3
     if (key === "currentWarnings") return hasWeatherAlert
     return false
@@ -2139,8 +2332,8 @@ Panel {
   }
 
   function scrollDailyBy(columns) {
-    if (!daily || !daily.scroller) return
-    var scroller = daily.scroller
+    if (!dailySection || !dailySection.scroller) return
+    var scroller = dailySection.scroller
     var step = forecastColumnWidth(scroller.width) + forecastColumnGap
     var maximum = Math.max(0, scroller.contentWidth - scroller.width)
     scroller.contentX = Math.max(0, Math.min(maximum, scroller.contentX + columns * step))
@@ -2510,6 +2703,35 @@ Panel {
   function forecastEventTime(value) {
     var timestamp = String(value || "")
     return timestamp.length >= 16 ? timestamp.slice(11, 16) : "–"
+  }
+
+  // The sun event a day still has ahead of it: sunrise before dawn, sunset
+  // during the day, and the next day's sunrise once the sun has set. Days
+  // after today always start with their sunrise.
+  // True while the sun is below the horizon at the place.
+  readonly property bool isNightNow: {
+    if (!todayForecast || !todayForecast.sunrise || !todayForecast.sunset) return false
+    var now = nowDate.getTime()
+    return now < new Date(todayForecast.sunrise).getTime()
+      || now > new Date(todayForecast.sunset).getTime()
+  }
+
+  function sunEventWithinTheHour(value) {
+    if (!value) return false
+    var delta = new Date(value).getTime() - nowDate.getTime()
+    return delta >= 0 && delta <= 3600000
+  }
+
+  function nextSunEvent(day, index) {
+    if (!day) return null
+    var now = nowDate
+    var sunrise = day.sunrise ? new Date(day.sunrise) : null
+    var sunset = day.sunset ? new Date(day.sunset) : null
+    if (sunrise && now < sunrise) return { rising: true, time: day.sunrise }
+    if (sunset && now < sunset) return { rising: false, time: day.sunset }
+    var next = forecastDays.length > index + 1 ? forecastDays[index + 1] : null
+    if (next && next.sunrise) return { rising: true, time: next.sunrise }
+    return sunset ? { rising: false, time: day.sunset } : null
   }
 
   function paintSunEventIcon(canvas, rising) {
@@ -3253,6 +3475,7 @@ Panel {
       anchors.fill: parent
       contentWidth: width
       contentHeight: weatherColumn.implicitHeight
+
       clip: true
       boundsBehavior: Flickable.StopAtBounds
       interactive: contentHeight > height
@@ -3275,10 +3498,24 @@ Panel {
         }
 
         WeatherAlerts { panel: root; width: parent.width }
-        WeatherAirQualitySection { panel: root }
-        WeatherHourly { panel: root }
-        WeatherDaily { id: daily; panel: root }
-        WeatherForecast { panel: root }
+        Component { id: airQualitySectionComponent; WeatherAirQualitySection { panel: root } }
+        Component { id: hourlySectionComponent; WeatherHourly { panel: root } }
+        Component { id: dailySectionComponent; WeatherDaily { panel: root } }
+        Component { id: forecastSectionComponent; WeatherForecast { panel: root } }
+
+        // Sections in the order chosen under Settings → Display.
+        Repeater {
+          model: root.displaySectionOrder
+
+          Loader {
+            required property string modelData
+            width: weatherColumn.width
+            sourceComponent: modelData === "airQuality" ? airQualitySectionComponent
+              : (modelData === "hourly" ? hourlySectionComponent
+                : (modelData === "daily" ? dailySectionComponent : forecastSectionComponent))
+            onLoaded: if (modelData === "daily") root.dailySection = item
+          }
+        }
 
         Text {
           visible: root.usingCachedData

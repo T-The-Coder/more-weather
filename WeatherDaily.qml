@@ -66,148 +66,196 @@ Column {
             spacing: Style.space(3)
             width: panel.forecastColumnWidth(forecastScroller.width)
 
-            // Long weekday names fall back to the short form when a narrow
-            // column cannot fit them (DONNERSTAG in the popup, say).
-            Text {
-              readonly property string longName: panel.dailyDayName(dayColumn.modelData.date).toUpperCase()
-              visible: panel.displaySetting("dailyDayName", true)
-              anchors.horizontalCenter: parent.horizontalCenter
-              text: panel.captionTextWidth(longName) <= dayColumn.width
-                ? longName
-                : panel.dailyDayName(dayColumn.modelData.date, true).toUpperCase()
-              color: panel.mutedText
-              font.family: panel.fontFamily
-              font.pixelSize: Style.font.caption
-              font.italic: panel.cachedField(modelData, "date")
-              font.letterSpacing: 1
-            }
+            // Values in the order chosen under Settings → Display.
+            Repeater {
+              model: panel.displayDailyOrder
 
-            Text {
-              visible: panel.displaySetting("dailyIcon", true)
-              anchors.horizontalCenter: parent.horizontalCenter
-              text: panel.dayIcon(modelData)
-              color: panel.foreground
-              font.family: panel.fontFamily
-              font.pixelSize: Style.font.title
-              font.italic: panel.cachedField(modelData, "openMeteoWeatherCode")
-            }
-
-            Row {
-              visible: panel.displaySetting("dailyTemperature", true)
-              anchors.horizontalCenter: parent.horizontalCenter
-              spacing: Style.space(6)
-
-              Text {
-                text: panel.bareTempForDay(modelData, "max")
-                color: panel.foreground
-                font.family: panel.fontFamily
-                font.pixelSize: Style.font.body
-                // Bold like the hourly temperature; the minimum stays muted.
-                font.bold: true
-                font.italic: panel.cachedField(modelData,
-                  panel.useImperial ? "maxtempF" : "maxtempC")
+              Loader {
+                required property string modelData
+                anchors.horizontalCenter: parent.horizontalCenter
+                // The entry's own flag: `visible` would report this loader's
+                // state back to itself.
+                visible: item ? item.entryVisible : false
+                sourceComponent: modelData === "dailyIcon" ? dayIconEntry
+                  : (modelData === "dailyTemperature" ? dayTemperatureEntry
+                    : (modelData === "dailySunEvents" ? daySunEventsEntry
+                      : (modelData === "dailySunNext" ? daySunNextEntry : dayTextEntry)))
               }
+            }
+
+            Component {
+              id: dayTextEntry
+
               Text {
-                text: panel.bareTempForDay(modelData, "min")
+                readonly property string entryKey: parent ? parent.modelData : ""
+                // Long weekday names fall back to the short form when a narrow
+                // column cannot fit them (DONNERSTAG in the popup, say).
+                readonly property string longName: entryKey === "dailyDayName"
+                  ? panel.dailyDayName(dayColumn.modelData.date).toUpperCase() : ""
+                property bool entryVisible: panel.displaySetting(entryKey, true)
+                visible: entryVisible
+                text: {
+                  var day = dayColumn.modelData
+                  if (entryKey === "dailyDayName")
+                    return panel.captionTextWidth(longName) <= dayColumn.width
+                      ? longName : panel.dailyDayName(day.date, true).toUpperCase()
+                  if (entryKey === "dailyRainProbability")
+                    return "󰖗 " + (day.rainProbability !== "" ? day.rainProbability : "–") + "%"
+                  if (entryKey === "dailyRainAmount") return "󰖌 " + panel.precipitationText(day.rainAmount, false)
+                  if (entryKey === "dailyUv")
+                    return "UV " + (day.uvIndex !== "" ? panel.localizedNumber(day.uvIndex) : "–")
+                  if (entryKey === "dailyWind") return "󰖝 " + panel.forecastWind(day)
+                  return ""
+                }
                 color: panel.mutedText
                 font.family: panel.fontFamily
-                font.pixelSize: Style.font.body
-                font.italic: panel.cachedField(modelData,
-                  panel.useImperial ? "mintempF" : "mintempC")
+                font.pixelSize: Style.font.caption
+                font.letterSpacing: entryKey === "dailyDayName" ? 1 : 0
+                font.italic: {
+                  var day = dayColumn.modelData
+                  if (entryKey === "dailyDayName") return panel.cachedField(day, "date")
+                  if (entryKey === "dailyRainProbability") return panel.cachedField(day, "rainProbability")
+                  if (entryKey === "dailyRainAmount") return panel.cachedField(day, "rainAmount")
+                  if (entryKey === "dailyUv") return panel.cachedField(day, "uvIndex")
+                  if (entryKey === "dailyWind")
+                    return panel.cachedField(day, panel.useImperial ? "windSpeedMph" : "windSpeedKmph")
+                  return false
+                }
               }
             }
 
-            Text {
-              visible: panel.displaySetting("dailyRainProbability", true)
-              anchors.horizontalCenter: parent.horizontalCenter
-              text: "󰖗 " + (modelData.rainProbability !== "" ? modelData.rainProbability : "–") + "%"
-              color: panel.mutedText
-              font.family: panel.fontFamily
-              font.pixelSize: Style.font.caption
-              font.italic: panel.cachedField(modelData, "rainProbability")
+            Component {
+              id: dayIconEntry
+
+              Text {
+                property bool entryVisible: panel.displaySetting("dailyIcon", true)
+                visible: entryVisible
+                text: panel.dayIcon(dayColumn.modelData)
+                color: panel.foreground
+                font.family: panel.fontFamily
+                font.pixelSize: Style.font.title
+                font.italic: panel.cachedField(dayColumn.modelData, "openMeteoWeatherCode")
+              }
             }
 
-            Text {
-              visible: panel.displaySetting("dailyRainAmount", true)
-              anchors.horizontalCenter: parent.horizontalCenter
-              text: "󰖌 " + panel.precipitationText(modelData.rainAmount, false)
-              color: panel.mutedText
-              font.family: panel.fontFamily
-              font.pixelSize: Style.font.caption
-              font.italic: panel.cachedField(modelData, "rainAmount")
-            }
-
-            Text {
-              visible: panel.displaySetting("dailyUv", true)
-              anchors.horizontalCenter: parent.horizontalCenter
-              text: "UV " + (modelData.uvIndex !== "" ? panel.localizedNumber(modelData.uvIndex) : "–")
-              color: panel.mutedText
-              font.family: panel.fontFamily
-              font.pixelSize: Style.font.caption
-              font.italic: panel.cachedField(modelData, "uvIndex")
-            }
-
-            Text {
-              visible: panel.displaySetting("dailyWind", true)
-              anchors.horizontalCenter: parent.horizontalCenter
-              text: "󰖝 " + panel.forecastWind(modelData)
-              color: panel.mutedText
-              font.family: panel.fontFamily
-              font.pixelSize: Style.font.caption
-              font.italic: panel.cachedField(modelData,
-                panel.useImperial ? "windSpeedMph" : "windSpeedKmph")
-            }
-
-            Grid {
-              visible: panel.displaySetting("dailySunEvents", true)
-              anchors.horizontalCenter: parent.horizontalCenter
-              columns: panel.standaloneMode ? 2 : 1
-              columnSpacing: Style.space(4)
-              rowSpacing: Style.space(1)
+            Component {
+              id: dayTemperatureEntry
 
               Row {
+                property bool entryVisible: panel.displaySetting("dailyTemperature", true)
+                visible: entryVisible
+                spacing: Style.space(6)
+
+                Text {
+                  text: panel.bareTempForDay(dayColumn.modelData, "max")
+                  color: panel.foreground
+                  font.family: panel.fontFamily
+                  font.pixelSize: Style.font.body
+                  // Bold like the hourly temperature; the minimum stays muted.
+                  font.bold: true
+                  font.italic: panel.cachedField(dayColumn.modelData,
+                    panel.useImperial ? "maxtempF" : "maxtempC")
+                }
+                Text {
+                  text: panel.bareTempForDay(dayColumn.modelData, "min")
+                  color: panel.mutedText
+                  font.family: panel.fontFamily
+                  font.pixelSize: Style.font.body
+                  font.italic: panel.cachedField(dayColumn.modelData,
+                    panel.useImperial ? "mintempF" : "mintempC")
+                }
+              }
+            }
+
+            // Only what is still ahead: sunrise or sunset, whichever comes
+            // next for this day.
+            Component {
+              id: daySunNextEntry
+
+              Row {
+                readonly property var event: panel.nextSunEvent(dayColumn.modelData, dayColumn.index)
+                property bool entryVisible: panel.displaySetting("dailySunNext", false) && !!event
+                visible: entryVisible
                 spacing: Style.space(2)
 
                 Canvas {
-                  id: sunriseIcon
+                  id: sunNextIcon
                   anchors.verticalCenter: parent.verticalCenter
                   width: Style.space(11)
                   height: Style.space(11)
                   property color iconColor: panel.mutedText
+                  property bool rising: parent.event ? parent.event.rising : true
                   onIconColorChanged: requestPaint()
-                  onPaint: panel.paintSunEventIcon(sunriseIcon, true)
+                  onRisingChanged: requestPaint()
+                  onPaint: panel.paintSunEventIcon(sunNextIcon, rising)
                 }
 
                 Text {
                   anchors.verticalCenter: parent.verticalCenter
-                  text: panel.forecastEventTime(modelData.sunrise)
+                  text: parent.event ? panel.forecastEventTime(parent.event.time) : ""
                   color: panel.mutedText
                   font.family: panel.fontFamily
                   font.pixelSize: Style.font.caption
-                  font.italic: panel.cachedField(modelData, "sunrise")
+                  font.italic: panel.cachedField(dayColumn.modelData,
+                    parent.event && parent.event.rising ? "sunrise" : "sunset")
                 }
               }
+            }
 
-              Row {
-                spacing: Style.space(2)
+            Component {
+              id: daySunEventsEntry
 
-                Canvas {
-                  id: sunsetIcon
-                  anchors.verticalCenter: parent.verticalCenter
-                  width: Style.space(11)
-                  height: Style.space(11)
-                  property color iconColor: panel.mutedText
-                  onIconColorChanged: requestPaint()
-                  onPaint: panel.paintSunEventIcon(sunsetIcon, false)
+              Grid {
+                property bool entryVisible: panel.displaySetting("dailySunEvents", true)
+                visible: entryVisible
+                columns: panel.standaloneMode ? 2 : 1
+                columnSpacing: Style.space(4)
+                rowSpacing: Style.space(1)
+
+                Row {
+                  spacing: Style.space(2)
+
+                  Canvas {
+                    id: sunriseIcon
+                    anchors.verticalCenter: parent.verticalCenter
+                    width: Style.space(11)
+                    height: Style.space(11)
+                    property color iconColor: panel.mutedText
+                    onIconColorChanged: requestPaint()
+                    onPaint: panel.paintSunEventIcon(sunriseIcon, true)
+                  }
+
+                  Text {
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: panel.forecastEventTime(dayColumn.modelData.sunrise)
+                    color: panel.mutedText
+                    font.family: panel.fontFamily
+                    font.pixelSize: Style.font.caption
+                    font.italic: panel.cachedField(dayColumn.modelData, "sunrise")
+                  }
                 }
 
-                Text {
-                  anchors.verticalCenter: parent.verticalCenter
-                  text: panel.forecastEventTime(modelData.sunset)
-                  color: panel.mutedText
-                  font.family: panel.fontFamily
-                  font.pixelSize: Style.font.caption
-                  font.italic: panel.cachedField(modelData, "sunset")
+                Row {
+                  spacing: Style.space(2)
+
+                  Canvas {
+                    id: sunsetIcon
+                    anchors.verticalCenter: parent.verticalCenter
+                    width: Style.space(11)
+                    height: Style.space(11)
+                    property color iconColor: panel.mutedText
+                    onIconColorChanged: requestPaint()
+                    onPaint: panel.paintSunEventIcon(sunsetIcon, false)
+                  }
+
+                  Text {
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: panel.forecastEventTime(dayColumn.modelData.sunset)
+                    color: panel.mutedText
+                    font.family: panel.fontFamily
+                    font.pixelSize: Style.font.caption
+                    font.italic: panel.cachedField(dayColumn.modelData, "sunset")
+                  }
                 }
               }
             }

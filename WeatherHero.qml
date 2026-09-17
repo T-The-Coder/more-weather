@@ -149,73 +149,78 @@ Column {
       anchors.right: parent.right
       anchors.verticalCenter: parent.verticalCenter
       spacing: Style.space(24)
-      property real statColumnWidth: Math.max(feelsLabel.implicitWidth,
-        windLabel.implicitWidth, humidityLabel.implicitWidth,
-        feelsValue.implicitWidth, windValue.implicitWidth, humidityValue.implicitWidth)
+      // Equal columns, measured off the labels and values themselves. The
+      // delegates below are built from the chosen order, so the widths come
+      // from these hidden twins instead.
+      property real statColumnWidth: Math.max(feelsLabelMetrics.width, windLabelMetrics.width,
+        humidityLabelMetrics.width, feelsValueMetrics.width, windValueMetrics.width,
+        humidityValueMetrics.width)
 
-      Column {
-        visible: panel.displaySetting("heroFeelsLike", true)
-        width: weatherStats.statColumnWidth
-        spacing: Style.space(5)
-        Text {
-          id: feelsLabel
-          text: panel.interfaceLanguage === "de" ? "GEFÜHLT" : panel.upperLabel(panel.i18n("feelsLikeShort"))
-          color: panel.mutedText
-          font.family: panel.fontFamily
-          font.pixelSize: Style.font.bodySmall
-          font.letterSpacing: 1
-        }
-        Text {
-          id: feelsValue
-          text: panel.reportFeels
-          color: panel.foreground
-          font.family: panel.fontFamily
-          font.pixelSize: Style.font.title
-          font.italic: panel.currentFeelsCached
-        }
+      TextMetrics {
+        id: feelsLabelMetrics
+        font.family: panel.fontFamily
+        font.pixelSize: Style.font.bodySmall
+        font.letterSpacing: 1
+        text: panel.interfaceLanguage === "de" ? "GEFÜHLT" : panel.upperLabel(panel.i18n("feelsLikeShort"))
+      }
+      TextMetrics {
+        id: windLabelMetrics
+        font: feelsLabelMetrics.font
+        text: panel.upperLabel(panel.i18n("wind"))
+      }
+      TextMetrics {
+        id: humidityLabelMetrics
+        font: feelsLabelMetrics.font
+        text: panel.upperLabel(panel.i18n("humidity"))
+      }
+      TextMetrics {
+        id: feelsValueMetrics
+        font.family: panel.fontFamily
+        font.pixelSize: Style.font.title
+        text: panel.reportFeels
+      }
+      TextMetrics {
+        id: windValueMetrics
+        font: feelsValueMetrics.font
+        text: panel.reportWind
+      }
+      TextMetrics {
+        id: humidityValueMetrics
+        font: feelsValueMetrics.font
+        text: panel.reportHumidity
       }
 
-      Column {
-        visible: panel.displaySetting("heroWind", true)
-        width: weatherStats.statColumnWidth
-        spacing: Style.space(5)
-        Text {
-          id: windLabel
-          text: panel.upperLabel(panel.i18n("wind"))
-          color: panel.mutedText
-          font.family: panel.fontFamily
-          font.pixelSize: Style.font.bodySmall
-          font.letterSpacing: 1
-        }
-        Text {
-          id: windValue
-          text: panel.reportWind
-          color: panel.foreground
-          font.family: panel.fontFamily
-          font.pixelSize: Style.font.title
-          font.italic: panel.currentWindCached
-        }
-      }
+      // The three values in the order chosen under Settings → Display.
+      Repeater {
+        model: panel.displayHeroOrder
 
-      Column {
-        visible: panel.displaySetting("heroHumidity", true)
-        width: weatherStats.statColumnWidth
-        spacing: Style.space(5)
-        Text {
-          id: humidityLabel
-          text: panel.upperLabel(panel.i18n("humidity"))
-          color: panel.mutedText
-          font.family: panel.fontFamily
-          font.pixelSize: Style.font.bodySmall
-          font.letterSpacing: 1
-        }
-        Text {
-          id: humidityValue
-          text: panel.reportHumidity
-          color: panel.foreground
-          font.family: panel.fontFamily
-          font.pixelSize: Style.font.title
-          font.italic: panel.currentHumidityCached
+        Column {
+          required property string modelData
+          readonly property bool isFeels: modelData === "heroFeelsLike"
+          readonly property bool isWind: modelData === "heroWind"
+          visible: panel.displaySetting(modelData, true)
+          width: weatherStats.statColumnWidth
+          spacing: Style.space(5)
+
+          Text {
+            text: parent.isFeels
+              ? (panel.interfaceLanguage === "de" ? "GEFÜHLT" : panel.upperLabel(panel.i18n("feelsLikeShort")))
+              : panel.upperLabel(panel.i18n(parent.isWind ? "wind" : "humidity"))
+            color: panel.mutedText
+            font.family: panel.fontFamily
+            font.pixelSize: Style.font.bodySmall
+            font.letterSpacing: 1
+          }
+
+          Text {
+            text: parent.isFeels ? panel.reportFeels
+              : (parent.isWind ? panel.reportWind : panel.reportHumidity)
+            color: panel.foreground
+            font.family: panel.fontFamily
+            font.pixelSize: Style.font.title
+            font.italic: parent.isFeels ? panel.currentFeelsCached
+              : (parent.isWind ? panel.currentWindCached : panel.currentHumidityCached)
+          }
         }
       }
     }

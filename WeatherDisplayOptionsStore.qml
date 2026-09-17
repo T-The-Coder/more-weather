@@ -79,6 +79,8 @@ Item {
       if (key === "defaultForecastTab") {
         var tab = parseInt(source[key], 10)
         result[key] = isNaN(tab) ? defaults[key] : Math.max(0, Math.min(2, tab))
+      } else if (key.indexOf("Order") > 0) {
+        result[key] = panel.sanitizedOrder(source[key], key)
       } else if (key === "hoverUnitSystem") {
         result[key] = normalizedHoverUnitSystem(source[key])
       } else {
@@ -178,14 +180,43 @@ Item {
     if (surface === activeSurface) panel.precipitationTab = next.defaultForecastTab
   }
 
+  // Puts the picked view's entries back into factory order, leaving every
+  // switch as it is.
+  function restoreSettingsDisplayOrder() {
+    if (panel.settingsTargetSurface === "menubar") {
+      setSettingsDisplaySetting("entryOrder", panel.defaultMenubarEntryOrder())
+      return
+    }
+    setSettingsDisplaySetting("heroOrder", panel.defaultHeroOrder())
+    setSettingsDisplaySetting("sectionOrder", panel.defaultSectionOrder())
+    setSettingsDisplaySetting("hourlyOrder", panel.defaultHourlyOrder())
+    setSettingsDisplaySetting("dailyOrder", panel.defaultDailyOrder())
+  }
+
   function settingsDisplayIsDefault() {
     var surface = panel.settingsTargetSurface
     var options = surface === "app" ? panel.appDisplayOptions
       : (surface === "widget" ? panel.widgetDisplayOptions : panel.menubarDisplayOptions)
     var defaults = panel.defaultOptionsFor(surface)
-    for (var key in defaults)
-      if (panel.optionValue(options, surface, key, undefined) !== defaults[key]) return false
+    for (var key in defaults) {
+      var value = panel.optionValue(options, surface, key, undefined)
+      var fallback = defaults[key]
+      if (fallback && fallback.length !== undefined && typeof fallback !== "string") {
+        if (String(value) !== String(fallback)) return false
+      } else if (value !== fallback) return false
+    }
     return true
+  }
+
+  // Moves one entry up or down in its list and writes the new order.
+  function moveSettingsDisplayEntry(orderKey, key, delta) {
+    var order = panel.sanitizedOrder(panel.settingsDisplaySetting(orderKey, null), orderKey)
+    var index = order.indexOf(key)
+    var target = index + delta
+    if (index < 0 || target < 0 || target >= order.length) return
+    order.splice(index, 1)
+    order.splice(target, 0, key)
+    setSettingsDisplaySetting(orderKey, order)
   }
 
   function setSettingsDisplaySetting(key, value) {
@@ -195,7 +226,8 @@ Item {
     var next = sanitizedDisplayOptions(source, surface)
     next[key] = (key === "defaultForecastTab"
         ? Math.max(0, Math.min(2, Number(value) || 0))
-        : (key === "hoverUnitSystem" ? normalizedHoverUnitSystem(value) : !!value))
+        : (key === "hoverUnitSystem" ? normalizedHoverUnitSystem(value)
+          : (key.indexOf("Order") > 0 ? panel.sanitizedOrder(value, key) : !!value)))
     // A menu bar entry shows always, when relevant, or on hover: switching
     // one on switches the other two off.
     if (surface === "menubar" && next[key] === true) {

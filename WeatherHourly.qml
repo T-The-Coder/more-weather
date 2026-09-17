@@ -37,86 +37,83 @@ Column {
         model: panel.hourlyForecast
 
         Column {
+          id: hourColumn
           required property var modelData
+          readonly property var hour: modelData
           spacing: Style.space(3)
           width: panel.forecastColumnWidth(hourlySection.width)
 
-          Text {
-            visible: panel.displaySetting("hourlyTime", true)
-            anchors.horizontalCenter: parent.horizontalCenter
-            text: panel.hourlyTime(modelData)
-            color: panel.mutedText
-            font.family: panel.fontFamily
-            font.pixelSize: Style.font.caption
-            font.italic: panel.cachedField(modelData, "time")
-          }
+          // Values in the order chosen under Settings → Display.
+          Repeater {
+            model: panel.displayHourlyOrder
 
-          Text {
-            id: hourIcon
-            visible: panel.displaySetting("hourlyIcon", true)
-            anchors.horizontalCenter: parent.horizontalCenter
-            transform: Scale {
-              origin.x: hourIcon.width / 2
-              xScale: panel.mirrorsGlyph(hourIcon.text) ? -1 : 1
+            Loader {
+              required property string modelData
+              anchors.horizontalCenter: parent.horizontalCenter
+              // The entry's own flag: `visible` would report this loader's
+              // state back to itself.
+              visible: item ? item.entryVisible : false
+              sourceComponent: modelData === "hourlyIcon" ? hourIconEntry : hourTextEntry
             }
-            text: panel.hourlyIcon(modelData)
-            color: panel.foreground
-            font.family: panel.fontFamily
-            font.pixelSize: Style.font.title
-            font.italic: panel.cachedField(modelData, "weatherCode")
-              || panel.cachedField(modelData, "isDay")
           }
 
-          Text {
-            visible: panel.displaySetting("hourlyTemperature", true)
-            anchors.horizontalCenter: parent.horizontalCenter
-            text: panel.hourlyTemp(modelData)
-            color: panel.foreground
-            font.family: panel.fontFamily
-            font.pixelSize: Style.font.body
-            font.bold: true
-            font.italic: panel.cachedField(modelData, panel.useImperial ? "tempF" : "tempC")
+          Component {
+            id: hourTextEntry
+
+            Text {
+              readonly property string entryKey: parent ? parent.modelData : ""
+              readonly property bool isTemperature: entryKey === "hourlyTemperature"
+              property bool entryVisible: panel.displaySetting(entryKey, true)
+              visible: entryVisible
+              text: {
+                var hour = hourColumn.hour
+                if (entryKey === "hourlyTime") return panel.hourlyTime(hour)
+                if (entryKey === "hourlyTemperature") return panel.hourlyTemp(hour)
+                if (entryKey === "hourlyRainProbability")
+                  return "󰖗 " + (hour.rainProbability !== "" ? hour.rainProbability : "–") + "%"
+                if (entryKey === "hourlyRainAmount") return "󰖌 " + panel.precipitationText(hour.rainAmount, false)
+                if (entryKey === "hourlyUv")
+                  return "UV " + (hour.uvIndex !== "" ? panel.localizedNumber(hour.uvIndex) : "–")
+                if (entryKey === "hourlyWind") return "󰖝 " + panel.forecastWind(hour)
+                return ""
+              }
+              color: isTemperature ? panel.foreground : panel.mutedText
+              font.family: panel.fontFamily
+              font.pixelSize: isTemperature ? Style.font.body : Style.font.caption
+              font.bold: isTemperature
+              font.italic: {
+                var hour = hourColumn.hour
+                if (entryKey === "hourlyTime") return panel.cachedField(hour, "time")
+                if (entryKey === "hourlyTemperature")
+                  return panel.cachedField(hour, panel.useImperial ? "tempF" : "tempC")
+                if (entryKey === "hourlyRainProbability") return panel.cachedField(hour, "rainProbability")
+                if (entryKey === "hourlyRainAmount") return panel.cachedField(hour, "rainAmount")
+                if (entryKey === "hourlyUv") return panel.cachedField(hour, "uvIndex")
+                if (entryKey === "hourlyWind")
+                  return panel.cachedField(hour, panel.useImperial ? "windSpeedMph" : "windSpeedKmph")
+                return false
+              }
+            }
           }
 
-          Text {
-            visible: panel.displaySetting("hourlyRainProbability", true)
-            anchors.horizontalCenter: parent.horizontalCenter
-            text: "󰖗 " + (modelData.rainProbability !== "" ? modelData.rainProbability : "–") + "%"
-            color: panel.mutedText
-            font.family: panel.fontFamily
-            font.pixelSize: Style.font.caption
-            font.italic: panel.cachedField(modelData, "rainProbability")
-          }
+          Component {
+            id: hourIconEntry
 
-          Text {
-            visible: panel.displaySetting("hourlyRainAmount", true)
-            anchors.horizontalCenter: parent.horizontalCenter
-            text: "󰖌 " + panel.precipitationText(modelData.rainAmount, false)
-            color: panel.mutedText
-            font.family: panel.fontFamily
-            font.pixelSize: Style.font.caption
-            font.italic: panel.cachedField(modelData, "rainAmount")
-          }
-
-          Text {
-            visible: panel.displaySetting("hourlyUv", true)
-            anchors.horizontalCenter: parent.horizontalCenter
-            text: "UV " + (modelData.uvIndex !== "" ? panel.localizedNumber(modelData.uvIndex) : "–")
-            color: panel.mutedText
-            font.family: panel.fontFamily
-            font.pixelSize: Style.font.caption
-            font.italic: panel.cachedField(modelData, "uvIndex")
-          }
-
-          Text {
-            visible: panel.displaySetting("hourlyWind", true)
-            anchors.horizontalCenter: parent.horizontalCenter
-            text: "󰖝 " + panel.forecastWind(modelData)
-            color: panel.mutedText
-            font.family: panel.fontFamily
-            font.pixelSize: Style.font.caption
-            font.italic: panel.cachedField(modelData,
-              panel.useImperial ? "windSpeedMph" : "windSpeedKmph")
+            Text {
+              id: hourIcon
+              property bool entryVisible: panel.displaySetting("hourlyIcon", true)
+              visible: entryVisible
+              transform: Scale {
+                origin.x: hourIcon.width / 2
+                xScale: panel.mirrorsGlyph(hourIcon.text) ? -1 : 1
+              }
+              text: panel.hourlyIcon(hourColumn.hour)
+              color: panel.foreground
+              font.family: panel.fontFamily
+              font.pixelSize: Style.font.title
+              font.italic: panel.cachedField(hourColumn.hour, "weatherCode")
+                || panel.cachedField(hourColumn.hour, "isDay")
+            }
           }
         }
       }

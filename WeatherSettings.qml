@@ -368,9 +368,11 @@ Rectangle {
       Repeater {
         // Menu bar: cards in the order the entries appear in the bar; the
         // first card's switch shows or hides the whole bar entry.
-        model: panel.settingsTargetSurface === "menubar" ? [
+        model: panel.settingsOrderedCards(panel.settingsTargetSurface === "menubar" ? [
+          // One list, in the order the bar draws it: the entries come from
+          // different corners of the forecast, but they share one row.
           {
-            title: panel.i18n("currentWeather"),
+            title: panel.upperLabel(panel.i18n("menubar")),
             masterKey: "showCurrent",
             options: [
               { key: "currentWeatherSymbol", title: panel.i18n("weatherSymbol"), hover: true },
@@ -379,42 +381,23 @@ Rectangle {
               { key: "currentFeelsLike", title: panel.i18n("feelsLikeTemperature"), hover: true, relevant: true },
               { key: "currentWind", title: panel.i18n("wind"), hover: true, relevant: true },
               { key: "currentHumidity", title: panel.i18n("humidity"), hover: true },
-              { key: "currentUv", title: panel.i18n("uvIndex"), hover: true, relevant: true }
-            ],
-            hint: panel.i18n("menubarRelevantCurrentHint"),
-            hasDefaultTab: false
-          },
-          {
-            title: panel.upperLabel(panel.i18n("precipitation")),
-            masterKey: "",
-            dependsOn: "showCurrent",
-            options: [
+              { key: "currentUv", title: panel.i18n("uvIndex"), hover: true, relevant: true },
+              { key: "currentDayRange", title: panel.i18n("temperatureRange"), hover: true },
               { key: "currentPrecipitation", title: panel.i18n("rainProbability"), hover: true, relevant: true },
               { key: "currentRainIntensity", title: panel.i18n("rainIntensity"), hover: true, relevant: true },
-              { key: "currentRainStart", title: panel.i18n("rainStartTime"), hover: true, relevant: true }
-            ],
-            hint: panel.i18n("menubarRelevantRainHint"),
-            hasDefaultTab: false
-          },
-          {
-            title: panel.upperLabel(panel.i18n("airQualityPollen")),
-            masterKey: "",
-            dependsOn: "showCurrent",
-            options: [
+              { key: "currentRainAmount", title: panel.i18n("rainAmount"), hover: true, relevant: true },
+              { key: "currentRainStart", title: panel.i18n("rainStartTime"), hover: true, relevant: true },
+              { key: "currentSunrise", title: panel.i18n("sunrise"), hover: true, relevant: true },
+              { key: "currentSunset", title: panel.i18n("sunset"), hover: true, relevant: true },
+              { key: "currentSunNext", title: panel.i18n("sunNext"), hover: true, relevant: true },
+              { key: "currentMoon", title: panel.i18n("moonPhase"), hover: true, relevant: true },
               { key: "currentAirQuality", title: panel.i18n("airQualityIndex"), hover: true, relevant: true },
               { key: "currentAirQualityColor", title: panel.i18n("airQualityColor"), hover: true, relevant: true },
-              { key: "currentPollen", title: panel.i18n("pollen"), hover: true, relevant: true }
-            ],
-            hint: panel.i18n("menubarRelevantAirHint"),
-            hasDefaultTab: false
-          },
-          {
-            title: panel.upperLabel(panel.i18n("weatherWarnings")),
-            masterKey: "",
-            dependsOn: "showCurrent",
-            options: [
+              { key: "currentPollen", title: panel.i18n("pollen"), hover: true, relevant: true },
               { key: "currentWarnings", title: panel.i18n("weatherWarnings"), hover: true }
             ],
+            hint: panel.i18n("menubarRelevantCurrentHint") + " " + panel.i18n("menubarRelevantRainHint")
+              + " " + panel.i18n("menubarRelevantAirHint"),
             hasDefaultTab: false
           },
           {
@@ -489,7 +472,8 @@ Rectangle {
               { key: "dailyRainAmount", title: panel.i18n("rainAmount") },
               { key: "dailyUv", title: panel.i18n("uvIndex") },
               { key: "dailyWind", title: panel.i18n("wind") },
-              { key: "dailySunEvents", title: panel.i18n("sunriseSunset") }
+              { key: "dailySunEvents", title: panel.i18n("sunriseSunset") },
+              { key: "dailySunNext", title: panel.i18n("sunNext") }
             ],
             hasDefaultTab: false
           },
@@ -503,7 +487,7 @@ Rectangle {
             ],
             hasDefaultTab: true
           }
-        ]
+        ])
 
         Rectangle {
           id: settingsCard
@@ -535,6 +519,9 @@ Rectangle {
               settingKey: settingsCard.groupData.masterKey
               title: settingsCard.groupData.title
               emphasized: true
+              orderListKey: panel.settingsTargetSurface === "menubar" ? ""
+                : panel.orderListKeyForSetting(settingsCard.groupData.masterKey)
+              orderEntry: panel.orderKeyForSetting(settingsCard.groupData.masterKey)
             }
 
             Text {
@@ -607,7 +594,7 @@ Rectangle {
             }
 
             Repeater {
-              model: settingsCard.groupData.options
+              model: panel.settingsOrderedOptions(settingsCard.groupData.options)
 
               WeatherSwitchRow {
                 panel: settingsView.panel
@@ -616,6 +603,8 @@ Rectangle {
                 settingKey: modelData.key
                 title: modelData.title
                 relevantKey: modelData.relevant ? modelData.key + "WhenRelevant" : ""
+                orderListKey: panel.orderListKeyForSetting(modelData.key)
+                orderEntry: panel.orderKeyForSetting(modelData.key)
                 hoverKey: modelData.hover ? modelData.key + "OnHover" : ""
                 columnWidth: settingsView.switchColumnWidth
                 rowEnabled: (settingsCard.groupData.masterKey === ""
@@ -736,15 +725,54 @@ Rectangle {
         }
       }
 
+      // Both resets side by side: order only, and every switch.
+      Row {
+        visible: panel.settingsPage === "display"
+        anchors.horizontalCenter: parent.horizontalCenter
+        spacing: Style.space(10)
+
+      // Order only: one click, since nothing switches off with it.
+      Rectangle {
+        id: restoreOrderButton
+        width: Math.min((settingsColumn.width - Style.space(10)) / 2,
+          restoreOrderLabel.implicitWidth + Style.space(28))
+        height: Style.space(32)
+        radius: Style.cornerRadius
+        enabled: !panel.settingsOrderIsDefault
+        opacity: enabled ? 1 : 0.42
+        color: restoreOrderMouse.containsMouse && enabled
+          ? Style.hoverFillFor(panel.foreground, Color.accent) : "transparent"
+        border.color: panel.subtleText
+        border.width: Style.spacing.hairline
+
+        Text {
+          id: restoreOrderLabel
+          anchors.centerIn: parent
+          width: Math.min(implicitWidth, (settingsColumn.width - Style.space(10)) / 2 - Style.space(28))
+          text: panel.i18n("restoreOrder")
+          color: panel.foreground
+          font.family: panel.fontFamily
+          font.pixelSize: Style.font.bodySmall
+          elide: Text.ElideRight
+        }
+
+        MouseArea {
+          id: restoreOrderMouse
+          anchors.fill: parent
+          enabled: parent.enabled
+          hoverEnabled: true
+          cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+          onClicked: panel.displayOptionsStore.restoreSettingsDisplayOrder()
+        }
+      }
+
       // Two-step reset: the first click arms it, a second click within a few
       // seconds restores the selected view's factory defaults.
       Rectangle {
         id: restoreDefaultsButton
         property bool armed: false
         readonly property bool isDefault: panel.displayOptionsStore.settingsDisplayIsDefault()
-        visible: panel.settingsPage === "display"
-        anchors.horizontalCenter: parent.horizontalCenter
-        width: Math.min(settingsColumn.width,
+        width: Math.min((settingsColumn.width - Style.space(10)) / 2,
           restoreDefaultsLabel.implicitWidth + Style.space(28))
         height: Style.space(32)
         radius: Style.cornerRadius
@@ -773,7 +801,7 @@ Rectangle {
         Text {
           id: restoreDefaultsLabel
           anchors.centerIn: parent
-          width: Math.min(implicitWidth, settingsColumn.width - Style.space(28))
+          width: Math.min(implicitWidth, (settingsColumn.width - Style.space(10)) / 2 - Style.space(28))
           text: panel.i18n(parent.isDefault ? "defaultsActive"
             : (parent.armed ? "restoreDefaultsConfirm" : "restoreDefaults"))
           color: parent.armed
@@ -800,6 +828,7 @@ Rectangle {
             panel.displayOptionsStore.restoreSettingsDisplayDefaults()
           }
         }
+      }
       }
 
       Item {

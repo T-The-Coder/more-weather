@@ -259,7 +259,12 @@ var catalog = {
     kelvinUnitsSummary: "K · mm · km/h · km",
     hoverUnitSystem: "Other units on hover",
     hoverUnitSystemOff: "Off",
-    hoverUnitSystemHint: "While the pointer rests on the widget, the bar switches to this unit system. Kelvin changes temperatures only."
+    hoverUnitSystemHint: "While the pointer rests on the widget, the bar switches to this unit system. Kelvin changes temperatures only.",
+    restoreOrder: "Restore order",
+    sunNext: "Next sun event",
+    sunrise: "Sunrise",
+    sunset: "Sunset",
+    moonPhase: "Moon phase"
   },
   de: {
     weather: "Wetter",
@@ -514,7 +519,12 @@ var catalog = {
     kelvinUnitsSummary: "K · mm · km/h · km",
     hoverUnitSystem: "Beim Überfahren andere Einheiten",
     hoverUnitSystemOff: "Aus",
-    hoverUnitSystemHint: "Solange der Mauszeiger auf dem Widget ruht, wechselt die Leiste zu diesem Einheitensystem. Kelvin betrifft nur Temperaturen."
+    hoverUnitSystemHint: "Solange der Mauszeiger auf dem Widget ruht, wechselt die Leiste zu diesem Einheitensystem. Kelvin betrifft nur Temperaturen.",
+    restoreOrder: "Reihenfolge zurücksetzen",
+    sunNext: "Sonne als Nächstes",
+    sunrise: "Sonnenaufgang",
+    sunset: "Sonnenuntergang",
+    moonPhase: "Mondphase"
   }
 }
 
@@ -909,7 +919,12 @@ addCatalogEntries("es", {
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "Otras unidades al pasar el ratón",
   "hoverUnitSystemOff": "Desactivado",
-  "hoverUnitSystemHint": "Mientras el puntero está sobre el widget, la barra cambia a este sistema de unidades. Kelvin solo afecta a las temperaturas."
+  "hoverUnitSystemHint": "Mientras el puntero está sobre el widget, la barra cambia a este sistema de unidades. Kelvin solo afecta a las temperaturas.",
+  "restoreOrder": "Restablecer el orden",
+  "sunNext": "Próximo evento solar",
+  "sunrise": "Amanecer",
+  "sunset": "Atardecer",
+  "moonPhase": "Fase lunar"
 })
 
 addCatalogEntries("fr", {
@@ -1011,7 +1026,12 @@ addCatalogEntries("fr", {
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "Autres unités au survol",
   "hoverUnitSystemOff": "Désactivé",
-  "hoverUnitSystemHint": "Tant que le pointeur survole le widget, la barre passe à ce système d’unités. Kelvin ne change que les températures."
+  "hoverUnitSystemHint": "Tant que le pointeur survole le widget, la barre passe à ce système d’unités. Kelvin ne change que les températures.",
+  "restoreOrder": "Rétablir l’ordre",
+  "sunNext": "Prochain événement solaire",
+  "sunrise": "Lever du soleil",
+  "sunset": "Coucher du soleil",
+  "moonPhase": "Phase de la Lune"
 })
 
 addCatalogEntries("pt", {
@@ -1113,7 +1133,12 @@ addCatalogEntries("pt", {
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "Outras unidades ao passar o mouse",
   "hoverUnitSystemOff": "Desligado",
-  "hoverUnitSystemHint": "Enquanto o ponteiro está sobre o widget, a barra muda para este sistema de unidades. Kelvin afeta apenas as temperaturas."
+  "hoverUnitSystemHint": "Enquanto o ponteiro está sobre o widget, a barra muda para este sistema de unidades. Kelvin afeta apenas as temperaturas.",
+  "restoreOrder": "Restaurar a ordem",
+  "sunNext": "Próximo evento solar",
+  "sunrise": "Nascer do sol",
+  "sunset": "Pôr do sol",
+  "moonPhase": "Fase da lua"
 })
 
 addCatalogEntries("ru", {
@@ -1215,7 +1240,12 @@ addCatalogEntries("ru", {
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "Другие единицы при наведении",
   "hoverUnitSystemOff": "Выключено",
-  "hoverUnitSystemHint": "Пока указатель находится над виджетом, панель переходит на эту систему единиц. Кельвин меняет только температуры."
+  "hoverUnitSystemHint": "Пока указатель находится над виджетом, панель переходит на эту систему единиц. Кельвин меняет только температуры.",
+  "restoreOrder": "Сбросить порядок",
+  "sunNext": "Ближайшее событие солнца",
+  "sunrise": "Восход",
+  "sunset": "Закат",
+  "moonPhase": "Фаза Луны"
 })
 
 addCatalogEntries("uk", {
@@ -1317,7 +1347,12 @@ addCatalogEntries("uk", {
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "Інші одиниці при наведенні",
   "hoverUnitSystemOff": "Вимкнено",
-  "hoverUnitSystemHint": "Поки вказівник над віджетом, панель переходить на цю систему одиниць. Кельвін змінює лише температури."
+  "hoverUnitSystemHint": "Поки вказівник над віджетом, панель переходить на цю систему одиниць. Кельвін змінює лише температури.",
+  "restoreOrder": "Скинути порядок",
+  "sunNext": "Найближча подія сонця",
+  "sunrise": "Схід сонця",
+  "sunset": "Захід сонця",
+  "moonPhase": "Фаза Місяця"
 })
 
 addCatalogEntries("pl", {
@@ -1419,7 +1454,12 @@ addCatalogEntries("pl", {
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "Inne jednostki po najechaniu",
   "hoverUnitSystemOff": "Wyłączone",
-  "hoverUnitSystemHint": "Gdy wskaźnik spoczywa na widżecie, pasek przełącza się na ten układ jednostek. Kelwin zmienia tylko temperatury."
+  "hoverUnitSystemHint": "Gdy wskaźnik spoczywa na widżecie, pasek przełącza się na ten układ jednostek. Kelwin zmienia tylko temperatury.",
+  "restoreOrder": "Przywróć kolejność",
+  "sunNext": "Najbliższe zdarzenie słońca",
+  "sunrise": "Wschód słońca",
+  "sunset": "Zachód słońca",
+  "moonPhase": "Faza Księżyca"
 })
 
 addCatalogEntries("it", {
@@ -1521,7 +1561,12 @@ addCatalogEntries("it", {
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "Altre unità al passaggio",
   "hoverUnitSystemOff": "Disattivato",
-  "hoverUnitSystemHint": "Mentre il puntatore è sul widget, la barra passa a questo sistema di unità. Kelvin cambia solo le temperature."
+  "hoverUnitSystemHint": "Mentre il puntatore è sul widget, la barra passa a questo sistema di unità. Kelvin cambia solo le temperature.",
+  "restoreOrder": "Ripristina l’ordine",
+  "sunNext": "Prossimo evento solare",
+  "sunrise": "Alba",
+  "sunset": "Tramonto",
+  "moonPhase": "Fase lunare"
 })
 
 addCatalogEntries("nl", {
@@ -1623,7 +1668,12 @@ addCatalogEntries("nl", {
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "Andere eenheden bij aanwijzen",
   "hoverUnitSystemOff": "Uit",
-  "hoverUnitSystemHint": "Zolang de aanwijzer op de widget rust, schakelt de balk over op dit eenhedenstelsel. Kelvin verandert alleen temperaturen."
+  "hoverUnitSystemHint": "Zolang de aanwijzer op de widget rust, schakelt de balk over op dit eenhedenstelsel. Kelvin verandert alleen temperaturen.",
+  "restoreOrder": "Volgorde herstellen",
+  "sunNext": "Eerstvolgende zonnestand",
+  "sunrise": "Zonsopkomst",
+  "sunset": "Zonsondergang",
+  "moonPhase": "Maanfase"
 })
 
 addCatalogEntries("tr", {
@@ -1725,7 +1775,12 @@ addCatalogEntries("tr", {
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "Üzerine gelince başka birimler",
   "hoverUnitSystemOff": "Kapalı",
-  "hoverUnitSystemHint": "İşaretçi bileşenin üzerindeyken çubuk bu birim sistemine geçer. Kelvin yalnızca sıcaklıkları değiştirir."
+  "hoverUnitSystemHint": "İşaretçi bileşenin üzerindeyken çubuk bu birim sistemine geçer. Kelvin yalnızca sıcaklıkları değiştirir.",
+  "restoreOrder": "Sırayı sıfırla",
+  "sunNext": "Sıradaki güneş olayı",
+  "sunrise": "Gün doğumu",
+  "sunset": "Gün batımı",
+  "moonPhase": "Ay evresi"
 })
 
 addCatalogEntries("cs", {
@@ -1827,7 +1882,12 @@ addCatalogEntries("cs", {
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "Jiné jednotky při najetí",
   "hoverUnitSystemOff": "Vypnuto",
-  "hoverUnitSystemHint": "Dokud ukazatel spočívá na widgetu, lišta přejde na tuto soustavu jednotek. Kelvin mění jen teploty."
+  "hoverUnitSystemHint": "Dokud ukazatel spočívá na widgetu, lišta přejde na tuto soustavu jednotek. Kelvin mění jen teploty.",
+  "restoreOrder": "Obnovit pořadí",
+  "sunNext": "Nejbližší událost slunce",
+  "sunrise": "Východ slunce",
+  "sunset": "Západ slunce",
+  "moonPhase": "Fáze Měsíce"
 })
 
 addCatalogEntries("sv", {
@@ -1929,7 +1989,12 @@ addCatalogEntries("sv", {
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "Andra enheter vid hovring",
   "hoverUnitSystemOff": "Av",
-  "hoverUnitSystemHint": "Medan pekaren vilar på widgeten byter fältet till detta enhetssystem. Kelvin ändrar bara temperaturer."
+  "hoverUnitSystemHint": "Medan pekaren vilar på widgeten byter fältet till detta enhetssystem. Kelvin ändrar bara temperaturer.",
+  "restoreOrder": "Återställ ordningen",
+  "sunNext": "Nästa solhändelse",
+  "sunrise": "Soluppgång",
+  "sunset": "Solnedgång",
+  "moonPhase": "Månfas"
 })
 
 addCatalogEntries("fi", {
@@ -2031,7 +2096,12 @@ addCatalogEntries("fi", {
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "Muut yksiköt osoitettaessa",
   "hoverUnitSystemOff": "Pois",
-  "hoverUnitSystemHint": "Kun osoitin on pienoissovelluksen päällä, palkki vaihtaa tähän yksikköjärjestelmään. Kelvin muuttaa vain lämpötilat."
+  "hoverUnitSystemHint": "Kun osoitin on pienoissovelluksen päällä, palkki vaihtaa tähän yksikköjärjestelmään. Kelvin muuttaa vain lämpötilat.",
+  "restoreOrder": "Palauta järjestys",
+  "sunNext": "Seuraava auringon tapahtuma",
+  "sunrise": "Auringonnousu",
+  "sunset": "Auringonlasku",
+  "moonPhase": "Kuun vaihe"
 })
 
 addCatalogEntries("nb", {
@@ -2133,7 +2203,12 @@ addCatalogEntries("nb", {
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "Andre enheter ved peking",
   "hoverUnitSystemOff": "Av",
-  "hoverUnitSystemHint": "Mens pekeren hviler på miniprogrammet, bytter linjen til dette enhetssystemet. Kelvin endrer bare temperaturer."
+  "hoverUnitSystemHint": "Mens pekeren hviler på miniprogrammet, bytter linjen til dette enhetssystemet. Kelvin endrer bare temperaturer.",
+  "restoreOrder": "Tilbakestill rekkefølgen",
+  "sunNext": "Neste solhendelse",
+  "sunrise": "Soloppgang",
+  "sunset": "Solnedgang",
+  "moonPhase": "Månefase"
 })
 
 addCatalogEntries("da", {
@@ -2235,7 +2310,12 @@ addCatalogEntries("da", {
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "Andre enheder ved peg",
   "hoverUnitSystemOff": "Fra",
-  "hoverUnitSystemHint": "Mens markøren hviler på widgetten, skifter linjen til dette enhedssystem. Kelvin ændrer kun temperaturer."
+  "hoverUnitSystemHint": "Mens markøren hviler på widgetten, skifter linjen til dette enhedssystem. Kelvin ændrer kun temperaturer.",
+  "restoreOrder": "Nulstil rækkefølgen",
+  "sunNext": "Næste solhændelse",
+  "sunrise": "Solopgang",
+  "sunset": "Solnedgang",
+  "moonPhase": "Månefase"
 })
 
 addCatalogEntries("ro", {
@@ -2337,7 +2417,12 @@ addCatalogEntries("ro", {
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "Alte unități la trecerea cursorului",
   "hoverUnitSystemOff": "Oprit",
-  "hoverUnitSystemHint": "Cât timp cursorul stă pe widget, bara trece la acest sistem de unități. Kelvin schimbă doar temperaturile."
+  "hoverUnitSystemHint": "Cât timp cursorul stă pe widget, bara trece la acest sistem de unități. Kelvin schimbă doar temperaturile.",
+  "restoreOrder": "Restabilește ordinea",
+  "sunNext": "Următorul eveniment solar",
+  "sunrise": "Răsărit",
+  "sunset": "Apus",
+  "moonPhase": "Faza lunii"
 })
 
 addCatalogEntries("hu", {
@@ -2439,7 +2524,12 @@ addCatalogEntries("hu", {
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "Más mértékegységek rámutatáskor",
   "hoverUnitSystemOff": "Ki",
-  "hoverUnitSystemHint": "Amíg a mutató a minialkalmazáson áll, a sáv erre a mértékegységrendszerre vált. A Kelvin csak a hőmérsékleteket érinti."
+  "hoverUnitSystemHint": "Amíg a mutató a minialkalmazáson áll, a sáv erre a mértékegységrendszerre vált. A Kelvin csak a hőmérsékleteket érinti.",
+  "restoreOrder": "Sorrend visszaállítása",
+  "sunNext": "Következő napesemény",
+  "sunrise": "Napkelte",
+  "sunset": "Napnyugta",
+  "moonPhase": "Holdfázis"
 })
 
 addCatalogEntries("el", {
@@ -2541,7 +2631,12 @@ addCatalogEntries("el", {
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "Άλλες μονάδες στο πέρασμα",
   "hoverUnitSystemOff": "Ανενεργό",
-  "hoverUnitSystemHint": "Όσο ο δείκτης βρίσκεται πάνω στο γραφικό στοιχείο, η γραμμή αλλάζει σε αυτό το σύστημα μονάδων. Το Κέλβιν αλλάζει μόνο τις θερμοκρασίες."
+  "hoverUnitSystemHint": "Όσο ο δείκτης βρίσκεται πάνω στο γραφικό στοιχείο, η γραμμή αλλάζει σε αυτό το σύστημα μονάδων. Το Κέλβιν αλλάζει μόνο τις θερμοκρασίες.",
+  "restoreOrder": "Επαναφορά σειράς",
+  "sunNext": "Επόμενο ηλιακό συμβάν",
+  "sunrise": "Ανατολή",
+  "sunset": "Δύση",
+  "moonPhase": "Φάση σελήνης"
 })
 
 addCatalogEntries("zh_CN", {
@@ -2643,7 +2738,12 @@ addCatalogEntries("zh_CN", {
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "悬停时换用其他单位",
   "hoverUnitSystemOff": "关闭",
-  "hoverUnitSystemHint": "指针停留在小组件上时，栏中切换到该单位制。开尔文只影响温度。"
+  "hoverUnitSystemHint": "指针停留在小组件上时，栏中切换到该单位制。开尔文只影响温度。",
+  "restoreOrder": "恢复顺序",
+  "sunNext": "下一次日出/日落",
+  "sunrise": "日出",
+  "sunset": "日落",
+  "moonPhase": "月相"
 })
 
 addCatalogEntries("zh_TW", {
@@ -2745,7 +2845,12 @@ addCatalogEntries("zh_TW", {
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "滑過時改用其他單位",
   "hoverUnitSystemOff": "關閉",
-  "hoverUnitSystemHint": "指標停留於小工具上時，列中切換為此單位制。克耳文只影響溫度。"
+  "hoverUnitSystemHint": "指標停留於小工具上時，列中切換為此單位制。克耳文只影響溫度。",
+  "restoreOrder": "還原順序",
+  "sunNext": "下一次日出／日落",
+  "sunrise": "日出",
+  "sunset": "日落",
+  "moonPhase": "月相"
 })
 
 addCatalogEntries("ja", {
@@ -2847,7 +2952,12 @@ addCatalogEntries("ja", {
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "ホバー時は別の単位",
   "hoverUnitSystemOff": "オフ",
-  "hoverUnitSystemHint": "ポインターがウィジェットの上にある間、バーはこの単位系に切り替わります。ケルビンは気温だけに効きます。"
+  "hoverUnitSystemHint": "ポインターがウィジェットの上にある間、バーはこの単位系に切り替わります。ケルビンは気温だけに効きます。",
+  "restoreOrder": "並び順を戻す",
+  "sunNext": "次の日の出・日の入り",
+  "sunrise": "日の出",
+  "sunset": "日の入り",
+  "moonPhase": "月齢"
 })
 
 addCatalogEntries("ko", {
@@ -2949,7 +3059,12 @@ addCatalogEntries("ko", {
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "마우스를 올리면 다른 단위",
   "hoverUnitSystemOff": "끔",
-  "hoverUnitSystemHint": "포인터가 위젯 위에 있는 동안 막대가 이 단위계로 바뀝니다. 켈빈은 기온에만 적용됩니다."
+  "hoverUnitSystemHint": "포인터가 위젯 위에 있는 동안 막대가 이 단위계로 바뀝니다. 켈빈은 기온에만 적용됩니다.",
+  "restoreOrder": "순서 되돌리기",
+  "sunNext": "다음 일출·일몰",
+  "sunrise": "일출",
+  "sunset": "일몰",
+  "moonPhase": "달의 위상"
 })
 
 addCatalogEntries("ar", {
@@ -3051,7 +3166,12 @@ addCatalogEntries("ar", {
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "وحدات أخرى عند التمرير",
   "hoverUnitSystemOff": "معطّل",
-  "hoverUnitSystemHint": "ما دام المؤشر فوق الأداة، يتحول الشريط إلى نظام الوحدات هذا. كلفن يغيّر درجات الحرارة فقط."
+  "hoverUnitSystemHint": "ما دام المؤشر فوق الأداة، يتحول الشريط إلى نظام الوحدات هذا. كلفن يغيّر درجات الحرارة فقط.",
+  "restoreOrder": "استعادة الترتيب",
+  "sunNext": "الحدث الشمسي التالي",
+  "sunrise": "الشروق",
+  "sunset": "الغروب",
+  "moonPhase": "طور القمر"
 })
 
 addCatalogEntries("he", {
@@ -3153,7 +3273,12 @@ addCatalogEntries("he", {
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "יחידות אחרות במעבר עכבר",
   "hoverUnitSystemOff": "כבוי",
-  "hoverUnitSystemHint": "כל עוד הסמן נח על היישומון, הסרגל עובר למערכת היחידות הזו. קלווין משנה רק טמפרטורות."
+  "hoverUnitSystemHint": "כל עוד הסמן נח על היישומון, הסרגל עובר למערכת היחידות הזו. קלווין משנה רק טמפרטורות.",
+  "restoreOrder": "שחזור הסדר",
+  "sunNext": "אירוע השמש הבא",
+  "sunrise": "זריחה",
+  "sunset": "שקיעה",
+  "moonPhase": "מופע הירח"
 })
 
 addCatalogEntries("fa", {
@@ -3255,7 +3380,12 @@ addCatalogEntries("fa", {
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "واحدهای دیگر هنگام نگه‌داشتن نشانگر",
   "hoverUnitSystemOff": "خاموش",
-  "hoverUnitSystemHint": "تا وقتی نشانگر روی ویجت بماند، نوار به این نظام واحدها تغییر می‌کند. کلوین فقط دما را تغییر می‌دهد."
+  "hoverUnitSystemHint": "تا وقتی نشانگر روی ویجت بماند، نوار به این نظام واحدها تغییر می‌کند. کلوین فقط دما را تغییر می‌دهد.",
+  "restoreOrder": "بازگرداندن ترتیب",
+  "sunNext": "رویداد بعدی خورشید",
+  "sunrise": "طلوع آفتاب",
+  "sunset": "غروب آفتاب",
+  "moonPhase": "فاز ماه"
 })
 
 addCatalogEntries("hi", {
@@ -3357,7 +3487,12 @@ addCatalogEntries("hi", {
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "होवर करने पर दूसरी इकाइयाँ",
   "hoverUnitSystemOff": "बंद",
-  "hoverUnitSystemHint": "जब तक पॉइंटर विजेट पर रहता है, बार इस इकाई प्रणाली में बदल जाता है। केल्विन केवल तापमान बदलता है।"
+  "hoverUnitSystemHint": "जब तक पॉइंटर विजेट पर रहता है, बार इस इकाई प्रणाली में बदल जाता है। केल्विन केवल तापमान बदलता है।",
+  "restoreOrder": "क्रम पुनर्स्थापित करें",
+  "sunNext": "अगली सूर्य घटना",
+  "sunrise": "सूर्योदय",
+  "sunset": "सूर्यास्त",
+  "moonPhase": "चंद्र कला"
 })
 
 addCatalogEntries("id", {
@@ -3459,7 +3594,12 @@ addCatalogEntries("id", {
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "Satuan lain saat diarahkan",
   "hoverUnitSystemOff": "Mati",
-  "hoverUnitSystemHint": "Selama penunjuk berada di atas widget, bilah beralih ke sistem satuan ini. Kelvin hanya mengubah suhu."
+  "hoverUnitSystemHint": "Selama penunjuk berada di atas widget, bilah beralih ke sistem satuan ini. Kelvin hanya mengubah suhu.",
+  "restoreOrder": "Pulihkan urutan",
+  "sunNext": "Peristiwa matahari berikutnya",
+  "sunrise": "Matahari terbit",
+  "sunset": "Matahari terbenam",
+  "moonPhase": "Fase bulan"
 })
 
 addCatalogEntries("vi", {
@@ -3561,7 +3701,12 @@ addCatalogEntries("vi", {
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "Đơn vị khác khi rê chuột",
   "hoverUnitSystemOff": "Tắt",
-  "hoverUnitSystemHint": "Khi con trỏ còn trên tiện ích, thanh chuyển sang hệ đơn vị này. Kelvin chỉ đổi nhiệt độ."
+  "hoverUnitSystemHint": "Khi con trỏ còn trên tiện ích, thanh chuyển sang hệ đơn vị này. Kelvin chỉ đổi nhiệt độ.",
+  "restoreOrder": "Khôi phục thứ tự",
+  "sunNext": "Sự kiện mặt trời kế tiếp",
+  "sunrise": "Mặt trời mọc",
+  "sunset": "Mặt trời lặn",
+  "moonPhase": "Pha Mặt Trăng"
 })
 
 addCatalogEntries("th", {
@@ -3663,7 +3808,12 @@ addCatalogEntries("th", {
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "ใช้หน่วยอื่นเมื่อชี้",
   "hoverUnitSystemOff": "ปิด",
-  "hoverUnitSystemHint": "ขณะที่ตัวชี้อยู่บนวิดเจ็ต แถบจะเปลี่ยนไปใช้ระบบหน่วยนี้ เคลวินมีผลกับอุณหภูมิเท่านั้น"
+  "hoverUnitSystemHint": "ขณะที่ตัวชี้อยู่บนวิดเจ็ต แถบจะเปลี่ยนไปใช้ระบบหน่วยนี้ เคลวินมีผลกับอุณหภูมิเท่านั้น",
+  "restoreOrder": "คืนค่าลำดับ",
+  "sunNext": "เหตุการณ์ดวงอาทิตย์ถัดไป",
+  "sunrise": "ดวงอาทิตย์ขึ้น",
+  "sunset": "ดวงอาทิตย์ตก",
+  "moonPhase": "ข้างขึ้นข้างแรม"
 })
 
 // Restore-defaults button on the display settings page.
