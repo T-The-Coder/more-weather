@@ -9266,6 +9266,157 @@ Object.keys(catalog).forEach(function(language) {
   var key = String(wheel).split(" + ")[0] || "Ctrl"
   catalog[language].ctrlArrows = key + " ← → ↑ ↓"
 })
+// Wind map heights and its processor note (2.5).
+addCatalogEntries("en", {
+  "windMapSummaryAloft": "{location} · {speed} {unit} from {direction}",
+  "windCpuHint": "The animated wind map takes about a fifth of a processor core while it is on screen (Qt draws it in software), and nothing while the tab or the window is hidden. Its height (10 m up to 10 km) is chosen at the map's top left.",
+  "shortcutWindLevel": "Wind map: higher / lower"
+})
+addCatalogEntries("de", {
+  "windMapSummaryAloft": "{location} · {speed} {unit} aus {direction}",
+  "windCpuHint": "Die animierte Windkarte braucht etwa ein Fünftel eines Prozessorkerns, solange sie zu sehen ist (Qt zeichnet sie in Software), und nichts, solange Tab oder Fenster verborgen sind. Die Höhe (10 m bis 10 km) wird oben links auf der Karte gewählt.",
+  "shortcutWindLevel": "Windkarte: höher / tiefer"
+})
+addCatalogEntries("es", {
+  "windMapSummaryAloft": "{location} · {speed} {unit} del {direction}",
+  "windCpuHint": "El mapa de viento animado usa aproximadamente una quinta parte de un núcleo del procesador mientras está visible (Qt lo dibuja por software), y nada mientras la pestaña o la ventana están ocultas. La altura (de 10 m a 10 km) se elige arriba a la izquierda del mapa.",
+  "shortcutWindLevel": "Mapa de viento: más alto / más bajo"
+})
+addCatalogEntries("fr", {
+  "windMapSummaryAloft": "{location} · {speed} {unit} de {direction}",
+  "windCpuHint": "La carte du vent animée utilise environ un cinquième d'un cœur de processeur tant qu'elle est affichée (Qt la dessine en logiciel), et rien quand l'onglet ou la fenêtre est masqué. L'altitude (de 10 m à 10 km) se choisit en haut à gauche de la carte.",
+  "shortcutWindLevel": "Carte du vent : plus haut / plus bas"
+})
+addCatalogEntries("pt", {
+  "windMapSummaryAloft": "{location} · {speed} {unit} de {direction}",
+  "windCpuHint": "O mapa de vento animado usa cerca de um quinto de um núcleo do processador enquanto está visível (o Qt desenha-o em software), e nada enquanto o separador ou a janela estão ocultos. A altura (de 10 m a 10 km) escolhe-se no canto superior esquerdo do mapa.",
+  "shortcutWindLevel": "Mapa de vento: mais alto / mais baixo"
+})
+addCatalogEntries("ru", {
+  "windMapSummaryAloft": "{location} · {speed} {unit}, {direction}",
+  "windCpuHint": "Анимированная карта ветра занимает примерно пятую часть ядра процессора, пока она видна (Qt рисует её программно), и ничего, пока вкладка или окно скрыты. Высота (от 10 м до 10 км) выбирается слева вверху на карте.",
+  "shortcutWindLevel": "Карта ветра: выше / ниже"
+})
+addCatalogEntries("uk", {
+  "windMapSummaryAloft": "{location} · {speed} {unit}, {direction}",
+  "windCpuHint": "Анімована карта вітру займає приблизно п'яту частину ядра процесора, поки її видно (Qt малює її програмно), і нічого, поки вкладку чи вікно приховано. Висоту (від 10 м до 10 км) вибирають угорі ліворуч на карті.",
+  "shortcutWindLevel": "Карта вітру: вище / нижче"
+})
+addCatalogEntries("pl", {
+  "windMapSummaryAloft": "{location} · {speed} {unit} z {direction}",
+  "windCpuHint": "Animowana mapa wiatru zajmuje około jednej piątej rdzenia procesora, gdy jest widoczna (Qt rysuje ją programowo), i nic, gdy karta lub okno są ukryte. Wysokość (od 10 m do 10 km) wybiera się w lewym górnym rogu mapy.",
+  "shortcutWindLevel": "Mapa wiatru: wyżej / niżej"
+})
+addCatalogEntries("it", {
+  "windMapSummaryAloft": "{location} · {speed} {unit} da {direction}",
+  "windCpuHint": "La mappa del vento animata usa circa un quinto di un core del processore finché è visibile (Qt la disegna via software), e nulla mentre la scheda o la finestra sono nascoste. L'altezza (da 10 m a 10 km) si sceglie in alto a sinistra sulla mappa.",
+  "shortcutWindLevel": "Mappa del vento: più in alto / più in basso"
+})
+addCatalogEntries("nl", {
+  "windMapSummaryAloft": "{location} · {speed} {unit} uit {direction}",
+  "windCpuHint": "De geanimeerde windkaart gebruikt ongeveer een vijfde van een processorkern zolang ze zichtbaar is (Qt tekent haar in software), en niets zolang het tabblad of venster verborgen is. De hoogte (10 m tot 10 km) kies je linksboven op de kaart.",
+  "shortcutWindLevel": "Windkaart: hoger / lager"
+})
+addCatalogEntries("tr", {
+  "windMapSummaryAloft": "{location} · {direction} yönünden {speed} {unit}",
+  "windCpuHint": "Hareketli rüzgâr haritası görünür olduğu sürece bir işlemci çekirdeğinin yaklaşık beşte birini kullanır (Qt onu yazılımla çizer); sekme veya pencere gizliyken hiç kullanmaz. Yükseklik (10 m ile 10 km arası) haritanın sol üstünden seçilir.",
+  "shortcutWindLevel": "Rüzgâr haritası: daha yüksek / daha alçak"
+})
+addCatalogEntries("cs", {
+  "windMapSummaryAloft": "{location} · {speed} {unit} od {direction}",
+  "windCpuHint": "Animovaná mapa větru zabírá asi pětinu jádra procesoru, dokud je vidět (Qt ji kreslí softwarově), a nic, když je karta nebo okno skryté. Výšku (10 m až 10 km) zvolíte vlevo nahoře na mapě.",
+  "shortcutWindLevel": "Mapa větru: výš / níž"
+})
+addCatalogEntries("sv", {
+  "windMapSummaryAloft": "{location} · {speed} {unit} från {direction}",
+  "windCpuHint": "Den animerade vindkartan använder ungefär en femtedel av en processorkärna medan den syns (Qt ritar den i mjukvara), och inget medan fliken eller fönstret är dolt. Höjden (10 m till 10 km) väljs uppe till vänster på kartan.",
+  "shortcutWindLevel": "Vindkarta: högre / lägre"
+})
+addCatalogEntries("fi", {
+  "windMapSummaryAloft": "{location} · {speed} {unit} suunnasta {direction}",
+  "windCpuHint": "Animoitu tuulikartta vie noin viidenneksen prosessoriytimestä näkyvissä ollessaan (Qt piirtää sen ohjelmallisesti), eikä mitään, kun välilehti tai ikkuna on piilossa. Korkeus (10 m – 10 km) valitaan kartan vasemmasta yläkulmasta.",
+  "shortcutWindLevel": "Tuulikartta: ylemmäs / alemmas"
+})
+addCatalogEntries("nb", {
+  "windMapSummaryAloft": "{location} · {speed} {unit} fra {direction}",
+  "windCpuHint": "Det animerte vindkartet bruker omtrent en femtedel av en prosessorkjerne mens det vises (Qt tegner det i programvare), og ingenting mens fanen eller vinduet er skjult. Høyden (10 m til 10 km) velges øverst til venstre på kartet.",
+  "shortcutWindLevel": "Vindkart: høyere / lavere"
+})
+addCatalogEntries("da", {
+  "windMapSummaryAloft": "{location} · {speed} {unit} fra {direction}",
+  "windCpuHint": "Det animerede vindkort bruger omkring en femtedel af en processorkerne, mens det vises (Qt tegner det i software), og intet, mens fanen eller vinduet er skjult. Højden (10 m til 10 km) vælges øverst til venstre på kortet.",
+  "shortcutWindLevel": "Vindkort: højere / lavere"
+})
+addCatalogEntries("ro", {
+  "windMapSummaryAloft": "{location} · {speed} {unit} din {direction}",
+  "windCpuHint": "Harta animată a vântului folosește aproximativ o cincime dintr-un nucleu de procesor cât timp este vizibilă (Qt o desenează software), și nimic cât timp fila sau fereastra sunt ascunse. Înălțimea (10 m până la 10 km) se alege din stânga sus a hărții.",
+  "shortcutWindLevel": "Harta vântului: mai sus / mai jos"
+})
+addCatalogEntries("hu", {
+  "windMapSummaryAloft": "{location} · {speed} {unit}, {direction} felől",
+  "windCpuHint": "Az animált széltérkép látható állapotban egy processzormag nagyjából ötödét használja (a Qt szoftveresen rajzolja), rejtett lap vagy ablak esetén semmit. A magasság (10 m-től 10 km-ig) a térkép bal felső sarkában választható.",
+  "shortcutWindLevel": "Széltérkép: magasabban / alacsonyabban"
+})
+addCatalogEntries("el", {
+  "windMapSummaryAloft": "{location} · {speed} {unit} από {direction}",
+  "windCpuHint": "Ο κινούμενος χάρτης ανέμου χρησιμοποιεί περίπου το ένα πέμπτο ενός πυρήνα επεξεργαστή όσο είναι ορατός (το Qt τον σχεδιάζει μέσω λογισμικού) και τίποτα όσο η καρτέλα ή το παράθυρο είναι κρυφά. Το ύψος (10 m έως 10 km) επιλέγεται πάνω αριστερά στον χάρτη.",
+  "shortcutWindLevel": "Χάρτης ανέμου: ψηλότερα / χαμηλότερα"
+})
+addCatalogEntries("ja", {
+  "windMapSummaryAloft": "{location} · {direction}の風 {speed} {unit}",
+  "windCpuHint": "アニメーションする風の地図は、表示中は CPU コア約 5 分の 1 を使います（Qt がソフトウェアで描画するため）。タブやウィンドウが隠れている間は使いません。高さ（10 m〜10 km）は地図の左上で選びます。",
+  "shortcutWindLevel": "風の地図：上の層 / 下の層"
+})
+addCatalogEntries("ko", {
+  "windMapSummaryAloft": "{location} · {direction}풍 {speed} {unit}",
+  "windCpuHint": "움직이는 바람 지도는 화면에 보이는 동안 CPU 코어의 약 5분의 1을 사용합니다(Qt가 소프트웨어로 그림). 탭이나 창이 숨겨지면 사용하지 않습니다. 높이(10 m~10 km)는 지도 왼쪽 위에서 고릅니다.",
+  "shortcutWindLevel": "바람 지도: 더 높이 / 더 낮게"
+})
+addCatalogEntries("ar", {
+  "windMapSummaryAloft": "{location} · {speed} {unit} من {direction}",
+  "windCpuHint": "تستهلك خريطة الرياح المتحركة نحو خُمس نواة معالج ما دامت ظاهرة (يرسمها Qt برمجيًا)، ولا شيء عندما يكون التبويب أو النافذة مخفيًا. يُختار الارتفاع (من 10 م إلى 10 كم) أعلى يسار الخريطة.",
+  "shortcutWindLevel": "خريطة الرياح: أعلى / أدنى"
+})
+addCatalogEntries("he", {
+  "windMapSummaryAloft": "{location} · {speed} {unit} מ{direction}",
+  "windCpuHint": "מפת הרוח המונפשת צורכת כחמישית מליבת מעבד כל עוד היא מוצגת (Qt מצייר אותה בתוכנה), ולא כלום כשהלשונית או החלון מוסתרים. הגובה (‎10 מ׳ עד 10 ק״מ) נבחר בפינה השמאלית העליונה של המפה.",
+  "shortcutWindLevel": "מפת רוח: גבוה יותר / נמוך יותר"
+})
+addCatalogEntries("fa", {
+  "windMapSummaryAloft": "{location} · {speed} {unit} از {direction}",
+  "windCpuHint": "نقشهٔ متحرک باد تا وقتی دیده می‌شود حدود یک‌پنجم یک هستهٔ پردازنده را مصرف می‌کند (Qt آن را نرم‌افزاری رسم می‌کند) و وقتی زبانه یا پنجره پنهان است هیچ. ارتفاع (۱۰ متر تا ۱۰ کیلومتر) در بالا-چپ نقشه انتخاب می‌شود.",
+  "shortcutWindLevel": "نقشهٔ باد: بالاتر / پایین‌تر"
+})
+addCatalogEntries("hi", {
+  "windMapSummaryAloft": "{location} · {direction} से {speed} {unit}",
+  "windCpuHint": "एनिमेटेड हवा का मानचित्र दिखते रहने तक प्रोसेसर कोर का लगभग पाँचवाँ हिस्सा लेता है (Qt इसे सॉफ़्टवेयर में बनाता है), और टैब या विंडो छिपी होने पर कुछ नहीं। ऊँचाई (10 मी से 10 किमी) मानचित्र के ऊपर बाईं ओर चुनी जाती है।",
+  "shortcutWindLevel": "हवा का मानचित्र: ऊपर / नीचे"
+})
+addCatalogEntries("id", {
+  "windMapSummaryAloft": "{location} · {speed} {unit} dari {direction}",
+  "windCpuHint": "Peta angin beranimasi memakai sekitar seperlima inti prosesor selama terlihat (Qt menggambarnya secara perangkat lunak), dan tidak sama sekali saat tab atau jendela tersembunyi. Ketinggian (10 m hingga 10 km) dipilih di kiri atas peta.",
+  "shortcutWindLevel": "Peta angin: lebih tinggi / lebih rendah"
+})
+addCatalogEntries("vi", {
+  "windMapSummaryAloft": "{location} · {speed} {unit} hướng {direction}",
+  "windCpuHint": "Bản đồ gió động dùng khoảng một phần năm lõi CPU khi đang hiển thị (Qt vẽ bằng phần mềm), và không dùng khi thẻ hoặc cửa sổ bị ẩn. Độ cao (10 m đến 10 km) được chọn ở góc trên bên trái bản đồ.",
+  "shortcutWindLevel": "Bản đồ gió: cao hơn / thấp hơn"
+})
+addCatalogEntries("th", {
+  "windMapSummaryAloft": "{location} · {speed} {unit} จาก{direction}",
+  "windCpuHint": "แผนที่ลมแบบเคลื่อนไหวใช้ประมาณหนึ่งในห้าของคอร์ซีพียูขณะแสดงอยู่ (Qt วาดด้วยซอฟต์แวร์) และไม่ใช้เลยเมื่อแท็บหรือหน้าต่างถูกซ่อน เลือกความสูง (10 ม. ถึง 10 กม.) ที่มุมซ้ายบนของแผนที่",
+  "shortcutWindLevel": "แผนที่ลม: สูงขึ้น / ต่ำลง"
+})
+addCatalogEntries("zh_CN", {
+  "windMapSummaryAloft": "{location} · {direction}风 {speed} {unit}",
+  "windCpuHint": "动态风场地图在显示时约占一个处理器核心的五分之一（Qt 以软件方式绘制），标签页或窗口隐藏时不占用。高度（10 米至 10 千米）在地图左上角选择。",
+  "shortcutWindLevel": "风场地图：升高 / 降低"
+})
+addCatalogEntries("zh_TW", {
+  "windMapSummaryAloft": "{location} · {direction}風 {speed} {unit}",
+  "windCpuHint": "動態風場地圖在顯示時約佔一個處理器核心的五分之一（Qt 以軟體方式繪製），分頁或視窗隱藏時不佔用。高度（10 公尺至 10 公里）在地圖左上角選擇。",
+  "shortcutWindLevel": "風場地圖：升高 / 降低"
+})
 // Each language in its own name, for the language picker.
 var languageNames = {
   "en": "English",

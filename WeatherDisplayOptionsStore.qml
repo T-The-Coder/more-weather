@@ -2,6 +2,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 import "I18n.js" as I18n
+import "Model.js" as Model
 
 // Loads, sanitizes and writes the per-surface display options (app, widget,
 // menu bar). Reading an option stays on the panel (displaySetting and friends).
@@ -31,8 +32,14 @@ Item {
       windUnit: normalizedWindUnit(parsed.windUnit),
       refreshMinutes: normalizedRefreshMinutes(parsed.refreshMinutes),
       radarMinutes: normalizedRadarMinutes(parsed.radarMinutes),
-      colorAccents: parsed.colorAccents !== false
+      colorAccents: parsed.colorAccents !== false,
+      windLevel: normalizedWindLevel(parsed.windLevel)
     }
+  }
+
+  // Height of the wind map (Model.WIND_LEVELS).
+  function normalizedWindLevel(value) {
+    return Model.windLevel(String(value || "10m")).id
   }
 
   // Wind in its own unit (Model.windUnitFor); "auto" follows the unit system.
@@ -63,7 +70,8 @@ Item {
       windUnit: normalizedWindUnit(key === "windUnit" ? value : panel.generalOptions.windUnit),
       refreshMinutes: normalizedRefreshMinutes(key === "refreshMinutes" ? value : panel.generalOptions.refreshMinutes),
       radarMinutes: normalizedRadarMinutes(key === "radarMinutes" ? value : panel.generalOptions.radarMinutes),
-      colorAccents: (key === "colorAccents" ? value : panel.generalOptions.colorAccents) !== false
+      colorAccents: (key === "colorAccents" ? value : panel.generalOptions.colorAccents) !== false,
+      windLevel: normalizedWindLevel(key === "windLevel" ? value : panel.generalOptions.windLevel)
     }
     panel.generalOptions = next
     generalOptionsFile.setText(JSON.stringify(next) + "\n")

@@ -81,3 +81,22 @@ test("the drift arrow keeps a labelled length at every zoom", () => {
   assert.strictEqual(wide.minutes, 120)
   assert.strictEqual(Model.driftArrow(null, 1, 900, 600, 46, 22), null)
 })
+
+test("the wind grid is read at the chosen height, gusts only at 10 m", () => {
+  const report = [{
+    latitude: 48.3, longitude: 10.8,
+    current: { wind_speed_10m: 12, wind_direction_10m: 250, wind_gusts_10m: 30,
+      wind_speed_850hPa: 40, wind_direction_850hPa: 270, wind_speed_250hPa: 180, wind_direction_250hPa: 280 }
+  }]
+  const ground = Model.windGridSeries(report, "10m")[0]
+  assert.strictEqual(ground.windSpeed, 12)
+  assert.strictEqual(ground.windGust, 30)
+  const aloft = Model.windGridSeries(report, "850hPa")[0]
+  assert.strictEqual(aloft.windSpeed, 40)
+  assert.strictEqual(aloft.windDirection, 270)
+  assert.strictEqual(aloft.windGust, null)
+  // A height the report lacks gives no points; an unknown one means 10 m.
+  assert.strictEqual(Model.windGridSeries(report, "500hPa").length, 0)
+  assert.strictEqual(Model.windGridSeries(report, "nonsense")[0].windSpeed, 12)
+  assert.strictEqual(Model.windLevel("250hPa").scaleKmh, 320)
+})

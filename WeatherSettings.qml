@@ -209,6 +209,7 @@ Rectangle {
       masterKey: "showWind",
       sectionKey: "wind",
       options: [],
+      hint: panel.i18n("windCpuHint"),
       hasDefaultTab: false
     },
     // The tab strip: moved like a section (its place in the window), with

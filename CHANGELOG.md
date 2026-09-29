@@ -96,11 +96,17 @@ All notable changes to More Weather are documented here.
   current value moved. Past rows are now dropped before the lists are cut.
 - Wind map after RegenVorschau: the speed as a smooth colour wash from deep
   blue (calm) to violet (storm) with a legend, and white streaks drifting
-  with the wind, faster where it blows harder, each with a fading tail; the
-  wind under the pointer shows its speed and direction. The streaks are
-  drawn on the graphics card (shaders/windstreaks.frag), fifteen steps a
-  second: the animation costs about 8 % of a core instead of the 48 % a
-  Canvas version needed, and nothing while the window is hidden.
+  with the wind, faster where it blows harder, each with a fading trail; the
+  wind under the pointer shows its speed and direction. The animation runs
+  at fifteen frames a second and takes about a fifth of a processor core
+  while the map is on screen (Qt draws it in software; a GPU version was
+  cheaper but blurred the streaks), none while it is hidden. The settings'
+  wind card says so.
+- The wind map's height can be switched at its top left (or with Shift+↑/↓):
+  10 m, 120 m, and the pressure levels 850 hPa (about 1,500 m), 700 hPa
+  (3,000 m), 500 hPa (5,500 m) and 250 hPa (10 km, the jet stream). All come
+  in the same request, so switching is instant; the colour scale widens with
+  the height, and the choice is kept.
 - Radar playback and the wind animation pause while the window is hidden
   or minimised.
 - The warning lookups' large documents (Alert Hub register, CAP feeds and

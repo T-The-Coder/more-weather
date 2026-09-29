@@ -10,9 +10,8 @@ import "Model.js" as Model
 // update (a Gaussian blend of the east and north components, as wide as the
 // samples lie apart, so directions blend rather than jump and no point
 // stands out as a blot); the colour wash is that lattice drawn
-// a pixel per cell and scaled up smoothly; the streaks are drawn on the
-// graphics card from the same lattice (shaders/windstreaks.frag), so the
-// animation costs almost no processor time. It runs only while `running`.
+// a pixel per cell and scaled up smoothly, and the streaks read it
+// bilinearly. The animation runs only while `running`.
 Item {
   id: field
   required property var panel
@@ -22,6 +21,9 @@ Item {
   property bool running: true
   // Over the dark satellite picture the wash can be stronger.
   property real washOpacity: 0.55
+  // Speed at the colour scale's end: winds aloft blow far harder than at
+  // 10 m (Model.WIND_LEVELS), so the scale widens with the height.
+  property real scaleKmh: 100
 
   readonly property int columns: 64
   readonly property int rows: Math.max(8, Math.round(columns * height / Math.max(1, width)))
@@ -35,7 +37,8 @@ Item {
     [35, [47, 201, 143]], [48, [182, 212, 58]], [62, [242, 179, 58]], [78, [232, 82, 58]],
     [100, [180, 58, 214]]
   ]
-  function colorAt(kmh) {
+  function colorAt(speed) {
+    var kmh = speed * 100 / scaleKmh
     var list = stops
     if (kmh <= list[0][0]) return list[0][1]
     for (var i = 1; i < list.length; ++i) {
@@ -97,7 +100,6 @@ Item {
     }
     lattice = { cells: cells, cellWidth: cellWidth, cellHeight: cellHeight }
     wash.requestPaint()
-    vectors.requestPaint()
   }
 
   // The vector at a point of the view, bilinear between lattice cells.
@@ -124,6 +126,7 @@ Item {
     onTriggered: field.rebuild()
   }
   onSamplesChanged: rebuildTimer.restart()
+  onScaleKmhChanged: rebuildTimer.restart()
   onViewportChanged: rebuildTimer.restart()
   onWidthChanged: rebuildTimer.restart()
   onHeightChanged: rebuildTimer.restart()
@@ -166,72 +169,85 @@ Item {
 
   // The streaks: particles that live a few seconds, move with the field and
   // are drawn as short segments on a canvas that fades a little each frame.
-  // The field's vectors as a small texture for the shader: east and south
-  // components in red and green, 0.5 for calm, 0 and 1 for 120 km/h.
+  // The streaks: particles that live a few seconds, move with the field and
+  // are drawn as short segments on a canvas that fades a little each frame,
+  // so each leaves a trail. The loop reads the lattice inline and makes no
+  // objects: it runs for every particle fifteen times a second.
   Canvas {
-    id: vectors
-    width: field.columns
-    height: field.rows
-    onPaint: {
-      var ctx = getContext("2d")
-      ctx.clearRect(0, 0, width, height)
-      var data = field.lattice
-      if (!data) return
-      for (var r = 0; r < field.rows; ++r) {
-        for (var c = 0; c < field.columns; ++c) {
-          var at = (r * field.columns + c) * 3
-          var red = Math.round(Math.max(0, Math.min(255, (0.5 + data.cells[at] / 240) * 255)))
-          var green = Math.round(Math.max(0, Math.min(255, (0.5 + data.cells[at + 1] / 240) * 255)))
-          ctx.fillStyle = "rgb(" + red + "," + green + ",0)"
-          // Opaque and a little larger than a pixel, as in the wash.
-          ctx.fillRect(c, r, 1.6, 1.6)
-        }
-      }
-    }
-  }
-  ShaderEffectSource {
-    id: vectorTexture
-    sourceItem: vectors
-    hideSource: true
-    smooth: true
-    width: 1
-    height: 1
-    visible: false
-  }
-
-  Image {
-    id: dotsImage
-    source: "data/wind-dots.png"
-    smooth: true
-  }
-  ShaderEffectSource {
-    id: dotsTexture
-    sourceItem: dotsImage
-    hideSource: true
-    smooth: true
-    width: 1
-    height: 1
-    visible: false
-  }
-
-  // The streaks, drawn on the graphics card (shaders/windstreaks.frag); the
-  // only work here is moving `phase` along, once a second round. Fifteen
-  // steps a second rather than an animation's sixty: each step redraws the
-  // whole window, which is what the animation costs.
-  ShaderEffect {
     id: streaks
     anchors.fill: parent
-    visible: field.lattice !== null
-    property var vectorField: vectorTexture
-    property var dots: dotsTexture
-    property real phase: 0
-    property size viewSize: Qt.size(width, height)
-    fragmentShader: "shaders/windstreaks.frag.qsb"
+    renderTarget: Canvas.FramebufferObject
+    renderStrategy: Canvas.Cooperative
+    property var particles: []
+    readonly property int count: Math.round(Math.min(380, Math.max(100, field.width * field.height / 1000)))
+
+    function spawn(particle) {
+      particle.x = Math.random() * width
+      particle.y = Math.random() * height
+      particle.age = Math.floor(Math.random() * 80)
+      return particle
+    }
+
+    onPaint: {
+      var ctx = getContext("2d")
+      var data = field.lattice
+      if (!data) {
+        ctx.clearRect(0, 0, width, height)
+        return
+      }
+      if (particles.length !== count) {
+        var list = []
+        for (var n = 0; n < count; ++n) list.push(spawn({}))
+        particles = list
+      }
+      // Fade what was drawn, leaving trails.
+      ctx.globalCompositeOperation = "destination-out"
+      ctx.fillStyle = "rgba(0,0,0,0.14)"
+      ctx.fillRect(0, 0, width, height)
+      ctx.globalCompositeOperation = "source-over"
+      ctx.strokeStyle = "rgba(255,255,255,0.85)"
+      ctx.lineWidth = 1.1
+      ctx.beginPath()
+      var cells = data.cells
+      var columns = field.columns
+      var maxColumn = columns - 1.001
+      var maxRow = field.rows - 1.001
+      // About 2 px per frame (30 px a second) at 20 km/h near the ground;
+      // aloft the same share of the scale, so a jet stream does not race.
+      var step = 0.1 * 100 / field.scaleKmh
+      for (var i = 0; i < particles.length; ++i) {
+        var particle = particles[i]
+        var fx = Math.max(0, Math.min(maxColumn, particle.x / data.cellWidth))
+        var fy = Math.max(0, Math.min(maxRow, particle.y / data.cellHeight))
+        var c = Math.floor(fx)
+        var r = Math.floor(fy)
+        var tx = fx - c
+        var ty = fy - r
+        var a = (r * columns + c) * 3
+        var b = a + columns * 3
+        var u = (cells[a] * (1 - tx) + cells[a + 3] * tx) * (1 - ty) + (cells[b] * (1 - tx) + cells[b + 3] * tx) * ty
+        var v = (cells[a + 1] * (1 - tx) + cells[a + 4] * tx) * (1 - ty) + (cells[b + 1] * (1 - tx) + cells[b + 4] * tx) * ty
+        var nx = particle.x + u * step
+        var ny = particle.y + v * step
+        particle.age++
+        if (particle.age > 90 || nx < 0 || ny < 0 || nx > width || ny > height) {
+          spawn(particle)
+          particle.age = 0
+          continue
+        }
+        ctx.moveTo(particle.x, particle.y)
+        ctx.lineTo(nx, ny)
+        particle.x = nx
+        particle.y = ny
+      }
+      ctx.stroke()
+    }
   }
+
   Timer {
     interval: 66
     repeat: true
     running: field.running && field.visible && field.lattice !== null
-    onTriggered: streaks.phase = (streaks.phase + interval / 1000) % 1
+    onTriggered: streaks.requestPaint()
   }
 }

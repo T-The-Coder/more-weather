@@ -1257,8 +1257,24 @@ Panel {
   property real windGridRequestLatitude: 0
   property real windGridRequestLongitude: 0
   property real windGridRequestRadiusKm: 0
-  readonly property var windGrid: Model.windGridSeries(cacheFallbackActive ? null : windGridReport)
-  readonly property var windMapData: windGrid.length > 0
+  // Height of the wind map (Model.WIND_LEVELS), chosen in the wind tab.
+  readonly property string windLevelId: Model.windLevel(String(generalSetting("windLevel", "10m"))).id
+  readonly property var windLevelInfo: Model.windLevel(windLevelId)
+  function stepWindLevel(delta) {
+    var levels = Model.WIND_LEVELS
+    var index = 0
+    for (var i = 0; i < levels.length; ++i) if (levels[i].id === windLevelId) index = i
+    var next = Math.max(0, Math.min(levels.length - 1, index + delta))
+    if (next !== index) displayOptionsStore.setGeneralSetting("windLevel", levels[next].id)
+  }
+  // "1 500 m" or "4 900 ft" for a height of the wind map.
+  function windLevelText(level) {
+    if (useImperial) return localizedNumber(Math.round(level.metres * 3.28084 / (level.metres < 1000 ? 10 : 100)) * (level.metres < 1000 ? 10 : 100)) + " ft"
+    return level.metres >= 10000 ? localizedNumber(level.metres / 1000) + " km" : localizedNumber(level.metres) + " m"
+  }
+  readonly property var windGrid: Model.windGridSeries(cacheFallbackActive ? null : windGridReport, windLevelId)
+  // The point forecast stands in only for the 10 m wind it has.
+  readonly property var windMapData: windGrid.length > 0 || windLevelId !== "10m"
     ? windGrid
     : (rainNowcast.length > 0 ? [{
         latitude: mapCenterLatitude,
@@ -1778,7 +1794,7 @@ Panel {
   // fallback only matters for keys that have no default at all.
   // Unit system and language apply to the menu bar, widget and app alike.
   property var generalOptions: ({ unitSystem: "auto", language: "auto", windUnit: "auto", refreshMinutes: 0,
-    radarMinutes: 0, colorAccents: true })
+    radarMinutes: 0, colorAccents: true, windLevel: "10m" })
   function generalSetting(key, fallback) {
     var value = generalOptions ? generalOptions[key] : undefined
     return value === undefined ? fallback : value
@@ -3110,6 +3126,13 @@ Panel {
       return
     }
 
+    // Shift+↑/↓ change the wind map's height while it is shown.
+    if (windShown && (event.modifiers & Qt.ShiftModifier)
+        && (event.key === Qt.Key_Up || event.key === Qt.Key_Down)) {
+      stepWindLevel(event.key === Qt.Key_Up ? 1 : -1)
+      event.accepted = true
+      return
+    }
     // Shift+←/→ move the hour cursor; Backspace returns to now.
     if ((event.modifiers & Qt.ShiftModifier) && (event.key === Qt.Key_Left || event.key === Qt.Key_Right)) {
       moveHourCursor(event.key === Qt.Key_Right ? 1 : -1)
@@ -3278,6 +3301,15 @@ Panel {
     if (index < 0 || index >= savedLocations.length) return
     if (index !== activeFavoriteIndex) selectSavedLocation(savedLocations[index])
     root.defer(function() { root.scrollHeroIntoView() })
+  }
+
+  function showTab(name) {
+    if (displayTabs.indexOf(String(name)) < 0) return
+    activeTab = String(name)
+    // The tabs sit below the sections in the window: show them.
+    root.defer(function() {
+      weatherScroll.contentY = Math.max(0, weatherScroll.contentHeight - weatherScroll.height)
+    })
   }
 
   function stepFavorite(delta) {
@@ -4173,6 +4205,9 @@ Panel {
     function favorite(index: int): void { root.openFromHotkey(); root.showFavorite(index - 1) }
     function nextFavorite(): void { root.openFromHotkey(); root.stepFavorite(1) }
     function previousFavorite(): void { root.openFromHotkey(); root.stepFavorite(-1) }
+    // A tab by its section key (rain, radar, wind, favorites, ...), scrolled
+    // into view; for global key bindings. The window is not brought forward.
+    function tab(name: string): void { root.showTab(name) }
     function providerStatus(): string {
       return JSON.stringify({
         language: root.interfaceLanguage,

@@ -45,7 +45,8 @@ Column {
         { keys: ["0"], action: "shortcutZoomReset" },
         { keys: ["ctrlArrows", "mouseDrag"], translateKeys: true, action: "shortcutMapPan" },
         { keys: ["ctrlWheel"], translateKeys: true, action: "shortcutMapWheel" },
-        { keys: ["shiftWheel"], translateKeys: true, action: "shortcutSidewaysWheel" }
+        { keys: ["shiftWheel"], translateKeys: true, action: "shortcutSidewaysWheel" },
+        { keys: ["⇧ ↑ ↓"], action: "shortcutWindLevel" }
       ]
     },
     {

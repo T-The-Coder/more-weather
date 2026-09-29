@@ -61,6 +61,7 @@ Item {
       panel: windMapItem.panel
       viewport: windMapItem.viewport
       washOpacity: windMapItem.drawnMap ? 0.5 : 0.62
+      scaleKmh: panel.windLevelInfo.scaleKmh
       running: windMapItem.animating
     }
 
@@ -137,6 +138,7 @@ Item {
         var occupied = []
         if (windZoomControls.visible)
           occupied.push({ x: windZoomControls.x, y: windZoomControls.y, w: windZoomControls.width, h: windZoomControls.height })
+        occupied.push({ x: windLevelControls.x, y: windLevelControls.y, w: windLevelControls.width, h: windLevelControls.height })
         if (windSummary.visible)
           occupied.push({ x: windSummary.x, y: windSummary.y, w: windSummary.width, h: windSummary.height })
 
@@ -225,6 +227,71 @@ Item {
     panel: windMapItem.panel
   }
 
+  // Height of the wind: ▼ lower, ▲ higher (also Shift+↓ / Shift+↑).
+  BorderSurface {
+    id: windLevelControls
+    anchors.left: parent.left
+    anchors.top: parent.top
+    anchors.margins: Style.space(8)
+    width: windLevelRow.implicitWidth + Style.space(10)
+    height: Style.space(28)
+    radius: Style.cornerRadius
+    color: Color.popups.background
+    borderSpec: Border.surfaceSpec("popups", "border", Color.popups.border, Style.normalBorderWidth)
+
+    Row {
+      id: windLevelRow
+      anchors.centerIn: parent
+      spacing: Style.space(4)
+
+      Text {
+        anchors.verticalCenter: parent.verticalCenter
+        leftPadding: Style.space(4)
+        rightPadding: Style.space(2)
+        text: panel.windLevelText(panel.windLevelInfo)
+          + (panel.windLevelId.indexOf("hPa") > 0 ? " · " + panel.windLevelId.replace("hPa", " hPa") : "")
+        color: Color.popups.text
+        font.family: panel.fontFamily
+        font.pixelSize: Style.font.caption
+        font.bold: true
+      }
+
+      Repeater {
+        model: [{ glyph: "▼", delta: -1 }, { glyph: "▲", delta: 1 }]
+
+        BorderSurface {
+          id: levelButton
+          required property var modelData
+          anchors.verticalCenter: parent.verticalCenter
+          width: Style.space(22)
+          height: Style.space(20)
+          radius: Style.cornerRadius
+          enabled: modelData.delta < 0 ? panel.windLevelId !== "10m" : panel.windLevelId !== "250hPa"
+          opacity: enabled ? 1 : 0.38
+          color: Style.controlFill(false, levelMouse.containsMouse, Color.popups.text, Color.accent)
+          borderSpec: Border.controlSpec(levelMouse.containsMouse ? "hover-cursor" : "normal", Color.popups.text, Color.accent)
+
+          Text {
+            anchors.centerIn: parent
+            text: levelButton.modelData.glyph
+            color: levelMouse.containsMouse ? Style.hoverStateColor(Color.popups.text, Color.accent) : Color.popups.text
+            font.family: panel.fontFamily
+            font.pixelSize: Style.font.caption
+          }
+
+          MouseArea {
+            id: levelMouse
+            anchors.fill: parent
+            enabled: levelButton.enabled
+            hoverEnabled: true
+            cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+            onClicked: panel.stepWindLevel(levelButton.modelData.delta)
+          }
+        }
+      }
+    }
+  }
+
   WeatherMapZoomControls {
     id: windZoomControls
     panel: windMapItem.panel
@@ -301,7 +368,7 @@ Item {
       }
       Text {
         x: parent.width * 0.5 - implicitWidth / 2
-        text: panel.windMapSpeed(50)
+        text: panel.windMapSpeed(panel.windLevelInfo.scaleKmh / 2)
         color: Color.popups.text
         style: Text.Outline
         styleColor: Color.popups.background
@@ -310,7 +377,7 @@ Item {
       }
       Text {
         anchors.right: parent.right
-        text: panel.windMapSpeed(100) + " " + panel.windMapUnit
+        text: panel.windMapSpeed(panel.windLevelInfo.scaleKmh) + " " + panel.windMapUnit
         color: Color.popups.text
         style: Text.Outline
         styleColor: Color.popups.background
@@ -340,7 +407,14 @@ Item {
     Text {
       id: windMapLabel
       anchors.centerIn: parent
-      text: panel.windMapCurrent
+      text: panel.windMapCurrent && panel.windLevelId !== "10m"
+        ? panel.i18n("windMapSummaryAloft", {
+            location: panel.reportLocation,
+            speed: panel.windMapSpeed(panel.windMapCurrent.windSpeed),
+            direction: panel.windDirectionName(panel.windMapCurrent.windDirection),
+            unit: panel.windMapUnit
+          })
+        : panel.windMapCurrent
         ? panel.i18n("windMapSummary", {
             location: panel.reportLocation,
             speed: panel.windMapSpeed(panel.windMapCurrent.windSpeed),

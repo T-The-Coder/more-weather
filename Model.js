@@ -2032,8 +2032,28 @@ function airQualitySummary(report, useUsScale) {
   }
 }
 
-function windGridSeries(report) {
+// Heights the wind map offers (Open-Meteo's variable suffixes): the 10 m of
+// every forecast, wind-turbine height, and the pressure levels meteorology
+// and aviation use, with their usual height and the speed the colour scale
+// reaches its end at (winds aloft blow far harder).
+var WIND_LEVELS = [
+  { id: "10m", metres: 10, scaleKmh: 100 },
+  { id: "120m", metres: 120, scaleKmh: 120 },
+  { id: "850hPa", metres: 1500, scaleKmh: 150 },
+  { id: "700hPa", metres: 3000, scaleKmh: 180 },
+  { id: "500hPa", metres: 5500, scaleKmh: 240 },
+  { id: "250hPa", metres: 10500, scaleKmh: 320 }
+]
+
+function windLevel(id) {
+  for (var i = 0; i < WIND_LEVELS.length; ++i) if (WIND_LEVELS[i].id === id) return WIND_LEVELS[i]
+  return WIND_LEVELS[0]
+}
+
+// The grid's wind at one of WIND_LEVELS; gusts exist only at 10 m.
+function windGridSeries(report, levelId) {
   if (!report) return []
+  var level = windLevel(levelId).id
   var rows = Array.isArray(report) ? report : [report]
   var result = []
   for (var i = 0; i < rows.length; ++i) {
@@ -2041,12 +2061,14 @@ function windGridSeries(report) {
     var latitude = parseFloat(rows[i] && rows[i].latitude)
     var longitude = parseFloat(rows[i] && rows[i].longitude)
     if (!current || isNaN(latitude) || isNaN(longitude)) continue
+    var speed = current["wind_speed_" + level]
+    if (speed === undefined || speed === null) continue
     result.push({
       latitude: latitude,
       longitude: longitude,
-      windSpeed: numericValue([current.wind_speed_10m], 0),
-      windDirection: numericValue([current.wind_direction_10m], 0),
-      windGust: numericValue([current.wind_gusts_10m], 0)
+      windSpeed: numericValue([speed], 0),
+      windDirection: numericValue([current["wind_direction_" + level]], 0),
+      windGust: level === "10m" ? numericValue([current.wind_gusts_10m], 0) : null
     })
   }
   return result

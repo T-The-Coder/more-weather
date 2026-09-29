@@ -20,7 +20,8 @@ Item {
   // The "f" marks grids spread over the flat map extent; square grids cached
   // before the map was unsquashed no longer match.
   function extentKey(latitude, longitude, radiusKm) {
-    return Number(latitude).toFixed(3) + "," + Number(longitude).toFixed(3) + "," + Math.round(radiusKm) + ",f"
+    // ",l": grids with every height (WIND_LEVELS); older ones had 10 m only.
+    return Number(latitude).toFixed(3) + "," + Number(longitude).toFixed(3) + "," + Math.round(radiusKm) + ",l"
   }
 
   function rememberWindGrid(key, report, at) {
@@ -144,7 +145,12 @@ Item {
     var windGridUrl = "https://api.open-meteo.com/v1/forecast"
       + "?latitude=" + windLatitudes.join(",")
       + "&longitude=" + windLongitudes.join(",")
-      + "&current=wind_speed_10m,wind_direction_10m,wind_gusts_10m,precipitation"
+      // Every height of the wind map in the same request, so switching
+      // between them needs none.
+      + "&current=wind_speed_10m,wind_direction_10m,wind_gusts_10m,precipitation,"
+      + Model.WIND_LEVELS.slice(1).map(function(level) {
+          return "wind_speed_" + level.id + ",wind_direction_" + level.id
+        }).join(",")
       + "&wind_speed_unit=kmh"
     windGridProc.request = { url: windGridUrl, timeoutMs: 12000 }
     windGridProc.running = true
