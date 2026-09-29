@@ -55,8 +55,10 @@ window.
     place.
   - A map drawn in the theme's colours (land, lakes, towns, rivers, borders from Natural
     Earth, shipped with the plugin, so it needs no network), or the satellite picture as
-    a map style. Drag to move it, Ctrl + wheel zooms towards the pointer (a plain wheel
-    scrolls the page), `0` or the crosshair button returns to the place. The wind map shares the same view.
+    a map style. Drag it or use Ctrl + arrow keys to move it, Ctrl + wheel zooms towards
+    the pointer (a plain wheel scrolls the page), `0` or the crosshair button returns to
+    the place. Town names come from OpenStreetMap in your language, with Natural Earth's
+    larger towns filling in offline or where OpenStreetMap has none. The wind map shares the same view.
   - City labels, plus a drift arrow at the map's true scale, marked in round steps from
     5 minutes up to two hours (three or four when zoomed far out), so it keeps its time
     labels at every zoom. It follows the frame on screen and is tracked from the radar itself in the
@@ -209,6 +211,20 @@ Omarchy's built-in weather widget and is left in place.
 | `~/.cache/more-weather/map-images/` | Downloaded radar and map pictures, removed after three hours |
 | `$XDG_RUNTIME_DIR/more-weather-app/` | Temporary app configuration (links to the plugin and the Omarchy shell) |
 | `~/.local/share/applications/more-weather.desktop`, `~/.local/share/more-weather/launch`, `~/.local/share/icons/hicolor/scalable/apps/more-weather.svg` | App launcher entry, only while **Show in app launcher** is on |
+
+## Development
+
+The calculations (forecast merging, rain alerts, the temperature line, the
+drift arrow), the map data and the translations have tests for Node's built-in
+test runner, with nothing to install:
+
+```bash
+node --test tests/*.test.mjs
+```
+
+They also run on GitHub for every push. The drawn map's data is built from
+Natural Earth with `python3 tools/build-basemap.py` (only needed when the
+source data or the layers change; the result, `data/basemap.bin`, is committed).
 
 ## License
 

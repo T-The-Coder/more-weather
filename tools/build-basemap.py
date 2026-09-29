@@ -24,7 +24,7 @@ File
 All numbers little-endian; varints are LEB128, signed ones zigzag-coded.
 
     magic     "MWBM"
-    version   u8 (1)
+    version   u8 (2)
     cell      u8, degrees per cell side (5)
     count     u16, cells
     index     per cell: row u8, column u8, offset u32, length u32
@@ -36,6 +36,10 @@ All numbers little-endian; varints are LEB128, signed ones zigzag-coded.
                   lines:    one point list
                 point list: point count varint, then x, y signed varints:
                   the first point, then deltas to the previous one
+              then the places: count varint, then per place
+                x, y signed varints (not deltas), population varint,
+                kind u8 (1 a city: a capital or a large town, 0 a town),
+                name: byte length varint, UTF-8
 
 Points are in thousandths of a degree from the cell's south-west corner
 (0 … 5000); x is east, y north. Polygons are cut to the cell, so a ring may
@@ -55,7 +59,8 @@ ROOT = os.path.dirname(HERE)
 CACHE = os.path.join(HERE, ".cache")
 OUTPUT = os.path.join(ROOT, "data", "basemap.bin")
 MAGIC = b"MWBM"
-VERSION = 1
+VERSION = 2
+PLACES_SOURCE = "ne_10m_populated_places_simple"
 LAYER_ORDER = ["land", "lakes", "urban", "rivers", "admin1", "admin0"]
 POLYGON_LAYERS = {"land", "lakes", "urban"}
 
@@ -319,7 +324,37 @@ def build():
                             if encoded:
                                 cell(row, col).setdefault(name, []).append(encoded)
 
+    add_places(cells)
     write(cells)
+
+
+def add_places(cells):
+    """Natural Earth's populated places, for the map's labels where
+    OpenStreetMap has none (offline, or a view it was not asked for)."""
+    data = fetch(PLACES_SOURCE)
+    count = 0
+    for feature in data["features"]:
+        properties = feature.get("properties") or {}
+        geometry = feature.get("geometry") or {}
+        if geometry.get("type") != "Point":
+            continue
+        lon, lat = geometry["coordinates"][:2]
+        name = str(properties.get("name") or "").strip()
+        if not name:
+            continue
+        row = int(math.floor((lat + 90) / CELL))
+        col = int(math.floor((lon + 180) / CELL))
+        if not (0 <= row < 180 // CELL and 0 <= col < 360 // CELL):
+            continue
+        box = cell_box(row, col)
+        population = max(0, int(properties.get("pop_max") or 0))
+        capital = "capital" in str(properties.get("featurecla") or "").lower()
+        kind = 1 if capital or population >= 100000 else 0
+        x = int(round((lon - box[0]) * QUANTUM))
+        y = int(round((lat - box[1]) * QUANTUM))
+        cells.setdefault((row, col), {}).setdefault("places", []).append((x, y, population, kind, name))
+        count += 1
+    print("places", count, file=sys.stderr)
 
 
 def varint(value, out):
@@ -345,6 +380,7 @@ def points(flat, out):
 
 def encode_cell(layers):
     out = bytearray()
+    places = layers.get("places", [])
     for name in LAYER_ORDER:
         features = layers.get(name, [])
         varint(len(features), out)
@@ -355,6 +391,15 @@ def encode_cell(layers):
                     points(ring, out)
             else:
                 points(feature, out)
+    varint(len(places), out)
+    for x, y, population, kind, name in places:
+        signed(x, out)
+        signed(y, out)
+        varint(population, out)
+        out.append(kind)
+        encoded = name.encode("utf-8")
+        varint(len(encoded), out)
+        out += encoded
     return bytes(out)
 
 

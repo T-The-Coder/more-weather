@@ -49,7 +49,8 @@ This separation keeps the widget and standalone app on the same policy.
   primary forecast also fails, the MET Norway-normalised point vector is used.
 - Base map: drawn from Natural Earth 1:10m (public domain; land, lakes, urban
   areas, rivers, state and country borders), shipped as data/basemap.bin
-  (2.6 MB, 5° x 5° cells behind an index, built by tools/build-basemap.py and
+  (2.7 MB, 5° x 5° cells behind an index, with Natural Earth's populated
+  places for offline map labels; built by tools/build-basemap.py and
   read by Basemap.js), so it needs no request. The
   satellite style is DWD's bluemarble WMS picture for the current view.
 

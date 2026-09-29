@@ -43,7 +43,7 @@ Column {
         { keys: ["Space"], action: "shortcutRadarPlay" },
         { keys: ["+", "−"], action: "shortcutZoom" },
         { keys: ["0"], action: "shortcutZoomReset" },
-        { keys: ["mouseDrag"], translateKeys: true, action: "shortcutMapPan" },
+        { keys: ["ctrlArrows", "mouseDrag"], translateKeys: true, action: "shortcutMapPan" },
         { keys: ["ctrlWheel"], translateKeys: true, action: "shortcutMapWheel" },
         { keys: ["shiftWheel"], translateKeys: true, action: "shortcutSidewaysWheel" }
       ]

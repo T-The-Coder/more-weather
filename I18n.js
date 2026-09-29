@@ -9260,6 +9260,12 @@ addCatalogEntries("zh_TW", {
   "shiftWheel": "Shift + 滾輪",
   "shortcutSidewaysWheel": "每日預報與雷達時間軸：橫向（觸控板：左右滑動）"
 })
+// Ctrl + arrows move the map (2.5): the Ctrl key's name as in "ctrlWheel".
+Object.keys(catalog).forEach(function(language) {
+  var wheel = catalog[language].ctrlWheel || catalog.en.ctrlWheel
+  var key = String(wheel).split(" + ")[0] || "Ctrl"
+  catalog[language].ctrlArrows = key + " ← → ↑ ↓"
+})
 // Each language in its own name, for the language picker.
 var languageNames = {
   "en": "English",

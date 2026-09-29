@@ -4,6 +4,7 @@ import Quickshell.Io
 import qs.Commons
 import qs.Ui
 import "Model.js" as Model
+import "Basemap.js" as Basemap
 import "I18n.js" as I18n
 import "Providers.js" as Providers
 
@@ -485,26 +486,50 @@ Panel {
 
   // Every hour of the forecast days, midnight to midnight, for the daily
   // temperature line: { time, tempC (unrounded, NaN where missing), rain
-  // (mm in the hour), isDay }.
-  // From Open-Meteo, which starts its hours at midnight today.
+  // (mm in the hour), isDay }. In the DWD area from Bright Sky, the source of
+  // the day columns and the hourly forecast: the station's measurements for
+  // the hours gone, MOSMIX after them. Open-Meteo, which starts its hours at
+  // midnight today, fills in elsewhere and beyond.
   readonly property var weekHours: {
     var hourly = dailyForecastReport && dailyForecastReport.hourly
     var days = forecastDays
-    if (!hourly || !hourly.time || !hourly.temperature_2m || !days.length) return []
+    if (!days.length) return []
     var byHour = {}
-    for (var i = 0; i < hourly.time.length; ++i) byHour[String(hourly.time[i]).slice(0, 13)] = i
+    if (hourly && hourly.time && hourly.temperature_2m) {
+      for (var i = 0; i < hourly.time.length; ++i) {
+        var value = hourly.temperature_2m[i] === null ? NaN : parseFloat(hourly.temperature_2m[i])
+        byHour[String(hourly.time[i]).slice(0, 13)] = {
+          tempC: value,
+          rain: hourly.precipitation ? (parseFloat(hourly.precipitation[i]) || 0) : 0,
+          isDay: hourly.is_day ? Number(hourly.is_day[i]) !== 0 : undefined
+        }
+      }
+    }
+    var rows = !cacheFallbackActive && mosmixReport && mosmixReport.weather ? mosmixReport.weather : []
+    for (var r = 0; r < rows.length; ++r) {
+      var temperature = rows[r].temperature
+      if (temperature === null || temperature === undefined || !isFinite(Number(temperature))) continue
+      var key = String(rows[r].timestamp || "").slice(0, 13)
+      var known = byHour[key]
+      byHour[key] = {
+        tempC: Number(temperature),
+        rain: Number(rows[r].precipitation) || 0,
+        // Daylight from the forecast's hours; Bright Sky's own is its icon.
+        isDay: known && known.isDay !== undefined ? known.isDay
+          : String(rows[r].icon || "").indexOf("night") < 0
+      }
+    }
     var list = []
     for (var d = 0; d < days.length; ++d) {
       var date = String(days[d].date || "").slice(0, 10)
       for (var h = 0; h < 24; ++h) {
-        var key = date + "T" + (h < 10 ? "0" : "") + h
-        var at = byHour[key]
-        var value = at === undefined || hourly.temperature_2m[at] === null ? NaN : parseFloat(hourly.temperature_2m[at])
+        var hourKey = date + "T" + (h < 10 ? "0" : "") + h
+        var entry = byHour[hourKey]
         list.push({
-          time: key + ":00",
-          tempC: value,
-          rain: at === undefined || !hourly.precipitation ? 0 : (parseFloat(hourly.precipitation[at]) || 0),
-          isDay: at === undefined || !hourly.is_day ? undefined : Number(hourly.is_day[at]) !== 0
+          time: hourKey + ":00",
+          tempC: entry ? entry.tempC : NaN,
+          rain: entry ? entry.rain : 0,
+          isDay: entry ? entry.isDay : undefined
         })
       }
     }
@@ -1358,8 +1383,28 @@ Panel {
   // The satellite picture; the drawn map needs none.
   readonly property string mapBasemapUrl: mapExtentKnown && mapStyle === "satellite"
     ? Providers.calmContextMapUrl(mapBbox, mapImageWidth, mapImageHeight) : ""
+  // Bumped when data/basemap.bin has been read (WeatherBasemap).
+  property int basemapRevision: Basemap.loaded() ? 1 : 0
+  // Place names for the maps: OpenStreetMap's (more places, in the chosen
+  // language), and Natural Earth's larger towns from the map data where
+  // OpenStreetMap has none nearby: offline, after it failed, or in a view
+  // moved away from the area it was asked for.
+  readonly property var mapPlaces: {
+    var osm = radarPlaceCache.places || []
+    if (basemapRevision < 1) return osm
+    var extra = Basemap.placesIn(mapWest - mapLongitudeRadius * 0.2, mapEast + mapLongitudeRadius * 0.2,
+      mapSouth - mapLatitudeRadius * 0.2, mapNorth + mapLatitudeRadius * 0.2)
+    var kept = []
+    for (var i = 0; i < extra.length; ++i) {
+      var near = false
+      for (var j = 0; j < osm.length && !near; ++j)
+        near = Model.geographicDistanceKm(extra[i].latitude, extra[i].longitude, osm[j].latitude, osm[j].longitude) < 5
+      if (!near) kept.push(extra[i])
+    }
+    return osm.concat(kept)
+  }
   readonly property var radarPlaceCandidates: Model.radarPlaceCandidates(
-    radarPlaceCache.places || [], mapViewLatitude, mapViewLongitude,
+    mapPlaces, mapViewLatitude, mapViewLongitude,
     mapRadiusKm, mapZoomLevel, reportLocation)
   onMapCenterLatitudeChanged: {
     mapPanLatitude = 0
@@ -2191,17 +2236,21 @@ Panel {
     return cachedField(current, useImperial && imperialKey ? imperialKey : metricKey)
   }
 
-  function weatherSnapshotFromReport(source, locationName, providerId) {
-    var currentCondition = Model.openMeteoCurrentCondition(source)
+  // A saved place's weather, built like the shown place's: in the DWD area
+  // with Bright Sky (`mosmix`) for the current values, the hours and the
+  // days, so a place reads the same in "My places" and once shown.
+  function weatherSnapshotFromReport(source, locationName, providerId, mosmix) {
     var now = new Date()
     var today = Qt.formatDate(now, "yyyy-MM-dd")
+    var openMeteoCurrent = Model.openMeteoCurrentCondition(source)
+    var currentCondition = mosmix ? Model.brightSkyCurrentCondition(mosmix, openMeteoCurrent, now) : openMeteoCurrent
     return {
       label: Model.currentIcon(currentCondition, ""),
       forecastProviderId: String(providerId || source && source._providerId || "open-meteo"),
       alertProviderId: "",
       current: currentCondition,
-      hourly: Model.hybridHourlyForecast(null, source, source, null, now, 72),
-      daily: Model.hybridForecastDays(null, source, today, source).slice(0, 3),
+      hourly: Model.hybridHourlyForecast(mosmix || null, source, source, null, now, 72),
+      daily: Model.hybridForecastDays(mosmix || null, source, today, source).slice(0, 3),
       nowcast: Model.rainNowcastSeries(null, source, now, 9),
       alerts: []
     }
@@ -2403,6 +2452,19 @@ Panel {
   // DWD's kilometre-scale radar and Bright Sky's MOSMIX/alerts are regional
   // specialities. The generous border box retains their useful edge coverage
   // around Germany; every other coordinate uses the global source path.
+  // Bright Sky's hours from midnight today for a week: the station's
+  // measurements for the hours gone, DWD MOSMIX after them.
+  function brightSkyWeatherUrl(lat, lon) {
+    var today = new Date()
+    var lastDay = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000)
+    return "https://api.brightsky.dev/weather"
+      + "?lat=" + encodeURIComponent(String(lat))
+      + "&lon=" + encodeURIComponent(String(lon))
+      + "&date=" + Qt.formatDate(today, "yyyy-MM-dd")
+      + "&last_date=" + Qt.formatDate(lastDay, "yyyy-MM-dd")
+      + "&tz=" + encodeURIComponent("Europe/Berlin")
+  }
+
   function usesDwdRegionalSources(latitude, longitude) {
     return Providers.usesDwd(latitude, longitude)
   }
@@ -2491,15 +2553,7 @@ Panel {
 
     var useDwd = usesDwdRegionalSources(lat, lon)
     if (useDwd) {
-      var today = new Date()
-      var lastDay = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000)
-      var weatherUrl = "https://api.brightsky.dev/weather"
-        + "?lat=" + encodeURIComponent(String(lat))
-        + "&lon=" + encodeURIComponent(String(lon))
-        + "&date=" + Qt.formatDate(today, "yyyy-MM-dd")
-        + "&last_date=" + Qt.formatDate(lastDay, "yyyy-MM-dd")
-        + "&tz=" + encodeURIComponent("Europe/Berlin")
-      mosmixProc.request = { url: weatherUrl, timeoutMs: 8000 }
+      mosmixProc.request = { url: brightSkyWeatherUrl(lat, lon), timeoutMs: 8000 }
       mosmixProc.running = true
 
       startDwdRadarRequest(lat, lon)
@@ -2993,6 +3047,16 @@ Panel {
       }
     }
 
+    // Ctrl+arrows move the radar or wind map by a quarter of the view.
+    if (control && !alternate && !command && (radarShown || windShown)) {
+      var across = event.key === Qt.Key_Left ? -1 : (event.key === Qt.Key_Right ? 1 : 0)
+      var along = event.key === Qt.Key_Up ? 1 : (event.key === Qt.Key_Down ? -1 : 0)
+      if (across !== 0 || along !== 0) {
+        panMapBy(across * 0.25, along * 0.25)
+        event.accepted = true
+        return
+      }
+    }
     if (!plain) return
 
     if (event.key === Qt.Key_Tab || event.key === Qt.Key_Backtab) {
@@ -3537,6 +3601,15 @@ Panel {
     if (!quiet) mapViewAboutToMove()
     var lon = mapPanLongitude - dx / viewport.renderedWidth * (mapEast - mapWest)
     var lat = mapPanLatitude + dy / viewport.renderedHeight * (mapNorth - mapSouth)
+    mapPanLongitude = ((lon + 540) % 360) - 180
+    mapPanLatitude = Math.max(-80 - mapCenterLatitude, Math.min(80 - mapCenterLatitude, lat))
+  }
+
+  // Moves the view by fractions of its width (east) and height (north).
+  function panMapBy(east, north) {
+    mapViewAboutToMove()
+    var lon = mapPanLongitude + east * (mapEast - mapWest)
+    var lat = mapPanLatitude + north * (mapNorth - mapSouth)
     mapPanLongitude = ((lon + 540) % 360) - 180
     mapPanLatitude = Math.max(-80 - mapCenterLatitude, Math.min(80 - mapCenterLatitude, lat))
   }

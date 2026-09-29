@@ -78,7 +78,11 @@ Item {
   FileView {
     path: basemap.loadedRevision === 0 ? basemap.dataFile : ""
     printErrors: false
-    onLoaded: if (Basemap.load(data())) basemap.loadedRevision++
+    onLoaded: {
+      if (!Basemap.load(data())) return
+      basemap.loadedRevision++
+      basemap.panel.basemapRevision++
+    }
   }
 
   // Waits for the end of the event: the extent's four sides change one

@@ -65,7 +65,7 @@ All notable changes to More Weather are documented here.
   place of the update time. Backspace or Esc return to now.
 - Radar and wind map drawn in the theme's colours, after the Weather Radar
   plugin: land, lakes, towns, rivers, state and country borders from Natural
-  Earth, shipped with the plugin (data/basemap.bin, 2.6 MB; only the 5° cells
+  Earth, shipped with the plugin (data/basemap.bin, 2.7 MB; only the 5° cells
   around the view are decoded), so
   the ground needs no network and follows theme changes. The satellite
   picture stays available under Settings → Display → Radar → Map style.
@@ -94,6 +94,20 @@ All notable changes to More Weather are documented here.
   shown place) kept their oldest hours and days and dropped every newer
   forecast, so "My places" worked from hours two weeks old and only the
   current value moved. Past rows are now dropped before the lists are cut.
+- One source per place in the DWD area: the week's temperature line now
+  takes Bright Sky's hours like the day columns and the hourly forecast (the
+  station's measurements for the hours gone, MOSMIX after them), so the
+  line's low and high match the columns; saved places there are fetched
+  from Bright Sky too, so "My places" reads the same as the place once shown.
+- Map place names work offline: Natural Earth's towns ship with the map data
+  and fill in where OpenStreetMap has none (it failed, or the map was moved
+  away from the area it was asked for).
+- Ctrl + arrow keys move the radar and wind map by a quarter of the view.
+- The map data is one 2.7 MB file (data/basemap.bin, read through
+  Basemap.js) instead of many small ones.
+- Tests for Node's built-in runner (node --test tests/*.test.mjs): forecast
+  merging, rain alerts, the temperature line, the drift arrow, the map data
+  and the translations; they run on GitHub for every push.
 - Temperature line, after linecast: under the hourly columns the next 24
   hours as one line, each segment coloured by its warmth, with daylight
   bands, a rule and day name at midnight, the value at each high and low, a
