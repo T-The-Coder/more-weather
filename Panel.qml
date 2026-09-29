@@ -344,14 +344,13 @@ Panel {
   }
 
   // Saved-locations bookmark list ("Ortsverwaltung") — a separate,
-  // plugin-owned file. Unlike weather.json (owned by the root-installed
-  // omarchy-weather-location CLI), nothing else ever writes this file, so
-  // watchChanges stays false and we're free to write it directly with
-  // setText() — same idiom Notifications/Service.qml and agents/Main.qml
-  // use for their own single-writer JSON state.
+  // plugin-owned file, written directly with setText(). The bar and the
+  // standalone app both write it (and an import of the settings does), so
+  // each watches it for the other's changes.
   property FileView savedLocationsFile: FileView {
     path: Quickshell.env("HOME") + "/.local/state/omarchy/settings/more-weather-locations.json"
-    watchChanges: false
+    watchChanges: true
+    onFileChanged: reload()
     atomicWrites: true
     printErrors: false
     onLoaded: {
@@ -4185,6 +4184,7 @@ Panel {
   property WeatherRadarPlaces radarPlaces: WeatherRadarPlaces { panel: root }
   property WeatherSharedLiveData sharedLive: WeatherSharedLiveData { panel: root }
   property WeatherDisplayOptionsStore displayOptionsStore: WeatherDisplayOptionsStore { panel: root }
+  property WeatherSettingsTransfer settingsTransfer: WeatherSettingsTransfer { panel: root }
   property WeatherAirQuality airQuality: WeatherAirQuality { panel: root }
   property WeatherRegionalNowcast regionalNowcast: WeatherRegionalNowcast { panel: root }
   property WeatherAlertLookup alertLookup: WeatherAlertLookup { panel: root }

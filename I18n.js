@@ -9417,6 +9417,427 @@ addCatalogEntries("zh_TW", {
   "windCpuHint": "動態風場地圖在顯示時約佔一個處理器核心的五分之一（Qt 以軟體方式繪製），分頁或視窗隱藏時不佔用。高度（10 公尺至 10 公里）在地圖左上角選擇。",
   "shortcutWindLevel": "風場地圖：升高 / 降低"
 })
+// Export and import of the settings (2.5).
+addCatalogEntries("en", {
+  "settingsTransfer": "Export and import",
+  "settingsTransferFile": "File",
+  "settingsExport": "Export",
+  "settingsImport": "Import",
+  "settingsImportConfirm": "Really import?",
+  "settingsExported": "Exported to {path}.",
+  "settingsExportFailed": "Could not write {path}.",
+  "settingsBackupFailed": "Could not save the current settings to {path}; nothing was imported.",
+  "settingsImportMissing": "{path} could not be read.",
+  "settingsImportInvalid": "{path} is not a More Weather settings file.",
+  "settingsImported": "Imported from {path}. The previous settings are in {backup}.",
+  "settingsTransferHint": "The general settings, the menu bar, widget and app display and your places, in one file. Before an import the current settings are saved to {backup}, so it can be undone by importing that file."
+})
+addCatalogEntries("de", {
+  "settingsTransfer": "Exportieren und importieren",
+  "settingsTransferFile": "Datei",
+  "settingsExport": "Exportieren",
+  "settingsImport": "Importieren",
+  "settingsImportConfirm": "Wirklich importieren?",
+  "settingsExported": "Exportiert nach {path}.",
+  "settingsExportFailed": "{path} konnte nicht geschrieben werden.",
+  "settingsBackupFailed": "Die aktuellen Einstellungen konnten nicht nach {path} gesichert werden; es wurde nichts importiert.",
+  "settingsImportMissing": "{path} konnte nicht gelesen werden.",
+  "settingsImportInvalid": "{path} ist keine Einstellungsdatei von More Weather.",
+  "settingsImported": "Importiert aus {path}. Die bisherigen Einstellungen liegen in {backup}.",
+  "settingsTransferHint": "Die allgemeinen Einstellungen, die Anzeige von Menüleiste, Widget und App sowie deine Orte in einer Datei. Vor einem Import werden die aktuellen Einstellungen nach {backup} gesichert; ein Import dieser Datei macht ihn rückgängig."
+})
+addCatalogEntries("es", {
+  "settingsTransfer": "Exportar e importar",
+  "settingsTransferFile": "Archivo",
+  "settingsExport": "Exportar",
+  "settingsImport": "Importar",
+  "settingsImportConfirm": "¿Importar de verdad?",
+  "settingsExported": "Exportado a {path}.",
+  "settingsExportFailed": "No se pudo escribir {path}.",
+  "settingsBackupFailed": "No se pudieron guardar los ajustes actuales en {path}; no se importó nada.",
+  "settingsImportMissing": "No se pudo leer {path}.",
+  "settingsImportInvalid": "{path} no es un archivo de ajustes de More Weather.",
+  "settingsImported": "Importado de {path}. Los ajustes anteriores están en {backup}.",
+  "settingsTransferHint": "Los ajustes generales, la presentación de la barra de menús, el widget y la app, y tus lugares, en un archivo. Antes de importar, los ajustes actuales se guardan en {backup}; importar ese archivo lo deshace."
+})
+addCatalogEntries("fr", {
+  "settingsTransfer": "Exporter et importer",
+  "settingsTransferFile": "Fichier",
+  "settingsExport": "Exporter",
+  "settingsImport": "Importer",
+  "settingsImportConfirm": "Vraiment importer ?",
+  "settingsExported": "Exporté vers {path}.",
+  "settingsExportFailed": "Impossible d'écrire {path}.",
+  "settingsBackupFailed": "Impossible d'enregistrer les réglages actuels dans {path} ; rien n'a été importé.",
+  "settingsImportMissing": "Impossible de lire {path}.",
+  "settingsImportInvalid": "{path} n'est pas un fichier de réglages de More Weather.",
+  "settingsImported": "Importé depuis {path}. Les réglages précédents sont dans {backup}.",
+  "settingsTransferHint": "Les réglages généraux, l'affichage de la barre de menus, du widget et de l'app, et vos lieux, dans un seul fichier. Avant une importation, les réglages actuels sont enregistrés dans {backup} ; importer ce fichier l'annule."
+})
+addCatalogEntries("pt", {
+  "settingsTransfer": "Exportar e importar",
+  "settingsTransferFile": "Ficheiro",
+  "settingsExport": "Exportar",
+  "settingsImport": "Importar",
+  "settingsImportConfirm": "Importar mesmo?",
+  "settingsExported": "Exportado para {path}.",
+  "settingsExportFailed": "Não foi possível escrever {path}.",
+  "settingsBackupFailed": "Não foi possível guardar as definições atuais em {path}; nada foi importado.",
+  "settingsImportMissing": "Não foi possível ler {path}.",
+  "settingsImportInvalid": "{path} não é um ficheiro de definições do More Weather.",
+  "settingsImported": "Importado de {path}. As definições anteriores estão em {backup}.",
+  "settingsTransferHint": "As definições gerais, a apresentação da barra de menus, do widget e da app, e os seus locais, num ficheiro. Antes de importar, as definições atuais são guardadas em {backup}; importar esse ficheiro desfaz a importação."
+})
+addCatalogEntries("ru", {
+  "settingsTransfer": "Экспорт и импорт",
+  "settingsTransferFile": "Файл",
+  "settingsExport": "Экспортировать",
+  "settingsImport": "Импортировать",
+  "settingsImportConfirm": "Точно импортировать?",
+  "settingsExported": "Экспортировано в {path}.",
+  "settingsExportFailed": "Не удалось записать {path}.",
+  "settingsBackupFailed": "Не удалось сохранить текущие настройки в {path}; ничего не импортировано.",
+  "settingsImportMissing": "Не удалось прочитать {path}.",
+  "settingsImportInvalid": "{path} — не файл настроек More Weather.",
+  "settingsImported": "Импортировано из {path}. Прежние настройки — в {backup}.",
+  "settingsTransferHint": "Общие настройки, отображение в панели, виджете и приложении и ваши места — в одном файле. Перед импортом текущие настройки сохраняются в {backup}; импорт этого файла отменяет изменения."
+})
+addCatalogEntries("uk", {
+  "settingsTransfer": "Експорт та імпорт",
+  "settingsTransferFile": "Файл",
+  "settingsExport": "Експортувати",
+  "settingsImport": "Імпортувати",
+  "settingsImportConfirm": "Справді імпортувати?",
+  "settingsExported": "Експортовано до {path}.",
+  "settingsExportFailed": "Не вдалося записати {path}.",
+  "settingsBackupFailed": "Не вдалося зберегти поточні налаштування до {path}; нічого не імпортовано.",
+  "settingsImportMissing": "Не вдалося прочитати {path}.",
+  "settingsImportInvalid": "{path} — не файл налаштувань More Weather.",
+  "settingsImported": "Імпортовано з {path}. Попередні налаштування — у {backup}.",
+  "settingsTransferHint": "Загальні налаштування, відображення в панелі, віджеті й застосунку та ваші місця — в одному файлі. Перед імпортом поточні налаштування зберігаються до {backup}; імпорт цього файла скасовує зміни."
+})
+addCatalogEntries("pl", {
+  "settingsTransfer": "Eksport i import",
+  "settingsTransferFile": "Plik",
+  "settingsExport": "Eksportuj",
+  "settingsImport": "Importuj",
+  "settingsImportConfirm": "Na pewno importować?",
+  "settingsExported": "Wyeksportowano do {path}.",
+  "settingsExportFailed": "Nie udało się zapisać {path}.",
+  "settingsBackupFailed": "Nie udało się zapisać bieżących ustawień do {path}; nic nie zaimportowano.",
+  "settingsImportMissing": "Nie udało się odczytać {path}.",
+  "settingsImportInvalid": "{path} nie jest plikiem ustawień More Weather.",
+  "settingsImported": "Zaimportowano z {path}. Poprzednie ustawienia są w {backup}.",
+  "settingsTransferHint": "Ustawienia ogólne, wygląd paska menu, widżetu i aplikacji oraz twoje miejsca w jednym pliku. Przed importem bieżące ustawienia są zapisywane do {backup}; zaimportowanie tego pliku cofa zmiany."
+})
+addCatalogEntries("it", {
+  "settingsTransfer": "Esporta e importa",
+  "settingsTransferFile": "File",
+  "settingsExport": "Esporta",
+  "settingsImport": "Importa",
+  "settingsImportConfirm": "Importare davvero?",
+  "settingsExported": "Esportato in {path}.",
+  "settingsExportFailed": "Impossibile scrivere {path}.",
+  "settingsBackupFailed": "Impossibile salvare le impostazioni attuali in {path}; non è stato importato nulla.",
+  "settingsImportMissing": "Impossibile leggere {path}.",
+  "settingsImportInvalid": "{path} non è un file di impostazioni di More Weather.",
+  "settingsImported": "Importato da {path}. Le impostazioni precedenti sono in {backup}.",
+  "settingsTransferHint": "Le impostazioni generali, la visualizzazione di barra dei menu, widget e app e i tuoi luoghi, in un unico file. Prima di un'importazione le impostazioni attuali vengono salvate in {backup}; importare quel file la annulla."
+})
+addCatalogEntries("nl", {
+  "settingsTransfer": "Exporteren en importeren",
+  "settingsTransferFile": "Bestand",
+  "settingsExport": "Exporteren",
+  "settingsImport": "Importeren",
+  "settingsImportConfirm": "Echt importeren?",
+  "settingsExported": "Geëxporteerd naar {path}.",
+  "settingsExportFailed": "{path} kon niet worden geschreven.",
+  "settingsBackupFailed": "De huidige instellingen konden niet in {path} worden opgeslagen; er is niets geïmporteerd.",
+  "settingsImportMissing": "{path} kon niet worden gelezen.",
+  "settingsImportInvalid": "{path} is geen instellingenbestand van More Weather.",
+  "settingsImported": "Geïmporteerd uit {path}. De vorige instellingen staan in {backup}.",
+  "settingsTransferHint": "De algemene instellingen, de weergave van menubalk, widget en app en je plaatsen in één bestand. Voor een import worden de huidige instellingen in {backup} opgeslagen; dat bestand importeren maakt het ongedaan."
+})
+addCatalogEntries("tr", {
+  "settingsTransfer": "Dışa ve içe aktar",
+  "settingsTransferFile": "Dosya",
+  "settingsExport": "Dışa aktar",
+  "settingsImport": "İçe aktar",
+  "settingsImportConfirm": "Gerçekten içe aktarılsın mı?",
+  "settingsExported": "{path} konumuna aktarıldı.",
+  "settingsExportFailed": "{path} yazılamadı.",
+  "settingsBackupFailed": "Geçerli ayarlar {path} konumuna kaydedilemedi; hiçbir şey içe aktarılmadı.",
+  "settingsImportMissing": "{path} okunamadı.",
+  "settingsImportInvalid": "{path} bir More Weather ayar dosyası değil.",
+  "settingsImported": "{path} içinden aktarıldı. Önceki ayarlar {backup} içinde.",
+  "settingsTransferHint": "Genel ayarlar, menü çubuğu, widget ve uygulama görünümü ile yerleriniz tek dosyada. İçe aktarmadan önce geçerli ayarlar {backup} konumuna kaydedilir; bu dosyayı içe aktarmak işlemi geri alır."
+})
+addCatalogEntries("cs", {
+  "settingsTransfer": "Export a import",
+  "settingsTransferFile": "Soubor",
+  "settingsExport": "Exportovat",
+  "settingsImport": "Importovat",
+  "settingsImportConfirm": "Opravdu importovat?",
+  "settingsExported": "Exportováno do {path}.",
+  "settingsExportFailed": "{path} nelze zapsat.",
+  "settingsBackupFailed": "Současná nastavení nelze uložit do {path}; nic nebylo importováno.",
+  "settingsImportMissing": "{path} nelze přečíst.",
+  "settingsImportInvalid": "{path} není soubor nastavení More Weather.",
+  "settingsImported": "Importováno z {path}. Předchozí nastavení jsou v {backup}.",
+  "settingsTransferHint": "Obecná nastavení, zobrazení v liště, widgetu a aplikaci a vaše místa v jednom souboru. Před importem se současná nastavení uloží do {backup}; import tohoto souboru jej vrátí."
+})
+addCatalogEntries("sv", {
+  "settingsTransfer": "Exportera och importera",
+  "settingsTransferFile": "Fil",
+  "settingsExport": "Exportera",
+  "settingsImport": "Importera",
+  "settingsImportConfirm": "Verkligen importera?",
+  "settingsExported": "Exporterat till {path}.",
+  "settingsExportFailed": "Kunde inte skriva {path}.",
+  "settingsBackupFailed": "Kunde inte spara de aktuella inställningarna i {path}; inget importerades.",
+  "settingsImportMissing": "{path} kunde inte läsas.",
+  "settingsImportInvalid": "{path} är ingen inställningsfil för More Weather.",
+  "settingsImported": "Importerat från {path}. De tidigare inställningarna finns i {backup}.",
+  "settingsTransferHint": "De allmänna inställningarna, visningen i menyraden, widgeten och appen samt dina platser i en fil. Före en import sparas de aktuella inställningarna i {backup}; att importera den filen ångrar det."
+})
+addCatalogEntries("fi", {
+  "settingsTransfer": "Vienti ja tuonti",
+  "settingsTransferFile": "Tiedosto",
+  "settingsExport": "Vie",
+  "settingsImport": "Tuo",
+  "settingsImportConfirm": "Tuodaanko varmasti?",
+  "settingsExported": "Viety tiedostoon {path}.",
+  "settingsExportFailed": "Tiedostoa {path} ei voitu kirjoittaa.",
+  "settingsBackupFailed": "Nykyisiä asetuksia ei voitu tallentaa tiedostoon {path}; mitään ei tuotu.",
+  "settingsImportMissing": "Tiedostoa {path} ei voitu lukea.",
+  "settingsImportInvalid": "{path} ei ole More Weatherin asetustiedosto.",
+  "settingsImported": "Tuotu tiedostosta {path}. Aiemmat asetukset ovat tiedostossa {backup}.",
+  "settingsTransferHint": "Yleiset asetukset, valikkopalkin, widgetin ja sovelluksen näkymä sekä paikkasi yhdessä tiedostossa. Ennen tuontia nykyiset asetukset tallennetaan tiedostoon {backup}; sen tuominen peruu muutoksen."
+})
+addCatalogEntries("nb", {
+  "settingsTransfer": "Eksporter og importer",
+  "settingsTransferFile": "Fil",
+  "settingsExport": "Eksporter",
+  "settingsImport": "Importer",
+  "settingsImportConfirm": "Vil du virkelig importere?",
+  "settingsExported": "Eksportert til {path}.",
+  "settingsExportFailed": "Kunne ikke skrive {path}.",
+  "settingsBackupFailed": "Kunne ikke lagre gjeldende innstillinger i {path}; ingenting ble importert.",
+  "settingsImportMissing": "{path} kunne ikke leses.",
+  "settingsImportInvalid": "{path} er ikke en innstillingsfil for More Weather.",
+  "settingsImported": "Importert fra {path}. De forrige innstillingene ligger i {backup}.",
+  "settingsTransferHint": "De generelle innstillingene, visningen i menylinjen, widgeten og appen og stedene dine i én fil. Før en import lagres gjeldende innstillinger i {backup}; å importere den filen angrer det."
+})
+addCatalogEntries("da", {
+  "settingsTransfer": "Eksportér og importér",
+  "settingsTransferFile": "Fil",
+  "settingsExport": "Eksportér",
+  "settingsImport": "Importér",
+  "settingsImportConfirm": "Vil du virkelig importere?",
+  "settingsExported": "Eksporteret til {path}.",
+  "settingsExportFailed": "{path} kunne ikke skrives.",
+  "settingsBackupFailed": "De aktuelle indstillinger kunne ikke gemmes i {path}; intet blev importeret.",
+  "settingsImportMissing": "{path} kunne ikke læses.",
+  "settingsImportInvalid": "{path} er ikke en indstillingsfil fra More Weather.",
+  "settingsImported": "Importeret fra {path}. De tidligere indstillinger ligger i {backup}.",
+  "settingsTransferHint": "De generelle indstillinger, visningen i menulinjen, widgetten og appen samt dine steder i én fil. Før en import gemmes de aktuelle indstillinger i {backup}; at importere den fil fortryder det."
+})
+addCatalogEntries("ro", {
+  "settingsTransfer": "Export și import",
+  "settingsTransferFile": "Fișier",
+  "settingsExport": "Exportă",
+  "settingsImport": "Importă",
+  "settingsImportConfirm": "Sigur importați?",
+  "settingsExported": "Exportat în {path}.",
+  "settingsExportFailed": "{path} nu a putut fi scris.",
+  "settingsBackupFailed": "Setările actuale nu au putut fi salvate în {path}; nu s-a importat nimic.",
+  "settingsImportMissing": "{path} nu a putut fi citit.",
+  "settingsImportInvalid": "{path} nu este un fișier de setări More Weather.",
+  "settingsImported": "Importat din {path}. Setările anterioare sunt în {backup}.",
+  "settingsTransferHint": "Setările generale, afișarea în bara de meniu, widget și aplicație și locurile tale, într-un singur fișier. Înainte de import, setările actuale sunt salvate în {backup}; importul acelui fișier anulează operațiunea."
+})
+addCatalogEntries("hu", {
+  "settingsTransfer": "Exportálás és importálás",
+  "settingsTransferFile": "Fájl",
+  "settingsExport": "Exportálás",
+  "settingsImport": "Importálás",
+  "settingsImportConfirm": "Biztosan importálja?",
+  "settingsExported": "Exportálva ide: {path}.",
+  "settingsExportFailed": "A(z) {path} nem írható.",
+  "settingsBackupFailed": "A jelenlegi beállítások nem menthetők ide: {path}; semmi sem lett importálva.",
+  "settingsImportMissing": "A(z) {path} nem olvasható.",
+  "settingsImportInvalid": "A(z) {path} nem More Weather beállításfájl.",
+  "settingsImported": "Importálva innen: {path}. A korábbi beállítások itt vannak: {backup}.",
+  "settingsTransferHint": "Az általános beállítások, a menüsor, a widget és az alkalmazás megjelenítése és a helyeid egy fájlban. Importálás előtt a jelenlegi beállítások ide mentődnek: {backup}; ennek a fájlnak az importálása visszavonja a változást."
+})
+addCatalogEntries("el", {
+  "settingsTransfer": "Εξαγωγή και εισαγωγή",
+  "settingsTransferFile": "Αρχείο",
+  "settingsExport": "Εξαγωγή",
+  "settingsImport": "Εισαγωγή",
+  "settingsImportConfirm": "Σίγουρα εισαγωγή;",
+  "settingsExported": "Εξήχθη στο {path}.",
+  "settingsExportFailed": "Δεν ήταν δυνατή η εγγραφή του {path}.",
+  "settingsBackupFailed": "Δεν ήταν δυνατή η αποθήκευση των τρεχουσών ρυθμίσεων στο {path}· δεν εισήχθη τίποτα.",
+  "settingsImportMissing": "Δεν ήταν δυνατή η ανάγνωση του {path}.",
+  "settingsImportInvalid": "Το {path} δεν είναι αρχείο ρυθμίσεων του More Weather.",
+  "settingsImported": "Εισήχθη από το {path}. Οι προηγούμενες ρυθμίσεις βρίσκονται στο {backup}.",
+  "settingsTransferHint": "Οι γενικές ρυθμίσεις, η εμφάνιση στη γραμμή μενού, στο widget και στην εφαρμογή και οι τοποθεσίες σας σε ένα αρχείο. Πριν από μια εισαγωγή οι τρέχουσες ρυθμίσεις αποθηκεύονται στο {backup}· η εισαγωγή αυτού του αρχείου την αναιρεί."
+})
+addCatalogEntries("ja", {
+  "settingsTransfer": "エクスポートとインポート",
+  "settingsTransferFile": "ファイル",
+  "settingsExport": "エクスポート",
+  "settingsImport": "インポート",
+  "settingsImportConfirm": "本当にインポートしますか？",
+  "settingsExported": "{path} にエクスポートしました。",
+  "settingsExportFailed": "{path} に書き込めませんでした。",
+  "settingsBackupFailed": "現在の設定を {path} に保存できなかったため、何もインポートしていません。",
+  "settingsImportMissing": "{path} を読み込めませんでした。",
+  "settingsImportInvalid": "{path} は More Weather の設定ファイルではありません。",
+  "settingsImported": "{path} からインポートしました。以前の設定は {backup} にあります。",
+  "settingsTransferHint": "全般設定、メニューバー・ウィジェット・アプリの表示、保存した場所を 1 つのファイルにまとめます。インポート前に現在の設定を {backup} に保存するので、そのファイルをインポートすれば元に戻せます。"
+})
+addCatalogEntries("ko", {
+  "settingsTransfer": "내보내기 및 가져오기",
+  "settingsTransferFile": "파일",
+  "settingsExport": "내보내기",
+  "settingsImport": "가져오기",
+  "settingsImportConfirm": "정말 가져올까요?",
+  "settingsExported": "{path}(으)로 내보냈습니다.",
+  "settingsExportFailed": "{path}에 쓸 수 없습니다.",
+  "settingsBackupFailed": "현재 설정을 {path}에 저장할 수 없어 아무것도 가져오지 않았습니다.",
+  "settingsImportMissing": "{path}을(를) 읽을 수 없습니다.",
+  "settingsImportInvalid": "{path}은(는) More Weather 설정 파일이 아닙니다.",
+  "settingsImported": "{path}에서 가져왔습니다. 이전 설정은 {backup}에 있습니다.",
+  "settingsTransferHint": "일반 설정, 메뉴 막대·위젯·앱 표시와 저장한 장소를 한 파일에 담습니다. 가져오기 전에 현재 설정을 {backup}에 저장하므로 그 파일을 가져오면 되돌릴 수 있습니다."
+})
+addCatalogEntries("ar", {
+  "settingsTransfer": "التصدير والاستيراد",
+  "settingsTransferFile": "الملف",
+  "settingsExport": "تصدير",
+  "settingsImport": "استيراد",
+  "settingsImportConfirm": "هل تريد الاستيراد فعلًا؟",
+  "settingsExported": "تم التصدير إلى {path}.",
+  "settingsExportFailed": "تعذّرت كتابة {path}.",
+  "settingsBackupFailed": "تعذّر حفظ الإعدادات الحالية في {path}؛ لم يُستورد شيء.",
+  "settingsImportMissing": "تعذّرت قراءة {path}.",
+  "settingsImportInvalid": "{path} ليس ملف إعدادات لـ More Weather.",
+  "settingsImported": "تم الاستيراد من {path}. الإعدادات السابقة موجودة في {backup}.",
+  "settingsTransferHint": "الإعدادات العامة وعرض شريط القوائم والأداة والتطبيق وأماكنك في ملف واحد. قبل الاستيراد تُحفظ الإعدادات الحالية في {backup}؛ واستيراد ذلك الملف يتراجع عنه."
+})
+addCatalogEntries("he", {
+  "settingsTransfer": "ייצוא וייבוא",
+  "settingsTransferFile": "קובץ",
+  "settingsExport": "ייצוא",
+  "settingsImport": "ייבוא",
+  "settingsImportConfirm": "לייבא באמת?",
+  "settingsExported": "יוצא אל {path}.",
+  "settingsExportFailed": "לא ניתן לכתוב את {path}.",
+  "settingsBackupFailed": "לא ניתן היה לשמור את ההגדרות הנוכחיות ב־{path}; שום דבר לא יובא.",
+  "settingsImportMissing": "לא ניתן לקרוא את {path}.",
+  "settingsImportInvalid": "{path} אינו קובץ הגדרות של More Weather.",
+  "settingsImported": "יובא מ־{path}. ההגדרות הקודמות נמצאות ב־{backup}.",
+  "settingsTransferHint": "ההגדרות הכלליות, התצוגה בשורת התפריטים, בווידג׳ט ובאפליקציה והמקומות שלך — בקובץ אחד. לפני ייבוא ההגדרות הנוכחיות נשמרות ב־{backup}; ייבוא הקובץ הזה מבטל אותו."
+})
+addCatalogEntries("fa", {
+  "settingsTransfer": "برون‌بری و درون‌بری",
+  "settingsTransferFile": "پرونده",
+  "settingsExport": "برون‌بری",
+  "settingsImport": "درون‌بری",
+  "settingsImportConfirm": "واقعاً درون‌بری شود؟",
+  "settingsExported": "به {path} برون‌بری شد.",
+  "settingsExportFailed": "نوشتن {path} ممکن نشد.",
+  "settingsBackupFailed": "ذخیرهٔ تنظیمات کنونی در {path} ممکن نشد؛ چیزی درون‌بری نشد.",
+  "settingsImportMissing": "خواندن {path} ممکن نشد.",
+  "settingsImportInvalid": "{path} پروندهٔ تنظیمات More Weather نیست.",
+  "settingsImported": "از {path} درون‌بری شد. تنظیمات پیشین در {backup} است.",
+  "settingsTransferHint": "تنظیمات کلی، نمایش نوار منو، ابزارک و برنامه و مکان‌های شما در یک پرونده. پیش از درون‌بری، تنظیمات کنونی در {backup} ذخیره می‌شود؛ درون‌بری همان پرونده آن را برمی‌گرداند."
+})
+addCatalogEntries("hi", {
+  "settingsTransfer": "निर्यात और आयात",
+  "settingsTransferFile": "फ़ाइल",
+  "settingsExport": "निर्यात करें",
+  "settingsImport": "आयात करें",
+  "settingsImportConfirm": "सच में आयात करें?",
+  "settingsExported": "{path} में निर्यात किया गया।",
+  "settingsExportFailed": "{path} लिखी नहीं जा सकी।",
+  "settingsBackupFailed": "मौजूदा सेटिंग्स {path} में सहेजी नहीं जा सकीं; कुछ भी आयात नहीं हुआ।",
+  "settingsImportMissing": "{path} पढ़ी नहीं जा सकी।",
+  "settingsImportInvalid": "{path} More Weather की सेटिंग्स फ़ाइल नहीं है।",
+  "settingsImported": "{path} से आयात किया गया। पिछली सेटिंग्स {backup} में हैं।",
+  "settingsTransferHint": "सामान्य सेटिंग्स, मेनू बार, विजेट और ऐप का प्रदर्शन और आपके स्थान एक फ़ाइल में। आयात से पहले मौजूदा सेटिंग्स {backup} में सहेजी जाती हैं; उस फ़ाइल को आयात करने से बदलाव वापस हो जाता है।"
+})
+addCatalogEntries("id", {
+  "settingsTransfer": "Ekspor dan impor",
+  "settingsTransferFile": "Berkas",
+  "settingsExport": "Ekspor",
+  "settingsImport": "Impor",
+  "settingsImportConfirm": "Yakin mengimpor?",
+  "settingsExported": "Diekspor ke {path}.",
+  "settingsExportFailed": "{path} tidak dapat ditulis.",
+  "settingsBackupFailed": "Pengaturan saat ini tidak dapat disimpan ke {path}; tidak ada yang diimpor.",
+  "settingsImportMissing": "{path} tidak dapat dibaca.",
+  "settingsImportInvalid": "{path} bukan berkas pengaturan More Weather.",
+  "settingsImported": "Diimpor dari {path}. Pengaturan sebelumnya ada di {backup}.",
+  "settingsTransferHint": "Pengaturan umum, tampilan bilah menu, widget dan aplikasi, serta tempat Anda dalam satu berkas. Sebelum impor, pengaturan saat ini disimpan ke {backup}; mengimpor berkas itu membatalkannya."
+})
+addCatalogEntries("vi", {
+  "settingsTransfer": "Xuất và nhập",
+  "settingsTransferFile": "Tệp",
+  "settingsExport": "Xuất",
+  "settingsImport": "Nhập",
+  "settingsImportConfirm": "Thật sự nhập?",
+  "settingsExported": "Đã xuất ra {path}.",
+  "settingsExportFailed": "Không thể ghi {path}.",
+  "settingsBackupFailed": "Không thể lưu cài đặt hiện tại vào {path}; không có gì được nhập.",
+  "settingsImportMissing": "Không thể đọc {path}.",
+  "settingsImportInvalid": "{path} không phải là tệp cài đặt của More Weather.",
+  "settingsImported": "Đã nhập từ {path}. Cài đặt trước đó nằm trong {backup}.",
+  "settingsTransferHint": "Cài đặt chung, hiển thị trên thanh menu, widget và ứng dụng cùng các địa điểm của bạn trong một tệp. Trước khi nhập, cài đặt hiện tại được lưu vào {backup}; nhập tệp đó sẽ hoàn tác."
+})
+addCatalogEntries("th", {
+  "settingsTransfer": "ส่งออกและนำเข้า",
+  "settingsTransferFile": "ไฟล์",
+  "settingsExport": "ส่งออก",
+  "settingsImport": "นำเข้า",
+  "settingsImportConfirm": "นำเข้าจริงหรือ?",
+  "settingsExported": "ส่งออกไปยัง {path} แล้ว",
+  "settingsExportFailed": "เขียน {path} ไม่ได้",
+  "settingsBackupFailed": "บันทึกการตั้งค่าปัจจุบันไปยัง {path} ไม่ได้ จึงไม่ได้นำเข้าอะไร",
+  "settingsImportMissing": "อ่าน {path} ไม่ได้",
+  "settingsImportInvalid": "{path} ไม่ใช่ไฟล์การตั้งค่าของ More Weather",
+  "settingsImported": "นำเข้าจาก {path} แล้ว การตั้งค่าเดิมอยู่ใน {backup}",
+  "settingsTransferHint": "การตั้งค่าทั่วไป การแสดงผลในแถบเมนู วิดเจ็ต และแอป รวมถึงสถานที่ของคุณในไฟล์เดียว ก่อนนำเข้าจะบันทึกการตั้งค่าปัจจุบันไว้ที่ {backup} การนำเข้าไฟล์นั้นจะย้อนกลับได้"
+})
+addCatalogEntries("zh_CN", {
+  "settingsTransfer": "导出和导入",
+  "settingsTransferFile": "文件",
+  "settingsExport": "导出",
+  "settingsImport": "导入",
+  "settingsImportConfirm": "确定要导入吗？",
+  "settingsExported": "已导出到 {path}。",
+  "settingsExportFailed": "无法写入 {path}。",
+  "settingsBackupFailed": "无法将当前设置保存到 {path}，未导入任何内容。",
+  "settingsImportMissing": "无法读取 {path}。",
+  "settingsImportInvalid": "{path} 不是 More Weather 的设置文件。",
+  "settingsImported": "已从 {path} 导入。之前的设置保存在 {backup}。",
+  "settingsTransferHint": "常规设置、菜单栏、小组件和应用的显示以及你的地点，保存在一个文件中。导入前会把当前设置保存到 {backup}，导入该文件即可撤销。"
+})
+addCatalogEntries("zh_TW", {
+  "settingsTransfer": "匯出與匯入",
+  "settingsTransferFile": "檔案",
+  "settingsExport": "匯出",
+  "settingsImport": "匯入",
+  "settingsImportConfirm": "確定要匯入嗎？",
+  "settingsExported": "已匯出至 {path}。",
+  "settingsExportFailed": "無法寫入 {path}。",
+  "settingsBackupFailed": "無法將目前設定儲存至 {path}，未匯入任何內容。",
+  "settingsImportMissing": "無法讀取 {path}。",
+  "settingsImportInvalid": "{path} 不是 More Weather 的設定檔。",
+  "settingsImported": "已從 {path} 匯入。先前的設定存於 {backup}。",
+  "settingsTransferHint": "一般設定、選單列、小工具與應用程式的顯示以及你的地點，存在一個檔案中。匯入前會把目前設定儲存至 {backup}，匯入該檔案即可復原。"
+})
 // Each language in its own name, for the language picker.
 var languageNames = {
   "en": "English",

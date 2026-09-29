@@ -92,6 +92,8 @@ window.
   a weekly temperature bar and the air quality dot; one switch turns them off.
 - **Separate display settings** for the bar, the popup and the app, and the widget's
   position in the bar (left, center or right).
+- **Export and import** of all settings and your places as one JSON file (Settings →
+  General); an import first saves the current settings, so it can be undone.
 - **Sections your way:** Current weather, my places, air quality, hourly, daily, rain,
   radar and wind can be put in any order. All but the current weather can also be
   shown as a tab; the tabs share one strip that has its own place in the order, and
@@ -211,7 +213,8 @@ Omarchy's built-in weather widget and is left in place.
 |---|---|
 | `~/.local/state/omarchy/settings/weather.json` | Location (shared with Omarchy, written via `omarchy-weather-location`) |
 | `~/.config/omarchy/shell.json` | Omarchy's bar layout; changed only through `omarchy-bar move` when you pick a position under Settings → General |
-| `~/.local/state/omarchy/settings/more-weather-*.json` | Display settings, favorites, cache, data shared between bar and app |
+| `~/.local/state/omarchy/settings/more-weather-*.json` | Display settings, favorites, cache, data shared between bar and app; `more-weather-settings-backup.json` holds the settings from before the last import |
+| `~/Downloads/more-weather-settings.json` | Exported settings (the default path; any other can be typed in) |
 | `~/.cache/more-weather/map-images/` | Downloaded radar and map pictures, removed after three hours |
 | `$XDG_RUNTIME_DIR/more-weather-app/` | Temporary app configuration (links to the plugin and the Omarchy shell) |
 | `~/.local/share/applications/more-weather.desktop`, `~/.local/share/more-weather/launch`, `~/.local/share/icons/hicolor/scalable/apps/more-weather.svg` | App launcher entry, only while **Show in app launcher** is on |

@@ -309,7 +309,9 @@ Rectangle {
       ]
       if (barPositionUsable) general.push({ id: "barPosition", type: "dropdown" })
       general.push({ id: "colorAccents", type: "accents" }, { id: "refresh", type: "dropdown" },
-        { id: "radarRefresh", type: "dropdown" }, { id: "launcher", type: "launcher" })
+        { id: "radarRefresh", type: "dropdown" }, { id: "launcher", type: "launcher" },
+        { id: "transferPath", type: "path" }, { id: "exportSettings", type: "button" },
+        { id: "importSettings", type: "button" })
       return general
     }
     if (panel.settingsPage !== "display") return []
@@ -457,6 +459,12 @@ Rectangle {
         !(panel.settingsDisplaySetting(item.key, false) === true))
     } else if (item.type === "defaultTab") {
       changeValue(item, 1)
+    } else if (item.type === "path") {
+      transferPathField.forceActiveFocus()
+    } else if (item.id === "exportSettings") {
+      exportButton.press()
+    } else if (item.id === "importSettings") {
+      importButton.press()
     } else if (item.id === "restoreOrder") {
       panel.displayOptionsStore.restoreSettingsDisplayOrder()
     } else if (item.id === "restoreDefaults") {
@@ -921,6 +929,81 @@ Rectangle {
             font.family: panel.fontFamily
             font.pixelSize: Style.font.caption
             wrapMode: Text.WordWrap
+          }
+
+          // Export and import of the settings and places (WeatherSettingsTransfer).
+          Text {
+            topPadding: Style.space(6)
+            text: panel.upperLabel(panel.i18n("settingsTransfer"))
+            color: panel.foreground
+            font.family: panel.fontFamily
+            font.pixelSize: Style.font.bodySmall
+            font.bold: true
+            font.letterSpacing: 1
+          }
+
+          Text {
+            text: panel.i18n("settingsTransferFile")
+            color: panel.mutedText
+            font.family: panel.fontFamily
+            font.pixelSize: Style.font.bodySmall
+          }
+
+          TextField {
+            id: transferPathField
+            width: Math.min(parent.width, Style.space(460))
+            text: panel.settingsTransfer.defaultPath
+            foreground: panel.foreground
+            font.family: panel.fontFamily
+            hasCursor: settingsView.focusId === "transferPath"
+            onHasCursorChanged: if (hasCursor) settingsView.ensureVisible(this)
+            // Enter or Esc hand the keys back to the settings.
+            onAccepted: panel.restoreKeyFocus()
+            Keys.onEscapePressed: panel.restoreKeyFocus()
+          }
+
+          Row {
+            spacing: Style.space(10)
+
+            WeatherSettingsButton {
+              id: exportButton
+              panel: settingsView.panel
+              label: panel.i18n("settingsExport")
+              kbFocused: settingsView.focusId === "exportSettings"
+              onKbFocusedChanged: if (kbFocused) settingsView.ensureVisible(this)
+              onActivated: panel.settingsTransfer.exportTo(transferPathField.text)
+            }
+
+            WeatherSettingsButton {
+              id: importButton
+              panel: settingsView.panel
+              label: panel.i18n("settingsImport")
+              confirmLabel: panel.i18n("settingsImportConfirm")
+              kbFocused: settingsView.focusId === "importSettings"
+              onKbFocusedChanged: if (kbFocused) settingsView.ensureVisible(this)
+              onActivated: panel.settingsTransfer.importFrom(transferPathField.text)
+            }
+          }
+
+          // What the last export or import did, and where.
+          Text {
+            readonly property var status: panel.settingsTransfer.status
+            visible: status !== null
+            width: parent.width
+            text: status ? panel.i18n(status.key, { path: status.path, backup: panel.settingsTransfer.backupPath }) : ""
+            color: status && status.error ? panel.warningColorForSeverity("severe") : panel.foreground
+            font.family: panel.fontFamily
+            font.pixelSize: Style.font.caption
+            wrapMode: Text.WrapAnywhere
+          }
+
+          Text {
+            width: parent.width
+            text: panel.i18n("settingsTransferHint", { backup: panel.settingsTransfer.backupPath })
+            color: panel.mutedText
+            font.family: panel.fontFamily
+            font.pixelSize: Style.font.caption
+            wrapMode: Text.Wrap
           }
 
         }

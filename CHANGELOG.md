@@ -94,6 +94,15 @@ All notable changes to More Weather are documented here.
   shown place) kept their oldest hours and days and dropped every newer
   forecast, so "My places" worked from hours two weeks old and only the
   current value moved. Past rows are now dropped before the lists are cut.
+- Export and import under Settings → General: the general settings, the
+  display of menu bar, widget and app, and the saved places as one JSON file
+  (by default ~/Downloads/more-weather-settings.json; the path can be
+  edited). An import is confirmed with a second press, goes through the
+  same checks as the settings files, and first saves the current settings
+  to more-weather-settings-backup.json, so importing that file undoes it.
+  Keyboard: the path field, Export and Import are in the page's key order.
+- Saved places changed in the app now reach the bar at once and the other
+  way round (the places file is watched like the other settings files).
 - Wind map after RegenVorschau: the speed as a smooth colour wash from deep
   blue (calm) to violet (storm) with a legend, and white streaks drifting
   with the wind, faster where it blows harder, each with a fading trail; the
