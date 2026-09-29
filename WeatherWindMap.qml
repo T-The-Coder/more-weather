@@ -1,10 +1,12 @@
 import QtQuick
+import QtQuick.Window
 import qs.Commons
 import qs.Ui
 import "Providers.js" as Providers
 import "Model.js" as Model
 
-// Animated Best Match wind field for the map extent. Loaded only while the
+// Animated Best Match wind field for the map extent, after RegenVorschau:
+// a colour wash of the speed and streaks drifting with the wind. Loaded only while the
 // wind tab is shown; the grid and the basemap are fetched in the background
 // (WeatherWindGrid, WeatherMapPrefetch).
 Item {
@@ -25,6 +27,9 @@ Item {
     panel.forecastRequestLongitude || panel.mapCenterLongitude,
     panel.mapWest, panel.mapEast, panel.mapSouth, panel.mapNorth)
   readonly property bool drawnMap: panel.mapStyle !== "satellite"
+  // The streaks move only while the tab is shown in a window that is.
+  readonly property bool animating: panel.windShown && panel.windMapData.length > 0
+    && (!Window.window || (Window.window.visible && Window.window.visibility !== Window.Minimized))
   property real dragX: 0
   property real dragY: 0
 
@@ -48,81 +53,15 @@ Item {
       viewport: windMapItem.viewport
     }
 
-    Canvas {
-      id: windMapCanvas
+    // The wind as a flowing field: speed as a colour wash, white streaks
+    // drifting with it (WeatherWindField, after RegenVorschau).
+    WeatherWindField {
+      id: windField
       anchors.fill: parent
-      property real phase: 0
-      property var gridData: panel.windMapData
-      onPhaseChanged: requestPaint()
-      onGridDataChanged: requestPaint()
-      onWidthChanged: requestPaint()
-      onHeightChanged: requestPaint()
-      onPaint: {
-        var ctx = getContext("2d")
-        ctx.clearRect(0, 0, width, height)
-        var grid = panel.windMapData
-        if (!grid.length) return
-        // Over the dark satellite picture light strokes on a blue veil; over
-        // the drawn map the text colour, which reads in light and dark themes.
-        var ink = panel.foreground
-        ctx.fillStyle = windMapItem.drawnMap ? "rgba(27,103,194,0.08)" : "rgba(27,103,194,0.22)"
-        ctx.fillRect(0, 0, width, height)
-
-        // Dense animated particles use the nearest real grid vector.
-        ctx.strokeStyle = windMapItem.drawnMap ? Qt.rgba(ink.r, ink.g, ink.b, 0.45) : "rgba(255,255,255,0.68)"
-        ctx.lineWidth = 1.15
-        for (var s = 0; s < 140; ++s) {
-          var sample = grid[s % grid.length]
-          var direction = Number(sample.windDirection || 0)
-          var speed = Number(sample.windSpeed || 0)
-          var angle = (direction + 90) * Math.PI / 180
-          var dx = Math.cos(angle), dy = Math.sin(angle)
-          var anchor = grid.length > 1
-            ? Model.mapPoint(windMapItem.viewport, sample.latitude, sample.longitude,
-              panel.mapWest, panel.mapEast, panel.mapSouth, panel.mapNorth)
-            : null
-          var anchorX = anchor ? anchor.x : (s * 79 % width)
-          var anchorY = anchor ? anchor.y : (s * 47 % height)
-          var jitterX = ((s * 37) % 61) - 30
-          var jitterY = ((s * 53) % 45) - 22
-          // Drift roughly proportional to the real wind: about 5 px/s at
-          // 7 km/h, 12 px/s at 20 km/h and 50 px/s at 100 km/h (one phase step
-          // per 90 ms). A small floor keeps calm air from freezing completely.
-          var travel = (windMapCanvas.phase * (0.15 + speed * 0.045) + s * 7) % 34 - 17
-          var px = anchorX + jitterX + dx * travel
-          var py = anchorY + jitterY + dy * travel
-          var length = 5 + Math.min(11, speed / 2)
-          ctx.beginPath()
-          ctx.moveTo(px, py)
-          ctx.lineTo(px + dx * length, py + dy * length)
-          ctx.stroke()
-        }
-
-        // One vector arrow at each of the 35 Best Match samples.
-        if (grid.length > 1) {
-          ctx.strokeStyle = windMapItem.drawnMap ? String(Color.accent) : "rgba(255,209,128,0.92)"
-          ctx.lineWidth = 1.45
-          for (var g = 0; g < grid.length; ++g) {
-            var item = grid[g]
-            var itemAngle = (Number(item.windDirection || 0) + 90) * Math.PI / 180
-            var itemDx = Math.cos(itemAngle), itemDy = Math.sin(itemAngle)
-            var itemPoint = Model.mapPoint(windMapItem.viewport, item.latitude, item.longitude,
-              panel.mapWest, panel.mapEast, panel.mapSouth, panel.mapNorth)
-            var itemX = itemPoint.x
-            var itemY = itemPoint.y
-            var arrowLength = 7 + Math.min(12, Number(item.windSpeed || 0) / 2)
-            var tipX = itemX + itemDx * arrowLength
-            var tipY = itemY + itemDy * arrowLength
-            ctx.beginPath(); ctx.moveTo(itemX, itemY); ctx.lineTo(tipX, tipY); ctx.stroke()
-            ctx.beginPath()
-            ctx.moveTo(tipX, tipY)
-            ctx.lineTo(tipX - itemDx * 4 - itemDy * 2.5, tipY - itemDy * 4 + itemDx * 2.5)
-            ctx.moveTo(tipX, tipY)
-            ctx.lineTo(tipX - itemDx * 4 + itemDy * 2.5, tipY - itemDy * 4 - itemDx * 2.5)
-            ctx.stroke()
-          }
-        }
-      }
+      panel: windMapItem.panel
+      viewport: windMapItem.viewport
+      washOpacity: windMapItem.drawnMap ? 0.5 : 0.62
+      running: windMapItem.animating
     }
 
     Rectangle {
@@ -280,6 +219,7 @@ Item {
 
   // Drag to move the map, the wheel zooms towards the pointer.
   WeatherMapGestures {
+    id: windGestures
     anchors.fill: parent
     mapItem: windMapItem
     panel: windMapItem.panel
@@ -292,6 +232,92 @@ Item {
     anchors.right: parent.right
     anchors.top: parent.top
     anchors.margins: Style.space(8)
+  }
+
+  // The wind under the pointer: speed and where it comes from.
+  Rectangle {
+    readonly property var wind: windGestures.containsMouse && !windGestures.dragging
+      ? windField.windAt(windGestures.mouseX - windMapItem.dragX, windGestures.mouseY - windMapItem.dragY) : null
+    visible: wind !== null
+    x: Math.min(parent.width - width - Style.space(4), windGestures.mouseX + Style.space(14))
+    y: Math.max(Style.space(4), windGestures.mouseY - height - Style.space(6))
+    width: pointerWind.implicitWidth + Style.space(12)
+    height: pointerWind.implicitHeight + Style.space(6)
+    radius: Style.cornerRadius
+    color: Color.popups.background
+    border.color: Color.popups.border
+    border.width: Style.spacing.hairline
+    Text {
+      id: pointerWind
+      anchors.centerIn: parent
+      text: parent.wind
+        ? panel.windMapSpeed(parent.wind.speed) + " " + panel.windMapUnit + " · "
+          + panel.windDirectionName((Math.atan2(parent.wind.u, -parent.wind.v) * 180 / Math.PI + 540) % 360)
+        : ""
+      color: Color.popups.text
+      font.family: panel.fontFamily
+      font.pixelSize: Style.font.caption
+      font.bold: true
+    }
+  }
+
+  // Colour scale of the wash.
+  Column {
+    anchors.left: parent.left
+    anchors.bottom: parent.bottom
+    anchors.leftMargin: Style.space(8)
+    anchors.bottomMargin: Style.space(24)
+    spacing: Style.space(2)
+    visible: panel.windMapData.length > 0
+
+    Rectangle {
+      width: Style.space(150)
+      height: Style.space(6)
+      radius: height / 2
+      gradient: Gradient {
+        orientation: Gradient.Horizontal
+        GradientStop { position: 0; color: "#2b1f8f" }
+        GradientStop { position: 0.08; color: "#3a3fd8" }
+        GradientStop { position: 0.16; color: "#2f7fe8" }
+        GradientStop { position: 0.25; color: "#22b6d8" }
+        GradientStop { position: 0.35; color: "#2fc98f" }
+        GradientStop { position: 0.48; color: "#b6d43a" }
+        GradientStop { position: 0.62; color: "#f2b33a" }
+        GradientStop { position: 0.78; color: "#e8523a" }
+        GradientStop { position: 1; color: "#b43ad6" }
+      }
+    }
+    Item {
+      width: Style.space(150)
+      height: legendZero.implicitHeight
+      Text {
+        id: legendZero
+        text: panel.windMapSpeed(0)
+        color: Color.popups.text
+        style: Text.Outline
+        styleColor: Color.popups.background
+        font.family: panel.fontFamily
+        font.pixelSize: Style.font.caption
+      }
+      Text {
+        x: parent.width * 0.5 - implicitWidth / 2
+        text: panel.windMapSpeed(50)
+        color: Color.popups.text
+        style: Text.Outline
+        styleColor: Color.popups.background
+        font.family: panel.fontFamily
+        font.pixelSize: Style.font.caption
+      }
+      Text {
+        anchors.right: parent.right
+        text: panel.windMapSpeed(100) + " " + panel.windMapUnit
+        color: Color.popups.text
+        style: Text.Outline
+        styleColor: Color.popups.background
+        font.family: panel.fontFamily
+        font.pixelSize: Style.font.caption
+      }
+    }
   }
 
   WeatherMapAttribution {
@@ -331,11 +357,4 @@ Item {
     }
   }
 
-  Timer {
-    interval: 90
-    repeat: true
-    running: panel.windShown && panel.windMapData.length > 0
-    // Wraps after ~25 h; an earlier wrap made every particle jump at once.
-    onTriggered: windMapCanvas.phase = (windMapCanvas.phase + 1) % 1000000
-  }
 }

@@ -63,8 +63,11 @@ window.
     5 minutes up to two hours (three or four when zoomed far out), so it keeps its time
     labels at every zoom. It follows the frame on screen and is tracked from the radar itself in the
     DWD area; elsewhere it uses the model wind at about 3 km (700 hPa).
-- **Wind map:** An animated particle field from a 35-point model grid over the
-  visible map area.
+- **Wind map:** After RegenVorschau: the wind speed as a colour wash (deep blue for calm
+  through cyan, green and yellow to red and violet for storms, with a legend) and white
+  streaks drifting with the wind, faster where it blows harder, from a 35-point model
+  grid over the visible area. The streaks are drawn on the graphics card; the wind under
+  the pointer shows its speed and direction.
 - **Locations:** Search for places, keep a list of favorites or detect your location
   automatically.
 - **My places:** All favorites at a glance, one line each with symbol, temperature,
@@ -226,6 +229,9 @@ tests/qml-syntax.sh    # every QML file parses (qmllint)
 They also run on GitHub for every push. The drawn map's data is built from
 Natural Earth with `python3 tools/build-basemap.py` (only needed when the
 source data or the layers change; the result, `data/basemap.bin`, is committed).
+The wind streaks' shader is compiled with `tools/build-shaders.sh` (Qt's `qsb`,
+from qt6-shadertools) and its dot texture made by `tools/build-noise.py`; both
+results are committed too.
 
 ## License
 

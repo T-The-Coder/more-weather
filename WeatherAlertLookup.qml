@@ -13,7 +13,9 @@ import "Model.js" as Model
 //    the office's warning file read for that municipality. The matching is
 //    kept per place, so a refresh costs a single request.
 // The result goes to panel.acceptAlertReport; a failure to
-// panel.alertLookupFailed, which moves on in the provider chain.
+// panel.alertLookupFailed, which moves on in the provider chain. Every
+// document is parsed in ModelWorker.js, off the shell's main thread; results
+// of a lookup that has since been cancelled or restarted are dropped.
 QtObject {
   id: lookup
   required property var panel
@@ -43,6 +45,33 @@ QtObject {
   property string jmaAreaCode: ""
 
   readonly property bool running: step !== ""
+
+  // Parser calls in flight: id → continuation; the generation drops the
+  // answers of a lookup that has since been cancelled.
+  property int generation: 0
+  property int nextCallId: 0
+  property var pendingCalls: ({})
+
+  function parse(fn, args, done) {
+    var id = ++nextCallId
+    var calls = pendingCalls
+    calls[id] = { generation: generation, done: done }
+    pendingCalls = calls
+    parser.sendMessage({ id: id, fn: fn, args: args })
+  }
+
+  property WorkerScript parser: WorkerScript {
+    source: "ModelWorker.js"
+    onMessage: function(message) {
+      var calls = lookup.pendingCalls
+      var call = calls[message.id]
+      delete calls[message.id]
+      lookup.pendingCalls = calls
+      if (!call || call.generation !== lookup.generation) return
+      if (message.error) console.warn("weather: warning parser failed:", message.error)
+      call.done(message.error ? null : message.result)
+    }
+  }
 
   function start(provider, lat, lon) {
     cancel()
@@ -74,6 +103,7 @@ QtObject {
   }
 
   function cancel() {
+    generation++
     request.running = false
     step = ""
     queue = []
@@ -107,12 +137,13 @@ QtObject {
   }
 
   function startAlertHubFeeds() {
-    var feeds = Model.alertHubFeeds(alertHubSources, countryCode)
-    if (feeds === null) {
-      fail()
-      return
-    }
-    startFeeds(feeds.map(function(feed) { return feed.url }))
+    parse("alertHubFeeds", [alertHubSources, countryCode], function(feeds) {
+      if (!feeds) {
+        fail()
+        return
+      }
+      startFeeds(feeds.map(function(feed) { return feed.url }))
+    })
   }
 
   function nextFeed() {
@@ -156,8 +187,10 @@ QtObject {
   }
 
   function jmaMatchArea() {
-    queue = Model.jmaAreaCandidates(jmaBoxes, latitude, longitude)
-    nextJmaOutline()
+    parse("jmaAreaCandidates", [jmaBoxes, latitude, longitude], function(candidates) {
+      queue = candidates || []
+      nextJmaOutline()
+    })
   }
 
   function nextJmaOutline() {
@@ -176,15 +209,16 @@ QtObject {
       fetch("jma-areas", jmaBase + "common/const/area.json", 15000)
       return
     }
-    var office = Model.jmaOfficeCode(jmaAreas, jmaAreaCode)
-    if (!office) {
-      fail()
-      return
-    }
-    var places = jmaPlaces
-    places[placeKey()] = { area: jmaAreaCode, office: office }
-    jmaPlaces = places
-    fetch("jma-warnings", jmaBase + "warning/data/r8/" + office + ".json", 10000)
+    parse("jmaOfficeCode", [jmaAreas, jmaAreaCode], function(office) {
+      if (!office) {
+        fail()
+        return
+      }
+      var places = jmaPlaces
+      places[placeKey()] = { area: jmaAreaCode, office: office }
+      jmaPlaces = places
+      fetch("jma-warnings", jmaBase + "warning/data/r8/" + office + ".json", 10000)
+    })
   }
 
   property WeatherRequest request: WeatherRequest {
@@ -203,30 +237,35 @@ QtObject {
         lookup.alertHubSources = raw
         lookup.startAlertHubFeeds()
       } else if (current === "feed") {
-        var entries = Model.capFeedEntries(raw)
-        if (entries !== null) lookup.takeFeedEntries(entries)
-        lookup.nextFeed()
+        lookup.parse("capFeedEntries", [raw], function(entries) {
+          if (entries) lookup.takeFeedEntries(entries)
+          lookup.nextFeed()
+        })
       } else if (current === "cap") {
         var link = String(request.request && request.request.url || "")
-        var alerts = Model.capAlerts(raw, lookup.latitude, lookup.longitude, lookup.providerId, "")
-        // Unreadable documents are remembered as empty, so they are not
-        // asked for again.
-        lookup.rememberCapDocument(link, alerts || [])
-        lookup.collected = lookup.collected.concat(alerts || [])
-        lookup.nextCapDocument()
+        lookup.parse("capAlerts", [raw, lookup.latitude, lookup.longitude, lookup.providerId, ""], function(alerts) {
+          // Unreadable documents are remembered as empty, so they are not
+          // asked for again.
+          lookup.rememberCapDocument(link, alerts || [])
+          lookup.collected = lookup.collected.concat(alerts || [])
+          lookup.nextCapDocument()
+        })
       } else if (current === "jma-boxes") {
         lookup.jmaBoxes = raw
         lookup.jmaMatchArea()
       } else if (current === "jma-outline") {
-        if (Model.jmaAreaContains(raw, lookup.latitude, lookup.longitude)) lookup.jmaAreaFound()
-        else lookup.nextJmaOutline()
+        lookup.parse("jmaAreaContains", [raw, lookup.latitude, lookup.longitude], function(contains) {
+          if (contains) lookup.jmaAreaFound()
+          else lookup.nextJmaOutline()
+        })
       } else if (current === "jma-areas") {
         lookup.jmaAreas = raw
         lookup.jmaAreaFound()
       } else if (current === "jma-warnings") {
-        var report = Model.jmaAlertReport(raw, lookup.jmaAreaCode)
-        if (report) lookup.finish(report)
-        else lookup.fail()
+        lookup.parse("jmaAlertReport", [raw, lookup.jmaAreaCode], function(report) {
+          if (report) lookup.finish(report)
+          else lookup.fail()
+        })
       }
     }
   }

@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Window
 import qs.Commons
 import qs.Ui
 import "Providers.js" as Providers
@@ -558,9 +559,12 @@ Item {
   Timer {
     interval: panel.radarFrameIndex >= panel.radarFrames.length - 1 ? 1300 : 600
     repeat: true
+    // Playback holds while the window is hidden or minimised.
     running: panel.radarShown
       && panel.radarPlaying
       && panel.radarPlayableFrameCount > 1
+      && (!radarMapItem.Window.window || (radarMapItem.Window.window.visible
+        && radarMapItem.Window.window.visibility !== Window.Minimized))
     onTriggered: {
       var next = panel.nextRadarFrameIndex()
       if (panel.radarFrameReady[next]) panel.selectRadarFrame(next)

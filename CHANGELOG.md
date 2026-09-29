@@ -94,6 +94,18 @@ All notable changes to More Weather are documented here.
   shown place) kept their oldest hours and days and dropped every newer
   forecast, so "My places" worked from hours two weeks old and only the
   current value moved. Past rows are now dropped before the lists are cut.
+- Wind map after RegenVorschau: the speed as a smooth colour wash from deep
+  blue (calm) to violet (storm) with a legend, and white streaks drifting
+  with the wind, faster where it blows harder, each with a fading tail; the
+  wind under the pointer shows its speed and direction. The streaks are
+  drawn on the graphics card (shaders/windstreaks.frag), fifteen steps a
+  second: the animation costs about 8 % of a core instead of the 48 % a
+  Canvas version needed, and nothing while the window is hidden.
+- Radar playback and the wind animation pause while the window is hidden
+  or minimised.
+- The warning lookups' large documents (Alert Hub register, CAP feeds and
+  documents, JMA's area files) are parsed in a background thread
+  (ModelWorker.js) instead of on the shell's main thread.
 - Fixes from a review: letting go of Ctrl (or turning a sideways swipe
   upward) mid-gesture now hands the scroll back to the page instead of
   zooming the map or moving the daily strip on; no rain notification while

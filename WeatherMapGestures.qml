@@ -14,6 +14,8 @@ MouseArea {
   property real wheelAccumulated: 0
 
   acceptedButtons: Qt.LeftButton
+  // The wind map reads the pointer for the wind under it.
+  hoverEnabled: true
   cursorShape: dragging ? Qt.ClosedHandCursor : Qt.OpenHandCursor
   preventStealing: true
 
@@ -23,6 +25,9 @@ MouseArea {
     dragging = false
   }
   onPositionChanged: function(mouse) {
+    // With hover on, the pointer moves without a button too: only a held
+    // button drags.
+    if (!pressed) return
     var dx = mouse.x - startX
     var dy = mouse.y - startY
     // A few pixels of jitter are still a click.
