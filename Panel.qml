@@ -3105,6 +3105,14 @@ Panel {
     }
 
     var lineStep = Style.space(48)
+    // Shift+↑/↓ change the wind map's height while it is shown;
+    // ahead of ↑/↓, which scroll the view whatever Shift says.
+    if (windShown && (event.modifiers & Qt.ShiftModifier)
+        && (event.key === Qt.Key_Up || event.key === Qt.Key_Down)) {
+      stepWindLevel(event.key === Qt.Key_Up ? 1 : -1)
+      event.accepted = true
+      return
+    }
     if (event.key === Qt.Key_Down || text === "j") {
       scrollWeatherBy(lineStep)
       event.accepted = true
@@ -3126,13 +3134,6 @@ Panel {
       return
     }
 
-    // Shift+↑/↓ change the wind map's height while it is shown.
-    if (windShown && (event.modifiers & Qt.ShiftModifier)
-        && (event.key === Qt.Key_Up || event.key === Qt.Key_Down)) {
-      stepWindLevel(event.key === Qt.Key_Up ? 1 : -1)
-      event.accepted = true
-      return
-    }
     // Shift+←/→ move the hour cursor; Backspace returns to now.
     if ((event.modifiers & Qt.ShiftModifier) && (event.key === Qt.Key_Left || event.key === Qt.Key_Right)) {
       moveHourCursor(event.key === Qt.Key_Right ? 1 : -1)

@@ -102,7 +102,8 @@ All notable changes to More Weather are documented here.
   while the map is on screen (Qt draws it in software; a GPU version was
   cheaper but blurred the streaks), none while it is hidden. The settings'
   wind card says so.
-- The wind map's height can be switched at its top left (or with Shift+↑/↓):
+- The wind map's height can be switched at its top left (arrows, then the
+  height and a faint key hint), or with Shift+↑/↓:
   10 m, 120 m, and the pressure levels 850 hPa (about 1,500 m), 700 hPa
   (3,000 m), 500 hPa (5,500 m) and 250 hPa (10 km, the jet stream). All come
   in the same request, so switching is instant; the colour scale widens with

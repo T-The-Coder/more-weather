@@ -290,6 +290,16 @@ Item {
         font.pixelSize: Style.font.caption
         font.bold: true
       }
+
+      // The keys, in faint type where they act.
+      Text {
+        anchors.verticalCenter: parent.verticalCenter
+        rightPadding: Style.space(4)
+        text: "⇧ ↑ ↓"
+        color: panel.hintText
+        font.family: panel.fontFamily
+        font.pixelSize: Style.font.caption
+      }
     }
   }
 
