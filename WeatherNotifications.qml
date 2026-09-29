@@ -97,7 +97,7 @@ Item {
       if (panel.reportLocation) rainBody = panel.reportLocation + " · " + rainBody
       alertNotifyProc.command = ["notify-send", "--app-name=More Weather",
         "--icon=more-weather", "--urgency=normal",
-        panel.i18n("rainNotificationTitle", { time: Qt.formatTime(rain.date, "HH:mm") }), rainBody]
+        panel.i18n("rainNotificationTitle", { time: panel.placeClock(rain.date) }), rainBody]
       alertNotifyProc.running = true
       return
     }

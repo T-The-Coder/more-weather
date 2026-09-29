@@ -21,6 +21,14 @@ Item {
     ? Model.jmaTilesFor(panel.mapWest, panel.mapEast, panel.mapSouth, panel.mapNorth, panel.mapCenterLatitude) : []
 
   visible: active
+  // The JMA picture of the frame on screen is complete: the frame underneath
+  // is hidden then, rather than showing through with its own, coarser rain.
+  readonly property bool covering: {
+    // count: itemAt alone would not notice the layers being created.
+    if (!active || frameRepeater.count === 0) return false
+    var layer = frameRepeater.itemAt(panel.radarDisplayedFrameIndex)
+    return !!layer && layer.complete
+  }
 
   // JMA time for a frame: the nearest within half a step either side.
   function timeFor(timestamp) {
@@ -35,6 +43,7 @@ Item {
   }
 
   Repeater {
+    id: frameRepeater
     model: jmaLayer.active ? jmaLayer.panel.radarFrames : []
 
     Item {
@@ -64,7 +73,7 @@ Item {
           // Stretched to the tile's extent; Mercator's bend within one tile
           // is far below a pixel at these sizes.
           fillMode: Image.Stretch
-          smooth: false
+          smooth: true
           store: jmaLayer.panel.mapImages
           remoteUrl: Model.jmaTileUrl(frameLayer.time, modelData.z, modelData.x, modelData.y)
           load: jmaLayer.panel.radarFrameLoadAllowed(frameLayer.index)

@@ -452,6 +452,16 @@ function locationCommit(text, suggestions, selectedIndex) {
   return { name: name, latitude: null, longitude: null }
 }
 
+// The date ("2026-09-29") at a place `offsetSeconds` ahead of UTC.
+function placeDate(nowMs, offsetSeconds) {
+  return new Date(Number(nowMs) + Number(offsetSeconds || 0) * 1000).toISOString().slice(0, 10)
+}
+
+// "HH:mm" of an instant at a place `offsetSeconds` ahead of UTC.
+function placeClock(nowMs, offsetSeconds) {
+  return new Date(Number(nowMs) + Number(offsetSeconds || 0) * 1000).toISOString().slice(11, 16)
+}
+
 function isFutureForecastDate(dateString, todayString) {
   if (!dateString) return false
   return String(dateString).slice(0, 10) > String(todayString || "")
@@ -1380,8 +1390,11 @@ function jmaTileUrl(time, zoom, x, y) {
 // finest (up to 8) at which a handful of tiles do.
 function jmaTilesFor(west, east, south, north, latitude) {
   var widthKm = Math.abs(east - west) * 111.32 * Math.max(0.2, Math.cos(Number(latitude) * Math.PI / 180))
-  var zoom = 8
-  while (zoom > 4 && widthKm > 3 * 40075 * Math.max(0.2, Math.cos(Number(latitude) * Math.PI / 180)) / Math.pow(2, zoom)) zoom -= 2
+  // JMA's tiles come at zoom 4, 6, 8 and 10; the finest with at most seven
+  // tiles across the view (10 up to the default view, where 8 was scaled up
+  // threefold and turned blocky; at most 28 tiles).
+  var zoom = 10
+  while (zoom > 4 && widthKm > 7 * 40075 * Math.max(0.2, Math.cos(Number(latitude) * Math.PI / 180)) / Math.pow(2, zoom)) zoom -= 2
   var northWest = mercatorTile(north, west, zoom)
   var southEast = mercatorTile(south, east, zoom)
   var tiles = []

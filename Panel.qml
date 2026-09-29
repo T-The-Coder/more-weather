@@ -537,9 +537,7 @@ Panel {
   // The hour now at the place: its UTC offset from the forecast, since the
   // hours are the place's own and this computer may be elsewhere.
   readonly property int weekHoursNowIndex: {
-    var offset = dailyForecastReport && isFinite(Number(dailyForecastReport.utc_offset_seconds))
-      ? Number(dailyForecastReport.utc_offset_seconds) : -nowDate.getTimezoneOffset() * 60
-    var key = new Date(nowDate.getTime() + offset * 1000).toISOString().slice(0, 13)
+    var key = new Date(nowDate.getTime() + placeUtcOffsetSeconds * 1000).toISOString().slice(0, 13)
     for (var i = 0; i < weekHours.length; ++i) if (weekHours[i].time.slice(0, 13) === key) return i
     return -1
   }
@@ -1490,7 +1488,18 @@ Panel {
   // bar) follows the widget's choice.
   readonly property string interfaceLanguage: I18n.resolvedLanguage(generalSetting("language", "auto"), localeName)
   readonly property var interfaceLocale: Qt.locale(I18n.localeName(interfaceLanguage))
-  readonly property string todayDate: Qt.formatDate(new Date(relativeTimeNowMs), "yyyy-MM-dd")
+  // The place's own UTC offset (from the forecast), else this computer's:
+  // "today" and "now" are the place's, which may be a day away from here
+  // (Chicago on Tuesday evening while it is Wednesday in Germany).
+  readonly property int placeUtcOffsetSeconds: dailyForecastReport
+    && isFinite(Number(dailyForecastReport.utc_offset_seconds))
+    ? Number(dailyForecastReport.utc_offset_seconds) : -new Date(relativeTimeNowMs).getTimezoneOffset() * 60
+  readonly property string todayDate: Model.placeDate(relativeTimeNowMs, placeUtcOffsetSeconds)
+  // "HH:mm" of an instant at the place, like the forecast's own times.
+  function placeClock(date) {
+    var ms = date instanceof Date ? date.getTime() : Number(date)
+    return isNaN(ms) ? "" : Model.placeClock(ms, placeUtcOffsetSeconds)
+  }
   // "auto" resolves by the place's country first and the locale second.
   readonly property string unitCountry: reportCountry || providerCountry
   readonly property bool useImperial: Model.shouldUseImperial(
@@ -1552,7 +1561,7 @@ Panel {
   readonly property var upcomingRain: isCurrentlyRaining ? null
     : Model.upcomingRainStart(rainNowcast, nowDate)
   readonly property string upcomingRainTime: upcomingRain
-    ? Qt.formatTime(upcomingRain.date, "HH:mm") : ""
+    ? placeClock(upcomingRain.date) : ""
   readonly property bool menubarShowAirQuality: menubarShowCurrent
     && menubarEntryShown("currentAirQuality")
   readonly property string menubarAirQualityText: menubarShowAirQuality
@@ -2241,7 +2250,9 @@ Panel {
   // days, so a place reads the same in "My places" and once shown.
   function weatherSnapshotFromReport(source, locationName, providerId, mosmix) {
     var now = new Date()
-    var today = Qt.formatDate(now, "yyyy-MM-dd")
+    // The saved place's own date, from its forecast's UTC offset.
+    var today = Model.placeDate(now.getTime(), source && isFinite(Number(source.utc_offset_seconds))
+      ? Number(source.utc_offset_seconds) : -now.getTimezoneOffset() * 60)
     var openMeteoCurrent = Model.openMeteoCurrentCondition(source)
     var currentCondition = mosmix ? Model.brightSkyCurrentCondition(mosmix, openMeteoCurrent, now) : openMeteoCurrent
     return {
@@ -3723,7 +3734,7 @@ Panel {
   function radarFrameClock(frame) {
     if (!frame || !frame.timestamp) return i18n("current")
     var date = new Date(frame.timestamp)
-    return isNaN(date.getTime()) ? i18n("current") : Qt.formatTime(date, "HH:mm")
+    return isNaN(date.getTime()) ? i18n("current") : placeClock(date)
   }
 
   function radarFrameLead(index) {

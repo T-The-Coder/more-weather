@@ -100,3 +100,17 @@ test("the wind grid is read at the chosen height, gusts only at 10 m", () => {
   assert.strictEqual(Model.windGridSeries(report, "nonsense")[0].windSpeed, 12)
   assert.strictEqual(Model.windLevel("250hPa").scaleKmh, 320)
 })
+
+test("today is the place's date, not this computer's", () => {
+  // 00:30 in Germany on Wednesday is Tuesday 17:30 in Chicago (UTC−5).
+  const now = Date.parse("2026-09-29T22:30:00Z")
+  assert.strictEqual(Model.placeDate(now, -5 * 3600), "2026-09-29")
+  assert.strictEqual(Model.placeDate(now, 2 * 3600), "2026-09-30")
+  assert.strictEqual(Model.placeDate(now, 9 * 3600), "2026-09-30")
+})
+
+test("clock times are the place's", () => {
+  const instant = Date.parse("2026-09-29T22:10:00Z")
+  assert.strictEqual(Model.placeClock(instant, 9 * 3600), "07:10")
+  assert.strictEqual(Model.placeClock(instant, -5 * 3600), "17:10")
+})

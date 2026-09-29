@@ -952,7 +952,7 @@ Rectangle {
           TextField {
             id: transferPathField
             width: Math.min(parent.width, Style.space(460))
-            text: panel.settingsTransfer.defaultPath
+            text: panel.settingsTransfer.shown(panel.settingsTransfer.defaultPath)
             foreground: panel.foreground
             font.family: panel.fontFamily
             hasCursor: settingsView.focusId === "transferPath"
@@ -992,7 +992,8 @@ Rectangle {
             readonly property var status: panel.settingsTransfer.status
             visible: status !== null
             width: parent.width
-            text: status ? panel.i18n(status.key, { path: status.path, backup: panel.settingsTransfer.backupPath }) : ""
+            text: status ? panel.i18n(status.key, { path: panel.settingsTransfer.shown(status.path),
+              backup: panel.settingsTransfer.shown(panel.settingsTransfer.backupPath) }) : ""
             color: status && status.error ? panel.warningColorForSeverity("severe") : panel.foreground
             font.family: panel.fontFamily
             font.pixelSize: Style.font.caption
@@ -1001,7 +1002,7 @@ Rectangle {
 
           Text {
             width: parent.width
-            text: panel.i18n("settingsTransferHint", { backup: panel.settingsTransfer.backupPath })
+            text: panel.i18n("settingsTransferHint", { backup: panel.settingsTransfer.shown(panel.settingsTransfer.backupPath) })
             color: panel.mutedText
             font.family: panel.fontFamily
             font.pixelSize: Style.font.caption

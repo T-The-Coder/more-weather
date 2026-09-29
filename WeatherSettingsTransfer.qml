@@ -53,6 +53,12 @@ QtObject {
     }
   }
 
+  // A path as shown: the home folder as ~, as typed in a shell.
+  function shown(path) {
+    var text = String(path || "")
+    return text.indexOf(home + "/") === 0 ? "~" + text.slice(home.length) : text
+  }
+
   // Leading ~ stands for the home folder, as in a shell.
   function expanded(path) {
     var text = String(path || "").replace(/^\s+|\s+$/g, "")

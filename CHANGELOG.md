@@ -2,7 +2,23 @@
 
 All notable changes to More Weather are documented here.
 
-## Unreleased
+## 3.0.0 — 2026-09-30
+
+Version 3 in short:
+
+- **Radar and wind map drawn in your theme,** from map data that ships with
+  the plugin; drag to move, Ctrl + wheel to zoom; satellite stays a map style.
+- **Wind map after RegenVorschau:** a colour wash of the speed and streaks
+  drifting with the wind, at 10 m up to 10 km.
+- **Temperature lines** over the next 24 hours and through the week, with
+  rain bars, daylight and labelled highs and lows.
+- **My places:** every saved place on one line, one key away.
+- **Your layout:** every section in the window or as a tab, in your order.
+- **Rain alerts** with a threshold and a radius; more official national
+  weather services and warnings worldwide.
+- Colour accents, an hour cursor, a radar timeline, export and import of
+  the settings, full keyboard control, and tests that run on every push.
+
 
 - Added the moon phase to the widget and the app: as a header value next to
   feels-like, wind and humidity, and as a row in the daily forecast (phase on
@@ -101,6 +117,13 @@ All notable changes to More Weather are documented here.
   same checks as the settings files, and first saves the current settings
   to more-weather-settings-backup.json, so importing that file undoes it.
   Keyboard: the path field, Export and Import are in the page's key order.
+- "Today" is the place's day, not this computer's: after midnight in Europe
+  Chicago's Tuesday went missing and Wednesday was called today. The radar
+  timeline, "rain from" and the rain notification show the place's time too.
+- Japan: when JMA's radar picture is complete it replaces the frame below it
+  instead of covering it with both showing, and it comes at zoom 10 for the
+  closer views (it was scaled up threefold and blocky).
+- Export and import show home paths as ~/….
 - Importing the backup file itself restores it without first overwriting
   it (an undo used to import the settings it was meant to replace), and
   reports a restore; export and import wait for each other.

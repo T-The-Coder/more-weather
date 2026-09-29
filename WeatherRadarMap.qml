@@ -113,7 +113,7 @@ Item {
         store: panel.mapImages
         remoteUrl: panel.radarFrameUrl(modelData)
         load: panel.radarFrameLoadAllowed(index)
-        visible: index === panel.radarDisplayedFrameIndex && status === Image.Ready
+        visible: index === panel.radarDisplayedFrameIndex && status === Image.Ready && !jmaLayer.covering
         onStatusChanged: if (status !== Image.Error) panel.updateRadarFrameStatus(index, status, modelData)
         onFailed: panel.updateRadarFrameStatus(index, Image.Error, modelData)
         Component.onCompleted: panel.updateRadarFrameStatus(index, status, modelData)
@@ -122,6 +122,7 @@ Item {
 
     // Japan: JMA's radar tiles over the frames above (WeatherJmaRadarLayer).
     WeatherJmaRadarLayer {
+      id: jmaLayer
       anchors.fill: parent
       panel: radarMapItem.panel
       viewport: radarMapItem.viewport
