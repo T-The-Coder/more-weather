@@ -11,6 +11,9 @@ Column {
   spacing: Style.space(10)
   // The topmost section shown draws no line above it.
   property bool leading: false
+  // Known to the panel, which scrolls the strip into view (IPC `tab`).
+  Component.onCompleted: panel.tabsItem = tabsSection
+  Component.onDestruction: if (panel.tabsItem === tabsSection) panel.tabsItem = null
 
   Rectangle {
     visible: !tabsSection.leading

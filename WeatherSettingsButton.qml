@@ -42,6 +42,9 @@ Rectangle {
   Text {
     id: buttonLabel
     anchors.centerIn: parent
+    // A narrow window shortens the label rather than the button's padding.
+    width: Math.min(implicitWidth, button.width - Style.space(28))
+    elide: Text.ElideRight
     text: button.armed ? button.confirmLabel : button.label
     color: button.armed ? Style.selectedStateColor(button.panel.foreground, Color.accent) : button.panel.foreground
     font.family: button.panel.fontFamily

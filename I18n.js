@@ -9838,6 +9838,37 @@ addCatalogEntries("zh_TW", {
   "settingsImported": "已從 {path} 匯入。先前的設定存於 {backup}。",
   "settingsTransferHint": "一般設定、選單列、小工具與應用程式的顯示以及你的地點，存在一個檔案中。匯入前會把目前設定儲存至 {backup}，匯入該檔案即可復原。"
 })
+// Restoring the settings backup (2.5).
+addCatalogEntries("en", { "settingsRestored": "Restored from {path}." })
+addCatalogEntries("de", { "settingsRestored": "Aus {path} wiederhergestellt." })
+addCatalogEntries("es", { "settingsRestored": "Restaurado desde {path}." })
+addCatalogEntries("fr", { "settingsRestored": "Restauré depuis {path}." })
+addCatalogEntries("pt", { "settingsRestored": "Restaurado a partir de {path}." })
+addCatalogEntries("ru", { "settingsRestored": "Восстановлено из {path}." })
+addCatalogEntries("uk", { "settingsRestored": "Відновлено з {path}." })
+addCatalogEntries("pl", { "settingsRestored": "Przywrócono z {path}." })
+addCatalogEntries("it", { "settingsRestored": "Ripristinato da {path}." })
+addCatalogEntries("nl", { "settingsRestored": "Hersteld uit {path}." })
+addCatalogEntries("tr", { "settingsRestored": "{path} içinden geri yüklendi." })
+addCatalogEntries("cs", { "settingsRestored": "Obnoveno z {path}." })
+addCatalogEntries("sv", { "settingsRestored": "Återställt från {path}." })
+addCatalogEntries("fi", { "settingsRestored": "Palautettu tiedostosta {path}." })
+addCatalogEntries("nb", { "settingsRestored": "Gjenopprettet fra {path}." })
+addCatalogEntries("da", { "settingsRestored": "Gendannet fra {path}." })
+addCatalogEntries("ro", { "settingsRestored": "Restaurat din {path}." })
+addCatalogEntries("hu", { "settingsRestored": "Visszaállítva innen: {path}." })
+addCatalogEntries("el", { "settingsRestored": "Επαναφέρθηκε από το {path}." })
+addCatalogEntries("ja", { "settingsRestored": "{path} から復元しました。" })
+addCatalogEntries("ko", { "settingsRestored": "{path}에서 복원했습니다." })
+addCatalogEntries("ar", { "settingsRestored": "تمت الاستعادة من {path}." })
+addCatalogEntries("he", { "settingsRestored": "שוחזר מ־{path}." })
+addCatalogEntries("fa", { "settingsRestored": "از {path} بازیابی شد." })
+addCatalogEntries("hi", { "settingsRestored": "{path} से पुनर्स्थापित किया गया।" })
+addCatalogEntries("id", { "settingsRestored": "Dipulihkan dari {path}." })
+addCatalogEntries("vi", { "settingsRestored": "Đã khôi phục từ {path}." })
+addCatalogEntries("th", { "settingsRestored": "กู้คืนจาก {path} แล้ว" })
+addCatalogEntries("zh_CN", { "settingsRestored": "已从 {path} 恢复。" })
+addCatalogEntries("zh_TW", { "settingsRestored": "已從 {path} 還原。" })
 // Each language in its own name, for the language picker.
 var languageNames = {
   "en": "English",

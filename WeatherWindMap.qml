@@ -348,21 +348,17 @@ Item {
     spacing: Style.space(2)
     visible: panel.windMapData.length > 0
 
-    Rectangle {
-      width: Style.space(150)
-      height: Style.space(6)
-      radius: height / 2
-      gradient: Gradient {
-        orientation: Gradient.Horizontal
-        GradientStop { position: 0; color: "#2b1f8f" }
-        GradientStop { position: 0.08; color: "#3a3fd8" }
-        GradientStop { position: 0.16; color: "#2f7fe8" }
-        GradientStop { position: 0.25; color: "#22b6d8" }
-        GradientStop { position: 0.35; color: "#2fc98f" }
-        GradientStop { position: 0.48; color: "#b6d43a" }
-        GradientStop { position: 0.62; color: "#f2b33a" }
-        GradientStop { position: 0.78; color: "#e8523a" }
-        GradientStop { position: 1; color: "#b43ad6" }
+    // Drawn from the wash's own colour scale, in thin slices.
+    Row {
+      Repeater {
+        model: 50
+        Rectangle {
+          required property int index
+          readonly property var rgb: windField.colorAt((index + 0.5) / 50 * windField.scaleKmh)
+          width: Style.space(3)
+          height: Style.space(6)
+          color: Qt.rgba(rgb[0] / 255, rgb[1] / 255, rgb[2] / 255, 1)
+        }
       }
     }
     Item {

@@ -3303,12 +3303,18 @@ Panel {
     root.defer(function() { root.scrollHeroIntoView() })
   }
 
+  // The tab strip (WeatherTabs), for scrolling it into view.
+  property Item tabsItem: null
+
   function showTab(name) {
     if (displayTabs.indexOf(String(name)) < 0) return
     activeTab = String(name)
-    // The tabs sit below the sections in the window: show them.
+    // The strip at the top of the view, with as much of the tab as fits.
     root.defer(function() {
-      weatherScroll.contentY = Math.max(0, weatherScroll.contentHeight - weatherScroll.height)
+      if (!tabsItem) return
+      var top = tabsItem.mapToItem(weatherColumn, 0, 0).y
+      var maximum = Math.max(0, weatherScroll.contentHeight - weatherScroll.height)
+      weatherScroll.contentY = Math.max(0, Math.min(maximum, top))
     })
   }
 

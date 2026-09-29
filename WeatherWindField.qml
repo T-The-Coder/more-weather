@@ -102,10 +102,11 @@ Item {
     wash.requestPaint()
   }
 
-  // The vector at a point of the view, bilinear between lattice cells.
-  function windAt(x, y) {
+  // The vector at a point of the view, bilinear between lattice cells,
+  // written into `out` ({ u, v }): the streaks call this for every particle
+  // fifteen times a second, so it makes no objects of its own.
+  function sampleInto(x, y, out) {
     var data = lattice
-    if (!data) return null
     var fx = Math.max(0, Math.min(columns - 1.001, x / data.cellWidth))
     var fy = Math.max(0, Math.min(rows - 1.001, y / data.cellHeight))
     var c = Math.floor(fx)
@@ -115,9 +116,16 @@ Item {
     var cells = data.cells
     var a = (r * columns + c) * 3
     var b = a + columns * 3
-    var u = (cells[a] * (1 - tx) + cells[a + 3] * tx) * (1 - ty) + (cells[b] * (1 - tx) + cells[b + 3] * tx) * ty
-    var v = (cells[a + 1] * (1 - tx) + cells[a + 4] * tx) * (1 - ty) + (cells[b + 1] * (1 - tx) + cells[b + 4] * tx) * ty
-    return { u: u, v: v, speed: Math.sqrt(u * u + v * v) }
+    out.u = (cells[a] * (1 - tx) + cells[a + 3] * tx) * (1 - ty) + (cells[b] * (1 - tx) + cells[b + 3] * tx) * ty
+    out.v = (cells[a + 1] * (1 - tx) + cells[a + 4] * tx) * (1 - ty) + (cells[b + 1] * (1 - tx) + cells[b + 4] * tx) * ty
+  }
+
+  // The wind at a point of the view (the pointer's), or null before data.
+  function windAt(x, y) {
+    if (!lattice) return null
+    var out = { u: 0, v: 0 }
+    sampleInto(x, y, out)
+    return { u: out.u, v: out.v, speed: Math.sqrt(out.u * out.u + out.v * out.v) }
   }
 
   Timer {
@@ -126,7 +134,8 @@ Item {
     onTriggered: field.rebuild()
   }
   onSamplesChanged: rebuildTimer.restart()
-  onScaleKmhChanged: rebuildTimer.restart()
+  // Only the colours depend on the scale.
+  onScaleKmhChanged: wash.requestPaint()
   onViewportChanged: rebuildTimer.restart()
   onWidthChanged: rebuildTimer.restart()
   onHeightChanged: rebuildTimer.restart()
@@ -168,17 +177,15 @@ Item {
   }
 
   // The streaks: particles that live a few seconds, move with the field and
-  // are drawn as short segments on a canvas that fades a little each frame.
-  // The streaks: particles that live a few seconds, move with the field and
   // are drawn as short segments on a canvas that fades a little each frame,
-  // so each leaves a trail. The loop reads the lattice inline and makes no
-  // objects: it runs for every particle fifteen times a second.
+  // so each leaves a trail.
   Canvas {
     id: streaks
     anchors.fill: parent
     renderTarget: Canvas.FramebufferObject
     renderStrategy: Canvas.Cooperative
     property var particles: []
+    readonly property var wind: ({ u: 0, v: 0 })
     readonly property int count: Math.round(Math.min(380, Math.max(100, field.width * field.height / 1000)))
 
     function spawn(particle) {
@@ -208,27 +215,14 @@ Item {
       ctx.strokeStyle = "rgba(255,255,255,0.85)"
       ctx.lineWidth = 1.1
       ctx.beginPath()
-      var cells = data.cells
-      var columns = field.columns
-      var maxColumn = columns - 1.001
-      var maxRow = field.rows - 1.001
       // About 2 px per frame (30 px a second) at 20 km/h near the ground;
       // aloft the same share of the scale, so a jet stream does not race.
       var step = 0.1 * 100 / field.scaleKmh
       for (var i = 0; i < particles.length; ++i) {
         var particle = particles[i]
-        var fx = Math.max(0, Math.min(maxColumn, particle.x / data.cellWidth))
-        var fy = Math.max(0, Math.min(maxRow, particle.y / data.cellHeight))
-        var c = Math.floor(fx)
-        var r = Math.floor(fy)
-        var tx = fx - c
-        var ty = fy - r
-        var a = (r * columns + c) * 3
-        var b = a + columns * 3
-        var u = (cells[a] * (1 - tx) + cells[a + 3] * tx) * (1 - ty) + (cells[b] * (1 - tx) + cells[b + 3] * tx) * ty
-        var v = (cells[a + 1] * (1 - tx) + cells[a + 4] * tx) * (1 - ty) + (cells[b + 1] * (1 - tx) + cells[b + 4] * tx) * ty
-        var nx = particle.x + u * step
-        var ny = particle.y + v * step
+        field.sampleInto(particle.x, particle.y, wind)
+        var nx = particle.x + wind.u * step
+        var ny = particle.y + wind.v * step
         particle.age++
         if (particle.age > 90 || nx < 0 || ny < 0 || nx > width || ny > height) {
           spawn(particle)

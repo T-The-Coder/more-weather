@@ -466,7 +466,7 @@ Rectangle {
     } else if (item.id === "importSettings") {
       importButton.press()
     } else if (item.id === "restoreOrder") {
-      panel.displayOptionsStore.restoreSettingsDisplayOrder()
+      restoreOrderButton.press()
     } else if (item.id === "restoreDefaults") {
       restoreDefaultsButton.press()
     }
@@ -968,6 +968,7 @@ Rectangle {
             WeatherSettingsButton {
               id: exportButton
               panel: settingsView.panel
+              enabled: !panel.settingsTransfer.busy
               label: panel.i18n("settingsExport")
               kbFocused: settingsView.focusId === "exportSettings"
               onKbFocusedChanged: if (kbFocused) settingsView.ensureVisible(this)
@@ -977,6 +978,7 @@ Rectangle {
             WeatherSettingsButton {
               id: importButton
               panel: settingsView.panel
+              enabled: !panel.settingsTransfer.busy
               label: panel.i18n("settingsImport")
               confirmLabel: panel.i18n("settingsImportConfirm")
               kbFocused: settingsView.focusId === "importSettings"
@@ -1546,109 +1548,36 @@ Rectangle {
         anchors.horizontalCenter: parent.horizontalCenter
         spacing: Style.space(10)
 
-      // Order only: one click, since nothing switches off with it.
-      Rectangle {
+      // Order only: one press, since nothing switches off with it.
+      WeatherSettingsButton {
         id: restoreOrderButton
-        width: Math.min((settingsColumn.width - Style.space(10)) / 2,
-          restoreOrderLabel.implicitWidth + Style.space(28))
-        height: Style.space(32)
-        radius: Style.cornerRadius
+        panel: settingsView.panel
+        width: Math.min((settingsColumn.width - Style.space(10)) / 2, implicitWidth)
+        label: panel.i18n("restoreOrder")
         enabled: !panel.settingsOrderIsDefault
-        opacity: enabled ? 1 : 0.42
-        readonly property bool kbFocused: settingsView.focusId === "restoreOrder"
+        kbFocused: settingsView.focusId === "restoreOrder"
         onKbFocusedChanged: if (kbFocused) settingsView.ensureVisible(this)
-        color: (restoreOrderMouse.containsMouse || kbFocused) && enabled
-          ? Style.hoverFillFor(panel.foreground, Color.accent) : "transparent"
-        border.color: kbFocused ? Color.accent : panel.subtleText
-        border.width: Style.spacing.hairline
-
-        Text {
-          id: restoreOrderLabel
-          anchors.centerIn: parent
-          width: Math.min(implicitWidth, (settingsColumn.width - Style.space(10)) / 2 - Style.space(28))
-          text: panel.i18n("restoreOrder")
-          color: panel.foreground
-          font.family: panel.fontFamily
-          font.pixelSize: Style.font.bodySmall
-          elide: Text.ElideRight
-        }
-
-        MouseArea {
-          id: restoreOrderMouse
-          anchors.fill: parent
-          enabled: parent.enabled
-          hoverEnabled: true
-          cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
-          onClicked: panel.displayOptionsStore.restoreSettingsDisplayOrder()
-        }
+        onActivated: panel.displayOptionsStore.restoreSettingsDisplayOrder()
       }
 
-      // Two-step reset: the first click arms it, a second click within a few
+      // Two-step reset: the first press arms it, a second one within a few
       // seconds restores the selected view's factory defaults.
-      Rectangle {
+      WeatherSettingsButton {
         id: restoreDefaultsButton
-        property bool armed: false
         readonly property bool isDefault: panel.displayOptionsStore.settingsDisplayIsDefault()
-        readonly property bool kbFocused: settingsView.focusId === "restoreDefaults"
-        onKbFocusedChanged: if (kbFocused) settingsView.ensureVisible(this)
-        // First press arms, a second one within a few seconds resets.
-        function press() {
-          if (isDefault) return
-          if (!armed) {
-            armed = true
-            return
-          }
-          armed = false
-          panel.displayOptionsStore.restoreSettingsDisplayDefaults()
-        }
-        width: Math.min((settingsColumn.width - Style.space(10)) / 2,
-          restoreDefaultsLabel.implicitWidth + Style.space(28))
-        height: Style.space(32)
-        radius: Style.cornerRadius
+        panel: settingsView.panel
+        width: Math.min((settingsColumn.width - Style.space(10)) / 2, implicitWidth)
+        label: panel.i18n(isDefault ? "defaultsActive" : "restoreDefaults")
+        confirmLabel: panel.i18n("restoreDefaultsConfirm")
         enabled: !isDefault
-        opacity: isDefault ? 0.42 : 1
-        color: armed ? Style.selectedFillFor(panel.foreground, Color.accent)
-          : (restoreDefaultsMouse.containsMouse || kbFocused
-            ? Style.hoverFillFor(panel.foreground, Color.accent) : "transparent")
-        border.color: armed || kbFocused ? Color.accent : panel.subtleText
-        border.width: Style.spacing.hairline
-
+        kbFocused: settingsView.focusId === "restoreDefaults"
+        onKbFocusedChanged: if (kbFocused) settingsView.ensureVisible(this)
         onIsDefaultChanged: if (isDefault) armed = false
-        onVisibleChanged: armed = false
+        onActivated: panel.displayOptionsStore.restoreSettingsDisplayDefaults()
 
         Connections {
           target: panel
           function onSettingsTargetSurfaceChanged() { restoreDefaultsButton.armed = false }
-        }
-
-        Timer {
-          running: restoreDefaultsButton.armed
-          interval: 4000
-          onTriggered: restoreDefaultsButton.armed = false
-        }
-
-        Text {
-          id: restoreDefaultsLabel
-          anchors.centerIn: parent
-          width: Math.min(implicitWidth, (settingsColumn.width - Style.space(10)) / 2 - Style.space(28))
-          text: panel.i18n(parent.isDefault ? "defaultsActive"
-            : (parent.armed ? "restoreDefaultsConfirm" : "restoreDefaults"))
-          color: parent.armed
-            ? Style.selectedStateColor(panel.foreground, Color.accent)
-            : panel.foreground
-          font.family: panel.fontFamily
-          font.pixelSize: Style.font.bodySmall
-          font.bold: parent.armed
-          elide: Text.ElideRight
-        }
-
-        MouseArea {
-          id: restoreDefaultsMouse
-          anchors.fill: parent
-          enabled: parent.enabled
-          hoverEnabled: true
-          cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
-          onClicked: parent.press()
         }
       }
       }

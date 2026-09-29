@@ -101,6 +101,11 @@ All notable changes to More Weather are documented here.
   same checks as the settings files, and first saves the current settings
   to more-weather-settings-backup.json, so importing that file undoes it.
   Keyboard: the path field, Export and Import are in the page's key order.
+- Importing the backup file itself restores it without first overwriting
+  it (an undo used to import the settings it was meant to replace), and
+  reports a restore; export and import wait for each other.
+- The IPC call `tab <name>` scrolls the tab strip into view wherever it
+  sits in the section order.
 - Saved places changed in the app now reach the bar at once and the other
   way round (the places file is watched like the other settings files).
 - Wind map after RegenVorschau: the speed as a smooth colour wash from deep

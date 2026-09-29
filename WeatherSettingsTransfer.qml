@@ -26,6 +26,8 @@ QtObject {
   // The outcome of the last export or import, for the settings page:
   // { key: i18n key, path, error: bool }.
   property var status: null
+  // One at a time: export and the import's backup share the writer.
+  property bool busy: false
 
   property FileView userDirs: FileView {
     path: transfer.home + "/.config/user-dirs.dirs"
@@ -62,19 +64,28 @@ QtObject {
     atomicWrites: true
     property string purpose: ""
     onSaved: {
-      if (purpose === "export") transfer.status = { key: "settingsExported", path: path, error: false }
-      else if (purpose === "backup") transfer.startImport()
+      if (purpose === "backup") {
+        transfer.startImport()
+        return
+      }
+      transfer.finish({ key: "settingsExported", path: path, error: false })
     }
     onSaveFailed: {
-      if (purpose === "export") transfer.status = { key: "settingsExportFailed", path: path, error: true }
       // Without a backup nothing is replaced.
-      else transfer.status = { key: "settingsBackupFailed", path: path, error: true }
+      transfer.finish({ key: purpose === "export" ? "settingsExportFailed" : "settingsBackupFailed",
+        path: path, error: true })
     }
+  }
+
+  function finish(result) {
+    status = result
+    busy = false
   }
 
   function exportTo(path) {
     var target = expanded(path)
-    if (!target) return
+    if (!target || busy) return
+    busy = true
     writer.purpose = "export"
     writer.path = target
     writer.setText(JSON.stringify(snapshot(), null, 2) + "\n")
@@ -83,8 +94,16 @@ QtObject {
   property string importPath: ""
 
   function importFrom(path) {
-    importPath = expanded(path)
-    if (!importPath) return
+    var source = expanded(path)
+    if (!source || busy) return
+    busy = true
+    importPath = source
+    // Importing the backup itself undoes the last import: it must not be
+    // overwritten by a backup of the settings it is meant to replace.
+    if (source === backupPath) {
+      startImport()
+      return
+    }
     // First the backup of what the import replaces; the import follows once
     // it is written (writer.onSaved).
     writer.purpose = "backup"
@@ -95,7 +114,7 @@ QtObject {
   property FileView reader: FileView {
     printErrors: false
     onLoaded: transfer.apply(text())
-    onLoadFailed: transfer.status = { key: "settingsImportMissing", path: path, error: true }
+    onLoadFailed: transfer.finish({ key: "settingsImportMissing", path: path, error: true })
   }
 
   function startImport() {
@@ -107,8 +126,8 @@ QtObject {
   function apply(raw) {
     var data = null
     try { data = JSON.parse(String(raw || "")) } catch (e) { data = null }
-    if (!data || data.app !== "more-weather" || typeof data !== "object") {
-      status = { key: "settingsImportInvalid", path: importPath, error: true }
+    if (!data || typeof data !== "object" || data.app !== "more-weather") {
+      finish({ key: "settingsImportInvalid", path: importPath, error: true })
       return
     }
     var store = panel.displayOptionsStore
@@ -132,6 +151,7 @@ QtObject {
       panel.savedLocations = Model.parseSavedLocations(JSON.stringify(data.favorites))
       panel.savedLocationsFile.setText(JSON.stringify(panel.savedLocations, null, 2) + "\n")
     }
-    status = { key: "settingsImported", path: importPath, error: false }
+    // From the backup no new one was made: it is a restore.
+    finish({ key: importPath === backupPath ? "settingsRestored" : "settingsImported", path: importPath, error: false })
   }
 }
