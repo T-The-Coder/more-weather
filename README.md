@@ -220,6 +220,7 @@ test runner, with nothing to install:
 
 ```bash
 node --test tests/*.test.mjs
+tests/qml-syntax.sh    # every QML file parses (qmllint)
 ```
 
 They also run on GitHub for every push. The drawn map's data is built from

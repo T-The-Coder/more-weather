@@ -33,11 +33,11 @@ Item {
   property real dragX: 0
   property real dragY: 0
 
-  // The pictures on screen when the view moves stay, placed at their old
-  // extent, until the new ones have arrived: a pan or zoom never blanks the
-  // map. `extent` is where the picture's rectangle lies, in degrees.
+  // The radar frame on screen when the view moves stays, placed at its old
+  // extent, until the new one has arrived (the ground does the same, in
+  // WeatherMapGround): a pan or zoom never blanks the map. `extent` is where
+  // the picture's rectangle lies, in degrees.
   property var staleFrame: null
-  property var staleBasemap: null
   function extentOf(item) {
     var view = viewport
     var lonSpan = panel.mapEast - panel.mapWest
@@ -60,8 +60,6 @@ Item {
     else if (!panel.radarHasDisplayedFrame && staleFrame) {
       // Still waiting since the last move: keep the older picture.
     } else staleFrame = null
-    if (!drawnMap && satelliteImage.status === Image.Ready)
-      staleBasemap = { source: satelliteImage.source, extent: extentOf(satelliteImage) }
   }
   Connections {
     target: radarMapItem.panel
@@ -82,25 +80,10 @@ Item {
 
     // The ground under every radar source; DWD frames are the radar layer
     // alone since they stopped carrying the basemap themselves.
-    WeatherBasemap {
+    WeatherMapGround {
       anchors.fill: parent
-      visible: radarMapItem.drawnMap
       panel: radarMapItem.panel
       viewport: radarMapItem.viewport
-    }
-    WeatherStalePicture {
-      picture: radarMapItem.staleBasemap
-      visible: !radarMapItem.drawnMap && satelliteImage.status !== Image.Ready
-      viewport: radarMapItem.viewport
-      panel: radarMapItem.panel
-    }
-    WeatherRemoteImage {
-      id: satelliteImage
-      anchors.fill: parent
-      visible: !radarMapItem.drawnMap
-      store: panel.mapImages
-      remoteUrl: radarMapItem.drawnMap ? "" : panel.mapBasemapUrl
-      onStatusChanged: if (status === Image.Ready) radarMapItem.staleBasemap = null
     }
 
     // The last frame at its old place until the frame for the new view is in.

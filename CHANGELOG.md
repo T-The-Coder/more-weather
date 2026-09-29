@@ -94,6 +94,12 @@ All notable changes to More Weather are documented here.
   shown place) kept their oldest hours and days and dropped every newer
   forecast, so "My places" worked from hours two weeks old and only the
   current value moved. Past rows are now dropped before the lists are cut.
+- Fixes from a review: letting go of Ctrl (or turning a sideways swipe
+  upward) mid-gesture now hands the scroll back to the page instead of
+  zooming the map or moving the daily strip on; no rain notification while
+  the radar measures rain of that strength at the place already; a saved
+  place is no longer queued a second time while it is being fetched.
+- A QML syntax check (tests/qml-syntax.sh, qmllint) runs with the tests.
 - One source per place in the DWD area: the week's temperature line now
   takes Bright Sky's hours like the day columns and the hourly forecast (the
   station's measurements for the hours gone, MOSMIX after them), so the

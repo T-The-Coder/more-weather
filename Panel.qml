@@ -545,19 +545,6 @@ Panel {
     return -1
   }
 
-  // The hours' span, for the height of the hourly temperature curve.
-  readonly property var hourlyTemperatureRange: {
-    var low = Infinity
-    var high = -Infinity
-    for (var i = 0; i < hourlyForecast.length; ++i) {
-      var value = parseFloat(hourlyForecast[i].tempC)
-      if (!isFinite(value)) continue
-      low = Math.min(low, value)
-      high = Math.max(high, value)
-    }
-    return { low: low, high: high }
-  }
-
   property FileView radarPlacesCacheFile: FileView {
     path: Quickshell.env("HOME") + "/.local/state/omarchy/settings/more-weather-radar-places.json"
     watchChanges: true
@@ -714,7 +701,6 @@ Panel {
     if (!displaySetting(sectionMasterKeys[key], true)) return false
     return displayTabs.indexOf(key) < 0 || currentTab === key
   }
-  readonly property bool rainShown: sectionShown("rain")
   readonly property bool radarShown: opened && sectionShown("radar")
   readonly property bool windShown: opened && sectionShown("wind")
   readonly property var settingsTabs: sectionTabsFrom(settingsSectionOrder, settingsDisplaySetting)
@@ -802,8 +788,10 @@ Panel {
     : (rainAlertThreshold === "moderate" ? 0.51 : 0.1)
   readonly property int rainAlertRadiusKm: Number(menubarDisplaySetting("rainAlertRadius", "25")) || 25
   readonly property int rainAlertLeadMinutes: Math.round(rainAlertRadiusKm / 50 * 60)
-  readonly property var rainAlert: Model.rainAlertStart(rainNowcast, nowDate, rainAlertThresholdRate,
-    rainAlertLeadMinutes)
+  // Rain the radar measures at that strength now is nothing to announce,
+  // whatever the nowcast's first slot says.
+  readonly property var rainAlert: isCurrentlyRaining && parseFloat(radarCurrentIntensity) >= rainAlertThresholdRate
+    ? null : Model.rainAlertStart(rainNowcast, nowDate, rainAlertThresholdRate, rainAlertLeadMinutes)
   onNotifyRainSoonChanged: notifications.scheduleAlertNotifications()
   onUpcomingRainChanged: notifications.scheduleAlertNotifications()
   onRainAlertChanged: notifications.scheduleAlertNotifications()
@@ -1269,9 +1257,6 @@ Panel {
   property real windGridRequestLatitude: 0
   property real windGridRequestLongitude: 0
   property real windGridRequestRadiusKm: 0
-  readonly property var radarCurrentFrame: radarFrames.length > 0
-    ? radarFrames[Math.max(0, Math.min(radarFrameIndex, radarFrames.length - 1))]
-    : null
   readonly property var windGrid: Model.windGridSeries(cacheFallbackActive ? null : windGridReport)
   readonly property var windMapData: windGrid.length > 0
     ? windGrid
@@ -3554,6 +3539,9 @@ Panel {
     var aimed = (wheel.modifiers & (Qt.ControlModifier | Qt.ShiftModifier)) !== 0
     var target = now < wheelLatchUntil && !aimed ? wheelLatch : null
     if (target && target !== scroller && (!target.visible || wheelAreas.indexOf(target) < 0)) target = null
+    // A latched area whose terms no longer hold (Ctrl let go over a map, a
+    // sideways swipe turned into an upward one) gives the scroll to the page.
+    if (target && target !== scroller && target.wantsWheel && !target.wantsWheel(wheel)) target = scroller
     if (!target) {
       target = scroller
       for (var i = wheelAreas.length - 1; i >= 0; --i) {

@@ -14,7 +14,10 @@ Item {
   property var providerChain: []
 
   function prepareSavedCacheQueue() {
-    if (panel.standaloneMode || !panel.weatherDataCacheLoaded || savedCacheProc.running) return
+    // Not while a place is being fetched (its forecast, then Bright Sky):
+    // it would be queued again before it is stored.
+    if (panel.standaloneMode || !panel.weatherDataCacheLoaded || savedCacheProc.running
+        || brightSkyProc.running || panel.savedCacheActive) return
     var entries = panel.weatherDataCache && panel.weatherDataCache.entries ? panel.weatherDataCache.entries : ({})
     // With the forecast interval while "My places" is shown, else every six
     // hours.

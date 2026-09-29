@@ -27,20 +27,6 @@ Item {
   readonly property bool drawnMap: panel.mapStyle !== "satellite"
   property real dragX: 0
   property real dragY: 0
-  // The satellite picture from before a move, until the new one is in.
-  property var staleBasemap: null
-  function keepPictures() {
-    if (drawnMap || windMapBackground.status !== Image.Ready) return
-    // The picture fills the view cropped: its extent is the map's.
-    staleBasemap = {
-      source: windMapBackground.source,
-      extent: { west: panel.mapWest, east: panel.mapEast, north: panel.mapNorth, south: panel.mapSouth }
-    }
-  }
-  Connections {
-    target: windMapItem.panel
-    function onMapViewAboutToMove() { windMapItem.keepPictures() }
-  }
 
   // Everything tied to the ground moves together while the map is dragged;
   // on release the view itself moves (panel.panMap) and this returns to 0.
@@ -56,25 +42,10 @@ Item {
       color: Color.popups.background
     }
 
-    WeatherBasemap {
+    WeatherMapGround {
       anchors.fill: parent
-      visible: windMapItem.drawnMap
       panel: windMapItem.panel
       viewport: windMapItem.viewport
-    }
-    WeatherStalePicture {
-      picture: windMapItem.staleBasemap
-      visible: !windMapItem.drawnMap && windMapBackground.status !== Image.Ready
-      viewport: windMapItem.viewport
-      panel: windMapItem.panel
-    }
-    WeatherRemoteImage {
-      id: windMapBackground
-      anchors.fill: parent
-      visible: !windMapItem.drawnMap
-      store: panel.mapImages
-      remoteUrl: windMapItem.drawnMap ? "" : panel.mapBasemapUrl
-      onStatusChanged: if (status === Image.Ready) windMapItem.staleBasemap = null
     }
 
     Canvas {

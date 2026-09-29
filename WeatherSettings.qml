@@ -375,47 +375,50 @@ Rectangle {
     focusId = focusItems[next].id
   }
 
+  // Each dropdown the keyboard reaches: its options, current value, how a
+  // new value is stored, and the item that opens its list.
+  function dropdownSpec(id) {
+    var store = panel.displayOptionsStore
+    function general(key, fallback, numeric) {
+      return {
+        value: String(panel.generalSetting(key, fallback)),
+        set: function(value) { store.setGeneralSetting(key, numeric ? Number(value) : value) }
+      }
+    }
+    function display(key, fallback) {
+      return {
+        value: String(panel.settingsDisplaySetting(key, fallback)),
+        set: function(value) { store.setSettingsDisplaySetting(key, value) }
+      }
+    }
+    function spec(options, item, access) {
+      return { options: options, item: item, value: access.value, set: access.set }
+    }
+    if (id === "unit") return spec(unitOptions, unitDropdown,
+      { value: panel.settingsUnitSystem, set: function(value) { store.setGeneralSetting("unitSystem", value) } })
+    if (id === "language") return spec(languageOptions, languageDropdown, general("language", "auto"))
+    if (id === "barPosition") return spec(barPositionOptions, barPositionDropdown,
+      { value: panel.barPlacement.section, set: function(value) { panel.barPlacement.moveTo(value) } })
+    if (id === "windUnit") return spec(windUnitOptions, windUnitDropdown, general("windUnit", "auto"))
+    if (id === "refresh") return spec(refreshOptions, refreshDropdown, general("refreshMinutes", 0, true))
+    if (id === "radarRefresh") return spec(radarRefreshOptions, radarRefreshDropdown, general("radarMinutes", 0, true))
+    if (id === "rainThreshold") return spec(rainThresholdOptions, rainThresholdDropdown, display("rainAlertThreshold", "any"))
+    if (id === "rainRadius") return spec(rainRadiusOptions, rainRadiusDropdown, display("rainAlertRadius", "25"))
+    if (id === "mapStyle") return spec(mapStyleOptions, mapStyleDropdown, display("mapStyle", "drawn"))
+    return spec(hoverUnitOptions, hoverUnitDropdown, display("hoverUnitSystem", ""))
+  }
+
   function stepDropdown(id, delta) {
-    var options = id === "unit" ? unitOptions : (id === "language" ? languageOptions
-      : (id === "barPosition" ? barPositionOptions : (id === "windUnit" ? windUnitOptions
-        : (id === "refresh" ? refreshOptions : (id === "radarRefresh" ? radarRefreshOptions
-          : (id === "rainThreshold" ? rainThresholdOptions : (id === "rainRadius" ? rainRadiusOptions
-            : (id === "mapStyle" ? mapStyleOptions : hoverUnitOptions))))))))
-    var current = id === "unit" ? panel.settingsUnitSystem
-      : (id === "language" ? String(panel.generalSetting("language", "auto"))
-        : (id === "barPosition" ? panel.barPlacement.section
-          : (id === "windUnit" ? String(panel.generalSetting("windUnit", "auto"))
-            : (id === "refresh" ? String(panel.generalSetting("refreshMinutes", 0))
-              : (id === "radarRefresh" ? String(panel.generalSetting("radarMinutes", 0))
-                : (id === "rainThreshold" || id === "rainRadius" || id === "mapStyle" ? String(panel.settingsDisplaySetting(rainSettingKey(id), ""))
-                  : panel.settingsHoverUnitSystem))))))
+    var dropdown = dropdownSpec(id)
     var index = 0
-    for (var i = 0; i < options.length; i++) if (options[i].value === current) index = i
-    var next = Math.max(0, Math.min(options.length - 1, index + delta))
-    if (next === index) return
-    var value = options[next].value
-    if (id === "unit") panel.displayOptionsStore.setGeneralSetting("unitSystem", value)
-    else if (id === "language") panel.displayOptionsStore.setGeneralSetting("language", value)
-    else if (id === "barPosition") panel.barPlacement.moveTo(value)
-    else if (id === "windUnit") panel.displayOptionsStore.setGeneralSetting("windUnit", value)
-    else if (id === "refresh") panel.displayOptionsStore.setGeneralSetting("refreshMinutes", Number(value))
-    else if (id === "radarRefresh") panel.displayOptionsStore.setGeneralSetting("radarMinutes", Number(value))
-    else if (id === "rainThreshold" || id === "rainRadius" || id === "mapStyle") panel.displayOptionsStore.setSettingsDisplaySetting(rainSettingKey(id), value)
-    else panel.displayOptionsStore.setSettingsDisplaySetting("hoverUnitSystem", value)
+    for (var i = 0; i < dropdown.options.length; i++) if (dropdown.options[i].value === dropdown.value) index = i
+    var next = Math.max(0, Math.min(dropdown.options.length - 1, index + delta))
+    if (next !== index) dropdown.set(dropdown.options[next].value)
   }
 
   function openDropdown(id) {
-    var dropdown = id === "unit" ? unitDropdown : (id === "language" ? languageDropdown
-      : (id === "barPosition" ? barPositionDropdown : (id === "windUnit" ? windUnitDropdown
-        : (id === "refresh" ? refreshDropdown : (id === "radarRefresh" ? radarRefreshDropdown
-          : (id === "rainThreshold" ? rainThresholdDropdown : (id === "rainRadius" ? rainRadiusDropdown
-            : (id === "mapStyle" ? mapStyleDropdown : hoverUnitDropdown))))))))
+    var dropdown = dropdownSpec(id).item
     if (dropdown) dropdown.open()
-  }
-
-  // Stored key of a dropdown kept in the display options.
-  function rainSettingKey(id) {
-    return id === "rainThreshold" ? "rainAlertThreshold" : (id === "mapStyle" ? "mapStyle" : "rainAlertRadius")
   }
 
   function changeValue(item, delta) {

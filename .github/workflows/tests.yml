@@ -13,3 +13,9 @@ jobs:
         with:
           node-version: 22
       - run: node --test tests/*.test.mjs
+  qml:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y qt6-declarative-dev-tools
+      - run: QMLLINT=/usr/lib/qt6/bin/qmllint tests/qml-syntax.sh
