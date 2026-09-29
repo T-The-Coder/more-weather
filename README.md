@@ -1,9 +1,10 @@
 # More Weather
 
 A detailed weather plugin for the [Omarchy](https://omarchy.org) bar, with official
-severe weather warnings, a two-hour rain nowcast, an animated rain radar, a live
-wind map, air quality and pollen. The same view also runs as a standalone app
-window.
+severe weather warnings from national weather services, a two-hour rain nowcast, a rain
+radar and a wind map drawn in your theme that you can move and zoom, temperature lines,
+rain alerts, air quality and pollen, and all your places at a glance. The same view also
+runs as a standalone app window.
 
 ![More Weather](preview.png)
 
@@ -105,13 +106,13 @@ window.
   Settings → Shortcuts, and the settings name their keys where they apply.
 - **Settings → Sources** shows which service is serving each kind of data right now.
 
-| Overview | Radar | Wind |
+| Chicago in °F, with an NWS warning | Tokyo in the rain, JMA radar | Tórshavn in a gale, wind map |
 |---|---|---|
-| ![Overview](screenshots/overview.png) | ![Radar](screenshots/radar.png) | ![Wind](screenshots/wind.png) |
+| ![Chicago](screenshots/chicago.png) | ![Tokyo radar](screenshots/tokyo-radar.png) | ![Tórshavn wind](screenshots/torshavn-wind.png) |
 
-| Display settings | Data sources |
-|---|---|
-| ![Settings](screenshots/settings.png) | ![Sources](screenshots/sources.png) |
+| Menu bar and widget | Settings | Data sources |
+|---|---|---|
+| ![Menu bar and widget](screenshots/menubar-widget.png) | ![Settings](screenshots/settings.png) | ![Sources](screenshots/sources.png) |
 
 ## Data sources
 
