@@ -260,9 +260,19 @@ function stripWeatherCacheMetadata(value) {
   return result
 }
 
-function mergeWeatherSnapshotForStorage(live, cached) {
+// Past rows are dropped before the lists are cut to length: they are sorted
+// by time and the first rows kept, so without the cut-off the oldest hours
+// stayed for good and every newer forecast fell off the end (seen on
+// 2026-09-29: saved places still held the hours of 14 September).
+function mergeWeatherSnapshotForStorage(live, cached, nowMs) {
   var incoming = live && typeof live === "object" ? live : {}
   var previous = cached && typeof cached === "object" ? cached : {}
+  var now = Number(nowMs) || Date.now()
+  // The hour under way stays; a day stays until well past its end whatever
+  // the time zone ("2026-09-29" reads as midnight UTC).
+  var hourFrom = now - 60 * 60 * 1000
+  var dayFrom = now - 36 * 60 * 60 * 1000
+  var nowcastFrom = now - 15 * 60 * 1000
   return {
     label: weatherValueAvailable(incoming.label) ? incoming.label : String(previous.label || ""),
     forecastProviderId: weatherValueAvailable(incoming.forecastProviderId)
@@ -270,9 +280,9 @@ function mergeWeatherSnapshotForStorage(live, cached) {
     alertProviderId: weatherValueAvailable(incoming.alertProviderId)
       ? incoming.alertProviderId : String(previous.alertProviderId || ""),
     current: stripWeatherCacheMetadata(mergeCachedWeatherObject(incoming.current, previous.current)),
-    hourly: stripWeatherCacheMetadata(mergeCachedWeatherSeries(incoming.hourly, previous.hourly, "time", 0, 72)),
-    daily: stripWeatherCacheMetadata(mergeCachedWeatherSeries(incoming.daily, previous.daily, "date", 0, 3)),
-    nowcast: stripWeatherCacheMetadata(mergeCachedWeatherSeries(incoming.nowcast, previous.nowcast, "time", 0, 9)),
+    hourly: stripWeatherCacheMetadata(mergeCachedWeatherSeries(incoming.hourly, previous.hourly, "time", hourFrom, 72)),
+    daily: stripWeatherCacheMetadata(mergeCachedWeatherSeries(incoming.daily, previous.daily, "date", dayFrom, 3)),
+    nowcast: stripWeatherCacheMetadata(mergeCachedWeatherSeries(incoming.nowcast, previous.nowcast, "time", nowcastFrom, 9)),
     alerts: stripWeatherCacheMetadata(mergeCachedWeatherSeries(incoming.alerts, previous.alerts, "id", 0, 0))
   }
 }
@@ -811,10 +821,15 @@ function openMeteoHourlyForecast(report, currentHour, limit) {
     var time = String(hourly.time[i] || "")
     if (start && time < start) continue
     var tempC = hourly.temperature_2m ? hourly.temperature_2m[i] : ""
+    var feelsC = hourly.apparent_temperature ? hourly.apparent_temperature[i] : null
     result.push({
       time: time,
       tempC: roundedTemp(tempC),
       tempF: roundedTemp(celsiusToFahrenheit(tempC)),
+      feelsLikeC: feelsC === null || feelsC === undefined ? "" : roundedTemp(feelsC),
+      feelsLikeF: feelsC === null || feelsC === undefined ? "" : roundedTemp(celsiusToFahrenheit(feelsC)),
+      humidity: hourly.relative_humidity_2m && hourly.relative_humidity_2m[i] !== null
+        && hourly.relative_humidity_2m[i] !== undefined ? roundedTemp(hourly.relative_humidity_2m[i]) : "",
       rainProbability: hourly.precipitation_probability ? roundedTemp(hourly.precipitation_probability[i]) : "",
       rainAmount: hourly.precipitation && hourly.precipitation[i] !== null && hourly.precipitation[i] !== undefined ? String(Math.round(parseFloat(hourly.precipitation[i]) * 10) / 10) : "",
       windSpeedKmph: hourly.wind_speed_10m ? roundedTemp(hourly.wind_speed_10m[i]) : "",
@@ -936,6 +951,11 @@ function hybridHourlyForecast(mosmixReport, dailyForecastReport, uvReport, radar
       time: row.timestamp,
       tempC: roundedTemp(row.temperature),
       tempF: roundedTemp(celsiusToFahrenheit(row.temperature)),
+      // MOSMIX has no feels-like: Open-Meteo's for the same hour.
+      feelsLikeC: rainFb.feelsLikeC !== undefined ? rainFb.feelsLikeC : "",
+      feelsLikeF: rainFb.feelsLikeF !== undefined ? rainFb.feelsLikeF : "",
+      humidity: row.relative_humidity !== undefined && row.relative_humidity !== null
+        ? roundedTemp(row.relative_humidity) : (rainFb.humidity || ""),
       rainProbability: mosmixProbability !== "" ? mosmixProbability : (rainFb.rainProbability || ""),
       rainAmount: row.precipitation === undefined || row.precipitation === null ? "" : String(Math.round(parseFloat(row.precipitation) * 10) / 10),
       windSpeedKmph: roundedTemp(row.wind_speed) || rainFb.windSpeedKmph || "",
@@ -968,6 +988,9 @@ function hybridHourlyForecast(mosmixReport, dailyForecastReport, uvReport, radar
         time: fbEntry.time,
         tempC: fbEntry.tempC,
         tempF: fbEntry.tempF,
+        feelsLikeC: fbEntry.feelsLikeC,
+        feelsLikeF: fbEntry.feelsLikeF,
+        humidity: fbEntry.humidity,
         rainProbability: fbEntry.rainProbability,
         rainAmount: fbEntry.rainAmount,
         windSpeedKmph: fbEntry.windSpeedKmph,
@@ -1172,7 +1195,536 @@ function radarNextHourAmount(report, now) {
 // wet share around the place per frame (RadarMotion.mjs); without it the
 // 3 x 3 km grid of `radarReport` stands in. `probabilitySource` is "radar"
 // where the radar took part.
-function rainNowcastSeries(mosmixReport, report, now, limit, radarReport, radarWet) {
+// Open-Meteo answers a request for two models with every hourly, daily and
+// 15-minute field twice, suffixed by model. The first model's value wins
+// wherever it has one, the second fills its gaps and the days beyond its
+// range. `_modelId` names the first model when it supplied anything.
+function mergedModelForecast(response, primary, fallback, modelId) {
+  if (!response || typeof response !== "object") return response
+  var primarySuffix = "_" + primary
+  var fallbackSuffix = "_" + fallback
+  var sections = ["hourly", "daily", "minutely_15"]
+  var usedPrimary = false
+  var result = {}
+  for (var key in response) result[key] = response[key]
+  function baseName(field) {
+    if (field.slice(-primarySuffix.length) === primarySuffix) return field.slice(0, -primarySuffix.length)
+    if (field.slice(-fallbackSuffix.length) === fallbackSuffix) return field.slice(0, -fallbackSuffix.length)
+    return ""
+  }
+  function mergeSection(data, countPrimary) {
+    if (!data || typeof data !== "object") return data
+    var merged = {}
+    var bases = []
+    for (var field in data) {
+      var base = baseName(field)
+      if (base === "") merged[field] = data[field]
+      else if (bases.indexOf(base) < 0) bases.push(base)
+    }
+    for (var b = 0; b < bases.length; ++b) {
+      var first = data[bases[b] + primarySuffix]
+      var second = data[bases[b] + fallbackSuffix]
+      if (Array.isArray(first) || Array.isArray(second)) {
+        var length = Math.max(first ? first.length : 0, second ? second.length : 0)
+        var values = []
+        for (var i = 0; i < length; ++i) {
+          var value = first && first[i] !== null && first[i] !== undefined ? first[i] : null
+          if (value !== null && countPrimary) usedPrimary = true
+          values.push(value !== null ? value : (second && second[i] !== undefined ? second[i] : null))
+        }
+        merged[bases[b]] = values
+      } else {
+        merged[bases[b]] = first !== null && first !== undefined ? first : second
+      }
+    }
+    return merged
+  }
+  for (var s = 0; s < sections.length; ++s) {
+    if (response[sections[s]]) result[sections[s]] = mergeSection(response[sections[s]], true)
+    if (response[sections[s] + "_units"]) result[sections[s] + "_units"] = mergeSection(response[sections[s] + "_units"], false)
+  }
+  result._modelId = usedPrimary ? String(modelId || primary) : ""
+  return result
+}
+
+// ---- Regional rain nowcast. Both sources become the same list of
+//      { start, end, rate } in epoch ms and mm/h for rainNowcastSeries.
+// MET Norway Nowcast 2.0: an instant rain rate every five minutes, from the
+// Nordic radar composite. Only used where MET reports radar coverage.
+function metNowcastPoints(raw) {
+  var parsed
+  try { parsed = typeof raw === "string" ? JSON.parse(raw) : raw } catch (e) { return null }
+  var properties = parsed && parsed.properties
+  if (!properties || !Array.isArray(properties.timeseries)) return null
+  if (properties.meta && properties.meta.radar_coverage && properties.meta.radar_coverage !== "ok") return []
+  var points = []
+  for (var i = 0; i < properties.timeseries.length; ++i) {
+    var row = properties.timeseries[i]
+    var start = new Date(row && row.time).getTime()
+    var details = row && row.data && row.data.instant ? row.data.instant.details : null
+    var rate = details ? Number(details.precipitation_rate) : NaN
+    if (isNaN(start) || !isFinite(rate)) continue
+    points.push({ start: start, end: start + 5 * 60 * 1000, rate: Math.max(0, rate) })
+  }
+  return points
+}
+
+// GeoSphere Austria nowcast (INCA): the sum of each 15 minutes, stamped at
+// the end of the quarter hour, over a 1 km grid.
+function geosphereNowcastPoints(raw) {
+  var parsed
+  try { parsed = typeof raw === "string" ? JSON.parse(raw) : raw } catch (e) { return null }
+  if (!parsed || !Array.isArray(parsed.timestamps) || !Array.isArray(parsed.features) || !parsed.features.length)
+    return null
+  var parameters = parsed.features[0].properties && parsed.features[0].properties.parameters
+  var values = parameters && parameters.rr ? parameters.rr.data : null
+  if (!Array.isArray(values)) return null
+  var points = []
+  for (var i = 0; i < parsed.timestamps.length && i < values.length; ++i) {
+    var end = new Date(parsed.timestamps[i]).getTime()
+    var amount = Number(values[i])
+    if (isNaN(end) || values[i] === null || !isFinite(amount)) continue
+    points.push({ start: end - 15 * 60 * 1000, end: end, rate: Math.max(0, amount) * 4 })
+  }
+  return points
+}
+
+// Buienradar rain text: "value|HH:MM" every five minutes for two hours, in
+// Dutch local time without a date; value 0–255 on a logarithmic scale,
+// 10^((value - 109) / 32) mm/h. The first row lies within minutes of now, so
+// of the two possible offsets (CET, CEST) the one that puts it closest wins.
+function buienradarNowcastPoints(raw, now) {
+  var lines = String(raw || "").trim().split(/\r?\n/)
+  var rows = []
+  for (var i = 0; i < lines.length; ++i) {
+    var match = lines[i].match(/^\s*(\d{1,3})\s*\|\s*(\d{1,2}):(\d{2})\s*$/)
+    if (match) rows.push({ value: Number(match[1]), hour: Number(match[2]), minute: Number(match[3]) })
+  }
+  if (!rows.length) return null
+  var current = (now instanceof Date ? now : new Date(now || Date.now())).getTime()
+  var best = null
+  for (var offset = 1; offset <= 2; ++offset) {
+    var base = new Date(current)
+    var candidate = Date.UTC(base.getUTCFullYear(), base.getUTCMonth(), base.getUTCDate(),
+      rows[0].hour - offset, rows[0].minute)
+    while (candidate - current > 12 * 60 * 60 * 1000) candidate -= 24 * 60 * 60 * 1000
+    while (current - candidate > 12 * 60 * 60 * 1000) candidate += 24 * 60 * 60 * 1000
+    if (best === null || Math.abs(candidate - current) < Math.abs(best - current)) best = candidate
+  }
+  var points = []
+  for (var r = 0; r < rows.length; ++r) {
+    var start = best + r * 5 * 60 * 1000
+    var rate = rows[r].value > 0 ? Math.pow(10, (rows[r].value - 109) / 32) : 0
+    points.push({ start: start, end: start + 5 * 60 * 1000, rate: Math.round(rate * 100) / 100 })
+  }
+  return points
+}
+
+// ---- JMA radar tiles (Japan). JMA publishes its radar and one-hour
+//      nowcast only as Web Mercator PNG tiles at even zoom levels. The rain
+//      at the place is read from one pixel: the tiles use a 4-bit palette
+//      whose index is JMA's intensity class, so no colour matching is
+//      needed. Reading a pixel takes a small PNG decoder with an inflate
+//      written after RFC 1951 (no Canvas: it has no context without a window).
+var JMA_TILE_BASE = "https://www.jma.go.jp/bosai/jmatile/data/nowc/"
+// Palette index → mm/h (class middle): 0/1 transparent, then <1, 1–5,
+// 5–10, 10–20, 20–30, 30–50, 50–80, ≥80.
+var JMA_RAIN_RATES = [0, 0, 0.5, 3, 7.5, 15, 25, 40, 65, 90]
+
+// "20260929083500" (UTC) → epoch ms.
+function jmaTimeMs(text) {
+  var match = String(text || "").match(/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})$/)
+  if (!match) return NaN
+  return Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3]),
+    Number(match[4]), Number(match[5]), Number(match[6]))
+}
+
+// targetTimes_N1.json (observed, newest first) or _N2.json (forecast).
+function jmaTargetTimes(raw) {
+  var parsed
+  try { parsed = typeof raw === "string" ? JSON.parse(raw) : raw } catch (e) { return null }
+  if (!Array.isArray(parsed)) return null
+  var times = []
+  for (var i = 0; i < parsed.length; ++i) {
+    var entry = parsed[i] || {}
+    var elements = Array.isArray(entry.elements) ? entry.elements : []
+    if (elements.indexOf("hrpns") < 0) continue
+    var valid = jmaTimeMs(entry.validtime)
+    if (!isNaN(valid)) times.push({ basetime: String(entry.basetime), validtime: String(entry.validtime), ms: valid })
+  }
+  times.sort(function(a, b) { return a.ms - b.ms })
+  return times
+}
+
+function mercatorTile(latitude, longitude, zoom) {
+  var n = Math.pow(2, zoom)
+  var lat = Math.max(-85, Math.min(85, Number(latitude))) * Math.PI / 180
+  var fx = (Number(longitude) + 180) / 360 * n
+  var fy = (1 - Math.log(Math.tan(lat) + 1 / Math.cos(lat)) / Math.PI) / 2 * n
+  var x = Math.floor(fx)
+  var y = Math.floor(fy)
+  return { z: zoom, x: x, y: y, px: Math.min(255, Math.floor((fx - x) * 256)), py: Math.min(255, Math.floor((fy - y) * 256)) }
+}
+
+function mercatorTileBounds(x, y, zoom) {
+  var n = Math.pow(2, zoom)
+  function latitudeOf(row) { return Math.atan(Math.sinh(Math.PI * (1 - 2 * row / n))) * 180 / Math.PI }
+  return { west: x / n * 360 - 180, east: (x + 1) / n * 360 - 180, north: latitudeOf(y), south: latitudeOf(y + 1) }
+}
+
+function jmaTileUrl(time, zoom, x, y) {
+  return JMA_TILE_BASE + time.basetime + "/none/" + time.validtime + "/surf/hrpns/" + zoom + "/" + x + "/" + y + ".png"
+}
+
+// Tiles of one even zoom level that cover the map extent; the zoom is the
+// finest (up to 8) at which a handful of tiles do.
+function jmaTilesFor(west, east, south, north, latitude) {
+  var widthKm = Math.abs(east - west) * 111.32 * Math.max(0.2, Math.cos(Number(latitude) * Math.PI / 180))
+  var zoom = 8
+  while (zoom > 4 && widthKm > 3 * 40075 * Math.max(0.2, Math.cos(Number(latitude) * Math.PI / 180)) / Math.pow(2, zoom)) zoom -= 2
+  var northWest = mercatorTile(north, west, zoom)
+  var southEast = mercatorTile(south, east, zoom)
+  var tiles = []
+  for (var ty = northWest.y; ty <= southEast.y && tiles.length < 36; ++ty)
+    for (var tx = northWest.x; tx <= southEast.x && tiles.length < 36; ++tx) {
+      var bounds = mercatorTileBounds(tx, ty, zoom)
+      tiles.push({ z: zoom, x: tx, y: ty, west: bounds.west, east: bounds.east, north: bounds.north, south: bounds.south })
+    }
+  return tiles
+}
+
+// Raw DEFLATE (RFC 1951) from `start` in a byte array; returns the bytes.
+function inflateBytes(data, start) {
+  var position = start || 0
+  var bitBuffer = 0
+  var bitCount = 0
+  var out = []
+  function bits(count) {
+    while (bitCount < count) {
+      if (position >= data.length) throw new Error("inflate: out of data")
+      bitBuffer |= data[position++] << bitCount
+      bitCount += 8
+    }
+    var value = bitBuffer & ((1 << count) - 1)
+    bitBuffer >>>= count
+    bitCount -= count
+    return value
+  }
+  function huffman(lengths, count) {
+    var counts = []
+    var offsets = []
+    var symbols = []
+    for (var l = 0; l < 16; ++l) counts.push(0)
+    for (var s = 0; s < count; ++s) counts[lengths[s]]++
+    counts[0] = 0
+    offsets.push(0, 0)
+    for (var o = 1; o < 15; ++o) offsets.push(offsets[o] + counts[o])
+    for (var t = 0; t < count; ++t) if (lengths[t]) symbols[offsets[lengths[t]]++] = t
+    return { counts: counts, symbols: symbols }
+  }
+  function decode(table) {
+    var code = 0
+    var first = 0
+    var index = 0
+    for (var length = 1; length < 16; ++length) {
+      code |= bits(1)
+      var count = table.counts[length]
+      if (code - count < first) return table.symbols[index + (code - first)]
+      index += count
+      first = (first + count) << 1
+      code <<= 1
+    }
+    throw new Error("inflate: bad code")
+  }
+  var lengthBase = [3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 19, 23, 27, 31, 35, 43, 51, 59, 67, 83, 99, 115, 131, 163, 195, 227, 258]
+  var lengthExtra = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0]
+  var distanceBase = [1, 2, 3, 4, 5, 7, 9, 13, 17, 25, 33, 49, 65, 97, 129, 193, 257, 385, 513, 769, 1025, 1537,
+    2049, 3073, 4097, 6145, 8193, 12289, 16385, 24577]
+  var distanceExtra = [0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13]
+  var order = [16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15]
+  var fixedLength = null
+  var fixedDistance = null
+  var last = 0
+  while (!last) {
+    last = bits(1)
+    var type = bits(2)
+    if (type === 0) {
+      bitBuffer = 0
+      bitCount = 0
+      if (position + 4 > data.length) throw new Error("inflate: short stored block")
+      var storedLength = data[position] | (data[position + 1] << 8)
+      position += 4
+      for (var b = 0; b < storedLength; ++b) out.push(data[position++])
+      continue
+    }
+    var lengthTable
+    var distanceTable
+    if (type === 1) {
+      if (!fixedLength) {
+        var fixed = []
+        for (var f = 0; f < 288; ++f) fixed.push(f < 144 ? 8 : (f < 256 ? 9 : (f < 280 ? 7 : 8)))
+        fixedLength = huffman(fixed, 288)
+        var fixedDist = []
+        for (var g = 0; g < 30; ++g) fixedDist.push(5)
+        fixedDistance = huffman(fixedDist, 30)
+      }
+      lengthTable = fixedLength
+      distanceTable = fixedDistance
+    } else if (type === 2) {
+      var literalCount = bits(5) + 257
+      var distanceCount = bits(5) + 1
+      var codeCount = bits(4) + 4
+      var codeLengths = []
+      for (var c = 0; c < 19; ++c) codeLengths.push(0)
+      for (var k = 0; k < codeCount; ++k) codeLengths[order[k]] = bits(3)
+      var codeTable = huffman(codeLengths, 19)
+      var lengths = []
+      while (lengths.length < literalCount + distanceCount) {
+        var symbol = decode(codeTable)
+        if (symbol < 16) lengths.push(symbol)
+        else {
+          var repeat = 0
+          var value = 0
+          if (symbol === 16) {
+            if (!lengths.length) throw new Error("inflate: bad repeat")
+            value = lengths[lengths.length - 1]
+            repeat = 3 + bits(2)
+          } else if (symbol === 17) repeat = 3 + bits(3)
+          else repeat = 11 + bits(7)
+          for (var r = 0; r < repeat; ++r) lengths.push(value)
+        }
+      }
+      lengthTable = huffman(lengths.slice(0, literalCount), literalCount)
+      distanceTable = huffman(lengths.slice(literalCount), distanceCount)
+    } else {
+      throw new Error("inflate: bad block type")
+    }
+    while (true) {
+      var next = decode(lengthTable)
+      if (next < 256) out.push(next)
+      else if (next === 256) break
+      else {
+        next -= 257
+        if (next >= 29) throw new Error("inflate: bad length")
+        var copyLength = lengthBase[next] + bits(lengthExtra[next])
+        var distanceSymbol = decode(distanceTable)
+        var distance = distanceBase[distanceSymbol] + bits(distanceExtra[distanceSymbol])
+        if (distance > out.length) throw new Error("inflate: distance too far")
+        for (var d = 0; d < copyLength; ++d) out.push(out[out.length - distance])
+      }
+    }
+  }
+  return out
+}
+
+// Palette index (colour type 3) or grey/red value of one pixel of a PNG
+// given as a string of byte values; null when it cannot be read.
+function pngPixelIndex(binary, x, y) {
+  var text = String(binary || "")
+  var bytes = []
+  for (var i = 0; i < text.length; ++i) bytes.push(text.charCodeAt(i) & 0xff)
+  var signature = [137, 80, 78, 71, 13, 10, 26, 10]
+  for (var s = 0; s < 8; ++s) if (bytes[s] !== signature[s]) return null
+  var position = 8
+  var width = 0
+  var height = 0
+  var depth = 0
+  var colourType = 0
+  var compressed = []
+  while (position + 8 <= bytes.length) {
+    var length = ((bytes[position] << 24) | (bytes[position + 1] << 16) | (bytes[position + 2] << 8) | bytes[position + 3]) >>> 0
+    var type = String.fromCharCode(bytes[position + 4], bytes[position + 5], bytes[position + 6], bytes[position + 7])
+    var dataStart = position + 8
+    if (type === "IHDR") {
+      width = ((bytes[dataStart] << 24) | (bytes[dataStart + 1] << 16) | (bytes[dataStart + 2] << 8) | bytes[dataStart + 3]) >>> 0
+      height = ((bytes[dataStart + 4] << 24) | (bytes[dataStart + 5] << 16) | (bytes[dataStart + 6] << 8) | bytes[dataStart + 7]) >>> 0
+      depth = bytes[dataStart + 8]
+      colourType = bytes[dataStart + 9]
+      if (bytes[dataStart + 12] !== 0) return null
+    } else if (type === "IDAT") {
+      for (var b = 0; b < length; ++b) compressed.push(bytes[dataStart + b])
+    } else if (type === "IEND") {
+      break
+    }
+    position = dataStart + length + 4
+  }
+  var channels = colourType === 3 || colourType === 0 ? 1 : (colourType === 2 ? 3 : (colourType === 6 ? 4 : (colourType === 4 ? 2 : 0)))
+  if (!width || !height || !channels || x < 0 || y < 0 || x >= width || y >= height || compressed.length < 3) return null
+  var raw
+  try { raw = inflateBytes(compressed, 2) } catch (e) { return null }
+  var bitsPerPixel = depth * channels
+  var rowBytes = Math.ceil(width * bitsPerPixel / 8)
+  var step = Math.max(1, Math.floor(bitsPerPixel / 8))
+  var previous = []
+  for (var p = 0; p < rowBytes; ++p) previous.push(0)
+  var row = previous
+  for (var r = 0; r <= y; ++r) {
+    var offset = r * (rowBytes + 1)
+    if (offset + rowBytes >= raw.length + 1) return null
+    var filter = raw[offset]
+    row = []
+    for (var c = 0; c < rowBytes; ++c) {
+      var value = raw[offset + 1 + c]
+      var left = c >= step ? row[c - step] : 0
+      var up = previous[c]
+      var upLeft = c >= step ? previous[c - step] : 0
+      if (filter === 1) value += left
+      else if (filter === 2) value += up
+      else if (filter === 3) value += Math.floor((left + up) / 2)
+      else if (filter === 4) {
+        var estimate = left + up - upLeft
+        var distanceLeft = Math.abs(estimate - left)
+        var distanceUp = Math.abs(estimate - up)
+        var distanceUpLeft = Math.abs(estimate - upLeft)
+        value += distanceLeft <= distanceUp && distanceLeft <= distanceUpLeft ? left
+          : (distanceUp <= distanceUpLeft ? up : upLeft)
+      }
+      row.push(value & 0xff)
+    }
+    previous = row
+  }
+  var bitOffset = x * bitsPerPixel
+  var byte = row[Math.floor(bitOffset / 8)]
+  if (depth >= 8) return byte
+  var shift = 8 - depth - (bitOffset % 8)
+  return (byte >> shift) & ((1 << depth) - 1)
+}
+
+// Rain at the place from one JMA tile: mm/h, or null when unreadable.
+function jmaTileRainRate(binary, px, py) {
+  var index = pngPixelIndex(binary, px, py)
+  if (index === null || index === undefined) return null
+  return index < JMA_RAIN_RATES.length ? JMA_RAIN_RATES[index] : null
+}
+
+// ---- Wind in the unit of choice. Every source gives km/h; the general
+//      setting picks km/h, m/s, mph, knots or Beaufort ("auto" follows the
+//      unit system: mph for imperial, km/h otherwise).
+var BEAUFORT_LIMITS_KMH = [1, 6, 12, 20, 29, 39, 50, 62, 75, 89, 103, 118]
+
+function windUnitFor(setting, imperial) {
+  var unit = String(setting || "auto")
+  if (["kmh", "ms", "mph", "kn", "bft"].indexOf(unit) >= 0) return unit
+  return imperial ? "mph" : "kmh"
+}
+
+// { value (rounded number), unit (label) } or null without a speed.
+function windValue(kmh, unit) {
+  var speed = parseFloat(kmh)
+  if (kmh === "" || kmh === null || kmh === undefined || !isFinite(speed)) return null
+  speed = Math.max(0, speed)
+  if (unit === "ms") return { value: Math.round(speed / 3.6), unit: "m/s" }
+  if (unit === "mph") return { value: Math.round(speed * 0.621371), unit: "mph" }
+  if (unit === "kn") return { value: Math.round(speed / 1.852), unit: "kn" }
+  if (unit === "bft") {
+    var force = 0
+    while (force < BEAUFORT_LIMITS_KMH.length && speed >= BEAUFORT_LIMITS_KMH[force]) force++
+    return { value: force, unit: "Bft" }
+  }
+  return { value: Math.round(speed), unit: "km/h" }
+}
+
+// ---- Day length (NOAA approximation: solar declination by day of year,
+//      sunrise and sunset at −0.833° for refraction and the sun's disc).
+//      Minutes of daylight; 0 in polar night, 1440 in midnight sun.
+function dayLengthMinutes(date, latitude) {
+  var day = date instanceof Date ? date : new Date(date)
+  var lat = Number(latitude)
+  if (isNaN(day.getTime()) || !isFinite(lat)) return null
+  var start = Date.UTC(day.getUTCFullYear(), 0, 0)
+  var dayOfYear = Math.floor((Date.UTC(day.getUTCFullYear(), day.getUTCMonth(), day.getUTCDate()) - start) / 86400000)
+  var gamma = 2 * Math.PI / 365 * (dayOfYear - 1)
+  var declination = 0.006918 - 0.399912 * Math.cos(gamma) + 0.070257 * Math.sin(gamma)
+    - 0.006758 * Math.cos(2 * gamma) + 0.000907 * Math.sin(2 * gamma)
+    - 0.002697 * Math.cos(3 * gamma) + 0.00148 * Math.sin(3 * gamma)
+  var phi = lat * Math.PI / 180
+  var cosHour = (Math.sin(-0.833 * Math.PI / 180) - Math.sin(phi) * Math.sin(declination))
+    / (Math.cos(phi) * Math.cos(declination))
+  if (cosHour >= 1) return 0
+  if (cosHour <= -1) return 1440
+  return Math.round(2 * Math.acos(cosHour) * 180 / Math.PI * 4)
+}
+
+// "YYYY-MM-DD" → day length and its change against the day before, in
+// minutes, both by the same approximation so the change is consistent.
+function dayLengthFor(dateText, latitude) {
+  var match = String(dateText || "").match(/^(\d{4})-(\d{2})-(\d{2})/)
+  if (!match) return null
+  var noon = Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3]), 12)
+  var today = dayLengthMinutes(new Date(noon), latitude)
+  var before = dayLengthMinutes(new Date(noon - 86400000), latitude)
+  if (today === null || before === null) return null
+  return { minutes: today, change: today - before }
+}
+
+// ---- The next full or new moon, whichever comes first: the phase fraction
+//      crosses 0.5 (full) or wraps from 1 to 0 (new). Found hourly, then to
+//      the minute. { full, date }.
+function nextMoonEvent(now) {
+  var start = (now instanceof Date ? now : new Date(now || Date.now())).getTime()
+  var previous = moonPhaseFraction(new Date(start))
+  for (var hours = 1; hours <= 31 * 24; ++hours) {
+    var stamp = start + hours * 3600000
+    var fraction = moonPhaseFraction(new Date(stamp))
+    var full = previous < 0.5 && fraction >= 0.5
+    var fresh = fraction < previous
+    if (full || fresh) {
+      var low = stamp - 3600000
+      var high = stamp
+      for (var step = 0; step < 12; ++step) {
+        var middle = (low + high) / 2
+        var value = moonPhaseFraction(new Date(middle))
+        var crossed = full ? value >= 0.5 : value < previous && value < 0.5
+        if (crossed) high = middle
+        else low = middle
+      }
+      return { full: full, date: new Date(high) }
+    }
+    previous = fraction
+  }
+  return null
+}
+
+// ---- Today against yesterday: the temperature now and at the same hour
+//      yesterday, from Open-Meteo's hourly series with past_days=1 (times in
+//      the place's zone, utc_offset_seconds). °C difference, or null.
+function yesterdayTemperatureChange(report, currentCelsius, now) {
+  var hourly = report && report.hourly
+  if (!hourly || !Array.isArray(hourly.time) || !Array.isArray(hourly.temperature_2m)) return null
+  var offset = Number(report.utc_offset_seconds || 0) * 1000
+  var nowMs = (now instanceof Date ? now : new Date(now || Date.now())).getTime()
+  var best = -1
+  for (var i = 0; i < hourly.time.length; ++i) {
+    var match = String(hourly.time[i]).match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/)
+    if (!match) continue
+    var stamp = Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3]),
+      Number(match[4]), Number(match[5])) - offset
+    if (stamp <= nowMs) best = i
+  }
+  if (best < 24) return null
+  var then = parseFloat(hourly.temperature_2m[best - 24])
+  var current = parseFloat(currentCelsius)
+  if (!isFinite(then) || !isFinite(current)) return null
+  return current - then
+}
+
+// Mean rate over a 15-minute slot, or null when the points cover less than
+// ten minutes of it.
+function regionalSlotIntensity(points, slotStart) {
+  if (!Array.isArray(points) || !points.length) return null
+  var slotEnd = slotStart + 15 * 60 * 1000
+  var covered = 0
+  var sum = 0
+  for (var i = 0; i < points.length; ++i) {
+    var overlap = Math.min(slotEnd, points[i].end) - Math.max(slotStart, points[i].start)
+    if (overlap <= 0) continue
+    covered += overlap
+    sum += points[i].rate * overlap
+  }
+  return covered >= 10 * 60 * 1000 ? sum / covered : null
+}
+
+function rainNowcastSeries(mosmixReport, report, now, limit, radarReport, radarWet, regionalPoints) {
   var data = report && report.minutely_15 ? report.minutely_15 : null
   if (!data || !data.time) return []
   var weather = mosmixReport && mosmixReport.weather ? mosmixReport.weather : []
@@ -1252,7 +1804,10 @@ function rainNowcastSeries(mosmixReport, report, now, limit, radarReport, radarW
     if (isNaN(stamp) || stamp + 15 * 60 * 1000 < start) continue
     var probability = mosmixAt(stamp, "precipitation_probability", true)
     var precipitation = mosmixAt(stamp, "precipitation", false)
-    var radarIntensity = radarSlotIntensity(stamp)
+    // A national radar nowcast (MET Norway, GeoSphere) is fetched only where
+    // it is the better source; the DWD radar amount covers the rest.
+    var radarIntensity = regionalSlotIntensity(regionalPoints, stamp)
+    if (radarIntensity === null) radarIntensity = radarSlotIntensity(stamp)
     // null when the source has no probability (MET Norway's 15-minute data),
     // so the chart can leave the line out instead of drawing 0 %.
     var rawProbability = data.precipitation_probability ? parseFloat(data.precipitation_probability[i]) : NaN
@@ -1303,6 +1858,113 @@ function upcomingRainStart(series, now) {
     date: new Date(begins),
     minutes: Math.max(0, Math.round((begins - nowMs) / 60000)),
     peak: peak
+  }
+}
+
+// Highs and lows worth a label on a temperature line, after linecast (MIT):
+// a point higher (lower) than everything within `window` points either side
+// (the last of equal ones, labelled at their middle),
+// and at least `minGap` points after the last label of its kind.
+function temperatureExtrema(values, window, minGap) {
+  // Through a Repeater's modelData the list arrives as a Qt list, not an Array.
+  var list = values && values.length !== undefined ? Array.prototype.slice.call(values) : []
+  var out = []
+  var lastMax = -minGap * 2
+  var lastMin = -minGap * 2
+  for (var i = 0; i < list.length; i++) {
+    var value = Number(list[i])
+    if (list[i] === "" || list[i] === null || !isFinite(value)) continue
+    var isMax = true
+    var isMin = true
+    for (var j = Math.max(0, i - window); j <= Math.min(list.length - 1, i + window); j++) {
+      if (j === i || list[j] === "" || list[j] === null || !isFinite(Number(list[j]))) continue
+      var other = Number(list[j])
+      // Whole degrees make flat tops: the last point of one counts.
+      if (j < i ? other > value : other >= value) isMax = false
+      if (j < i ? other < value : other <= value) isMin = false
+      if (!isMax && !isMin) break
+    }
+    // The label goes to the middle of a flat top or bottom.
+    var first = i
+    while (first > 0 && Number(list[first - 1]) === value) first--
+    var at = Math.floor((first + i) / 2)
+    if (isMax && i - lastMax >= minGap) {
+      out.push({ index: at, kind: "max", value: value })
+      lastMax = i
+    } else if (isMin && i - lastMin >= minGap) {
+      out.push({ index: at, kind: "min", value: value })
+      lastMin = i
+    }
+  }
+  return out
+}
+
+// A value of an hourly series for the moment `nowMs`, interpolated between
+// the hours around it (hours stand for their start). Answers null when the
+// series has no hour within 90 minutes before now, so a series that has run
+// out is not stretched.
+function hourlyValueAt(hourly, nowMs, key) {
+  var list = hourly && hourly.length !== undefined ? hourly : []
+  var before = null
+  var after = null
+  for (var i = 0; i < list.length; ++i) {
+    var at = new Date(list[i].time).getTime()
+    var value = parseFloat(list[i][key])
+    if (isNaN(at) || !isFinite(value)) continue
+    if (at <= nowMs && (!before || at > before.at)) before = { at: at, value: value, row: list[i] }
+    if (at > nowMs && (!after || at < after.at)) after = { at: at, value: value, row: list[i] }
+  }
+  if (!before || nowMs - before.at > 90 * 60 * 1000) return null
+  if (!after || after.at - before.at > 3 * 60 * 60 * 1000) return { value: before.value, row: before.row }
+  var f = (nowMs - before.at) / (after.at - before.at)
+  return { value: before.value + (after.value - before.value) * f, row: before.row }
+}
+
+// Level on the rain legend's scale: light up to 0.5 mm/h, moderate up to 4,
+// heavy above.
+function rainLevel(rate) {
+  var value = Number(rate) || 0
+  return value > 4 ? 2 : (value > 0.5 ? 1 : 0)
+}
+
+// Rain notification: the first slot within `leadMinutes` whose rate reaches
+// `threshold` (mm/h) and is likely, as upcomingRainStart. Rain already at
+// that strength now is nothing to announce; light rain now and a downpour
+// ahead, with a threshold above light, is.
+function rainAlertStart(series, now, threshold, leadMinutes) {
+  var rows = Array.isArray(series) ? series : []
+  var nowMs = (now instanceof Date ? now : new Date(now || Date.now())).getTime()
+  var limit = Math.max(0.1, Number(threshold) || 0.1)
+  var horizon = nowMs + Math.max(15, Number(leadMinutes) || 30) * 60000
+  var start = -1
+  for (var i = 0; i < rows.length; ++i) {
+    var stamp = new Date(rows[i].time).getTime()
+    if (isNaN(stamp) || stamp > horizon) break
+    var amount = Number(rows[i].precipitation)
+    var probability = rows[i].probability
+    var likely = rows[i].precipitationSource === "radar"
+      || probability === "" || probability === null || probability === undefined
+      || !isFinite(Number(probability)) || Number(probability) >= 50
+    if (!(isFinite(amount) && amount >= limit && likely)) continue
+    // The slot under way already holds it: it is raining that hard now.
+    if (stamp <= nowMs) return null
+    start = i
+    break
+  }
+  if (start < 0) return null
+  var peak = 0
+  for (var j = start; j < rows.length; ++j) {
+    var at = new Date(rows[j].time).getTime()
+    if (!isNaN(at) && at > horizon) break
+    peak = Math.max(peak, Number(rows[j].precipitation) || 0)
+  }
+  var begins = new Date(rows[start].time).getTime()
+  return {
+    time: rows[start].time,
+    date: new Date(begins),
+    minutes: Math.max(0, Math.round((begins - nowMs) / 60000)),
+    peak: peak,
+    level: rainLevel(peak)
   }
 }
 
@@ -1684,6 +2346,390 @@ function ecccAlertReport(raw, latitude, longitude, language) {
   return { alerts: alerts, _providerId: "eccc" }
 }
 
+// ---- CAP 1.2 (MetService New Zealand). One alert document; its info block
+//      in English, its areas checked against the place when they carry
+//      polygons or circles. Returns an array of alerts (usually one).
+function capPolygonContains(text, latitude, longitude) {
+  var ring = []
+  var pairs = String(text || "").trim().split(/\s+/)
+  for (var i = 0; i < pairs.length; ++i) {
+    var parts = pairs[i].split(",")
+    var lat = Number(parts[0])
+    var lon = Number(parts[1])
+    if (isFinite(lat) && isFinite(lon)) ring.push([lon, lat])
+  }
+  return ring.length >= 3 && pointInRing(latitude, longitude, ring)
+}
+
+function capCircleContains(text, latitude, longitude) {
+  var match = String(text || "").trim().match(/^(-?[\d.]+),(-?[\d.]+)\s+([\d.]+)$/)
+  if (!match) return false
+  var dLat = (latitude - Number(match[1])) * 111.2
+  var dLon = (longitude - Number(match[2])) * 111.2 * Math.cos(latitude * Math.PI / 180)
+  return Math.sqrt(dLat * dLat + dLon * dLon) <= Number(match[3])
+}
+
+// Some services write every CAP element with a namespace prefix (cap:info);
+// the parsers here read plain names.
+function withoutXmlPrefixes(xml) {
+  return String(xml || "").replace(/<(\/?)[A-Za-z][\w.-]*:(?=[A-Za-z])/g, "<$1")
+}
+
+// CAP categories that belong in a weather app: weather, environment (floods,
+// air), fire. Earthquakes, health, security and the like are left out.
+var CAP_WEATHER_CATEGORIES = ["met", "env", "fire"]
+
+function capAlerts(raw, latitude, longitude, providerId, web) {
+  var xml = withoutXmlPrefixes(raw)
+  if (xml.indexOf("<alert") < 0) return null
+  var status = String(xmlElement(xml, "status") || "Actual").toLowerCase()
+  var messageType = String(xmlElement(xml, "msgType") || "Alert").toLowerCase()
+  var infos = xml.match(/<info>[\s\S]*?<\/info>/gi) || []
+  var info = infos[0] || ""
+  for (var i = 0; i < infos.length; ++i) {
+    if (/^en/i.test(xmlElement(infos[i], "language"))) { info = infos[i]; break }
+  }
+  if (!info) return []
+  var lat = Number(latitude)
+  var lon = Number(longitude)
+  var areas = info.match(/<area>[\s\S]*?<\/area>/gi) || []
+  var located = !areas.length || !isFinite(lat) || !isFinite(lon)
+  var areaNames = []
+  for (var a = 0; a < areas.length; ++a) {
+    var polygons = areas[a].match(/<polygon>[\s\S]*?<\/polygon>/gi) || []
+    var circles = areas[a].match(/<circle>[\s\S]*?<\/circle>/gi) || []
+    var inside = !polygons.length && !circles.length
+    for (var p = 0; p < polygons.length && !inside; ++p)
+      inside = capPolygonContains(decodeXml(polygons[p]), lat, lon)
+    for (var c = 0; c < circles.length && !inside; ++c)
+      inside = capCircleContains(decodeXml(circles[c]), lat, lon)
+    if (inside) {
+      located = true
+      var name = xmlElement(areas[a], "areaDesc")
+      if (name && areaNames.indexOf(name) < 0) areaNames.push(name)
+    }
+  }
+  if (!located) return []
+  // MetService adds its colour code as a parameter; it is the clearer scale.
+  var colour = ""
+  var parameters = info.match(/<parameter>[\s\S]*?<\/parameter>/gi) || []
+  for (var q = 0; q < parameters.length; ++q)
+    if (/colou?r/i.test(xmlElement(parameters[q], "valueName"))) colour = xmlElement(parameters[q], "value").toLowerCase()
+  var colourSeverity = { yellow: "moderate", orange: "severe", red: "extreme" }
+  var event = xmlElement(info, "event") || "Weather warning"
+  var headline = xmlElement(info, "headline") || event
+  var description = xmlElement(info, "description")
+  if (areaNames.length) description = areaNames.join(", ") + (description ? "\n" + description : "")
+  var instruction = xmlElement(info, "instruction")
+  var categories = (info.match(/<category>[\s\S]*?<\/category>/gi) || []).map(function(tag) {
+    return decodeXml(tag).toLowerCase()
+  })
+  var weatherRelated = !categories.length || categories.some(function(category) {
+    return CAP_WEATHER_CATEGORIES.indexOf(category) >= 0
+  })
+  // Identifiers this message updates or cancels ("sender,identifier,sent").
+  var references = String(xmlElement(xml, "references") || "").trim().split(/\s+/).filter(Boolean)
+    .map(function(entry) { return entry.split(",")[1] || entry })
+  return [{
+    alert_id: xmlElement(xml, "identifier") || headline,
+    status: messageType === "cancel" ? "cancelled" : status,
+    category: weatherRelated ? "met" : "other",
+    _references: references,
+    severity: colourSeverity[colour] || String(xmlElement(info, "severity") || "minor").toLowerCase(),
+    event_en: event,
+    event_de: event,
+    headline_en: headline,
+    headline_de: headline,
+    description_en: description,
+    description_de: description,
+    instruction_en: instruction,
+    instruction_de: instruction,
+    onset: xmlElement(info, "onset") || xmlElement(info, "effective") || xmlElement(xml, "sent"),
+    expires: xmlElement(info, "expires"),
+    web: xmlElement(info, "web") || web || ""
+  }]
+}
+
+// A CAP feed (RSS or Atom) lists one CAP document per alert: its link and,
+// where given, when it was published (epoch ms, NaN when unknown).
+function capFeedEntries(raw) {
+  var xml = withoutXmlPrefixes(raw)
+  if (xml.indexOf("<rss") < 0 && xml.indexOf("<feed") < 0) return null
+  var entries = []
+  var seen = {}
+  var items = xml.match(/<(item|entry)(?:\s[^>]*)?>[\s\S]*?<\/\1>/gi) || []
+  for (var i = 0; i < items.length; ++i) {
+    var link = xmlElement(items[i], "link")
+    if (!link) {
+      var href = items[i].match(/<link[^>]*href="([^"]+)"/i)
+      link = href ? decodeXml(href[1]) : ""
+    }
+    // Some authorities serve their documents over plain HTTP only.
+    if (!/^https?:\/\//.test(link) || seen[link]) continue
+    seen[link] = true
+    var published = new Date(xmlElement(items[i], "pubDate") || xmlElement(items[i], "updated")
+      || xmlElement(items[i], "published")).getTime()
+    entries.push({ link: link, published: published })
+  }
+  return entries
+}
+
+// Drops alerts that a later message in the same set updates or cancels.
+function withoutSupersededAlerts(alerts) {
+  var list = Array.isArray(alerts) ? alerts : []
+  var superseded = {}
+  for (var i = 0; i < list.length; ++i) {
+    var references = list[i]._references || []
+    for (var r = 0; r < references.length; ++r) superseded[references[r]] = true
+  }
+  return list.filter(function(alert) { return !superseded[alert.alert_id] })
+}
+
+// ---- Alert Hub (Alert-Hub.Org CIC): the register of the official CAP feeds
+//      of WMO-registered alerting authorities. The authorities' own feeds are
+//      used; the hub's mirror (cap-sources) lags years behind for many. The
+//      country's official feeds, weather services first.
+function alertHubFeeds(raw, countryCode) {
+  var parsed
+  try { parsed = typeof raw === "string" ? JSON.parse(raw) : raw } catch (e) { return null }
+  if (!parsed || !Array.isArray(parsed.sources)) return null
+  var code = String(countryCode || "").toLowerCase()
+  var feeds = []
+  for (var i = 0; i < parsed.sources.length; ++i) {
+    var source = parsed.sources[i] && parsed.sources[i].source
+    if (!source || String(source.authorityCountry || "").toLowerCase() !== code) continue
+    if (source.sourceIsOfficial === false || source.capAlertFeedStatus !== "operating" || !source.capAlertFeed) continue
+    var name = source.byLanguage && source.byLanguage[0] ? String(source.byLanguage[0].name || "") : ""
+    var weatherService = /meteo|met\b|weather|hydromet|climat|senamhi|inamhi|ideam|inmet|smn|nms|dmn/i
+      .test(String(source.sourceId || "") + " " + name)
+    feeds.push({ url: String(source.capAlertFeed), language: String(source.sourceId || "").split("-")[2] || "",
+      weather: weatherService, name: name })
+  }
+  // One feed per authority: English where offered, else the first language.
+  var byAuthority = {}
+  for (var f = 0; f < feeds.length; ++f) {
+    var key = feeds[f].url.replace(/-[a-z]{2,3}\/rss\.xml$/, "")
+    if (!byAuthority[key] || feeds[f].language === "en") byAuthority[key] = feeds[f]
+  }
+  var chosen = []
+  for (var k in byAuthority) chosen.push(byAuthority[k])
+  chosen.sort(function(a, b) { return (b.weather ? 1 : 0) - (a.weather ? 1 : 0) })
+  return chosen.slice(0, 4)
+}
+
+// ---- INMET (Brazil): all active warnings with their polygons in one JSON
+//      (apiprevmet3.inmet.gov.br/avisos/ativos), today's and upcoming.
+function inmetAlertReport(raw, latitude, longitude) {
+  var parsed
+  try { parsed = typeof raw === "string" ? JSON.parse(raw) : raw } catch (e) { return null }
+  if (!parsed || (!Array.isArray(parsed.hoje) && !Array.isArray(parsed.futuro))) return null
+  var rows = (parsed.hoje || []).concat(parsed.futuro || [])
+  var lat = Number(latitude)
+  var lon = Number(longitude)
+  var severities = { "perigo potencial": "moderate", "perigo": "severe", "grande perigo": "extreme" }
+  // Times are Brasília time without an offset.
+  function brasilia(text) {
+    var match = String(text || "").match(/^(\d{4}-\d{2}-\d{2})[ T](\d{2}:\d{2})/)
+    return match ? match[1] + "T" + match[2] + ":00-03:00" : ""
+  }
+  function listText(text) {
+    return String(text || "").replace(/^\[|\]$/g, "").split(/',\s*'/).map(function(part) {
+      return part.replace(/^['"\s]+|['"\s]+$/g, "")
+    }).filter(Boolean).join("\n")
+  }
+  var alerts = []
+  var seen = {}
+  for (var i = 0; i < rows.length; ++i) {
+    var row = rows[i] || {}
+    if (String(row.encerrado) === "True") continue
+    var geometry = null
+    try { geometry = typeof row.poligono === "string" ? JSON.parse(row.poligono) : row.poligono } catch (e) { geometry = null }
+    if (isFinite(lat) && isFinite(lon) && (!geometry || !geometryContainsPoint(geometry, lat, lon))) continue
+    var id = String(row.codigo || row.id || i)
+    if (seen[id]) continue
+    seen[id] = true
+    var event = String(row.descricao || "Aviso")
+    var headline = "Aviso de " + event + " · " + String(row.severidade || "")
+    alerts.push({
+      alert_id: id,
+      status: "actual",
+      category: "met",
+      severity: severities[String(row.severidade || "").toLowerCase()] || "minor",
+      event_en: event,
+      event_de: event,
+      headline_en: headline,
+      headline_de: headline,
+      description_en: listText(row.riscos),
+      description_de: listText(row.riscos),
+      instruction_en: listText(row.instrucoes),
+      instruction_de: listText(row.instrucoes),
+      onset: brasilia(row.inicio),
+      expires: brasilia(row.fim),
+      web: "https://alertas2.inmet.gov.br/"
+    })
+  }
+  return { alerts: alerts, _providerId: "inmet" }
+}
+
+// ---- Bureau of Meteorology: one RSS feed of current warnings per state.
+//      Titles only ("29/16:05 EST Severe Weather Warning for …"); marine
+//      and coastal-water warnings are left out for a place on land.
+function bomAlertReport(raw) {
+  var xml = String(raw || "")
+  if (xml.indexOf("<rss") < 0) return null
+  var items = xml.match(/<item>[\s\S]*?<\/item>/gi) || []
+  var alerts = []
+  for (var i = 0; i < items.length; ++i) {
+    var title = xmlElement(items[i], "title").replace(/^\d{1,2}\/\d{1,2}:\d{2}\s+[A-Z]{3,4}\s+/, "")
+    if (!title || /marine|coastal waters|ocean wind|surf|tsunami (no threat|cancellation)/i.test(title)) continue
+    var lower = title.toLowerCase()
+    var severity = /emergency|tropical cyclone warning|extreme/.test(lower) ? "extreme"
+      : (/severe|warning/.test(lower) && !/watch|advice/.test(lower) ? "severe"
+        : (/watch|advice|minor/.test(lower) ? "moderate" : "minor"))
+    var event = title.replace(/\s+for\s+.*$/i, "")
+    alerts.push({
+      alert_id: xmlElement(items[i], "guid") || title,
+      status: /cancel/i.test(title) ? "cancelled" : "actual",
+      category: "met",
+      severity: severity,
+      event_en: event,
+      event_de: event,
+      headline_en: title,
+      headline_de: title,
+      description_en: "",
+      description_de: "",
+      instruction_en: "",
+      instruction_de: "",
+      onset: xmlElement(items[i], "pubDate") ? new Date(xmlElement(items[i], "pubDate")).toISOString() : "",
+      expires: "",
+      web: xmlElement(items[i], "link").replace(/^http:/, "https:")
+    })
+  }
+  return { alerts: alerts, _providerId: "bom" }
+}
+
+// ---- Japan Meteorological Agency (bosai JSON, warning system of 2026).
+//      Warnings are issued per municipality (class20 area). The place is
+//      matched through JMA's own area outlines; see WeatherAlertLookup.qml.
+// Municipalities whose bounding box holds the place, from class20relm.json.
+function jmaAreaCandidates(raw, latitude, longitude) {
+  var parsed
+  try { parsed = typeof raw === "string" ? JSON.parse(raw) : raw } catch (e) { return [] }
+  var lat = Number(latitude)
+  var lon = Number(longitude)
+  var codes = []
+  if (!parsed || !isFinite(lat) || !isFinite(lon)) return codes
+  for (var code in parsed) {
+    var box = parsed[code]
+    if (!box || !box.ne || !box.sw) continue
+    if (lat <= box.ne[0] && lat >= box.sw[0] && lon <= box.ne[1] && lon >= box.sw[1]) codes.push(code)
+  }
+  return codes
+}
+
+function jmaAreaContains(raw, latitude, longitude) {
+  var parsed
+  try { parsed = typeof raw === "string" ? JSON.parse(raw) : raw } catch (e) { return false }
+  var features = parsed && Array.isArray(parsed.features) ? parsed.features : (parsed && parsed.geometry ? [parsed] : [])
+  for (var i = 0; i < features.length; ++i)
+    if (features[i] && features[i].geometry && geometryContainsPoint(features[i].geometry, Number(latitude), Number(longitude)))
+      return true
+  return false
+}
+
+// The forecast office (prefecture level) a municipality belongs to, via the
+// class15 and class10 levels of area.json.
+function jmaOfficeCode(raw, areaCode) {
+  var parsed
+  try { parsed = typeof raw === "string" ? JSON.parse(raw) : raw } catch (e) { return "" }
+  if (!parsed || !parsed.class20s || !parsed.class20s[areaCode]) return ""
+  var class15 = parsed.class20s[areaCode].parent
+  var class10 = parsed.class15s && parsed.class15s[class15] ? parsed.class15s[class15].parent : ""
+  return parsed.class10s && parsed.class10s[class10] ? String(parsed.class10s[class10].parent || "") : ""
+}
+
+// Code → [kind, level], as JMA's own warning page lists them (2026 system).
+var JMA_KINDS = {
+  "02": ["wind_snow", 30], "03": ["rain", 30], "05": ["wind", 30], "06": ["snow", 30], "07": ["wave", 30],
+  "08": ["tide", 30], "09": ["landslide", 30], "10": ["rain", 20], "12": ["snow", 20], "13": ["wind_snow", 20],
+  "14": ["thunder", 20], "15": ["wind", 20], "16": ["wave", 20], "17": ["snow_melting", 20], "19": ["tide", 20],
+  "20": ["flood", 20], "21": ["flood", 20], "22": ["flood", 20], "23": ["cold", 20], "24": ["frost", 20],
+  "25": ["ice_accretion", 20], "26": ["snow_accretion", 20], "29": ["landslide", 20], "30": ["flood", 30],
+  "31": ["flood", 30], "32": ["wind_snow", 50], "33": ["rain", 50], "35": ["wind", 50], "36": ["snow", 50],
+  "37": ["wave", 50], "38": ["tide", 50], "39": ["landslide", 50], "40": ["flood", 40], "41": ["flood", 40],
+  "43": ["rain", 40], "48": ["tide", 40], "49": ["landslide", 40], "51": ["flood", 50], "53": ["flood", 50]
+}
+var JMA_NAMES = {
+  rain: ["Heavy rain", "Starkregen"], landslide: ["Landslide", "Erdrutsch"], flood: ["Flood", "Hochwasser"],
+  wind: ["Storm", "Sturm"], wind_snow: ["Snowstorm", "Schneesturm"], snow: ["Heavy snow", "Starker Schneefall"],
+  wave: ["High waves", "Hoher Seegang"], tide: ["Storm surge", "Sturmflut"], thunder: ["Thunderstorm", "Gewitter"],
+  snow_melting: ["Snowmelt", "Schneeschmelze"], cold: ["Low temperature", "Kälte"], frost: ["Frost", "Frost"],
+  ice_accretion: ["Icing", "Vereisung"], snow_accretion: ["Snow accretion", "Schneelast"]
+}
+var JMA_LEVELS = {
+  20: ["advisory", "Hinweis", "minor"], 30: ["warning", "Warnung", "moderate"],
+  40: ["danger warning", "Gefahrenwarnung", "severe"], 50: ["emergency warning", "Unwetterwarnung", "extreme"]
+}
+
+// Current warnings for one municipality from an office's warning file: per
+// kind the latest report counts, issued (発表) or continued (継続).
+function jmaAlertReport(raw, areaCode) {
+  var parsed
+  try { parsed = typeof raw === "string" ? JSON.parse(raw) : raw } catch (e) { return null }
+  var reports = Array.isArray(parsed) ? parsed : (parsed ? [parsed] : [])
+  if (!reports.length) return null
+  var latest = {}
+  for (var r = 0; r < reports.length; ++r) {
+    var report = reports[r] || {}
+    var stamp = new Date(report.reportDatetime).getTime()
+    var items = report.warning && Array.isArray(report.warning.class20Items) ? report.warning.class20Items : []
+    for (var i = 0; i < items.length; ++i) {
+      if (String(items[i].areaCode) !== String(areaCode)) continue
+      var kinds = items[i].kinds || []
+      for (var k = 0; k < kinds.length; ++k) {
+        var code = kinds[k].code
+        if (!code) continue
+        if (!latest[code] || stamp >= latest[code].stamp)
+          latest[code] = { stamp: stamp, status: String(kinds[k].status || ""), time: String(report.reportDatetime || "") }
+      }
+    }
+  }
+  var alerts = []
+  for (var kind in latest) {
+    var entry = latest[kind]
+    if (entry.status !== "発表" && entry.status !== "継続") continue
+    var info = JMA_KINDS[kind] || ["", 20]
+    // Below warning level a gale (強風) and wind with snow (風雪) are the
+    // milder forms of storm and snowstorm.
+    var names = info[0] === "wind" && info[1] === 20 ? ["Gale", "Starkwind"]
+      : (info[0] === "wind_snow" && info[1] === 20 ? ["Wind and snow", "Wind und Schnee"]
+        : (JMA_NAMES[info[0]] || ["Weather", "Wetter"]))
+    var level = JMA_LEVELS[info[1]] || JMA_LEVELS[20]
+    var english = names[0] + " " + level[0]
+    var german = level[1] + " " + names[1]
+    alerts.push({
+      alert_id: "jma-" + areaCode + "-" + kind,
+      status: "actual",
+      category: "met",
+      severity: level[2],
+      event_en: english,
+      event_de: german,
+      headline_en: english,
+      headline_de: german,
+      description_en: "",
+      description_de: "",
+      instruction_en: "",
+      instruction_de: "",
+      onset: entry.time,
+      expires: "",
+      web: "https://www.jma.go.jp/bosai/warning/#area_type=class20s&area_code=" + areaCode + "&lang=en",
+      _level: info[1]
+    })
+  }
+  alerts.sort(function(a, b) { return b._level - a._level })
+  return { alerts: alerts, _providerId: "jma" }
+}
+
 // ---- Place lookup. Name, region and country for the forecast place, from
 //      IP geolocation (auto-detect), Nominatim reverse geocoding (stored
 //      coordinates) or a name search (name-only locations). The result keeps
@@ -1798,14 +2844,22 @@ function wmsRadarTimeline(raw, providerId, now, hours) {
   var dimension = xml.match(/<Dimension[^>]*name=["']time["'][^>]*>([^<]+)<\/Dimension>/i)
   if (!dimension) return []
   var specification = decodeXml(dimension[1])
+  var currentTime = (now instanceof Date ? now : new Date(now || Date.now())).getTime()
+  if (isNaN(currentTime)) currentTime = Date.now()
+  var firstAllowed = currentTime - Math.max(1, parseFloat(hours) || 2) * 60 * 60 * 1000 - 10 * 60 * 1000
+  var lastAllowed = currentTime + 10 * 60 * 1000
   var stamps = []
   if (specification.indexOf("/") >= 0) {
     var parts = specification.split("/")
     var start = new Date(parts[0]).getTime()
     var end = new Date(parts[1]).getTime()
     var step = isoDurationMilliseconds(parts[2])
-    if (!isNaN(start) && !isNaN(end) && step > 0)
-      for (var stamp = start; stamp <= end && stamps.length < 500; stamp += step) stamps.push(stamp)
+    // Long ranges (FMI lists a week in 5-minute steps) start at the first
+    // step inside the window instead of at the range's beginning.
+    if (!isNaN(start) && !isNaN(end) && step > 0) {
+      var first = start + Math.max(0, Math.ceil((firstAllowed - start) / step)) * step
+      for (var stamp = first; stamp <= end && stamps.length < 500; stamp += step) stamps.push(stamp)
+    }
   } else {
     var values = specification.split(",")
     for (var i = 0; i < values.length; ++i) {
@@ -1813,10 +2867,6 @@ function wmsRadarTimeline(raw, providerId, now, hours) {
       if (!isNaN(parsed)) stamps.push(parsed)
     }
   }
-  var currentTime = (now instanceof Date ? now : new Date(now || Date.now())).getTime()
-  if (isNaN(currentTime)) currentTime = Date.now()
-  var firstAllowed = currentTime - Math.max(1, parseFloat(hours) || 2) * 60 * 60 * 1000 - 10 * 60 * 1000
-  var lastAllowed = currentTime + 10 * 60 * 1000
   var result = []
   for (var s = 0; s < stamps.length; ++s) {
     if (stamps[s] < firstAllowed || stamps[s] > lastAllowed) continue
@@ -2062,6 +3112,20 @@ function moonPhaseIndex(date) {
   return Math.round(moonPhaseFraction(date) * 28) % 28
 }
 
+// Lit share of the disc in percent, from the phase angle: 0 at new moon,
+// 50 at the quarters, 100 at full moon.
+function moonIlluminationPercent(date) {
+  return Math.round((1 - Math.cos(2 * Math.PI * moonPhaseFraction(date))) / 2 * 100)
+}
+
+// The Moon one sees on a forecast day's evening: phase at 22:00 local time
+// of that calendar day ("YYYY-MM-DD"). Null for a date that does not parse.
+function moonEveningDate(dateText) {
+  var match = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(dateText || ""))
+  if (!match) return null
+  return new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]), 22, 0, 0)
+}
+
 // Nerd Font moon set (moon_new … moon_waning_crescent_6): the lit part is the
 // filled shape, which reads correctly on a dark panel; the new moon is an
 // empty outline. The "moon-alt" set fills the shadow instead and would show
@@ -2296,9 +3360,9 @@ function driftTimeLabel(minutes) {
 
 // The drift arrow in view pixels, ending at the view centre. Its tail is
 // where the rain was `minutes` earlier than it reaches the place, at the true
-// map scale: the longest 15-minute step up to two hours that still fits,
-// with a middle mark when half of it is a 15-minute step too. Returns null
-// without a drift; `minutes` is 0 when not even 15 minutes fit (no labels).
+// map scale: the longest round step that still fits (see below), with a
+// middle mark when half of it is a multiple of 5 minutes. Returns null
+// without a drift; `minutes` is 0 when not even 5 minutes fit (no labels).
 function driftArrow(drift, pixelsPerKm, viewWidth, viewHeight, marginX, marginY) {
   if (!drift) return null
   var speed = Math.max(0, Number(drift.speedKmh) || 0)
@@ -2310,15 +3374,23 @@ function driftArrow(drift, pixelsPerKm, viewWidth, viewHeight, marginX, marginY)
   if (Math.abs(dy) > 0.001) reach = Math.min(reach, (viewHeight / 2 - marginY) / Math.abs(dy))
   reach = Math.max(0, reach)
   var perMinute = speed / 60 * pixelsPerKm
+  // The longest round time up to two hours that fits, down to 5 minutes
+  // when zoomed in on fast rain; zoomed out on slow rain, 3 or 4 hours when
+  // two would leave the arrow too short for a label.
+  var steps = [120, 90, 60, 45, 30, 20, 15, 10, 5]
   var minutes = 0
-  for (var step = 120; step >= 15; step -= 15) {
-    if (perMinute * step <= reach) { minutes = step; break }
+  for (var s = 0; s < steps.length; ++s) {
+    if (perMinute * steps[s] <= reach) { minutes = steps[s]; break }
+  }
+  if (minutes === 120 && perMinute * 120 < 36) {
+    if (perMinute * 240 <= reach) minutes = 240
+    else if (perMinute * 180 <= reach) minutes = 180
   }
   var length = minutes ? perMinute * minutes : reach
   var marks = []
   if (minutes) {
     marks.push({ minutes: minutes, fraction: 1 })
-    if (minutes % 30 === 0) marks.push({ minutes: minutes / 2, fraction: 0.5 })
+    if (minutes >= 20 && (minutes / 2) % 5 === 0) marks.push({ minutes: minutes / 2, fraction: 0.5 })
   }
   return { dx: dx, dy: dy, length: length, minutes: minutes, marks: marks }
 }
@@ -2481,6 +3553,35 @@ if (typeof module !== "undefined") {
     geocodingSearchPlace: geocodingSearchPlace,
     meteoAlarmApiAlertReport: meteoAlarmApiAlertReport,
     ecccAlertReport: ecccAlertReport,
+    capAlerts: capAlerts,
+    capFeedEntries: capFeedEntries,
+    withoutSupersededAlerts: withoutSupersededAlerts,
+    alertHubFeeds: alertHubFeeds,
+    inmetAlertReport: inmetAlertReport,
+    bomAlertReport: bomAlertReport,
+    jmaAreaCandidates: jmaAreaCandidates,
+    jmaAreaContains: jmaAreaContains,
+    jmaOfficeCode: jmaOfficeCode,
+    jmaAlertReport: jmaAlertReport,
+    mergedModelForecast: mergedModelForecast,
+    metNowcastPoints: metNowcastPoints,
+    geosphereNowcastPoints: geosphereNowcastPoints,
+    buienradarNowcastPoints: buienradarNowcastPoints,
+    windUnitFor: windUnitFor,
+    windValue: windValue,
+    dayLengthMinutes: dayLengthMinutes,
+    dayLengthFor: dayLengthFor,
+    nextMoonEvent: nextMoonEvent,
+    yesterdayTemperatureChange: yesterdayTemperatureChange,
+    jmaTimeMs: jmaTimeMs,
+    jmaTargetTimes: jmaTargetTimes,
+    mercatorTile: mercatorTile,
+    mercatorTileBounds: mercatorTileBounds,
+    jmaTileUrl: jmaTileUrl,
+    jmaTilesFor: jmaTilesFor,
+    inflateBytes: inflateBytes,
+    pngPixelIndex: pngPixelIndex,
+    jmaTileRainRate: jmaTileRainRate,
     geometryContainsPoint: geometryContainsPoint,
     wmsRadarTimeline: wmsRadarTimeline,
     closestRadarFrameIndex: closestRadarFrameIndex,
@@ -2497,6 +3598,8 @@ if (typeof module !== "undefined") {
     moonPhaseFraction: moonPhaseFraction,
     moonPhaseIndex: moonPhaseIndex,
     moonPhaseGlyph: moonPhaseGlyph,
+    moonIlluminationPercent: moonIlluminationPercent,
+    moonEveningDate: moonEveningDate,
     neutralWeatherGlyph: neutralWeatherGlyph,
     nightCompositeSymbol: nightCompositeSymbol,
     isMoonPhaseGlyph: isMoonPhaseGlyph,

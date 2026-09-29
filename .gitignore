@@ -3,3 +3,4 @@
 *.orig
 *~
 node_modules/
+tools/.cache/

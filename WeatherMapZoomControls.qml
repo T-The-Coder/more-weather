@@ -68,6 +68,38 @@ BorderSurface {
       }
     }
 
+    // Back to the place, while the map is moved away from it.
+    BorderSurface {
+      visible: panel.mapPanned
+      width: Style.space(22)
+      height: Style.space(20)
+      radius: Style.cornerRadius
+      color: Style.controlFill(false, recentreMouse.containsMouse, Color.popups.text, Color.accent)
+      borderSpec: Border.controlSpec(recentreMouse.containsMouse ? "hover-cursor" : "normal", Color.popups.text, Color.accent)
+
+      Text {
+        anchors.centerIn: parent
+        text: "󰆤"
+        color: recentreMouse.containsMouse
+          ? Style.hoverStateColor(Color.popups.text, Color.accent)
+          : Color.popups.text
+        font.family: panel.fontFamily
+        font.pixelSize: Style.font.caption
+      }
+
+      MouseArea {
+        id: recentreMouse
+        anchors.fill: parent
+        hoverEnabled: true
+        cursorShape: Qt.PointingHandCursor
+        onClicked: {
+          panel.mapViewAboutToMove()
+          panel.mapPanLatitude = 0
+          panel.mapPanLongitude = 0
+        }
+      }
+    }
+
     Rectangle {
       anchors.verticalCenter: parent.verticalCenter
       width: Style.spacing.hairline

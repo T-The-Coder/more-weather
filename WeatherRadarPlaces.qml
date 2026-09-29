@@ -23,8 +23,8 @@ Item {
   function ensureRadarPlaces() {
     if (radarPlacesProc.running) return
     if (!panel.hasConfiguredCoordinates && !panel.areaInfo) return
-    var latitude = Number(panel.mapCenterLatitude)
-    var longitude = Number(panel.mapCenterLongitude)
+    var latitude = Number(panel.mapViewLatitude)
+    var longitude = Number(panel.mapViewLongitude)
     if (!isFinite(latitude) || !isFinite(longitude)) return
     var requestRadiusKm = panel.mapRadiusKm * 1.18
     // "Nearby" labels do not need to cover a very wide zoom level. Keeping
@@ -88,7 +88,7 @@ Item {
       panel.radarPlacesLoading = false
       if (exitCode !== 0 || !panel.radarPlacesResponseAccepted)
         console.warn("weather: all OSM place providers failed; retaining last good labels")
-      var moved = Model.geographicDistanceKm(panel.mapCenterLatitude, panel.mapCenterLongitude,
+      var moved = Model.geographicDistanceKm(panel.mapViewLatitude, panel.mapViewLongitude,
         panel.radarPlacesRequestLatitude, panel.radarPlacesRequestLongitude)
       var requestedExtentChanged = moved + panel.mapRadiusKm * 1.18 > panel.radarPlacesRequestRadiusKm
         || panel.interfaceLanguage !== panel.radarPlacesRequestLanguage

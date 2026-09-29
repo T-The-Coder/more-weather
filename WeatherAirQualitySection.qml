@@ -6,6 +6,10 @@ import qs.Commons
 Column {
   id: airSection
   required property var panel
+  // As a tab the strip above already separates it from the section before.
+  property bool inTab: false
+  // The topmost section shown draws no line above it.
+  property bool leading: false
   readonly property var summary: panel.airQualitySummary
   readonly property bool showIndex: panel.displaySetting("airQualityIndex", true)
   readonly property bool showPollen: panel.displaySetting("airQualityPollen", true)
@@ -36,6 +40,7 @@ Column {
   }
 
   Rectangle {
+    visible: !airSection.inTab && !airSection.leading
     width: parent.width
     height: Style.spacing.hairline
     color: panel.foreground
@@ -75,9 +80,10 @@ Column {
         visible: !!airSection.summary && airSection.summary.index !== null
         spacing: Style.space(6)
 
-        // Softened category colour; can be switched off in the settings.
+        // Softened category colour, one of the colour accents (Settings →
+        // General).
         Rectangle {
-          visible: panel.displaySetting("airQualityColor", true)
+          visible: panel.colorAccents
           anchors.verticalCenter: parent.verticalCenter
           width: Style.space(7)
           height: width

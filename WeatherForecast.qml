@@ -3,52 +3,67 @@ import qs.Commons
 import "Model.js" as Model
 import "Providers.js" as Providers
 
-// Rain / radar / wind tabs. Each view is created only while its tab is
-// visible in an open panel; the fixed slot height keeps the layout still
-// when a view is swapped in.
+// One of the rain / radar / wind sections, in the window or as a tab. The
+// view is created only while the section is shown in an open panel; the
+// fixed slot height keeps the layout still when a view is swapped in.
 Column {
   id: forecastSection
   required property var panel
-  visible: panel.showForecastSection
-    && (panel.rainNowcast.length > 0 || panel.radarFrames.length > 0
-      || panel.windMapData.length > 0 || panel.windGridLoading || panel.windGridFailed)
+  property string kind: "rain"
+  // As a tab the strip above already separates it from the section before.
+  property bool inTab: false
+  // The topmost section shown draws no line above it.
+  property bool leading: false
+  readonly property bool isRain: kind === "rain"
+  readonly property bool isRadar: kind === "radar"
+  visible: isRain ? panel.showRainSection : (isRadar ? panel.showRadarSection : panel.showWindSection)
   width: parent ? parent.width : 0
   spacing: Style.space(10)
+
+  Rectangle {
+    visible: !forecastSection.inTab && !forecastSection.leading
+    width: parent.width
+    height: Style.spacing.hairline
+    color: panel.foreground
+    opacity: 0.12
+  }
 
   Row {
     width: parent.width
 
     Text {
-      text: panel.precipitationTab === 1
+      id: forecastTitle
+      text: forecastSection.isRadar
         ? (panel.radarUsesModelFallback
           ? panel.i18n("precipitationModelCurrent")
           : (panel.radarActiveProviderId === "dwd"
             ? panel.i18n("rainForecastTwoHours")
             : panel.i18n("rainRadarPastTwoHours")))
-        : panel.i18n("rainForecastTwoHours")
+        : (forecastSection.isRain ? panel.i18n("rainForecastTwoHours")
+          : panel.upperLabel(panel.i18n("wind")))
       color: panel.mutedText
       font.family: panel.fontFamily
       font.pixelSize: Style.font.bodySmall
       font.letterSpacing: 1
     }
 
-    Item { width: parent.width - parent.children[0].implicitWidth - nowcastSource.implicitWidth; height: 1 }
+    Item { width: parent.width - forecastTitle.implicitWidth - nowcastSource.implicitWidth; height: 1 }
 
     Text {
       id: nowcastSource
-      readonly property string sourceLink: panel.precipitationTab === 1
-        ? Providers.radarLink(panel.radarActiveProviderId)
-        : Providers.forecastLink(panel.precipitationTab === 2
-            ? panel.windActiveProviderId : panel.displayForecastProviderId)
-      text: panel.precipitationTab === 0
+      readonly property string sourceLink: forecastSection.isRadar
+        ? Providers.radarLink(panel.radarDisplayProviderId)
+        : Providers.forecastLink(forecastSection.isRain
+            ? panel.displayForecastProviderId : panel.windActiveProviderId)
+      text: forecastSection.isRain
         ? panel.rainNowcastSourceLabel
-        : (panel.precipitationTab === 1
-          ? panel.i18n(Providers.radarLabelKey(panel.radarActiveProviderId))
+        : (forecastSection.isRadar
+          ? panel.i18n(Providers.radarLabelKey(panel.radarDisplayProviderId))
           : panel.i18n(Providers.forecastLabelKey(panel.windActiveProviderId)))
       color: panel.subtleText
       font.family: panel.fontFamily
       font.pixelSize: Style.font.caption
-      font.italic: panel.precipitationTab === 0
+      font.italic: forecastSection.isRain
         && Model.weatherSeriesUsesCache(panel.rainNowcast)
 
       MouseArea {
@@ -61,51 +76,11 @@ Column {
     }
   }
 
-  Row {
-    id: precipitationTabs
-    anchors.horizontalCenter: parent.horizontalCenter
-    spacing: Style.space(5)
-
-    Repeater {
-      model: [panel.i18n("rain").toUpperCase(), panel.i18n("radar").toUpperCase(), panel.i18n("wind").toUpperCase()]
-
-      Rectangle {
-        required property string modelData
-        required property int index
-        width: Style.space(82)
-        height: Style.space(28)
-        radius: Style.cornerRadius
-        color: index === panel.precipitationTab
-          ? Style.hoverFillFor(panel.foreground, Color.accent)
-          : (tabMouse.containsMouse ? Style.hoverFillFor(panel.foreground, Color.accent) : "transparent")
-
-        Text {
-          anchors.centerIn: parent
-          text: modelData
-          color: index === panel.precipitationTab
-            ? Style.hoverStateColor(panel.foreground, Color.accent)
-            : panel.mutedText
-          font.family: panel.fontFamily
-          font.pixelSize: Style.font.caption
-          font.bold: index === panel.precipitationTab
-        }
-
-        MouseArea {
-          id: tabMouse
-          anchors.fill: parent
-          hoverEnabled: true
-          cursorShape: Qt.PointingHandCursor
-          onClicked: panel.precipitationTab = index
-        }
-      }
-    }
-  }
-
   Loader {
     width: parent.width
     height: Style.space(230)
     visible: active
-    active: forecastSection.panel.precipitationTab === 0
+    active: forecastSection.isRain
     sourceComponent: Component { WeatherRainChart { panel: forecastSection.panel } }
   }
 
@@ -113,16 +88,25 @@ Column {
     width: parent.width
     height: forecastSection.panel.mapViewHeight(width)
     visible: active
-    active: forecastSection.panel.opened && forecastSection.panel.precipitationTab === 1
+    active: forecastSection.isRadar && forecastSection.panel.radarShown
     onActiveChanged: if (!active) forecastSection.panel.resetRadarDisplay()
     sourceComponent: Component { WeatherRadarMap { panel: forecastSection.panel } }
+  }
+
+  // Play, scrub and the frame's time, under the map (after Weather Radar).
+  Loader {
+    width: parent.width
+    height: Style.space(34)
+    visible: active
+    active: forecastSection.isRadar && forecastSection.panel.radarShown
+    sourceComponent: Component { WeatherRadarTimeline { panel: forecastSection.panel } }
   }
 
   Loader {
     width: parent.width
     height: forecastSection.panel.mapViewHeight(width)
     visible: active
-    active: forecastSection.panel.opened && forecastSection.panel.precipitationTab === 2
+    active: forecastSection.kind === "wind" && forecastSection.panel.windShown
     sourceComponent: Component { WeatherWindMap { panel: forecastSection.panel } }
   }
 }

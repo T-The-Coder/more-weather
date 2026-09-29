@@ -18,6 +18,9 @@ Column {
         { keys: ["Ctrl ,"], action: "shortcutSettings" },
         { keys: ["r", "F5"], action: "shortcutRefresh" },
         { keys: ["o"], action: "shortcutOpenApp" },
+        { keys: ["w"], action: "shortcutServiceLink" },
+        { keys: ["Alt 1–9"], action: "shortcutFavoriteJump" },
+        { keys: ["Alt ← →"], action: "shortcutFavoriteStep" },
         { keys: ["/", "Enter"], action: "shortcutSearch" }
       ]
     },
@@ -27,17 +30,22 @@ Column {
         { keys: ["↑ ↓", "j k"], action: "shortcutScroll" },
         { keys: ["PgUp", "PgDn"], action: "shortcutPage" },
         { keys: ["Home", "End"], action: "shortcutJump" },
-        { keys: ["← →", "h l"], action: "shortcutScrollDaily" }
+        { keys: ["← →", "h l"], action: "shortcutScrollDaily" },
+        { keys: ["⇧ ← →"], action: "shortcutHourCursor" },
+        { keys: ["⌫", "Esc"], action: "shortcutHourCursorReset" }
       ]
     },
     {
       title: "shortcutsGroupForecast",
       rows: [
-        { keys: ["1", "2", "3"], action: "shortcutViews" },
+        { keys: ["1–9"], action: "shortcutViews" },
         { keys: ["← →", "h l"], action: "shortcutRadarStep" },
         { keys: ["Space"], action: "shortcutRadarPlay" },
         { keys: ["+", "−"], action: "shortcutZoom" },
-        { keys: ["0"], action: "shortcutZoomReset" }
+        { keys: ["0"], action: "shortcutZoomReset" },
+        { keys: ["mouseDrag"], translateKeys: true, action: "shortcutMapPan" },
+        { keys: ["ctrlWheel"], translateKeys: true, action: "shortcutMapWheel" },
+        { keys: ["shiftWheel"], translateKeys: true, action: "shortcutSidewaysWheel" }
       ]
     },
     {
@@ -53,7 +61,13 @@ Column {
     {
       title: "shortcutsGroupSettings",
       rows: [
-        { keys: ["← →"], action: "shortcutSettingsPages" },
+        { keys: ["Tab", "⇧ Tab"], action: "shortcutSettingsPages" },
+        { keys: ["1", "2", "3"], action: "shortcutSettingsSurface" },
+        { keys: ["↑ ↓", "j k"], action: "shortcutSettingsMove" },
+        { keys: ["← →", "h l"], action: "shortcutSettingsChange" },
+        { keys: ["Space", "Enter"], action: "shortcutSettingsToggle" },
+        { keys: ["⇧ ↑ ↓", "J K"], action: "shortcutSettingsReorder" },
+        { keys: ["PgUp", "PgDn"], action: "shortcutPage" },
         { keys: ["Esc"], action: "shortcutSettingsClose" }
       ]
     },

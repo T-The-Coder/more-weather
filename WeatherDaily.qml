@@ -1,16 +1,22 @@
 import QtQuick
 import qs.Commons
+import "Model.js" as Model
 
 // Seven-day strip on the shared forecast column grid, scrollable sideways.
 Column {
   id: dailySection
   required property var panel
+  // As a tab the strip above already separates it from the section before.
+  property bool inTab: false
+  // The topmost section shown draws no line above it.
+  property bool leading: false
   readonly property alias scroller: forecastScroller
   visible: panel.showDailySection && panel.forecastDays.length > 0
   width: parent ? parent.width : 0
   spacing: Style.space(14)
 
   Rectangle {
+    visible: !dailySection.inTab && !dailySection.leading
     width: parent.width
     height: Style.spacing.hairline
     color: panel.foreground
@@ -42,13 +48,27 @@ Column {
       anchors.right: parent.right
       anchors.top: dailyTitle.bottom
       anchors.topMargin: Style.space(8)
-      height: forecastRow.height
+      height: forecastRow.height + (weekChart.shown ? Style.space(10) + weekChart.height : 0)
       contentWidth: forecastRow.width
       contentHeight: height
       clip: true
       boundsBehavior: Flickable.StopAtBounds
       flickableDirection: Flickable.HorizontalFlick
       interactive: contentWidth > width
+
+      // The page's wheel router (Panel.routeWheel) hands this strip only
+      // sideways scrolling: a touchpad swipe, a tilting wheel, or Shift with
+      // the wheel. Up and down always scroll the page.
+      readonly property bool wheelEnabled: interactive
+      function wantsWheel(wheel) {
+        return panel.wheelIsSideways(wheel)
+      }
+      function takeWheel(wheel) {
+        var maximum = Math.max(0, contentWidth - width)
+        contentX = Math.max(0, Math.min(maximum, contentX - panel.wheelSidewaysPixels(wheel)))
+      }
+      Component.onCompleted: panel.registerWheelArea(forecastScroller)
+      Component.onDestruction: panel.unregisterWheelArea(forecastScroller)
 
       // Same column grid as Hourly: six columns fill the viewport, the
       // seventh day is a scroll away.
@@ -79,7 +99,11 @@ Column {
                 sourceComponent: modelData === "dailyIcon" ? dayIconEntry
                   : (modelData === "dailyTemperature" ? dayTemperatureEntry
                     : (modelData === "dailySunEvents" ? daySunEventsEntry
-                      : (modelData === "dailySunNext" ? daySunNextEntry : dayTextEntry)))
+                      : (modelData === "dailySunNext" ? daySunNextEntry
+                        : (modelData === "dailyMoon" ? dayMoonEntry
+                          : (modelData === "dailyTemperatureBar" ? dayTemperatureBarEntry
+                          : (modelData === "dailyDayLength" ? dayLengthEntry
+                            : (modelData === "dailyDayLengthChange" ? dayLengthChangeEntry : dayTextEntry)))))))
               }
             }
 
@@ -107,7 +131,14 @@ Column {
                   if (entryKey === "dailyWind") return "󰖝 " + panel.forecastWind(day)
                   return ""
                 }
-                color: panel.mutedText
+                // Colour accents: rain chance, UV and strong wind.
+                color: {
+                  var day = dayColumn.modelData
+                  var accent = entryKey === "dailyRainProbability" ? panel.rainProbabilityAccent(day.rainProbability)
+                    : (entryKey === "dailyUv" ? panel.uvAccent(day.uvIndex)
+                      : (entryKey === "dailyWind" ? panel.windAccent(day.windSpeedKmph) : ""))
+                  return accent || panel.mutedText
+                }
                 font.family: panel.fontFamily
                 font.pixelSize: Style.font.caption
                 font.letterSpacing: entryKey === "dailyDayName" ? 1 : 0
@@ -146,23 +177,26 @@ Column {
                 visible: entryVisible
                 spacing: Style.space(6)
 
+                // Low left, high right, like the week bar below: cool to warm
+                // reads left to right on both.
+                Text {
+                  text: panel.bareTempForDay(dayColumn.modelData, "min")
+                  color: panel.absoluteTemperatureAccent(dayColumn.modelData.mintempC) || panel.mutedText
+                  font.family: panel.fontFamily
+                  font.pixelSize: Style.font.body
+                  font.italic: panel.cachedField(dayColumn.modelData,
+                    panel.useImperial ? "mintempF" : "mintempC")
+                }
                 Text {
                   text: panel.bareTempForDay(dayColumn.modelData, "max")
-                  color: panel.foreground
+                  // Warm or cool on the one scale used everywhere (colour accents).
+                  color: panel.absoluteTemperatureAccent(dayColumn.modelData.maxtempC) || panel.foreground
                   font.family: panel.fontFamily
                   font.pixelSize: Style.font.body
                   // Bold like the hourly temperature; the minimum stays muted.
                   font.bold: true
                   font.italic: panel.cachedField(dayColumn.modelData,
                     panel.useImperial ? "maxtempF" : "maxtempC")
-                }
-                Text {
-                  text: panel.bareTempForDay(dayColumn.modelData, "min")
-                  color: panel.mutedText
-                  font.family: panel.fontFamily
-                  font.pixelSize: Style.font.body
-                  font.italic: panel.cachedField(dayColumn.modelData,
-                    panel.useImperial ? "mintempF" : "mintempC")
                 }
               }
             }
@@ -198,6 +232,117 @@ Column {
                   font.pixelSize: Style.font.caption
                   font.italic: panel.cachedField(dayColumn.modelData,
                     parent.event && parent.event.rising ? "sunrise" : "sunset")
+                }
+              }
+            }
+
+            // The day's range as a bar on the week's scale, cool to warm
+            // with colour accents, in the text colour without.
+            Component {
+              id: dayTemperatureBarEntry
+
+              Item {
+                id: temperatureBar
+                readonly property var day: dayColumn.modelData
+                readonly property real low: panel.weekTemperatureRange.low
+                readonly property real high: panel.weekTemperatureRange.high
+                readonly property real minimum: parseFloat(day.mintempC)
+                readonly property real maximum: parseFloat(day.maxtempC)
+                property bool entryVisible: panel.displaySetting("dailyTemperatureBar", true)
+                  && isFinite(minimum) && isFinite(maximum) && high > low
+                visible: entryVisible
+                width: dayColumn.width * 0.8
+                height: Style.space(10)
+
+                Rectangle {
+                  anchors.verticalCenter: parent.verticalCenter
+                  width: parent.width
+                  height: Style.space(4)
+                  radius: height / 2
+                  color: panel.foreground
+                  opacity: 0.1
+                }
+
+                Rectangle {
+                  readonly property real from: (parent.minimum - parent.low) / (parent.high - parent.low)
+                  readonly property real to: (parent.maximum - parent.low) / (parent.high - parent.low)
+                  anchors.verticalCenter: parent.verticalCenter
+                  x: parent.width * from
+                  width: Math.max(height, parent.width * (to - from))
+                  height: Style.space(4)
+                  radius: height / 2
+                  gradient: Gradient {
+                    orientation: Gradient.Horizontal
+                    GradientStop {
+                      position: 0
+                      color: panel.absoluteTemperatureAccent(temperatureBar.minimum) || panel.mutedText
+                    }
+                    GradientStop {
+                      position: 1
+                      color: panel.absoluteTemperatureAccent(temperatureBar.maximum) || panel.mutedText
+                    }
+                  }
+                }
+              }
+            }
+
+            // Day length, and separately its change against the day before.
+            Component {
+              id: dayLengthEntry
+
+              Text {
+                property bool entryVisible: panel.displaySetting("dailyDayLength", true) && text !== ""
+                visible: entryVisible
+                text: panel.dayLengthText(dayColumn.modelData)
+                color: panel.mutedText
+                font.family: panel.fontFamily
+                font.pixelSize: Style.font.caption
+              }
+            }
+
+            Component {
+              id: dayLengthChangeEntry
+
+              Text {
+                property bool entryVisible: panel.displaySetting("dailyDayLengthChange", true) && text !== ""
+                visible: entryVisible
+                text: panel.dayLengthChangeText(dayColumn.modelData)
+                color: panel.mutedText
+                font.family: panel.fontFamily
+                font.pixelSize: Style.font.caption
+              }
+            }
+
+            // Moon phase on the day's evening: glyph (mirrored south of the
+            // equator) and lit share.
+            Component {
+              id: dayMoonEntry
+
+              Row {
+                property bool entryVisible: panel.displaySetting("dailyMoon", true)
+                  && dayMoonGlyph.text !== ""
+                visible: entryVisible
+                spacing: Style.space(2)
+
+                Text {
+                  id: dayMoonGlyph
+                  anchors.verticalCenter: parent.verticalCenter
+                  text: panel.dayMoonGlyph(dayColumn.modelData)
+                  color: panel.mutedText
+                  font.family: panel.fontFamily
+                  font.pixelSize: Style.font.caption
+                  transform: Scale {
+                    origin.x: dayMoonGlyph.width / 2
+                    xScale: panel.mirrorsGlyph(dayMoonGlyph.text) ? -1 : 1
+                  }
+                }
+
+                Text {
+                  anchors.verticalCenter: parent.verticalCenter
+                  text: panel.dayMoonText(dayColumn.modelData)
+                  color: panel.mutedText
+                  font.family: panel.fontFamily
+                  font.pixelSize: Style.font.caption
                 }
               }
             }
@@ -262,31 +407,71 @@ Column {
           }
         }
       }
-    }
 
-    // A mouse wheel scrolls this strip sideways; touchpads and dragging
-    // continue to use Flickable's native horizontal interaction.
-    MouseArea {
-      anchors.fill: forecastScroller
-      acceptedButtons: Qt.NoButton
-      onWheel: function(wheel) {
-        if (!forecastScroller.interactive) return
-        var delta = wheel.angleDelta.x !== 0 ? wheel.angleDelta.x : wheel.angleDelta.y
-        var maximum = Math.max(0, forecastScroller.contentWidth - forecastScroller.width)
-        forecastScroller.contentX = Math.max(0, Math.min(maximum, forecastScroller.contentX - delta))
-        wheel.accepted = true
+      // The temperature hour by hour through the week, after linecast's
+      // chart: each day under its column, a rule with the day's name in the
+      // gap at midnight, daylight as a band, the day's high and low written
+      // at their hours, the past of today dimmed. It scrolls with the days.
+      WeatherTemperatureChart {
+        id: weekChart
+        readonly property var hours: panel.weekHours
+        readonly property bool shown: panel.displaySetting("dailyTemperatureCurve", true)
+          && hours.filter(function(hour) { return isFinite(hour.tempC) }).length > 2
+        visible: shown
+        y: forecastRow.height + Style.space(10)
+        width: forecastRow.width
+        panel: dailySection.panel
+        step: (panel.forecastColumnWidth(forecastScroller.width) + panel.forecastColumnGap) / 24
+        xOffset: -panel.forecastColumnGap / 2
+        nowIndex: panel.weekHoursNowIndex
+        // One label per high and per low of a day.
+        extremaWindow: 8
+        extremaGap: 12
+        lines: [{
+          values: hours.map(function(hour) { return hour.tempC }),
+          texts: hours.map(function(hour) {
+            var c = Math.round(hour.tempC)
+            return isFinite(c) ? Model.tempBare(c, Math.round(hour.tempC * 1.8 + 32), panel.tempScale) : ""
+          }),
+          plainColor: panel.foreground
+        }]
+        daylight: hours.map(function(hour) { return hour.isDay })
+        rules: {
+          var list = []
+          for (var i = 24; i < hours.length; i += 24)
+            list.push({ index: i, label: panel.dailyDayName(hours[i].time.slice(0, 10), true) })
+          return list
+        }
+        axis: {
+          var list = []
+          for (var i = 0; i < hours.length; ++i) {
+            var hour = i % 24
+            if (hour === 6 || hour === 12 || hour === 18) list.push({ index: i, label: String(hour) })
+          }
+          return list
+        }
+        rain: hours.map(function(hour) { return hour.rain })
+        timeTexts: hours.map(function(hour) {
+          return panel.dailyDayName(hour.time.slice(0, 10), true) + " " + hour.time.slice(11, 16)
+        })
       }
     }
 
-    Rectangle {
+    // Scroll indicator: a rounded accent thumb on a faint track, thicker
+    // than a hairline so it never reads as the separator below.
+    Item {
       visible: forecastScroller.interactive
       anchors.left: parent.left
       anchors.right: parent.right
       anchors.bottom: parent.bottom
-      height: Style.spacing.hairline
-      radius: height / 2
-      color: panel.foreground
-      opacity: 0.12
+      height: Style.space(3)
+
+      Rectangle {
+        anchors.fill: parent
+        radius: height / 2
+        color: panel.foreground
+        opacity: 0.06
+      }
 
       Rectangle {
         readonly property real maximum: Math.max(1, forecastScroller.contentWidth - forecastScroller.width)
@@ -295,6 +480,7 @@ Column {
         radius: height / 2
         x: (parent.width - width) * forecastScroller.contentX / maximum
         color: Color.accent
+        opacity: 0.7
       }
     }
   }

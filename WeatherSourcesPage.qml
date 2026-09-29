@@ -15,7 +15,7 @@ Column {
   readonly property string forecastInUse: panel.cacheFallbackActive ? "CACHE"
     : (panel.dailyForecastReport || panel.mosmixReport
       ? (panel.mosmixReport ? label("sourceMosmix") + " + " : "")
-        + label(Providers.forecastLabelKey(panel.displayForecastProviderId))
+        + label(panel.displayForecastLabelKey)
       : "")
 
   // Source of the radar drift arrow for the frame on screen (Model.rainDriftAt).
@@ -24,7 +24,7 @@ Column {
     if (!drift || (!panel.radarFrames.length && !panel.radarUsesModelFallback)) return ""
     if (drift.source === "radar") return "DWD RADAR"
     if (drift.source === "steering") return "OPEN-METEO · 700 HPA"
-    return label(Providers.forecastLabelKey(panel.displayForecastProviderId))
+    return label(panel.displayForecastLabelKey)
   }
 
   readonly property string placeInUse: {
@@ -40,7 +40,7 @@ Column {
       title: "sourceGroupForecast", details: "sourceGroupForecastDetails",
       inUse: forecastInUse,
       links: [["DWD / Bright Sky", "https://brightsky.dev/"], ["Open-Meteo", "https://open-meteo.com/"],
-        ["MET Norway", "https://api.met.no/"]]
+        ["MET Norway", "https://api.met.no/"], ["MeteoSwiss", "https://www.meteoswiss.admin.ch/"]]
     },
     {
       title: "sourceGroupUv", details: "sourceGroupUvDetails",
@@ -51,14 +51,17 @@ Column {
       title: "sourceGroupNowcast", details: "sourceGroupNowcastDetails",
       inUse: panel.rainNowcast.length > 0 ? panel.rainNowcastSourceLabel : "",
       links: [["DWD / Bright Sky", "https://brightsky.dev/"], ["Open-Meteo", "https://open-meteo.com/"],
-        ["MET Norway", "https://api.met.no/"]]
+        ["MET Norway", "https://api.met.no/"], ["GeoSphere Austria", "https://data.hub.geosphere.at/"],
+        ["Buienradar", "https://www.buienradar.nl/"], ["JMA", "https://www.jma.go.jp/bosai/nowc/"]]
     },
     {
       title: "sourceGroupRadar", details: "sourceGroupRadarDetails",
       inUse: panel.radarFrames.length > 0 || panel.radarUsesModelFallback
-        ? label(Providers.radarLabelKey(panel.radarActiveProviderId)) : "",
+        ? label(Providers.radarLabelKey(panel.radarDisplayProviderId)) : "",
       links: [["DWD", "https://www.dwd.de/"], ["NWS", "https://radar.weather.gov/"],
-        ["ECCC", "https://geo.weather.gc.ca/geomet/"], ["RainViewer", "https://www.rainviewer.com/"],
+        ["ECCC", "https://geo.weather.gc.ca/geomet/"], ["FMI", "https://en.ilmatieteenlaitos.fi/open-data"],
+        ["KNMI", "https://www.knmi.nl/"], ["JMA", "https://www.jma.go.jp/bosai/nowc/"],
+        ["RainViewer", "https://www.rainviewer.com/"],
         ["Open-Meteo", "https://open-meteo.com/"], ["MET Norway", "https://api.met.no/"]]
     },
     {
@@ -70,7 +73,7 @@ Column {
       title: "sourceGroupWind", details: "sourceGroupWindDetails",
       inUse: panel.windGrid.length > 0 ? label("sourceBestMatch")
         : (panel.windMapData.length > 0
-          ? label(Providers.forecastLabelKey(panel.displayForecastProviderId)) : ""),
+          ? label(panel.displayForecastLabelKey) : ""),
       links: [["Open-Meteo", "https://open-meteo.com/"]]
     },
     {
@@ -78,7 +81,11 @@ Column {
       inUse: panel.displayAlertProviderId !== ""
         ? label(Providers.alertLabelKey(panel.displayAlertProviderId)) : "",
       links: [["DWD", "https://www.dwd.de/"], ["MeteoAlarm", "https://meteoalarm.org/"],
-        ["NWS", "https://www.weather.gov/"], ["ECCC", "https://weather.gc.ca/"]]
+        ["NWS", "https://www.weather.gov/"], ["ECCC", "https://weather.gc.ca/"],
+        ["BOM", "https://www.bom.gov.au/"], ["MetService", "https://www.metservice.com/"],
+        ["JMA", "https://www.jma.go.jp/"], ["INMET", "https://alertas2.inmet.gov.br/"],
+        ["SMN", "https://www.smn.gob.ar/"], ["WMO Register of Alerting Authorities", "https://alertingauthority.wmo.int/"],
+        ["Alert Hub", "https://alert-hub.org/"]]
     },
     {
       title: "sourceGroupAirQuality", details: "sourceGroupAirQualityDetails",

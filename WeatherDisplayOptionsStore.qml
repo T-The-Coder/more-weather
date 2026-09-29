@@ -27,14 +27,43 @@ Item {
     catch (e) { parsed = ({}) }
     panel.generalOptions = {
       unitSystem: normalizedUnitSystem(parsed.unitSystem),
-      language: normalizedLanguage(parsed.language)
+      language: normalizedLanguage(parsed.language),
+      windUnit: normalizedWindUnit(parsed.windUnit),
+      refreshMinutes: normalizedRefreshMinutes(parsed.refreshMinutes),
+      radarMinutes: normalizedRadarMinutes(parsed.radarMinutes),
+      colorAccents: parsed.colorAccents !== false
     }
+  }
+
+  // Wind in its own unit (Model.windUnitFor); "auto" follows the unit system.
+  function normalizedWindUnit(value) {
+    var unit = String(value || "auto")
+    return ["auto", "kmh", "ms", "mph", "kn", "bft"].indexOf(unit) >= 0 ? unit : "auto"
+  }
+
+  // Minutes between forecast updates; 0 leaves it to the widget's
+  // shell.json entry (15 by default). MET Norway asks for at least ten.
+  readonly property var refreshChoices: [10, 15, 20, 30, 60]
+  function normalizedRefreshMinutes(value) {
+    var minutes = parseInt(value, 10)
+    return refreshChoices.indexOf(minutes) >= 0 ? minutes : 0
+  }
+
+  // Radar and rain nowcast; 0 takes every new measurement (about 5 min).
+  readonly property var radarChoices: [10, 15, 30]
+  function normalizedRadarMinutes(value) {
+    var minutes = parseInt(value, 10)
+    return radarChoices.indexOf(minutes) >= 0 ? minutes : 0
   }
 
   function setGeneralSetting(key, value) {
     var next = {
       unitSystem: normalizedUnitSystem(key === "unitSystem" ? value : panel.generalOptions.unitSystem),
-      language: normalizedLanguage(key === "language" ? value : panel.generalOptions.language)
+      language: normalizedLanguage(key === "language" ? value : panel.generalOptions.language),
+      windUnit: normalizedWindUnit(key === "windUnit" ? value : panel.generalOptions.windUnit),
+      refreshMinutes: normalizedRefreshMinutes(key === "refreshMinutes" ? value : panel.generalOptions.refreshMinutes),
+      radarMinutes: normalizedRadarMinutes(key === "radarMinutes" ? value : panel.generalOptions.radarMinutes),
+      colorAccents: (key === "colorAccents" ? value : panel.generalOptions.colorAccents) !== false
     }
     panel.generalOptions = next
     generalOptionsFile.setText(JSON.stringify(next) + "\n")
@@ -75,19 +104,43 @@ Item {
     var source = raw && typeof raw === "object" ? raw : ({})
     var result = ({})
     if (surface === "menubar") source = migratedMenubarOptions(source)
+    else source = migratedSectionOptions(source)
     for (var key in defaults) {
-      if (key === "defaultForecastTab") {
-        var tab = parseInt(source[key], 10)
-        result[key] = isNaN(tab) ? defaults[key] : Math.max(0, Math.min(2, tab))
+      if (key === "defaultTab") {
+        result[key] = normalizedSectionKey(source[key], defaults[key])
       } else if (key.indexOf("Order") > 0) {
         result[key] = panel.sanitizedOrder(source[key], key)
       } else if (key === "hoverUnitSystem") {
         result[key] = normalizedHoverUnitSystem(source[key])
+      } else if (choiceKeys[key]) {
+        result[key] = normalizedChoice(key, source[key], defaults[key])
       } else {
         result[key] = typeof source[key] === "boolean" ? source[key] : defaults[key]
       }
     }
     return result
+  }
+
+  function normalizedSectionKey(value, fallback) {
+    var key = String(value || "")
+    return panel.defaultSectionOrder().indexOf(key) >= 0 ? key : fallback
+  }
+
+  // Up to 2.4 rain, radar and wind were fixed tabs of one "forecast"
+  // section, with one switch and a numbered default tab.
+  function migratedSectionOptions(raw) {
+    var source = ({})
+    for (var key in raw) source[key] = raw[key]
+    if (typeof source.showForecast === "boolean") {
+      var names = ["showRain", "showRadar", "showWind"]
+      for (var i = 0; i < names.length; i++)
+        if (typeof source[names[i]] !== "boolean") source[names[i]] = source.showForecast
+    }
+    if (source.defaultTab === undefined && source.defaultForecastTab !== undefined) {
+      var index = parseInt(source.defaultForecastTab, 10)
+      source.defaultTab = ["rain", "radar", "wind"][isNaN(index) ? 0 : Math.max(0, Math.min(2, index))]
+    }
+    return source
   }
 
   // Older menu bar files, brought to the three-way switches without changing
@@ -124,6 +177,17 @@ Item {
     return source
   }
 
+  // Settings that take one of a few values, not a switch.
+  readonly property var choiceKeys: ({
+    rainAlertThreshold: ["any", "moderate", "heavy"],
+    rainAlertRadius: ["10", "25", "50", "100"],
+    mapStyle: ["drawn", "satellite"]
+  })
+  function normalizedChoice(key, value, fallback) {
+    var text = String(value === undefined || value === null ? "" : value)
+    return choiceKeys[key].indexOf(text) >= 0 ? text : fallback
+  }
+
   function normalizedHoverUnitSystem(value) {
     var unit = String(value || "").toLowerCase()
     return unit === "metric" || unit === "imperial" || unit === "kelvin" ? unit : ""
@@ -158,7 +222,7 @@ Item {
     }
     var activeSurface = panel.standaloneMode ? "app" : "widget"
     if (firstLoad && panel.opened && surface === activeSurface)
-      panel.precipitationTab = next.defaultForecastTab
+      panel.activeTab = next.defaultTab
   }
 
   // Resets the surface picked in settings to its factory defaults.
@@ -177,7 +241,7 @@ Item {
       menubarDisplayOptionsFile.setText(text)
     }
     var activeSurface = panel.standaloneMode ? "app" : "widget"
-    if (surface === activeSurface) panel.precipitationTab = next.defaultForecastTab
+    if (surface === activeSurface) panel.activeTab = next.defaultTab
   }
 
   // Puts the picked view's entries back into factory order, leaving every
@@ -191,6 +255,7 @@ Item {
     setSettingsDisplaySetting("sectionOrder", panel.defaultSectionOrder())
     setSettingsDisplaySetting("hourlyOrder", panel.defaultHourlyOrder())
     setSettingsDisplaySetting("dailyOrder", panel.defaultDailyOrder())
+    setSettingsDisplaySetting("favoritesOrder", panel.defaultFavoritesOrder())
   }
 
   function settingsDisplayIsDefault() {
@@ -208,8 +273,24 @@ Item {
     return true
   }
 
-  // Moves one entry up or down in its list and writes the new order.
+  // Moves one entry up or down in its list and writes the new order. The
+  // window and tab orders are views of the one section order: an entry
+  // swaps places there with its neighbour in the view.
   function moveSettingsDisplayEntry(orderKey, key, delta) {
+    if (orderKey === "sectionOrder" || orderKey === "tabOrder") {
+      var peers = panel.settingsOrderFor(orderKey)
+      var peerIndex = peers.indexOf(key)
+      var neighbour = peers[peerIndex + delta]
+      if (peerIndex < 0 || neighbour === undefined) return
+      var sections = panel.sanitizedOrder(panel.settingsDisplaySetting("sectionOrder", null), "sectionOrder")
+      var from = sections.indexOf(key)
+      var to = sections.indexOf(neighbour)
+      if (from < 0 || to < 0) return
+      sections[from] = neighbour
+      sections[to] = key
+      setSettingsDisplaySetting("sectionOrder", sections)
+      return
+    }
     var order = panel.sanitizedOrder(panel.settingsDisplaySetting(orderKey, null), orderKey)
     var index = order.indexOf(key)
     var target = index + delta
@@ -224,10 +305,11 @@ Item {
     var source = surface === "app" ? panel.appDisplayOptions
       : (surface === "widget" ? panel.widgetDisplayOptions : panel.menubarDisplayOptions)
     var next = sanitizedDisplayOptions(source, surface)
-    next[key] = (key === "defaultForecastTab"
-        ? Math.max(0, Math.min(2, Number(value) || 0))
+    next[key] = (key === "defaultTab"
+        ? normalizedSectionKey(value, "rain")
         : (key === "hoverUnitSystem" ? normalizedHoverUnitSystem(value)
-          : (key.indexOf("Order") > 0 ? panel.sanitizedOrder(value, key) : !!value)))
+          : (choiceKeys[key] ? normalizedChoice(key, value, next[key])
+            : (key.indexOf("Order") > 0 ? panel.sanitizedOrder(value, key) : !!value))))
     // A menu bar entry shows always, when relevant, or on hover: switching
     // one on switches the other two off.
     if (surface === "menubar" && next[key] === true) {
@@ -247,7 +329,7 @@ Item {
       menubarDisplayOptionsFile.setText(JSON.stringify(next) + "\n")
     }
     var activeSurface = panel.standaloneMode ? "app" : "widget"
-    if (key === "defaultForecastTab" && surface === activeSurface)
-      panel.precipitationTab = next.defaultForecastTab
+    if (key === "defaultTab" && surface === activeSurface)
+      panel.activeTab = next.defaultTab
   }
 }

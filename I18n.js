@@ -264,7 +264,8 @@ var catalog = {
     sunNext: "Next sun event",
     sunrise: "Sunrise",
     sunset: "Sunset",
-    moonPhase: "Moon phase"
+    moonPhase: "Moon phase",
+    moon: "Moon"
   },
   de: {
     weather: "Wetter",
@@ -521,10 +522,11 @@ var catalog = {
     hoverUnitSystemOff: "Aus",
     hoverUnitSystemHint: "Solange der Mauszeiger auf dem Widget ruht, wechselt die Leiste zu diesem Einheitensystem. Kelvin betrifft nur Temperaturen.",
     restoreOrder: "Reihenfolge zurücksetzen",
-    sunNext: "Sonne als Nächstes",
+    sunNext: "Sonnenauf- / -untergang als Nächstes",
     sunrise: "Sonnenaufgang",
     sunset: "Sonnenuntergang",
-    moonPhase: "Mondphase"
+    moonPhase: "Mondphase",
+    moon: "Mond"
   }
 }
 
@@ -924,7 +926,8 @@ addCatalogEntries("es", {
   "sunNext": "Próximo evento solar",
   "sunrise": "Amanecer",
   "sunset": "Atardecer",
-  "moonPhase": "Fase lunar"
+  "moonPhase": "Fase lunar",
+  "moon": "Luna"
 })
 
 addCatalogEntries("fr", {
@@ -1031,7 +1034,8 @@ addCatalogEntries("fr", {
   "sunNext": "Prochain événement solaire",
   "sunrise": "Lever du soleil",
   "sunset": "Coucher du soleil",
-  "moonPhase": "Phase de la Lune"
+  "moonPhase": "Phase de la Lune",
+  "moon": "Lune"
 })
 
 addCatalogEntries("pt", {
@@ -1138,7 +1142,8 @@ addCatalogEntries("pt", {
   "sunNext": "Próximo evento solar",
   "sunrise": "Nascer do sol",
   "sunset": "Pôr do sol",
-  "moonPhase": "Fase da lua"
+  "moonPhase": "Fase da lua",
+  "moon": "Lua"
 })
 
 addCatalogEntries("ru", {
@@ -1245,7 +1250,8 @@ addCatalogEntries("ru", {
   "sunNext": "Ближайшее событие солнца",
   "sunrise": "Восход",
   "sunset": "Закат",
-  "moonPhase": "Фаза Луны"
+  "moonPhase": "Фаза Луны",
+  "moon": "Луна"
 })
 
 addCatalogEntries("uk", {
@@ -1352,7 +1358,8 @@ addCatalogEntries("uk", {
   "sunNext": "Найближча подія сонця",
   "sunrise": "Схід сонця",
   "sunset": "Захід сонця",
-  "moonPhase": "Фаза Місяця"
+  "moonPhase": "Фаза Місяця",
+  "moon": "Місяць"
 })
 
 addCatalogEntries("pl", {
@@ -1459,7 +1466,8 @@ addCatalogEntries("pl", {
   "sunNext": "Najbliższe zdarzenie słońca",
   "sunrise": "Wschód słońca",
   "sunset": "Zachód słońca",
-  "moonPhase": "Faza Księżyca"
+  "moonPhase": "Faza Księżyca",
+  "moon": "Księżyc"
 })
 
 addCatalogEntries("it", {
@@ -1566,7 +1574,8 @@ addCatalogEntries("it", {
   "sunNext": "Prossimo evento solare",
   "sunrise": "Alba",
   "sunset": "Tramonto",
-  "moonPhase": "Fase lunare"
+  "moonPhase": "Fase lunare",
+  "moon": "Luna"
 })
 
 addCatalogEntries("nl", {
@@ -1673,7 +1682,8 @@ addCatalogEntries("nl", {
   "sunNext": "Eerstvolgende zonnestand",
   "sunrise": "Zonsopkomst",
   "sunset": "Zonsondergang",
-  "moonPhase": "Maanfase"
+  "moonPhase": "Maanfase",
+  "moon": "Maan"
 })
 
 addCatalogEntries("tr", {
@@ -1780,7 +1790,8 @@ addCatalogEntries("tr", {
   "sunNext": "Sıradaki güneş olayı",
   "sunrise": "Gün doğumu",
   "sunset": "Gün batımı",
-  "moonPhase": "Ay evresi"
+  "moonPhase": "Ay evresi",
+  "moon": "Ay"
 })
 
 addCatalogEntries("cs", {
@@ -1887,7 +1898,8 @@ addCatalogEntries("cs", {
   "sunNext": "Nejbližší událost slunce",
   "sunrise": "Východ slunce",
   "sunset": "Západ slunce",
-  "moonPhase": "Fáze Měsíce"
+  "moonPhase": "Fáze Měsíce",
+  "moon": "Měsíc"
 })
 
 addCatalogEntries("sv", {
@@ -1994,7 +2006,8 @@ addCatalogEntries("sv", {
   "sunNext": "Nästa solhändelse",
   "sunrise": "Soluppgång",
   "sunset": "Solnedgång",
-  "moonPhase": "Månfas"
+  "moonPhase": "Månfas",
+  "moon": "Måne"
 })
 
 addCatalogEntries("fi", {
@@ -2101,7 +2114,8 @@ addCatalogEntries("fi", {
   "sunNext": "Seuraava auringon tapahtuma",
   "sunrise": "Auringonnousu",
   "sunset": "Auringonlasku",
-  "moonPhase": "Kuun vaihe"
+  "moonPhase": "Kuun vaihe",
+  "moon": "Kuu"
 })
 
 addCatalogEntries("nb", {
@@ -2208,7 +2222,8 @@ addCatalogEntries("nb", {
   "sunNext": "Neste solhendelse",
   "sunrise": "Soloppgang",
   "sunset": "Solnedgang",
-  "moonPhase": "Månefase"
+  "moonPhase": "Månefase",
+  "moon": "Måne"
 })
 
 addCatalogEntries("da", {
@@ -2315,7 +2330,8 @@ addCatalogEntries("da", {
   "sunNext": "Næste solhændelse",
   "sunrise": "Solopgang",
   "sunset": "Solnedgang",
-  "moonPhase": "Månefase"
+  "moonPhase": "Månefase",
+  "moon": "Måne"
 })
 
 addCatalogEntries("ro", {
@@ -2422,7 +2438,8 @@ addCatalogEntries("ro", {
   "sunNext": "Următorul eveniment solar",
   "sunrise": "Răsărit",
   "sunset": "Apus",
-  "moonPhase": "Faza lunii"
+  "moonPhase": "Faza lunii",
+  "moon": "Luna"
 })
 
 addCatalogEntries("hu", {
@@ -2529,7 +2546,8 @@ addCatalogEntries("hu", {
   "sunNext": "Következő napesemény",
   "sunrise": "Napkelte",
   "sunset": "Napnyugta",
-  "moonPhase": "Holdfázis"
+  "moonPhase": "Holdfázis",
+  "moon": "Hold"
 })
 
 addCatalogEntries("el", {
@@ -2636,7 +2654,8 @@ addCatalogEntries("el", {
   "sunNext": "Επόμενο ηλιακό συμβάν",
   "sunrise": "Ανατολή",
   "sunset": "Δύση",
-  "moonPhase": "Φάση σελήνης"
+  "moonPhase": "Φάση σελήνης",
+  "moon": "Σελήνη"
 })
 
 addCatalogEntries("zh_CN", {
@@ -2743,7 +2762,8 @@ addCatalogEntries("zh_CN", {
   "sunNext": "下一次日出/日落",
   "sunrise": "日出",
   "sunset": "日落",
-  "moonPhase": "月相"
+  "moonPhase": "月相",
+  "moon": "月亮"
 })
 
 addCatalogEntries("zh_TW", {
@@ -2850,7 +2870,8 @@ addCatalogEntries("zh_TW", {
   "sunNext": "下一次日出／日落",
   "sunrise": "日出",
   "sunset": "日落",
-  "moonPhase": "月相"
+  "moonPhase": "月相",
+  "moon": "月亮"
 })
 
 addCatalogEntries("ja", {
@@ -2957,7 +2978,8 @@ addCatalogEntries("ja", {
   "sunNext": "次の日の出・日の入り",
   "sunrise": "日の出",
   "sunset": "日の入り",
-  "moonPhase": "月齢"
+  "moonPhase": "月齢",
+  "moon": "月"
 })
 
 addCatalogEntries("ko", {
@@ -3064,7 +3086,8 @@ addCatalogEntries("ko", {
   "sunNext": "다음 일출·일몰",
   "sunrise": "일출",
   "sunset": "일몰",
-  "moonPhase": "달의 위상"
+  "moonPhase": "달의 위상",
+  "moon": "달"
 })
 
 addCatalogEntries("ar", {
@@ -3171,7 +3194,8 @@ addCatalogEntries("ar", {
   "sunNext": "الحدث الشمسي التالي",
   "sunrise": "الشروق",
   "sunset": "الغروب",
-  "moonPhase": "طور القمر"
+  "moonPhase": "طور القمر",
+  "moon": "القمر"
 })
 
 addCatalogEntries("he", {
@@ -3278,7 +3302,8 @@ addCatalogEntries("he", {
   "sunNext": "אירוע השמש הבא",
   "sunrise": "זריחה",
   "sunset": "שקיעה",
-  "moonPhase": "מופע הירח"
+  "moonPhase": "מופע הירח",
+  "moon": "ירח"
 })
 
 addCatalogEntries("fa", {
@@ -3385,7 +3410,8 @@ addCatalogEntries("fa", {
   "sunNext": "رویداد بعدی خورشید",
   "sunrise": "طلوع آفتاب",
   "sunset": "غروب آفتاب",
-  "moonPhase": "فاز ماه"
+  "moonPhase": "فاز ماه",
+  "moon": "ماه"
 })
 
 addCatalogEntries("hi", {
@@ -3492,7 +3518,8 @@ addCatalogEntries("hi", {
   "sunNext": "अगली सूर्य घटना",
   "sunrise": "सूर्योदय",
   "sunset": "सूर्यास्त",
-  "moonPhase": "चंद्र कला"
+  "moonPhase": "चंद्र कला",
+  "moon": "चंद्रमा"
 })
 
 addCatalogEntries("id", {
@@ -3599,7 +3626,8 @@ addCatalogEntries("id", {
   "sunNext": "Peristiwa matahari berikutnya",
   "sunrise": "Matahari terbit",
   "sunset": "Matahari terbenam",
-  "moonPhase": "Fase bulan"
+  "moonPhase": "Fase bulan",
+  "moon": "Bulan"
 })
 
 addCatalogEntries("vi", {
@@ -3706,7 +3734,8 @@ addCatalogEntries("vi", {
   "sunNext": "Sự kiện mặt trời kế tiếp",
   "sunrise": "Mặt trời mọc",
   "sunset": "Mặt trời lặn",
-  "moonPhase": "Pha Mặt Trăng"
+  "moonPhase": "Pha Mặt Trăng",
+  "moon": "Trăng"
 })
 
 addCatalogEntries("th", {
@@ -3813,7 +3842,8 @@ addCatalogEntries("th", {
   "sunNext": "เหตุการณ์ดวงอาทิตย์ถัดไป",
   "sunrise": "ดวงอาทิตย์ขึ้น",
   "sunset": "ดวงอาทิตย์ตก",
-  "moonPhase": "ข้างขึ้นข้างแรม"
+  "moonPhase": "ข้างขึ้นข้างแรม",
+  "moon": "ดวงจันทร์"
 })
 
 // Restore-defaults button on the display settings page.
@@ -5572,6 +5602,3664 @@ addCatalogEntries("id", { "notifications": "Notifikasi" })
 addCatalogEntries("vi", { "notifications": "Thông báo" })
 addCatalogEntries("th", { "notifications": "การแจ้งเตือน" })
 
+// Sections in the window or as tabs (2.5): short tab and settings labels.
+addCatalogEntries("en", {
+  "airTab": "Air",
+  "tabs": "Tabs",
+  "tabsHint": "Sections set to “as tab” share one strip, in their order. Keys 1–9 pick them the same way.",
+  "showAs": "Show",
+  "placementWindow": "In window",
+  "placementTab": "As tab",
+  "defaultTab": "Opens on",
+  "shortcutViews": "Tab 1–9 in their order"
+})
+addCatalogEntries("de", {
+  "airTab": "Luft",
+  "tabs": "Tabs",
+  "tabsHint": "Rubriken „als Tab“ teilen sich eine Leiste, in ihrer Reihenfolge. Die Tasten 1–9 wählen sie genauso.",
+  "showAs": "Anzeige",
+  "placementWindow": "Im Fenster",
+  "placementTab": "Als Tab",
+  "defaultTab": "Öffnet mit",
+  "shortcutViews": "Tab 1–9 in ihrer Reihenfolge"
+})
+addCatalogEntries("es", {
+  "airTab": "Aire",
+  "tabs": "Pestañas",
+  "tabsHint": "Las secciones «como pestaña» comparten una barra, en su orden. Las teclas 1–9 las eligen igual.",
+  "showAs": "Mostrar",
+  "placementWindow": "En la ventana",
+  "placementTab": "Como pestaña",
+  "defaultTab": "Abre con",
+  "shortcutViews": "Pestaña 1–9 en su orden"
+})
+addCatalogEntries("fr", {
+  "airTab": "Air",
+  "tabs": "Onglets",
+  "tabsHint": "Les sections « en onglet » partagent une barre, dans leur ordre. Les touches 1–9 les choisissent de même.",
+  "showAs": "Affichage",
+  "placementWindow": "Dans la fenêtre",
+  "placementTab": "En onglet",
+  "defaultTab": "S’ouvre sur",
+  "shortcutViews": "Onglet 1–9 dans leur ordre"
+})
+addCatalogEntries("pt", {
+  "airTab": "Ar",
+  "tabs": "Abas",
+  "tabsHint": "As seções “como aba” compartilham uma barra, na sua ordem. As teclas 1–9 as escolhem da mesma forma.",
+  "showAs": "Mostrar",
+  "placementWindow": "Na janela",
+  "placementTab": "Como aba",
+  "defaultTab": "Abre em",
+  "shortcutViews": "Aba 1–9 na sua ordem"
+})
+addCatalogEntries("ru", {
+  "airTab": "Воздух",
+  "tabs": "Вкладки",
+  "tabsHint": "Разделы «вкладкой» делят одну панель в своём порядке. Клавиши 1–9 выбирают их так же.",
+  "showAs": "Показ",
+  "placementWindow": "В окне",
+  "placementTab": "Вкладкой",
+  "defaultTab": "Открывать",
+  "shortcutViews": "Вкладка 1–9 по порядку"
+})
+addCatalogEntries("uk", {
+  "airTab": "Повітря",
+  "tabs": "Вкладки",
+  "tabsHint": "Розділи «вкладкою» ділять одну панель у своєму порядку. Клавіші 1–9 обирають їх так само.",
+  "showAs": "Показ",
+  "placementWindow": "У вікні",
+  "placementTab": "Вкладкою",
+  "defaultTab": "Відкривати",
+  "shortcutViews": "Вкладка 1–9 за порядком"
+})
+addCatalogEntries("pl", {
+  "airTab": "Powietrze",
+  "tabs": "Karty",
+  "tabsHint": "Sekcje „jako karta” dzielą jeden pasek, w swojej kolejności. Klawisze 1–9 wybierają je tak samo.",
+  "showAs": "Pokaż",
+  "placementWindow": "W oknie",
+  "placementTab": "Jako karta",
+  "defaultTab": "Otwiera się na",
+  "shortcutViews": "Karta 1–9 w kolejności"
+})
+addCatalogEntries("it", {
+  "airTab": "Aria",
+  "tabs": "Schede",
+  "tabsHint": "Le sezioni «come scheda» condividono una barra, nel loro ordine. I tasti 1–9 le scelgono allo stesso modo.",
+  "showAs": "Mostra",
+  "placementWindow": "Nella finestra",
+  "placementTab": "Come scheda",
+  "defaultTab": "Apre su",
+  "shortcutViews": "Scheda 1–9 nel loro ordine"
+})
+addCatalogEntries("nl", {
+  "airTab": "Lucht",
+  "tabs": "Tabbladen",
+  "tabsHint": "Secties „als tabblad” delen één balk, in hun volgorde. De toetsen 1–9 kiezen ze net zo.",
+  "showAs": "Tonen",
+  "placementWindow": "In venster",
+  "placementTab": "Als tabblad",
+  "defaultTab": "Opent op",
+  "shortcutViews": "Tabblad 1–9 in volgorde"
+})
+addCatalogEntries("tr", {
+  "airTab": "Hava",
+  "tabs": "Sekmeler",
+  "tabsHint": "“Sekme olarak” bölümler sıralarıyla tek bir çubuğu paylaşır. 1–9 tuşları onları aynı şekilde seçer.",
+  "showAs": "Göster",
+  "placementWindow": "Pencerede",
+  "placementTab": "Sekme olarak",
+  "defaultTab": "Açılış",
+  "shortcutViews": "Sekme 1–9 sırayla"
+})
+addCatalogEntries("cs", {
+  "airTab": "Vzduch",
+  "tabs": "Karty",
+  "tabsHint": "Sekce „jako karta“ sdílejí jednu lištu ve svém pořadí. Klávesy 1–9 je vybírají stejně.",
+  "showAs": "Zobrazit",
+  "placementWindow": "V okně",
+  "placementTab": "Jako karta",
+  "defaultTab": "Otevře se na",
+  "shortcutViews": "Karta 1–9 v pořadí"
+})
+addCatalogEntries("sv", {
+  "airTab": "Luft",
+  "tabs": "Flikar",
+  "tabsHint": "Avsnitt ”som flik” delar en list, i sin ordning. Tangenterna 1–9 väljer dem likadant.",
+  "showAs": "Visa",
+  "placementWindow": "I fönstret",
+  "placementTab": "Som flik",
+  "defaultTab": "Öppnas på",
+  "shortcutViews": "Flik 1–9 i ordning"
+})
+addCatalogEntries("fi", {
+  "airTab": "Ilma",
+  "tabs": "Välilehdet",
+  "tabsHint": "”Välilehtenä” näytettävät osiot jakavat yhden palkin järjestyksessään. Näppäimet 1–9 valitsevat ne samoin.",
+  "showAs": "Näytä",
+  "placementWindow": "Ikkunassa",
+  "placementTab": "Välilehtenä",
+  "defaultTab": "Avautuu",
+  "shortcutViews": "Välilehti 1–9 järjestyksessä"
+})
+addCatalogEntries("nb", {
+  "airTab": "Luft",
+  "tabs": "Faner",
+  "tabsHint": "Seksjoner «som fane» deler én linje, i sin rekkefølge. Tastene 1–9 velger dem på samme måte.",
+  "showAs": "Vis",
+  "placementWindow": "I vinduet",
+  "placementTab": "Som fane",
+  "defaultTab": "Åpner på",
+  "shortcutViews": "Fane 1–9 i rekkefølge"
+})
+addCatalogEntries("da", {
+  "airTab": "Luft",
+  "tabs": "Faner",
+  "tabsHint": "Sektioner »som fane« deler én bjælke, i deres rækkefølge. Tasterne 1–9 vælger dem på samme måde.",
+  "showAs": "Vis",
+  "placementWindow": "I vinduet",
+  "placementTab": "Som fane",
+  "defaultTab": "Åbner på",
+  "shortcutViews": "Fane 1–9 i rækkefølge"
+})
+addCatalogEntries("ro", {
+  "airTab": "Aer",
+  "tabs": "File",
+  "tabsHint": "Secțiunile „ca filă” împart o bară, în ordinea lor. Tastele 1–9 le aleg la fel.",
+  "showAs": "Afișare",
+  "placementWindow": "În fereastră",
+  "placementTab": "Ca filă",
+  "defaultTab": "Se deschide pe",
+  "shortcutViews": "Fila 1–9 în ordine"
+})
+addCatalogEntries("hu", {
+  "airTab": "Levegő",
+  "tabs": "Lapok",
+  "tabsHint": "A „lapként” megjelenő részek egy sávon osztoznak, sorrendjükben. Az 1–9 billentyűk ugyanígy választanak.",
+  "showAs": "Megjelenítés",
+  "placementWindow": "Az ablakban",
+  "placementTab": "Lapként",
+  "defaultTab": "Nyitáskor",
+  "shortcutViews": "1–9. lap sorrendben"
+})
+addCatalogEntries("el", {
+  "airTab": "Αέρας",
+  "tabs": "Καρτέλες",
+  "tabsHint": "Οι ενότητες «ως καρτέλα» μοιράζονται μία γραμμή, με τη σειρά τους. Τα πλήκτρα 1–9 τις επιλέγουν το ίδιο.",
+  "showAs": "Εμφάνιση",
+  "placementWindow": "Στο παράθυρο",
+  "placementTab": "Ως καρτέλα",
+  "defaultTab": "Ανοίγει σε",
+  "shortcutViews": "Καρτέλα 1–9 με τη σειρά"
+})
+addCatalogEntries("zh_CN", {
+  "airTab": "空气",
+  "tabs": "标签页",
+  "tabsHint": "设为“标签页”的栏目按顺序共用一个标签栏，按键 1–9 同样依次选择。",
+  "showAs": "显示",
+  "placementWindow": "在窗口中",
+  "placementTab": "作为标签页",
+  "defaultTab": "打开时显示",
+  "shortcutViews": "按顺序切换标签页 1–9"
+})
+addCatalogEntries("zh_TW", {
+  "airTab": "空氣",
+  "tabs": "分頁",
+  "tabsHint": "設為「分頁」的欄目依順序共用一個分頁列，按鍵 1–9 同樣依序選擇。",
+  "showAs": "顯示",
+  "placementWindow": "在視窗中",
+  "placementTab": "作為分頁",
+  "defaultTab": "開啟時顯示",
+  "shortcutViews": "依順序切換分頁 1–9"
+})
+addCatalogEntries("ja", {
+  "airTab": "大気",
+  "tabs": "タブ",
+  "tabsHint": "「タブ」に設定したセクションは順番どおり1つのタブバーを共有します。1–9キーも同じ順で選びます。",
+  "showAs": "表示",
+  "placementWindow": "ウィンドウ内",
+  "placementTab": "タブ",
+  "defaultTab": "最初に開く",
+  "shortcutViews": "タブ 1–9（並び順）"
+})
+addCatalogEntries("ko", {
+  "airTab": "공기",
+  "tabs": "탭",
+  "tabsHint": "‘탭’으로 설정한 섹션은 순서대로 하나의 탭 막대를 공유합니다. 1–9 키도 같은 순서로 선택합니다.",
+  "showAs": "표시",
+  "placementWindow": "창에",
+  "placementTab": "탭으로",
+  "defaultTab": "처음 열 탭",
+  "shortcutViews": "순서대로 탭 1–9"
+})
+addCatalogEntries("ar", {
+  "airTab": "الهواء",
+  "tabs": "علامات التبويب",
+  "tabsHint": "الأقسام المعروضة «كعلامة تبويب» تتشارك شريطًا واحدًا بترتيبها. المفاتيح 1–9 تختارها بالطريقة نفسها.",
+  "showAs": "العرض",
+  "placementWindow": "في النافذة",
+  "placementTab": "كعلامة تبويب",
+  "defaultTab": "يفتح على",
+  "shortcutViews": "علامة التبويب 1–9 بالترتيب"
+})
+addCatalogEntries("he", {
+  "airTab": "אוויר",
+  "tabs": "לשוניות",
+  "tabsHint": "מקטעים „כלשונית” חולקים סרגל אחד, לפי הסדר שלהם. המקשים 1–9 בוחרים בהם באותו אופן.",
+  "showAs": "הצגה",
+  "placementWindow": "בחלון",
+  "placementTab": "כלשונית",
+  "defaultTab": "נפתח על",
+  "shortcutViews": "לשונית 1–9 לפי הסדר"
+})
+addCatalogEntries("fa", {
+  "airTab": "هوا",
+  "tabs": "زبانه‌ها",
+  "tabsHint": "بخش‌های «به‌صورت زبانه» به ترتیب خود یک نوار مشترک دارند. کلیدهای ۱–۹ آن‌ها را به همین ترتیب انتخاب می‌کنند.",
+  "showAs": "نمایش",
+  "placementWindow": "در پنجره",
+  "placementTab": "به‌صورت زبانه",
+  "defaultTab": "باز شدن با",
+  "shortcutViews": "زبانهٔ ۱–۹ به ترتیب"
+})
+addCatalogEntries("hi", {
+  "airTab": "हवा",
+  "tabs": "टैब",
+  "tabsHint": "“टैब के रूप में” सेट किए गए अनुभाग अपने क्रम में एक पट्टी साझा करते हैं। कुंजियाँ 1–9 उन्हें उसी तरह चुनती हैं।",
+  "showAs": "दिखाएँ",
+  "placementWindow": "विंडो में",
+  "placementTab": "टैब के रूप में",
+  "defaultTab": "इससे खुलता है",
+  "shortcutViews": "क्रम में टैब 1–9"
+})
+addCatalogEntries("id", {
+  "airTab": "Udara",
+  "tabs": "Tab",
+  "tabsHint": "Bagian “sebagai tab” berbagi satu bilah, sesuai urutannya. Tombol 1–9 memilihnya dengan cara yang sama.",
+  "showAs": "Tampilkan",
+  "placementWindow": "Di jendela",
+  "placementTab": "Sebagai tab",
+  "defaultTab": "Dibuka di",
+  "shortcutViews": "Tab 1–9 sesuai urutan"
+})
+addCatalogEntries("vi", {
+  "airTab": "Không khí",
+  "tabs": "Thẻ",
+  "tabsHint": "Các mục “dạng thẻ” dùng chung một thanh theo thứ tự của chúng. Phím 1–9 chọn chúng theo cách tương tự.",
+  "showAs": "Hiển thị",
+  "placementWindow": "Trong cửa sổ",
+  "placementTab": "Dạng thẻ",
+  "defaultTab": "Mở ở",
+  "shortcutViews": "Thẻ 1–9 theo thứ tự"
+})
+addCatalogEntries("th", {
+  "airTab": "อากาศ",
+  "tabs": "แท็บ",
+  "tabsHint": "ส่วนที่ตั้งเป็น “แท็บ” ใช้แถบเดียวกันตามลำดับ ปุ่ม 1–9 เลือกได้เช่นเดียวกัน",
+  "showAs": "แสดง",
+  "placementWindow": "ในหน้าต่าง",
+  "placementTab": "เป็นแท็บ",
+  "defaultTab": "เปิดที่",
+  "shortcutViews": "แท็บ 1–9 ตามลำดับ"
+})
+
+// Movable current weather, section explanations (2.5).
+addCatalogEntries("en", {
+  "displaySettingsHint": "Choose what the selected view shows; the arrows set the order.",
+  "displaySectionsHint": "Each section appears in the window or as a tab. Tabs share one strip where the first tabbed section stands.",
+  "currentWeatherHint": "Always shown, in the window: it holds the place, refresh and settings. Warnings appear right below it.",
+  "shortcutsGroupForecast": "TABS & MAPS"
+})
+addCatalogEntries("de", {
+  "displaySettingsHint": "Lege fest, was die ausgewählte Ansicht zeigt; die Pfeile bestimmen die Reihenfolge.",
+  "displaySectionsHint": "Jede Rubrik erscheint im Fenster oder als Tab. Tabs teilen sich eine Leiste an der Stelle der ersten Tab-Rubrik.",
+  "currentWeatherHint": "Immer sichtbar, im Fenster: Hier liegen Ort, Aktualisieren und Einstellungen. Warnungen erscheinen direkt darunter.",
+  "shortcutsGroupForecast": "TABS & KARTEN"
+})
+addCatalogEntries("es", {
+  "displaySettingsHint": "Elige qué muestra la vista seleccionada; las flechas fijan el orden.",
+  "displaySectionsHint": "Cada sección aparece en la ventana o como pestaña. Las pestañas comparten una barra donde está la primera sección en pestaña.",
+  "currentWeatherHint": "Siempre visible, en la ventana: contiene el lugar, la actualización y los ajustes. Los avisos aparecen justo debajo.",
+  "shortcutsGroupForecast": "PESTAÑAS Y MAPAS"
+})
+addCatalogEntries("fr", {
+  "displaySettingsHint": "Choisissez ce qu’affiche la vue sélectionnée ; les flèches fixent l’ordre.",
+  "displaySectionsHint": "Chaque section s’affiche dans la fenêtre ou en onglet. Les onglets partagent une barre à la place de la première section en onglet.",
+  "currentWeatherHint": "Toujours affiché, dans la fenêtre : il contient le lieu, l’actualisation et les réglages. Les alertes apparaissent juste en dessous.",
+  "shortcutsGroupForecast": "ONGLETS ET CARTES"
+})
+addCatalogEntries("pt", {
+  "displaySettingsHint": "Escolha o que a visualização selecionada mostra; as setas definem a ordem.",
+  "displaySectionsHint": "Cada seção aparece na janela ou como aba. As abas compartilham uma barra onde fica a primeira seção em aba.",
+  "currentWeatherHint": "Sempre visível, na janela: contém o local, a atualização e as configurações. Os alertas aparecem logo abaixo.",
+  "shortcutsGroupForecast": "ABAS E MAPAS"
+})
+addCatalogEntries("ru", {
+  "displaySettingsHint": "Выберите, что показывает выбранный вид; стрелки задают порядок.",
+  "displaySectionsHint": "Каждый раздел показывается в окне или вкладкой. Вкладки делят одну панель на месте первого раздела-вкладки.",
+  "currentWeatherHint": "Всегда видно, в окне: здесь место, обновление и настройки. Предупреждения — сразу под ним.",
+  "shortcutsGroupForecast": "ВКЛАДКИ И КАРТЫ"
+})
+addCatalogEntries("uk", {
+  "displaySettingsHint": "Виберіть, що показує вибраний вигляд; стрілки задають порядок.",
+  "displaySectionsHint": "Кожен розділ показується у вікні або вкладкою. Вкладки ділять одну панель на місці першого розділу-вкладки.",
+  "currentWeatherHint": "Завжди видно, у вікні: тут місце, оновлення та налаштування. Попередження — одразу під ним.",
+  "shortcutsGroupForecast": "ВКЛАДКИ Й МАПИ"
+})
+addCatalogEntries("pl", {
+  "displaySettingsHint": "Wybierz, co pokazuje wybrany widok; strzałki ustalają kolejność.",
+  "displaySectionsHint": "Każda sekcja pojawia się w oknie lub jako karta. Karty dzielą jeden pasek w miejscu pierwszej sekcji jako karta.",
+  "currentWeatherHint": "Zawsze widoczne, w oknie: zawiera miejsce, odświeżanie i ustawienia. Ostrzeżenia pojawiają się tuż pod nim.",
+  "shortcutsGroupForecast": "KARTY I MAPY"
+})
+addCatalogEntries("it", {
+  "displaySettingsHint": "Scegli cosa mostra la vista selezionata; le frecce fissano l’ordine.",
+  "displaySectionsHint": "Ogni sezione appare nella finestra o come scheda. Le schede condividono una barra dove sta la prima sezione a scheda.",
+  "currentWeatherHint": "Sempre visibile, nella finestra: contiene il luogo, l’aggiornamento e le impostazioni. Gli avvisi compaiono subito sotto.",
+  "shortcutsGroupForecast": "SCHEDE E MAPPE"
+})
+addCatalogEntries("nl", {
+  "displaySettingsHint": "Kies wat de gekozen weergave toont; de pijlen bepalen de volgorde.",
+  "displaySectionsHint": "Elke sectie verschijnt in het venster of als tabblad. Tabbladen delen één balk op de plek van de eerste sectie als tabblad.",
+  "currentWeatherHint": "Altijd zichtbaar, in het venster: hier staan plaats, verversen en instellingen. Waarschuwingen staan er direct onder.",
+  "shortcutsGroupForecast": "TABBLADEN & KAARTEN"
+})
+addCatalogEntries("tr", {
+  "displaySettingsHint": "Seçili görünümün neyi gösterdiğini seçin; oklar sırayı belirler.",
+  "displaySectionsHint": "Her bölüm pencerede ya da sekme olarak görünür. Sekmeler, ilk sekme bölümünün yerinde tek bir çubuğu paylaşır.",
+  "currentWeatherHint": "Her zaman görünür, pencerede: konum, yenileme ve ayarlar buradadır. Uyarılar hemen altında görünür.",
+  "shortcutsGroupForecast": "SEKMELER VE HARİTALAR"
+})
+addCatalogEntries("cs", {
+  "displaySettingsHint": "Vyberte, co zvolený pohled ukazuje; šipky určují pořadí.",
+  "displaySectionsHint": "Každá sekce se zobrazí v okně nebo jako karta. Karty sdílejí jednu lištu v místě první sekce jako karta.",
+  "currentWeatherHint": "Vždy viditelné, v okně: obsahuje místo, obnovení a nastavení. Výstrahy jsou hned pod ním.",
+  "shortcutsGroupForecast": "KARTY A MAPY"
+})
+addCatalogEntries("sv", {
+  "displaySettingsHint": "Välj vad den valda vyn visar; pilarna bestämmer ordningen.",
+  "displaySectionsHint": "Varje avsnitt visas i fönstret eller som flik. Flikarna delar en list där det första flikavsnittet står.",
+  "currentWeatherHint": "Alltid synligt, i fönstret: här finns plats, uppdatering och inställningar. Varningar visas direkt under.",
+  "shortcutsGroupForecast": "FLIKAR & KARTOR"
+})
+addCatalogEntries("fi", {
+  "displaySettingsHint": "Valitse, mitä valittu näkymä näyttää; nuolet määräävät järjestyksen.",
+  "displaySectionsHint": "Jokainen osio näkyy ikkunassa tai välilehtenä. Välilehdet jakavat yhden palkin ensimmäisen välilehtiosion kohdalla.",
+  "currentWeatherHint": "Aina näkyvissä, ikkunassa: siinä ovat paikka, päivitys ja asetukset. Varoitukset näkyvät heti sen alla.",
+  "shortcutsGroupForecast": "VÄLILEHDET JA KARTAT"
+})
+addCatalogEntries("nb", {
+  "displaySettingsHint": "Velg hva den valgte visningen viser; pilene bestemmer rekkefølgen.",
+  "displaySectionsHint": "Hver seksjon vises i vinduet eller som fane. Fanene deler én linje der den første faneseksjonen står.",
+  "currentWeatherHint": "Alltid synlig, i vinduet: her er sted, oppdatering og innstillinger. Farevarsler vises rett under.",
+  "shortcutsGroupForecast": "FANER OG KART"
+})
+addCatalogEntries("da", {
+  "displaySettingsHint": "Vælg, hvad den valgte visning viser; pilene bestemmer rækkefølgen.",
+  "displaySectionsHint": "Hver sektion vises i vinduet eller som fane. Fanerne deler én bjælke, hvor den første fanesektion står.",
+  "currentWeatherHint": "Altid synlig, i vinduet: her er sted, opdatering og indstillinger. Varsler vises lige nedenunder.",
+  "shortcutsGroupForecast": "FANER OG KORT"
+})
+addCatalogEntries("ro", {
+  "displaySettingsHint": "Alege ce arată vizualizarea selectată; săgețile stabilesc ordinea.",
+  "displaySectionsHint": "Fiecare secțiune apare în fereastră sau ca filă. Filele împart o bară în locul primei secțiuni ca filă.",
+  "currentWeatherHint": "Mereu vizibil, în fereastră: conține locul, actualizarea și setările. Avertizările apar imediat dedesubt.",
+  "shortcutsGroupForecast": "FILE ȘI HĂRȚI"
+})
+addCatalogEntries("hu", {
+  "displaySettingsHint": "Válaszd ki, mit mutat a kijelölt nézet; a nyilak adják a sorrendet.",
+  "displaySectionsHint": "Minden rész az ablakban vagy lapként jelenik meg. A lapok egy sávon osztoznak az első lapként megjelenő rész helyén.",
+  "currentWeatherHint": "Mindig látható, az ablakban: itt van a hely, a frissítés és a beállítások. A figyelmeztetések közvetlenül alatta jelennek meg.",
+  "shortcutsGroupForecast": "LAPOK ÉS TÉRKÉPEK"
+})
+addCatalogEntries("el", {
+  "displaySettingsHint": "Επιλέξτε τι δείχνει η επιλεγμένη προβολή· τα βέλη ορίζουν τη σειρά.",
+  "displaySectionsHint": "Κάθε ενότητα εμφανίζεται στο παράθυρο ή ως καρτέλα. Οι καρτέλες μοιράζονται μία γραμμή στη θέση της πρώτης ενότητας-καρτέλας.",
+  "currentWeatherHint": "Πάντα ορατό, στο παράθυρο: περιέχει τοποθεσία, ανανέωση και ρυθμίσεις. Οι προειδοποιήσεις εμφανίζονται ακριβώς από κάτω.",
+  "shortcutsGroupForecast": "ΚΑΡΤΕΛΕΣ ΚΑΙ ΧΑΡΤΕΣ"
+})
+addCatalogEntries("zh_CN", {
+  "displaySettingsHint": "选择所选视图显示的内容；箭头调整顺序。",
+  "displaySectionsHint": "每个栏目可显示在窗口中或作为标签页。标签页共用一个标签栏，位于第一个标签页栏目处。",
+  "currentWeatherHint": "始终显示在窗口中：包含地点、刷新和设置。预警紧随其下。",
+  "shortcutsGroupForecast": "标签页与地图"
+})
+addCatalogEntries("zh_TW", {
+  "displaySettingsHint": "選擇所選檢視顯示的內容；箭頭調整順序。",
+  "displaySectionsHint": "每個欄目可顯示在視窗中或作為分頁。分頁共用一個分頁列，位於第一個分頁欄目處。",
+  "currentWeatherHint": "一律顯示在視窗中：包含地點、重新整理和設定。警報緊接其下。",
+  "shortcutsGroupForecast": "分頁與地圖"
+})
+addCatalogEntries("ja", {
+  "displaySettingsHint": "選択したビューに表示する内容を選びます。矢印で順番を変えられます。",
+  "displaySectionsHint": "各セクションはウィンドウ内またはタブとして表示されます。タブは最初のタブセクションの位置で1つのタブバーを共有します。",
+  "currentWeatherHint": "常にウィンドウ内に表示：場所、更新、設定があります。警報はそのすぐ下に表示されます。",
+  "shortcutsGroupForecast": "タブと地図"
+})
+addCatalogEntries("ko", {
+  "displaySettingsHint": "선택한 보기에 표시할 항목을 고릅니다. 화살표로 순서를 정합니다.",
+  "displaySectionsHint": "각 섹션은 창 안이나 탭으로 표시됩니다. 탭은 첫 번째 탭 섹션 자리에서 하나의 탭 막대를 공유합니다.",
+  "currentWeatherHint": "항상 창 안에 표시: 위치, 새로 고침, 설정이 있습니다. 경보는 바로 아래에 표시됩니다.",
+  "shortcutsGroupForecast": "탭 및 지도"
+})
+addCatalogEntries("ar", {
+  "displaySettingsHint": "اختر ما يعرضه العرض المحدد؛ الأسهم تحدد الترتيب.",
+  "displaySectionsHint": "يظهر كل قسم في النافذة أو كعلامة تبويب. تتشارك علامات التبويب شريطًا واحدًا في مكان أول قسم معروض كعلامة تبويب.",
+  "currentWeatherHint": "يظهر دائمًا في النافذة: يضم الموقع والتحديث والإعدادات. تظهر التحذيرات أسفله مباشرة.",
+  "shortcutsGroupForecast": "علامات التبويب والخرائط"
+})
+addCatalogEntries("he", {
+  "displaySettingsHint": "בחרו מה התצוגה הנבחרת מציגה; החצים קובעים את הסדר.",
+  "displaySectionsHint": "כל מקטע מוצג בחלון או כלשונית. הלשוניות חולקות סרגל אחד במקום המקטע הראשון שמוצג כלשונית.",
+  "currentWeatherHint": "תמיד מוצג, בחלון: כולל מיקום, רענון והגדרות. האזהרות מופיעות מיד מתחתיו.",
+  "shortcutsGroupForecast": "לשוניות ומפות"
+})
+addCatalogEntries("fa", {
+  "displaySettingsHint": "انتخاب کنید نمای انتخاب‌شده چه چیزی نشان دهد؛ پیکان‌ها ترتیب را تعیین می‌کنند.",
+  "displaySectionsHint": "هر بخش در پنجره یا به‌صورت زبانه نمایش داده می‌شود. زبانه‌ها یک نوار مشترک در جای نخستین بخش زبانه‌ای دارند.",
+  "currentWeatherHint": "همیشه در پنجره نمایش داده می‌شود: مکان، به‌روزرسانی و تنظیمات اینجاست. هشدارها درست زیر آن می‌آیند.",
+  "shortcutsGroupForecast": "زبانه‌ها و نقشه‌ها"
+})
+addCatalogEntries("hi", {
+  "displaySettingsHint": "चुनें कि चयनित दृश्य क्या दिखाए; तीर क्रम तय करते हैं।",
+  "displaySectionsHint": "हर अनुभाग विंडो में या टैब के रूप में दिखता है। टैब पहले टैब-अनुभाग की जगह एक पट्टी साझा करते हैं।",
+  "currentWeatherHint": "हमेशा विंडो में दिखता है: इसमें स्थान, रीफ़्रेश और सेटिंग्स हैं। चेतावनियाँ ठीक इसके नीचे दिखती हैं।",
+  "shortcutsGroupForecast": "टैब और मानचित्र"
+})
+addCatalogEntries("id", {
+  "displaySettingsHint": "Pilih apa yang ditampilkan tampilan terpilih; panah menentukan urutan.",
+  "displaySectionsHint": "Setiap bagian tampil di jendela atau sebagai tab. Tab berbagi satu bilah di tempat bagian tab pertama.",
+  "currentWeatherHint": "Selalu tampil, di jendela: berisi lokasi, penyegaran, dan pengaturan. Peringatan muncul tepat di bawahnya.",
+  "shortcutsGroupForecast": "TAB & PETA"
+})
+addCatalogEntries("vi", {
+  "displaySettingsHint": "Chọn nội dung chế độ xem đã chọn hiển thị; mũi tên đặt thứ tự.",
+  "displaySectionsHint": "Mỗi mục hiển thị trong cửa sổ hoặc dạng thẻ. Các thẻ dùng chung một thanh tại vị trí của mục dạng thẻ đầu tiên.",
+  "currentWeatherHint": "Luôn hiển thị trong cửa sổ: chứa địa điểm, làm mới và cài đặt. Cảnh báo hiện ngay bên dưới.",
+  "shortcutsGroupForecast": "THẺ & BẢN ĐỒ"
+})
+addCatalogEntries("th", {
+  "displaySettingsHint": "เลือกสิ่งที่มุมมองที่เลือกแสดง ลูกศรใช้กำหนดลำดับ",
+  "displaySectionsHint": "แต่ละส่วนแสดงในหน้าต่างหรือเป็นแท็บ แท็บใช้แถบเดียวกันที่ตำแหน่งของส่วนแท็บแรก",
+  "currentWeatherHint": "แสดงในหน้าต่างเสมอ: มีตำแหน่ง รีเฟรช และการตั้งค่า คำเตือนแสดงอยู่ด้านล่างทันที",
+  "shortcutsGroupForecast": "แท็บและแผนที่"
+})
+
+// Settings by keyboard (2.5).
+addCatalogEntries("en", {
+  "settingsPagesKeysHint": "Tab / ⇧ Tab switch pages · Esc closes",
+  "settingsKeysHint": "Keyboard: 1–3 pick the view · ↑↓ go to a setting · ←→ change it or pick the column · Space switches · ⇧↑↓ moves the entry",
+  "shortcutSettingsSurface": "Menu bar / widget / app settings",
+  "shortcutSettingsMove": "Previous / next setting",
+  "shortcutSettingsChange": "Change the value or pick the switch column",
+  "shortcutSettingsToggle": "Switch, open the list or press the button",
+  "shortcutSettingsReorder": "Move the entry up / down"
+})
+addCatalogEntries("de", {
+  "settingsPagesKeysHint": "Tab / ⇧ Tab wechseln die Seite · Esc schließt",
+  "settingsKeysHint": "Tastatur: 1–3 wählen die Ansicht · ↑↓ zur Einstellung · ←→ ändern oder Spalte wählen · Leertaste schaltet · ⇧↑↓ verschiebt den Eintrag",
+  "shortcutSettingsSurface": "Einstellungen für Menüleiste / Widget / App",
+  "shortcutSettingsMove": "Vorherige / nächste Einstellung",
+  "shortcutSettingsChange": "Wert ändern oder Schalterspalte wählen",
+  "shortcutSettingsToggle": "Umschalten, Liste öffnen oder Knopf drücken",
+  "shortcutSettingsReorder": "Eintrag nach oben / unten verschieben"
+})
+addCatalogEntries("es", {
+  "settingsPagesKeysHint": "Tab / ⇧ Tab cambian de página · Esc cierra",
+  "settingsKeysHint": "Teclado: 1–3 eligen la vista · ↑↓ ir a un ajuste · ←→ cambiarlo o elegir la columna · Espacio conmuta · ⇧↑↓ mueve la entrada",
+  "shortcutSettingsSurface": "Ajustes de barra / widget / aplicación",
+  "shortcutSettingsMove": "Ajuste anterior / siguiente",
+  "shortcutSettingsChange": "Cambiar el valor o elegir la columna",
+  "shortcutSettingsToggle": "Conmutar, abrir la lista o pulsar el botón",
+  "shortcutSettingsReorder": "Mover la entrada arriba / abajo"
+})
+addCatalogEntries("fr", {
+  "settingsPagesKeysHint": "Tab / ⇧ Tab changent de page · Échap ferme",
+  "settingsKeysHint": "Clavier : 1–3 choisissent la vue · ↑↓ vers un réglage · ←→ le modifient ou choisissent la colonne · Espace bascule · ⇧↑↓ déplace l’entrée",
+  "shortcutSettingsSurface": "Réglages barre / widget / application",
+  "shortcutSettingsMove": "Réglage précédent / suivant",
+  "shortcutSettingsChange": "Modifier la valeur ou choisir la colonne",
+  "shortcutSettingsToggle": "Basculer, ouvrir la liste ou appuyer sur le bouton",
+  "shortcutSettingsReorder": "Déplacer l’entrée vers le haut / bas"
+})
+addCatalogEntries("pt", {
+  "settingsPagesKeysHint": "Tab / ⇧ Tab mudam de página · Esc fecha",
+  "settingsKeysHint": "Teclado: 1–3 escolhem a visualização · ↑↓ ir a uma opção · ←→ alterá-la ou escolher a coluna · Espaço alterna · ⇧↑↓ move a entrada",
+  "shortcutSettingsSurface": "Configurações de barra / widget / app",
+  "shortcutSettingsMove": "Opção anterior / seguinte",
+  "shortcutSettingsChange": "Alterar o valor ou escolher a coluna",
+  "shortcutSettingsToggle": "Alternar, abrir a lista ou apertar o botão",
+  "shortcutSettingsReorder": "Mover a entrada para cima / baixo"
+})
+addCatalogEntries("ru", {
+  "settingsPagesKeysHint": "Tab / ⇧ Tab — смена страницы · Esc — закрыть",
+  "settingsKeysHint": "Клавиатура: 1–3 — вид · ↑↓ — к настройке · ←→ — изменить или выбрать столбец · Пробел — переключить · ⇧↑↓ — переместить",
+  "shortcutSettingsSurface": "Настройки панели / виджета / приложения",
+  "shortcutSettingsMove": "Предыдущая / следующая настройка",
+  "shortcutSettingsChange": "Изменить значение или выбрать столбец",
+  "shortcutSettingsToggle": "Переключить, открыть список или нажать кнопку",
+  "shortcutSettingsReorder": "Переместить пункт вверх / вниз"
+})
+addCatalogEntries("uk", {
+  "settingsPagesKeysHint": "Tab / ⇧ Tab — зміна сторінки · Esc — закрити",
+  "settingsKeysHint": "Клавіатура: 1–3 — вигляд · ↑↓ — до налаштування · ←→ — змінити або вибрати стовпець · Пробіл — перемкнути · ⇧↑↓ — перемістити",
+  "shortcutSettingsSurface": "Налаштування панелі / віджета / застосунку",
+  "shortcutSettingsMove": "Попереднє / наступне налаштування",
+  "shortcutSettingsChange": "Змінити значення або вибрати стовпець",
+  "shortcutSettingsToggle": "Перемкнути, відкрити список або натиснути кнопку",
+  "shortcutSettingsReorder": "Перемістити пункт угору / вниз"
+})
+addCatalogEntries("pl", {
+  "settingsPagesKeysHint": "Tab / ⇧ Tab zmieniają stronę · Esc zamyka",
+  "settingsKeysHint": "Klawiatura: 1–3 wybierają widok · ↑↓ do ustawienia · ←→ zmiana lub wybór kolumny · Spacja przełącza · ⇧↑↓ przesuwa wpis",
+  "shortcutSettingsSurface": "Ustawienia paska / widżetu / aplikacji",
+  "shortcutSettingsMove": "Poprzednie / następne ustawienie",
+  "shortcutSettingsChange": "Zmień wartość lub wybierz kolumnę",
+  "shortcutSettingsToggle": "Przełącz, otwórz listę lub naciśnij przycisk",
+  "shortcutSettingsReorder": "Przesuń wpis w górę / w dół"
+})
+addCatalogEntries("it", {
+  "settingsPagesKeysHint": "Tab / ⇧ Tab cambiano pagina · Esc chiude",
+  "settingsKeysHint": "Tastiera: 1–3 scelgono la vista · ↑↓ a un’impostazione · ←→ la cambiano o scelgono la colonna · Spazio commuta · ⇧↑↓ sposta la voce",
+  "shortcutSettingsSurface": "Impostazioni barra / widget / app",
+  "shortcutSettingsMove": "Impostazione precedente / successiva",
+  "shortcutSettingsChange": "Cambia il valore o scegli la colonna",
+  "shortcutSettingsToggle": "Commuta, apri l’elenco o premi il pulsante",
+  "shortcutSettingsReorder": "Sposta la voce su / giù"
+})
+addCatalogEntries("nl", {
+  "settingsPagesKeysHint": "Tab / ⇧ Tab wisselen van pagina · Esc sluit",
+  "settingsKeysHint": "Toetsenbord: 1–3 kiezen de weergave · ↑↓ naar een instelling · ←→ wijzigen of kolom kiezen · Spatie schakelt · ⇧↑↓ verplaatst het item",
+  "shortcutSettingsSurface": "Instellingen balk / widget / app",
+  "shortcutSettingsMove": "Vorige / volgende instelling",
+  "shortcutSettingsChange": "Waarde wijzigen of kolom kiezen",
+  "shortcutSettingsToggle": "Schakelen, lijst openen of knop indrukken",
+  "shortcutSettingsReorder": "Item omhoog / omlaag verplaatsen"
+})
+addCatalogEntries("tr", {
+  "settingsPagesKeysHint": "Tab / ⇧ Tab sayfa değiştirir · Esc kapatır",
+  "settingsKeysHint": "Klavye: 1–3 görünümü seçer · ↑↓ ayara gider · ←→ değiştirir veya sütun seçer · Boşluk açar/kapatır · ⇧↑↓ girdiyi taşır",
+  "shortcutSettingsSurface": "Çubuk / widget / uygulama ayarları",
+  "shortcutSettingsMove": "Önceki / sonraki ayar",
+  "shortcutSettingsChange": "Değeri değiştir veya sütun seç",
+  "shortcutSettingsToggle": "Aç/kapat, listeyi aç veya düğmeye bas",
+  "shortcutSettingsReorder": "Girdiyi yukarı / aşağı taşı"
+})
+addCatalogEntries("cs", {
+  "settingsPagesKeysHint": "Tab / ⇧ Tab mění stránku · Esc zavře",
+  "settingsKeysHint": "Klávesnice: 1–3 volí pohled · ↑↓ na nastavení · ←→ změna nebo volba sloupce · Mezerník přepíná · ⇧↑↓ přesouvá položku",
+  "shortcutSettingsSurface": "Nastavení lišty / widgetu / aplikace",
+  "shortcutSettingsMove": "Předchozí / další nastavení",
+  "shortcutSettingsChange": "Změnit hodnotu nebo zvolit sloupec",
+  "shortcutSettingsToggle": "Přepnout, otevřít seznam nebo stisknout tlačítko",
+  "shortcutSettingsReorder": "Posunout položku nahoru / dolů"
+})
+addCatalogEntries("sv", {
+  "settingsPagesKeysHint": "Tab / ⇧ Tab byter sida · Esc stänger",
+  "settingsKeysHint": "Tangentbord: 1–3 väljer vy · ↑↓ till en inställning · ←→ ändrar eller väljer kolumn · Mellanslag växlar · ⇧↑↓ flyttar posten",
+  "shortcutSettingsSurface": "Inställningar för list / widget / app",
+  "shortcutSettingsMove": "Föregående / nästa inställning",
+  "shortcutSettingsChange": "Ändra värdet eller välj kolumn",
+  "shortcutSettingsToggle": "Växla, öppna listan eller tryck på knappen",
+  "shortcutSettingsReorder": "Flytta posten upp / ned"
+})
+addCatalogEntries("fi", {
+  "settingsPagesKeysHint": "Tab / ⇧ Tab vaihtavat sivua · Esc sulkee",
+  "settingsKeysHint": "Näppäimistö: 1–3 valitsee näkymän · ↑↓ asetukseen · ←→ muuttaa tai valitsee sarakkeen · Välilyönti vaihtaa · ⇧↑↓ siirtää kohdetta",
+  "shortcutSettingsSurface": "Palkin / pienoisohjelman / sovelluksen asetukset",
+  "shortcutSettingsMove": "Edellinen / seuraava asetus",
+  "shortcutSettingsChange": "Muuta arvoa tai valitse sarake",
+  "shortcutSettingsToggle": "Vaihda, avaa luettelo tai paina painiketta",
+  "shortcutSettingsReorder": "Siirrä kohdetta ylös / alas"
+})
+addCatalogEntries("nb", {
+  "settingsPagesKeysHint": "Tab / ⇧ Tab bytter side · Esc lukker",
+  "settingsKeysHint": "Tastatur: 1–3 velger visning · ↑↓ til en innstilling · ←→ endrer eller velger kolonne · Mellomrom slår av/på · ⇧↑↓ flytter oppføringen",
+  "shortcutSettingsSurface": "Innstillinger for linje / widget / app",
+  "shortcutSettingsMove": "Forrige / neste innstilling",
+  "shortcutSettingsChange": "Endre verdien eller velg kolonne",
+  "shortcutSettingsToggle": "Slå av/på, åpne listen eller trykk på knappen",
+  "shortcutSettingsReorder": "Flytt oppføringen opp / ned"
+})
+addCatalogEntries("da", {
+  "settingsPagesKeysHint": "Tab / ⇧ Tab skifter side · Esc lukker",
+  "settingsKeysHint": "Tastatur: 1–3 vælger visning · ↑↓ til en indstilling · ←→ ændrer eller vælger kolonne · Mellemrum slår til/fra · ⇧↑↓ flytter posten",
+  "shortcutSettingsSurface": "Indstillinger for bjælke / widget / app",
+  "shortcutSettingsMove": "Forrige / næste indstilling",
+  "shortcutSettingsChange": "Ændr værdien eller vælg kolonne",
+  "shortcutSettingsToggle": "Slå til/fra, åbn listen eller tryk på knappen",
+  "shortcutSettingsReorder": "Flyt posten op / ned"
+})
+addCatalogEntries("ro", {
+  "settingsPagesKeysHint": "Tab / ⇧ Tab schimbă pagina · Esc închide",
+  "settingsKeysHint": "Tastatură: 1–3 aleg vizualizarea · ↑↓ la o setare · ←→ o modifică sau aleg coloana · Spațiu comută · ⇧↑↓ mută intrarea",
+  "shortcutSettingsSurface": "Setări bară / widget / aplicație",
+  "shortcutSettingsMove": "Setarea anterioară / următoare",
+  "shortcutSettingsChange": "Modifică valoarea sau alege coloana",
+  "shortcutSettingsToggle": "Comută, deschide lista sau apasă butonul",
+  "shortcutSettingsReorder": "Mută intrarea în sus / în jos"
+})
+addCatalogEntries("hu", {
+  "settingsPagesKeysHint": "Tab / ⇧ Tab lapoz · Esc bezár",
+  "settingsKeysHint": "Billentyűzet: 1–3 nézetet választ · ↑↓ beállításhoz lép · ←→ módosít vagy oszlopot választ · Szóköz kapcsol · ⇧↑↓ mozgatja a tételt",
+  "shortcutSettingsSurface": "Sáv / widget / alkalmazás beállításai",
+  "shortcutSettingsMove": "Előző / következő beállítás",
+  "shortcutSettingsChange": "Érték módosítása vagy oszlop választása",
+  "shortcutSettingsToggle": "Kapcsolás, lista megnyitása vagy gomb megnyomása",
+  "shortcutSettingsReorder": "Tétel mozgatása fel / le"
+})
+addCatalogEntries("el", {
+  "settingsPagesKeysHint": "Tab / ⇧ Tab αλλάζουν σελίδα · Esc κλείνει",
+  "settingsKeysHint": "Πληκτρολόγιο: 1–3 επιλέγουν προβολή · ↑↓ σε ρύθμιση · ←→ αλλαγή ή επιλογή στήλης · Διάστημα εναλλάσσει · ⇧↑↓ μετακινεί την καταχώριση",
+  "shortcutSettingsSurface": "Ρυθμίσεις γραμμής / widget / εφαρμογής",
+  "shortcutSettingsMove": "Προηγούμενη / επόμενη ρύθμιση",
+  "shortcutSettingsChange": "Αλλαγή τιμής ή επιλογή στήλης",
+  "shortcutSettingsToggle": "Εναλλαγή, άνοιγμα λίστας ή πάτημα κουμπιού",
+  "shortcutSettingsReorder": "Μετακίνηση καταχώρισης πάνω / κάτω"
+})
+addCatalogEntries("zh_CN", {
+  "settingsPagesKeysHint": "Tab / ⇧ Tab 切换页面 · Esc 关闭",
+  "settingsKeysHint": "键盘：1–3 选择视图 · ↑↓ 移到设置项 · ←→ 更改或选择列 · 空格切换 · ⇧↑↓ 移动条目",
+  "shortcutSettingsSurface": "菜单栏 / 小组件 / 应用设置",
+  "shortcutSettingsMove": "上一个 / 下一个设置项",
+  "shortcutSettingsChange": "更改数值或选择开关列",
+  "shortcutSettingsToggle": "切换、打开列表或按下按钮",
+  "shortcutSettingsReorder": "上移 / 下移条目"
+})
+addCatalogEntries("zh_TW", {
+  "settingsPagesKeysHint": "Tab / ⇧ Tab 切換頁面 · Esc 關閉",
+  "settingsKeysHint": "鍵盤：1–3 選擇檢視 · ↑↓ 移到設定項 · ←→ 變更或選擇欄 · 空白鍵切換 · ⇧↑↓ 移動項目",
+  "shortcutSettingsSurface": "選單列 / 小工具 / 應用程式設定",
+  "shortcutSettingsMove": "上一個 / 下一個設定項",
+  "shortcutSettingsChange": "變更數值或選擇開關欄",
+  "shortcutSettingsToggle": "切換、開啟清單或按下按鈕",
+  "shortcutSettingsReorder": "上移 / 下移項目"
+})
+addCatalogEntries("ja", {
+  "settingsPagesKeysHint": "Tab / ⇧ Tab でページ切替 · Esc で閉じる",
+  "settingsKeysHint": "キーボード：1–3 で表示先を選択 · ↑↓ で設定へ移動 · ←→ で変更・列の選択 · Space で切替 · ⇧↑↓ で項目を移動",
+  "shortcutSettingsSurface": "メニューバー / ウィジェット / アプリの設定",
+  "shortcutSettingsMove": "前 / 次の設定",
+  "shortcutSettingsChange": "値を変更、またはスイッチ列を選択",
+  "shortcutSettingsToggle": "切替、リストを開く、またはボタンを押す",
+  "shortcutSettingsReorder": "項目を上 / 下へ移動"
+})
+addCatalogEntries("ko", {
+  "settingsPagesKeysHint": "Tab / ⇧ Tab 페이지 전환 · Esc 닫기",
+  "settingsKeysHint": "키보드: 1–3 보기 선택 · ↑↓ 설정으로 이동 · ←→ 변경 또는 열 선택 · Space 전환 · ⇧↑↓ 항목 이동",
+  "shortcutSettingsSurface": "메뉴 막대 / 위젯 / 앱 설정",
+  "shortcutSettingsMove": "이전 / 다음 설정",
+  "shortcutSettingsChange": "값 변경 또는 스위치 열 선택",
+  "shortcutSettingsToggle": "전환, 목록 열기 또는 버튼 누르기",
+  "shortcutSettingsReorder": "항목을 위 / 아래로 이동"
+})
+addCatalogEntries("ar", {
+  "settingsPagesKeysHint": "Tab / ⇧ Tab لتبديل الصفحة · Esc للإغلاق",
+  "settingsKeysHint": "لوحة المفاتيح: 1–3 لاختيار العرض · ↑↓ للانتقال إلى إعداد · ←→ للتغيير أو اختيار العمود · المسافة للتبديل · ⇧↑↓ لنقل العنصر",
+  "shortcutSettingsSurface": "إعدادات الشريط / الأداة / التطبيق",
+  "shortcutSettingsMove": "الإعداد السابق / التالي",
+  "shortcutSettingsChange": "تغيير القيمة أو اختيار العمود",
+  "shortcutSettingsToggle": "تبديل أو فتح القائمة أو ضغط الزر",
+  "shortcutSettingsReorder": "نقل العنصر لأعلى / لأسفل"
+})
+addCatalogEntries("he", {
+  "settingsPagesKeysHint": "Tab / ⇧ Tab מחליפים עמוד · Esc סוגר",
+  "settingsKeysHint": "מקלדת: 1–3 בוחרים תצוגה · ↑↓ להגדרה · ←→ שינוי או בחירת עמודה · רווח מחליף · ⇧↑↓ מזיז את הפריט",
+  "shortcutSettingsSurface": "הגדרות סרגל / וידג׳ט / אפליקציה",
+  "shortcutSettingsMove": "הגדרה קודמת / הבאה",
+  "shortcutSettingsChange": "שינוי הערך או בחירת עמודה",
+  "shortcutSettingsToggle": "החלפה, פתיחת רשימה או לחיצה על כפתור",
+  "shortcutSettingsReorder": "הזזת הפריט למעלה / למטה"
+})
+addCatalogEntries("fa", {
+  "settingsPagesKeysHint": "Tab / ⇧ Tab صفحه را عوض می‌کنند · Esc می‌بندد",
+  "settingsKeysHint": "صفحه‌کلید: ۱–۳ انتخاب نما · ↑↓ رفتن به تنظیم · ←→ تغییر یا انتخاب ستون · فاصله تغییر وضعیت · ⇧↑↓ جابه‌جایی مورد",
+  "shortcutSettingsSurface": "تنظیمات نوار / ابزارک / برنامه",
+  "shortcutSettingsMove": "تنظیم قبلی / بعدی",
+  "shortcutSettingsChange": "تغییر مقدار یا انتخاب ستون",
+  "shortcutSettingsToggle": "تغییر وضعیت، باز کردن فهرست یا زدن دکمه",
+  "shortcutSettingsReorder": "جابه‌جایی مورد به بالا / پایین"
+})
+addCatalogEntries("hi", {
+  "settingsPagesKeysHint": "Tab / ⇧ Tab पेज बदलते हैं · Esc बंद करता है",
+  "settingsKeysHint": "कीबोर्ड: 1–3 दृश्य चुनें · ↑↓ सेटिंग पर जाएँ · ←→ बदलें या कॉलम चुनें · Space टॉगल · ⇧↑↓ प्रविष्टि खिसकाएँ",
+  "shortcutSettingsSurface": "मेनू बार / विजेट / ऐप सेटिंग्स",
+  "shortcutSettingsMove": "पिछली / अगली सेटिंग",
+  "shortcutSettingsChange": "मान बदलें या स्विच कॉलम चुनें",
+  "shortcutSettingsToggle": "टॉगल करें, सूची खोलें या बटन दबाएँ",
+  "shortcutSettingsReorder": "प्रविष्टि ऊपर / नीचे खिसकाएँ"
+})
+addCatalogEntries("id", {
+  "settingsPagesKeysHint": "Tab / ⇧ Tab ganti halaman · Esc menutup",
+  "settingsKeysHint": "Keyboard: 1–3 pilih tampilan · ↑↓ ke pengaturan · ←→ ubah atau pilih kolom · Spasi mengalihkan · ⇧↑↓ memindahkan entri",
+  "shortcutSettingsSurface": "Pengaturan bilah / widget / aplikasi",
+  "shortcutSettingsMove": "Pengaturan sebelumnya / berikutnya",
+  "shortcutSettingsChange": "Ubah nilai atau pilih kolom",
+  "shortcutSettingsToggle": "Alihkan, buka daftar, atau tekan tombol",
+  "shortcutSettingsReorder": "Pindahkan entri ke atas / bawah"
+})
+addCatalogEntries("vi", {
+  "settingsPagesKeysHint": "Tab / ⇧ Tab chuyển trang · Esc đóng",
+  "settingsKeysHint": "Bàn phím: 1–3 chọn chế độ xem · ↑↓ tới cài đặt · ←→ thay đổi hoặc chọn cột · Space bật/tắt · ⇧↑↓ di chuyển mục",
+  "shortcutSettingsSurface": "Cài đặt thanh / tiện ích / ứng dụng",
+  "shortcutSettingsMove": "Cài đặt trước / sau",
+  "shortcutSettingsChange": "Đổi giá trị hoặc chọn cột",
+  "shortcutSettingsToggle": "Bật/tắt, mở danh sách hoặc nhấn nút",
+  "shortcutSettingsReorder": "Di chuyển mục lên / xuống"
+})
+addCatalogEntries("th", {
+  "settingsPagesKeysHint": "Tab / ⇧ Tab เปลี่ยนหน้า · Esc ปิด",
+  "settingsKeysHint": "แป้นพิมพ์: 1–3 เลือกมุมมอง · ↑↓ ไปยังการตั้งค่า · ←→ เปลี่ยนค่าหรือเลือกคอลัมน์ · Space สลับ · ⇧↑↓ ย้ายรายการ",
+  "shortcutSettingsSurface": "การตั้งค่าแถบ / วิดเจ็ต / แอป",
+  "shortcutSettingsMove": "การตั้งค่าก่อนหน้า / ถัดไป",
+  "shortcutSettingsChange": "เปลี่ยนค่าหรือเลือกคอลัมน์สวิตช์",
+  "shortcutSettingsToggle": "สลับ เปิดรายการ หรือกดปุ่ม",
+  "shortcutSettingsReorder": "ย้ายรายการขึ้น / ลง"
+})
+
+// Data sources added in 2.5 (MeteoSwiss, regional radar nowcasts, FMI radar,
+// warnings for Australia, New Zealand and Japan): sentences and list entries
+// added to the translated source texts rather than retranslating them.
+function amendCatalogEntry(language, key, change) {
+  var table = catalog[language]
+  if (table && typeof table[key] === "string") table[key] = change(table[key])
+}
+
+var sourceAdditions = {
+  "en": [
+    "In Switzerland and Liechtenstein MeteoSwiss ICON-CH (1–2 km) leads for the first five days; Best Match covers the rest.",
+    "Radar amounts also come from MET Norway's nowcast in Norway, Sweden, Finland and Denmark (every 5 minutes) and from GeoSphere Austria's INCA nowcast in Austria (1 km, every 15 minutes).",
+    "Radar amounts also in NO, SE, FI, DK (MET Norway) and AT (GeoSphere Austria).",
+    "Also the Australian Bureau of Meteorology (per state), New Zealand's MetService and the Japan Meteorological Agency (per municipality)."
+  ],
+  "de": [
+    "In der Schweiz und in Liechtenstein führt MeteoSwiss ICON-CH (1–2 km) die ersten fünf Tage; Best Match deckt den Rest ab.",
+    "Radarmengen kommen außerdem aus dem Nowcast von MET Norway in Norwegen, Schweden, Finnland und Dänemark (alle 5 Minuten) und aus dem INCA-Nowcast von GeoSphere Austria in Österreich (1 km, alle 15 Minuten).",
+    "Radarmengen auch in NO, SE, FI, DK (MET Norway) und AT (GeoSphere Austria).",
+    "Außerdem das australische Bureau of Meteorology (je Bundesstaat), MetService in Neuseeland und die Japan Meteorological Agency (je Gemeinde)."
+  ],
+  "es": [
+    "En Suiza y Liechtenstein manda MeteoSwiss ICON-CH (1–2 km) los primeros cinco días; Best Match cubre el resto.",
+    "Las cantidades de radar también proceden del nowcast de MET Norway en Noruega, Suecia, Finlandia y Dinamarca (cada 5 minutos) y del nowcast INCA de GeoSphere Austria en Austria (1 km, cada 15 minutos).",
+    "Cantidades de radar también en NO, SE, FI, DK (MET Norway) y AT (GeoSphere Austria).",
+    "También el Bureau of Meteorology de Australia (por estado), MetService de Nueva Zelanda y la Agencia Meteorológica de Japón (por municipio)."
+  ],
+  "fr": [
+    "En Suisse et au Liechtenstein, MeteoSwiss ICON-CH (1–2 km) prime les cinq premiers jours ; Best Match couvre le reste.",
+    "Les cumuls radar viennent aussi du nowcast de MET Norway en Norvège, Suède, Finlande et Danemark (toutes les 5 minutes) et du nowcast INCA de GeoSphere Austria en Autriche (1 km, toutes les 15 minutes).",
+    "Cumuls radar aussi en NO, SE, FI, DK (MET Norway) et AT (GeoSphere Austria).",
+    "Aussi le Bureau of Meteorology australien (par État), MetService en Nouvelle-Zélande et l’Agence météorologique du Japon (par commune)."
+  ],
+  "pt": [
+    "Na Suíça e no Liechtenstein, o MeteoSwiss ICON-CH (1–2 km) lidera nos primeiros cinco dias; o Best Match cobre o resto.",
+    "As quantidades de radar também vêm do nowcast do MET Norway na Noruega, Suécia, Finlândia e Dinamarca (a cada 5 minutos) e do nowcast INCA da GeoSphere Austria na Áustria (1 km, a cada 15 minutos).",
+    "Quantidades de radar também em NO, SE, FI, DK (MET Norway) e AT (GeoSphere Austria).",
+    "Também o Bureau of Meteorology da Austrália (por estado), a MetService da Nova Zelândia e a Agência Meteorológica do Japão (por município)."
+  ],
+  "ru": [
+    "В Швейцарии и Лихтенштейне первые пять дней ведёт MeteoSwiss ICON-CH (1–2 км); остальное — Best Match.",
+    "Радарные количества также берутся из наукаста MET Norway в Норвегии, Швеции, Финляндии и Дании (каждые 5 минут) и из наукаста INCA GeoSphere Austria в Австрии (1 км, каждые 15 минут).",
+    "Радарные количества также в NO, SE, FI, DK (MET Norway) и AT (GeoSphere Austria).",
+    "Также Бюро метеорологии Австралии (по штатам), MetService Новой Зеландии и Японское метеорологическое агентство (по муниципалитетам)."
+  ],
+  "uk": [
+    "У Швейцарії та Ліхтенштейні перші п’ять днів веде MeteoSwiss ICON-CH (1–2 км); решту — Best Match.",
+    "Радарні кількості також надходять із наукасту MET Norway у Норвегії, Швеції, Фінляндії та Данії (кожні 5 хвилин) і з наукасту INCA GeoSphere Austria в Австрії (1 км, кожні 15 хвилин).",
+    "Радарні кількості також у NO, SE, FI, DK (MET Norway) і AT (GeoSphere Austria).",
+    "Також Бюро метеорології Австралії (за штатами), MetService Нової Зеландії та Японське метеорологічне агентство (за муніципалітетами)."
+  ],
+  "pl": [
+    "W Szwajcarii i Liechtensteinie przez pierwsze pięć dni prowadzi MeteoSwiss ICON-CH (1–2 km); resztę pokrywa Best Match.",
+    "Ilości radarowe pochodzą też z nowcastu MET Norway w Norwegii, Szwecji, Finlandii i Danii (co 5 minut) oraz z nowcastu INCA GeoSphere Austria w Austrii (1 km, co 15 minut).",
+    "Ilości radarowe także w NO, SE, FI, DK (MET Norway) i AT (GeoSphere Austria).",
+    "Także australijskie Bureau of Meteorology (według stanów), MetService w Nowej Zelandii i Japońska Agencja Meteorologiczna (według gmin)."
+  ],
+  "it": [
+    "In Svizzera e Liechtenstein MeteoSwiss ICON-CH (1–2 km) guida i primi cinque giorni; Best Match copre il resto.",
+    "Le quantità radar provengono anche dal nowcast di MET Norway in Norvegia, Svezia, Finlandia e Danimarca (ogni 5 minuti) e dal nowcast INCA di GeoSphere Austria in Austria (1 km, ogni 15 minuti).",
+    "Quantità radar anche in NO, SE, FI, DK (MET Norway) e AT (GeoSphere Austria).",
+    "Anche il Bureau of Meteorology australiano (per stato), MetService in Nuova Zelanda e l’Agenzia meteorologica giapponese (per comune)."
+  ],
+  "nl": [
+    "In Zwitserland en Liechtenstein leidt MeteoSwiss ICON-CH (1–2 km) de eerste vijf dagen; Best Match dekt de rest.",
+    "Radarhoeveelheden komen ook uit de nowcast van MET Norway in Noorwegen, Zweden, Finland en Denemarken (elke 5 minuten) en uit de INCA-nowcast van GeoSphere Austria in Oostenrijk (1 km, elke 15 minuten).",
+    "Radarhoeveelheden ook in NO, SE, FI, DK (MET Norway) en AT (GeoSphere Austria).",
+    "Ook het Australische Bureau of Meteorology (per staat), MetService in Nieuw-Zeeland en het Japanse meteorologisch instituut (per gemeente)."
+  ],
+  "tr": [
+    "İsviçre ve Lihtenştayn'da ilk beş gün MeteoSwiss ICON-CH (1–2 km) öncülük eder; gerisini Best Match kapsar.",
+    "Radar miktarları ayrıca Norveç, İsveç, Finlandiya ve Danimarka'da MET Norway'in anlık tahmininden (5 dakikada bir) ve Avusturya'da GeoSphere Austria'nın INCA anlık tahmininden (1 km, 15 dakikada bir) gelir.",
+    "Radar miktarları ayrıca NO, SE, FI, DK (MET Norway) ve AT (GeoSphere Austria) için.",
+    "Ayrıca Avustralya Meteoroloji Bürosu (eyalet bazında), Yeni Zelanda MetService ve Japonya Meteoroloji Ajansı (belediye bazında)."
+  ],
+  "cs": [
+    "Ve Švýcarsku a Lichtenštejnsku vede prvních pět dní MeteoSwiss ICON-CH (1–2 km); zbytek pokrývá Best Match.",
+    "Radarové úhrny pocházejí také z nowcastu MET Norway v Norsku, Švédsku, Finsku a Dánsku (každých 5 minut) a z nowcastu INCA GeoSphere Austria v Rakousku (1 km, každých 15 minut).",
+    "Radarové úhrny také v NO, SE, FI, DK (MET Norway) a AT (GeoSphere Austria).",
+    "Také australský Bureau of Meteorology (po státech), novozélandská MetService a Japonská meteorologická agentura (po obcích)."
+  ],
+  "sv": [
+    "I Schweiz och Liechtenstein leder MeteoSwiss ICON-CH (1–2 km) de första fem dagarna; Best Match täcker resten.",
+    "Radarmängder kommer också från MET Norways nowcast i Norge, Sverige, Finland och Danmark (var 5:e minut) och från GeoSphere Austrias INCA-nowcast i Österrike (1 km, var 15:e minut).",
+    "Radarmängder även i NO, SE, FI, DK (MET Norway) och AT (GeoSphere Austria).",
+    "Även australiska Bureau of Meteorology (per delstat), Nya Zeelands MetService och Japans meteorologiska myndighet (per kommun)."
+  ],
+  "fi": [
+    "Sveitsissä ja Liechtensteinissa MeteoSwiss ICON-CH (1–2 km) johtaa viisi ensimmäistä päivää; Best Match kattaa loput.",
+    "Tutkamäärät tulevat myös MET Norwayn nowcastista Norjassa, Ruotsissa, Suomessa ja Tanskassa (5 minuutin välein) sekä GeoSphere Austrian INCA-nowcastista Itävallassa (1 km, 15 minuutin välein).",
+    "Tutkamäärät myös NO, SE, FI, DK (MET Norway) ja AT (GeoSphere Austria).",
+    "Lisäksi Australian Bureau of Meteorology (osavaltioittain), Uuden-Seelannin MetService ja Japanin ilmatieteen virasto (kunnittain)."
+  ],
+  "nb": [
+    "I Sveits og Liechtenstein leder MeteoSwiss ICON-CH (1–2 km) de første fem dagene; Best Match dekker resten.",
+    "Radarmengder kommer også fra MET Norways nowcast i Norge, Sverige, Finland og Danmark (hvert 5. minutt) og fra GeoSphere Austrias INCA-nowcast i Østerrike (1 km, hvert 15. minutt).",
+    "Radarmengder også i NO, SE, FI, DK (MET Norway) og AT (GeoSphere Austria).",
+    "Også australske Bureau of Meteorology (per delstat), New Zealands MetService og Japans meteorologiske byrå (per kommune)."
+  ],
+  "da": [
+    "I Schweiz og Liechtenstein fører MeteoSwiss ICON-CH (1–2 km) de første fem dage; Best Match dækker resten.",
+    "Radarmængder kommer også fra MET Norways nowcast i Norge, Sverige, Finland og Danmark (hvert 5. minut) og fra GeoSphere Austrias INCA-nowcast i Østrig (1 km, hvert 15. minut).",
+    "Radarmængder også i NO, SE, FI, DK (MET Norway) og AT (GeoSphere Austria).",
+    "Også australske Bureau of Meteorology (pr. delstat), New Zealands MetService og Japans meteorologiske institut (pr. kommune)."
+  ],
+  "ro": [
+    "În Elveția și Liechtenstein, MeteoSwiss ICON-CH (1–2 km) conduce primele cinci zile; Best Match acoperă restul.",
+    "Cantitățile radar provin și din nowcastul MET Norway în Norvegia, Suedia, Finlanda și Danemarca (la fiecare 5 minute) și din nowcastul INCA al GeoSphere Austria în Austria (1 km, la fiecare 15 minute).",
+    "Cantități radar și în NO, SE, FI, DK (MET Norway) și AT (GeoSphere Austria).",
+    "De asemenea Bureau of Meteorology din Australia (pe state), MetService din Noua Zeelandă și Agenția Meteorologică a Japoniei (pe municipii)."
+  ],
+  "hu": [
+    "Svájcban és Liechtensteinben az első öt napban a MeteoSwiss ICON-CH (1–2 km) vezet; a többit a Best Match fedi le.",
+    "A radaros mennyiségek a MET Norway nowcastjából is származnak Norvégiában, Svédországban, Finnországban és Dániában (5 percenként), valamint a GeoSphere Austria INCA nowcastjából Ausztriában (1 km, 15 percenként).",
+    "Radaros mennyiségek NO, SE, FI, DK (MET Norway) és AT (GeoSphere Austria) területén is.",
+    "Továbbá az ausztrál Bureau of Meteorology (államonként), az új-zélandi MetService és a Japán Meteorológiai Ügynökség (településenként)."
+  ],
+  "el": [
+    "Στην Ελβετία και το Λιχτενστάιν προηγείται το MeteoSwiss ICON-CH (1–2 km) τις πρώτες πέντε ημέρες· το Best Match καλύπτει τις υπόλοιπες.",
+    "Οι ποσότητες ραντάρ προέρχονται επίσης από το nowcast της MET Norway σε Νορβηγία, Σουηδία, Φινλανδία και Δανία (ανά 5 λεπτά) και από το nowcast INCA της GeoSphere Austria στην Αυστρία (1 km, ανά 15 λεπτά).",
+    "Ποσότητες ραντάρ επίσης σε NO, SE, FI, DK (MET Norway) και AT (GeoSphere Austria).",
+    "Επίσης το Bureau of Meteorology της Αυστραλίας (ανά πολιτεία), η MetService της Νέας Ζηλανδίας και η Μετεωρολογική Υπηρεσία της Ιαπωνίας (ανά δήμο)."
+  ],
+  "zh_CN": [
+    "在瑞士和列支敦士登，前五天以 MeteoSwiss ICON-CH（1–2 公里）为主，其余由 Best Match 补足。",
+    "雷达降水量还来自挪威、瑞典、芬兰和丹麦的 MET Norway 临近预报（每 5 分钟）以及奥地利的 GeoSphere Austria INCA 临近预报（1 公里，每 15 分钟）。",
+    "雷达降水量也覆盖 NO、SE、FI、DK（MET Norway）和 AT（GeoSphere Austria）。",
+    "另有澳大利亚气象局（按州）、新西兰 MetService 和日本气象厅（按市町村）。"
+  ],
+  "zh_TW": [
+    "在瑞士和列支敦斯登，前五天以 MeteoSwiss ICON-CH（1–2 公里）為主，其餘由 Best Match 補足。",
+    "雷達降水量也來自挪威、瑞典、芬蘭和丹麥的 MET Norway 即時預報（每 5 分鐘）以及奧地利的 GeoSphere Austria INCA 即時預報（1 公里，每 15 分鐘）。",
+    "雷達降水量也涵蓋 NO、SE、FI、DK（MET Norway）和 AT（GeoSphere Austria）。",
+    "另有澳洲氣象局（按州）、紐西蘭 MetService 和日本氣象廳（按市町村）。"
+  ],
+  "ja": [
+    "スイスとリヒテンシュタインでは最初の5日間を MeteoSwiss ICON-CH（1–2 km）が担い、残りを Best Match が補います。",
+    "レーダー雨量は、ノルウェー・スウェーデン・フィンランド・デンマークでは MET Norway のナウキャスト（5分ごと）、オーストリアでは GeoSphere Austria の INCA ナウキャスト（1 km、15分ごと）からも取得します。",
+    "レーダー雨量は NO・SE・FI・DK（MET Norway）と AT（GeoSphere Austria）にも対応。",
+    "ほかにオーストラリア気象局（州ごと）、ニュージーランドの MetService、気象庁（市町村ごと）。"
+  ],
+  "ko": [
+    "스위스와 리히텐슈타인에서는 처음 5일 동안 MeteoSwiss ICON-CH(1–2 km)가 우선하고 나머지는 Best Match가 채웁니다.",
+    "레이더 강수량은 노르웨이·스웨덴·핀란드·덴마크에서는 MET Norway 초단기 예보(5분마다), 오스트리아에서는 GeoSphere Austria INCA 초단기 예보(1 km, 15분마다)에서도 가져옵니다.",
+    "레이더 강수량은 NO, SE, FI, DK(MET Norway)와 AT(GeoSphere Austria)에서도 제공됩니다.",
+    "또한 호주 기상청(주별), 뉴질랜드 MetService, 일본 기상청(시정촌별)."
+  ],
+  "ar": [
+    "في سويسرا وليختنشتاين يتصدر MeteoSwiss ICON-CH (1–2 كم) الأيام الخمسة الأولى، ويغطي Best Match الباقي.",
+    "تأتي كميات الرادار أيضًا من التنبؤ الآني لـ MET Norway في النرويج والسويد وفنلندا والدنمارك (كل 5 دقائق) ومن تنبؤ INCA الآني لـ GeoSphere Austria في النمسا (1 كم، كل 15 دقيقة).",
+    "كميات الرادار متاحة أيضًا في NO وSE وFI وDK (MET Norway) وAT (GeoSphere Austria).",
+    "وكذلك مكتب الأرصاد الجوية الأسترالي (حسب الولاية) وMetService في نيوزيلندا ووكالة الأرصاد الجوية اليابانية (حسب البلدية)."
+  ],
+  "he": [
+    "בשווייץ ובליכטנשטיין מוביל MeteoSwiss ICON-CH (1–2 ק״מ) בחמשת הימים הראשונים; Best Match משלים את השאר.",
+    "כמויות המכ״ם מגיעות גם מתחזית ה-nowcast של MET Norway בנורווגיה, שוודיה, פינלנד ודנמרק (כל 5 דקות) ומתחזית ה-INCA של GeoSphere Austria באוסטריה (1 ק״מ, כל 15 דקות).",
+    "כמויות מכ״ם גם ב-NO, SE, FI, DK (MET Norway) וב-AT (GeoSphere Austria).",
+    "וגם הלשכה המטאורולוגית של אוסטרליה (לפי מדינה), MetService בניו זילנד והסוכנות המטאורולוגית של יפן (לפי רשות מקומית)."
+  ],
+  "fa": [
+    "در سوئیس و لیختن‌اشتاین، MeteoSwiss ICON-CH (۱–۲ کیلومتر) پنج روز نخست را پیش می‌برد و Best Match بقیه را پوشش می‌دهد.",
+    "مقادیر رادار همچنین از پیش‌بینی آنی MET Norway در نروژ، سوئد، فنلاند و دانمارک (هر ۵ دقیقه) و از پیش‌بینی آنی INCA ژئوسفر اتریش در اتریش (۱ کیلومتر، هر ۱۵ دقیقه) می‌آید.",
+    "مقادیر رادار همچنین در NO، SE، FI، DK (MET Norway) و AT (GeoSphere Austria).",
+    "همچنین اداره هواشناسی استرالیا (به تفکیک ایالت)، MetService نیوزیلند و سازمان هواشناسی ژاپن (به تفکیک شهرداری)."
+  ],
+  "hi": [
+    "स्विट्ज़रलैंड और लिकटेंस्टाइन में पहले पाँच दिन MeteoSwiss ICON-CH (1–2 किमी) आगे रहता है; बाकी Best Match से।",
+    "रडार वर्षा मात्रा नॉर्वे, स्वीडन, फ़िनलैंड और डेनमार्क में MET Norway के नाउकास्ट (हर 5 मिनट) और ऑस्ट्रिया में GeoSphere Austria के INCA नाउकास्ट (1 किमी, हर 15 मिनट) से भी आती है।",
+    "रडार मात्रा NO, SE, FI, DK (MET Norway) और AT (GeoSphere Austria) में भी।",
+    "साथ ही ऑस्ट्रेलियाई मौसम ब्यूरो (राज्यवार), न्यूज़ीलैंड की MetService और जापान मौसम विज्ञान एजेंसी (नगरपालिका-वार)।"
+  ],
+  "id": [
+    "Di Swiss dan Liechtenstein, MeteoSwiss ICON-CH (1–2 km) memimpin untuk lima hari pertama; Best Match mengisi sisanya.",
+    "Jumlah radar juga berasal dari nowcast MET Norway di Norwegia, Swedia, Finlandia, dan Denmark (setiap 5 menit) serta dari nowcast INCA GeoSphere Austria di Austria (1 km, setiap 15 menit).",
+    "Jumlah radar juga di NO, SE, FI, DK (MET Norway) dan AT (GeoSphere Austria).",
+    "Juga Bureau of Meteorology Australia (per negara bagian), MetService Selandia Baru, dan Badan Meteorologi Jepang (per kotamadya)."
+  ],
+  "vi": [
+    "Tại Thụy Sĩ và Liechtenstein, MeteoSwiss ICON-CH (1–2 km) dẫn đầu trong năm ngày đầu; Best Match bổ sung phần còn lại.",
+    "Lượng mưa radar cũng lấy từ nowcast của MET Norway ở Na Uy, Thụy Điển, Phần Lan và Đan Mạch (mỗi 5 phút) và từ nowcast INCA của GeoSphere Austria ở Áo (1 km, mỗi 15 phút).",
+    "Lượng mưa radar cũng có ở NO, SE, FI, DK (MET Norway) và AT (GeoSphere Austria).",
+    "Ngoài ra còn Cục Khí tượng Úc (theo bang), MetService của New Zealand và Cơ quan Khí tượng Nhật Bản (theo đô thị)."
+  ],
+  "th": [
+    "ในสวิตเซอร์แลนด์และลิกเตนสไตน์ ใช้ MeteoSwiss ICON-CH (1–2 กม.) เป็นหลักในห้าวันแรก และ Best Match ครอบคลุมส่วนที่เหลือ",
+    "ปริมาณจากเรดาร์ยังมาจาก nowcast ของ MET Norway ในนอร์เวย์ สวีเดน ฟินแลนด์ และเดนมาร์ก (ทุก 5 นาที) และจาก nowcast INCA ของ GeoSphere Austria ในออสเตรีย (1 กม. ทุก 15 นาที)",
+    "ปริมาณจากเรดาร์ยังมีใน NO, SE, FI, DK (MET Norway) และ AT (GeoSphere Austria)",
+    "รวมถึงสำนักอุตุนิยมวิทยาออสเตรเลีย (รายรัฐ) MetService ของนิวซีแลนด์ และสำนักงานอุตุนิยมวิทยาญี่ปุ่น (รายเทศบาล)"
+  ]
+}
+
+function withListEntry(text, entry, before) {
+  // CJK texts set the separator without a space before it.
+  var parts = String(text).split(/\s*·\s*/)
+  var index = Math.max(0, parts.length - before)
+  parts.splice(index, 0, entry)
+  return parts.join(" · ")
+}
+
+for (var sourceLanguage in sourceAdditions) {
+  var additions = sourceAdditions[sourceLanguage]
+  amendCatalogEntry(sourceLanguage, "sourceGroupForecastDetails", function(text) { return text + " " + additions[0] })
+  amendCatalogEntry(sourceLanguage, "sourceGroupForecastCoverage", function(text) { return text + " · CH, LI: MeteoSwiss ICON-CH" })
+  amendCatalogEntry(sourceLanguage, "sourceGroupNowcastDetails", function(text) { return text + " " + additions[1] })
+  amendCatalogEntry(sourceLanguage, "sourceGroupNowcastCoverage", function(text) { return text + " " + additions[2] })
+  // Radar: Finland and the Netherlands before RainViewer and the model.
+  amendCatalogEntry(sourceLanguage, "sourceGroupRadarCoverage", function(text) {
+    return withListEntry(withListEntry(withListEntry(text, "FI (FMI)", 2), "NL (KNMI)", 2), "JP (JMA)", 2)
+  })
+  // Buienradar (the KNMI radar) for the Netherlands and Belgium; brand and
+  // country codes read the same in every language.
+  amendCatalogEntry(sourceLanguage, "sourceGroupNowcastDetails", function(text) { return text + " NL, BE: Buienradar (KNMI radar). JP: JMA (radar nowcast, 1 h)." })
+  amendCatalogEntry(sourceLanguage, "sourceGroupNowcastCoverage", function(text) { return text + " NL, BE: Buienradar. JP: JMA." })
+  amendCatalogEntry(sourceLanguage, "sourceGroupWarningsDetails", function(text) { return text + " " + additions[3] })
+  // Warnings: the new countries before the closing "none elsewhere".
+  amendCatalogEntry(sourceLanguage, "sourceGroupWarningsCoverage",
+    function(text) { return withListEntry(text, "AU: BOM · NZ: MetService · JP: JMA", 1) })
+}
+
+addCatalogEntries("en", {
+  "sourceKnmiRadar": "KNMI · OFFICIAL RADAR",
+  "sourceJmaRadar": "JMA · OFFICIAL RADAR",
+  "sourceBuienradarNowcast": "BUIENRADAR",
+  "sourceJmaNowcast": "JMA NOWCAST",
+  "sourceMeteoSwiss": "METEOSWISS · ICON-CH",
+  "sourceMetNowcast": "MET NORWAY NOWCAST",
+  "sourceGeoSphereNowcast": "GEOSPHERE AUSTRIA · INCA",
+  "sourceFmiRadar": "FMI · OFFICIAL RADAR",
+  "sourceBomWarnings": "BOM WARNINGS",
+  "sourceMetServiceWarnings": "METSERVICE WARNINGS",
+  "sourceJmaWarnings": "JMA WARNINGS"
+})
+addCatalogEntries("de", {
+  "sourceKnmiRadar": "KNMI · AMTLICHES RADAR",
+  "sourceJmaRadar": "JMA · AMTLICHES RADAR",
+  "sourceBuienradarNowcast": "BUIENRADAR",
+  "sourceJmaNowcast": "JMA-NOWCAST",
+  "sourceMeteoSwiss": "METEOSCHWEIZ · ICON-CH",
+  "sourceMetNowcast": "MET NORWAY NOWCAST",
+  "sourceGeoSphereNowcast": "GEOSPHERE AUSTRIA · INCA",
+  "sourceFmiRadar": "FMI · AMTLICHES RADAR",
+  "sourceBomWarnings": "BOM-WARNUNGEN",
+  "sourceMetServiceWarnings": "METSERVICE-WARNUNGEN",
+  "sourceJmaWarnings": "JMA-WARNUNGEN"
+})
+
+// Warnings beyond the dedicated services (2.5): INMET, SMN and the official
+// CAP feeds of the Alert Hub register replace the closing "none elsewhere".
+var warningAdditions = {
+  "en": [
+    "Everywhere else the official CAP warning feeds of the country's alerting authorities registered with the WMO (via the Alert Hub register); Brazil's INMET and Argentina's SMN directly.",
+    "BR: INMET · AR: SMN · elsewhere the official CAP feeds registered with the WMO, where the country publishes one (about 115 countries today)."
+  ],
+  "de": [
+    "Überall sonst die amtlichen CAP-Warnfeeds der bei der WMO registrierten Warnbehörden des Landes (über das Alert-Hub-Register); INMET in Brasilien und SMN in Argentinien direkt.",
+    "BR: INMET · AR: SMN · sonst die bei der WMO registrierten amtlichen CAP-Feeds, sofern das Land einen veröffentlicht (derzeit etwa 115 Länder)."
+  ],
+  "es": [
+    "En el resto, los canales CAP oficiales de las autoridades de alerta del país registradas en la OMM (a través del registro Alert Hub); INMET de Brasil y SMN de Argentina directamente.",
+    "BR: INMET · AR: SMN · en el resto, los canales CAP oficiales registrados en la OMM, si el país publica uno (hoy unos 115 países)."
+  ],
+  "fr": [
+    "Ailleurs, les flux CAP officiels des autorités d’alerte du pays enregistrées auprès de l’OMM (via le registre Alert Hub) ; l’INMET au Brésil et le SMN en Argentine directement.",
+    "BR : INMET · AR : SMN · ailleurs, les flux CAP officiels enregistrés auprès de l’OMM, si le pays en publie un (environ 115 pays aujourd’hui)."
+  ],
+  "pt": [
+    "No restante, os feeds CAP oficiais das autoridades de alerta do país registradas na OMM (pelo registro Alert Hub); o INMET no Brasil e o SMN na Argentina diretamente.",
+    "BR: INMET · AR: SMN · no restante, os feeds CAP oficiais registrados na OMM, se o país publicar um (hoje cerca de 115 países)."
+  ],
+  "ru": [
+    "В остальных странах — официальные CAP-ленты национальных служб оповещения, зарегистрированных в ВМО (через реестр Alert Hub); INMET в Бразилии и SMN в Аргентине напрямую.",
+    "BR: INMET · AR: SMN · в остальных странах — официальные CAP-ленты, зарегистрированные в ВМО, если страна их публикует (сейчас около 115 стран)."
+  ],
+  "uk": [
+    "В інших країнах — офіційні CAP-стрічки національних служб оповіщення, зареєстрованих у ВМО (через реєстр Alert Hub); INMET у Бразилії та SMN в Аргентині напряму.",
+    "BR: INMET · AR: SMN · в інших країнах — офіційні CAP-стрічки, зареєстровані у ВМО, якщо країна їх публікує (зараз близько 115 країн)."
+  ],
+  "pl": [
+    "Gdzie indziej oficjalne kanały CAP krajowych służb ostrzegawczych zarejestrowanych w WMO (przez rejestr Alert Hub); INMET w Brazylii i SMN w Argentynie bezpośrednio.",
+    "BR: INMET · AR: SMN · gdzie indziej oficjalne kanały CAP zarejestrowane w WMO, jeśli kraj taki publikuje (obecnie ok. 115 krajów)."
+  ],
+  "it": [
+    "Altrove i feed CAP ufficiali delle autorità di allerta del paese registrate presso l’OMM (tramite il registro Alert Hub); l’INMET in Brasile e lo SMN in Argentina direttamente.",
+    "BR: INMET · AR: SMN · altrove i feed CAP ufficiali registrati presso l’OMM, se il paese ne pubblica uno (oggi circa 115 paesi)."
+  ],
+  "nl": [
+    "Elders de officiële CAP-feeds van de bij de WMO geregistreerde waarschuwingsinstanties van het land (via het Alert Hub-register); INMET in Brazilië en SMN in Argentinië rechtstreeks.",
+    "BR: INMET · AR: SMN · elders de bij de WMO geregistreerde officiële CAP-feeds, als het land er een publiceert (nu ongeveer 115 landen)."
+  ],
+  "tr": [
+    "Diğer her yerde, ülkenin DMÖ'ye kayıtlı uyarı kurumlarının resmî CAP akışları (Alert Hub kaydı üzerinden); Brezilya'da INMET ve Arjantin'de SMN doğrudan.",
+    "BR: INMET · AR: SMN · diğer yerlerde, ülke yayımlıyorsa DMÖ'ye kayıtlı resmî CAP akışları (bugün yaklaşık 115 ülke)."
+  ],
+  "cs": [
+    "Jinde oficiální CAP kanály výstražných orgánů země registrovaných u WMO (přes registr Alert Hub); INMET v Brazílii a SMN v Argentině přímo.",
+    "BR: INMET · AR: SMN · jinde oficiální CAP kanály registrované u WMO, pokud je země zveřejňuje (dnes asi 115 zemí)."
+  ],
+  "sv": [
+    "Överallt annars de officiella CAP-flödena från landets varningsmyndigheter registrerade hos WMO (via Alert Hub-registret); INMET i Brasilien och SMN i Argentina direkt.",
+    "BR: INMET · AR: SMN · annars de officiella CAP-flöden som är registrerade hos WMO, om landet publicerar ett (i dag cirka 115 länder)."
+  ],
+  "fi": [
+    "Muualla maan WMO:hon rekisteröityjen varoitusviranomaisten viralliset CAP-syötteet (Alert Hub -rekisterin kautta); Brasiliassa INMET ja Argentiinassa SMN suoraan.",
+    "BR: INMET · AR: SMN · muualla WMO:hon rekisteröidyt viralliset CAP-syötteet, jos maa julkaisee sellaisen (nyt noin 115 maata)."
+  ],
+  "nb": [
+    "Ellers de offisielle CAP-strømmene fra landets varslingsmyndigheter registrert hos WMO (via Alert Hub-registeret); INMET i Brasil og SMN i Argentina direkte.",
+    "BR: INMET · AR: SMN · ellers de offisielle CAP-strømmene registrert hos WMO, der landet publiserer en (i dag rundt 115 land)."
+  ],
+  "da": [
+    "Andre steder de officielle CAP-feeds fra landets varslingsmyndigheder registreret hos WMO (via Alert Hub-registret); INMET i Brasilien og SMN i Argentina direkte.",
+    "BR: INMET · AR: SMN · andre steder de officielle CAP-feeds registreret hos WMO, hvis landet udgiver et (i dag omkring 115 lande)."
+  ],
+  "ro": [
+    "În rest, fluxurile CAP oficiale ale autorităților de avertizare din țară înregistrate la OMM (prin registrul Alert Hub); INMET în Brazilia și SMN în Argentina direct.",
+    "BR: INMET · AR: SMN · în rest, fluxurile CAP oficiale înregistrate la OMM, dacă țara publică unul (azi circa 115 țări)."
+  ],
+  "hu": [
+    "Máshol az ország WMO-nál regisztrált riasztó hatóságainak hivatalos CAP-hírcsatornái (az Alert Hub nyilvántartáson keresztül); Brazíliában az INMET, Argentínában az SMN közvetlenül.",
+    "BR: INMET · AR: SMN · máshol a WMO-nál regisztrált hivatalos CAP-csatornák, ha az ország közzétesz ilyet (ma kb. 115 ország)."
+  ],
+  "el": [
+    "Αλλού οι επίσημες ροές CAP των αρχών προειδοποίησης της χώρας που είναι καταχωρισμένες στον ΠΜΟ (μέσω του μητρώου Alert Hub)· το INMET στη Βραζιλία και το SMN στην Αργεντινή απευθείας.",
+    "BR: INMET · AR: SMN · αλλού οι επίσημες ροές CAP που είναι καταχωρισμένες στον ΠΜΟ, εφόσον η χώρα δημοσιεύει (σήμερα περίπου 115 χώρες)."
+  ],
+  "zh_CN": [
+    "其他地区使用该国在世界气象组织登记的预警机构的官方 CAP 预警源（通过 Alert Hub 登记册）；巴西 INMET 和阿根廷 SMN 直接获取。",
+    "BR：INMET · AR：SMN · 其他地区：该国发布的、在世界气象组织登记的官方 CAP 预警源（目前约 115 个国家）。"
+  ],
+  "zh_TW": [
+    "其他地區使用該國在世界氣象組織登記的警報機構之官方 CAP 警報來源（透過 Alert Hub 登記冊）；巴西 INMET 與阿根廷 SMN 直接取得。",
+    "BR：INMET · AR：SMN · 其他地區：該國發布、在世界氣象組織登記的官方 CAP 來源（目前約 115 國）。"
+  ],
+  "ja": [
+    "その他の国では、WMO に登録されたその国の警報機関の公式 CAP フィード（Alert Hub 登録簿経由）。ブラジルの INMET とアルゼンチンの SMN は直接取得します。",
+    "BR：INMET · AR：SMN · その他は、その国が公開している WMO 登録の公式 CAP フィード（現在約 115 か国）。"
+  ],
+  "ko": [
+    "그 밖의 지역은 WMO에 등록된 해당 국가 경보 기관의 공식 CAP 피드(Alert Hub 등록부 경유)를 사용하며, 브라질 INMET과 아르헨티나 SMN은 직접 가져옵니다.",
+    "BR: INMET · AR: SMN · 그 밖에는 해당 국가가 게시하는 WMO 등록 공식 CAP 피드(현재 약 115개국)."
+  ],
+  "ar": [
+    "وفي غير ذلك، خلاصات CAP الرسمية لجهات الإنذار في البلد المسجلة لدى المنظمة العالمية للأرصاد الجوية (عبر سجل Alert Hub)؛ وINMET في البرازيل وSMN في الأرجنتين مباشرة.",
+    "BR: INMET · AR: SMN · وفي غير ذلك خلاصات CAP الرسمية المسجلة لدى المنظمة، إن نشر البلد واحدة (نحو 115 بلدًا حاليًا)."
+  ],
+  "he": [
+    "בכל מקום אחר, ערוצי ה-CAP הרשמיים של רשויות ההתרעה במדינה הרשומות בארגון המטאורולוגי העולמי (דרך מרשם Alert Hub); INMET בברזיל ו-SMN בארגנטינה ישירות.",
+    "BR: INMET · AR: SMN · במקומות אחרים ערוצי ה-CAP הרשמיים הרשומים ב-WMO, אם המדינה מפרסמת כזה (כיום כ-115 מדינות)."
+  ],
+  "fa": [
+    "در جاهای دیگر، خوراک‌های رسمی CAP مراجع هشدار کشور که در سازمان جهانی هواشناسی ثبت شده‌اند (از طریق فهرست Alert Hub)؛ INMET در برزیل و SMN در آرژانتین مستقیم.",
+    "BR: INMET · AR: SMN · در جاهای دیگر خوراک‌های رسمی CAP ثبت‌شده در WMO، اگر کشور یکی منتشر کند (اکنون حدود ۱۱۵ کشور)."
+  ],
+  "hi": [
+    "अन्य जगहों पर देश के WMO में पंजीकृत चेतावनी प्राधिकरणों के आधिकारिक CAP फ़ीड (Alert Hub रजिस्टर के ज़रिए); ब्राज़ील का INMET और अर्जेंटीना का SMN सीधे।",
+    "BR: INMET · AR: SMN · अन्यत्र WMO में पंजीकृत आधिकारिक CAP फ़ीड, यदि देश कोई प्रकाशित करता है (अभी लगभग 115 देश)।"
+  ],
+  "id": [
+    "Di tempat lain, umpan CAP resmi dari otoritas peringatan negara yang terdaftar di WMO (melalui register Alert Hub); INMET di Brasil dan SMN di Argentina secara langsung.",
+    "BR: INMET · AR: SMN · di tempat lain umpan CAP resmi yang terdaftar di WMO, jika negara menerbitkannya (kini sekitar 115 negara)."
+  ],
+  "vi": [
+    "Ở nơi khác, các nguồn CAP chính thức của cơ quan cảnh báo trong nước đã đăng ký với WMO (qua sổ đăng ký Alert Hub); INMET ở Brazil và SMN ở Argentina lấy trực tiếp.",
+    "BR: INMET · AR: SMN · nơi khác dùng nguồn CAP chính thức đăng ký với WMO, nếu quốc gia có công bố (hiện khoảng 115 quốc gia)."
+  ],
+  "th": [
+    "ที่อื่นใช้ฟีด CAP อย่างเป็นทางการของหน่วยงานเตือนภัยของประเทศที่ขึ้นทะเบียนกับ WMO (ผ่านทะเบียน Alert Hub) ส่วน INMET ของบราซิลและ SMN ของอาร์เจนตินาดึงโดยตรง",
+    "BR: INMET · AR: SMN · ที่อื่นใช้ฟีด CAP ทางการที่ขึ้นทะเบียนกับ WMO หากประเทศนั้นเผยแพร่ (ปัจจุบันราว 115 ประเทศ)"
+  ]
+}
+
+for (var warningLanguage in warningAdditions) {
+  var warningTexts = warningAdditions[warningLanguage]
+  amendCatalogEntry(warningLanguage, "sourceGroupWarningsDetails", function(text) { return text + " " + warningTexts[0] })
+  amendCatalogEntry(warningLanguage, "sourceGroupWarningsCoverage", function(text) {
+    var parts = String(text).split(/\s*·\s*/)
+    parts[parts.length - 1] = warningTexts[1]
+    return parts.join(" · ")
+  })
+}
+
+addCatalogEntries("en", {
+  "sourceInmetWarnings": "INMET WARNINGS",
+  "sourceSmnWarnings": "SMN WARNINGS",
+  "sourceAlertHubWarnings": "OFFICIAL CAP WARNINGS"
+})
+addCatalogEntries("de", {
+  "sourceInmetWarnings": "INMET-WARNUNGEN",
+  "sourceSmnWarnings": "SMN-WARNUNGEN",
+  "sourceAlertHubWarnings": "AMTLICHE CAP-WARNUNGEN"
+})
+
+// My places (2.5).
+addCatalogEntries("en", {
+  "myPlaces": "My places",
+  "favoritesHint": "Your favourites (+ in the place search), one per line. A click shows the place; their weather is renewed about every 30 minutes.",
+  "favoritesKeysHint": "Alt 1–9 · Alt ← →",
+  "shortcutFavoriteJump": "Show favourite 1–9",
+  "shortcutFavoriteStep": "Previous / next favourite"
+})
+addCatalogEntries("de", {
+  "myPlaces": "Meine Orte",
+  "favoritesHint": "Deine Favoriten (+ in der Ortssuche), einer pro Zeile. Ein Klick zeigt den Ort; ihr Wetter wird etwa alle 30 Minuten erneuert.",
+  "favoritesKeysHint": "Alt 1–9 · Alt ← →",
+  "shortcutFavoriteJump": "Favorit 1–9 anzeigen",
+  "shortcutFavoriteStep": "Vorheriger / nächster Favorit"
+})
+addCatalogEntries("es", {
+  "myPlaces": "Mis lugares",
+  "favoritesHint": "Tus favoritos (+ en la búsqueda de lugares), uno por línea. Un clic muestra el lugar; su tiempo se renueva cada 30 minutos aprox.",
+  "favoritesKeysHint": "Alt 1–9 · Alt ← →",
+  "shortcutFavoriteJump": "Mostrar favorito 1–9",
+  "shortcutFavoriteStep": "Favorito anterior / siguiente"
+})
+addCatalogEntries("fr", {
+  "myPlaces": "Mes lieux",
+  "favoritesHint": "Vos favoris (+ dans la recherche de lieu), un par ligne. Un clic affiche le lieu ; leur météo est renouvelée env. toutes les 30 minutes.",
+  "favoritesKeysHint": "Alt 1–9 · Alt ← →",
+  "shortcutFavoriteJump": "Afficher le favori 1–9",
+  "shortcutFavoriteStep": "Favori précédent / suivant"
+})
+addCatalogEntries("pt", {
+  "myPlaces": "Meus locais",
+  "favoritesHint": "Seus favoritos (+ na busca de locais), um por linha. Um clique mostra o local; o tempo deles é renovado a cada 30 minutos aprox.",
+  "favoritesKeysHint": "Alt 1–9 · Alt ← →",
+  "shortcutFavoriteJump": "Mostrar favorito 1–9",
+  "shortcutFavoriteStep": "Favorito anterior / seguinte"
+})
+addCatalogEntries("ru", {
+  "myPlaces": "Мои места",
+  "favoritesHint": "Ваше избранное (+ в поиске места), по одному в строке. Щелчок показывает место; погода обновляется примерно каждые 30 минут.",
+  "favoritesKeysHint": "Alt 1–9 · Alt ← →",
+  "shortcutFavoriteJump": "Показать избранное 1–9",
+  "shortcutFavoriteStep": "Предыдущее / следующее избранное"
+})
+addCatalogEntries("uk", {
+  "myPlaces": "Мої місця",
+  "favoritesHint": "Ваші обрані (+ у пошуку місця), по одному в рядку. Клацання показує місце; погода оновлюється приблизно кожні 30 хвилин.",
+  "favoritesKeysHint": "Alt 1–9 · Alt ← →",
+  "shortcutFavoriteJump": "Показати обране 1–9",
+  "shortcutFavoriteStep": "Попереднє / наступне обране"
+})
+addCatalogEntries("pl", {
+  "myPlaces": "Moje miejsca",
+  "favoritesHint": "Twoje ulubione (+ w wyszukiwaniu miejsc), po jednym w wierszu. Kliknięcie pokazuje miejsce; pogoda odświeża się co ok. 30 minut.",
+  "favoritesKeysHint": "Alt 1–9 · Alt ← →",
+  "shortcutFavoriteJump": "Pokaż ulubione 1–9",
+  "shortcutFavoriteStep": "Poprzednie / następne ulubione"
+})
+addCatalogEntries("it", {
+  "myPlaces": "I miei luoghi",
+  "favoritesHint": "I tuoi preferiti (+ nella ricerca del luogo), uno per riga. Un clic mostra il luogo; il loro meteo si rinnova ogni 30 minuti circa.",
+  "favoritesKeysHint": "Alt 1–9 · Alt ← →",
+  "shortcutFavoriteJump": "Mostra preferito 1–9",
+  "shortcutFavoriteStep": "Preferito precedente / successivo"
+})
+addCatalogEntries("nl", {
+  "myPlaces": "Mijn plaatsen",
+  "favoritesHint": "Je favorieten (+ in het zoeken naar plaatsen), één per regel. Een klik toont de plaats; hun weer wordt ongeveer elke 30 minuten ververst.",
+  "favoritesKeysHint": "Alt 1–9 · Alt ← →",
+  "shortcutFavoriteJump": "Favoriet 1–9 tonen",
+  "shortcutFavoriteStep": "Vorige / volgende favoriet"
+})
+addCatalogEntries("tr", {
+  "myPlaces": "Yerlerim",
+  "favoritesHint": "Favorilerin (yer aramasında +), her satırda bir tane. Tıklamak yeri gösterir; hava durumları yaklaşık 30 dakikada bir yenilenir.",
+  "favoritesKeysHint": "Alt 1–9 · Alt ← →",
+  "shortcutFavoriteJump": "Favori 1–9'u göster",
+  "shortcutFavoriteStep": "Önceki / sonraki favori"
+})
+addCatalogEntries("cs", {
+  "myPlaces": "Moje místa",
+  "favoritesHint": "Vaše oblíbená (+ ve vyhledávání místa), jedno na řádek. Kliknutí zobrazí místo; počasí se obnovuje asi každých 30 minut.",
+  "favoritesKeysHint": "Alt 1–9 · Alt ← →",
+  "shortcutFavoriteJump": "Zobrazit oblíbené 1–9",
+  "shortcutFavoriteStep": "Předchozí / další oblíbené"
+})
+addCatalogEntries("sv", {
+  "myPlaces": "Mina platser",
+  "favoritesHint": "Dina favoriter (+ i platssökningen), en per rad. Ett klick visar platsen; vädret förnyas ungefär var 30:e minut.",
+  "favoritesKeysHint": "Alt 1–9 · Alt ← →",
+  "shortcutFavoriteJump": "Visa favorit 1–9",
+  "shortcutFavoriteStep": "Föregående / nästa favorit"
+})
+addCatalogEntries("fi", {
+  "myPlaces": "Omat paikat",
+  "favoritesHint": "Suosikkisi (+ paikkahaussa), yksi per rivi. Napsautus näyttää paikan; sää päivittyy noin 30 minuutin välein.",
+  "favoritesKeysHint": "Alt 1–9 · Alt ← →",
+  "shortcutFavoriteJump": "Näytä suosikki 1–9",
+  "shortcutFavoriteStep": "Edellinen / seuraava suosikki"
+})
+addCatalogEntries("nb", {
+  "myPlaces": "Mine steder",
+  "favoritesHint": "Favorittene dine (+ i stedssøket), én per linje. Et klikk viser stedet; været fornyes omtrent hvert 30. minutt.",
+  "favoritesKeysHint": "Alt 1–9 · Alt ← →",
+  "shortcutFavoriteJump": "Vis favoritt 1–9",
+  "shortcutFavoriteStep": "Forrige / neste favoritt"
+})
+addCatalogEntries("da", {
+  "myPlaces": "Mine steder",
+  "favoritesHint": "Dine favoritter (+ i stedsøgningen), én pr. linje. Et klik viser stedet; vejret fornyes cirka hvert 30. minut.",
+  "favoritesKeysHint": "Alt 1–9 · Alt ← →",
+  "shortcutFavoriteJump": "Vis favorit 1–9",
+  "shortcutFavoriteStep": "Forrige / næste favorit"
+})
+addCatalogEntries("ro", {
+  "myPlaces": "Locurile mele",
+  "favoritesHint": "Favoritele tale (+ în căutarea locului), câte unul pe rând. Un clic afișează locul; vremea lor se reînnoiește cam la 30 de minute.",
+  "favoritesKeysHint": "Alt 1–9 · Alt ← →",
+  "shortcutFavoriteJump": "Arată favoritul 1–9",
+  "shortcutFavoriteStep": "Favoritul anterior / următor"
+})
+addCatalogEntries("hu", {
+  "myPlaces": "Helyeim",
+  "favoritesHint": "A kedvenceid (+ a helykeresésben), soronként egy. Egy kattintás megjeleníti a helyet; az időjárásuk kb. 30 percenként frissül.",
+  "favoritesKeysHint": "Alt 1–9 · Alt ← →",
+  "shortcutFavoriteJump": "1–9. kedvenc megjelenítése",
+  "shortcutFavoriteStep": "Előző / következő kedvenc"
+})
+addCatalogEntries("el", {
+  "myPlaces": "Οι τοποθεσίες μου",
+  "favoritesHint": "Τα αγαπημένα σου (+ στην αναζήτηση τοποθεσίας), ένα ανά γραμμή. Ένα κλικ δείχνει την τοποθεσία· ο καιρός ανανεώνεται περίπου κάθε 30 λεπτά.",
+  "favoritesKeysHint": "Alt 1–9 · Alt ← →",
+  "shortcutFavoriteJump": "Εμφάνιση αγαπημένου 1–9",
+  "shortcutFavoriteStep": "Προηγούμενο / επόμενο αγαπημένο"
+})
+addCatalogEntries("zh_CN", {
+  "myPlaces": "我的地点",
+  "favoritesHint": "你的收藏（地点搜索中的 +），每行一个。点击即显示该地点；天气约每 30 分钟更新。",
+  "favoritesKeysHint": "Alt 1–9 · Alt ← →",
+  "shortcutFavoriteJump": "显示收藏 1–9",
+  "shortcutFavoriteStep": "上一个 / 下一个收藏"
+})
+addCatalogEntries("zh_TW", {
+  "myPlaces": "我的地點",
+  "favoritesHint": "你的收藏（地點搜尋中的 +），每行一個。點擊即顯示該地點；天氣約每 30 分鐘更新。",
+  "favoritesKeysHint": "Alt 1–9 · Alt ← →",
+  "shortcutFavoriteJump": "顯示收藏 1–9",
+  "shortcutFavoriteStep": "上一個 / 下一個收藏"
+})
+addCatalogEntries("ja", {
+  "myPlaces": "マイ地点",
+  "favoritesHint": "お気に入り（地点検索の +）を1行に1つ表示。クリックでその地点を表示します。天気は約30分ごとに更新されます。",
+  "favoritesKeysHint": "Alt 1–9 · Alt ← →",
+  "shortcutFavoriteJump": "お気に入り 1–9 を表示",
+  "shortcutFavoriteStep": "前 / 次のお気に入り"
+})
+addCatalogEntries("ko", {
+  "myPlaces": "내 장소",
+  "favoritesHint": "즐겨찾기(장소 검색의 +)를 한 줄에 하나씩 표시합니다. 클릭하면 해당 장소를 보여 주며, 날씨는 약 30분마다 갱신됩니다.",
+  "favoritesKeysHint": "Alt 1–9 · Alt ← →",
+  "shortcutFavoriteJump": "즐겨찾기 1–9 표시",
+  "shortcutFavoriteStep": "이전 / 다음 즐겨찾기"
+})
+addCatalogEntries("ar", {
+  "myPlaces": "أماكني",
+  "favoritesHint": "مفضلاتك (+ في البحث عن مكان)، واحدة في كل سطر. النقر يعرض المكان؛ ويتجدد طقسها كل 30 دقيقة تقريبًا.",
+  "favoritesKeysHint": "Alt 1–9 · Alt ← →",
+  "shortcutFavoriteJump": "عرض المفضلة 1–9",
+  "shortcutFavoriteStep": "المفضلة السابقة / التالية"
+})
+addCatalogEntries("he", {
+  "myPlaces": "המקומות שלי",
+  "favoritesHint": "המועדפים שלך (+ בחיפוש מקום), אחד בכל שורה. לחיצה מציגה את המקום; מזג האוויר שלהם מתחדש בערך כל 30 דקות.",
+  "favoritesKeysHint": "Alt 1–9 · Alt ← →",
+  "shortcutFavoriteJump": "הצגת מועדף 1–9",
+  "shortcutFavoriteStep": "מועדף קודם / הבא"
+})
+addCatalogEntries("fa", {
+  "myPlaces": "مکان‌های من",
+  "favoritesHint": "علاقه‌مندی‌های شما (+ در جست‌وجوی مکان)، هر کدام در یک سطر. با کلیک مکان نمایش داده می‌شود؛ هوای آن‌ها حدود هر ۳۰ دقیقه تازه می‌شود.",
+  "favoritesKeysHint": "Alt 1–9 · Alt ← →",
+  "shortcutFavoriteJump": "نمایش علاقه‌مندی ۱–۹",
+  "shortcutFavoriteStep": "علاقه‌مندی قبلی / بعدی"
+})
+addCatalogEntries("hi", {
+  "myPlaces": "मेरी जगहें",
+  "favoritesHint": "आपके पसंदीदा (स्थान खोज में +), हर पंक्ति में एक। क्लिक करने पर वह जगह दिखती है; उनका मौसम लगभग हर 30 मिनट में ताज़ा होता है।",
+  "favoritesKeysHint": "Alt 1–9 · Alt ← →",
+  "shortcutFavoriteJump": "पसंदीदा 1–9 दिखाएँ",
+  "shortcutFavoriteStep": "पिछला / अगला पसंदीदा"
+})
+addCatalogEntries("id", {
+  "myPlaces": "Tempat saya",
+  "favoritesHint": "Favorit Anda (+ di pencarian tempat), satu per baris. Klik untuk menampilkan tempat; cuacanya diperbarui sekitar setiap 30 menit.",
+  "favoritesKeysHint": "Alt 1–9 · Alt ← →",
+  "shortcutFavoriteJump": "Tampilkan favorit 1–9",
+  "shortcutFavoriteStep": "Favorit sebelumnya / berikutnya"
+})
+addCatalogEntries("vi", {
+  "myPlaces": "Địa điểm của tôi",
+  "favoritesHint": "Các mục yêu thích (+ trong tìm kiếm địa điểm), mỗi dòng một mục. Nhấp để hiển thị địa điểm; thời tiết được làm mới khoảng mỗi 30 phút.",
+  "favoritesKeysHint": "Alt 1–9 · Alt ← →",
+  "shortcutFavoriteJump": "Hiện mục yêu thích 1–9",
+  "shortcutFavoriteStep": "Mục yêu thích trước / sau"
+})
+addCatalogEntries("th", {
+  "myPlaces": "สถานที่ของฉัน",
+  "favoritesHint": "รายการโปรดของคุณ (+ ในการค้นหาสถานที่) บรรทัดละหนึ่งแห่ง คลิกเพื่อแสดงสถานที่ สภาพอากาศจะอัปเดตราวทุก 30 นาที",
+  "favoritesKeysHint": "Alt 1–9 · Alt ← →",
+  "shortcutFavoriteJump": "แสดงรายการโปรด 1–9",
+  "shortcutFavoriteStep": "รายการโปรดก่อนหน้า / ถัดไป"
+})
+
+// Tab strip as its own entry (2.5): the section hint describes it.
+addCatalogEntries("en", { "displaySectionsHint": "Each section appears in the window or as a tab. The tab strip moves like a section; the tabbed sections are listed under it and set the order of the tabs." })
+addCatalogEntries("de", { "displaySectionsHint": "Jede Rubrik erscheint im Fenster oder als Tab. Die Tab-Leiste wird wie eine Rubrik verschoben; die Tab-Rubriken stehen darunter und bestimmen die Reihenfolge der Tabs." })
+addCatalogEntries("es", { "displaySectionsHint": "Cada sección aparece en la ventana o como pestaña. La barra de pestañas se mueve como una sección; las secciones en pestaña se listan debajo y fijan el orden de las pestañas." })
+addCatalogEntries("fr", { "displaySectionsHint": "Chaque section s’affiche dans la fenêtre ou en onglet. La barre d’onglets se déplace comme une section ; les sections en onglet sont listées dessous et fixent l’ordre des onglets." })
+addCatalogEntries("pt", { "displaySectionsHint": "Cada seção aparece na janela ou como aba. A barra de abas se move como uma seção; as seções em aba ficam listadas abaixo dela e definem a ordem das abas." })
+addCatalogEntries("ru", { "displaySectionsHint": "Каждый раздел показывается в окне или вкладкой. Панель вкладок перемещается как раздел; разделы-вкладки перечислены под ней и задают порядок вкладок." })
+addCatalogEntries("uk", { "displaySectionsHint": "Кожен розділ показується у вікні або вкладкою. Панель вкладок переміщується як розділ; розділи-вкладки перелічено під нею, вони задають порядок вкладок." })
+addCatalogEntries("pl", { "displaySectionsHint": "Każda sekcja pojawia się w oknie lub jako karta. Pasek kart przesuwa się jak sekcja; sekcje jako karty są wymienione pod nim i ustalają kolejność kart." })
+addCatalogEntries("it", { "displaySectionsHint": "Ogni sezione appare nella finestra o come scheda. La barra delle schede si sposta come una sezione; le sezioni a scheda sono elencate sotto e fissano l’ordine delle schede." })
+addCatalogEntries("nl", { "displaySectionsHint": "Elke sectie verschijnt in het venster of als tabblad. De tabbladbalk verplaats je als een sectie; de secties als tabblad staan eronder en bepalen de volgorde van de tabbladen." })
+addCatalogEntries("tr", { "displaySectionsHint": "Her bölüm pencerede ya da sekme olarak görünür. Sekme çubuğu bir bölüm gibi taşınır; sekme bölümleri onun altında listelenir ve sekmelerin sırasını belirler." })
+addCatalogEntries("cs", { "displaySectionsHint": "Každá sekce se zobrazí v okně nebo jako karta. Lišta karet se přesouvá jako sekce; sekce jako karty jsou uvedeny pod ní a určují pořadí karet." })
+addCatalogEntries("sv", { "displaySectionsHint": "Varje avsnitt visas i fönstret eller som flik. Fliklisten flyttas som ett avsnitt; flikavsnitten listas under den och bestämmer flikarnas ordning." })
+addCatalogEntries("fi", { "displaySectionsHint": "Jokainen osio näkyy ikkunassa tai välilehtenä. Välilehtipalkkia siirretään kuin osiota; välilehtiosiot luetellaan sen alla ja ne määräävät välilehtien järjestyksen." })
+addCatalogEntries("nb", { "displaySectionsHint": "Hver seksjon vises i vinduet eller som fane. Fanelinjen flyttes som en seksjon; faneseksjonene står under den og bestemmer fanenes rekkefølge." })
+addCatalogEntries("da", { "displaySectionsHint": "Hver sektion vises i vinduet eller som fane. Fanebjælken flyttes som en sektion; fanesektionerne står under den og bestemmer fanernes rækkefølge." })
+addCatalogEntries("ro", { "displaySectionsHint": "Fiecare secțiune apare în fereastră sau ca filă. Bara de file se mută ca o secțiune; secțiunile ca filă sunt listate sub ea și stabilesc ordinea filelor." })
+addCatalogEntries("hu", { "displaySectionsHint": "Minden rész az ablakban vagy lapként jelenik meg. A lapsáv úgy mozgatható, mint egy rész; a lapként megjelenő részek alatta szerepelnek, és ezek adják a lapok sorrendjét." })
+addCatalogEntries("el", { "displaySectionsHint": "Κάθε ενότητα εμφανίζεται στο παράθυρο ή ως καρτέλα. Η γραμμή καρτελών μετακινείται σαν ενότητα· οι ενότητες-καρτέλες παρατίθενται από κάτω και ορίζουν τη σειρά των καρτελών." })
+addCatalogEntries("zh_CN", { "displaySectionsHint": "每个栏目可显示在窗口中或作为标签页。标签栏可像栏目一样移动；标签页栏目列在其下方，并决定标签页的顺序。" })
+addCatalogEntries("zh_TW", { "displaySectionsHint": "每個欄目可顯示在視窗中或作為分頁。分頁列可像欄目一樣移動；分頁欄目列在其下方，並決定分頁的順序。" })
+addCatalogEntries("ja", { "displaySectionsHint": "各セクションはウィンドウ内またはタブとして表示されます。タブバーはセクションと同様に移動でき、タブのセクションはその下に並び、タブの順番を決めます。" })
+addCatalogEntries("ko", { "displaySectionsHint": "각 섹션은 창 안이나 탭으로 표시됩니다. 탭 막대는 섹션처럼 이동하며, 탭 섹션은 그 아래에 나열되어 탭 순서를 정합니다." })
+addCatalogEntries("ar", { "displaySectionsHint": "يظهر كل قسم في النافذة أو كعلامة تبويب. يُنقل شريط علامات التبويب كأي قسم؛ وتُدرج أقسام علامات التبويب تحته وتحدد ترتيبها." })
+addCatalogEntries("he", { "displaySectionsHint": "כל מקטע מוצג בחלון או כלשונית. סרגל הלשוניות זז כמו מקטע; מקטעי הלשוניות מופיעים מתחתיו וקובעים את סדר הלשוניות." })
+addCatalogEntries("fa", { "displaySectionsHint": "هر بخش در پنجره یا به‌صورت زبانه نمایش داده می‌شود. نوار زبانه‌ها مانند یک بخش جابه‌جا می‌شود؛ بخش‌های زبانه‌ای زیر آن فهرست می‌شوند و ترتیب زبانه‌ها را تعیین می‌کنند." })
+addCatalogEntries("hi", { "displaySectionsHint": "हर अनुभाग विंडो में या टैब के रूप में दिखता है। टैब पट्टी एक अनुभाग की तरह खिसकाई जाती है; टैब वाले अनुभाग उसके नीचे सूचीबद्ध होते हैं और टैब का क्रम तय करते हैं।" })
+addCatalogEntries("id", { "displaySectionsHint": "Setiap bagian tampil di jendela atau sebagai tab. Bilah tab dipindahkan seperti bagian; bagian tab tercantum di bawahnya dan menentukan urutan tab." })
+addCatalogEntries("vi", { "displaySectionsHint": "Mỗi mục hiển thị trong cửa sổ hoặc dạng thẻ. Thanh thẻ được di chuyển như một mục; các mục dạng thẻ được liệt kê bên dưới và quyết định thứ tự thẻ." })
+addCatalogEntries("th", { "displaySectionsHint": "แต่ละส่วนแสดงในหน้าต่างหรือเป็นแท็บ แถบแท็บย้ายได้เหมือนส่วนหนึ่ง ส่วนที่เป็นแท็บจะแสดงอยู่ใต้แถบและกำหนดลำดับแท็บ" })
+
+// Weather extras (2.5): yesterday, moon, day length, wind unit, updates,
+// weather-service link, distance rings.
+addCatalogEntries("en", {
+  "yesterdayShort": "vs. yesterday",
+  "fullMoon": "Full moon",
+  "newMoon": "New moon",
+  "moonToday": "today",
+  "moonTomorrow": "tomorrow",
+  "moonInDays": "in {days} days",
+  "openAtService": "Open at the weather service ({service})",
+  "windUnit": "Wind unit",
+  "windUnitAuto": "Automatic ({unit})",
+  "windUnitKnots": "Knots",
+  "windUnitBeaufort": "Beaufort",
+  "refreshInterval": "Updates",
+  "refreshDefault": "Default (every {minutes} min)",
+  "refreshEvery": "every {minutes} min",
+  "refreshIntervalHint": "How often the forecast is reloaded; radar and nowcast keep their own pace. MET Norway asks for no more than every 10 minutes.",
+  "compareYesterday": "Compared with yesterday",
+  "nextFullNewMoon": "Next full or new moon",
+  "serviceLinkButton": "\"Open at the weather service\" button",
+  "dayLength": "Day length",
+  "radarRings": "Distance rings",
+  "shortcutServiceLink": "Open the place at the weather service"
+})
+addCatalogEntries("de", {
+  "yesterdayShort": "zu gestern",
+  "fullMoon": "Vollmond",
+  "newMoon": "Neumond",
+  "moonToday": "heute",
+  "moonTomorrow": "morgen",
+  "moonInDays": "in {days} Tagen",
+  "openAtService": "Beim Wetterdienst öffnen ({service})",
+  "windUnit": "Windeinheit",
+  "windUnitAuto": "Automatisch ({unit})",
+  "windUnitKnots": "Knoten",
+  "windUnitBeaufort": "Beaufort",
+  "refreshInterval": "Aktualisierung",
+  "refreshDefault": "Standard (alle {minutes} min)",
+  "refreshEvery": "alle {minutes} min",
+  "refreshIntervalHint": "Wie oft die Vorhersage neu geladen wird; Radar und Nowcast haben ihren eigenen Takt. MET Norway bittet um höchstens alle 10 Minuten.",
+  "compareYesterday": "Vergleich mit gestern",
+  "nextFullNewMoon": "Nächster Voll- oder Neumond",
+  "serviceLinkButton": "Knopf „Beim Wetterdienst öffnen“",
+  "dayLength": "Tageslänge",
+  "radarRings": "Entfernungsringe",
+  "shortcutServiceLink": "Ort beim Wetterdienst öffnen"
+})
+addCatalogEntries("es", {
+  "yesterdayShort": "vs. ayer",
+  "fullMoon": "Luna llena",
+  "newMoon": "Luna nueva",
+  "moonToday": "hoy",
+  "moonTomorrow": "mañana",
+  "moonInDays": "en {days} días",
+  "openAtService": "Abrir en el servicio meteorológico ({service})",
+  "windUnit": "Unidad de viento",
+  "windUnitAuto": "Automática ({unit})",
+  "windUnitKnots": "Nudos",
+  "windUnitBeaufort": "Beaufort",
+  "refreshInterval": "Actualización",
+  "refreshDefault": "Predeterminado (cada {minutes} min)",
+  "refreshEvery": "cada {minutes} min",
+  "refreshIntervalHint": "Con qué frecuencia se recarga la previsión; radar y nowcast siguen su propio ritmo. MET Norway pide no más de cada 10 minutos.",
+  "compareYesterday": "Comparación con ayer",
+  "nextFullNewMoon": "Próxima luna llena o nueva",
+  "serviceLinkButton": "Botón «Abrir en el servicio meteorológico»",
+  "dayLength": "Duración del día",
+  "radarRings": "Anillos de distancia",
+  "shortcutServiceLink": "Abrir el lugar en el servicio meteorológico"
+})
+addCatalogEntries("fr", {
+  "yesterdayShort": "vs hier",
+  "fullMoon": "Pleine lune",
+  "newMoon": "Nouvelle lune",
+  "moonToday": "aujourd’hui",
+  "moonTomorrow": "demain",
+  "moonInDays": "dans {days} jours",
+  "openAtService": "Ouvrir au service météo ({service})",
+  "windUnit": "Unité du vent",
+  "windUnitAuto": "Automatique ({unit})",
+  "windUnitKnots": "Nœuds",
+  "windUnitBeaufort": "Beaufort",
+  "refreshInterval": "Actualisation",
+  "refreshDefault": "Par défaut (toutes les {minutes} min)",
+  "refreshEvery": "toutes les {minutes} min",
+  "refreshIntervalHint": "Fréquence de rechargement de la prévision ; radar et nowcast gardent leur propre rythme. MET Norway demande au plus toutes les 10 minutes.",
+  "compareYesterday": "Comparaison avec hier",
+  "nextFullNewMoon": "Prochaine pleine ou nouvelle lune",
+  "serviceLinkButton": "Bouton « Ouvrir au service météo »",
+  "dayLength": "Durée du jour",
+  "radarRings": "Cercles de distance",
+  "shortcutServiceLink": "Ouvrir le lieu au service météo"
+})
+addCatalogEntries("pt", {
+  "yesterdayShort": "vs. ontem",
+  "fullMoon": "Lua cheia",
+  "newMoon": "Lua nova",
+  "moonToday": "hoje",
+  "moonTomorrow": "amanhã",
+  "moonInDays": "em {days} dias",
+  "openAtService": "Abrir no serviço meteorológico ({service})",
+  "windUnit": "Unidade do vento",
+  "windUnitAuto": "Automática ({unit})",
+  "windUnitKnots": "Nós",
+  "windUnitBeaufort": "Beaufort",
+  "refreshInterval": "Atualização",
+  "refreshDefault": "Padrão (a cada {minutes} min)",
+  "refreshEvery": "a cada {minutes} min",
+  "refreshIntervalHint": "Com que frequência a previsão é recarregada; radar e nowcast seguem seu próprio ritmo. A MET Norway pede no máximo a cada 10 minutos.",
+  "compareYesterday": "Comparação com ontem",
+  "nextFullNewMoon": "Próxima lua cheia ou nova",
+  "serviceLinkButton": "Botão “Abrir no serviço meteorológico”",
+  "dayLength": "Duração do dia",
+  "radarRings": "Anéis de distância",
+  "shortcutServiceLink": "Abrir o local no serviço meteorológico"
+})
+addCatalogEntries("ru", {
+  "yesterdayShort": "к вчера",
+  "fullMoon": "Полнолуние",
+  "newMoon": "Новолуние",
+  "moonToday": "сегодня",
+  "moonTomorrow": "завтра",
+  "moonInDays": "через {days} дн.",
+  "openAtService": "Открыть в метеослужбе ({service})",
+  "windUnit": "Единица ветра",
+  "windUnitAuto": "Автоматически ({unit})",
+  "windUnitKnots": "Узлы",
+  "windUnitBeaufort": "Бофорт",
+  "refreshInterval": "Обновление",
+  "refreshDefault": "По умолчанию (каждые {minutes} мин)",
+  "refreshEvery": "каждые {minutes} мин",
+  "refreshIntervalHint": "Как часто перезагружается прогноз; радар и наукаст идут в своём темпе. MET Norway просит не чаще раза в 10 минут.",
+  "compareYesterday": "Сравнение со вчера",
+  "nextFullNewMoon": "Ближайшее полнолуние или новолуние",
+  "serviceLinkButton": "Кнопка «Открыть в метеослужбе»",
+  "dayLength": "Долгота дня",
+  "radarRings": "Кольца расстояний",
+  "shortcutServiceLink": "Открыть место в метеослужбе"
+})
+addCatalogEntries("uk", {
+  "yesterdayShort": "до вчора",
+  "fullMoon": "Повня",
+  "newMoon": "Молодик",
+  "moonToday": "сьогодні",
+  "moonTomorrow": "завтра",
+  "moonInDays": "через {days} дн.",
+  "openAtService": "Відкрити в метеослужбі ({service})",
+  "windUnit": "Одиниця вітру",
+  "windUnitAuto": "Автоматично ({unit})",
+  "windUnitKnots": "Вузли",
+  "windUnitBeaufort": "Бофорт",
+  "refreshInterval": "Оновлення",
+  "refreshDefault": "Типово (кожні {minutes} хв)",
+  "refreshEvery": "кожні {minutes} хв",
+  "refreshIntervalHint": "Як часто перезавантажується прогноз; радар і наукаст мають власний темп. MET Norway просить не частіше ніж раз на 10 хвилин.",
+  "compareYesterday": "Порівняння з учора",
+  "nextFullNewMoon": "Найближча повня чи молодик",
+  "serviceLinkButton": "Кнопка «Відкрити в метеослужбі»",
+  "dayLength": "Тривалість дня",
+  "radarRings": "Кільця відстані",
+  "shortcutServiceLink": "Відкрити місце в метеослужбі"
+})
+addCatalogEntries("pl", {
+  "yesterdayShort": "vs wczoraj",
+  "fullMoon": "Pełnia",
+  "newMoon": "Nów",
+  "moonToday": "dziś",
+  "moonTomorrow": "jutro",
+  "moonInDays": "za {days} dni",
+  "openAtService": "Otwórz w serwisie pogodowym ({service})",
+  "windUnit": "Jednostka wiatru",
+  "windUnitAuto": "Automatycznie ({unit})",
+  "windUnitKnots": "Węzły",
+  "windUnitBeaufort": "Beaufort",
+  "refreshInterval": "Odświeżanie",
+  "refreshDefault": "Domyślnie (co {minutes} min)",
+  "refreshEvery": "co {minutes} min",
+  "refreshIntervalHint": "Jak często prognoza jest odświeżana; radar i nowcast mają własny rytm. MET Norway prosi o nie częściej niż co 10 minut.",
+  "compareYesterday": "Porównanie z wczoraj",
+  "nextFullNewMoon": "Najbliższa pełnia lub nów",
+  "serviceLinkButton": "Przycisk „Otwórz w serwisie pogodowym”",
+  "dayLength": "Długość dnia",
+  "radarRings": "Pierścienie odległości",
+  "shortcutServiceLink": "Otwórz miejsce w serwisie pogodowym"
+})
+addCatalogEntries("it", {
+  "yesterdayShort": "vs ieri",
+  "fullMoon": "Luna piena",
+  "newMoon": "Luna nuova",
+  "moonToday": "oggi",
+  "moonTomorrow": "domani",
+  "moonInDays": "tra {days} giorni",
+  "openAtService": "Apri nel servizio meteo ({service})",
+  "windUnit": "Unità del vento",
+  "windUnitAuto": "Automatica ({unit})",
+  "windUnitKnots": "Nodi",
+  "windUnitBeaufort": "Beaufort",
+  "refreshInterval": "Aggiornamento",
+  "refreshDefault": "Predefinito (ogni {minutes} min)",
+  "refreshEvery": "ogni {minutes} min",
+  "refreshIntervalHint": "Ogni quanto si ricarica la previsione; radar e nowcast seguono il loro ritmo. MET Norway chiede non più di ogni 10 minuti.",
+  "compareYesterday": "Confronto con ieri",
+  "nextFullNewMoon": "Prossima luna piena o nuova",
+  "serviceLinkButton": "Pulsante «Apri nel servizio meteo»",
+  "dayLength": "Durata del giorno",
+  "radarRings": "Anelli di distanza",
+  "shortcutServiceLink": "Apri il luogo nel servizio meteo"
+})
+addCatalogEntries("nl", {
+  "yesterdayShort": "t.o.v. gisteren",
+  "fullMoon": "Volle maan",
+  "newMoon": "Nieuwe maan",
+  "moonToday": "vandaag",
+  "moonTomorrow": "morgen",
+  "moonInDays": "over {days} dagen",
+  "openAtService": "Openen bij de weerdienst ({service})",
+  "windUnit": "Windeenheid",
+  "windUnitAuto": "Automatisch ({unit})",
+  "windUnitKnots": "Knopen",
+  "windUnitBeaufort": "Beaufort",
+  "refreshInterval": "Verversen",
+  "refreshDefault": "Standaard (elke {minutes} min)",
+  "refreshEvery": "elke {minutes} min",
+  "refreshIntervalHint": "Hoe vaak de verwachting opnieuw wordt geladen; radar en nowcast hebben hun eigen ritme. MET Norway vraagt om hoogstens elke 10 minuten.",
+  "compareYesterday": "Vergelijking met gisteren",
+  "nextFullNewMoon": "Volgende volle of nieuwe maan",
+  "serviceLinkButton": "Knop „Openen bij de weerdienst”",
+  "dayLength": "Daglengte",
+  "radarRings": "Afstandsringen",
+  "shortcutServiceLink": "Plaats openen bij de weerdienst"
+})
+addCatalogEntries("tr", {
+  "yesterdayShort": "düne göre",
+  "fullMoon": "Dolunay",
+  "newMoon": "Yeni ay",
+  "moonToday": "bugün",
+  "moonTomorrow": "yarın",
+  "moonInDays": "{days} gün sonra",
+  "openAtService": "Meteoroloji servisinde aç ({service})",
+  "windUnit": "Rüzgâr birimi",
+  "windUnitAuto": "Otomatik ({unit})",
+  "windUnitKnots": "Knot",
+  "windUnitBeaufort": "Beaufort",
+  "refreshInterval": "Güncelleme",
+  "refreshDefault": "Varsayılan ({minutes} dk'da bir)",
+  "refreshEvery": "{minutes} dk'da bir",
+  "refreshIntervalHint": "Tahminin ne sıklıkla yeniden yüklendiği; radar ve anlık tahmin kendi temposundadır. MET Norway en fazla 10 dakikada bir istiyor.",
+  "compareYesterday": "Dünle karşılaştırma",
+  "nextFullNewMoon": "Sonraki dolunay veya yeni ay",
+  "serviceLinkButton": "“Meteoroloji servisinde aç” düğmesi",
+  "dayLength": "Gün uzunluğu",
+  "radarRings": "Mesafe halkaları",
+  "shortcutServiceLink": "Yeri meteoroloji servisinde aç"
+})
+addCatalogEntries("cs", {
+  "yesterdayShort": "oproti včerejšku",
+  "fullMoon": "Úplněk",
+  "newMoon": "Nov",
+  "moonToday": "dnes",
+  "moonTomorrow": "zítra",
+  "moonInDays": "za {days} dní",
+  "openAtService": "Otevřít u meteorologické služby ({service})",
+  "windUnit": "Jednotka větru",
+  "windUnitAuto": "Automaticky ({unit})",
+  "windUnitKnots": "Uzly",
+  "windUnitBeaufort": "Beaufort",
+  "refreshInterval": "Aktualizace",
+  "refreshDefault": "Výchozí (každých {minutes} min)",
+  "refreshEvery": "každých {minutes} min",
+  "refreshIntervalHint": "Jak často se předpověď načítá znovu; radar a nowcast mají vlastní tempo. MET Norway žádá nejvýše každých 10 minut.",
+  "compareYesterday": "Srovnání se včerejškem",
+  "nextFullNewMoon": "Příští úplněk nebo nov",
+  "serviceLinkButton": "Tlačítko „Otevřít u meteorologické služby“",
+  "dayLength": "Délka dne",
+  "radarRings": "Vzdálenostní kruhy",
+  "shortcutServiceLink": "Otevřít místo u meteorologické služby"
+})
+addCatalogEntries("sv", {
+  "yesterdayShort": "mot igår",
+  "fullMoon": "Fullmåne",
+  "newMoon": "Nymåne",
+  "moonToday": "idag",
+  "moonTomorrow": "imorgon",
+  "moonInDays": "om {days} dagar",
+  "openAtService": "Öppna hos vädertjänsten ({service})",
+  "windUnit": "Vindenhet",
+  "windUnitAuto": "Automatisk ({unit})",
+  "windUnitKnots": "Knop",
+  "windUnitBeaufort": "Beaufort",
+  "refreshInterval": "Uppdatering",
+  "refreshDefault": "Standard (var {minutes}:e min)",
+  "refreshEvery": "var {minutes}:e min",
+  "refreshIntervalHint": "Hur ofta prognosen laddas om; radar och nowcast har egen takt. MET Norway ber om högst var 10:e minut.",
+  "compareYesterday": "Jämfört med igår",
+  "nextFullNewMoon": "Nästa fullmåne eller nymåne",
+  "serviceLinkButton": "Knappen ”Öppna hos vädertjänsten”",
+  "dayLength": "Daglängd",
+  "radarRings": "Avståndsringar",
+  "shortcutServiceLink": "Öppna platsen hos vädertjänsten"
+})
+addCatalogEntries("fi", {
+  "yesterdayShort": "eiliseen",
+  "fullMoon": "Täysikuu",
+  "newMoon": "Uusikuu",
+  "moonToday": "tänään",
+  "moonTomorrow": "huomenna",
+  "moonInDays": "{days} päivän päästä",
+  "openAtService": "Avaa sääpalvelussa ({service})",
+  "windUnit": "Tuulen yksikkö",
+  "windUnitAuto": "Automaattinen ({unit})",
+  "windUnitKnots": "Solmut",
+  "windUnitBeaufort": "Beaufort",
+  "refreshInterval": "Päivitys",
+  "refreshDefault": "Oletus ({minutes} min välein)",
+  "refreshEvery": "{minutes} min välein",
+  "refreshIntervalHint": "Kuinka usein ennuste ladataan uudelleen; tutka ja nowcast kulkevat omaan tahtiinsa. MET Norway pyytää enintään 10 minuutin välein.",
+  "compareYesterday": "Vertailu eiliseen",
+  "nextFullNewMoon": "Seuraava täysikuu tai uusikuu",
+  "serviceLinkButton": "Painike ”Avaa sääpalvelussa”",
+  "dayLength": "Päivän pituus",
+  "radarRings": "Etäisyysrenkaat",
+  "shortcutServiceLink": "Avaa paikka sääpalvelussa"
+})
+addCatalogEntries("nb", {
+  "yesterdayShort": "mot i går",
+  "fullMoon": "Fullmåne",
+  "newMoon": "Nymåne",
+  "moonToday": "i dag",
+  "moonTomorrow": "i morgen",
+  "moonInDays": "om {days} dager",
+  "openAtService": "Åpne hos værtjenesten ({service})",
+  "windUnit": "Vindenhet",
+  "windUnitAuto": "Automatisk ({unit})",
+  "windUnitKnots": "Knop",
+  "windUnitBeaufort": "Beaufort",
+  "refreshInterval": "Oppdatering",
+  "refreshDefault": "Standard (hvert {minutes}. min)",
+  "refreshEvery": "hvert {minutes}. min",
+  "refreshIntervalHint": "Hvor ofte varselet lastes på nytt; radar og nowcast har sin egen takt. MET Norway ber om høyst hvert 10. minutt.",
+  "compareYesterday": "Sammenlignet med i går",
+  "nextFullNewMoon": "Neste fullmåne eller nymåne",
+  "serviceLinkButton": "Knappen «Åpne hos værtjenesten»",
+  "dayLength": "Daglengde",
+  "radarRings": "Avstandsringer",
+  "shortcutServiceLink": "Åpne stedet hos værtjenesten"
+})
+addCatalogEntries("da", {
+  "yesterdayShort": "mod i går",
+  "fullMoon": "Fuldmåne",
+  "newMoon": "Nymåne",
+  "moonToday": "i dag",
+  "moonTomorrow": "i morgen",
+  "moonInDays": "om {days} dage",
+  "openAtService": "Åbn hos vejrtjenesten ({service})",
+  "windUnit": "Vindenhed",
+  "windUnitAuto": "Automatisk ({unit})",
+  "windUnitKnots": "Knob",
+  "windUnitBeaufort": "Beaufort",
+  "refreshInterval": "Opdatering",
+  "refreshDefault": "Standard (hvert {minutes}. min)",
+  "refreshEvery": "hvert {minutes}. min",
+  "refreshIntervalHint": "Hvor ofte udsigten genindlæses; radar og nowcast har deres egen takt. MET Norway beder om højst hvert 10. minut.",
+  "compareYesterday": "Sammenlignet med i går",
+  "nextFullNewMoon": "Næste fuldmåne eller nymåne",
+  "serviceLinkButton": "Knappen »Åbn hos vejrtjenesten«",
+  "dayLength": "Daglængde",
+  "radarRings": "Afstandsringe",
+  "shortcutServiceLink": "Åbn stedet hos vejrtjenesten"
+})
+addCatalogEntries("ro", {
+  "yesterdayShort": "față de ieri",
+  "fullMoon": "Lună plină",
+  "newMoon": "Lună nouă",
+  "moonToday": "azi",
+  "moonTomorrow": "mâine",
+  "moonInDays": "peste {days} zile",
+  "openAtService": "Deschide la serviciul meteo ({service})",
+  "windUnit": "Unitatea vântului",
+  "windUnitAuto": "Automat ({unit})",
+  "windUnitKnots": "Noduri",
+  "windUnitBeaufort": "Beaufort",
+  "refreshInterval": "Actualizare",
+  "refreshDefault": "Implicit (la fiecare {minutes} min)",
+  "refreshEvery": "la fiecare {minutes} min",
+  "refreshIntervalHint": "Cât de des se reîncarcă prognoza; radarul și nowcastul au ritmul lor. MET Norway cere cel mult la fiecare 10 minute.",
+  "compareYesterday": "Comparație cu ieri",
+  "nextFullNewMoon": "Următoarea lună plină sau nouă",
+  "serviceLinkButton": "Butonul „Deschide la serviciul meteo”",
+  "dayLength": "Durata zilei",
+  "radarRings": "Cercuri de distanță",
+  "shortcutServiceLink": "Deschide locul la serviciul meteo"
+})
+addCatalogEntries("hu", {
+  "yesterdayShort": "tegnaphoz",
+  "fullMoon": "Telihold",
+  "newMoon": "Újhold",
+  "moonToday": "ma",
+  "moonTomorrow": "holnap",
+  "moonInDays": "{days} nap múlva",
+  "openAtService": "Megnyitás az időjárás-szolgálatnál ({service})",
+  "windUnit": "Szél mértékegysége",
+  "windUnitAuto": "Automatikus ({unit})",
+  "windUnitKnots": "Csomó",
+  "windUnitBeaufort": "Beaufort",
+  "refreshInterval": "Frissítés",
+  "refreshDefault": "Alapértelmezett ({minutes} percenként)",
+  "refreshEvery": "{minutes} percenként",
+  "refreshIntervalHint": "Milyen gyakran töltődik újra az előrejelzés; a radar és a nowcast saját ütemben halad. A MET Norway legfeljebb 10 percenkénti lekérést kér.",
+  "compareYesterday": "Összehasonlítás a tegnappal",
+  "nextFullNewMoon": "Következő telihold vagy újhold",
+  "serviceLinkButton": "„Megnyitás az időjárás-szolgálatnál” gomb",
+  "dayLength": "Nappal hossza",
+  "radarRings": "Távolsággyűrűk",
+  "shortcutServiceLink": "Hely megnyitása az időjárás-szolgálatnál"
+})
+addCatalogEntries("el", {
+  "yesterdayShort": "σε σχέση με χθες",
+  "fullMoon": "Πανσέληνος",
+  "newMoon": "Νέα σελήνη",
+  "moonToday": "σήμερα",
+  "moonTomorrow": "αύριο",
+  "moonInDays": "σε {days} ημέρες",
+  "openAtService": "Άνοιγμα στη μετεωρολογική υπηρεσία ({service})",
+  "windUnit": "Μονάδα ανέμου",
+  "windUnitAuto": "Αυτόματα ({unit})",
+  "windUnitKnots": "Κόμβοι",
+  "windUnitBeaufort": "Μποφόρ",
+  "refreshInterval": "Ενημέρωση",
+  "refreshDefault": "Προεπιλογή (κάθε {minutes} λεπτά)",
+  "refreshEvery": "κάθε {minutes} λεπτά",
+  "refreshIntervalHint": "Πόσο συχνά φορτώνεται ξανά η πρόγνωση· ραντάρ και nowcast έχουν δικό τους ρυθμό. Η MET Norway ζητά το πολύ κάθε 10 λεπτά.",
+  "compareYesterday": "Σύγκριση με χθες",
+  "nextFullNewMoon": "Επόμενη πανσέληνος ή νέα σελήνη",
+  "serviceLinkButton": "Κουμπί «Άνοιγμα στη μετεωρολογική υπηρεσία»",
+  "dayLength": "Διάρκεια ημέρας",
+  "radarRings": "Δακτύλιοι απόστασης",
+  "shortcutServiceLink": "Άνοιγμα της τοποθεσίας στη μετεωρολογική υπηρεσία"
+})
+addCatalogEntries("zh_CN", {
+  "yesterdayShort": "较昨日",
+  "fullMoon": "满月",
+  "newMoon": "新月",
+  "moonToday": "今天",
+  "moonTomorrow": "明天",
+  "moonInDays": "{days} 天后",
+  "openAtService": "在气象服务中打开（{service}）",
+  "windUnit": "风速单位",
+  "windUnitAuto": "自动（{unit}）",
+  "windUnitKnots": "节",
+  "windUnitBeaufort": "蒲福",
+  "refreshInterval": "更新",
+  "refreshDefault": "默认（每 {minutes} 分钟）",
+  "refreshEvery": "每 {minutes} 分钟",
+  "refreshIntervalHint": "预报重新加载的频率；雷达和临近预报有各自的节奏。MET Norway 要求最多每 10 分钟一次。",
+  "compareYesterday": "与昨日比较",
+  "nextFullNewMoon": "下一次满月或新月",
+  "serviceLinkButton": "“在气象服务中打开”按钮",
+  "dayLength": "昼长",
+  "radarRings": "距离圈",
+  "shortcutServiceLink": "在气象服务中打开该地点"
+})
+addCatalogEntries("zh_TW", {
+  "yesterdayShort": "較昨日",
+  "fullMoon": "滿月",
+  "newMoon": "新月",
+  "moonToday": "今天",
+  "moonTomorrow": "明天",
+  "moonInDays": "{days} 天後",
+  "openAtService": "在氣象服務中開啟（{service}）",
+  "windUnit": "風速單位",
+  "windUnitAuto": "自動（{unit}）",
+  "windUnitKnots": "節",
+  "windUnitBeaufort": "蒲福",
+  "refreshInterval": "更新",
+  "refreshDefault": "預設（每 {minutes} 分鐘）",
+  "refreshEvery": "每 {minutes} 分鐘",
+  "refreshIntervalHint": "預報重新載入的頻率；雷達與即時預報有各自的節奏。MET Norway 要求最多每 10 分鐘一次。",
+  "compareYesterday": "與昨日比較",
+  "nextFullNewMoon": "下一次滿月或新月",
+  "serviceLinkButton": "「在氣象服務中開啟」按鈕",
+  "dayLength": "晝長",
+  "radarRings": "距離圈",
+  "shortcutServiceLink": "在氣象服務中開啟該地點"
+})
+addCatalogEntries("ja", {
+  "yesterdayShort": "昨日比",
+  "fullMoon": "満月",
+  "newMoon": "新月",
+  "moonToday": "今日",
+  "moonTomorrow": "明日",
+  "moonInDays": "{days} 日後",
+  "openAtService": "気象サービスで開く（{service}）",
+  "windUnit": "風速の単位",
+  "windUnitAuto": "自動（{unit}）",
+  "windUnitKnots": "ノット",
+  "windUnitBeaufort": "ビューフォート",
+  "refreshInterval": "更新",
+  "refreshDefault": "既定（{minutes} 分ごと）",
+  "refreshEvery": "{minutes} 分ごと",
+  "refreshIntervalHint": "予報を再読み込みする頻度。レーダーとナウキャストは独自の間隔です。MET Norway は 10 分以上の間隔を求めています。",
+  "compareYesterday": "昨日との比較",
+  "nextFullNewMoon": "次の満月または新月",
+  "serviceLinkButton": "「気象サービスで開く」ボタン",
+  "dayLength": "日の長さ",
+  "radarRings": "距離リング",
+  "shortcutServiceLink": "この地点を気象サービスで開く"
+})
+addCatalogEntries("ko", {
+  "yesterdayShort": "어제 대비",
+  "fullMoon": "보름달",
+  "newMoon": "삭(초승달 전)",
+  "moonToday": "오늘",
+  "moonTomorrow": "내일",
+  "moonInDays": "{days}일 후",
+  "openAtService": "기상 서비스에서 열기({service})",
+  "windUnit": "풍속 단위",
+  "windUnitAuto": "자동({unit})",
+  "windUnitKnots": "노트",
+  "windUnitBeaufort": "보퍼트",
+  "refreshInterval": "업데이트",
+  "refreshDefault": "기본값({minutes}분마다)",
+  "refreshEvery": "{minutes}분마다",
+  "refreshIntervalHint": "예보를 다시 불러오는 주기입니다. 레이더와 초단기 예보는 자체 주기를 따릅니다. MET Norway는 최소 10분 간격을 요청합니다.",
+  "compareYesterday": "어제와 비교",
+  "nextFullNewMoon": "다음 보름달 또는 삭",
+  "serviceLinkButton": "‘기상 서비스에서 열기’ 버튼",
+  "dayLength": "낮의 길이",
+  "radarRings": "거리 원",
+  "shortcutServiceLink": "이 장소를 기상 서비스에서 열기"
+})
+addCatalogEntries("ar", {
+  "yesterdayShort": "مقارنة بالأمس",
+  "fullMoon": "بدر",
+  "newMoon": "محاق",
+  "moonToday": "اليوم",
+  "moonTomorrow": "غدًا",
+  "moonInDays": "بعد {days} أيام",
+  "openAtService": "فتح في خدمة الأرصاد ({service})",
+  "windUnit": "وحدة الرياح",
+  "windUnitAuto": "تلقائي ({unit})",
+  "windUnitKnots": "عقدة",
+  "windUnitBeaufort": "بوفورت",
+  "refreshInterval": "التحديث",
+  "refreshDefault": "الافتراضي (كل {minutes} دقيقة)",
+  "refreshEvery": "كل {minutes} دقيقة",
+  "refreshIntervalHint": "عدد مرات إعادة تحميل التوقعات؛ للرادار والتنبؤ الآني إيقاعهما الخاص. تطلب MET Norway ألا يزيد ذلك عن مرة كل 10 دقائق.",
+  "compareYesterday": "مقارنة بالأمس",
+  "nextFullNewMoon": "البدر أو المحاق القادم",
+  "serviceLinkButton": "زر «فتح في خدمة الأرصاد»",
+  "dayLength": "طول النهار",
+  "radarRings": "حلقات المسافة",
+  "shortcutServiceLink": "فتح المكان في خدمة الأرصاد"
+})
+addCatalogEntries("he", {
+  "yesterdayShort": "לעומת אתמול",
+  "fullMoon": "ירח מלא",
+  "newMoon": "מולד",
+  "moonToday": "היום",
+  "moonTomorrow": "מחר",
+  "moonInDays": "בעוד {days} ימים",
+  "openAtService": "פתיחה בשירות המטאורולוגי ({service})",
+  "windUnit": "יחידת רוח",
+  "windUnitAuto": "אוטומטי ({unit})",
+  "windUnitKnots": "קשרים",
+  "windUnitBeaufort": "בופור",
+  "refreshInterval": "עדכון",
+  "refreshDefault": "ברירת מחדל (כל {minutes} דק׳)",
+  "refreshEvery": "כל {minutes} דק׳",
+  "refreshIntervalHint": "באיזו תדירות התחזית נטענת מחדש; למכ״ם ול-nowcast קצב משלהם. MET Norway מבקשת לא יותר מפעם ב-10 דקות.",
+  "compareYesterday": "השוואה לאתמול",
+  "nextFullNewMoon": "הירח המלא או המולד הבא",
+  "serviceLinkButton": "כפתור „פתיחה בשירות המטאורולוגי”",
+  "dayLength": "אורך היום",
+  "radarRings": "טבעות מרחק",
+  "shortcutServiceLink": "פתיחת המקום בשירות המטאורולוגי"
+})
+addCatalogEntries("fa", {
+  "yesterdayShort": "نسبت به دیروز",
+  "fullMoon": "ماه کامل",
+  "newMoon": "ماه نو",
+  "moonToday": "امروز",
+  "moonTomorrow": "فردا",
+  "moonInDays": "{days} روز دیگر",
+  "openAtService": "باز کردن در سرویس هواشناسی ({service})",
+  "windUnit": "واحد باد",
+  "windUnitAuto": "خودکار ({unit})",
+  "windUnitKnots": "گره",
+  "windUnitBeaufort": "بوفورت",
+  "refreshInterval": "به‌روزرسانی",
+  "refreshDefault": "پیش‌فرض (هر {minutes} دقیقه)",
+  "refreshEvery": "هر {minutes} دقیقه",
+  "refreshIntervalHint": "هر چند وقت پیش‌بینی دوباره بارگیری شود؛ رادار و پیش‌بینی آنی ریتم خودشان را دارند. MET Norway درخواست می‌کند حداکثر هر ۱۰ دقیقه باشد.",
+  "compareYesterday": "مقایسه با دیروز",
+  "nextFullNewMoon": "ماه کامل یا ماه نوی بعدی",
+  "serviceLinkButton": "دکمهٔ «باز کردن در سرویس هواشناسی»",
+  "dayLength": "طول روز",
+  "radarRings": "حلقه‌های فاصله",
+  "shortcutServiceLink": "باز کردن مکان در سرویس هواشناسی"
+})
+addCatalogEntries("hi", {
+  "yesterdayShort": "कल की तुलना में",
+  "fullMoon": "पूर्णिमा",
+  "newMoon": "अमावस्या",
+  "moonToday": "आज",
+  "moonTomorrow": "कल",
+  "moonInDays": "{days} दिन में",
+  "openAtService": "मौसम सेवा पर खोलें ({service})",
+  "windUnit": "हवा की इकाई",
+  "windUnitAuto": "स्वचालित ({unit})",
+  "windUnitKnots": "नॉट",
+  "windUnitBeaufort": "ब्यूफ़ोर्ट",
+  "refreshInterval": "अपडेट",
+  "refreshDefault": "डिफ़ॉल्ट (हर {minutes} मिनट)",
+  "refreshEvery": "हर {minutes} मिनट",
+  "refreshIntervalHint": "पूर्वानुमान कितनी बार फिर से लोड हो; रडार और नाउकास्ट अपनी गति से चलते हैं। MET Norway अधिकतम हर 10 मिनट का अनुरोध करता है।",
+  "compareYesterday": "कल से तुलना",
+  "nextFullNewMoon": "अगली पूर्णिमा या अमावस्या",
+  "serviceLinkButton": "“मौसम सेवा पर खोलें” बटन",
+  "dayLength": "दिन की लंबाई",
+  "radarRings": "दूरी के वृत्त",
+  "shortcutServiceLink": "स्थान को मौसम सेवा पर खोलें"
+})
+addCatalogEntries("id", {
+  "yesterdayShort": "vs kemarin",
+  "fullMoon": "Bulan purnama",
+  "newMoon": "Bulan baru",
+  "moonToday": "hari ini",
+  "moonTomorrow": "besok",
+  "moonInDays": "dalam {days} hari",
+  "openAtService": "Buka di layanan cuaca ({service})",
+  "windUnit": "Satuan angin",
+  "windUnitAuto": "Otomatis ({unit})",
+  "windUnitKnots": "Knot",
+  "windUnitBeaufort": "Beaufort",
+  "refreshInterval": "Pembaruan",
+  "refreshDefault": "Bawaan (setiap {minutes} mnt)",
+  "refreshEvery": "setiap {minutes} mnt",
+  "refreshIntervalHint": "Seberapa sering prakiraan dimuat ulang; radar dan nowcast punya ritme sendiri. MET Norway meminta paling sering setiap 10 menit.",
+  "compareYesterday": "Dibandingkan kemarin",
+  "nextFullNewMoon": "Purnama atau bulan baru berikutnya",
+  "serviceLinkButton": "Tombol “Buka di layanan cuaca”",
+  "dayLength": "Lama siang",
+  "radarRings": "Cincin jarak",
+  "shortcutServiceLink": "Buka tempat di layanan cuaca"
+})
+addCatalogEntries("vi", {
+  "yesterdayShort": "so với hôm qua",
+  "fullMoon": "Trăng tròn",
+  "newMoon": "Trăng non",
+  "moonToday": "hôm nay",
+  "moonTomorrow": "ngày mai",
+  "moonInDays": "sau {days} ngày",
+  "openAtService": "Mở tại dịch vụ thời tiết ({service})",
+  "windUnit": "Đơn vị gió",
+  "windUnitAuto": "Tự động ({unit})",
+  "windUnitKnots": "Hải lý/giờ",
+  "windUnitBeaufort": "Beaufort",
+  "refreshInterval": "Cập nhật",
+  "refreshDefault": "Mặc định (mỗi {minutes} phút)",
+  "refreshEvery": "mỗi {minutes} phút",
+  "refreshIntervalHint": "Tần suất tải lại dự báo; radar và nowcast có nhịp riêng. MET Norway yêu cầu không quá mỗi 10 phút.",
+  "compareYesterday": "So với hôm qua",
+  "nextFullNewMoon": "Trăng tròn hoặc trăng non tiếp theo",
+  "serviceLinkButton": "Nút “Mở tại dịch vụ thời tiết”",
+  "dayLength": "Độ dài ngày",
+  "radarRings": "Vòng khoảng cách",
+  "shortcutServiceLink": "Mở địa điểm tại dịch vụ thời tiết"
+})
+addCatalogEntries("th", {
+  "yesterdayShort": "เทียบเมื่อวาน",
+  "fullMoon": "จันทร์เต็มดวง",
+  "newMoon": "จันทร์ดับ",
+  "moonToday": "วันนี้",
+  "moonTomorrow": "พรุ่งนี้",
+  "moonInDays": "อีก {days} วัน",
+  "openAtService": "เปิดที่บริการอุตุนิยมวิทยา ({service})",
+  "windUnit": "หน่วยลม",
+  "windUnitAuto": "อัตโนมัติ ({unit})",
+  "windUnitKnots": "นอต",
+  "windUnitBeaufort": "โบฟอร์ต",
+  "refreshInterval": "การอัปเดต",
+  "refreshDefault": "ค่าเริ่มต้น (ทุก {minutes} นาที)",
+  "refreshEvery": "ทุก {minutes} นาที",
+  "refreshIntervalHint": "ความถี่ในการโหลดพยากรณ์ใหม่ เรดาร์และ nowcast มีจังหวะของตัวเอง MET Norway ขอให้ไม่ถี่กว่าทุก 10 นาที",
+  "compareYesterday": "เทียบกับเมื่อวาน",
+  "nextFullNewMoon": "จันทร์เต็มดวงหรือจันทร์ดับครั้งถัดไป",
+  "serviceLinkButton": "ปุ่ม “เปิดที่บริการอุตุนิยมวิทยา”",
+  "dayLength": "ความยาวกลางวัน",
+  "radarRings": "วงระยะทาง",
+  "shortcutServiceLink": "เปิดสถานที่ที่บริการอุตุนิยมวิทยา"
+})
+
+// Day length change as its own entry (2.5).
+addCatalogEntries("en", { "dayLengthChange": "Change in day length" })
+addCatalogEntries("de", { "dayLengthChange": "Änderung der Tageslänge" })
+addCatalogEntries("es", { "dayLengthChange": "Cambio de la duración del día" })
+addCatalogEntries("fr", { "dayLengthChange": "Variation de la durée du jour" })
+addCatalogEntries("pt", { "dayLengthChange": "Variação da duração do dia" })
+addCatalogEntries("ru", { "dayLengthChange": "Изменение долготы дня" })
+addCatalogEntries("uk", { "dayLengthChange": "Зміна тривалості дня" })
+addCatalogEntries("pl", { "dayLengthChange": "Zmiana długości dnia" })
+addCatalogEntries("it", { "dayLengthChange": "Variazione della durata del giorno" })
+addCatalogEntries("nl", { "dayLengthChange": "Verandering van de daglengte" })
+addCatalogEntries("tr", { "dayLengthChange": "Gün uzunluğundaki değişim" })
+addCatalogEntries("cs", { "dayLengthChange": "Změna délky dne" })
+addCatalogEntries("sv", { "dayLengthChange": "Förändring av daglängden" })
+addCatalogEntries("fi", { "dayLengthChange": "Päivän pituuden muutos" })
+addCatalogEntries("nb", { "dayLengthChange": "Endring i daglengden" })
+addCatalogEntries("da", { "dayLengthChange": "Ændring i daglængden" })
+addCatalogEntries("ro", { "dayLengthChange": "Variația duratei zilei" })
+addCatalogEntries("hu", { "dayLengthChange": "A nappal hosszának változása" })
+addCatalogEntries("el", { "dayLengthChange": "Μεταβολή της διάρκειας ημέρας" })
+addCatalogEntries("zh_CN", { "dayLengthChange": "昼长变化" })
+addCatalogEntries("zh_TW", { "dayLengthChange": "晝長變化" })
+addCatalogEntries("ja", { "dayLengthChange": "日の長さの変化" })
+addCatalogEntries("ko", { "dayLengthChange": "낮 길이 변화" })
+addCatalogEntries("ar", { "dayLengthChange": "تغيّر طول النهار" })
+addCatalogEntries("he", { "dayLengthChange": "שינוי באורך היום" })
+addCatalogEntries("fa", { "dayLengthChange": "تغییر طول روز" })
+addCatalogEntries("hi", { "dayLengthChange": "दिन की लंबाई में बदलाव" })
+addCatalogEntries("id", { "dayLengthChange": "Perubahan lama siang" })
+addCatalogEntries("vi", { "dayLengthChange": "Thay đổi độ dài ngày" })
+addCatalogEntries("th", { "dayLengthChange": "การเปลี่ยนแปลงความยาวกลางวัน" })
+
+// General settings page and separate radar interval (2.5).
+addCatalogEntries("en", {
+  "settingsPageGeneral": "General",
+  "generalSubtitle": "For the menu bar, widget and app",
+  "settingsGeneralKeysHint": "Keyboard: ↑↓ go to a setting · ←→ change it · Space / Enter open the list",
+  "refreshForecast": "Forecast",
+  "refreshRadar": "Radar and rain nowcast",
+  "radarRefreshAuto": "Every new measurement (about 5 min)",
+  "refreshIntervalHint": "The forecast changes slowly; radar and nowcast bring new measurements about every 5 minutes, and a longer interval saves data. MET Norway asks for no more than every 10 minutes."
+})
+addCatalogEntries("de", {
+  "settingsPageGeneral": "Allgemein",
+  "generalSubtitle": "Für Menüleiste, Widget und App",
+  "settingsGeneralKeysHint": "Tastatur: ↑↓ zur Einstellung · ←→ ändern · Leertaste / Enter öffnet die Liste",
+  "refreshForecast": "Vorhersage",
+  "refreshRadar": "Radar und Regen-Nowcast",
+  "radarRefreshAuto": "Jede neue Messung (ca. 5 min)",
+  "refreshIntervalHint": "Die Vorhersage ändert sich langsam; Radar und Nowcast liefern etwa alle 5 Minuten neue Messungen, ein längeres Intervall spart Daten. MET Norway bittet um höchstens alle 10 Minuten."
+})
+addCatalogEntries("es", {
+  "settingsPageGeneral": "General",
+  "generalSubtitle": "Para la barra, el widget y la aplicación",
+  "settingsGeneralKeysHint": "Teclado: ↑↓ ir a un ajuste · ←→ cambiarlo · Espacio / Intro abre la lista",
+  "refreshForecast": "Previsión",
+  "refreshRadar": "Radar y nowcast de lluvia",
+  "radarRefreshAuto": "Cada nueva medición (unos 5 min)",
+  "refreshIntervalHint": "La previsión cambia despacio; radar y nowcast traen mediciones nuevas cada 5 minutos aprox., y un intervalo mayor ahorra datos. MET Norway pide no más de cada 10 minutos."
+})
+addCatalogEntries("fr", {
+  "settingsPageGeneral": "Général",
+  "generalSubtitle": "Pour la barre, le widget et l’application",
+  "settingsGeneralKeysHint": "Clavier : ↑↓ vers un réglage · ←→ le modifier · Espace / Entrée ouvre la liste",
+  "refreshForecast": "Prévision",
+  "refreshRadar": "Radar et nowcast de pluie",
+  "radarRefreshAuto": "Chaque nouvelle mesure (env. 5 min)",
+  "refreshIntervalHint": "La prévision évolue lentement ; radar et nowcast apportent de nouvelles mesures env. toutes les 5 minutes, un intervalle plus long économise des données. MET Norway demande au plus toutes les 10 minutes."
+})
+addCatalogEntries("pt", {
+  "settingsPageGeneral": "Geral",
+  "generalSubtitle": "Para a barra, o widget e o app",
+  "settingsGeneralKeysHint": "Teclado: ↑↓ ir a uma opção · ←→ alterá-la · Espaço / Enter abre a lista",
+  "refreshForecast": "Previsão",
+  "refreshRadar": "Radar e nowcast de chuva",
+  "radarRefreshAuto": "Cada nova medição (cerca de 5 min)",
+  "refreshIntervalHint": "A previsão muda devagar; radar e nowcast trazem medições novas a cada 5 minutos aprox., e um intervalo maior economiza dados. A MET Norway pede no máximo a cada 10 minutos."
+})
+addCatalogEntries("ru", {
+  "settingsPageGeneral": "Общие",
+  "generalSubtitle": "Для панели, виджета и приложения",
+  "settingsGeneralKeysHint": "Клавиатура: ↑↓ — к настройке · ←→ — изменить · Пробел / Enter — открыть список",
+  "refreshForecast": "Прогноз",
+  "refreshRadar": "Радар и наукаст осадков",
+  "radarRefreshAuto": "Каждое новое измерение (около 5 мин)",
+  "refreshIntervalHint": "Прогноз меняется медленно; радар и наукаст дают новые измерения примерно каждые 5 минут, более длинный интервал экономит данные. MET Norway просит не чаще раза в 10 минут."
+})
+addCatalogEntries("uk", {
+  "settingsPageGeneral": "Загальні",
+  "generalSubtitle": "Для панелі, віджета й застосунку",
+  "settingsGeneralKeysHint": "Клавіатура: ↑↓ — до налаштування · ←→ — змінити · Пробіл / Enter — відкрити список",
+  "refreshForecast": "Прогноз",
+  "refreshRadar": "Радар і наукаст опадів",
+  "radarRefreshAuto": "Кожне нове вимірювання (близько 5 хв)",
+  "refreshIntervalHint": "Прогноз змінюється повільно; радар і наукаст дають нові вимірювання приблизно кожні 5 хвилин, довший інтервал заощаджує дані. MET Norway просить не частіше ніж раз на 10 хвилин."
+})
+addCatalogEntries("pl", {
+  "settingsPageGeneral": "Ogólne",
+  "generalSubtitle": "Dla paska, widżetu i aplikacji",
+  "settingsGeneralKeysHint": "Klawiatura: ↑↓ do ustawienia · ←→ zmiana · Spacja / Enter otwiera listę",
+  "refreshForecast": "Prognoza",
+  "refreshRadar": "Radar i nowcast opadów",
+  "radarRefreshAuto": "Każdy nowy pomiar (ok. 5 min)",
+  "refreshIntervalHint": "Prognoza zmienia się powoli; radar i nowcast dają nowe pomiary mniej więcej co 5 minut, dłuższy odstęp oszczędza dane. MET Norway prosi o nie częściej niż co 10 minut."
+})
+addCatalogEntries("it", {
+  "settingsPageGeneral": "Generali",
+  "generalSubtitle": "Per barra, widget e app",
+  "settingsGeneralKeysHint": "Tastiera: ↑↓ a un’impostazione · ←→ cambiarla · Spazio / Invio apre l’elenco",
+  "refreshForecast": "Previsione",
+  "refreshRadar": "Radar e nowcast della pioggia",
+  "radarRefreshAuto": "Ogni nuova misura (circa 5 min)",
+  "refreshIntervalHint": "La previsione cambia lentamente; radar e nowcast portano nuove misure circa ogni 5 minuti, un intervallo più lungo risparmia dati. MET Norway chiede non più di ogni 10 minuti."
+})
+addCatalogEntries("nl", {
+  "settingsPageGeneral": "Algemeen",
+  "generalSubtitle": "Voor balk, widget en app",
+  "settingsGeneralKeysHint": "Toetsenbord: ↑↓ naar een instelling · ←→ wijzigen · Spatie / Enter opent de lijst",
+  "refreshForecast": "Verwachting",
+  "refreshRadar": "Radar en regen-nowcast",
+  "radarRefreshAuto": "Elke nieuwe meting (ca. 5 min)",
+  "refreshIntervalHint": "De verwachting verandert langzaam; radar en nowcast leveren ongeveer elke 5 minuten nieuwe metingen, een langer interval spaart data. MET Norway vraagt om hoogstens elke 10 minuten."
+})
+addCatalogEntries("tr", {
+  "settingsPageGeneral": "Genel",
+  "generalSubtitle": "Çubuk, widget ve uygulama için",
+  "settingsGeneralKeysHint": "Klavye: ↑↓ ayara git · ←→ değiştir · Boşluk / Enter listeyi açar",
+  "refreshForecast": "Tahmin",
+  "refreshRadar": "Radar ve yağış anlık tahmini",
+  "radarRefreshAuto": "Her yeni ölçüm (yaklaşık 5 dk)",
+  "refreshIntervalHint": "Tahmin yavaş değişir; radar ve anlık tahmin yaklaşık 5 dakikada bir yeni ölçüm getirir, daha uzun aralık veri tasarrufu sağlar. MET Norway en fazla 10 dakikada bir istiyor."
+})
+addCatalogEntries("cs", {
+  "settingsPageGeneral": "Obecné",
+  "generalSubtitle": "Pro lištu, widget a aplikaci",
+  "settingsGeneralKeysHint": "Klávesnice: ↑↓ na nastavení · ←→ změnit · Mezerník / Enter otevře seznam",
+  "refreshForecast": "Předpověď",
+  "refreshRadar": "Radar a nowcast srážek",
+  "radarRefreshAuto": "Každé nové měření (asi 5 min)",
+  "refreshIntervalHint": "Předpověď se mění pomalu; radar a nowcast přinášejí nová měření asi každých 5 minut, delší interval šetří data. MET Norway žádá nejvýše každých 10 minut."
+})
+addCatalogEntries("sv", {
+  "settingsPageGeneral": "Allmänt",
+  "generalSubtitle": "För listen, widgeten och appen",
+  "settingsGeneralKeysHint": "Tangentbord: ↑↓ till en inställning · ←→ ändra · Mellanslag / Enter öppnar listan",
+  "refreshForecast": "Prognos",
+  "refreshRadar": "Radar och regn-nowcast",
+  "radarRefreshAuto": "Varje ny mätning (ca 5 min)",
+  "refreshIntervalHint": "Prognosen ändras långsamt; radar och nowcast ger nya mätningar ungefär var 5:e minut, ett längre intervall sparar data. MET Norway ber om högst var 10:e minut."
+})
+addCatalogEntries("fi", {
+  "settingsPageGeneral": "Yleiset",
+  "generalSubtitle": "Palkille, pienoisohjelmalle ja sovellukselle",
+  "settingsGeneralKeysHint": "Näppäimistö: ↑↓ asetukseen · ←→ muuta · Välilyönti / Enter avaa luettelon",
+  "refreshForecast": "Ennuste",
+  "refreshRadar": "Tutka ja sadenowcast",
+  "radarRefreshAuto": "Jokainen uusi mittaus (n. 5 min)",
+  "refreshIntervalHint": "Ennuste muuttuu hitaasti; tutka ja nowcast tuovat uusia mittauksia noin 5 minuutin välein, pidempi väli säästää dataa. MET Norway pyytää enintään 10 minuutin välein."
+})
+addCatalogEntries("nb", {
+  "settingsPageGeneral": "Generelt",
+  "generalSubtitle": "For linjen, widgeten og appen",
+  "settingsGeneralKeysHint": "Tastatur: ↑↓ til en innstilling · ←→ endre · Mellomrom / Enter åpner listen",
+  "refreshForecast": "Varsel",
+  "refreshRadar": "Radar og regn-nowcast",
+  "radarRefreshAuto": "Hver ny måling (ca. 5 min)",
+  "refreshIntervalHint": "Varselet endrer seg sakte; radar og nowcast gir nye målinger omtrent hvert 5. minutt, et lengre intervall sparer data. MET Norway ber om høyst hvert 10. minutt."
+})
+addCatalogEntries("da", {
+  "settingsPageGeneral": "Generelt",
+  "generalSubtitle": "Til bjælken, widgetten og appen",
+  "settingsGeneralKeysHint": "Tastatur: ↑↓ til en indstilling · ←→ ændr · Mellemrum / Enter åbner listen",
+  "refreshForecast": "Udsigt",
+  "refreshRadar": "Radar og regn-nowcast",
+  "radarRefreshAuto": "Hver ny måling (ca. 5 min)",
+  "refreshIntervalHint": "Udsigten ændrer sig langsomt; radar og nowcast giver nye målinger omtrent hvert 5. minut, et længere interval sparer data. MET Norway beder om højst hvert 10. minut."
+})
+addCatalogEntries("ro", {
+  "settingsPageGeneral": "General",
+  "generalSubtitle": "Pentru bară, widget și aplicație",
+  "settingsGeneralKeysHint": "Tastatură: ↑↓ la o setare · ←→ modifică · Spațiu / Enter deschide lista",
+  "refreshForecast": "Prognoză",
+  "refreshRadar": "Radar și nowcast de ploaie",
+  "radarRefreshAuto": "Fiecare măsurătoare nouă (circa 5 min)",
+  "refreshIntervalHint": "Prognoza se schimbă încet; radarul și nowcastul aduc măsurători noi cam la 5 minute, un interval mai lung economisește date. MET Norway cere cel mult la fiecare 10 minute."
+})
+addCatalogEntries("hu", {
+  "settingsPageGeneral": "Általános",
+  "generalSubtitle": "A sávhoz, a widgethez és az alkalmazáshoz",
+  "settingsGeneralKeysHint": "Billentyűzet: ↑↓ beállításhoz · ←→ módosít · Szóköz / Enter megnyitja a listát",
+  "refreshForecast": "Előrejelzés",
+  "refreshRadar": "Radar és csapadék-nowcast",
+  "radarRefreshAuto": "Minden új mérés (kb. 5 perc)",
+  "refreshIntervalHint": "Az előrejelzés lassan változik; a radar és a nowcast kb. 5 percenként hoz új méréseket, a hosszabb időköz adatot takarít meg. A MET Norway legfeljebb 10 percenkénti lekérést kér."
+})
+addCatalogEntries("el", {
+  "settingsPageGeneral": "Γενικά",
+  "generalSubtitle": "Για γραμμή, widget και εφαρμογή",
+  "settingsGeneralKeysHint": "Πληκτρολόγιο: ↑↓ σε ρύθμιση · ←→ αλλαγή · Διάστημα / Enter ανοίγει τη λίστα",
+  "refreshForecast": "Πρόγνωση",
+  "refreshRadar": "Ραντάρ και nowcast βροχής",
+  "radarRefreshAuto": "Κάθε νέα μέτρηση (περίπου 5 λεπτά)",
+  "refreshIntervalHint": "Η πρόγνωση αλλάζει αργά· ραντάρ και nowcast φέρνουν νέες μετρήσεις περίπου κάθε 5 λεπτά, και μεγαλύτερο διάστημα εξοικονομεί δεδομένα. Η MET Norway ζητά το πολύ κάθε 10 λεπτά."
+})
+addCatalogEntries("zh_CN", {
+  "settingsPageGeneral": "通用",
+  "generalSubtitle": "适用于菜单栏、小组件和应用",
+  "settingsGeneralKeysHint": "键盘：↑↓ 移到设置项 · ←→ 更改 · 空格 / 回车打开列表",
+  "refreshForecast": "预报",
+  "refreshRadar": "雷达和降雨临近预报",
+  "radarRefreshAuto": "每次新测量（约 5 分钟）",
+  "refreshIntervalHint": "预报变化较慢；雷达和临近预报约每 5 分钟带来新测量，间隔更长可节省流量。MET Norway 要求最多每 10 分钟一次。"
+})
+addCatalogEntries("zh_TW", {
+  "settingsPageGeneral": "一般",
+  "generalSubtitle": "適用於選單列、小工具與應用程式",
+  "settingsGeneralKeysHint": "鍵盤：↑↓ 移到設定項 · ←→ 變更 · 空白鍵 / Enter 開啟清單",
+  "refreshForecast": "預報",
+  "refreshRadar": "雷達與降雨即時預報",
+  "radarRefreshAuto": "每次新測量（約 5 分鐘）",
+  "refreshIntervalHint": "預報變化較慢；雷達與即時預報約每 5 分鐘帶來新測量，間隔較長可節省流量。MET Norway 要求最多每 10 分鐘一次。"
+})
+addCatalogEntries("ja", {
+  "settingsPageGeneral": "一般",
+  "generalSubtitle": "メニューバー、ウィジェット、アプリ共通",
+  "settingsGeneralKeysHint": "キーボード：↑↓ で設定へ · ←→ で変更 · Space / Enter でリストを開く",
+  "refreshForecast": "予報",
+  "refreshRadar": "レーダーと降水ナウキャスト",
+  "radarRefreshAuto": "新しい観測ごと（約5分）",
+  "refreshIntervalHint": "予報はゆっくり変わります。レーダーとナウキャストは約5分ごとに新しい観測を届け、長めの間隔ならデータを節約できます。MET Norway は 10 分以上の間隔を求めています。"
+})
+addCatalogEntries("ko", {
+  "settingsPageGeneral": "일반",
+  "generalSubtitle": "메뉴 막대, 위젯, 앱 공통",
+  "settingsGeneralKeysHint": "키보드: ↑↓ 설정으로 이동 · ←→ 변경 · Space / Enter 목록 열기",
+  "refreshForecast": "예보",
+  "refreshRadar": "레이더 및 강수 초단기 예보",
+  "radarRefreshAuto": "새 관측마다(약 5분)",
+  "refreshIntervalHint": "예보는 천천히 바뀝니다. 레이더와 초단기 예보는 약 5분마다 새 관측을 제공하며, 간격을 늘리면 데이터를 절약합니다. MET Norway는 최소 10분 간격을 요청합니다."
+})
+addCatalogEntries("ar", {
+  "settingsPageGeneral": "عام",
+  "generalSubtitle": "للشريط والأداة والتطبيق",
+  "settingsGeneralKeysHint": "لوحة المفاتيح: ↑↓ إلى إعداد · ←→ للتغيير · المسافة / Enter لفتح القائمة",
+  "refreshForecast": "التوقعات",
+  "refreshRadar": "الرادار والتنبؤ الآني بالمطر",
+  "radarRefreshAuto": "كل قياس جديد (نحو 5 دقائق)",
+  "refreshIntervalHint": "تتغير التوقعات ببطء؛ يأتي الرادار والتنبؤ الآني بقياسات جديدة كل 5 دقائق تقريبًا، والفاصل الأطول يوفر البيانات. تطلب MET Norway ألا يزيد ذلك عن مرة كل 10 دقائق."
+})
+addCatalogEntries("he", {
+  "settingsPageGeneral": "כללי",
+  "generalSubtitle": "לסרגל, לווידג׳ט ולאפליקציה",
+  "settingsGeneralKeysHint": "מקלדת: ↑↓ להגדרה · ←→ שינוי · רווח / Enter פותח את הרשימה",
+  "refreshForecast": "תחזית",
+  "refreshRadar": "מכ״ם ו-nowcast גשם",
+  "radarRefreshAuto": "כל מדידה חדשה (כ-5 דק׳)",
+  "refreshIntervalHint": "התחזית משתנה לאט; המכ״ם וה-nowcast מביאים מדידות חדשות בערך כל 5 דקות, ומרווח ארוך יותר חוסך נתונים. MET Norway מבקשת לא יותר מפעם ב-10 דקות."
+})
+addCatalogEntries("fa", {
+  "settingsPageGeneral": "عمومی",
+  "generalSubtitle": "برای نوار، ابزارک و برنامه",
+  "settingsGeneralKeysHint": "صفحه‌کلید: ↑↓ رفتن به تنظیم · ←→ تغییر · فاصله / Enter باز کردن فهرست",
+  "refreshForecast": "پیش‌بینی",
+  "refreshRadar": "رادار و پیش‌بینی آنی باران",
+  "radarRefreshAuto": "هر اندازه‌گیری تازه (حدود ۵ دقیقه)",
+  "refreshIntervalHint": "پیش‌بینی آهسته تغییر می‌کند؛ رادار و پیش‌بینی آنی حدود هر ۵ دقیقه اندازه‌گیری تازه می‌آورند و فاصلهٔ طولانی‌تر داده صرفه‌جویی می‌کند. MET Norway درخواست می‌کند حداکثر هر ۱۰ دقیقه باشد."
+})
+addCatalogEntries("hi", {
+  "settingsPageGeneral": "सामान्य",
+  "generalSubtitle": "मेनू बार, विजेट और ऐप के लिए",
+  "settingsGeneralKeysHint": "कीबोर्ड: ↑↓ सेटिंग पर जाएँ · ←→ बदलें · Space / Enter सूची खोलें",
+  "refreshForecast": "पूर्वानुमान",
+  "refreshRadar": "रडार और बारिश नाउकास्ट",
+  "radarRefreshAuto": "हर नया मापन (लगभग 5 मिनट)",
+  "refreshIntervalHint": "पूर्वानुमान धीरे बदलता है; रडार और नाउकास्ट लगभग हर 5 मिनट में नए मापन लाते हैं, लंबा अंतराल डेटा बचाता है। MET Norway अधिकतम हर 10 मिनट का अनुरोध करता है।"
+})
+addCatalogEntries("id", {
+  "settingsPageGeneral": "Umum",
+  "generalSubtitle": "Untuk bilah, widget, dan aplikasi",
+  "settingsGeneralKeysHint": "Keyboard: ↑↓ ke pengaturan · ←→ ubah · Spasi / Enter buka daftar",
+  "refreshForecast": "Prakiraan",
+  "refreshRadar": "Radar dan nowcast hujan",
+  "radarRefreshAuto": "Setiap pengukuran baru (sekitar 5 mnt)",
+  "refreshIntervalHint": "Prakiraan berubah lambat; radar dan nowcast membawa pengukuran baru sekitar setiap 5 menit, dan interval lebih lama menghemat data. MET Norway meminta paling sering setiap 10 menit."
+})
+addCatalogEntries("vi", {
+  "settingsPageGeneral": "Chung",
+  "generalSubtitle": "Cho thanh, tiện ích và ứng dụng",
+  "settingsGeneralKeysHint": "Bàn phím: ↑↓ tới cài đặt · ←→ thay đổi · Space / Enter mở danh sách",
+  "refreshForecast": "Dự báo",
+  "refreshRadar": "Radar và nowcast mưa",
+  "radarRefreshAuto": "Mỗi lần đo mới (khoảng 5 phút)",
+  "refreshIntervalHint": "Dự báo thay đổi chậm; radar và nowcast mang lại số đo mới khoảng mỗi 5 phút, khoảng dài hơn giúp tiết kiệm dữ liệu. MET Norway yêu cầu không quá mỗi 10 phút."
+})
+addCatalogEntries("th", {
+  "settingsPageGeneral": "ทั่วไป",
+  "generalSubtitle": "สำหรับแถบ วิดเจ็ต และแอป",
+  "settingsGeneralKeysHint": "แป้นพิมพ์: ↑↓ ไปยังการตั้งค่า · ←→ เปลี่ยน · Space / Enter เปิดรายการ",
+  "refreshForecast": "พยากรณ์",
+  "refreshRadar": "เรดาร์และ nowcast ฝน",
+  "radarRefreshAuto": "ทุกการวัดใหม่ (ราว 5 นาที)",
+  "refreshIntervalHint": "พยากรณ์เปลี่ยนช้า เรดาร์และ nowcast ให้ค่าวัดใหม่ราวทุก 5 นาที ช่วงที่นานขึ้นช่วยประหยัดข้อมูล MET Norway ขอให้ไม่ถี่กว่าทุก 10 นาที"
+})
+
+// Colour accents (2.5).
+addCatalogEntries("en", {
+  "colorAccents": "Colour accents",
+  "colorAccentsHint": "Temperatures by warmth, rain chance by height, UV and strong wind by level, and the week's temperature bars in colour, from the current Omarchy theme's palette.",
+  "temperatureBar": "Temperature bar (week)"
+})
+addCatalogEntries("de", {
+  "colorAccents": "Farbakzente",
+  "colorAccentsHint": "Temperaturen nach Wärme, Regenwahrscheinlichkeit nach Höhe, UV und starker Wind nach Stufe sowie die Temperaturbalken der Woche farbig – in den Farben des aktuellen Omarchy-Themes.",
+  "temperatureBar": "Temperaturbalken (Woche)"
+})
+addCatalogEntries("es", {
+  "colorAccents": "Acentos de color",
+  "colorAccentsHint": "Temperaturas según el calor, probabilidad de lluvia según su valor, UV y viento fuerte según el nivel, y las barras de temperatura de la semana en color, con la paleta del tema de Omarchy actual.",
+  "temperatureBar": "Barra de temperatura (semana)"
+})
+addCatalogEntries("fr", {
+  "colorAccents": "Accents de couleur",
+  "colorAccentsHint": "Températures selon la chaleur, probabilité de pluie selon sa valeur, UV et vent fort selon le niveau, et barres de température de la semaine en couleur, dans la palette du thème Omarchy actuel.",
+  "temperatureBar": "Barre de température (semaine)"
+})
+addCatalogEntries("pt", {
+  "colorAccents": "Destaques de cor",
+  "colorAccentsHint": "Temperaturas pelo calor, probabilidade de chuva pelo valor, UV e vento forte pelo nível e as barras de temperatura da semana em cor, com a paleta do tema Omarchy atual.",
+  "temperatureBar": "Barra de temperatura (semana)"
+})
+addCatalogEntries("ru", {
+  "colorAccents": "Цветовые акценты",
+  "colorAccentsHint": "Температура по теплу, вероятность осадков по величине, УФ и сильный ветер по уровню и температурные полосы недели — в цветах текущей темы Omarchy.",
+  "temperatureBar": "Полоса температуры (неделя)"
+})
+addCatalogEntries("uk", {
+  "colorAccents": "Кольорові акценти",
+  "colorAccentsHint": "Температура за теплом, імовірність опадів за величиною, УФ і сильний вітер за рівнем і температурні смуги тижня — у кольорах поточної теми Omarchy.",
+  "temperatureBar": "Смуга температури (тиждень)"
+})
+addCatalogEntries("pl", {
+  "colorAccents": "Akcenty kolorystyczne",
+  "colorAccentsHint": "Temperatury według ciepła, szansa opadów według wartości, UV i silny wiatr według poziomu oraz paski temperatury tygodnia w kolorze, z palety bieżącego motywu Omarchy.",
+  "temperatureBar": "Pasek temperatury (tydzień)"
+})
+addCatalogEntries("it", {
+  "colorAccents": "Accenti di colore",
+  "colorAccentsHint": "Temperature secondo il calore, probabilità di pioggia secondo il valore, UV e vento forte secondo il livello e le barre di temperatura della settimana a colori, con la palette del tema Omarchy attuale.",
+  "temperatureBar": "Barra della temperatura (settimana)"
+})
+addCatalogEntries("nl", {
+  "colorAccents": "Kleuraccenten",
+  "colorAccentsHint": "Temperaturen naar warmte, regenkans naar hoogte, UV en harde wind naar niveau en de temperatuurbalken van de week in kleur, uit het palet van het huidige Omarchy-thema.",
+  "temperatureBar": "Temperatuurbalk (week)"
+})
+addCatalogEntries("tr", {
+  "colorAccents": "Renk vurguları",
+  "colorAccentsHint": "Sıcaklıklar ısıya, yağış olasılığı değerine, UV ve kuvvetli rüzgâr seviyesine göre ve haftanın sıcaklık çubukları renkli; mevcut Omarchy temasının paletiyle.",
+  "temperatureBar": "Sıcaklık çubuğu (hafta)"
+})
+addCatalogEntries("cs", {
+  "colorAccents": "Barevné akcenty",
+  "colorAccentsHint": "Teploty podle tepla, pravděpodobnost srážek podle výše, UV a silný vítr podle stupně a teplotní pruhy týdne barevně – v paletě aktuálního motivu Omarchy.",
+  "temperatureBar": "Teplotní pruh (týden)"
+})
+addCatalogEntries("sv", {
+  "colorAccents": "Färgaccenter",
+  "colorAccentsHint": "Temperaturer efter värme, regnrisk efter nivå, UV och hård vind efter styrka samt veckans temperaturstaplar i färg, ur paletten för det aktuella Omarchy-temat.",
+  "temperatureBar": "Temperaturstapel (vecka)"
+})
+addCatalogEntries("fi", {
+  "colorAccents": "Väriaksentit",
+  "colorAccentsHint": "Lämpötilat lämmön, sateen todennäköisyys arvon, UV ja kova tuuli tason mukaan sekä viikon lämpötilapalkit värillisinä – nykyisen Omarchy-teeman paletista.",
+  "temperatureBar": "Lämpötilapalkki (viikko)"
+})
+addCatalogEntries("nb", {
+  "colorAccents": "Fargeaksenter",
+  "colorAccentsHint": "Temperaturer etter varme, regnsjanse etter nivå, UV og sterk vind etter styrke og ukens temperaturstolper i farger, fra paletten til det gjeldende Omarchy-temaet.",
+  "temperatureBar": "Temperaturstolpe (uke)"
+})
+addCatalogEntries("da", {
+  "colorAccents": "Farveaccenter",
+  "colorAccentsHint": "Temperaturer efter varme, regnchance efter niveau, UV og hård vind efter styrke samt ugens temperaturbjælker i farve, fra paletten i det aktuelle Omarchy-tema.",
+  "temperatureBar": "Temperaturbjælke (uge)"
+})
+addCatalogEntries("ro", {
+  "colorAccents": "Accente de culoare",
+  "colorAccentsHint": "Temperaturi după căldură, probabilitatea ploii după valoare, UV și vânt puternic după nivel și barele de temperatură ale săptămânii colorate, din paleta temei Omarchy curente.",
+  "temperatureBar": "Bară de temperatură (săptămână)"
+})
+addCatalogEntries("hu", {
+  "colorAccents": "Színkiemelések",
+  "colorAccentsHint": "Hőmérséklet a meleg szerint, csapadékesély az érték szerint, UV és erős szél a fokozat szerint, valamint a hét hőmérséklet-sávjai színesen, az aktuális Omarchy-téma palettájából.",
+  "temperatureBar": "Hőmérsékletsáv (hét)"
+})
+addCatalogEntries("el", {
+  "colorAccents": "Χρωματικές πινελιές",
+  "colorAccentsHint": "Θερμοκρασίες κατά θερμότητα, πιθανότητα βροχής κατά τιμή, UV και ισχυρός άνεμος κατά επίπεδο και οι μπάρες θερμοκρασίας της εβδομάδας σε χρώμα, από την παλέτα του τρέχοντος θέματος Omarchy.",
+  "temperatureBar": "Μπάρα θερμοκρασίας (εβδομάδα)"
+})
+addCatalogEntries("zh_CN", {
+  "colorAccents": "色彩强调",
+  "colorAccentsHint": "按冷暖着色温度，按高低着色降雨概率，按等级着色紫外线和强风，并以彩色显示一周温度条，颜色取自当前 Omarchy 主题。",
+  "temperatureBar": "温度条（一周）"
+})
+addCatalogEntries("zh_TW", {
+  "colorAccents": "色彩強調",
+  "colorAccentsHint": "依冷暖著色溫度，依高低著色降雨機率，依等級著色紫外線與強風，並以彩色顯示一週溫度條，顏色取自目前的 Omarchy 主題。",
+  "temperatureBar": "溫度條（一週）"
+})
+addCatalogEntries("ja", {
+  "colorAccents": "カラーアクセント",
+  "colorAccentsHint": "気温は暖かさ、降水確率は高さ、UV と強風は段階に応じて色分けし、週の気温バーもカラー表示します。色は現在の Omarchy テーマから取ります。",
+  "temperatureBar": "気温バー（週）"
+})
+addCatalogEntries("ko", {
+  "colorAccents": "색상 강조",
+  "colorAccentsHint": "기온은 따뜻함, 강수 확률은 높이, 자외선과 강풍은 단계에 따라 색을 입히고, 주간 기온 막대도 색으로 표시합니다. 색상은 현재 Omarchy 테마에서 가져옵니다.",
+  "temperatureBar": "기온 막대(주간)"
+})
+addCatalogEntries("ar", {
+  "colorAccents": "لمسات لونية",
+  "colorAccentsHint": "تلوين درجات الحرارة حسب الدفء، واحتمال المطر حسب قيمته، والأشعة فوق البنفسجية والرياح القوية حسب المستوى، وأشرطة حرارة الأسبوع، بألوان سمة Omarchy الحالية.",
+  "temperatureBar": "شريط الحرارة (الأسبوع)"
+})
+addCatalogEntries("he", {
+  "colorAccents": "הדגשות צבע",
+  "colorAccentsHint": "טמפרטורות לפי חום, סיכוי לגשם לפי גובהו, UV ורוח חזקה לפי דרגה ופסי הטמפרטורה של השבוע בצבע, מפלטת ערכת Omarchy הנוכחית.",
+  "temperatureBar": "פס טמפרטורה (שבוע)"
+})
+addCatalogEntries("fa", {
+  "colorAccents": "تأکیدهای رنگی",
+  "colorAccentsHint": "دما بر اساس گرما، احتمال باران بر اساس مقدار، فرابنفش و باد شدید بر اساس سطح و نوارهای دمای هفته به‌صورت رنگی، با رنگ‌های پوستهٔ فعلی Omarchy.",
+  "temperatureBar": "نوار دما (هفته)"
+})
+addCatalogEntries("hi", {
+  "colorAccents": "रंग उभार",
+  "colorAccentsHint": "तापमान गर्मी के अनुसार, बारिश की संभावना मान के अनुसार, UV और तेज़ हवा स्तर के अनुसार और सप्ताह की तापमान पट्टियाँ रंग में — मौजूदा Omarchy थीम के रंगों से।",
+  "temperatureBar": "तापमान पट्टी (सप्ताह)"
+})
+addCatalogEntries("id", {
+  "colorAccents": "Aksen warna",
+  "colorAccentsHint": "Suhu menurut kehangatan, peluang hujan menurut nilainya, UV dan angin kencang menurut tingkat, serta batang suhu minggu ini berwarna, dari palet tema Omarchy saat ini.",
+  "temperatureBar": "Batang suhu (minggu)"
+})
+addCatalogEntries("vi", {
+  "colorAccents": "Điểm nhấn màu",
+  "colorAccentsHint": "Nhiệt độ theo độ ấm, khả năng mưa theo mức, UV và gió mạnh theo cấp, cùng thanh nhiệt độ của tuần được tô màu, theo bảng màu của chủ đề Omarchy hiện tại.",
+  "temperatureBar": "Thanh nhiệt độ (tuần)"
+})
+addCatalogEntries("th", {
+  "colorAccents": "สีเน้น",
+  "colorAccentsHint": "ลงสีอุณหภูมิตามความอุ่น โอกาสฝนตามค่า UV และลมแรงตามระดับ และแถบอุณหภูมิประจำสัปดาห์ ด้วยชุดสีของธีม Omarchy ปัจจุบัน",
+  "temperatureBar": "แถบอุณหภูมิ (สัปดาห์)"
+})
+
+// Hour cursor (2.5).
+addCatalogEntries("en", {
+  "heroAtTime": "at {time}",
+  "hourCursorHint": "⇧ ← → another hour · ⌫ now",
+  "shortcutHourCursor": "Show another hour in the current weather",
+  "shortcutHourCursorReset": "Back to now"
+})
+addCatalogEntries("de", {
+  "heroAtTime": "um {time}",
+  "hourCursorHint": "⇧ ← → andere Stunde · ⌫ jetzt",
+  "shortcutHourCursor": "Andere Stunde im aktuellen Wetter zeigen",
+  "shortcutHourCursorReset": "Zurück zu jetzt"
+})
+addCatalogEntries("es", {
+  "heroAtTime": "a las {time}",
+  "hourCursorHint": "⇧ ← → otra hora · ⌫ ahora",
+  "shortcutHourCursor": "Mostrar otra hora en el tiempo actual",
+  "shortcutHourCursorReset": "Volver a ahora"
+})
+addCatalogEntries("fr", {
+  "heroAtTime": "à {time}",
+  "hourCursorHint": "⇧ ← → autre heure · ⌫ maintenant",
+  "shortcutHourCursor": "Afficher une autre heure dans la météo actuelle",
+  "shortcutHourCursorReset": "Revenir à maintenant"
+})
+addCatalogEntries("pt", {
+  "heroAtTime": "às {time}",
+  "hourCursorHint": "⇧ ← → outra hora · ⌫ agora",
+  "shortcutHourCursor": "Mostrar outra hora no tempo atual",
+  "shortcutHourCursorReset": "Voltar para agora"
+})
+addCatalogEntries("ru", {
+  "heroAtTime": "в {time}",
+  "hourCursorHint": "⇧ ← → другой час · ⌫ сейчас",
+  "shortcutHourCursor": "Показать другой час в текущей погоде",
+  "shortcutHourCursorReset": "Вернуться к «сейчас»"
+})
+addCatalogEntries("uk", {
+  "heroAtTime": "о {time}",
+  "hourCursorHint": "⇧ ← → інша година · ⌫ зараз",
+  "shortcutHourCursor": "Показати іншу годину в поточній погоді",
+  "shortcutHourCursorReset": "Повернутися до «зараз»"
+})
+addCatalogEntries("pl", {
+  "heroAtTime": "o {time}",
+  "hourCursorHint": "⇧ ← → inna godzina · ⌫ teraz",
+  "shortcutHourCursor": "Pokaż inną godzinę w bieżącej pogodzie",
+  "shortcutHourCursorReset": "Wróć do teraz"
+})
+addCatalogEntries("it", {
+  "heroAtTime": "alle {time}",
+  "hourCursorHint": "⇧ ← → altra ora · ⌫ ora",
+  "shortcutHourCursor": "Mostra un’altra ora nel meteo attuale",
+  "shortcutHourCursorReset": "Torna ad adesso"
+})
+addCatalogEntries("nl", {
+  "heroAtTime": "om {time}",
+  "hourCursorHint": "⇧ ← → ander uur · ⌫ nu",
+  "shortcutHourCursor": "Een ander uur tonen in het huidige weer",
+  "shortcutHourCursorReset": "Terug naar nu"
+})
+addCatalogEntries("tr", {
+  "heroAtTime": "saat {time}",
+  "hourCursorHint": "⇧ ← → başka saat · ⌫ şimdi",
+  "shortcutHourCursor": "Güncel havada başka bir saati göster",
+  "shortcutHourCursorReset": "Şimdiye dön"
+})
+addCatalogEntries("cs", {
+  "heroAtTime": "v {time}",
+  "hourCursorHint": "⇧ ← → jiná hodina · ⌫ teď",
+  "shortcutHourCursor": "Zobrazit jinou hodinu v aktuálním počasí",
+  "shortcutHourCursorReset": "Zpět na teď"
+})
+addCatalogEntries("sv", {
+  "heroAtTime": "kl. {time}",
+  "hourCursorHint": "⇧ ← → annan timme · ⌫ nu",
+  "shortcutHourCursor": "Visa en annan timme i aktuellt väder",
+  "shortcutHourCursorReset": "Tillbaka till nu"
+})
+addCatalogEntries("fi", {
+  "heroAtTime": "klo {time}",
+  "hourCursorHint": "⇧ ← → toinen tunti · ⌫ nyt",
+  "shortcutHourCursor": "Näytä toinen tunti nykyisessä säässä",
+  "shortcutHourCursorReset": "Takaisin nykyhetkeen"
+})
+addCatalogEntries("nb", {
+  "heroAtTime": "kl. {time}",
+  "hourCursorHint": "⇧ ← → annen time · ⌫ nå",
+  "shortcutHourCursor": "Vis en annen time i været nå",
+  "shortcutHourCursorReset": "Tilbake til nå"
+})
+addCatalogEntries("da", {
+  "heroAtTime": "kl. {time}",
+  "hourCursorHint": "⇧ ← → anden time · ⌫ nu",
+  "shortcutHourCursor": "Vis en anden time i det aktuelle vejr",
+  "shortcutHourCursorReset": "Tilbage til nu"
+})
+addCatalogEntries("ro", {
+  "heroAtTime": "la {time}",
+  "hourCursorHint": "⇧ ← → altă oră · ⌫ acum",
+  "shortcutHourCursor": "Arată altă oră în vremea actuală",
+  "shortcutHourCursorReset": "Înapoi la acum"
+})
+addCatalogEntries("hu", {
+  "heroAtTime": "{time}-kor",
+  "hourCursorHint": "⇧ ← → másik óra · ⌫ most",
+  "shortcutHourCursor": "Másik óra megjelenítése az aktuális időjárásban",
+  "shortcutHourCursorReset": "Vissza a mosthoz"
+})
+addCatalogEntries("el", {
+  "heroAtTime": "στις {time}",
+  "hourCursorHint": "⇧ ← → άλλη ώρα · ⌫ τώρα",
+  "shortcutHourCursor": "Εμφάνιση άλλης ώρας στον τρέχοντα καιρό",
+  "shortcutHourCursorReset": "Επιστροφή στο τώρα"
+})
+addCatalogEntries("zh_CN", {
+  "heroAtTime": "{time}",
+  "hourCursorHint": "⇧ ← → 其他时刻 · ⌫ 现在",
+  "shortcutHourCursor": "在当前天气中显示其他时刻",
+  "shortcutHourCursorReset": "回到现在"
+})
+addCatalogEntries("zh_TW", {
+  "heroAtTime": "{time}",
+  "hourCursorHint": "⇧ ← → 其他時刻 · ⌫ 現在",
+  "shortcutHourCursor": "在目前天氣中顯示其他時刻",
+  "shortcutHourCursorReset": "回到現在"
+})
+addCatalogEntries("ja", {
+  "heroAtTime": "{time}",
+  "hourCursorHint": "⇧ ← → 別の時刻 · ⌫ 現在",
+  "shortcutHourCursor": "現在の天気に別の時刻を表示",
+  "shortcutHourCursorReset": "現在に戻る"
+})
+addCatalogEntries("ko", {
+  "heroAtTime": "{time}",
+  "hourCursorHint": "⇧ ← → 다른 시간 · ⌫ 지금",
+  "shortcutHourCursor": "현재 날씨에 다른 시간 표시",
+  "shortcutHourCursorReset": "지금으로 돌아가기"
+})
+addCatalogEntries("ar", {
+  "heroAtTime": "عند {time}",
+  "hourCursorHint": "⇧ ← → ساعة أخرى · ⌫ الآن",
+  "shortcutHourCursor": "عرض ساعة أخرى في الطقس الحالي",
+  "shortcutHourCursorReset": "العودة إلى الآن"
+})
+addCatalogEntries("he", {
+  "heroAtTime": "ב-{time}",
+  "hourCursorHint": "⇧ ← → שעה אחרת · ⌫ עכשיו",
+  "shortcutHourCursor": "הצגת שעה אחרת במזג האוויר הנוכחי",
+  "shortcutHourCursorReset": "חזרה לעכשיו"
+})
+addCatalogEntries("fa", {
+  "heroAtTime": "ساعت {time}",
+  "hourCursorHint": "⇧ ← → ساعت دیگر · ⌫ اکنون",
+  "shortcutHourCursor": "نمایش ساعت دیگری در هوای کنونی",
+  "shortcutHourCursorReset": "بازگشت به اکنون"
+})
+addCatalogEntries("hi", {
+  "heroAtTime": "{time} पर",
+  "hourCursorHint": "⇧ ← → दूसरा घंटा · ⌫ अभी",
+  "shortcutHourCursor": "वर्तमान मौसम में दूसरा घंटा दिखाएँ",
+  "shortcutHourCursorReset": "अभी पर लौटें"
+})
+addCatalogEntries("id", {
+  "heroAtTime": "pukul {time}",
+  "hourCursorHint": "⇧ ← → jam lain · ⌫ sekarang",
+  "shortcutHourCursor": "Tampilkan jam lain di cuaca saat ini",
+  "shortcutHourCursorReset": "Kembali ke sekarang"
+})
+addCatalogEntries("vi", {
+  "heroAtTime": "lúc {time}",
+  "hourCursorHint": "⇧ ← → giờ khác · ⌫ bây giờ",
+  "shortcutHourCursor": "Hiện giờ khác trong thời tiết hiện tại",
+  "shortcutHourCursorReset": "Quay về bây giờ"
+})
+addCatalogEntries("th", {
+  "heroAtTime": "เวลา {time}",
+  "hourCursorHint": "⇧ ← → ชั่วโมงอื่น · ⌫ ตอนนี้",
+  "shortcutHourCursor": "แสดงชั่วโมงอื่นในสภาพอากาศปัจจุบัน",
+  "shortcutHourCursorReset": "กลับไปตอนนี้"
+})
+
+// Temperature curve (2.5).
+addCatalogEntries("en", {
+  "temperatureCurve": "Temperature curve"
+})
+addCatalogEntries("de", {
+  "temperatureCurve": "Temperaturkurve"
+})
+addCatalogEntries("es", {
+  "temperatureCurve": "Curva de temperatura"
+})
+addCatalogEntries("fr", {
+  "temperatureCurve": "Courbe de température"
+})
+addCatalogEntries("pt", {
+  "temperatureCurve": "Curva de temperatura"
+})
+addCatalogEntries("ru", {
+  "temperatureCurve": "Кривая температуры"
+})
+addCatalogEntries("uk", {
+  "temperatureCurve": "Крива температури"
+})
+addCatalogEntries("pl", {
+  "temperatureCurve": "Krzywa temperatury"
+})
+addCatalogEntries("it", {
+  "temperatureCurve": "Curva della temperatura"
+})
+addCatalogEntries("nl", {
+  "temperatureCurve": "Temperatuurcurve"
+})
+addCatalogEntries("tr", {
+  "temperatureCurve": "Sıcaklık eğrisi"
+})
+addCatalogEntries("cs", {
+  "temperatureCurve": "Teplotní křivka"
+})
+addCatalogEntries("sv", {
+  "temperatureCurve": "Temperaturkurva"
+})
+addCatalogEntries("fi", {
+  "temperatureCurve": "Lämpötilakäyrä"
+})
+addCatalogEntries("nb", {
+  "temperatureCurve": "Temperaturkurve"
+})
+addCatalogEntries("da", {
+  "temperatureCurve": "Temperaturkurve"
+})
+addCatalogEntries("ro", {
+  "temperatureCurve": "Curba temperaturii"
+})
+addCatalogEntries("hu", {
+  "temperatureCurve": "Hőmérsékleti görbe"
+})
+addCatalogEntries("el", {
+  "temperatureCurve": "Καμπύλη θερμοκρασίας"
+})
+addCatalogEntries("ja", {
+  "temperatureCurve": "気温グラフ"
+})
+addCatalogEntries("ko", {
+  "temperatureCurve": "기온 곡선"
+})
+addCatalogEntries("ar", {
+  "temperatureCurve": "منحنى درجة الحرارة"
+})
+addCatalogEntries("he", {
+  "temperatureCurve": "עקומת טמפרטורה"
+})
+addCatalogEntries("fa", {
+  "temperatureCurve": "منحنی دما"
+})
+addCatalogEntries("hi", {
+  "temperatureCurve": "तापमान वक्र"
+})
+addCatalogEntries("id", {
+  "temperatureCurve": "Kurva suhu"
+})
+addCatalogEntries("vi", {
+  "temperatureCurve": "Đường cong nhiệt độ"
+})
+addCatalogEntries("th", {
+  "temperatureCurve": "กราฟอุณหภูมิ"
+})
+addCatalogEntries("zh_CN", {
+  "temperatureCurve": "气温曲线"
+})
+addCatalogEntries("zh_TW", {
+  "temperatureCurve": "氣溫曲線"
+})
+// Rain notification threshold and radius (2.5).
+addCatalogEntries("en", {
+  "notifyRainSoonHint": "Notification when rain is on its way to the shown location.",
+  "rainAlertThreshold": "From which strength",
+  "rainAlertAny": "Any rain",
+  "rainAlertModerate": "Moderate or more (over {rate})",
+  "rainAlertHeavy": "Heavy only (over {rate})",
+  "rainAlertRadius": "Radius",
+  "rainAlertRadiusOption": "{distance} · {lead} ahead",
+  "rainAlertHint": "Rain moves at about 50 km/h, so the radius sets how far ahead the rain nowcast is read. A wider radius warns earlier but is less certain. Stronger rain is announced again."
+})
+addCatalogEntries("de", {
+  "notifyRainSoonHint": "Benachrichtigung, wenn am angezeigten Ort Regen im Anzug ist.",
+  "rainAlertThreshold": "Ab welcher Stärke",
+  "rainAlertAny": "Jeder Regen",
+  "rainAlertModerate": "Ab mittel (über {rate})",
+  "rainAlertHeavy": "Nur stark (über {rate})",
+  "rainAlertRadius": "Umkreis",
+  "rainAlertRadiusOption": "{distance} · {lead} Vorlauf",
+  "rainAlertHint": "Regen zieht mit etwa 50 km/h, daher bestimmt der Umkreis, wie weit die Regenvorhersage vorausgelesen wird. Ein größerer Umkreis warnt früher, ist aber unsicherer. Stärkerer Regen wird erneut gemeldet."
+})
+addCatalogEntries("es", {
+  "notifyRainSoonHint": "Notificación cuando se acerca lluvia al lugar mostrado.",
+  "rainAlertThreshold": "A partir de qué intensidad",
+  "rainAlertAny": "Cualquier lluvia",
+  "rainAlertModerate": "Moderada o más (más de {rate})",
+  "rainAlertHeavy": "Solo fuerte (más de {rate})",
+  "rainAlertRadius": "Radio",
+  "rainAlertRadiusOption": "{distance} · {lead} de antelación",
+  "rainAlertHint": "La lluvia se desplaza a unos 50 km/h, así que el radio fija hasta dónde se lee la predicción inmediata. Un radio mayor avisa antes, pero con menos certeza. La lluvia más fuerte se vuelve a avisar."
+})
+addCatalogEntries("fr", {
+  "notifyRainSoonHint": "Notification quand de la pluie approche du lieu affiché.",
+  "rainAlertThreshold": "À partir de quelle intensité",
+  "rainAlertAny": "Toute pluie",
+  "rainAlertModerate": "Modérée ou plus (plus de {rate})",
+  "rainAlertHeavy": "Forte seulement (plus de {rate})",
+  "rainAlertRadius": "Rayon",
+  "rainAlertRadiusOption": "{distance} · {lead} d'avance",
+  "rainAlertHint": "La pluie se déplace à environ 50 km/h : le rayon fixe jusqu'où la prévision immédiate est lue. Un rayon plus grand prévient plus tôt, mais avec moins de certitude. Une pluie plus forte est signalée à nouveau."
+})
+addCatalogEntries("pt", {
+  "notifyRainSoonHint": "Notificação quando a chuva se aproxima do local mostrado.",
+  "rainAlertThreshold": "A partir de que intensidade",
+  "rainAlertAny": "Qualquer chuva",
+  "rainAlertModerate": "Moderada ou mais (acima de {rate})",
+  "rainAlertHeavy": "Só forte (acima de {rate})",
+  "rainAlertRadius": "Raio",
+  "rainAlertRadiusOption": "{distance} · {lead} de antecedência",
+  "rainAlertHint": "A chuva desloca-se a cerca de 50 km/h, por isso o raio define até onde a previsão imediata é lida. Um raio maior avisa mais cedo, mas com menos certeza. Chuva mais forte é avisada de novo."
+})
+addCatalogEntries("ru", {
+  "notifyRainSoonHint": "Уведомление, когда к показанному месту приближается дождь.",
+  "rainAlertThreshold": "С какой силы",
+  "rainAlertAny": "Любой дождь",
+  "rainAlertModerate": "Умеренный и сильнее (более {rate})",
+  "rainAlertHeavy": "Только сильный (более {rate})",
+  "rainAlertRadius": "Радиус",
+  "rainAlertRadiusOption": "{distance} · за {lead}",
+  "rainAlertHint": "Дождь движется примерно со скоростью 50 км/ч, поэтому радиус задаёт, насколько вперёд читается краткосрочный прогноз. Больший радиус предупреждает раньше, но менее надёжно. О более сильном дожде сообщается снова."
+})
+addCatalogEntries("uk", {
+  "notifyRainSoonHint": "Сповіщення, коли до показаного місця наближається дощ.",
+  "rainAlertThreshold": "З якої сили",
+  "rainAlertAny": "Будь-який дощ",
+  "rainAlertModerate": "Помірний і сильніший (понад {rate})",
+  "rainAlertHeavy": "Лише сильний (понад {rate})",
+  "rainAlertRadius": "Радіус",
+  "rainAlertRadiusOption": "{distance} · за {lead}",
+  "rainAlertHint": "Дощ рухається приблизно зі швидкістю 50 км/год, тож радіус визначає, наскільки вперед читається короткостроковий прогноз. Більший радіус попереджає раніше, але менш надійно. Про сильніший дощ повідомляється знову."
+})
+addCatalogEntries("pl", {
+  "notifyRainSoonHint": "Powiadomienie, gdy do pokazanego miejsca zbliża się deszcz.",
+  "rainAlertThreshold": "Od jakiej intensywności",
+  "rainAlertAny": "Każdy deszcz",
+  "rainAlertModerate": "Umiarkowany i silniejszy (ponad {rate})",
+  "rainAlertHeavy": "Tylko silny (ponad {rate})",
+  "rainAlertRadius": "Promień",
+  "rainAlertRadiusOption": "{distance} · {lead} wcześniej",
+  "rainAlertHint": "Deszcz przesuwa się z prędkością ok. 50 km/h, więc promień określa, jak daleko naprzód czytana jest prognoza krótkoterminowa. Większy promień ostrzega wcześniej, ale mniej pewnie. Silniejszy deszcz jest zgłaszany ponownie."
+})
+addCatalogEntries("it", {
+  "notifyRainSoonHint": "Notifica quando la pioggia si avvicina al luogo mostrato.",
+  "rainAlertThreshold": "Da quale intensità",
+  "rainAlertAny": "Qualsiasi pioggia",
+  "rainAlertModerate": "Moderata o più (oltre {rate})",
+  "rainAlertHeavy": "Solo forte (oltre {rate})",
+  "rainAlertRadius": "Raggio",
+  "rainAlertRadiusOption": "{distance} · {lead} di anticipo",
+  "rainAlertHint": "La pioggia si sposta a circa 50 km/h, quindi il raggio stabilisce fin dove viene letta la previsione a brevissimo termine. Un raggio più ampio avvisa prima, ma con meno certezza. La pioggia più forte viene segnalata di nuovo."
+})
+addCatalogEntries("nl", {
+  "notifyRainSoonHint": "Melding wanneer er regen op komst is voor de getoonde plaats.",
+  "rainAlertThreshold": "Vanaf welke sterkte",
+  "rainAlertAny": "Elke regen",
+  "rainAlertModerate": "Matig of meer (boven {rate})",
+  "rainAlertHeavy": "Alleen zwaar (boven {rate})",
+  "rainAlertRadius": "Straal",
+  "rainAlertRadiusOption": "{distance} · {lead} vooruit",
+  "rainAlertHint": "Regen trekt met ongeveer 50 km/u, dus de straal bepaalt hoe ver vooruit de neerslagverwachting wordt gelezen. Een grotere straal waarschuwt eerder, maar is minder zeker. Zwaardere regen wordt opnieuw gemeld."
+})
+addCatalogEntries("tr", {
+  "notifyRainSoonHint": "Gösterilen konuma yağmur yaklaşırken bildirim.",
+  "rainAlertThreshold": "Hangi şiddetten itibaren",
+  "rainAlertAny": "Her yağmur",
+  "rainAlertModerate": "Orta ve üzeri ({rate} üzeri)",
+  "rainAlertHeavy": "Yalnızca şiddetli ({rate} üzeri)",
+  "rainAlertRadius": "Yarıçap",
+  "rainAlertRadiusOption": "{distance} · {lead} önceden",
+  "rainAlertHint": "Yağmur yaklaşık 50 km/sa hızla ilerler; yarıçap, anlık tahminin ne kadar ileriye okunacağını belirler. Daha geniş yarıçap daha erken uyarır ama daha az kesindir. Daha şiddetli yağmur yeniden bildirilir."
+})
+addCatalogEntries("cs", {
+  "notifyRainSoonHint": "Upozornění, když se k zobrazenému místu blíží déšť.",
+  "rainAlertThreshold": "Od jaké intenzity",
+  "rainAlertAny": "Jakýkoli déšť",
+  "rainAlertModerate": "Mírný a silnější (nad {rate})",
+  "rainAlertHeavy": "Jen silný (nad {rate})",
+  "rainAlertRadius": "Okruh",
+  "rainAlertRadiusOption": "{distance} · {lead} předem",
+  "rainAlertHint": "Déšť se posouvá rychlostí asi 50 km/h, takže okruh určuje, jak daleko dopředu se čte krátkodobá předpověď. Větší okruh varuje dříve, ale méně jistě. Silnější déšť je ohlášen znovu."
+})
+addCatalogEntries("sv", {
+  "notifyRainSoonHint": "Avisering när regn är på väg till den visade platsen.",
+  "rainAlertThreshold": "Från vilken styrka",
+  "rainAlertAny": "Allt regn",
+  "rainAlertModerate": "Måttligt eller mer (över {rate})",
+  "rainAlertHeavy": "Bara kraftigt (över {rate})",
+  "rainAlertRadius": "Radie",
+  "rainAlertRadiusOption": "{distance} · {lead} i förväg",
+  "rainAlertHint": "Regn rör sig med ungefär 50 km/h, så radien avgör hur långt fram korttidsprognosen läses. En större radie varnar tidigare men är osäkrare. Kraftigare regn aviseras igen."
+})
+addCatalogEntries("fi", {
+  "notifyRainSoonHint": "Ilmoitus, kun sade lähestyy näytettyä paikkaa.",
+  "rainAlertThreshold": "Mistä voimakkuudesta alkaen",
+  "rainAlertAny": "Kaikki sade",
+  "rainAlertModerate": "Kohtalainen tai voimakkaampi (yli {rate})",
+  "rainAlertHeavy": "Vain voimakas (yli {rate})",
+  "rainAlertRadius": "Säde",
+  "rainAlertRadiusOption": "{distance} · {lead} etukäteen",
+  "rainAlertHint": "Sade liikkuu noin 50 km/h, joten säde määrää, kuinka pitkälle eteenpäin lyhyen aikavälin ennustetta luetaan. Suurempi säde varoittaa aiemmin mutta epävarmemmin. Voimakkaammasta sateesta ilmoitetaan uudelleen."
+})
+addCatalogEntries("nb", {
+  "notifyRainSoonHint": "Varsel når regn er på vei til det viste stedet.",
+  "rainAlertThreshold": "Fra hvilken styrke",
+  "rainAlertAny": "All nedbør",
+  "rainAlertModerate": "Moderat eller mer (over {rate})",
+  "rainAlertHeavy": "Bare kraftig (over {rate})",
+  "rainAlertRadius": "Radius",
+  "rainAlertRadiusOption": "{distance} · {lead} i forveien",
+  "rainAlertHint": "Regn beveger seg med omtrent 50 km/t, så radiusen bestemmer hvor langt fram korttidsvarselet leses. En større radius varsler tidligere, men er mer usikker. Kraftigere regn varsles på nytt."
+})
+addCatalogEntries("da", {
+  "notifyRainSoonHint": "Notifikation, når regn er på vej mod det viste sted.",
+  "rainAlertThreshold": "Fra hvilken styrke",
+  "rainAlertAny": "Al regn",
+  "rainAlertModerate": "Moderat eller mere (over {rate})",
+  "rainAlertHeavy": "Kun kraftig (over {rate})",
+  "rainAlertRadius": "Radius",
+  "rainAlertRadiusOption": "{distance} · {lead} i forvejen",
+  "rainAlertHint": "Regn bevæger sig med omkring 50 km/t, så radius afgør, hvor langt frem korttidsprognosen læses. En større radius advarer tidligere, men er mere usikker. Kraftigere regn meldes igen."
+})
+addCatalogEntries("ro", {
+  "notifyRainSoonHint": "Notificare când ploaia se apropie de locul afișat.",
+  "rainAlertThreshold": "De la ce intensitate",
+  "rainAlertAny": "Orice ploaie",
+  "rainAlertModerate": "Moderată sau mai mult (peste {rate})",
+  "rainAlertHeavy": "Doar puternică (peste {rate})",
+  "rainAlertRadius": "Rază",
+  "rainAlertRadiusOption": "{distance} · cu {lead} înainte",
+  "rainAlertHint": "Ploaia se deplasează cu circa 50 km/h, deci raza stabilește cât de departe în viitor se citește prognoza imediată. O rază mai mare avertizează mai devreme, dar mai puțin sigur. Ploaia mai puternică este semnalată din nou."
+})
+addCatalogEntries("hu", {
+  "notifyRainSoonHint": "Értesítés, ha eső közeledik a megjelenített helyhez.",
+  "rainAlertThreshold": "Milyen erősségtől",
+  "rainAlertAny": "Bármilyen eső",
+  "rainAlertModerate": "Mérsékelt vagy erősebb ({rate} felett)",
+  "rainAlertHeavy": "Csak erős ({rate} felett)",
+  "rainAlertRadius": "Sugár",
+  "rainAlertRadiusOption": "{distance} · {lead} előre",
+  "rainAlertHint": "Az eső kb. 50 km/h sebességgel halad, így a sugár határozza meg, meddig olvassuk előre a rövid távú előrejelzést. Nagyobb sugár korábban figyelmeztet, de bizonytalanabb. Az erősebb esőt újra jelezzük."
+})
+addCatalogEntries("el", {
+  "notifyRainSoonHint": "Ειδοποίηση όταν πλησιάζει βροχή στην εμφανιζόμενη τοποθεσία.",
+  "rainAlertThreshold": "Από ποια ένταση",
+  "rainAlertAny": "Κάθε βροχή",
+  "rainAlertModerate": "Μέτρια ή περισσότερο (πάνω από {rate})",
+  "rainAlertHeavy": "Μόνο ισχυρή (πάνω από {rate})",
+  "rainAlertRadius": "Ακτίνα",
+  "rainAlertRadiusOption": "{distance} · {lead} νωρίτερα",
+  "rainAlertHint": "Η βροχή κινείται με περίπου 50 km/h, οπότε η ακτίνα ορίζει πόσο μπροστά διαβάζεται η βραχυπρόθεσμη πρόγνωση. Μεγαλύτερη ακτίνα προειδοποιεί νωρίτερα αλλά με λιγότερη βεβαιότητα. Η ισχυρότερη βροχή αναφέρεται ξανά."
+})
+addCatalogEntries("ja", {
+  "notifyRainSoonHint": "表示中の場所に雨が近づくと通知します。",
+  "rainAlertThreshold": "通知する強さ",
+  "rainAlertAny": "すべての雨",
+  "rainAlertModerate": "並以上（{rate}超）",
+  "rainAlertHeavy": "強い雨のみ（{rate}超）",
+  "rainAlertRadius": "範囲",
+  "rainAlertRadiusOption": "{distance} · {lead}前",
+  "rainAlertHint": "雨は時速約50 kmで移動するため、範囲によって降水ナウキャストをどこまで先読みするかが決まります。範囲が広いほど早く知らせますが、確実性は下がります。雨が強まると再度通知します。"
+})
+addCatalogEntries("ko", {
+  "notifyRainSoonHint": "표시된 위치로 비가 다가오면 알립니다.",
+  "rainAlertThreshold": "알림 강도",
+  "rainAlertAny": "모든 비",
+  "rainAlertModerate": "보통 이상({rate} 초과)",
+  "rainAlertHeavy": "강한 비만({rate} 초과)",
+  "rainAlertRadius": "반경",
+  "rainAlertRadiusOption": "{distance} · {lead} 전",
+  "rainAlertHint": "비는 시속 약 50 km로 이동하므로 반경에 따라 초단기 예보를 얼마나 앞서 읽을지가 정해집니다. 반경이 넓을수록 더 일찍 알리지만 불확실성이 커집니다. 비가 더 강해지면 다시 알립니다."
+})
+addCatalogEntries("ar", {
+  "notifyRainSoonHint": "إشعار عند اقتراب المطر من الموقع المعروض.",
+  "rainAlertThreshold": "من أي شدة",
+  "rainAlertAny": "أي مطر",
+  "rainAlertModerate": "معتدل أو أكثر (أكثر من {rate})",
+  "rainAlertHeavy": "غزير فقط (أكثر من {rate})",
+  "rainAlertRadius": "نصف القطر",
+  "rainAlertRadiusOption": "{distance} · قبل {lead}",
+  "rainAlertHint": "يتحرك المطر بنحو 50 كم/س، لذا يحدد نصف القطر إلى أي مدى تُقرأ التنبؤات الآنية مسبقًا. نصف القطر الأكبر ينبه أبكر لكن بدقة أقل. يُبلَّغ عن المطر الأشد مرة أخرى."
+})
+addCatalogEntries("he", {
+  "notifyRainSoonHint": "התראה כשגשם מתקרב למיקום המוצג.",
+  "rainAlertThreshold": "מאיזו עוצמה",
+  "rainAlertAny": "כל גשם",
+  "rainAlertModerate": "בינוני ומעלה (מעל {rate})",
+  "rainAlertHeavy": "חזק בלבד (מעל {rate})",
+  "rainAlertRadius": "רדיוס",
+  "rainAlertRadiusOption": "{distance} · {lead} מראש",
+  "rainAlertHint": "גשם נע בכ־50 קמ״ש, ולכן הרדיוס קובע עד כמה קדימה נקראת תחזית הטווח המיידי. רדיוס גדול יותר מתריע מוקדם יותר אך בוודאות נמוכה יותר. גשם חזק יותר מדווח שוב."
+})
+addCatalogEntries("fa", {
+  "notifyRainSoonHint": "اعلان هنگامی که باران به مکان نمایش‌داده‌شده نزدیک می‌شود.",
+  "rainAlertThreshold": "از چه شدتی",
+  "rainAlertAny": "هر بارانی",
+  "rainAlertModerate": "متوسط یا بیشتر (بیش از {rate})",
+  "rainAlertHeavy": "فقط شدید (بیش از {rate})",
+  "rainAlertRadius": "شعاع",
+  "rainAlertRadiusOption": "{distance} · {lead} زودتر",
+  "rainAlertHint": "باران با سرعت حدود ۵۰ کیلومتر بر ساعت حرکت می‌کند، پس شعاع تعیین می‌کند پیش‌بینی کوتاه‌مدت تا چه اندازه جلوتر خوانده شود. شعاع بزرگ‌تر زودتر هشدار می‌دهد اما با اطمینان کمتر. باران شدیدتر دوباره اعلام می‌شود."
+})
+addCatalogEntries("hi", {
+  "notifyRainSoonHint": "दिखाए गए स्थान की ओर बारिश आने पर सूचना।",
+  "rainAlertThreshold": "किस तीव्रता से",
+  "rainAlertAny": "कोई भी बारिश",
+  "rainAlertModerate": "मध्यम या अधिक ({rate} से अधिक)",
+  "rainAlertHeavy": "केवल भारी ({rate} से अधिक)",
+  "rainAlertRadius": "दायरा",
+  "rainAlertRadiusOption": "{distance} · {lead} पहले",
+  "rainAlertHint": "बारिश लगभग 50 किमी/घंटा से चलती है, इसलिए दायरा तय करता है कि तात्कालिक पूर्वानुमान कितना आगे तक पढ़ा जाए। बड़ा दायरा पहले चेतावनी देता है, पर कम निश्चित होता है। तेज़ बारिश की सूचना फिर से दी जाती है।"
+})
+addCatalogEntries("id", {
+  "notifyRainSoonHint": "Notifikasi saat hujan mendekati lokasi yang ditampilkan.",
+  "rainAlertThreshold": "Mulai intensitas apa",
+  "rainAlertAny": "Semua hujan",
+  "rainAlertModerate": "Sedang atau lebih (di atas {rate})",
+  "rainAlertHeavy": "Hanya lebat (di atas {rate})",
+  "rainAlertRadius": "Radius",
+  "rainAlertRadiusOption": "{distance} · {lead} sebelumnya",
+  "rainAlertHint": "Hujan bergerak sekitar 50 km/jam, jadi radius menentukan seberapa jauh prakiraan jangka sangat pendek dibaca ke depan. Radius lebih besar memperingatkan lebih awal, tetapi kurang pasti. Hujan yang lebih lebat diberitahukan lagi."
+})
+addCatalogEntries("vi", {
+  "notifyRainSoonHint": "Thông báo khi mưa đang đến gần vị trí được hiển thị.",
+  "rainAlertThreshold": "Từ cường độ nào",
+  "rainAlertAny": "Mọi cơn mưa",
+  "rainAlertModerate": "Vừa trở lên (trên {rate})",
+  "rainAlertHeavy": "Chỉ mưa to (trên {rate})",
+  "rainAlertRadius": "Bán kính",
+  "rainAlertRadiusOption": "{distance} · trước {lead}",
+  "rainAlertHint": "Mưa di chuyển khoảng 50 km/h, nên bán kính quyết định dự báo cực ngắn được đọc trước bao xa. Bán kính lớn hơn cảnh báo sớm hơn nhưng kém chắc chắn hơn. Mưa mạnh hơn sẽ được báo lại."
+})
+addCatalogEntries("th", {
+  "notifyRainSoonHint": "แจ้งเตือนเมื่อฝนกำลังเข้าใกล้ตำแหน่งที่แสดง",
+  "rainAlertThreshold": "ตั้งแต่ความแรงระดับใด",
+  "rainAlertAny": "ฝนทุกระดับ",
+  "rainAlertModerate": "ปานกลางขึ้นไป (มากกว่า {rate})",
+  "rainAlertHeavy": "เฉพาะฝนหนัก (มากกว่า {rate})",
+  "rainAlertRadius": "รัศมี",
+  "rainAlertRadiusOption": "{distance} · ล่วงหน้า {lead}",
+  "rainAlertHint": "ฝนเคลื่อนที่ราว 50 กม./ชม. รัศมีจึงกำหนดว่าจะอ่านการพยากรณ์ระยะสั้นมากล่วงหน้าไกลเท่าใด รัศมีกว้างขึ้นเตือนได้เร็วขึ้นแต่แม่นยำน้อยลง ฝนที่แรงขึ้นจะแจ้งเตือนอีกครั้ง"
+})
+addCatalogEntries("zh_CN", {
+  "notifyRainSoonHint": "有雨接近所显示的地点时发出通知。",
+  "rainAlertThreshold": "从何种强度起",
+  "rainAlertAny": "任何降雨",
+  "rainAlertModerate": "中雨及以上（超过 {rate}）",
+  "rainAlertHeavy": "仅大雨（超过 {rate}）",
+  "rainAlertRadius": "半径",
+  "rainAlertRadiusOption": "{distance} · 提前 {lead}",
+  "rainAlertHint": "降雨移动速度约为 50 公里/小时，因此半径决定临近预报向前读取多远。半径越大提醒越早，但越不确定。雨势增强时会再次通知。"
+})
+addCatalogEntries("zh_TW", {
+  "notifyRainSoonHint": "有雨接近所顯示的地點時發出通知。",
+  "rainAlertThreshold": "從何種強度起",
+  "rainAlertAny": "任何降雨",
+  "rainAlertModerate": "中雨以上（超過 {rate}）",
+  "rainAlertHeavy": "僅大雨（超過 {rate}）",
+  "rainAlertRadius": "半徑",
+  "rainAlertRadiusOption": "{distance} · 提前 {lead}",
+  "rainAlertHint": "降雨移動速度約為每小時 50 公里，因此半徑決定即時預報向前讀取多遠。半徑越大提醒越早，但越不確定。雨勢增強時會再次通知。"
+})
+// The air quality dot among the colour accents (2.5).
+amendCatalogEntry("en", "colorAccentsHint", function(text) { return text + " The air quality colour dot follows this switch too." })
+amendCatalogEntry("de", "colorAccentsHint", function(text) { return text + " Auch der Farbpunkt der Luftqualität folgt diesem Schalter." })
+amendCatalogEntry("es", "colorAccentsHint", function(text) { return text + " El punto de color de la calidad del aire también sigue este interruptor." })
+amendCatalogEntry("fr", "colorAccentsHint", function(text) { return text + " La pastille de couleur de la qualité de l'air suit aussi ce réglage." })
+amendCatalogEntry("pt", "colorAccentsHint", function(text) { return text + " O ponto de cor da qualidade do ar também segue este interruptor." })
+amendCatalogEntry("ru", "colorAccentsHint", function(text) { return text + " Цветная точка качества воздуха тоже следует этому переключателю." })
+amendCatalogEntry("uk", "colorAccentsHint", function(text) { return text + " Кольорова точка якості повітря також підкоряється цьому перемикачу." })
+amendCatalogEntry("pl", "colorAccentsHint", function(text) { return text + " Kolorowa kropka jakości powietrza również zależy od tego przełącznika." })
+amendCatalogEntry("it", "colorAccentsHint", function(text) { return text + " Anche il punto colorato della qualità dell'aria segue questo interruttore." })
+amendCatalogEntry("nl", "colorAccentsHint", function(text) { return text + " Ook de kleurstip van de luchtkwaliteit volgt deze schakelaar." })
+amendCatalogEntry("tr", "colorAccentsHint", function(text) { return text + " Hava kalitesi renk noktası da bu anahtara uyar." })
+amendCatalogEntry("cs", "colorAccentsHint", function(text) { return text + " Barevná tečka kvality ovzduší se také řídí tímto přepínačem." })
+amendCatalogEntry("sv", "colorAccentsHint", function(text) { return text + " Luftkvalitetens färgpunkt följer också den här brytaren." })
+amendCatalogEntry("fi", "colorAccentsHint", function(text) { return text + " Myös ilmanlaadun väripiste noudattaa tätä kytkintä." })
+amendCatalogEntry("nb", "colorAccentsHint", function(text) { return text + " Fargeprikken for luftkvalitet følger også denne bryteren." })
+amendCatalogEntry("da", "colorAccentsHint", function(text) { return text + " Farveprikken for luftkvalitet følger også denne kontakt." })
+amendCatalogEntry("ro", "colorAccentsHint", function(text) { return text + " Și punctul colorat al calității aerului urmează acest comutator." })
+amendCatalogEntry("hu", "colorAccentsHint", function(text) { return text + " A levegőminőség színes pöttye is ezt a kapcsolót követi." })
+amendCatalogEntry("el", "colorAccentsHint", function(text) { return text + " Και η χρωματιστή κουκκίδα της ποιότητας αέρα ακολουθεί αυτόν τον διακόπτη." })
+amendCatalogEntry("ja", "colorAccentsHint", function(text) { return text + "大気質の色の点もこのスイッチに従います。" })
+amendCatalogEntry("ko", "colorAccentsHint", function(text) { return text + " 대기질 색 점도 이 스위치를 따릅니다." })
+amendCatalogEntry("ar", "colorAccentsHint", function(text) { return text + " تتبع نقطة لون جودة الهواء هذا المفتاح أيضًا." })
+amendCatalogEntry("he", "colorAccentsHint", function(text) { return text + " גם נקודת הצבע של איכות האוויר כפופה למתג הזה." })
+amendCatalogEntry("fa", "colorAccentsHint", function(text) { return text + " نقطهٔ رنگی کیفیت هوا نیز از این کلید پیروی می‌کند." })
+amendCatalogEntry("hi", "colorAccentsHint", function(text) { return text + " वायु गुणवत्ता का रंगीन बिंदु भी इसी स्विच का पालन करता है।" })
+amendCatalogEntry("id", "colorAccentsHint", function(text) { return text + " Titik warna kualitas udara juga mengikuti sakelar ini." })
+amendCatalogEntry("vi", "colorAccentsHint", function(text) { return text + " Chấm màu chất lượng không khí cũng theo công tắc này." })
+amendCatalogEntry("th", "colorAccentsHint", function(text) { return text + "จุดสีคุณภาพอากาศก็เป็นไปตามสวิตช์นี้ด้วย" })
+amendCatalogEntry("zh_CN", "colorAccentsHint", function(text) { return text + "空气质量色点也受此开关控制。" })
+amendCatalogEntry("zh_TW", "colorAccentsHint", function(text) { return text + "空氣品質色點也受此開關控制。" })
+// Drawn map, pan and zoom (2.5).
+addCatalogEntries("en", {
+  "mapStyle": "Map style",
+  "mapStyleDrawn": "Drawn (theme colours)",
+  "mapStyleSatellite": "Satellite",
+  "mapStyleHint": "Radar and wind maps. The drawn map comes with the plugin (Natural Earth) and follows the theme; the satellite picture is loaded from DWD for every view.",
+  "mouseDrag": "Drag",
+  "mouseWheel": "Mouse wheel",
+  "shortcutMapPan": "Map: move",
+  "shortcutMapWheel": "Map: zoom towards the pointer",
+  "shortcutZoomReset": "Map: back to the place, default zoom"
+})
+addCatalogEntries("de", {
+  "mapStyle": "Kartenstil",
+  "mapStyleDrawn": "Gezeichnet (Theme-Farben)",
+  "mapStyleSatellite": "Satellit",
+  "mapStyleHint": "Radar- und Windkarte. Die gezeichnete Karte liegt dem Plugin bei (Natural Earth) und folgt dem Theme; das Satellitenbild wird für jeden Ausschnitt vom DWD geladen.",
+  "mouseDrag": "Ziehen",
+  "mouseWheel": "Mausrad",
+  "shortcutMapPan": "Karte: verschieben",
+  "shortcutMapWheel": "Karte: zum Mauszeiger zoomen",
+  "shortcutZoomReset": "Karte: zurück zum Ort, Standard-Zoom"
+})
+addCatalogEntries("es", {
+  "mapStyle": "Estilo de mapa",
+  "mapStyleDrawn": "Dibujado (colores del tema)",
+  "mapStyleSatellite": "Satélite",
+  "mapStyleHint": "Mapas de radar y viento. El mapa dibujado viene con el plugin (Natural Earth) y sigue el tema; la imagen de satélite se carga del DWD para cada vista.",
+  "mouseDrag": "Arrastrar",
+  "mouseWheel": "Rueda del ratón",
+  "shortcutMapPan": "Mapa: mover",
+  "shortcutMapWheel": "Mapa: zoom hacia el puntero",
+  "shortcutZoomReset": "Mapa: volver al lugar, zoom predeterminado"
+})
+addCatalogEntries("fr", {
+  "mapStyle": "Style de carte",
+  "mapStyleDrawn": "Dessinée (couleurs du thème)",
+  "mapStyleSatellite": "Satellite",
+  "mapStyleHint": "Cartes radar et vent. La carte dessinée est fournie avec le plugin (Natural Earth) et suit le thème ; l'image satellite est chargée depuis le DWD pour chaque vue.",
+  "mouseDrag": "Glisser",
+  "mouseWheel": "Molette",
+  "shortcutMapPan": "Carte : déplacer",
+  "shortcutMapWheel": "Carte : zoomer vers le pointeur",
+  "shortcutZoomReset": "Carte : retour au lieu, zoom par défaut"
+})
+addCatalogEntries("pt", {
+  "mapStyle": "Estilo do mapa",
+  "mapStyleDrawn": "Desenhado (cores do tema)",
+  "mapStyleSatellite": "Satélite",
+  "mapStyleHint": "Mapas de radar e vento. O mapa desenhado vem com o plugin (Natural Earth) e segue o tema; a imagem de satélite é carregada do DWD para cada vista.",
+  "mouseDrag": "Arrastar",
+  "mouseWheel": "Roda do rato",
+  "shortcutMapPan": "Mapa: mover",
+  "shortcutMapWheel": "Mapa: zoom em direção ao ponteiro",
+  "shortcutZoomReset": "Mapa: voltar ao local, zoom padrão"
+})
+addCatalogEntries("ru", {
+  "mapStyle": "Стиль карты",
+  "mapStyleDrawn": "Нарисованная (цвета темы)",
+  "mapStyleSatellite": "Спутник",
+  "mapStyleHint": "Карты радара и ветра. Нарисованная карта входит в плагин (Natural Earth) и следует теме; спутниковый снимок загружается с DWD для каждого вида.",
+  "mouseDrag": "Перетаскивание",
+  "mouseWheel": "Колесо мыши",
+  "shortcutMapPan": "Карта: сдвинуть",
+  "shortcutMapWheel": "Карта: масштаб к указателю",
+  "shortcutZoomReset": "Карта: к месту, обычный масштаб"
+})
+addCatalogEntries("uk", {
+  "mapStyle": "Стиль карти",
+  "mapStyleDrawn": "Намальована (кольори теми)",
+  "mapStyleSatellite": "Супутник",
+  "mapStyleHint": "Карти радара й вітру. Намальована карта входить до плагіна (Natural Earth) і слідує темі; супутниковий знімок завантажується з DWD для кожного вигляду.",
+  "mouseDrag": "Перетягування",
+  "mouseWheel": "Коліщатко миші",
+  "shortcutMapPan": "Карта: зсунути",
+  "shortcutMapWheel": "Карта: масштаб до вказівника",
+  "shortcutZoomReset": "Карта: до місця, звичайний масштаб"
+})
+addCatalogEntries("pl", {
+  "mapStyle": "Styl mapy",
+  "mapStyleDrawn": "Rysowana (kolory motywu)",
+  "mapStyleSatellite": "Satelita",
+  "mapStyleHint": "Mapy radaru i wiatru. Rysowana mapa jest częścią wtyczki (Natural Earth) i podąża za motywem; obraz satelitarny jest pobierany z DWD dla każdego widoku.",
+  "mouseDrag": "Przeciąganie",
+  "mouseWheel": "Kółko myszy",
+  "shortcutMapPan": "Mapa: przesuń",
+  "shortcutMapWheel": "Mapa: powiększ w stronę kursora",
+  "shortcutZoomReset": "Mapa: powrót do miejsca, domyślne powiększenie"
+})
+addCatalogEntries("it", {
+  "mapStyle": "Stile della mappa",
+  "mapStyleDrawn": "Disegnata (colori del tema)",
+  "mapStyleSatellite": "Satellite",
+  "mapStyleHint": "Mappe radar e vento. La mappa disegnata è inclusa nel plugin (Natural Earth) e segue il tema; l'immagine satellitare viene caricata dal DWD per ogni vista.",
+  "mouseDrag": "Trascina",
+  "mouseWheel": "Rotella del mouse",
+  "shortcutMapPan": "Mappa: sposta",
+  "shortcutMapWheel": "Mappa: zoom verso il puntatore",
+  "shortcutZoomReset": "Mappa: torna al luogo, zoom predefinito"
+})
+addCatalogEntries("nl", {
+  "mapStyle": "Kaartstijl",
+  "mapStyleDrawn": "Getekend (themakleuren)",
+  "mapStyleSatellite": "Satelliet",
+  "mapStyleHint": "Radar- en windkaart. De getekende kaart zit bij de plugin (Natural Earth) en volgt het thema; het satellietbeeld wordt voor elk beeld bij de DWD geladen.",
+  "mouseDrag": "Slepen",
+  "mouseWheel": "Muiswiel",
+  "shortcutMapPan": "Kaart: verschuiven",
+  "shortcutMapWheel": "Kaart: naar de aanwijzer zoomen",
+  "shortcutZoomReset": "Kaart: terug naar de plaats, standaardzoom"
+})
+addCatalogEntries("tr", {
+  "mapStyle": "Harita stili",
+  "mapStyleDrawn": "Çizim (tema renkleri)",
+  "mapStyleSatellite": "Uydu",
+  "mapStyleHint": "Radar ve rüzgâr haritaları. Çizim harita eklentiyle gelir (Natural Earth) ve temayı izler; uydu görüntüsü her görünüm için DWD'den yüklenir.",
+  "mouseDrag": "Sürükle",
+  "mouseWheel": "Fare tekerleği",
+  "shortcutMapPan": "Harita: kaydır",
+  "shortcutMapWheel": "Harita: imlece doğru yakınlaştır",
+  "shortcutZoomReset": "Harita: konuma dön, varsayılan yakınlaştırma"
+})
+addCatalogEntries("cs", {
+  "mapStyle": "Styl mapy",
+  "mapStyleDrawn": "Kreslená (barvy motivu)",
+  "mapStyleSatellite": "Satelit",
+  "mapStyleHint": "Mapy radaru a větru. Kreslená mapa je součástí pluginu (Natural Earth) a řídí se motivem; satelitní snímek se pro každý výřez načítá z DWD.",
+  "mouseDrag": "Tažení",
+  "mouseWheel": "Kolečko myši",
+  "shortcutMapPan": "Mapa: posunout",
+  "shortcutMapWheel": "Mapa: přiblížit ke kurzoru",
+  "shortcutZoomReset": "Mapa: zpět na místo, výchozí přiblížení"
+})
+addCatalogEntries("sv", {
+  "mapStyle": "Kartstil",
+  "mapStyleDrawn": "Ritad (temafärger)",
+  "mapStyleSatellite": "Satellit",
+  "mapStyleHint": "Radar- och vindkartor. Den ritade kartan följer med pluginet (Natural Earth) och följer temat; satellitbilden laddas från DWD för varje vy.",
+  "mouseDrag": "Dra",
+  "mouseWheel": "Mushjul",
+  "shortcutMapPan": "Karta: flytta",
+  "shortcutMapWheel": "Karta: zooma mot pekaren",
+  "shortcutZoomReset": "Karta: tillbaka till platsen, standardzoom"
+})
+addCatalogEntries("fi", {
+  "mapStyle": "Kartan tyyli",
+  "mapStyleDrawn": "Piirretty (teeman värit)",
+  "mapStyleSatellite": "Satelliitti",
+  "mapStyleHint": "Tutka- ja tuulikartat. Piirretty kartta tulee lisäosan mukana (Natural Earth) ja seuraa teemaa; satelliittikuva ladataan DWD:ltä jokaiselle näkymälle.",
+  "mouseDrag": "Vedä",
+  "mouseWheel": "Hiiren rulla",
+  "shortcutMapPan": "Kartta: siirrä",
+  "shortcutMapWheel": "Kartta: zoomaa osoitinta kohti",
+  "shortcutZoomReset": "Kartta: takaisin paikkaan, oletuszoomaus"
+})
+addCatalogEntries("nb", {
+  "mapStyle": "Kartstil",
+  "mapStyleDrawn": "Tegnet (temafarger)",
+  "mapStyleSatellite": "Satellitt",
+  "mapStyleHint": "Radar- og vindkart. Det tegnede kartet følger med utvidelsen (Natural Earth) og følger temaet; satellittbildet lastes fra DWD for hver visning.",
+  "mouseDrag": "Dra",
+  "mouseWheel": "Musehjul",
+  "shortcutMapPan": "Kart: flytt",
+  "shortcutMapWheel": "Kart: zoom mot pekeren",
+  "shortcutZoomReset": "Kart: tilbake til stedet, standardzoom"
+})
+addCatalogEntries("da", {
+  "mapStyle": "Kortstil",
+  "mapStyleDrawn": "Tegnet (temafarver)",
+  "mapStyleSatellite": "Satellit",
+  "mapStyleHint": "Radar- og vindkort. Det tegnede kort følger med pluginet (Natural Earth) og følger temaet; satellitbilledet hentes fra DWD for hver visning.",
+  "mouseDrag": "Træk",
+  "mouseWheel": "Musehjul",
+  "shortcutMapPan": "Kort: flyt",
+  "shortcutMapWheel": "Kort: zoom mod markøren",
+  "shortcutZoomReset": "Kort: tilbage til stedet, standardzoom"
+})
+addCatalogEntries("ro", {
+  "mapStyle": "Stilul hărții",
+  "mapStyleDrawn": "Desenată (culorile temei)",
+  "mapStyleSatellite": "Satelit",
+  "mapStyleHint": "Hărți radar și vânt. Harta desenată vine cu pluginul (Natural Earth) și urmează tema; imaginea din satelit se încarcă de la DWD pentru fiecare vedere.",
+  "mouseDrag": "Trage",
+  "mouseWheel": "Rotița mouse-ului",
+  "shortcutMapPan": "Hartă: mută",
+  "shortcutMapWheel": "Hartă: zoom spre cursor",
+  "shortcutZoomReset": "Hartă: înapoi la loc, zoom implicit"
+})
+addCatalogEntries("hu", {
+  "mapStyle": "Térképstílus",
+  "mapStyleDrawn": "Rajzolt (téma színei)",
+  "mapStyleSatellite": "Műhold",
+  "mapStyleHint": "Radar- és széltérkép. A rajzolt térkép a bővítmény része (Natural Earth), és követi a témát; a műholdkép minden nézethez a DWD-től töltődik le.",
+  "mouseDrag": "Húzás",
+  "mouseWheel": "Egérgörgő",
+  "shortcutMapPan": "Térkép: mozgatás",
+  "shortcutMapWheel": "Térkép: nagyítás a mutató felé",
+  "shortcutZoomReset": "Térkép: vissza a helyre, alapnagyítás"
+})
+addCatalogEntries("el", {
+  "mapStyle": "Στυλ χάρτη",
+  "mapStyleDrawn": "Σχεδιασμένος (χρώματα θέματος)",
+  "mapStyleSatellite": "Δορυφόρος",
+  "mapStyleHint": "Χάρτες ραντάρ και ανέμου. Ο σχεδιασμένος χάρτης συνοδεύει το πρόσθετο (Natural Earth) και ακολουθεί το θέμα· η δορυφορική εικόνα φορτώνεται από το DWD για κάθε προβολή.",
+  "mouseDrag": "Σύρσιμο",
+  "mouseWheel": "Ροδέλα ποντικιού",
+  "shortcutMapPan": "Χάρτης: μετακίνηση",
+  "shortcutMapWheel": "Χάρτης: ζουμ προς τον δείκτη",
+  "shortcutZoomReset": "Χάρτης: πίσω στο μέρος, προεπιλεγμένο ζουμ"
+})
+addCatalogEntries("ja", {
+  "mapStyle": "地図のスタイル",
+  "mapStyleDrawn": "描画（テーマの色）",
+  "mapStyleSatellite": "衛星",
+  "mapStyleHint": "レーダーと風の地図。描画地図はプラグインに同梱（Natural Earth）され、テーマに合わせます。衛星画像は表示範囲ごとに DWD から読み込みます。",
+  "mouseDrag": "ドラッグ",
+  "mouseWheel": "マウスホイール",
+  "shortcutMapPan": "地図：移動",
+  "shortcutMapWheel": "地図：ポインターに向けてズーム",
+  "shortcutZoomReset": "地図：場所に戻り標準ズーム"
+})
+addCatalogEntries("ko", {
+  "mapStyle": "지도 스타일",
+  "mapStyleDrawn": "그린 지도(테마 색)",
+  "mapStyleSatellite": "위성",
+  "mapStyleHint": "레이더와 바람 지도. 그린 지도는 플러그인에 포함되며(Natural Earth) 테마를 따릅니다. 위성 사진은 보기마다 DWD에서 불러옵니다.",
+  "mouseDrag": "드래그",
+  "mouseWheel": "마우스 휠",
+  "shortcutMapPan": "지도: 이동",
+  "shortcutMapWheel": "지도: 포인터 쪽으로 확대/축소",
+  "shortcutZoomReset": "지도: 장소로 돌아가기, 기본 확대"
+})
+addCatalogEntries("ar", {
+  "mapStyle": "نمط الخريطة",
+  "mapStyleDrawn": "مرسومة (ألوان السمة)",
+  "mapStyleSatellite": "قمر صناعي",
+  "mapStyleHint": "خرائط الرادار والرياح. الخريطة المرسومة مضمّنة في الإضافة (Natural Earth) وتتبع السمة؛ تُحمَّل صورة القمر الصناعي من DWD لكل عرض.",
+  "mouseDrag": "سحب",
+  "mouseWheel": "عجلة الفأرة",
+  "shortcutMapPan": "الخريطة: تحريك",
+  "shortcutMapWheel": "الخريطة: تكبير نحو المؤشر",
+  "shortcutZoomReset": "الخريطة: العودة إلى المكان، التكبير الافتراضي"
+})
+addCatalogEntries("he", {
+  "mapStyle": "סגנון מפה",
+  "mapStyleDrawn": "מצוירת (צבעי ערכת הנושא)",
+  "mapStyleSatellite": "לוויין",
+  "mapStyleHint": "מפות מכ״ם ורוח. המפה המצוירת מגיעה עם התוסף (Natural Earth) ועוקבת אחר ערכת הנושא; תמונת הלוויין נטענת מ־DWD לכל תצוגה.",
+  "mouseDrag": "גרירה",
+  "mouseWheel": "גלגלת העכבר",
+  "shortcutMapPan": "מפה: הזזה",
+  "shortcutMapWheel": "מפה: זום לכיוון הסמן",
+  "shortcutZoomReset": "מפה: חזרה למקום, זום ברירת מחדל"
+})
+addCatalogEntries("fa", {
+  "mapStyle": "سبک نقشه",
+  "mapStyleDrawn": "ترسیمی (رنگ‌های پوسته)",
+  "mapStyleSatellite": "ماهواره",
+  "mapStyleHint": "نقشه‌های رادار و باد. نقشهٔ ترسیمی همراه افزونه است (Natural Earth) و از پوسته پیروی می‌کند؛ تصویر ماهواره‌ای برای هر نما از DWD بارگیری می‌شود.",
+  "mouseDrag": "کشیدن",
+  "mouseWheel": "چرخ موس",
+  "shortcutMapPan": "نقشه: جابه‌جایی",
+  "shortcutMapWheel": "نقشه: بزرگ‌نمایی به سمت نشانگر",
+  "shortcutZoomReset": "نقشه: بازگشت به مکان، بزرگ‌نمایی پیش‌فرض"
+})
+addCatalogEntries("hi", {
+  "mapStyle": "मानचित्र शैली",
+  "mapStyleDrawn": "रेखांकित (थीम के रंग)",
+  "mapStyleSatellite": "उपग्रह",
+  "mapStyleHint": "रडार और हवा के मानचित्र। रेखांकित मानचित्र प्लगइन के साथ आता है (Natural Earth) और थीम का अनुसरण करता है; उपग्रह चित्र हर दृश्य के लिए DWD से लोड होता है।",
+  "mouseDrag": "खींचें",
+  "mouseWheel": "माउस व्हील",
+  "shortcutMapPan": "मानचित्र: खिसकाएँ",
+  "shortcutMapWheel": "मानचित्र: पॉइंटर की ओर ज़ूम",
+  "shortcutZoomReset": "मानचित्र: स्थान पर वापस, मानक ज़ूम"
+})
+addCatalogEntries("id", {
+  "mapStyle": "Gaya peta",
+  "mapStyleDrawn": "Digambar (warna tema)",
+  "mapStyleSatellite": "Satelit",
+  "mapStyleHint": "Peta radar dan angin. Peta gambar disertakan dengan plugin (Natural Earth) dan mengikuti tema; gambar satelit dimuat dari DWD untuk setiap tampilan.",
+  "mouseDrag": "Seret",
+  "mouseWheel": "Roda tetikus",
+  "shortcutMapPan": "Peta: geser",
+  "shortcutMapWheel": "Peta: zoom ke arah penunjuk",
+  "shortcutZoomReset": "Peta: kembali ke lokasi, zoom bawaan"
+})
+addCatalogEntries("vi", {
+  "mapStyle": "Kiểu bản đồ",
+  "mapStyleDrawn": "Vẽ (màu chủ đề)",
+  "mapStyleSatellite": "Vệ tinh",
+  "mapStyleHint": "Bản đồ radar và gió. Bản đồ vẽ đi kèm plugin (Natural Earth) và theo chủ đề; ảnh vệ tinh được tải từ DWD cho mỗi khung nhìn.",
+  "mouseDrag": "Kéo",
+  "mouseWheel": "Con lăn chuột",
+  "shortcutMapPan": "Bản đồ: di chuyển",
+  "shortcutMapWheel": "Bản đồ: thu phóng về phía con trỏ",
+  "shortcutZoomReset": "Bản đồ: về vị trí, thu phóng mặc định"
+})
+addCatalogEntries("th", {
+  "mapStyle": "รูปแบบแผนที่",
+  "mapStyleDrawn": "วาด (สีธีม)",
+  "mapStyleSatellite": "ดาวเทียม",
+  "mapStyleHint": "แผนที่เรดาร์และลม แผนที่วาดมาพร้อมปลั๊กอิน (Natural Earth) และเป็นไปตามธีม ส่วนภาพดาวเทียมโหลดจาก DWD ทุกครั้งที่เปลี่ยนมุมมอง",
+  "mouseDrag": "ลาก",
+  "mouseWheel": "ล้อเมาส์",
+  "shortcutMapPan": "แผนที่: เลื่อน",
+  "shortcutMapWheel": "แผนที่: ซูมไปทางตัวชี้",
+  "shortcutZoomReset": "แผนที่: กลับไปที่ตำแหน่ง ซูมมาตรฐาน"
+})
+addCatalogEntries("zh_CN", {
+  "mapStyle": "地图样式",
+  "mapStyleDrawn": "绘制（主题颜色）",
+  "mapStyleSatellite": "卫星",
+  "mapStyleHint": "雷达和风场地图。绘制地图随插件提供（Natural Earth）并跟随主题；卫星图像按每个视图从 DWD 加载。",
+  "mouseDrag": "拖动",
+  "mouseWheel": "鼠标滚轮",
+  "shortcutMapPan": "地图：移动",
+  "shortcutMapWheel": "地图：朝指针缩放",
+  "shortcutZoomReset": "地图：回到地点，默认缩放"
+})
+addCatalogEntries("zh_TW", {
+  "mapStyle": "地圖樣式",
+  "mapStyleDrawn": "繪製（主題顏色）",
+  "mapStyleSatellite": "衛星",
+  "mapStyleHint": "雷達與風場地圖。繪製地圖隨外掛提供（Natural Earth）並跟隨主題；衛星影像依每個檢視從 DWD 載入。",
+  "mouseDrag": "拖曳",
+  "mouseWheel": "滑鼠滾輪",
+  "shortcutMapPan": "地圖：移動",
+  "shortcutMapWheel": "地圖：朝指標縮放",
+  "shortcutZoomReset": "地圖：回到地點，預設縮放"
+})
+// Wheel with modifiers on the maps, the daily strip and the timeline (2.5).
+addCatalogEntries("en", {
+  "mapZoomHint": "Ctrl + wheel to zoom",
+  "ctrlWheel": "Ctrl + wheel",
+  "shiftWheel": "Shift + wheel",
+  "shortcutSidewaysWheel": "Daily forecast and radar timeline: sideways (touchpad: swipe sideways)"
+})
+addCatalogEntries("de", {
+  "mapZoomHint": "Strg + Mausrad zum Zoomen",
+  "ctrlWheel": "Strg + Mausrad",
+  "shiftWheel": "Umschalt + Mausrad",
+  "shortcutSidewaysWheel": "Tagesvorhersage und Radar-Zeitleiste: seitwärts (Touchpad: seitlich wischen)"
+})
+addCatalogEntries("es", {
+  "mapZoomHint": "Ctrl + rueda para hacer zoom",
+  "ctrlWheel": "Ctrl + rueda",
+  "shiftWheel": "Mayús + rueda",
+  "shortcutSidewaysWheel": "Pronóstico diario y línea de tiempo del radar: en horizontal (touchpad: deslizar de lado)"
+})
+addCatalogEntries("fr", {
+  "mapZoomHint": "Ctrl + molette pour zoomer",
+  "ctrlWheel": "Ctrl + molette",
+  "shiftWheel": "Maj + molette",
+  "shortcutSidewaysWheel": "Prévisions quotidiennes et frise du radar : latéralement (pavé tactile : glisser de côté)"
+})
+addCatalogEntries("pt", {
+  "mapZoomHint": "Ctrl + roda para ampliar",
+  "ctrlWheel": "Ctrl + roda",
+  "shiftWheel": "Shift + roda",
+  "shortcutSidewaysWheel": "Previsão diária e linha do tempo do radar: na horizontal (touchpad: deslizar para o lado)"
+})
+addCatalogEntries("ru", {
+  "mapZoomHint": "Ctrl + колесо для масштаба",
+  "ctrlWheel": "Ctrl + колесо",
+  "shiftWheel": "Shift + колесо",
+  "shortcutSidewaysWheel": "Прогноз по дням и шкала радара: вбок (тачпад: провести вбок)"
+})
+addCatalogEntries("uk", {
+  "mapZoomHint": "Ctrl + коліщатко для масштабу",
+  "ctrlWheel": "Ctrl + коліщатко",
+  "shiftWheel": "Shift + коліщатко",
+  "shortcutSidewaysWheel": "Прогноз по днях і шкала радара: убік (тачпад: провести вбік)"
+})
+addCatalogEntries("pl", {
+  "mapZoomHint": "Ctrl + kółko, aby powiększyć",
+  "ctrlWheel": "Ctrl + kółko",
+  "shiftWheel": "Shift + kółko",
+  "shortcutSidewaysWheel": "Prognoza dzienna i oś czasu radaru: w bok (touchpad: przesuń w bok)"
+})
+addCatalogEntries("it", {
+  "mapZoomHint": "Ctrl + rotella per lo zoom",
+  "ctrlWheel": "Ctrl + rotella",
+  "shiftWheel": "Maiusc + rotella",
+  "shortcutSidewaysWheel": "Previsioni giornaliere e linea temporale del radar: di lato (touchpad: scorri di lato)"
+})
+addCatalogEntries("nl", {
+  "mapZoomHint": "Ctrl + muiswiel om te zoomen",
+  "ctrlWheel": "Ctrl + muiswiel",
+  "shiftWheel": "Shift + muiswiel",
+  "shortcutSidewaysWheel": "Dagverwachting en radartijdlijn: zijwaarts (touchpad: zijwaarts vegen)"
+})
+addCatalogEntries("tr", {
+  "mapZoomHint": "Yakınlaştırmak için Ctrl + tekerlek",
+  "ctrlWheel": "Ctrl + tekerlek",
+  "shiftWheel": "Shift + tekerlek",
+  "shortcutSidewaysWheel": "Günlük tahmin ve radar zaman çizelgesi: yana (dokunmatik yüzey: yana kaydır)"
+})
+addCatalogEntries("cs", {
+  "mapZoomHint": "Ctrl + kolečko pro přiblížení",
+  "ctrlWheel": "Ctrl + kolečko",
+  "shiftWheel": "Shift + kolečko",
+  "shortcutSidewaysWheel": "Denní předpověď a časová osa radaru: do stran (touchpad: přejetí do strany)"
+})
+addCatalogEntries("sv", {
+  "mapZoomHint": "Ctrl + hjul för att zooma",
+  "ctrlWheel": "Ctrl + hjul",
+  "shiftWheel": "Skift + hjul",
+  "shortcutSidewaysWheel": "Dygnsprognos och radarns tidslinje: i sidled (styrplatta: svep i sidled)"
+})
+addCatalogEntries("fi", {
+  "mapZoomHint": "Ctrl + rulla zoomaa",
+  "ctrlWheel": "Ctrl + rulla",
+  "shiftWheel": "Vaihto + rulla",
+  "shortcutSidewaysWheel": "Päiväennuste ja tutkan aikajana: sivuttain (kosketuslevy: pyyhkäise sivulle)"
+})
+addCatalogEntries("nb", {
+  "mapZoomHint": "Ctrl + hjul for å zoome",
+  "ctrlWheel": "Ctrl + hjul",
+  "shiftWheel": "Shift + hjul",
+  "shortcutSidewaysWheel": "Døgnvarsel og radarens tidslinje: sidelengs (styreplate: sveip sidelengs)"
+})
+addCatalogEntries("da", {
+  "mapZoomHint": "Ctrl + hjul for at zoome",
+  "ctrlWheel": "Ctrl + hjul",
+  "shiftWheel": "Skift + hjul",
+  "shortcutSidewaysWheel": "Døgnprognose og radarens tidslinje: sidelæns (pegeplade: stryg sidelæns)"
+})
+addCatalogEntries("ro", {
+  "mapZoomHint": "Ctrl + rotiță pentru zoom",
+  "ctrlWheel": "Ctrl + rotiță",
+  "shiftWheel": "Shift + rotiță",
+  "shortcutSidewaysWheel": "Prognoza zilnică și cronologia radarului: lateral (touchpad: glisare laterală)"
+})
+addCatalogEntries("hu", {
+  "mapZoomHint": "Ctrl + görgő a nagyításhoz",
+  "ctrlWheel": "Ctrl + görgő",
+  "shiftWheel": "Shift + görgő",
+  "shortcutSidewaysWheel": "Napi előrejelzés és radar idővonal: oldalra (érintőpad: oldalra húzás)"
+})
+addCatalogEntries("el", {
+  "mapZoomHint": "Ctrl + ροδέλα για ζουμ",
+  "ctrlWheel": "Ctrl + ροδέλα",
+  "shiftWheel": "Shift + ροδέλα",
+  "shortcutSidewaysWheel": "Ημερήσια πρόγνωση και χρονολόγιο ραντάρ: πλάγια (επιφάνεια αφής: σύρσιμο στο πλάι)"
+})
+addCatalogEntries("ja", {
+  "mapZoomHint": "Ctrl + ホイールでズーム",
+  "ctrlWheel": "Ctrl + ホイール",
+  "shiftWheel": "Shift + ホイール",
+  "shortcutSidewaysWheel": "日ごとの予報とレーダーのタイムライン：横方向（タッチパッド：横にスワイプ）"
+})
+addCatalogEntries("ko", {
+  "mapZoomHint": "Ctrl + 휠로 확대/축소",
+  "ctrlWheel": "Ctrl + 휠",
+  "shiftWheel": "Shift + 휠",
+  "shortcutSidewaysWheel": "일별 예보와 레이더 타임라인: 가로로 (터치패드: 옆으로 쓸기)"
+})
+addCatalogEntries("ar", {
+  "mapZoomHint": "Ctrl + العجلة للتكبير",
+  "ctrlWheel": "Ctrl + العجلة",
+  "shiftWheel": "Shift + العجلة",
+  "shortcutSidewaysWheel": "التوقعات اليومية والخط الزمني للرادار: جانبيًا (لوحة اللمس: اسحب جانبيًا)"
+})
+addCatalogEntries("he", {
+  "mapZoomHint": "Ctrl + גלגלת לזום",
+  "ctrlWheel": "Ctrl + גלגלת",
+  "shiftWheel": "Shift + גלגלת",
+  "shortcutSidewaysWheel": "תחזית יומית וציר הזמן של המכ״ם: לצדדים (משטח מגע: החלקה הצידה)"
+})
+addCatalogEntries("fa", {
+  "mapZoomHint": "Ctrl + چرخ برای بزرگ‌نمایی",
+  "ctrlWheel": "Ctrl + چرخ",
+  "shiftWheel": "Shift + چرخ",
+  "shortcutSidewaysWheel": "پیش‌بینی روزانه و نوار زمانی رادار: به پهلو (صفحهٔ لمسی: کشیدن به پهلو)"
+})
+addCatalogEntries("hi", {
+  "mapZoomHint": "ज़ूम के लिए Ctrl + व्हील",
+  "ctrlWheel": "Ctrl + व्हील",
+  "shiftWheel": "Shift + व्हील",
+  "shortcutSidewaysWheel": "दैनिक पूर्वानुमान और रडार टाइमलाइन: बगल में (टचपैड: बगल में स्वाइप)"
+})
+addCatalogEntries("id", {
+  "mapZoomHint": "Ctrl + roda untuk zoom",
+  "ctrlWheel": "Ctrl + roda",
+  "shiftWheel": "Shift + roda",
+  "shortcutSidewaysWheel": "Prakiraan harian dan linimasa radar: ke samping (touchpad: usap ke samping)"
+})
+addCatalogEntries("vi", {
+  "mapZoomHint": "Ctrl + con lăn để thu phóng",
+  "ctrlWheel": "Ctrl + con lăn",
+  "shiftWheel": "Shift + con lăn",
+  "shortcutSidewaysWheel": "Dự báo theo ngày và dòng thời gian radar: sang ngang (touchpad: vuốt ngang)"
+})
+addCatalogEntries("th", {
+  "mapZoomHint": "Ctrl + ล้อเมาส์เพื่อซูม",
+  "ctrlWheel": "Ctrl + ล้อเมาส์",
+  "shiftWheel": "Shift + ล้อเมาส์",
+  "shortcutSidewaysWheel": "พยากรณ์รายวันและไทม์ไลน์เรดาร์: เลื่อนด้านข้าง (ทัชแพด: ปัดด้านข้าง)"
+})
+addCatalogEntries("zh_CN", {
+  "mapZoomHint": "Ctrl + 滚轮缩放",
+  "ctrlWheel": "Ctrl + 滚轮",
+  "shiftWheel": "Shift + 滚轮",
+  "shortcutSidewaysWheel": "每日预报和雷达时间轴：横向（触控板：左右滑动）"
+})
+addCatalogEntries("zh_TW", {
+  "mapZoomHint": "Ctrl + 滾輪縮放",
+  "ctrlWheel": "Ctrl + 滾輪",
+  "shiftWheel": "Shift + 滾輪",
+  "shortcutSidewaysWheel": "每日預報與雷達時間軸：橫向（觸控板：左右滑動）"
+})
 // Each language in its own name, for the language picker.
 var languageNames = {
   "en": "English",

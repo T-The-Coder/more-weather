@@ -16,7 +16,9 @@ import Quickshell.Io
 // never land.
 //
 // request: { url, method ("GET"), headers ({}), body (""), timeoutMs (10000),
-//            maxBytes (defaultMaxBytes) }
+//            maxBytes (defaultMaxBytes), binary (false) }
+// With `binary`, the body travels base64-encoded through the shell and
+// `finished` delivers it as a string of byte values (0–255 per character).
 QtObject {
   id: http
 
@@ -49,6 +51,10 @@ QtObject {
   readonly property string script: "set -o pipefail; limit=$1; shift; "
     + "trap 'pkill -TERM -P $$; exit 143' TERM; "
     + "curl \"$@\" | head -c \"$limit\" & wait $!"
+  readonly property string binaryScript: "set -o pipefail; limit=$1; shift; "
+    + "trap 'pkill -TERM -P $$; exit 143' TERM; "
+    + "curl \"$@\" | head -c \"$limit\" | base64 -w0 & wait $!"
+  property bool binaryResponse: false
 
   property bool pendingExit: false
   property bool pendingStream: false
@@ -88,7 +94,9 @@ QtObject {
     pendingStream = false
     pendingCode = 0
     if (proc.running) proc.running = false
-    proc.command = ["bash", "-c", script, "more-weather-request", String(maxBytes + 16)].concat(args)
+    binaryResponse = !!spec.binary
+    proc.command = ["bash", "-c", binaryResponse ? binaryScript : script,
+      "more-weather-request", String(maxBytes + 16)].concat(args)
     proc.token = generation
     // curl's --max-time is the real timeout; this only catches a stuck process.
     timeoutTimer.interval = timeoutMs + 5000
@@ -100,6 +108,7 @@ QtObject {
     if (!pendingExit || !pendingStream) return
     var exitCode = pendingCode
     var out = String(collector.text || "")
+    if (binaryResponse) out = decodedBase64(out.trim())
     var cut = out.lastIndexOf("\n")
     var httpStatus = cut >= 0 ? Number(out.slice(cut + 1)) || 0 : 0
     var body = cut >= 0 ? out.slice(0, cut) : ""
@@ -109,6 +118,31 @@ QtObject {
     status = httpStatus
     errorText = !ok && exitCode === 22 ? body.slice(0, maxErrorChars) : ""
     complete(exitCode, ok ? body : "")
+  }
+
+  // Base64 to a string of byte values; the "\n<status>" trailer that curl
+  // wrote after the body comes back with it.
+  function decodedBase64(text) {
+    var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+    var lookup = {}
+    for (var a = 0; a < alphabet.length; ++a) lookup[alphabet.charAt(a)] = a
+    var bytes = []
+    var buffer = 0
+    var bits = 0
+    for (var i = 0; i < text.length; ++i) {
+      var value = lookup[text.charAt(i)]
+      if (value === undefined) continue
+      buffer = (buffer << 6) | value
+      bits += 6
+      if (bits >= 8) {
+        bits -= 8
+        bytes.push((buffer >> bits) & 0xff)
+      }
+    }
+    var parts = []
+    for (var start = 0; start < bytes.length; start += 4096)
+      parts.push(String.fromCharCode.apply(null, bytes.slice(start, start + 4096)))
+    return parts.join("")
   }
 
   function complete(exitCode, text) {

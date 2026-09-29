@@ -28,12 +28,27 @@ Column {
       border.width: 1
 
       Flickable {
+        id: warningScroll
         anchors.fill: parent
         anchors.margins: Style.space(10)
         contentWidth: width
         contentHeight: warningContent.implicitHeight
         clip: true
         boundsBehavior: Flickable.StopAtBounds
+
+        // A long warning scrolls in its box when a gesture begins over it
+        // (Panel.routeWheel); a page scroll passing over it goes on.
+        readonly property bool wheelEnabled: contentHeight > height
+        // At either end the scroll goes on to the page (false).
+        function takeWheel(wheel) {
+          var maximum = Math.max(0, contentHeight - height)
+          var next = Math.max(0, Math.min(maximum, contentY - panel.wheelPixels(wheel, false)))
+          if (next === contentY) return false
+          contentY = next
+          return true
+        }
+        Component.onCompleted: panel.registerWheelArea(warningScroll)
+        Component.onDestruction: panel.unregisterWheelArea(warningScroll)
 
         Column {
           id: warningContent

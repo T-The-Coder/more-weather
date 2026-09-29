@@ -11,46 +11,90 @@ window.
 
 **In the bar**
 - Weather symbol, temperature, feels-like, wind, humidity and precipitation.
-  Choose which of these the bar shows.
+  Choose which of these the bar shows. The rain drop shows the rain
+  probability: outline below 25 %, half full from 25 %, full from 75 %.
 - Optional hints: rain starting soon, poor air quality, high pollen and a colored
   warning mark while an official warning is active.
 - Left click opens the popup, middle click refreshes, right click sends a short
   status notification.
 
 **In the popup and the app**
-- **Current conditions:** Temperature, feels-like, wind and humidity, with the
-  moon phase behind the weather symbol at night.
-- **Official warnings:** Severity, time window, description and instructions.
+- **Current conditions:** Temperature, feels-like, wind, humidity, the moon phase with
+  its lit share, the change against yesterday at the same hour and the next full or
+  new moon, plus the moon behind the weather symbol at night. A button (or `w`) opens
+  the place at a weather service: NWS in the USA, ECCC in Canada, yr.no elsewhere.
+- **Official warnings:** Severity, time window, description and instructions, from the
+  national weather service in Germany, the 39 MeteoAlarm countries, the USA, Canada,
+  Australia, New Zealand, Japan, Brazil and Argentina, and elsewhere from the official
+  CAP feeds registered with the WMO (about 115 countries).
 - **Air quality and pollen:** European or US AQI, PM2.5, PM10, ozone and the pollen
   types that currently count.
-- **Hourly forecast:** Weather symbol, temperature, rain probability and amount, UV
-  index and wind. Where the DWD radar reaches, the symbol shows the rain it measures, and a
+- **Hour cursor:** Shift+←/→ or a click on an hour shows that hour in the current weather.
+- **Hourly forecast:** Weather symbol, temperature, rain probability and amount, UV index
+  and wind, and a temperature line over the next 24 hours (after linecast) with rain bars,
+  daylight bands, midnight rules, labelled highs and lows, and a click to pick the hour. Where the DWD radar reaches, the symbol shows the rain it measures, and a
   thunderstorm only when a warning or a station confirms one.
-- **7-day forecast:** Min/max temperature, rain, UV, wind, sunrise and sunset.
+- **7-day forecast:** Min/max temperature, as a bar and as an hour-by-hour line through
+  the week with each day under its column, rain bars, daylight bands and the day's high
+  and low (each switchable), rain, UV, wind, sunrise, sunset, moon phase,
+  day length and its change against the day before.
 - **Rain nowcast:** Intensity in 15-minute steps and probability over the next two hours.
   In the DWD area both come from the DWD radar nowcast, renewed every five minutes: rain
   already falling, moved along its track, blended with DWD MOSMIX for the probability. The
-  bars take the DWD radar colours, and the hourly forecast uses the same values.
+  bars take the DWD radar colours, the probability is a thin line over a translucent
+  area, and the hourly forecast uses the same values. In Norway, Sweden, Finland and Denmark the amounts come
+  from MET Norway's radar nowcast, in Austria from GeoSphere Austria's INCA nowcast, in
+  the Netherlands and Belgium from Buienradar, in Japan from JMA's one-hour radar
+  nowcast.
 - **Rain radar:**
-  - Animated frames with play/pause, stepping and zoom.
-  - City labels, plus a drift arrow at the map's true scale, marked in 15-minute steps up to
-    two hours. It follows the frame on screen and is tracked from the radar itself in the
+  - Official radar in the DWD area, the USA, Canada, Finland, the Netherlands and
+    Japan; RainViewer elsewhere.
+  - Animated frames with a timeline under the map (after Weather Radar): play/pause, a
+    notched track to drag or click through the frames with a mark for now and the
+    forecast part tinted, and the frame's time. Plus zoom and distance rings around the
+    place.
+  - A map drawn in the theme's colours (land, lakes, towns, rivers, borders from Natural
+    Earth, shipped with the plugin, so it needs no network), or the satellite picture as
+    a map style. Drag to move it, Ctrl + wheel zooms towards the pointer (a plain wheel
+    scrolls the page), `0` or the crosshair button returns to the place. The wind map shares the same view.
+  - City labels, plus a drift arrow at the map's true scale, marked in round steps from
+    5 minutes up to two hours (three or four when zoomed far out), so it keeps its time
+    labels at every zoom. It follows the frame on screen and is tracked from the radar itself in the
     DWD area; elsewhere it uses the model wind at about 3 km (700 hPa).
 - **Wind map:** An animated particle field from a 35-point model grid over the
   visible map area.
 - **Locations:** Search for places, keep a list of favorites or detect your location
   automatically.
+- **My places:** All favorites at a glance, one line each with symbol, temperature,
+  feels-like, wind, humidity and moon. A click, Alt+1–9 or Alt+←/→ switches to a
+  place. For global keys, bind the IPC calls `favorite <n>`, `nextFavorite` and
+  `previousFavorite` of the `more-weather` target, e.g.
+  `qs ipc -p /usr/share/omarchy/shell call more-weather favorite 1`.
 - **Notifications:** Desktop notifications for severe and extreme warnings and for
-  rain starting within 30 minutes.
+  rain on its way. For rain you choose the strength (any, moderate or more, heavy only)
+  and a radius of 10 to 100 km: rain moves at about 50 km/h, so the radius sets how far
+  ahead the nowcast is read (25 km ≈ 30 minutes, 100 km ≈ 2 hours). Rain that gets
+  stronger is announced again.
 
 **Everywhere**
 - **30 interface languages,** including right-to-left scripts, plus metric or
-  US/imperial units, both chosen automatically or by hand.
+  US/imperial units, both chosen automatically or by hand. Wind can have its own unit
+  (km/h, m/s, mph, knots or Beaufort), and the forecast and the radar with its
+  rain nowcast each have their own update interval in the settings.
+- **Colour accents** in the theme's palette: temperatures by warmth, rain chance from the
+  text colour through cyan, dark blue and magenta to violet, UV and strong wind by level,
+  a weekly temperature bar and the air quality dot; one switch turns them off.
 - **Separate display settings** for the bar, the popup and the app, and the widget's
   position in the bar (left, center or right).
+- **Sections your way:** Current weather, my places, air quality, hourly, daily, rain,
+  radar and wind can be put in any order. All but the current weather can also be
+  shown as a tab; the tabs share one strip that has its own place in the order, and
+  keys 1–9 pick them in their order. The current weather, with place, refresh,
+  settings and the warnings below it, always stays in the window.
 - **Offline cache:** When a service or the network is down, the last data (up to
   three days old) stays visible, marked in italics.
-- **Full keyboard control;** every shortcut is listed under Settings → Shortcuts.
+- **Full keyboard control,** settings included; every shortcut is listed under
+  Settings → Shortcuts, and the settings name their keys where they apply.
 - **Settings → Sources** shows which service is serving each kind of data right now.
 
 | Overview | Radar | Wind |

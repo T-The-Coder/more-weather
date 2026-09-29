@@ -24,6 +24,12 @@ Rectangle {
   readonly property int orderIndex: orderEntry !== "" ? orderList.indexOf(orderEntry) : -1
   readonly property bool orderable: orderIndex >= 0
   property string hoverKey: ""
+  // False for an entry that can only be moved, never switched off.
+  property bool showSwitch: true
+  // Keyboard focus in the settings, and which switch column it is on
+  // (0 always, 1 when relevant, 2 on hover).
+  property bool kbFocused: false
+  property int kbColumn: 0
   // Width of each switch column, shared with the column headings above.
   property real columnWidth: Style.space(32)
   readonly property bool columned: hoverKey !== ""
@@ -41,9 +47,11 @@ Rectangle {
   enabled: rowEnabled
   opacity: rowEnabled ? 1 : 0.42
   color: displaySettingMouse.containsMouse || relevantSettingMouse.containsMouse
-      || hoverSettingMouse.containsMouse
+      || hoverSettingMouse.containsMouse || kbFocused
     ? Style.hoverFillFor(panel.foreground, Color.accent)
     : "transparent"
+  border.color: kbFocused ? Color.accent : "transparent"
+  border.width: kbFocused ? Style.spacing.hairline : 0
 
   Row {
     id: orderButtons
@@ -91,8 +99,9 @@ Rectangle {
 
   Text {
     anchors.left: switchRow.orderable ? orderButtons.right : parent.left
+    // A row flush with the card text still keeps its label off the focus ring.
     anchors.leftMargin: switchRow.orderable ? Style.space(6)
-      : (parent.indented ? Style.space(12) : 0)
+      : (parent.indented ? Style.space(12) : (switchRow.kbFocused ? Style.space(6) : 0))
     anchors.right: permanentColumn.left
     anchors.rightMargin: Style.space(8)
     anchors.verticalCenter: parent.verticalCenter
@@ -113,10 +122,13 @@ Rectangle {
     width: switchRow.columned ? switchRow.columnWidth : Style.space(32)
 
     WeatherSwitchToggle {
+      visible: switchRow.showSwitch
       panel: switchRow.panel
       anchors.centerIn: parent
       checked: switchRow.checked
     }
+
+    ColumnCursor { visible: switchRow.kbFocused && switchRow.columned && switchRow.kbColumn === 0 }
   }
 
   // Entries without a rule for "stands out" (place, temperature, humidity,
@@ -136,6 +148,8 @@ Rectangle {
       anchors.centerIn: parent
       checked: switchRow.relevantChecked
     }
+
+    ColumnCursor { visible: switchRow.kbFocused && switchRow.kbColumn === 1 }
 
     Text {
       visible: switchRow.relevantKey === ""
@@ -170,6 +184,8 @@ Rectangle {
       checked: switchRow.hoverChecked
     }
 
+    ColumnCursor { visible: switchRow.kbFocused && switchRow.kbColumn === 2 }
+
     MouseArea {
       id: hoverSettingMouse
       anchors.fill: parent
@@ -180,12 +196,22 @@ Rectangle {
     }
   }
 
+  // Marks the switch column the keyboard is on in a menu bar row.
+  component ColumnCursor: Rectangle {
+    anchors.fill: parent
+    anchors.margins: Style.space(3)
+    radius: Style.cornerRadius
+    color: "transparent"
+    border.color: Color.accent
+    border.width: Style.spacing.hairline
+  }
+
   MouseArea {
     id: displaySettingMouse
     anchors.fill: parent
     anchors.leftMargin: orderButtons.visible ? orderButtons.width + Style.space(6) : 0
     anchors.rightMargin: relevantColumn.width + hoverColumn.width
-    enabled: parent.rowEnabled
+    enabled: parent.rowEnabled && parent.showSwitch
     hoverEnabled: true
     cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
     onClicked: {

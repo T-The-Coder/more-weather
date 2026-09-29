@@ -11,10 +11,56 @@ Column {
 
   function spinRefresh() { refreshSpin.restart() }
 
+  // ---- The value columns beside the temperature, one entry per option.
+  function statLabel(key) {
+    if (key === "heroFeelsLike")
+      return panel.interfaceLanguage === "de" ? "GEFÜHLT" : panel.upperLabel(panel.i18n("feelsLikeShort"))
+    if (key === "heroWind") return panel.upperLabel(panel.i18n("wind"))
+    if (key === "heroHumidity") return panel.upperLabel(panel.i18n("humidity"))
+    if (key === "heroMoon") return panel.upperLabel(panel.i18n("moon"))
+    if (key === "heroYesterday") return panel.upperLabel(panel.i18n("yesterdayShort"))
+    if (key === "heroMoonNext") return panel.heroMoonNextLabel
+    return ""
+  }
+  function statGlyph(key) {
+    if (key === "heroMoon") return panel.heroMoonGlyph
+    if (key === "heroMoonNext") return panel.heroMoonNextGlyph
+    return ""
+  }
+  function statText(key) {
+    if (key === "heroFeelsLike") return panel.heroFeels
+    if (key === "heroWind") return panel.heroWind
+    if (key === "heroHumidity") return panel.heroHumidity
+    if (key === "heroMoon") return panel.heroMoonText
+    // About now only: hidden while the hour cursor reads out another hour.
+    if (key === "heroYesterday") return panel.cursorHour ? "" : panel.heroYesterdayText
+    if (key === "heroMoonNext") return panel.cursorHour ? "" : panel.heroMoonNextText
+    return ""
+  }
+  // Colour accents: feels-like by warmth, strong wind, and the change
+  // against yesterday; humidity and the moon stay neutral.
+  function statColor(key) {
+    var current = panel.current
+    var accent = ""
+    if (key === "heroFeelsLike" && current) accent = panel.absoluteTemperatureAccent(panel.heroFeelsCelsius)
+    else if (key === "heroWind" && current) accent = panel.windAccent(panel.heroWindKmph)
+    else if (key === "heroYesterday") accent = panel.yesterdayAccent(panel.yesterdayChangeCelsius)
+    return accent || panel.foreground
+  }
+  function statItalic(key) {
+    if (key === "heroFeelsLike") return panel.currentFeelsCached
+    if (key === "heroWind") return panel.currentWindCached
+    if (key === "heroHumidity") return panel.currentHumidityCached
+    return false
+  }
+
   // In the widget, symbol and temperature open the app; they light up on
   // hover like the clock panel's hero.
   readonly property color heroColor: heroOpenMouse.containsMouse
     ? Style.hoverStateColor(panel.foreground, Color.accent) : panel.foreground
+  // The temperature by warmth (colour accents); hover keeps its highlight.
+  readonly property color temperatureColor: heroOpenMouse.containsMouse || !panel.current
+    ? heroColor : (panel.absoluteTemperatureAccent(panel.heroTempCelsius) || heroColor)
 
   width: parent.width
   // The large temperature brings generous line leading of its own;
@@ -49,7 +95,7 @@ Column {
 
       Text {
         id: heroIcon
-        visible: !panel.heroNightSymbol && panel.displaySetting("heroSymbol", true)
+        visible: (!panel.heroNightSymbol || !!panel.cursorHour) && panel.displaySetting("heroSymbol", true)
         // tightBoundingRect() is a plain method, so read a metrics property
         // first to re-measure when the font (or its fallback) changes.
         readonly property rect digitInk: digitMetrics.height > 0
@@ -68,7 +114,7 @@ Column {
 
         anchors.verticalCenter: parent.verticalCenter
         anchors.verticalCenterOffset: Math.round(digitInkOffset - glyphInkOffset)
-        text: panel.displayLabel || "—"
+        text: panel.heroSymbolText || "—"
         color: heroBlock.heroColor
         font.family: panel.fontFamily
         font.pixelSize: opticalSize
@@ -82,7 +128,7 @@ Column {
       // A little taller than the digits: the moon sits above the cloud, and
       // matching only the digit height would shrink the cloud itself.
       WeatherNightSymbol {
-        visible: !!panel.heroNightSymbol && panel.displaySetting("heroSymbol", true)
+        visible: !!panel.heroNightSymbol && !panel.cursorHour && panel.displaySetting("heroSymbol", true)
         anchors.verticalCenter: parent.verticalCenter
         anchors.verticalCenterOffset: Math.round(heroIcon.digitInkOffset)
         moonGlyph: panel.heroNightSymbol ? panel.heroNightSymbol.moon : ""
@@ -104,8 +150,8 @@ Column {
 
         Text {
           id: tempBig
-          text: panel.reportTempNum || "—"
-          color: heroBlock.heroColor
+          text: panel.heroTempNum || "—"
+          color: heroBlock.temperatureColor
           font.family: panel.fontFamily
           font.pixelSize: heroRow.width < 680 ? 48 : 56
           font.bold: true
@@ -113,7 +159,7 @@ Column {
         }
         Text {
           text: panel.current ? panel.tempUnit : ""
-          color: heroBlock.heroColor
+          color: heroBlock.temperatureColor
           font.family: panel.fontFamily
           font.pixelSize: Style.font.display
           font.italic: panel.currentTemperatureCached
@@ -149,77 +195,75 @@ Column {
       anchors.right: parent.right
       anchors.verticalCenter: parent.verticalCenter
       spacing: Style.space(24)
-      // Equal columns, measured off the labels and values themselves. The
-      // delegates below are built from the chosen order, so the widths come
-      // from these hidden twins instead.
-      property real statColumnWidth: Math.max(feelsLabelMetrics.width, windLabelMetrics.width,
-        humidityLabelMetrics.width, feelsValueMetrics.width, windValueMetrics.width,
-        humidityValueMetrics.width)
+      // Equal columns, as wide as the widest shown label or value.
+      readonly property var shownKeys: panel.displayHeroOrder.filter(function(key) {
+        return panel.displaySetting(key, true) && heroBlock.statText(key) !== ""
+      })
+      property real statColumnWidth: {
+        var widest = 0
+        for (var i = 0; i < shownKeys.length; ++i) {
+          var key = shownKeys[i]
+          var glyph = heroBlock.statGlyph(key)
+          widest = Math.max(widest, statLabelMetrics.advanceWidth(heroBlock.statLabel(key)) + heroBlock.statLabel(key).length,
+            statValueMetrics.advanceWidth(heroBlock.statText(key))
+              + (glyph !== "" ? statValueMetrics.advanceWidth(glyph) + Style.space(4) : 0))
+        }
+        return Math.ceil(widest)
+      }
 
-      TextMetrics {
-        id: feelsLabelMetrics
+      FontMetrics {
+        id: statLabelMetrics
         font.family: panel.fontFamily
         font.pixelSize: Style.font.bodySmall
-        font.letterSpacing: 1
-        text: panel.interfaceLanguage === "de" ? "GEFÜHLT" : panel.upperLabel(panel.i18n("feelsLikeShort"))
       }
-      TextMetrics {
-        id: windLabelMetrics
-        font: feelsLabelMetrics.font
-        text: panel.upperLabel(panel.i18n("wind"))
-      }
-      TextMetrics {
-        id: humidityLabelMetrics
-        font: feelsLabelMetrics.font
-        text: panel.upperLabel(panel.i18n("humidity"))
-      }
-      TextMetrics {
-        id: feelsValueMetrics
+      FontMetrics {
+        id: statValueMetrics
         font.family: panel.fontFamily
         font.pixelSize: Style.font.title
-        text: panel.reportFeels
-      }
-      TextMetrics {
-        id: windValueMetrics
-        font: feelsValueMetrics.font
-        text: panel.reportWind
-      }
-      TextMetrics {
-        id: humidityValueMetrics
-        font: feelsValueMetrics.font
-        text: panel.reportHumidity
       }
 
-      // The three values in the order chosen under Settings → Display.
+      // The values in the order chosen under Settings → Display.
       Repeater {
-        model: panel.displayHeroOrder
+        model: weatherStats.shownKeys
 
         Column {
           required property string modelData
-          readonly property bool isFeels: modelData === "heroFeelsLike"
-          readonly property bool isWind: modelData === "heroWind"
-          visible: panel.displaySetting(modelData, true)
           width: weatherStats.statColumnWidth
           spacing: Style.space(5)
 
           Text {
-            text: parent.isFeels
-              ? (panel.interfaceLanguage === "de" ? "GEFÜHLT" : panel.upperLabel(panel.i18n("feelsLikeShort")))
-              : panel.upperLabel(panel.i18n(parent.isWind ? "wind" : "humidity"))
+            text: heroBlock.statLabel(parent.modelData)
             color: panel.mutedText
             font.family: panel.fontFamily
             font.pixelSize: Style.font.bodySmall
             font.letterSpacing: 1
           }
 
-          Text {
-            text: parent.isFeels ? panel.reportFeels
-              : (parent.isWind ? panel.reportWind : panel.reportHumidity)
-            color: panel.foreground
-            font.family: panel.fontFamily
-            font.pixelSize: Style.font.title
-            font.italic: parent.isFeels ? panel.currentFeelsCached
-              : (parent.isWind ? panel.currentWindCached : panel.currentHumidityCached)
+          // A glyph (the moon's, mirrored south of the equator) and the value.
+          Row {
+            spacing: Style.space(4)
+
+            Text {
+              id: statGlyph
+              visible: text !== ""
+              anchors.verticalCenter: parent.verticalCenter
+              text: heroBlock.statGlyph(parent.parent.modelData)
+              color: panel.foreground
+              font.family: panel.fontFamily
+              font.pixelSize: Style.font.title
+              transform: Scale {
+                origin.x: statGlyph.width / 2
+                xScale: panel.mirrorsGlyph(statGlyph.text) ? -1 : 1
+              }
+            }
+            Text {
+              anchors.verticalCenter: parent.verticalCenter
+              text: heroBlock.statText(parent.parent.modelData)
+              color: heroBlock.statColor(parent.parent.modelData)
+              font.family: panel.fontFamily
+              font.pixelSize: Style.font.title
+              font.italic: heroBlock.statItalic(parent.parent.modelData)
+            }
           }
         }
       }
@@ -383,12 +427,47 @@ Column {
 
       Text {
         anchors.verticalCenter: parent.verticalCenter
-        text: panel.lastUpdatedLabel(panel.relativeTimeNowMs, panel.displayedUpdateMs).toUpperCase()
-        color: panel.mutedText
+        // The hour under the cursor, else how fresh the data is.
+        text: panel.cursorHour
+          ? panel.i18n("heroAtTime", { time: panel.hourCursorTime(panel.cursorHour) }).toUpperCase()
+          : panel.lastUpdatedLabel(panel.relativeTimeNowMs, panel.displayedUpdateMs).toUpperCase()
+        color: panel.cursorHour ? Color.accent : panel.mutedText
         font.family: panel.fontFamily
         font.pixelSize: Style.font.caption
         font.letterSpacing: 1
         font.italic: panel.lastUpdateFromCache
+      }
+
+      // The place at its weather service (yr.no, NWS, ECCC); also key w.
+      Item {
+        visible: panel.displaySetting("heroServiceLink", true) && !!panel.serviceLink
+        width: Style.space(18)
+        height: Style.space(18)
+        anchors.verticalCenter: parent.verticalCenter
+
+        Text {
+          anchors.centerIn: parent
+          text: "󰖟"  // nf-md-web
+          color: serviceMouse.containsMouse
+            ? Style.hoverStateColor(panel.foreground, Color.accent)
+            : panel.mutedText
+          font.family: panel.fontFamily
+          font.pixelSize: Style.font.body
+        }
+
+        MouseArea {
+          id: serviceMouse
+          anchors.fill: parent
+          hoverEnabled: true
+          cursorShape: Qt.PointingHandCursor
+          onClicked: panel.openServiceLink()
+        }
+
+        PanelToolTip {
+          visible: serviceMouse.containsMouse
+          text: panel.i18n("openAtService", { service: panel.serviceLink ? panel.serviceLink.name : "" })
+          fontFamily: panel.fontFamily
+        }
       }
 
       Item {

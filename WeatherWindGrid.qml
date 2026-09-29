@@ -58,7 +58,7 @@ Item {
     var local = panel.windGridCache[key]
     if (!usableGrid(entry) || (local && Number(local.at) >= Number(entry.at))) return
     rememberWindGrid(key, entry.report, entry.at)
-    var current = extentKey(panel.mapCenterLatitude, panel.mapCenterLongitude, panel.mapRadiusKm)
+    var current = extentKey(panel.mapViewLatitude, panel.mapViewLongitude, panel.mapRadiusKm)
     if (key === current) {
       claimWaitTimer.stop()
       showWindGrid(key, entry.report)
@@ -69,8 +69,8 @@ Item {
   // Zooming therefore changes both the basemap and the sampled wind field,
   // instead of projecting a fixed ±150 km grid onto a different viewport.
   function requestWindGrid(latitude, longitude) {
-    var lat = latitude === undefined ? Number(panel.mapCenterLatitude) : Number(latitude)
-    var lon = longitude === undefined ? Number(panel.mapCenterLongitude) : Number(longitude)
+    var lat = latitude === undefined ? Number(panel.mapViewLatitude) : Number(latitude)
+    var lon = longitude === undefined ? Number(panel.mapViewLongitude) : Number(longitude)
     var radiusKm = Number(panel.mapRadiusKm)
     var cacheKey = extentKey(lat, lon, radiusKm)
     if (windGridProc.running) {
@@ -169,7 +169,7 @@ Item {
     running: true
     repeat: true
     onTriggered: {
-      var key = extentKey(panel.mapCenterLatitude, panel.mapCenterLongitude, panel.mapRadiusKm)
+      var key = extentKey(panel.mapViewLatitude, panel.mapViewLongitude, panel.mapRadiusKm)
       if (!usableGrid(panel.windGridCache[key]) && Date.now() - fetchStartedMs >= backgroundRetryMs)
         requestWindGrid()
     }

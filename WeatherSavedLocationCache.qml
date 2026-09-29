@@ -3,7 +3,10 @@ import "Model.js" as Model
 import "Providers.js" as Providers
 
 // Background forecasts for saved locations (bar instance only), so switching
-// to a favourite shows recent data at once. Entries refresh after six hours.
+// to a favourite shows recent data at once and "My places" lists them.
+// Entries refresh with the forecast interval (15 minutes by default) while
+// that section is shown, else after six hours; a timer looks every five
+// minutes, whatever the main forecast does.
 Item {
   required property var panel
   // Provider chain of the location being fetched, fixed when it starts: a
@@ -13,7 +16,9 @@ Item {
   function prepareSavedCacheQueue() {
     if (panel.standaloneMode || !panel.weatherDataCacheLoaded || savedCacheProc.running) return
     var entries = panel.weatherDataCache && panel.weatherDataCache.entries ? panel.weatherDataCache.entries : ({})
-    var refreshBefore = Date.now() - 6 * 60 * 60 * 1000
+    // With the forecast interval while "My places" is shown, else every six
+    // hours.
+    var refreshBefore = Date.now() - (panel.favoritesWanted ? Math.max(10, panel.refreshMinutes) * 60 : 6 * 60 * 60) * 1000
     var queue = []
     for (var i = 0; i < panel.savedLocations.length; ++i) {
       var location = panel.savedLocations[i]
@@ -53,6 +58,13 @@ Item {
 
   property Timer savedCacheSchedule: Timer {
     interval: 1800
+    onTriggered: prepareSavedCacheQueue()
+  }
+
+  property Timer savedCachePoll: Timer {
+    interval: 5 * 60 * 1000
+    repeat: true
+    running: !panel.standaloneMode
     onTriggered: prepareSavedCacheQueue()
   }
 

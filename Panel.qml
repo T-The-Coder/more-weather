@@ -84,6 +84,10 @@ Panel {
   // supporting values, subtle for tertiary hints and hairline borders.
   readonly property color mutedText: Qt.darker(foreground, 1.35)
   readonly property color subtleText: Qt.darker(foreground, 1.7)
+  // Key hints ("⇧ ← → another hour", "Alt 1–9"): the text colour faded
+  // towards the theme's background, so they recede in light and dark themes.
+  readonly property color hintText: Qt.tint(foreground,
+    Qt.rgba(Color.popups.background.r, Color.popups.background.g, Color.popups.background.b, 0.55))
 
   // Canvas text in the panel's own font, so charts and map labels match the
   // rest of the popup instead of falling back to a proportional sans-serif.
@@ -123,7 +127,7 @@ Panel {
   function open() {
     openedFromHotkey = false
     settingsOpen = false
-    precipitationTab = defaultForecastTab
+    activeTab = defaultTab
     setCenterHoverRevealSuppressed(false)
     root.controller.show()
     locationFile.reload()
@@ -137,7 +141,7 @@ Panel {
   function openFromHotkey() {
     openedFromHotkey = true
     settingsOpen = false
-    precipitationTab = defaultForecastTab
+    activeTab = defaultTab
     root.controller.show()
     locationFile.reload()
     savedLocationsFile.reload()
@@ -156,6 +160,7 @@ Panel {
   }
 
   function close() {
+    hourCursor = -1
     setCenterHoverRevealSuppressed(false)
     if (root.editingLocation) root.cancelEditingLocation()
     root.settingsOpen = false
@@ -164,8 +169,8 @@ Panel {
   }
 
   // Settings pages, in tab order; ← / → step through them.
-  readonly property var settingsPages: ["display", "shortcuts", "sources"]
-  property string settingsPage: "display"
+  readonly property var settingsPages: ["general", "display", "shortcuts", "sources"]
+  property string settingsPage: "general"
 
   function stepSettingsPage(delta) {
     var index = settingsPages.indexOf(settingsPage)
@@ -173,7 +178,7 @@ Panel {
   }
 
   function openSettings(page) {
-    settingsPage = page || "display"
+    settingsPage = page || "general"
     settingsTargetSurface = standaloneMode ? "app" : "widget"
     displayOptionsStore.appDisplayOptionsFile.reload()
     displayOptionsStore.widgetDisplayOptionsFile.reload()
@@ -238,7 +243,11 @@ Panel {
   property string radarMotionRequestToken: ""
   property double radarMotionRequestAtMs: 0
   property double radarAttemptMs: 0
-  readonly property int radarRefreshMs: 5 * 60 * 1000
+  // Radar and rain nowcast: every new measurement (about five minutes, the
+  // services publish no faster), or a longer interval from Settings →
+  // General to save data.
+  readonly property int radarMinutes: Math.max(0, Number(generalSetting("radarMinutes", 0)) || 0)
+  readonly property int radarRefreshMs: Math.max(5, radarMinutes) * 60 * 1000
   property var rainViewerReport: null
   property var windGridReport: null
   // Recent wind grids by map extent. Each grid costs Open-Meteo 35 calls, so
@@ -364,6 +373,166 @@ Panel {
     onLoadFailed: root.loadWeatherDataCache("")
   }
 
+  // ---- Colour accents (Settings → General). The hues come from the
+  //      current Omarchy theme's colors.toml, so they suit every theme; they
+  //      are mixed into the text colour to stay readable on light and dark.
+  property var themePalette: ({
+    red: "#d20f39", orange: "#fe640b", yellow: "#df8e1d", green: "#40a02b",
+    cyan: "#179299", blue: "#1e66f5", magenta: "#8839ef"
+  })
+  property FileView themeColorsFile: FileView {
+    path: Quickshell.env("HOME") + "/.local/state/omarchy/current/theme/colors.toml"
+    watchChanges: true
+    printErrors: false
+    onFileChanged: reload()
+    onLoaded: {
+      var palette = {}
+      for (var key in root.themePalette) palette[key] = root.themePalette[key]
+      var lines = String(text()).split("\n")
+      for (var i = 0; i < lines.length; ++i) {
+        var match = lines[i].match(/^\s*(red|orange|yellow|green|cyan|blue|magenta)\s*=\s*"?(#[0-9a-fA-F]{6})"?/)
+        if (match) palette[match[1]] = match[2]
+      }
+      root.themePalette = palette
+    }
+  }
+  readonly property bool colorAccents: generalSetting("colorAccents", true) !== false
+
+  function paletteColor(name) {
+    var hex = String(themePalette[name] || "#808080")
+    return Qt.rgba(parseInt(hex.substr(1, 2), 16) / 255, parseInt(hex.substr(3, 2), 16) / 255,
+      parseInt(hex.substr(5, 2), 16) / 255, 1)
+  }
+  // The hue over the text colour, strong enough to read as colour, soft
+  // enough to stay text.
+  function accentOf(color) {
+    return Qt.tint(foreground, Qt.rgba(color.r, color.g, color.b, 0.72))
+  }
+  // Cool to warm over [low, high]: blue, cyan, yellow, orange, red.
+  function temperatureAccent(celsius, low, high) {
+    var value = parseFloat(celsius)
+    if (!colorAccents || !isFinite(value) || !isFinite(low) || !isFinite(high)) return ""
+    var t = high > low ? Math.max(0, Math.min(1, (value - low) / (high - low))) : 0.5
+    var stops = [[0, "blue"], [0.35, "cyan"], [0.65, "yellow"], [0.85, "orange"], [1, "red"]]
+    for (var i = 1; i < stops.length; ++i) {
+      if (t > stops[i][0]) continue
+      var from = paletteColor(stops[i - 1][1])
+      var to = paletteColor(stops[i][1])
+      var f = (t - stops[i - 1][0]) / (stops[i][0] - stops[i - 1][0])
+      return accentOf(Qt.rgba(from.r + (to.r - from.r) * f, from.g + (to.g - from.g) * f,
+        from.b + (to.b - from.b) * f, 1))
+    }
+    return accentOf(paletteColor("red"))
+  }
+  // Every temperature tint uses one fixed scale, so a colour means the same
+  // warmth in the current weather, the hours, the days and my places.
+  readonly property real accentScaleLow: -10
+  readonly property real accentScaleHigh: 35
+  function absoluteTemperatureAccent(celsius) {
+    return temperatureAccent(celsius, accentScaleLow, accentScaleHigh)
+  }
+  // Against yesterday: warmer warm, colder cool, from one degree.
+  function yesterdayAccent(changeCelsius) {
+    var value = parseFloat(changeCelsius)
+    if (!colorAccents || !isFinite(value) || Math.abs(value) < 1) return ""
+    return accentOf(paletteColor(value > 0 ? "orange" : "blue"))
+  }
+  // Rain probability: green, yellow, cyan, blue as it rises.
+  // Rain chance from the text colour at 0 % through cyan, dark blue and
+  // magenta to violet at 100 %, all from the theme (violet, which themes
+  // lack, as blue and magenta mixed and deepened).
+  function rainProbabilityAccent(percent) {
+    var value = parseFloat(percent)
+    if (!colorAccents || !isFinite(value)) return ""
+    var t = Math.max(0, Math.min(1, value / 100))
+    function mix(a, b, f) {
+      return Qt.rgba(a.r + (b.r - a.r) * f, a.g + (b.g - a.g) * f, a.b + (b.b - a.b) * f, 1)
+    }
+    var blue = paletteColor("blue")
+    var magenta = paletteColor("magenta")
+    var stops = [[0, foreground], [0.25, accentOf(paletteColor("cyan"))],
+      [0.5, accentOf(Qt.darker(blue, 1.45))], [0.75, accentOf(magenta)],
+      [1, accentOf(Qt.darker(mix(blue, magenta, 0.55), 1.25))]]
+    for (var i = 1; i < stops.length; ++i)
+      if (t <= stops[i][0])
+        return mix(stops[i - 1][1], stops[i][1], (t - stops[i - 1][0]) / (stops[i][0] - stops[i - 1][0]))
+    return stops[stops.length - 1][1]
+  }
+  // UV in the WHO bands from "moderate" (3) up; low stays neutral.
+  function uvAccent(index) {
+    var value = parseFloat(index)
+    if (!colorAccents || !isFinite(value) || value < 3) return ""
+    return accentOf(paletteColor(value < 6 ? "yellow" : (value < 8 ? "orange" : (value < 11 ? "red" : "magenta"))))
+  }
+  // Wind from a gale (Bft 7, 50 km/h) orange, from a storm (Bft 9) red.
+  function windAccent(kmh) {
+    var value = parseFloat(kmh)
+    if (!colorAccents || !isFinite(value) || value < 50) return ""
+    return accentOf(paletteColor(value < 75 ? "orange" : "red"))
+  }
+  // The week of the daily forecast, which the temperature bars span.
+  readonly property var weekTemperatureRange: {
+    var low = Infinity
+    var high = -Infinity
+    for (var i = 0; i < forecastDays.length; ++i) {
+      var min = parseFloat(forecastDays[i].mintempC)
+      var max = parseFloat(forecastDays[i].maxtempC)
+      if (isFinite(min)) low = Math.min(low, min)
+      if (isFinite(max)) high = Math.max(high, max)
+    }
+    return { low: low, high: high }
+  }
+
+  // Every hour of the forecast days, midnight to midnight, for the daily
+  // temperature line: { time, tempC (unrounded, NaN where missing), rain
+  // (mm in the hour), isDay }.
+  // From Open-Meteo, which starts its hours at midnight today.
+  readonly property var weekHours: {
+    var hourly = dailyForecastReport && dailyForecastReport.hourly
+    var days = forecastDays
+    if (!hourly || !hourly.time || !hourly.temperature_2m || !days.length) return []
+    var byHour = {}
+    for (var i = 0; i < hourly.time.length; ++i) byHour[String(hourly.time[i]).slice(0, 13)] = i
+    var list = []
+    for (var d = 0; d < days.length; ++d) {
+      var date = String(days[d].date || "").slice(0, 10)
+      for (var h = 0; h < 24; ++h) {
+        var key = date + "T" + (h < 10 ? "0" : "") + h
+        var at = byHour[key]
+        var value = at === undefined || hourly.temperature_2m[at] === null ? NaN : parseFloat(hourly.temperature_2m[at])
+        list.push({
+          time: key + ":00",
+          tempC: value,
+          rain: at === undefined || !hourly.precipitation ? 0 : (parseFloat(hourly.precipitation[at]) || 0),
+          isDay: at === undefined || !hourly.is_day ? undefined : Number(hourly.is_day[at]) !== 0
+        })
+      }
+    }
+    return list
+  }
+  // The hour now at the place: its UTC offset from the forecast, since the
+  // hours are the place's own and this computer may be elsewhere.
+  readonly property int weekHoursNowIndex: {
+    var offset = dailyForecastReport && isFinite(Number(dailyForecastReport.utc_offset_seconds))
+      ? Number(dailyForecastReport.utc_offset_seconds) : -nowDate.getTimezoneOffset() * 60
+    var key = new Date(nowDate.getTime() + offset * 1000).toISOString().slice(0, 13)
+    for (var i = 0; i < weekHours.length; ++i) if (weekHours[i].time.slice(0, 13) === key) return i
+    return -1
+  }
+
+  // The hours' span, for the height of the hourly temperature curve.
+  readonly property var hourlyTemperatureRange: {
+    var low = Infinity
+    var high = -Infinity
+    for (var i = 0; i < hourlyForecast.length; ++i) {
+      var value = parseFloat(hourlyForecast[i].tempC)
+      if (!isFinite(value)) continue
+      low = Math.min(low, value)
+      high = Math.max(high, value)
+    }
+    return { low: low, high: high }
+  }
+
   property FileView radarPlacesCacheFile: FileView {
     path: Quickshell.env("HOME") + "/.local/state/omarchy/settings/more-weather-radar-places.json"
     watchChanges: true
@@ -458,7 +627,9 @@ Panel {
 
   readonly property bool showHourlySection: displaySetting("showHourly", true)
   readonly property bool showDailySection: displaySetting("showDaily", true)
-  readonly property bool showForecastSection: displaySetting("showForecast", true)
+  readonly property bool showRainSection: displaySetting("showRain", true)
+  readonly property bool showRadarSection: displaySetting("showRadar", true)
+  readonly property bool showWindSection: displaySetting("showWind", true)
   readonly property bool showAirQualitySection: displaySetting("showAirQuality", false)
   // The bar instance also loads air quality for the menu bar hint.
   readonly property bool airQualityWanted: showAirQualitySection
@@ -471,11 +642,64 @@ Panel {
   readonly property bool showForecastIntensity: displaySetting("forecastIntensity", true)
   readonly property bool showForecastProbability: displaySetting("forecastProbability", true)
   readonly property bool showForecastTotal: displaySetting("forecastTotal", true)
-  readonly property int defaultForecastTab: Math.max(0, Math.min(2,
-    Number(displaySetting("defaultForecastTab", 0)) || 0))
-  readonly property bool settingsShowForecastSection: settingsDisplaySetting("showForecast", true)
-  readonly property int settingsDefaultForecastTab: Math.max(0, Math.min(2,
-    Number(settingsDisplaySetting("defaultForecastTab", 0)) || 0))
+
+  // Sections: each is on or off, and shown either in the scrolling window or
+  // as one tab of a shared tab strip. The strip stands where the first
+  // tabbed section sits in the order; 1–9 pick its tabs in that order.
+  // The current weather moves too, but always shows in the window: it holds
+  // the place, refresh and settings controls.
+  readonly property var sectionMasterKeys: ({
+    favorites: "showFavorites", airQuality: "showAirQuality", hourly: "showHourly", daily: "showDaily",
+    rain: "showRain", radar: "showRadar", wind: "showWind"
+  })
+  function sectionTabsFrom(order, lookup) {
+    var tabs = []
+    for (var i = 0; i < order.length; i++) {
+      var key = order[i]
+      if (!sectionMasterKeys[key]) continue
+      if (lookup(sectionMasterKeys[key], true) && lookup(key + "AsTab", false)) tabs.push(key)
+    }
+    return tabs
+  }
+  // What the scrolling column draws: the window sections, and the tab strip
+  // where "tabs" stands in the order. Tabbed sections keep their own order
+  // among the tabs only, so moving one never moves the strip.
+  readonly property var displayTabs: sectionTabsFrom(displaySectionOrder, displaySetting)
+  readonly property var displayLayout: {
+    var layout = []
+    for (var i = 0; i < displaySectionOrder.length; i++) {
+      var key = displaySectionOrder[i]
+      if (key === "tabs") {
+        if (displayTabs.length) layout.push("tabs")
+      } else if (displayTabs.indexOf(key) < 0) {
+        layout.push(key)
+      }
+    }
+    return layout
+  }
+  readonly property string defaultTab: {
+    var wanted = String(displaySetting("defaultTab", "rain"))
+    return displayTabs.indexOf(wanted) >= 0 ? wanted : (displayTabs.length ? displayTabs[0] : "")
+  }
+  // The picked tab; a tab that is gone falls back to the default one.
+  property string activeTab: ""
+  readonly property string currentTab: displayTabs.indexOf(activeTab) >= 0 ? activeTab : defaultTab
+  function sectionShown(key) {
+    if (key === "current") return true
+    if (!displaySetting(sectionMasterKeys[key], true)) return false
+    return displayTabs.indexOf(key) < 0 || currentTab === key
+  }
+  readonly property bool rainShown: sectionShown("rain")
+  readonly property bool radarShown: opened && sectionShown("radar")
+  readonly property bool windShown: opened && sectionShown("wind")
+  readonly property var settingsTabs: sectionTabsFrom(settingsSectionOrder, settingsDisplaySetting)
+  readonly property string settingsDefaultTab: {
+    var wanted = String(settingsDisplaySetting("defaultTab", "rain"))
+    return settingsTabs.indexOf(wanted) >= 0 ? wanted : (settingsTabs.length ? settingsTabs[0] : "")
+  }
+  function sectionTabLabel(key) {
+    return upperLabel(i18n(key === "airQuality" ? "airTab" : (key === "favorites" ? "myPlaces" : key)))
+  }
   readonly property string settingsUnitSystem: String(generalSetting("unitSystem", "auto"))
   readonly property string settingsHoverUnitSystem: String(settingsDisplaySetting("hoverUnitSystem", ""))
 
@@ -518,8 +742,9 @@ Panel {
   readonly property var todayForecast: forecastDays.length > 0 ? forecastDays[0] : null
   readonly property string menubarDayRangeText: !menubarShowCurrent
     || !menubarEntryShown("currentDayRange") || !todayForecast ? ""
-    : (Model.tempBare(todayForecast.maxtempC, todayForecast.maxtempF, menubarTempScale) + " / "
-      + Model.tempBare(todayForecast.mintempC, todayForecast.mintempF, menubarTempScale))
+    // Low before high, as in the daily forecast and its week bar.
+    : (Model.tempBare(todayForecast.mintempC, todayForecast.mintempF, menubarTempScale) + " / "
+      + Model.tempBare(todayForecast.maxtempC, todayForecast.maxtempF, menubarTempScale))
   readonly property string menubarRainAmountText: !menubarShowCurrent
     || !menubarEntryShown("currentRainAmount") || !nextHourForecast ? ""
     : "󰖌 " + precipitationTextForUnit(nextHourForecast.rainAmount, false, menubarUseImperial)
@@ -544,8 +769,19 @@ Panel {
   readonly property bool menubarShowWarnings: menubarShowCurrent && menubarEntryShown("currentWarnings")
   readonly property bool notifySevereWarnings: menubarDisplaySetting("notifySevereWarnings", true)
   readonly property bool notifyRainSoon: menubarDisplaySetting("notifyRainSoon", true)
+  // Rain notification: from which strength (the rain legend's levels) and how
+  // far around the place. Rain moves at about 50 km/h, so the radius becomes
+  // the lead time looked ahead in the nowcast: 25 km about 30 minutes.
+  readonly property string rainAlertThreshold: String(menubarDisplaySetting("rainAlertThreshold", "any"))
+  readonly property real rainAlertThresholdRate: rainAlertThreshold === "heavy" ? 4.01
+    : (rainAlertThreshold === "moderate" ? 0.51 : 0.1)
+  readonly property int rainAlertRadiusKm: Number(menubarDisplaySetting("rainAlertRadius", "25")) || 25
+  readonly property int rainAlertLeadMinutes: Math.round(rainAlertRadiusKm / 50 * 60)
+  readonly property var rainAlert: Model.rainAlertStart(rainNowcast, nowDate, rainAlertThresholdRate,
+    rainAlertLeadMinutes)
   onNotifyRainSoonChanged: notifications.scheduleAlertNotifications()
   onUpcomingRainChanged: notifications.scheduleAlertNotifications()
+  onRainAlertChanged: notifications.scheduleAlertNotifications()
 
   // Shared hero/bar icon state, updated with each successful weather response.
   // The current-conditions symbol. Derived from liveCurrent, so it follows
@@ -581,9 +817,69 @@ Panel {
   function mirrorsGlyph(text) {
     return moonMirrored && Model.isMoonPhaseGlyph(text)
   }
+  // ---- Current weather extras.
+  // Now against yesterday at the same hour, in the shown scale: "+2°".
+  readonly property var yesterdayChangeCelsius: current && yesterdayReport && !cacheFallbackActive
+    ? Model.yesterdayTemperatureChange(yesterdayReport, current.temp_C, nowDate) : null
+  readonly property string heroYesterdayText: {
+    if (yesterdayChangeCelsius === null) return ""
+    var change = Math.round(tempScale === "fahrenheit" ? yesterdayChangeCelsius * 1.8 : yesterdayChangeCelsius)
+    var sign = change > 0 ? "+" : (change < 0 ? "−" : "±")
+    return sign + localizedNumber(Math.abs(change)) + (tempScale === "kelvin" ? " K" : "°")
+  }
+  // The next full or new moon and how far away it is.
+  readonly property var nextMoon: Model.nextMoonEvent(nowDate)
+  readonly property string heroMoonNextLabel: nextMoon ? upperLabel(i18n(nextMoon.full ? "fullMoon" : "newMoon")) : ""
+  readonly property string heroMoonNextGlyph: nextMoon ? String.fromCharCode(nextMoon.full ? 0xe39b : 0xe38d) : ""
+  readonly property string heroMoonNextText: {
+    if (!nextMoon) return ""
+    var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate()).getTime()
+    var eventDay = new Date(nextMoon.date.getFullYear(), nextMoon.date.getMonth(), nextMoon.date.getDate()).getTime()
+    var days = Math.round((eventDay - today) / 86400000)
+    return days <= 0 ? i18n("moonToday") : (days === 1 ? i18n("moonTomorrow") : i18n("moonInDays", { days: days }))
+  }
+  // A forecast day's length ("11:51 h", after a sun-clock glyph) and its
+  // change against the day before (a trend glyph and "4 min"), at the
+  // place's latitude.
+  function dayLengthText(day) {
+    var length = day ? Model.dayLengthFor(day.date, forecastRequestLatitude || mapCenterLatitude) : null
+    if (!length) return ""
+    var minutes = length.minutes % 60
+    return "󱩸 " + Math.floor(length.minutes / 60) + ":" + (minutes < 10 ? "0" : "") + minutes + " h"
+  }
+  function dayLengthChangeText(day) {
+    var length = day ? Model.dayLengthFor(day.date, forecastRequestLatitude || mapCenterLatitude) : null
+    if (!length) return ""
+    // Trending down / up / flat: the day grows shorter, longer, or stays.
+    var trend = length.change < 0 ? "󰔳" : (length.change > 0 ? "󰔵" : "󰔴")
+    return trend + " " + localizedNumber(Math.abs(length.change)) + " min"
+  }
+  // The place's forecast at its national weather service (Providers).
+  readonly property var serviceLink: Providers.serviceForecastLink(providerCountry,
+    forecastRequestLatitude || mapCenterLatitude, forecastRequestLongitude || mapCenterLongitude, interfaceLanguage)
+  function openServiceLink() {
+    if (serviceLink && serviceLink.url) Qt.openUrlExternally(serviceLink.url)
+  }
+
+  // Today's phase for the current-weather row: glyph and lit share.
+  readonly property string heroMoonGlyph: Model.moonPhaseGlyph(nowDate)
+  readonly property string heroMoonText: localizedNumber(Model.moonIlluminationPercent(nowDate)) + "%"
+  // A forecast day's phase, taken on that day's evening.
+  function dayMoonGlyph(day) {
+    var evening = day ? Model.moonEveningDate(day.date) : null
+    return evening ? Model.moonPhaseGlyph(evening) : ""
+  }
+  function dayMoonText(day) {
+    var evening = day ? Model.moonEveningDate(day.date) : null
+    return evening ? localizedNumber(Model.moonIlluminationPercent(evening)) + "%" : ""
+  }
   readonly property string displayForecastProviderId: !cacheFallbackActive && dailyForecastReport
     ? forecastProviderId : String(cacheFallbackActive && cachedWeatherSnapshot
       && cachedWeatherSnapshot.forecastProviderId || forecastProviderId)
+  // The forecast's name: MeteoSwiss where its ICON-CH series led the answer.
+  readonly property string displayForecastLabelKey: !cacheFallbackActive && dailyForecastReport
+      && dailyForecastReport._modelId === "meteoswiss"
+    ? Providers.forecastLabelKey("meteoswiss") : Providers.forecastLabelKey(displayForecastProviderId)
   readonly property string displayAlertProviderId: !cacheFallbackActive && alertReport
     ? alertActiveProviderId : String(cacheFallbackActive && cachedWeatherSnapshot
       && cachedWeatherSnapshot.alertProviderId || alertActiveProviderId)
@@ -609,17 +905,56 @@ Panel {
     return start.getTime()
   }
   readonly property var displayedLiveHourlyForecast: cacheFallbackActive ? [] : liveHourlyForecast
+  // ---- Hour cursor: Shift+←/→ (or a click on an hour) picks one of the
+  //      next 24 hours, and the current weather reads it out.
+  readonly property var cursorHours: cacheFallbackActive
+    ? (cachedWeatherSnapshot && cachedWeatherSnapshot.hourly ? cachedWeatherSnapshot.hourly.slice(0, 24) : [])
+    : Model.hybridHourlyForecast(mosmixReport, dailyForecastReport, uvReport, radarReport, nowDate, 24,
+      liveRainNowcast, thunderstormConfirmed)
+  property int hourCursor: -1
+  readonly property var cursorHour: hourCursor >= 0 && hourCursor < cursorHours.length ? cursorHours[hourCursor] : null
+  onConfiguredLocationStateChanged: hourCursor = -1
+  function moveHourCursor(delta) {
+    if (!cursorHours.length) return
+    var next = hourCursor < 0 ? (delta > 0 ? 0 : cursorHours.length - 1) : hourCursor + delta
+    hourCursor = next < 0 || next >= cursorHours.length ? -1 : next
+  }
+  function toggleHourCursor(time) {
+    var index = -1
+    for (var i = 0; i < cursorHours.length; ++i) if (cursorHours[i].time === time) index = i
+    hourCursor = index === hourCursor ? -1 : index
+  }
+  function hourCursorTime(hour) {
+    return hour && hour.time ? String(hour.time).slice(11, 16) : ""
+  }
+  // What the current weather shows: now, or the hour under the cursor.
+  readonly property string heroTempNum: cursorHour
+    ? Model.tempNumber(cursorHour.tempC, cursorHour.tempF, tempScale) : reportTempNum
+  readonly property string heroSymbolText: cursorHour ? hourlyIcon(cursorHour) : displayLabel
+  readonly property string heroFeels: cursorHour
+    ? (cursorHour.feelsLikeC !== "" && cursorHour.feelsLikeC !== undefined
+      ? Model.tempWithUnit(cursorHour.feelsLikeC, cursorHour.feelsLikeF, tempScale) : "–")
+    : reportFeels
+  readonly property string heroWind: cursorHour ? (windText(cursorHour.windSpeedKmph, useImperial) || "–") : reportWind
+  readonly property string heroHumidity: cursorHour
+    ? (cursorHour.humidity !== "" && cursorHour.humidity !== undefined ? localizedNumber(cursorHour.humidity) + "%" : "–")
+    : reportHumidity
+  readonly property var heroTempCelsius: cursorHour ? cursorHour.tempC : (current ? current.temp_C : "")
+  readonly property var heroFeelsCelsius: cursorHour ? cursorHour.feelsLikeC : (current ? current.FeelsLikeC : "")
+  readonly property var heroWindKmph: cursorHour ? cursorHour.windSpeedKmph : (current ? current.windspeedKmph : "")
   readonly property var computedHourlyForecast: Model.mergeCachedWeatherSeries(displayedLiveHourlyForecast,
     (cacheFallbackActive || displayedLiveHourlyForecast.length > 0) && cachedWeatherSnapshot
       ? cachedWeatherSnapshot.hourly : [], "time", cacheWindowStartMs, 6)
-  readonly property var liveRainNowcast: Model.rainNowcastSeries(mosmixReport, dailyForecastReport, nowDate, 9, radarReport, radarWet)
+  readonly property var liveRainNowcast: Model.rainNowcastSeries(mosmixReport, dailyForecastReport, nowDate, 9,
+    radarReport, radarWet, regionalNowcast ? regionalNowcast.currentPoints : [])
   // Source label for the rain tab: the radar supplies amounts wherever it
   // reaches, the forecast the probability and anything beyond.
   readonly property string rainNowcastSourceLabel: {
-    var forecast = mosmixReport ? i18n("sourceMosmix")
-      : i18n(Providers.forecastLabelKey(displayForecastProviderId))
+    var forecast = mosmixReport ? i18n("sourceMosmix") : i18n(displayForecastLabelKey)
+    var regional = regionalNowcast && regionalNowcast.currentPoints.length ? regionalNowcast.activeProviderId : ""
     for (var i = 0; i < rainNowcast.length; ++i)
-      if (rainNowcast[i].precipitationSource === "radar") return i18n("sourceRadar") + " + " + forecast
+      if (rainNowcast[i].precipitationSource === "radar")
+        return i18n(regional ? Providers.regionalNowcastLabelKey(regional) : "sourceRadar") + " + " + forecast
     return forecast
   }
   readonly property var displayedLiveRainNowcast: cacheFallbackActive ? [] : liveRainNowcast
@@ -667,8 +1002,7 @@ Panel {
   // DWD run while the radar tab is open, every 15 minutes in the background
   // so an opened tab starts current. A new film is about 24 x 20 KB of radar
   // layers, loaded three at a time to spare DWD's GeoServer bursts.
-  readonly property int radarFilmRefreshMs: opened && precipitationTab === 1
-    ? 5 * 60 * 1000 : 15 * 60 * 1000
+  readonly property int radarFilmRefreshMs: Math.max(radarShown ? 5 : 15, radarMinutes) * 60 * 1000
   property double mapRefreshWindowUntilMs: 0
   readonly property int mapRefreshWindowMs: 60 * 1000
   // Location and zoom changes load new pictures anyway: no staging.
@@ -847,6 +1181,11 @@ Panel {
     }
   }
 
+  // Japan: JMA's radar tiles over the regular frames, once its times are in
+  // (WeatherJmaRadarLayer). Only the credit and the source label follow it.
+  readonly property bool jmaRadarActive: !!regionalNowcast && regionalNowcast.providerId === "jma"
+    && regionalNowcast.jmaObserved.length > 0 && radarFrames.length > 0 && !radarUsesModelFallback
+  readonly property string radarDisplayProviderId: jmaRadarActive ? "jma" : radarActiveProviderId
   readonly property string preferredRadarProviderId: Providers.primaryRadarProvider(
     providerCountry, mapCenterLatitude, mapCenterLongitude)
   readonly property var officialRadarFrames: preferredRadarProviderId === "dwd"
@@ -993,45 +1332,65 @@ Panel {
   readonly property real mapRadiusKm: 150 / Math.pow(1.5, mapZoomLevel)
   readonly property int mapImageWidth: Model.MAP_IMAGE_WIDTH
   readonly property int mapImageHeight: Model.MAP_IMAGE_HEIGHT
+  // The map view: the place, moved by dragging the map (degrees). A new
+  // place, the recentre button and the 0 key return it to the place.
+  // Radar and wind maps: drawn in the theme's colours, or satellite.
+  readonly property string mapStyle: String(displaySetting("mapStyle", "drawn"))
+  property real mapPanLatitude: 0
+  property real mapPanLongitude: 0
+  readonly property bool mapPanned: mapPanLatitude !== 0 || mapPanLongitude !== 0
+  readonly property real mapViewLatitude: Math.max(-80, Math.min(80, mapCenterLatitude + mapPanLatitude))
+  readonly property real mapViewLongitude: {
+    var lon = mapCenterLongitude + mapPanLongitude
+    return ((lon + 540) % 360) - 180
+  }
   readonly property real mapLatitudeRadius: Model.mapLatitudeRadiusKm(mapRadiusKm) / 111.32
-  readonly property real mapLongitudeRadius: mapRadiusKm / (111.32 * Math.max(0.2, Math.cos(mapCenterLatitude * Math.PI / 180)))
-  readonly property real mapWest: mapCenterLongitude - mapLongitudeRadius
-  readonly property real mapEast: mapCenterLongitude + mapLongitudeRadius
-  readonly property real mapSouth: mapCenterLatitude - mapLatitudeRadius
-  readonly property real mapNorth: mapCenterLatitude + mapLatitudeRadius
+  readonly property real mapLongitudeRadius: mapRadiusKm / (111.32 * Math.max(0.2, Math.cos(mapViewLatitude * Math.PI / 180)))
+  readonly property real mapWest: mapViewLongitude - mapLongitudeRadius
+  readonly property real mapEast: mapViewLongitude + mapLongitudeRadius
+  readonly property real mapSouth: mapViewLatitude - mapLatitudeRadius
+  readonly property real mapNorth: mapViewLatitude + mapLatitudeRadius
   readonly property string mapBbox: mapWest.toFixed(4) + "," + mapSouth.toFixed(4) + "," + mapEast.toFixed(4) + "," + mapNorth.toFixed(4)
   // No map pictures before the place is known: the extent around 0/0 is
   // meaningless and only costs requests.
   readonly property bool mapExtentKnown: isFinite(mapCenterLatitude) && isFinite(mapCenterLongitude)
     && !(mapCenterLatitude === 0 && mapCenterLongitude === 0)
-  readonly property string mapBasemapUrl: mapExtentKnown
+  // The satellite picture; the drawn map needs none.
+  readonly property string mapBasemapUrl: mapExtentKnown && mapStyle === "satellite"
     ? Providers.calmContextMapUrl(mapBbox, mapImageWidth, mapImageHeight) : ""
   readonly property var radarPlaceCandidates: Model.radarPlaceCandidates(
-    radarPlaceCache.places || [], mapCenterLatitude, mapCenterLongitude,
+    radarPlaceCache.places || [], mapViewLatitude, mapViewLongitude,
     mapRadiusKm, mapZoomLevel, reportLocation)
   onMapCenterLatitudeChanged: {
+    mapPanLatitude = 0
+    mapPanLongitude = 0
     if (airQuality) root.defer(airQuality.refresh)
-    radarPlaces.radarPlacesDebounce.restart()
-    windGridRefreshPending = true
-    windGridLoader.windGridDebounce.restart()
     openMapRefreshWindow(true)
     root.defer(function() { root.refreshRegionalRadar() })
   }
   onMapCenterLongitudeChanged: {
+    mapPanLatitude = 0
+    mapPanLongitude = 0
     if (airQuality) root.defer(airQuality.refresh)
-    radarPlaces.radarPlacesDebounce.restart()
-    windGridRefreshPending = true
-    windGridLoader.windGridDebounce.restart()
     openMapRefreshWindow(true)
     root.defer(function() { root.refreshRegionalRadar() })
   }
+  // A moved view needs its own pictures, place names and wind samples.
+  function mapViewMoved() {
+    radarFrameReady = []
+    radarHasDisplayedFrame = false
+    radarPlaces.radarPlacesDebounce.restart()
+    windGridRefreshPending = true
+    windGridLoader.windGridDebounce.restart()
+  }
+  onMapViewLatitudeChanged: mapViewMoved()
+  onMapViewLongitudeChanged: mapViewMoved()
   onInterfaceLanguageChanged: radarPlaces.radarPlacesDebounce.restart()
-  property int precipitationTab: 0
-  readonly property bool windMapVisible: opened && precipitationTab === 2
+  readonly property bool windMapVisible: windShown
   onWindMapVisibleChanged: if (windMapVisible) windGridLoader.windGridDebounce.restart()
   // Switching views never starts the animation implicitly. Leaving the
   // radar pauses it; returning shows the retained frame until Play is used.
-  onPrecipitationTabChanged: if (precipitationTab !== 1) radarPlaying = false
+  onRadarShownChanged: if (!radarShown) radarPlaying = false
   onRadarFramesChanged: {
     shownRadarPrefetched = []
     shownRadarPrefetchedCount = 0
@@ -1093,7 +1452,10 @@ Panel {
     generalSetting("unitSystem", "auto"), localeName, unitCountry)
 
   // Auto-refresh interval in minutes; clamped to a sane minimum.
-  readonly property int refreshMinutes: Math.max(1, parseInt(setting("refreshMinutes", 15), 10) || 15)
+  // The general setting when chosen, else the widget's shell.json entry.
+  readonly property int refreshMinutes: Number(generalSetting("refreshMinutes", 0)) > 0
+    ? Number(generalSetting("refreshMinutes", 0))
+    : Math.max(1, parseInt(setting("refreshMinutes", 15), 10) || 15)
 
   readonly property string reportLocation: configuredLocation || placeName
     || (areaInfo && areaInfo.areaName && areaInfo.areaName[0] ? areaInfo.areaName[0].value : "")
@@ -1105,7 +1467,7 @@ Panel {
   readonly property string reportTempNum:   current ? Model.tempNumber(current.temp_C, current.temp_F, tempScale) : ""
   readonly property string tempUnit:        Model.tempUnitLabel(tempScale)
   readonly property string reportFeels:     current ? Model.tempWithUnit(current.FeelsLikeC, current.FeelsLikeF, tempScale) : ""
-  readonly property string reportWind:      current ? (useImperial ? (localizedNumber(current.windspeedMiles) + " mph") : (localizedNumber(current.windspeedKmph) + " km/h")) : ""
+  readonly property string reportWind:      current ? windText(current.windspeedKmph, useImperial) : ""
   readonly property string reportHumidity:  current ? (localizedNumber(current.humidity) + "%") : ""
   readonly property bool currentTemperatureCached: currentFieldCached("temp_C", "temp_F")
   readonly property bool currentFeelsCached: currentFieldCached("FeelsLikeC", "FeelsLikeF")
@@ -1126,10 +1488,7 @@ Panel {
     : (menubarTempScale === "kelvin" ? menubarReportTempNum + " K" : menubarReportTempNum + "°")
   readonly property string menubarReportFeels: current
     ? Model.tempWithUnit(current.FeelsLikeC, current.FeelsLikeF, menubarTempScale) : ""
-  readonly property string menubarReportWind: current
-    ? (menubarUseImperial
-      ? localizedNumber(current.windspeedMiles) + " mph"
-      : localizedNumber(current.windspeedKmph) + " km/h") : ""
+  readonly property string menubarReportWind: current ? windText(current.windspeedKmph, menubarUseImperial) : ""
   readonly property string menubarReportHumidity: current ? localizedNumber(current.humidity) + "%" : ""
   readonly property bool menubarTemperatureCached: cachedField(current,
     menubarTempScale === "fahrenheit" ? "temp_F" : "temp_C")
@@ -1195,6 +1554,13 @@ Panel {
       ? precipitationTextForUnit(radarCurrentIntensity !== "" ? radarCurrentIntensity : "0",
         true, menubarUseImperial)
       : (menubarShowPrecipitation && nextHourRainProbability !== "" ? nextHourRainProbability + "%" : ""))
+  // How full the bar's drop is drawn while the badge shows the probability:
+  // rounded to 0 (outline), 50 (half) or 100 (full). Quarters were tried, but
+  // at bar size 25 % looked like the outline and 75 % like full. -1 for the
+  // rate and the rain start, which keep the plain filled drop.
+  readonly property int menubarRainDropLevel: menubarRainStartText === "" && !menubarRainBadgeShowsIntensity
+      && menubarShowPrecipitation && nextHourRainProbability !== ""
+    ? Math.max(0, Math.min(100, Math.round(Number(nextHourRainProbability) / 50) * 50)) : -1
   readonly property bool menubarHasVisibleContent: displayLabel !== "" && menubarShowCurrent && (
     menubarShowLocation || menubarShowWeatherSymbol || menubarShowTemperature
       || menubarShowFeelsLike || menubarShowWind || menubarShowHumidity
@@ -1217,6 +1583,17 @@ Panel {
       heroFeelsLike: true,
       heroWind: true,
       heroHumidity: true,
+      heroMoon: true,
+      heroYesterday: true,
+      heroMoonNext: false,
+      heroServiceLink: true,
+      radarRings: true,
+      mapStyle: "drawn",
+      dailyDayLength: true,
+      dailyTemperatureBar: true,
+      dailyTemperatureCurve: true,
+      hourlyTemperatureCurve: true,
+      dailyDayLengthChange: true,
       showHourly: true,
       hourlyTime: true,
       hourlyIcon: true,
@@ -1235,19 +1612,36 @@ Panel {
       dailyWind: true,
       dailySunEvents: true,
       dailySunNext: false,
-      showForecast: true,
+      dailyMoon: true,
+      showRain: true,
+      showRadar: true,
+      showWind: true,
+      airQualityAsTab: false,
+      hourlyAsTab: false,
+      dailyAsTab: false,
+      rainAsTab: true,
+      radarAsTab: true,
+      windAsTab: true,
       forecastIntensity: true,
       forecastProbability: true,
       forecastTotal: true,
       showAirQuality: false,
+      showFavorites: true,
+      favoritesAsTab: false,
+      favoritesSymbol: true,
+      favoritesTemperature: true,
+      favoritesFeelsLike: true,
+      favoritesWind: true,
+      favoritesHumidity: true,
+      favoritesMoon: false,
+      favoritesOrder: defaultFavoritesOrder(),
       heroOrder: defaultHeroOrder(),
       sectionOrder: defaultSectionOrder(),
       hourlyOrder: defaultHourlyOrder(),
       dailyOrder: defaultDailyOrder(),
       airQualityIndex: true,
       airQualityPollen: true,
-      airQualityColor: true,
-      defaultForecastTab: 0
+      defaultTab: "rain"
     }
   }
 
@@ -1260,6 +1654,15 @@ Panel {
     options.dailyUv = false
     options.dailyWind = false
     options.dailySunEvents = false
+    options.favoritesHumidity = false
+    options.dailyDayLength = false
+    options.dailyTemperatureBar = false
+    options.dailyTemperatureCurve = false
+    options.hourlyTemperatureCurve = false
+    options.dailyDayLengthChange = false
+    // The popup is narrower than the app: four value columns beside the
+    // temperature are as many as fit.
+    options.heroYesterday = false
     return options
   }
 
@@ -1335,14 +1738,17 @@ Panel {
       hoverUnitSystem: "",
       openWidgetOnHover: false,
       notifySevereWarnings: true,
-      notifyRainSoon: true
+      notifyRainSoon: true,
+      rainAlertThreshold: "any",
+      rainAlertRadius: "25"
     }
   }
 
   // Missing keys fall back to the surface's factory default, so callers'
   // fallback only matters for keys that have no default at all.
   // Unit system and language apply to the menu bar, widget and app alike.
-  property var generalOptions: ({ unitSystem: "auto", language: "auto" })
+  property var generalOptions: ({ unitSystem: "auto", language: "auto", windUnit: "auto", refreshMinutes: 0,
+    radarMinutes: 0, colorAccents: true })
   function generalSetting(key, fallback) {
     var value = generalOptions ? generalOptions[key] : undefined
     return value === undefined ? fallback : value
@@ -1375,12 +1781,17 @@ Panel {
       "currentAirQuality", "currentPollen", "currentWarnings"]
   }
 
+  function defaultFavoritesOrder() {
+    // The symbol always leads, before the name; the values follow in order.
+    return ["favoritesTemperature", "favoritesFeelsLike", "favoritesWind", "favoritesHumidity", "favoritesMoon"]
+  }
+
   function defaultHeroOrder() {
-    return ["heroFeelsLike", "heroWind", "heroHumidity"]
+    return ["heroFeelsLike", "heroWind", "heroHumidity", "heroMoon", "heroYesterday", "heroMoonNext"]
   }
 
   function defaultSectionOrder() {
-    return ["airQuality", "hourly", "daily", "forecast"]
+    return ["current", "favorites", "airQuality", "hourly", "daily", "tabs", "rain", "radar", "wind"]
   }
 
   function defaultHourlyOrder() {
@@ -1389,8 +1800,9 @@ Panel {
   }
 
   function defaultDailyOrder() {
-    return ["dailyDayName", "dailyIcon", "dailyTemperature", "dailyRainProbability",
-      "dailyRainAmount", "dailyUv", "dailyWind", "dailySunEvents", "dailySunNext"]
+    return ["dailyDayName", "dailyIcon", "dailyTemperature", "dailyTemperatureBar", "dailyRainProbability",
+      "dailyRainAmount", "dailyUv", "dailyWind", "dailySunEvents", "dailySunNext",
+      "dailyDayLength", "dailyDayLengthChange", "dailyMoon"]
   }
 
   function defaultOrderFor(orderKey) {
@@ -1398,16 +1810,21 @@ Panel {
     if (orderKey === "heroOrder") return defaultHeroOrder()
     if (orderKey === "hourlyOrder") return defaultHourlyOrder()
     if (orderKey === "dailyOrder") return defaultDailyOrder()
+    if (orderKey === "favoritesOrder") return defaultFavoritesOrder()
     return defaultSectionOrder()
   }
 
   // Which list an entry in the settings belongs to.
   function orderListKeyForSetting(key) {
+    // The temperature charts sit under the columns, outside their order.
+    if (key === "hourlyTemperatureCurve" || key === "dailyTemperatureCurve") return ""
     if (String(key).indexOf("current") === 0 || key === "showCurrent") return "entryOrder"
     if (String(key).indexOf("hero") === 0) return "heroOrder"
     if (String(key).indexOf("hourly") === 0 && key !== "showHourly") return "hourlyOrder"
     if (String(key).indexOf("daily") === 0 && key !== "showDaily") return "dailyOrder"
-    if (key === "showAirQuality" || key === "showHourly" || key === "showDaily" || key === "showForecast")
+    if (String(key).indexOf("favorites") === 0) return "favoritesOrder"
+    if (key === "showAirQuality" || key === "showHourly" || key === "showDaily"
+        || key === "showRain" || key === "showRadar" || key === "showWind" || key === "showFavorites")
       return "sectionOrder"
     return ""
   }
@@ -1417,12 +1834,39 @@ Panel {
     var defaults = defaultOrderFor(orderKey)
     var result = []
     var list = value && value.length !== undefined ? value : []
+    // Up to 2.4 rain, radar and wind shared one "forecast" section.
+    if (orderKey === "sectionOrder") {
+      var expanded = []
+      for (var f = 0; f < list.length; f++) {
+        if (String(list[f]) === "forecast") expanded.push("rain", "radar", "wind")
+        else expanded.push(list[f])
+      }
+      list = expanded
+      // Up to 2.4 the strip stood where the first tabbed section did; the
+      // forecast tabs were those, so it goes before them.
+      if (list.length && list.indexOf("tabs") < 0) {
+        var at = list.length
+        var forecastKeys = ["rain", "radar", "wind"]
+        for (var t = 0; t < list.length; t++) if (forecastKeys.indexOf(String(list[t])) >= 0) { at = t; break }
+        list = list.slice(0, at).concat(["tabs"], list.slice(at))
+      }
+    }
     for (var i = 0; i < list.length; i++) {
       var key = String(list[i])
       if (defaults.indexOf(key) >= 0 && result.indexOf(key) < 0) result.push(key)
     }
-    for (var d = 0; d < defaults.length; d++)
-      if (result.indexOf(defaults[d]) < 0) result.push(defaults[d])
+    // Up to 2.4 the current weather always stood first.
+    if (orderKey === "sectionOrder" && list.length > 0 && result.indexOf("current") < 0)
+      result.unshift("current")
+    // Entries the stored order does not name yet (added in a later version)
+    // go after their predecessor in the default order, so related entries
+    // stay together, instead of at the end.
+    for (var d = 0; d < defaults.length; d++) {
+      if (result.indexOf(defaults[d]) >= 0) continue
+      var after = -1
+      for (var p = d - 1; p >= 0 && after < 0; p--) after = result.indexOf(defaults[p])
+      result.splice(after + 1, 0, defaults[d])
+    }
     return result
   }
 
@@ -1432,11 +1876,13 @@ Panel {
   readonly property var displaySectionOrder: sanitizedOrder(displaySetting("sectionOrder", null), "sectionOrder")
   readonly property var displayHourlyOrder: sanitizedOrder(displaySetting("hourlyOrder", null), "hourlyOrder")
   readonly property var displayDailyOrder: sanitizedOrder(displaySetting("dailyOrder", null), "dailyOrder")
+  readonly property var displayFavoritesOrder: sanitizedOrder(displaySetting("favoritesOrder", null), "favoritesOrder")
   readonly property var settingsEntryOrder: sanitizedOrder(settingsDisplaySetting("entryOrder", null), "entryOrder")
   readonly property var settingsHeroOrder: sanitizedOrder(settingsDisplaySetting("heroOrder", null), "heroOrder")
   readonly property var settingsSectionOrder: sanitizedOrder(settingsDisplaySetting("sectionOrder", null), "sectionOrder")
   readonly property var settingsHourlyOrder: sanitizedOrder(settingsDisplaySetting("hourlyOrder", null), "hourlyOrder")
   readonly property var settingsDailyOrder: sanitizedOrder(settingsDisplaySetting("dailyOrder", null), "dailyOrder")
+  readonly property var settingsFavoritesOrder: sanitizedOrder(settingsDisplaySetting("favoritesOrder", null), "favoritesOrder")
 
   function menubarDisplaySetting(key, fallback) {
     return optionValue(menubarDisplayOptions, "menubar", key, fallback)
@@ -1448,6 +1894,12 @@ Panel {
     if (orderKey === "heroOrder") return settingsHeroOrder
     if (orderKey === "hourlyOrder") return settingsHourlyOrder
     if (orderKey === "dailyOrder") return settingsDailyOrder
+    if (orderKey === "favoritesOrder") return settingsFavoritesOrder
+    // The window order (sections in the window and the tab strip), and the
+    // order of the tabbed sections among themselves.
+    if (orderKey === "tabOrder") return settingsTabs
+    if (orderKey === "sectionOrder")
+      return settingsSectionOrder.filter(function(key) { return settingsTabs.indexOf(key) < 0 })
     return settingsSectionOrder
   }
 
@@ -1475,19 +1927,56 @@ Panel {
     : (String(settingsHeroOrder) === String(defaultHeroOrder())
       && String(settingsSectionOrder) === String(defaultSectionOrder())
       && String(settingsHourlyOrder) === String(defaultHourlyOrder())
-      && String(settingsDailyOrder) === String(defaultDailyOrder()))
+      && String(settingsDailyOrder) === String(defaultDailyOrder())
+      && String(settingsFavoritesOrder) === String(defaultFavoritesOrder()))
 
   // A card's rows all belong to the same list, so the first one names it.
   function settingsOrderedOptions(options) {
     var list = options || []
     var orderKey = list.length > 0 ? orderListKeyForSetting(list[0].key) : ""
     if (orderKey === "") return list
-    return sortedByOrder(list, orderKey, function(option) { return option.key })
+    // Options outside the order (the temperature charts) follow the rest.
+    var ordered = []
+    var fixed = []
+    for (var i = 0; i < list.length; i++)
+      (orderListKeyForSetting(list[i].key) === "" ? fixed : ordered).push(list[i])
+    return sortedByOrder(ordered, orderKey, function(option) { return option.key }).concat(fixed)
   }
 
+  // Section cards follow the section order; the cards around them (current
+  // weather first, tabs last) keep their place.
+  // Section cards in the window order; the tabbed sections' cards follow
+  // the tab card, in tab order, marked `inTabs` (drawn indented under it).
   function settingsOrderedCards(cards) {
     if (settingsTargetSurface === "menubar") return cards
-    return sortedByOrder(cards || [], "sectionOrder", function(card) { return card.masterKey })
+    var list = cards || []
+    var bySection = {}
+    var others = []
+    for (var i = 0; i < list.length; i++) {
+      if (list[i].sectionKey) bySection[list[i].sectionKey] = list[i]
+      else others.push(list[i])
+    }
+    var result = []
+    function withTabFlag(card, inTabs) {
+      var copy = {}
+      for (var key in card) copy[key] = card[key]
+      copy.inTabs = inTabs
+      return copy
+    }
+    for (var o = 0; o < settingsSectionOrder.length; o++) {
+      var key = settingsSectionOrder[o]
+      if (!bySection[key] || settingsTabs.indexOf(key) >= 0) continue
+      result.push(withTabFlag(bySection[key], false))
+      if (key === "tabs")
+        for (var t = 0; t < settingsTabs.length; t++)
+          if (bySection[settingsTabs[t]]) result.push(withTabFlag(bySection[settingsTabs[t]], true))
+    }
+    return result.concat(others)
+  }
+
+  // Which order a section card's arrows move it in.
+  function sectionOrderListFor(sectionKey) {
+    return settingsTabs.indexOf(sectionKey) >= 0 ? "tabOrder" : "sectionOrder"
   }
 
   function orderKeyForSetting(key) {
@@ -1497,7 +1986,10 @@ Panel {
     if (key === "showAirQuality") return "airQuality"
     if (key === "showHourly") return "hourly"
     if (key === "showDaily") return "daily"
-    if (key === "showForecast") return "forecast"
+    if (key === "showRain") return "rain"
+    if (key === "showFavorites") return "favorites"
+    if (key === "showRadar") return "radar"
+    if (key === "showWind") return "wind"
     return key
   }
 
@@ -1837,8 +2329,12 @@ Panel {
   }
 
   function windMapSpeed(value) {
-    var converted = useImperial ? Model.kilometersPerHourToMilesPerHour(value) : Number(value)
-    return converted === null || !isFinite(converted) ? "–" : localizedNumber(Math.round(converted))
+    var wind = Model.windValue(value, windUnitFor(useImperial))
+    return wind ? localizedNumber(wind.value) : "–"
+  }
+  readonly property string windMapUnit: {
+    var wind = Model.windValue(0, windUnitFor(useImperial))
+    return wind ? wind.unit : "km/h"
   }
 
   function distanceText(kilometers) {
@@ -1949,7 +2445,7 @@ Panel {
     var provider = forecastProviderChain[index]
     forecastRequestProviderId = provider.id
     dailyForecastProc.request = Providers.forecastRequest(provider.id,
-      forecastRequestLatitude, forecastRequestLongitude)
+      forecastRequestLatitude, forecastRequestLongitude, providerCountry)
     if (dailyForecastProc.request) dailyForecastProc.running = true
   }
 
@@ -1981,6 +2477,16 @@ Panel {
     if (openMeteoAvailable()) {
       uvProc.request = { url: uvUrl, timeoutMs: 5000 }
       uvProc.running = true
+      // Yesterday at this hour, for the comparison in the current weather.
+      if (!yesterdayProc.running) {
+        yesterdayProc.request = {
+          url: "https://api.open-meteo.com/v1/forecast?latitude=" + encodeURIComponent(String(lat))
+            + "&longitude=" + encodeURIComponent(String(lon))
+            + "&hourly=temperature_2m&past_days=1&forecast_days=1&timezone=auto",
+          timeoutMs: 5000
+        }
+        yesterdayProc.running = true
+      }
     }
 
     var useDwd = usesDwdRegionalSources(lat, lon)
@@ -2075,7 +2581,9 @@ Panel {
     var now = Date.now()
     var reference = radarReport && radarReport.radar && radarReport.radar.length
       ? new Date(radarReferenceTime(radarReport.radar[0])).getTime() : NaN
-    var nextRunMs = isFinite(reference) ? reference + 10.5 * 60 * 1000 : radarFetchedAtMs + radarRefreshMs
+    var nextRunMs = isFinite(reference)
+      ? Math.max(reference + 10.5 * 60 * 1000, radarFetchedAtMs + radarRefreshMs)
+      : radarFetchedAtMs + radarRefreshMs
     if (now < nextRunMs && now - radarFetchedAtMs < 2 * radarRefreshMs) return
     if (now - radarAttemptMs < 2 * 60 * 1000) return
     if (sharedLive.radarClaimedByOther()) return
@@ -2133,6 +2641,12 @@ Panel {
     }
     alertProviderIndex = index
     var provider = alertProviderChain[index]
+    if (provider.staged) {
+      alertProviderId = provider.id
+      alertResponseAccepted = false
+      alertLookup.start(provider, forecastRequestLatitude, forecastRequestLongitude)
+      return
+    }
     var request = Providers.alertRequest(provider, forecastRequestLatitude, forecastRequestLongitude)
     if (!request) return
     alertProviderId = provider.id
@@ -2163,6 +2677,22 @@ Panel {
     startAlertProvider(0)
   }
 
+  // A parsed warnings report from any provider becomes the shown one.
+  function acceptAlertReport(parsed, providerId) {
+    if (!parsed || !Array.isArray(parsed.alerts) || providerId !== alertProviderId) return
+    alertReport = parsed
+    alertResponseAccepted = true
+    alertActiveProviderId = providerId
+    console.info("weather: warning provider active:", alertActiveProviderId)
+    scheduleWeatherCachePersist()
+  }
+
+  function alertLookupFailed(providerId) {
+    if (providerId !== alertProviderId) return
+    console.warn("weather: warning provider failed:", providerId)
+    advanceAlertProvider()
+  }
+
   function advanceAlertProvider() {
     var next = alertProviderIndex + 1
     if (next < alertProviderChain.length) {
@@ -2186,6 +2716,7 @@ Panel {
     searchFocusSection = "suggestions"
     savedLocationIndex = 0
     locationSearchPristine = !startsWithTypedText
+    scrollHeroIntoView()
     root.defer(function() {
       locationField.text = startsWithTypedText
         ? typedText : (root.reportLocation || root.configuredLocation)
@@ -2326,6 +2857,16 @@ Panel {
     radarPlaying = false
   }
 
+  // The place field lives in the current-weather section, which the order
+  // may put further down: bring it into view for the search.
+  function scrollHeroIntoView() {
+    if (!hero) return
+    var top = hero.mapToItem(weatherColumn, 0, 0).y
+    var maximum = Math.max(0, weatherScroll.contentHeight - weatherScroll.height)
+    if (top < weatherScroll.contentY || top + hero.height > weatherScroll.contentY + weatherScroll.height)
+      weatherScroll.contentY = Math.max(0, Math.min(maximum, top))
+  }
+
   function scrollWeatherBy(delta) {
     var maximum = Math.max(0, weatherScroll.contentHeight - weatherScroll.height)
     weatherScroll.contentY = Math.max(0, Math.min(maximum, weatherScroll.contentY + delta))
@@ -2371,6 +2912,11 @@ Panel {
       event.accepted = true
       return
     }
+    if (event.key === Qt.Key_Escape && hourCursor >= 0 && !editingLocation && !settingsOpen) {
+      hourCursor = -1
+      event.accepted = true
+      return
+    }
     if (event.key === Qt.Key_Escape) {
       if (editingLocation) cancelEditingLocation()
       else if (settingsOpen) {
@@ -2383,10 +2929,7 @@ Panel {
     }
 
     if (settingsOpen) {
-      if (event.key === Qt.Key_Left || event.key === Qt.Key_Right) {
-        stepSettingsPage(event.key === Qt.Key_Right ? 1 : -1)
-        event.accepted = true
-      }
+      if (settingsLoader.item && settingsLoader.item.handleKey(event)) event.accepted = true
       return
     }
 
@@ -2436,6 +2979,20 @@ Panel {
       return
     }
 
+    // Alt+1…9: favourite 1–9; Alt+← / Alt+→: previous / next favourite.
+    if (alternate && !control && !command && savedLocations.length > 0) {
+      if (event.key >= Qt.Key_1 && event.key <= Qt.Key_9) {
+        showFavorite(event.key - Qt.Key_1)
+        event.accepted = true
+        return
+      }
+      if (event.key === Qt.Key_Left || event.key === Qt.Key_Right) {
+        stepFavorite(event.key === Qt.Key_Right ? 1 : -1)
+        event.accepted = true
+        return
+      }
+    }
+
     if (!plain) return
 
     if (event.key === Qt.Key_Tab || event.key === Qt.Key_Backtab) {
@@ -2443,8 +3000,14 @@ Panel {
       event.accepted = true
       return
     }
-    if (text === "1" || text === "2" || text === "3") {
-      if (showForecastSection) precipitationTab = Number(text) - 1
+    if (text.length === 1 && text >= "1" && text <= "9") {
+      var tabIndex = Number(text) - 1
+      if (tabIndex < displayTabs.length) activeTab = displayTabs[tabIndex]
+      event.accepted = true
+      return
+    }
+    if (text === "w") {
+      openServiceLink()
       event.accepted = true
       return
     }
@@ -2464,14 +3027,14 @@ Panel {
       return
     }
 
-    var mapView = precipitationTab === 1 || precipitationTab === 2
+    var mapView = radarShown || windShown
     if (mapView && (plusKey || minusKey)) {
       changeMapZoom(plusKey ? 1 : -1)
       event.accepted = true
       return
     }
     if (mapView && text === "0") {
-      mapZoomLevel = defaultMapZoomLevel
+      resetMapView()
       event.accepted = true
       return
     }
@@ -2498,9 +3061,21 @@ Panel {
       return
     }
 
+    // Shift+←/→ move the hour cursor; Backspace returns to now.
+    if ((event.modifiers & Qt.ShiftModifier) && (event.key === Qt.Key_Left || event.key === Qt.Key_Right)) {
+      moveHourCursor(event.key === Qt.Key_Right ? 1 : -1)
+      event.accepted = true
+      return
+    }
+    if (event.key === Qt.Key_Backspace && hourCursor >= 0) {
+      hourCursor = -1
+      event.accepted = true
+      return
+    }
+
     var leftKey = event.key === Qt.Key_Left || text === "h"
     var rightKey = event.key === Qt.Key_Right || text === "l"
-    var radarView = precipitationTab === 1 && radarFrames.length > 0
+    var radarView = radarShown && radarFrames.length > 0
     if (leftKey || rightKey) {
       if (radarView) {
         if (rightKey) stepRadarForward()
@@ -2578,6 +3153,89 @@ Panel {
   function toggleSavedLocations() {
     root.showSavedLocations = !root.showSavedLocations
     if (root.showSavedLocations && root.editingLocation) root.cancelEditingLocation()
+  }
+
+  // ---- My places: the favourites with their weather, one row each. The
+  //      active place reads the live values, the others the background
+  //      forecasts of WeatherSavedLocationCache (shared through the cache
+  //      file, so the app shows what the bar instance fetched).
+  readonly property bool showFavoritesSection: displaySetting("showFavorites", true) && savedLocations.length > 0
+  // Either view shows the section: the bar instance then renews the
+  // favourites' forecasts every half hour instead of every six hours.
+  readonly property bool favoritesWanted: savedLocations.length > 0
+    && (optionValue(appDisplayOptions, "app", "showFavorites", true)
+      || optionValue(widgetDisplayOptions, "widget", "showFavorites", true))
+  readonly property int activeFavoriteIndex: savedLocationIndexFor(configuredLocationState)
+  // A saved place's weather for now: read from its stored hourly forecast,
+  // between the hours, so a row keeps up with the clock between fetches
+  // instead of showing the value of the fetch (on a summer evening the
+  // temperature falls several degrees an hour). The stored current values
+  // fill in where the forecast has no hour for now.
+  function favoriteValuesNow(snapshot) {
+    var stored = snapshot.current || {}
+    var hourly = snapshot.hourly || []
+    var now = relativeTimeNowMs
+    function at(key) {
+      var found = Model.hourlyValueAt(hourly, now, key)
+      return found ? found : null
+    }
+    var temperature = at("tempC")
+    if (!temperature) return snapshot.current || null
+    var feels = at("feelsLikeC")
+    var wind = at("windSpeedKmph")
+    var humidity = at("humidity")
+    function fahrenheit(c) { return String(Math.round(c * 1.8 + 32)) }
+    return {
+      temp_C: String(Math.round(temperature.value)),
+      temp_F: fahrenheit(temperature.value),
+      FeelsLikeC: feels ? String(Math.round(feels.value)) : stored.FeelsLikeC,
+      FeelsLikeF: feels ? fahrenheit(feels.value) : stored.FeelsLikeF,
+      windspeedKmph: wind ? String(Math.round(wind.value)) : stored.windspeedKmph,
+      humidity: humidity ? String(Math.round(humidity.value)) : stored.humidity,
+      symbol: Model.hourlyIcon(temperature.row)
+    }
+  }
+
+  readonly property var favoriteRows: {
+    var rows = []
+    var entries = weatherDataCache && weatherDataCache.entries ? weatherDataCache.entries : ({})
+    var staleBefore = relativeTimeNowMs - 60 * 60 * 1000
+    for (var i = 0; i < savedLocations.length; ++i) {
+      var place = savedLocations[i]
+      var active = i === activeFavoriteIndex
+      var entry = entries[Model.weatherCacheKey(place.name, place.latitude, place.longitude)]
+      var snapshot = entry && entry.snapshot ? entry.snapshot : null
+      var values = active ? current : (snapshot ? favoriteValuesNow(snapshot) : null)
+      var updatedAt = active ? displayedUpdateMs : Number(entry && entry.updatedAt || 0)
+      rows.push({
+        index: i,
+        name: String(place.name || ""),
+        temperatureC: values ? values.temp_C : "",
+        active: active,
+        symbol: active ? displayLabel : (values && values.symbol || String(snapshot && snapshot.label || "")),
+        temperature: values ? Model.tempNumber(values.temp_C, values.temp_F, tempScale) : "",
+        feelsLike: values ? Model.tempWithUnit(values.FeelsLikeC, values.FeelsLikeF, tempScale) : "",
+        wind: values ? windText(values.windspeedKmph, useImperial) : "",
+        humidity: values && values.humidity !== undefined && values.humidity !== "" ? localizedNumber(values.humidity) + "%" : "",
+        moonMirrored: Model.moonMirroredAt(place.latitude),
+        stale: !active && (!updatedAt || updatedAt < staleBefore)
+      })
+    }
+    return rows
+  }
+
+  // A favourite becomes the shown place, with the current weather in view.
+  function showFavorite(index) {
+    if (index < 0 || index >= savedLocations.length) return
+    if (index !== activeFavoriteIndex) selectSavedLocation(savedLocations[index])
+    root.defer(function() { root.scrollHeroIntoView() })
+  }
+
+  function stepFavorite(delta) {
+    var count = savedLocations.length
+    if (!count) return
+    var from = activeFavoriteIndex
+    showFavorite(from < 0 ? (delta > 0 ? 0 : count - 1) : (from + delta + count) % count)
   }
 
   // Row click (not the remove button): switch active location like a
@@ -2694,10 +3352,17 @@ Panel {
   }
 
   function forecastWind(entry) {
-    if (!entry) return "–"
-    var value = useImperial ? entry.windSpeedMph : entry.windSpeedKmph
-    if (value === undefined || value === null || value === "") return "–"
-    return localizedNumber(value) + (useImperial ? " mph" : " km/h")
+    return entry ? (windText(entry.windSpeedKmph, useImperial) || "–") : "–"
+  }
+
+  // Wind in the unit chosen under Settings → General (Model.windValue).
+  function windUnitFor(imperial) {
+    return Model.windUnitFor(generalSetting("windUnit", "auto"), imperial)
+  }
+  function windText(kmh, imperial) {
+    var wind = Model.windValue(kmh, windUnitFor(imperial))
+    if (!wind) return ""
+    return wind.unit === "Bft" ? "Bft " + localizedNumber(wind.value) : localizedNumber(wind.value) + " " + wind.unit
   }
 
   function forecastEventTime(value) {
@@ -2778,11 +3443,121 @@ Panel {
     return isNaN(reference.getTime()) ? "" : reference.toISOString()
   }
 
+  // ---- Wheel and touchpad on the page.
+  // Omarchy scales touchpad scrolling down to 0.4 (browsers add their own
+  // acceleration on top), which made the view crawl; pixel deltas are scaled
+  // back up here. A mouse wheel scrolls a fixed step per notch.
+  readonly property real touchpadScrollFactor: 2.5
+  function wheelPixels(wheel, horizontal) {
+    var pixels = horizontal ? wheel.pixelDelta.x : wheel.pixelDelta.y
+    if (pixels !== 0) return pixels * touchpadScrollFactor
+    var angle = horizontal ? wheel.angleDelta.x : wheel.angleDelta.y
+    return angle / 120 * Style.space(60)
+  }
+  // Areas inside the page that take the wheel themselves (the daily strip,
+  // maps, the radar timeline, long warnings). Each has wheelEnabled,
+  // wantsWheel(wheel) and takeWheel(wheel, point), and may have
+  // declineWheel(wheel) to hint at what it wants instead. A plain vertical
+  // wheel belongs to the page: the strip and the timeline take sideways
+  // scrolling or Shift, the maps Ctrl, a warning only while it can scroll.
+  function wheelIsSideways(wheel) {
+    if (wheel.modifiers & Qt.ShiftModifier) return true
+    if (wheel.pixelDelta.x !== 0 || wheel.pixelDelta.y !== 0)
+      return Math.abs(wheel.pixelDelta.x) > Math.abs(wheel.pixelDelta.y)
+    return Math.abs(wheel.angleDelta.x) > Math.abs(wheel.angleDelta.y)
+  }
+  // Sideways distance of a wheel step: Shift turns a vertical wheel sideways.
+  function wheelSidewaysPixels(wheel) {
+    var sideways = wheelPixels(wheel, true)
+    return sideways !== 0 ? sideways : wheelPixels(wheel, false)
+  }
+  property var wheelAreas: []
+  function registerWheelArea(item) {
+    if (wheelAreas.indexOf(item) < 0) wheelAreas = wheelAreas.concat([item])
+  }
+  function unregisterWheelArea(item) {
+    wheelAreas = wheelAreas.filter(function(area) { return area !== item })
+  }
+  // Scroll latching, as in browsers: a gesture stays with what it began on
+  // (the page, or an area) until it pauses, so scrolling the page across the
+  // daily strip or a map keeps scrolling the page.
+  property var wheelLatch: null
+  property double wheelLatchUntil: 0
+  readonly property int wheelLatchMs: 450
+  function routeWheel(wheel, source, scroller) {
+    var now = Date.now()
+    // Ctrl or Shift says what the wheel is meant for: it ends the latch.
+    var aimed = (wheel.modifiers & (Qt.ControlModifier | Qt.ShiftModifier)) !== 0
+    var target = now < wheelLatchUntil && !aimed ? wheelLatch : null
+    if (target && target !== scroller && (!target.visible || wheelAreas.indexOf(target) < 0)) target = null
+    if (!target) {
+      target = scroller
+      for (var i = wheelAreas.length - 1; i >= 0; --i) {
+        var area = wheelAreas[i]
+        if (!area.visible || !area.wheelEnabled) continue
+        var local = area.mapFromItem(source, wheel.x, wheel.y)
+        if (local.x < 0 || local.y < 0 || local.x > area.width || local.y > area.height) continue
+        if (area.wantsWheel && !area.wantsWheel(wheel)) {
+          if (area.declineWheel) area.declineWheel(wheel)
+          break
+        }
+        target = area
+        break
+      }
+    }
+    wheelLatch = target
+    wheelLatchUntil = now + wheelLatchMs
+    if (target === scroller) {
+      var maximum = Math.max(0, scroller.contentHeight - scroller.height)
+      scroller.contentY = Math.max(0, Math.min(maximum, scroller.contentY - wheelPixels(wheel, false)))
+    } else if (target.takeWheel(wheel, target.mapFromItem(source, wheel.x, wheel.y)) === false) {
+      // An area at its end hands the scroll on to the page.
+      wheelLatch = scroller
+      var limit = Math.max(0, scroller.contentHeight - scroller.height)
+      scroller.contentY = Math.max(0, Math.min(limit, scroller.contentY - wheelPixels(wheel, false)))
+    }
+  }
+
+  // Just before the map view moves or zooms: the maps keep their current
+  // pictures on screen until the new ones are in (WeatherStalePicture).
+  signal mapViewAboutToMove()
+
   function changeMapZoom(delta) {
     var nextLevel = Math.max(mapMinimumZoom,
       Math.min(mapMaximumZoom, mapZoomLevel + delta))
     if (nextLevel === mapZoomLevel) return
+    mapViewAboutToMove()
     mapZoomLevel = nextLevel
+  }
+
+  // Moves the view by a drag of dx, dy view pixels on a map drawn with
+  // `viewport` (Model.mapViewport).
+  function panMap(dx, dy, viewport, quiet) {
+    if (!viewport || !(viewport.renderedWidth > 0) || !(viewport.renderedHeight > 0)) return
+    if (!quiet) mapViewAboutToMove()
+    var lon = mapPanLongitude - dx / viewport.renderedWidth * (mapEast - mapWest)
+    var lat = mapPanLatitude + dy / viewport.renderedHeight * (mapNorth - mapSouth)
+    mapPanLongitude = ((lon + 540) % 360) - 180
+    mapPanLatitude = Math.max(-80 - mapCenterLatitude, Math.min(80 - mapCenterLatitude, lat))
+  }
+
+  // Zooms by `delta` levels keeping the point dx, dy pixels from the view's
+  // centre where it is (the mouse wheel zooms towards the pointer).
+  function zoomMapAt(delta, dx, dy, viewport) {
+    var nextLevel = Math.max(mapMinimumZoom, Math.min(mapMaximumZoom, mapZoomLevel + delta))
+    if (nextLevel === mapZoomLevel || !viewport) return
+    var keep = 1 - Math.pow(1.5, mapZoomLevel - nextLevel)
+    mapViewAboutToMove()
+    panMap(-dx * keep, -dy * keep, viewport, true)
+    mapZoomLevel = nextLevel
+  }
+
+  function resetMapView() {
+    if (!mapPanned && mapZoomLevel === defaultMapZoomLevel) return
+    mapViewAboutToMove()
+    mapPanLatitude = 0
+    mapPanLongitude = 0
+    mapZoomLevel = defaultMapZoomLevel
   }
 
   // Height of the radar and wind maps: the picture's own proportions where
@@ -2821,11 +3596,11 @@ Panel {
       // RainViewer's coordinate-tile form is explicitly intended for small
       // embedded maps. Its maximum supported zoom is 7; the view draws the
       // tile at its own scale (Model.rainViewerTile).
-      var zoom = Model.rainViewerTile(root.mapRadiusKm, root.mapCenterLatitude).zoom
+      var zoom = Model.rainViewerTile(root.mapRadiusKm, root.mapViewLatitude).zoom
       return String(frame.rainViewerHost || "") + String(frame.rainViewerPath || "")
         + "/512/" + zoom
-        + "/" + Number(root.mapCenterLatitude).toFixed(5)
-        + "/" + Number(root.mapCenterLongitude).toFixed(5)
+        + "/" + Number(root.mapViewLatitude).toFixed(5)
+        + "/" + Number(root.mapViewLongitude).toFixed(5)
         + "/2/1_1.png"
     }
     var url = "https://maps.dwd.de/geoserver/dwd/ows?service=WMS&version=1.1.1&request=GetMap"
@@ -2947,6 +3722,15 @@ Panel {
     renewRadarOnInteraction()
   }
 
+  // A frame picked on the timeline under the map: stops playback there.
+  function scrubRadarFrame(index) {
+    if (!radarFrames.length) return
+    radarPlaying = false
+    radarUserNavigated = true
+    selectRadarFrame(index)
+    renewRadarOnInteraction()
+  }
+
   function stepRadarForward() {
     if (!radarFrames.length) return
     radarPlaying = false
@@ -3029,6 +3813,10 @@ Panel {
       }
       try {
         var response = JSON.parse(raw)
+        // In Switzerland the answer holds MeteoSwiss ICON-CH and Best Match
+        // side by side (Providers.openMeteoForecastUrl).
+        if (root.forecastRequestProviderId === "open-meteo" && Providers.usesMeteoSwiss(root.providerCountry))
+          response = Model.mergedModelForecast(response, "meteoswiss_icon_seamless", "best_match", "meteoswiss")
         var parsed = root.forecastRequestProviderId === "met-no"
           ? Model.metNoToOpenMeteo(response) : Model.withPlaceOffsets(response)
         if (!parsed || !parsed.current || !parsed.daily || !parsed.hourly)
@@ -3057,6 +3845,19 @@ Panel {
         if (!parsed.weather || !parsed.weather.length) return
         root.mosmixReport = parsed
         root.scheduleWeatherCachePersist()
+      } catch (e) { }
+    }
+  }
+
+  // Yesterday's hourly temperatures (Model.yesterdayTemperatureChange).
+  property var yesterdayReport: null
+  WeatherRequest {
+    id: yesterdayProc
+    onExited: function(exitCode) { if (exitCode !== 0) root.noteOpenMeteoResponse(yesterdayProc) }
+    onFinished: function(text) {
+      try {
+        var parsed = JSON.parse(String(text || ""))
+        if (parsed.hourly && parsed.hourly.temperature_2m) root.yesterdayReport = parsed
       } catch (e) { }
     }
   }
@@ -3203,17 +4004,15 @@ Panel {
         else if (root.alertProviderId === "eccc")
           parsed = Model.ecccAlertReport(raw, root.forecastRequestLatitude,
             root.forecastRequestLongitude, I18n.serviceLanguage(root.interfaceLanguage))
+        else if (root.alertProviderId === "bom")
+          parsed = Model.bomAlertReport(raw)
+        else if (root.alertProviderId === "inmet")
+          parsed = Model.inmetAlertReport(raw, root.forecastRequestLatitude, root.forecastRequestLongitude)
         else {
           var response = JSON.parse(raw)
           if (response && Array.isArray(response.alerts)) parsed = response
         }
-        if (parsed && Array.isArray(parsed.alerts)) {
-          root.alertReport = parsed
-          root.alertResponseAccepted = true
-          root.alertActiveProviderId = root.alertProviderId
-          console.info("weather: warning provider active:", root.alertActiveProviderId)
-          root.scheduleWeatherCachePersist()
-        }
+        root.acceptAlertReport(parsed, root.alertProviderId)
       } catch (e) { }
     }
   }
@@ -3293,6 +4092,8 @@ Panel {
   property WeatherSharedLiveData sharedLive: WeatherSharedLiveData { panel: root }
   property WeatherDisplayOptionsStore displayOptionsStore: WeatherDisplayOptionsStore { panel: root }
   property WeatherAirQuality airQuality: WeatherAirQuality { panel: root }
+  property WeatherRegionalNowcast regionalNowcast: WeatherRegionalNowcast { panel: root }
+  property WeatherAlertLookup alertLookup: WeatherAlertLookup { panel: root }
   property WeatherAppLauncherEntry appLauncherEntry: WeatherAppLauncherEntry { panel: root }
   property WeatherBarPlacement barPlacement: WeatherBarPlacement { panel: root }
 
@@ -3307,6 +4108,10 @@ Panel {
     function edit(): void { root.openFromHotkey(); root.startEditingLocation() }
     function settings(): void { root.openFromHotkey(); root.openSettings() }
     function refresh(): void { root.manualRefresh() }
+    // Favourites for global key bindings: the panel opens on the place.
+    function favorite(index: int): void { root.openFromHotkey(); root.showFavorite(index - 1) }
+    function nextFavorite(): void { root.openFromHotkey(); root.stepFavorite(1) }
+    function previousFavorite(): void { root.openFromHotkey(); root.stepFavorite(-1) }
     function providerStatus(): string {
       return JSON.stringify({
         language: root.interfaceLanguage,
@@ -3326,7 +4131,8 @@ Panel {
         radarPreferred: root.preferredRadarProviderId || "rainviewer",
         radarActive: root.radarActiveProviderId,
         radarModelFallback: root.radarUsesModelFallback,
-        precipitationTab: root.precipitationTab,
+        activeTab: root.currentTab,
+        tabs: root.displayTabs,
         radarPlaying: root.radarPlaying,
         radarFrameCount: root.radarFrames.length,
         radarTime: root.radarFrameLead(root.radarFrameIndex),
@@ -3456,6 +4262,26 @@ Panel {
     }
   }
 
+  // Back to the panel's key handling, e.g. after a dropdown list closes.
+  function restoreKeyFocus() {
+    root.defer(function() { keyCatcher.forceActiveFocus() })
+  }
+
+  // The current-weather block, wherever the section order puts it.
+  property Item hero: null
+
+  function sectionComponent(key) {
+    if (key === "current") return currentSectionComponent
+    if (key === "favorites") return favoritesSectionComponent
+    if (key === "airQuality") return airQualitySectionComponent
+    if (key === "hourly") return hourlySectionComponent
+    if (key === "daily") return dailySectionComponent
+    if (key === "rain") return rainSectionComponent
+    if (key === "radar") return radarSectionComponent
+    if (key === "wind") return windSectionComponent
+    return tabsSectionComponent
+  }
+
   // One visual tree, reparented into either the popup card or the application
   // window. All future layout and feature work therefore lands in both.
   Item {
@@ -3485,35 +4311,82 @@ Panel {
         width: weatherScroll.width
         spacing: Style.space(14)
 
-        WeatherHero { id: hero; panel: root; width: parent.width }
-        WeatherLocationLists { panel: root }
+        // Current weather with place, refresh and settings, the place
+        // search lists and the warnings: one section, moved as a whole.
+        Component {
+          id: currentSectionComponent
 
-        Text {
-          visible: !root.current
-          text: root.i18n("fetchingForecast")
-          color: root.mutedText
-          font.family: root.fontFamily
-          font.pixelSize: Style.font.bodySmall
-          font.italic: true
+          Column {
+            id: currentSection
+            spacing: Style.space(14)
+            // The topmost section shown draws no line above it.
+            property bool leading: false
+
+            Rectangle {
+              visible: !currentSection.leading
+              width: parent.width
+              height: Style.spacing.hairline
+              color: root.foreground
+              opacity: 0.12
+            }
+
+            WeatherHero {
+              panel: root
+              width: parent.width
+              Component.onCompleted: root.hero = this
+              Component.onDestruction: if (root.hero === this) root.hero = null
+            }
+            WeatherLocationLists { panel: root }
+
+            Text {
+              visible: !root.current
+              text: root.i18n("fetchingForecast")
+              color: root.mutedText
+              font.family: root.fontFamily
+              font.pixelSize: Style.font.bodySmall
+              font.italic: true
+            }
+
+            WeatherAlerts { panel: root; width: parent.width }
+          }
         }
-
-        WeatherAlerts { panel: root; width: parent.width }
         Component { id: airQualitySectionComponent; WeatherAirQualitySection { panel: root } }
         Component { id: hourlySectionComponent; WeatherHourly { panel: root } }
         Component { id: dailySectionComponent; WeatherDaily { panel: root } }
-        Component { id: forecastSectionComponent; WeatherForecast { panel: root } }
+        Component { id: favoritesSectionComponent; WeatherFavorites { panel: root } }
+        Component { id: rainSectionComponent; WeatherForecast { panel: root; kind: "rain" } }
+        Component { id: radarSectionComponent; WeatherForecast { panel: root; kind: "radar" } }
+        Component { id: windSectionComponent; WeatherForecast { panel: root; kind: "wind" } }
+        Component { id: tabsSectionComponent; WeatherTabs { panel: root } }
 
-        // Sections in the order chosen under Settings → Display.
+        // Sections in the order chosen under Settings → Display; the tabbed
+        // ones share one strip in the place of the first.
         Repeater {
-          model: root.displaySectionOrder
+          id: sectionRepeater
+          model: root.displayLayout
 
           Loader {
+            id: sectionLoader
             required property string modelData
+            required property int index
+            readonly property bool shown: !!item && item.visible
+            // No section above it is shown: then it draws no separator.
+            readonly property bool leading: {
+              for (var i = 0; i < index; ++i) {
+                var before = sectionRepeater.itemAt(i)
+                if (before && before.shown) return false
+              }
+              return true
+            }
             width: weatherColumn.width
-            sourceComponent: modelData === "airQuality" ? airQualitySectionComponent
-              : (modelData === "hourly" ? hourlySectionComponent
-                : (modelData === "daily" ? dailySectionComponent : forecastSectionComponent))
+            sourceComponent: root.sectionComponent(modelData)
             onLoaded: if (modelData === "daily") root.dailySection = item
+            Binding {
+              target: sectionLoader.item
+              property: "leading"
+              value: sectionLoader.leading
+              when: !!sectionLoader.item
+            }
           }
         }
 
@@ -3531,7 +4404,21 @@ Panel {
       }
     }
 
+    // Every wheel and touchpad scroll over the page goes through
+    // routeWheel: scaled for touchpads, and latched to the page or to the
+    // area it began on.
+    MouseArea {
+      anchors.fill: weatherScroll
+      z: 2
+      acceptedButtons: Qt.NoButton
+      onWheel: function(wheel) {
+        root.routeWheel(wheel, this, weatherScroll)
+        wheel.accepted = true
+      }
+    }
+
     Loader {
+      id: settingsLoader
       anchors.fill: parent
       z: 100
       active: root.settingsOpen

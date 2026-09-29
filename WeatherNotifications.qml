@@ -4,7 +4,7 @@ import Quickshell.Io
 import "Model.js" as Model
 
 // Desktop notifications from the bar instance: severe and extreme warnings
-// and rain starting within 30 minutes. Announced keys persist, so a restart
+// and rain reaching the chosen strength within the chosen radius. Announced keys persist, so a restart
 // stays quiet.
 Item {
   required property var panel
@@ -65,16 +65,25 @@ Item {
       pending = alert
       break
     }
-    // Rain starting within 30 minutes: at most one notification per two
-    // hours, so a shower that keeps shifting in the nowcast stays quiet.
+    // Rain reaching the threshold within the radius's lead time. Once told,
+    // the next two hours stay quiet unless it gets stronger (light to
+    // moderate, moderate to heavy), so a shower that keeps shifting in the
+    // nowcast is announced once.
     var rain = null
-    if (!pending && panel.notifyRainSoon && panel.upcomingRain && panel.upcomingRain.minutes <= 30
+    var rainNext = panel.rainAlert
+    if (!pending && panel.notifyRainSoon && rainNext
         && !Model.weatherSeriesUsesCache(panel.rainNowcast)) {
-      var recentRain = false
-      for (var knownKey in known) if (knownKey.indexOf("rain:") === 0) recentRain = true
-      if (!recentRain) {
-        rain = panel.upcomingRain
-        known["rain:" + rain.time] = now + 2 * 60 * 60 * 1000
+      var toldLevel = -1
+      for (var knownKey in known) {
+        var parts = knownKey.split(":")
+        if (parts[0] !== "rain") continue
+        // Keys before 2.5 carry no level: count them as light.
+        var level = parts.length > 2 ? Number(parts[1]) : 0
+        toldLevel = Math.max(toldLevel, isFinite(level) ? level : 0)
+      }
+      if (rainNext.level > toldLevel) {
+        rain = rainNext
+        known["rain:" + rainNext.level + ":" + rainNext.time] = now + 2 * 60 * 60 * 1000
         changed = true
       }
     }
@@ -83,12 +92,12 @@ Item {
       notifiedAlertsFile.setText(JSON.stringify(known) + "\n")
     }
     if (rain) {
-      var rainBody = panel.i18n(rain.peak > 4 ? "rainStrong" : (rain.peak > 0.5 ? "rainMedium" : "rainWeak"))
+      var rainBody = panel.i18n(["rainWeak", "rainMedium", "rainStrong"][rain.level])
         + " · " + panel.i18n("upToRate", { rate: panel.precipitationText(rain.peak, true) })
       if (panel.reportLocation) rainBody = panel.reportLocation + " · " + rainBody
       alertNotifyProc.command = ["notify-send", "--app-name=More Weather",
         "--icon=more-weather", "--urgency=normal",
-        panel.i18n("rainNotificationTitle", { time: panel.upcomingRainTime }), rainBody]
+        panel.i18n("rainNotificationTitle", { time: Qt.formatTime(rain.date, "HH:mm") }), rainBody]
       alertNotifyProc.running = true
       return
     }

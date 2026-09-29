@@ -348,6 +348,7 @@ BarWidget {
           spacing: Style.space(3)
 
           Text {
+            visible: rainDrop.level < 0
             anchors.verticalCenter: parent.verticalCenter
             text: "󰖌"
             color: button.foreground
@@ -355,6 +356,58 @@ BarWidget {
             font.pixelSize: Style.font.body
             font.italic: panelLoader.item ? panelLoader.item.rainBadgeCached : false
             renderType: Text.NativeRendering
+          }
+
+          // With the probability shown, the drop fills with it: outline,
+          // half or full (Panel.menubarRainDropLevel).
+          // The font's own outline drop, with its filled drop cut off above
+          // the water line, so size and style match the text beside it.
+          Item {
+            id: rainDrop
+            readonly property int level: panelLoader.item ? panelLoader.item.menubarRainDropLevel : -1
+            // Filled by area, not height: the narrow tip holds little, so
+            // half the water stands at 42 % of the drop's height (measured on
+            // the glyph).
+            readonly property real fill: level >= 100 ? 1 : (level >= 50 ? 0.423 : 0)
+            // The drop's ink within the line, from the font itself.
+            readonly property rect ink: dropMetrics.height > 0
+              ? dropMetrics.tightBoundingRect("󰖌") : Qt.rect(0, 0, 0, 0)
+            readonly property real waterLine: fill >= 1 ? 0
+              : dropMetrics.ascent + ink.y + ink.height * (1 - fill)
+            visible: level >= 0
+            anchors.verticalCenter: parent.verticalCenter
+            width: dropOutline.implicitWidth
+            height: dropOutline.implicitHeight
+
+            FontMetrics {
+              id: dropMetrics
+              font: dropOutline.font
+            }
+
+            Text {
+              id: dropOutline
+              text: "󰸊"
+              color: button.foreground
+              font.family: root.bar ? root.bar.fontFamily : Style.font.family
+              font.pixelSize: Style.font.body
+              renderType: Text.NativeRendering
+            }
+
+            Item {
+              visible: rainDrop.fill > 0
+              clip: true
+              y: rainDrop.waterLine
+              width: parent.width
+              height: Math.max(0, parent.height - y)
+
+              Text {
+                y: -parent.y
+                text: "󰖌"
+                color: button.foreground
+                font: dropOutline.font
+                renderType: Text.NativeRendering
+              }
+            }
           }
 
           Text {
