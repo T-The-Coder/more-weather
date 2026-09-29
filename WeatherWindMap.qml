@@ -227,7 +227,8 @@ Item {
     panel: windMapItem.panel
   }
 
-  // Height of the wind: ▼ lower, ▲ higher (also Shift+↓ / Shift+↑).
+  // Height of the wind: ▲ higher, ▼ lower (also Shift+↑ / Shift+↓), then
+  // the height itself.
   BorderSurface {
     id: windLevelControls
     anchors.left: parent.left
@@ -244,20 +245,8 @@ Item {
       anchors.centerIn: parent
       spacing: Style.space(4)
 
-      Text {
-        anchors.verticalCenter: parent.verticalCenter
-        leftPadding: Style.space(4)
-        rightPadding: Style.space(2)
-        text: panel.windLevelText(panel.windLevelInfo)
-          + (panel.windLevelId.indexOf("hPa") > 0 ? " · " + panel.windLevelId.replace("hPa", " hPa") : "")
-        color: Color.popups.text
-        font.family: panel.fontFamily
-        font.pixelSize: Style.font.caption
-        font.bold: true
-      }
-
       Repeater {
-        model: [{ glyph: "▼", delta: -1 }, { glyph: "▲", delta: 1 }]
+        model: [{ glyph: "▲", delta: 1 }, { glyph: "▼", delta: -1 }]
 
         BorderSurface {
           id: levelButton
@@ -288,6 +277,18 @@ Item {
             onClicked: panel.stepWindLevel(levelButton.modelData.delta)
           }
         }
+      }
+
+      Text {
+        anchors.verticalCenter: parent.verticalCenter
+        leftPadding: Style.space(2)
+        rightPadding: Style.space(4)
+        text: panel.windLevelText(panel.windLevelInfo)
+          + (panel.windLevelId.indexOf("hPa") > 0 ? " · " + panel.windLevelId.replace("hPa", " hPa") : "")
+        color: Color.popups.text
+        font.family: panel.fontFamily
+        font.pixelSize: Style.font.caption
+        font.bold: true
       }
     }
   }
