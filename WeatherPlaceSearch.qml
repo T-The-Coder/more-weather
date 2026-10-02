@@ -47,7 +47,9 @@ QtObject {
 
   onQueryChanged: {
     fallbackQuery = ""
-    if (trimmed.length < minimumLength) {
+    // query.trim() here, not `trimmed`: that binding has not caught up yet
+    // when the query jumps from empty to a whole name in one step.
+    if (query.trim().length < minimumLength) {
       debounce.stop()
       nominatimDelay.stop()
       generation++
