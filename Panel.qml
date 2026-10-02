@@ -3501,7 +3501,7 @@ Panel {
     var ctx = canvas.getContext("2d")
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     ctx.strokeStyle = canvas.iconColor
-    ctx.lineWidth = 1.2
+    ctx.lineWidth = canvas.bold === true ? 2 : 1.2
     ctx.lineCap = "round"
     ctx.lineJoin = "round"
 

@@ -52,6 +52,10 @@ BarWidget {
   // the bar, so the panel's hover zones (widget spot, and the stretch from
   // it to the card) stand in for the button.
   readonly property bool pointerOnWidget: button.tooltipHovered
+  // Text and symbols in the bar turn bold while the pointer rests on them,
+  // also with the popup open over the widget's spot.
+  readonly property bool barBold: pointerOnWidget
+    || (opened && !!panelLoader.item && panelLoader.item.popupPointerOnAnchor)
   // Opened while the pointer was on the widget; holds until the popup's
   // zones have seen the pointer, since they only learn of it once it moves.
   property bool hoverLatched: false
@@ -228,6 +232,7 @@ BarWidget {
           color: button.foreground
           font.family: root.bar ? root.bar.fontFamily : Style.font.family
           font.pixelSize: Style.font.body
+          font.bold: root.barBold
           font.italic: {
             if (!panelLoader.item) return false
             if (entryKey === "currentLocation") return panelLoader.item.locationCached
@@ -263,6 +268,7 @@ BarWidget {
           color: button.foreground
           font.family: root.bar ? root.bar.fontFamily : Style.font.family
           font.pixelSize: Style.bar.iconFont
+          font.bold: root.barBold
           font.italic: panelLoader.item ? panelLoader.item.weatherSymbolCached : false
           renderType: Text.NativeRendering
         }
@@ -295,8 +301,10 @@ BarWidget {
             height: Style.space(11)
             property color iconColor: button.foreground
             property bool rising: parent.rising
+            property bool bold: root.barBold
             onIconColorChanged: requestPaint()
             onRisingChanged: requestPaint()
+            onBoldChanged: requestPaint()
             onPaint: if (panelLoader.item) panelLoader.item.paintSunEventIcon(sunEventIcon, rising)
           }
 
@@ -306,6 +314,7 @@ BarWidget {
             color: button.foreground
             font.family: root.bar ? root.bar.fontFamily : Style.font.family
             font.pixelSize: Style.font.body
+            font.bold: root.barBold
             font.italic: !!panelLoader.item && panelLoader.item.cachedField(panelLoader.item.todayForecast,
               parent.rising ? "sunrise" : "sunset")
             renderType: Text.NativeRendering
@@ -331,6 +340,7 @@ BarWidget {
           color: button.foreground
           font.family: root.bar ? root.bar.fontFamily : Style.font.family
           font.pixelSize: Style.font.body
+          font.bold: root.barBold
           renderType: Text.NativeRendering
         }
       }
@@ -354,6 +364,7 @@ BarWidget {
             color: button.foreground
             font.family: root.bar ? root.bar.fontFamily : Style.font.family
             font.pixelSize: Style.font.body
+            font.bold: root.barBold
             font.italic: panelLoader.item ? panelLoader.item.rainBadgeCached : false
             renderType: Text.NativeRendering
           }
@@ -390,6 +401,7 @@ BarWidget {
               color: button.foreground
               font.family: root.bar ? root.bar.fontFamily : Style.font.family
               font.pixelSize: Style.font.body
+              font.bold: root.barBold
               renderType: Text.NativeRendering
             }
 
@@ -416,6 +428,7 @@ BarWidget {
             color: button.foreground
             font.family: root.bar ? root.bar.fontFamily : Style.font.family
             font.pixelSize: Style.font.body
+            font.bold: root.barBold
             font.italic: panelLoader.item ? panelLoader.item.rainBadgeCached : false
             renderType: Text.NativeRendering
           }
@@ -447,6 +460,7 @@ BarWidget {
             color: button.foreground
             font.family: root.bar ? root.bar.fontFamily : Style.font.family
             font.pixelSize: Style.font.body
+            font.bold: root.barBold
             renderType: Text.NativeRendering
           }
 
@@ -456,6 +470,7 @@ BarWidget {
             color: button.foreground
             font.family: root.bar ? root.bar.fontFamily : Style.font.family
             font.pixelSize: Style.font.body
+            font.bold: root.barBold
             font.italic: panelLoader.item && panelLoader.item.airQuality ? panelLoader.item.airQuality.stale : false
             renderType: Text.NativeRendering
           }

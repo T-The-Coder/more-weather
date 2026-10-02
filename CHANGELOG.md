@@ -2,6 +2,12 @@
 
 All notable changes to More Weather are documented here.
 
+## Unreleased
+
+- While the pointer rests on the weather in the menu bar, its text and
+  symbols turn bold (the sun-event arrow with a heavier line), also with the
+  popup open over the widget.
+
 ## 3.0.0 — 2026-09-30
 
 Version 3 in short:
