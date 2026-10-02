@@ -2,7 +2,23 @@
 
 All notable changes to More Weather are documented here.
 
-## Unreleased
+## 3.1.0 — 2026-10-03
+
+Version 3.1 in short:
+
+- **The menu bar reacts to the pointer:** bold while hovered, and its values
+  in the popup's colour accents while hovered or always.
+- **Tabs with symbols,** which keep only the symbol when all seven sections
+  are tabs.
+- **One place search with More Time:** Open-Meteo while typing, Nominatim on
+  Enter, the same keys in both plugins, and More Time's cities importable as
+  places.
+- **Texts read like More Time's** in all 30 languages, each language in More
+  Weather's own words.
+- **The moon as a shaded sphere** in the current weather and my places.
+- **New pictures** for the README and the plugin page.
+
+In detail:
 
 - While the pointer rests on the weather in the menu bar, its text and
   symbols turn bold (the sun-event arrow with a heavier line), also with the
@@ -70,7 +86,22 @@ All notable changes to More Weather are documented here.
 - README: a Keyboard table and an IPC section, the fixed path to the app
   launcher switch (Settings → General), and one section order shared with
   More Time.
-- Log lines start with `more-weather:`; the user agent says `more-weather/3.0`.
+- Log lines start with `more-weather:`; the user agent says `more-weather/3.1`.
+- Today's moon in the current weather and in my places is a small shaded
+  sphere (`WeatherMoonSphere.qml` with `Moon.js`, shared with More Time)
+  the height of a line of text, lit from the right while it waxes and from
+  the left while it wanes, the other way round south of the equator; the
+  lit share stays beside it.
+- The week's temperature curve under the daily forecast no longer runs
+  past the scrolling strip into the window's margin: segments outside the
+  visible part are not drawn (curve-rendered lines wholly outside a
+  clipping area escaped the clip).
+- The bar widget's hover (entries on hover, open on hover and closing again,
+  the latch while the popup maps under the pointer) moved into
+  `WeatherBarHover.qml`, shared with More Time; behaviour unchanged.
+- New README pictures and `preview.png`, from live data:
+  `tests/ui-showcase.sh` takes them, `tools/build-preview.sh` puts them
+  together.
 - Development: the popup moved into `WeatherPopup.qml`, loaded only in the
   bar, so the panel also loads offscreen. `tests/ui-shots.sh` shoots every
   view offscreen with synthetic weather and no network

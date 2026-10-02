@@ -29,8 +29,8 @@ runs as a standalone app window.
   status notification.
 
 **In the popup and the app**
-- **Current conditions:** Temperature, feels-like, wind, humidity, the moon phase with
-  its lit share, the change against yesterday at the same hour and the next full or
+- **Current conditions:** Temperature, feels-like, wind, humidity, the moon phase (a
+  shaded sphere) with its lit share, the change against yesterday at the same hour and the next full or
   new moon, plus the moon behind the weather symbol at night. A button (or `w`) opens
   the place at a weather service: NWS in the USA, ECCC in Canada, yr.no elsewhere. In
   the popup, the button beside the gear (or `o`, or a click on the symbol or the
@@ -122,11 +122,11 @@ runs as a standalone app window.
 
 ## Screenshots
 
-| Chicago in °F, with an NWS warning | Tokyo in the rain, JMA radar | Tórshavn in a gale, wind map |
+| Chicago in °F, air quality and the week | Tokyo, JMA radar under the tab strip | Tórshavn, wind map |
 |---|---|---|
 | ![Chicago](screenshots/chicago.png) | ![Tokyo radar](screenshots/tokyo-radar.png) | ![Tórshavn wind](screenshots/torshavn-wind.png) |
 
-| Menu bar and widget | Settings | Data sources |
+| Menu bar with coloured values, and the widget | Settings | Data sources |
 |---|---|---|
 | ![Menu bar and widget](screenshots/menubar-widget.png) | ![Settings](screenshots/settings.png) | ![Sources](screenshots/sources.png) |
 
@@ -329,6 +329,12 @@ tests/qml-syntax.sh    # every QML file parses (qmllint)
 tests/ui-shots.sh /tmp/shots    # screenshots of every view, offscreen
 ```
 
+`tests/ui-showcase.sh` takes the pictures above from live data (Chicago, Tokyo,
+Tórshavn and London as places, the current theme), and `tools/build-preview.sh
+<its output directory>` puts `screenshots/` and `preview.png` together from them.
+The version appears in `manifest.json` and in the user agent of
+`WeatherRequest.qml` and `WeatherImageStore.qml` (`more-weather/<major.minor>`).
+
 `tests/ui-shots.sh` runs the app view offscreen with a throwaway home and
 runtime directory, synthetic weather for Tórshavn (`tests/ui/fixtures/state.py`)
 and no network (`MORE_PLUGINS_OFFLINE=1`), and saves a picture of every tab,
@@ -338,8 +344,9 @@ downloaded, so the radar tab shows its model fallback.
 Some files are shared word for word with the sibling plugin
 [More Time](https://github.com/T-The-Coder/more-time) apart from their names
 (the switch rows, buttons, the bar placement, the app launcher entry, the
-request component, the place search with its parsers and their tests, the test
-helpers and the CI workflow).
+request component, the place search with its parsers and their tests, the bar
+hover, the moon sphere with its drawing and tests, the test helpers and the CI
+workflow).
 `tools/sync-shared.sh from-sibling` or `to-sibling` copies them when both
 repositories sit side by side, and `tests/shared-files.test.mjs` fails when
 they drift apart (it is skipped without the sibling, and per file while the

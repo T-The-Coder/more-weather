@@ -10,8 +10,8 @@
 set -euo pipefail
 
 pair=(more-time more-weather)
-renamed=(SwitchRow.qml SwitchToggle.qml BarPlacement.qml AppLauncherEntry.qml Request.qml Button.qml IconButton.qml PlaceSearch.qml)
-verbatim=(tests/qml-syntax.sh tests/load.mjs tests/shared-files.test.mjs .github/workflows/tests.yml tools/sync-shared.sh PlaceSearch.js tests/place-search.test.mjs)
+renamed=(SwitchRow.qml SwitchToggle.qml BarPlacement.qml AppLauncherEntry.qml Request.qml Button.qml IconButton.qml PlaceSearch.qml BarHover.qml MoonSphere.qml)
+verbatim=(tests/qml-syntax.sh tests/load.mjs tests/shared-files.test.mjs .github/workflows/tests.yml tools/sync-shared.sh PlaceSearch.js tests/place-search.test.mjs Moon.js tests/moon.test.mjs)
 
 root=$(cd "$(dirname "$0")/.." && pwd)
 

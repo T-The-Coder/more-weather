@@ -423,6 +423,8 @@ Column {
         panel: dailySection.panel
         step: (panel.forecastColumnWidth(forecastScroller.width) + panel.forecastColumnGap) / 24
         xOffset: -panel.forecastColumnGap / 2
+        visibleFrom: forecastScroller.contentX
+        visibleTo: forecastScroller.contentX + forecastScroller.width
         nowIndex: panel.weekHoursNowIndex
         // One label per high and per low of a day.
         extremaWindow: 8

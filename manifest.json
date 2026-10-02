@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "more-weather",
   "name": "More Weather",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Weather with official warnings, radar and wind maps you can move, temperature lines, rain alerts, my places and a standalone app",
   "kinds": [
     "bar-widget"

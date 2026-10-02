@@ -913,8 +913,17 @@ Panel {
     if (serviceLink && serviceLink.url) Qt.openUrlExternally(serviceLink.url)
   }
 
-  // Today's phase for the current-weather row: glyph and lit share.
+  // Today's phase for the current-weather row and my places: glyph (for
+  // the bar), lit share, and the shaded sphere's lit fraction (0–1).
   readonly property string heroMoonGlyph: Model.moonPhaseGlyph(nowDate)
+  readonly property real heroMoonPhase: Model.moonPhaseFraction(nowDate)
+  readonly property real heroMoonIlluminated: (1 - Math.cos(2 * Math.PI * heroMoonPhase)) / 2
+  // Where the sphere is lit (WeatherMoonSphere.litAngle): the waxing moon
+  // from the right, the waning from the left, the other way round south
+  // of the equator.
+  function moonLitAngle(mirrored) {
+    return (heroMoonPhase < 0.5) !== !!mirrored ? 0 : Math.PI
+  }
   readonly property string heroMoonText: localizedNumber(Model.moonIlluminationPercent(nowDate)) + "%"
   // A forecast day's phase, taken on that day's evening.
   function dayMoonGlyph(day) {

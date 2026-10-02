@@ -255,9 +255,10 @@ Column {
         for (var i = 0; i < shownKeys.length; ++i) {
           var key = shownKeys[i]
           var glyph = heroBlock.statGlyph(key)
+          var glyphWidth = key === "heroMoon" ? statValueMetrics.height + 2
+            : (glyph !== "" ? statValueMetrics.advanceWidth(glyph) : -Style.space(4))
           widest = Math.max(widest, statLabelMetrics.advanceWidth(heroBlock.statLabel(key)) + heroBlock.statLabel(key).length,
-            statValueMetrics.advanceWidth(heroBlock.statText(key))
-              + (glyph !== "" ? statValueMetrics.advanceWidth(glyph) + Style.space(4) : 0))
+            statValueMetrics.advanceWidth(heroBlock.statText(key)) + glyphWidth + Style.space(4))
         }
         return Math.ceil(widest)
       }
@@ -290,13 +291,24 @@ Column {
             font.letterSpacing: 1
           }
 
-          // A glyph (the moon's, mirrored south of the equator) and the value.
+          // A glyph (today's moon as a shaded sphere, lit from the side it
+          // is seen lit from at the place) and the value.
           Row {
             spacing: Style.space(4)
 
+            WeatherMoonSphere {
+              visible: parent.parent.modelData === "heroMoon"
+              anchors.verticalCenter: parent.verticalCenter
+              size: statValueMetrics.height
+              illuminated: panel.heroMoonIlluminated
+              phase: panel.heroMoonPhase
+              litAngle: panel.moonLitAngle(panel.moonMirrored)
+              ink: panel.foreground
+            }
+
             Text {
               id: statGlyph
-              visible: text !== ""
+              visible: text !== "" && parent.parent.modelData !== "heroMoon"
               anchors.verticalCenter: parent.verticalCenter
               text: heroBlock.statGlyph(parent.parent.modelData)
               color: panel.foreground

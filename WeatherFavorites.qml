@@ -65,7 +65,7 @@ Column {
     var widest = 0
     var rows = panel.favoriteRows
     for (var i = 0; i < rows.length; ++i) widest = Math.max(widest, valueMetrics.advanceWidth(valueText(rows[i], key)))
-    if (key === "favoritesMoon") widest += valueMetrics.advanceWidth(panel.heroMoonGlyph) + Style.space(4)
+    if (key === "favoritesMoon") widest += valueMetrics.height + 2 + Style.space(4)
     var heading = headingText(key)
     if (heading !== "") widest = Math.max(widest, headingMetrics.advanceWidth(heading) + heading.length)
     return Math.ceil(widest)
@@ -248,18 +248,16 @@ Column {
                   font.italic: favoriteRow.modelData.stale
                 }
 
-                // Moon phase glyph, mirrored south of the equator.
-                Text {
-                  id: favoriteMoon
+                // Today's moon, lit from the side it is seen lit from at
+                // the place (mirrored south of the equator).
+                WeatherMoonSphere {
                   visible: parent.modelData === "favoritesMoon"
-                  text: panel.heroMoonGlyph
-                  color: panel.foreground
-                  font.family: panel.fontFamily
-                  font.pixelSize: Style.font.body
-                  transform: Scale {
-                    origin.x: favoriteMoon.width / 2
-                    xScale: favoriteRow.modelData.moonMirrored ? -1 : 1
-                  }
+                  anchors.verticalCenter: parent.verticalCenter
+                  size: valueMetrics.height
+                  illuminated: panel.heroMoonIlluminated
+                  phase: panel.heroMoonPhase
+                  litAngle: panel.moonLitAngle(favoriteRow.modelData.moonMirrored)
+                  ink: panel.foreground
                 }
               }
             }

@@ -65,6 +65,7 @@ ShellRoot {
     function() {
       display("showFavorites", true)
       display("showAirQuality", true)
+      display("favoritesMoon", true)
       for (var i = 0; i < tabs.length; i++) display(tabs[i] + "AsTab", true)
     },
     function() { panel.activeTab = "favorites" },

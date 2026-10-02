@@ -19,6 +19,10 @@ Item {
   // Horizontal distance between points; the first sits half a step in,
   // moved by xOffset (the daily columns have a gap after each).
   property real step: count > 0 ? width / count : 0
+  // The part of the chart in view, for a chart inside a scroller (in the
+  // chart's coordinates); segments outside it are not drawn.
+  property real visibleFrom: -Infinity
+  property real visibleTo: Infinity
   property real xOffset: 0
   // Daylight per point (true, false, or undefined for no band).
   property var daylight: []
@@ -220,7 +224,10 @@ Item {
           readonly property real from: Number(lineItem.modelData.values[index])
           readonly property real to: Number(lineItem.modelData.values[index + 1])
           anchors.fill: parent
+          // Only segments that reach into the view: curve-rendered Shapes
+          // wholly outside a clipping Flickable were drawn past its edge.
           visible: isFinite(from) && isFinite(to)
+            && chart.xAt(index + 1) >= chart.visibleFrom && chart.xAt(index) <= chart.visibleTo
           opacity: segment.index < chart.nowIndex ? 0.4 : 1
           preferredRendererType: Shape.CurveRenderer
 
