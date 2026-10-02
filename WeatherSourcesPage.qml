@@ -108,7 +108,7 @@ Column {
     },
     {
       title: "sourceGroupMoon", details: "sourceGroupMoonDetails",
-      inUse: label("sourceLocalCalculation"),
+      inUse: panel.upperLabel(label("sourceLocalCalculation")),
       links: []
     }
   ]
@@ -171,8 +171,8 @@ Column {
             width: Math.min(implicitWidth, parent.width * 0.55)
             horizontalAlignment: Text.AlignRight
             text: sourceCard.modelData.inUse !== ""
-              ? sourcesPage.label("sourceInUse") + " · " + sourceCard.modelData.inUse
-              : sourcesPage.label("sourceNotInUse")
+              ? sourcesPage.panel.upperLabel(sourcesPage.label("sourceInUse")) + " · " + sourceCard.modelData.inUse
+              : sourcesPage.panel.upperLabel(sourcesPage.label("sourceNotInUse"))
             color: sourceCard.modelData.inUse !== ""
               ? Color.accent : sourcesPage.panel.subtleText
             font.family: sourcesPage.panel.fontFamily
@@ -194,7 +194,7 @@ Column {
         // Where each source applies; keys follow the group title.
         Text {
           width: parent.width
-          text: "<b>" + sourcesPage.label("sourceCoverage") + "</b> "
+          text: "<b>" + sourcesPage.panel.upperLabel(sourcesPage.label("sourceCoverage")) + "</b> "
             + sourcesPage.label(sourceCard.modelData.title + "Coverage")
           textFormat: Text.StyledText
           color: sourcesPage.panel.mutedText

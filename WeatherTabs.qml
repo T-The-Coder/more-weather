@@ -1,5 +1,6 @@
 import QtQuick
 import qs.Commons
+import qs.Ui
 
 // The sections set to "as tab" share this strip, in their chosen order; the
 // number keys pick them the same way. Only the picked section is created.
@@ -27,15 +28,18 @@ Column {
     id: tabStrip
     anchors.horizontalCenter: parent.horizontalCenter
     spacing: Style.space(5)
-    // Up to six tabs share the width; a few keep the familiar size.
-    readonly property real tabWidth: Math.min(Style.space(82),
+    readonly property real tabWidth: Math.min(Style.space(96),
       (tabsSection.width - spacing * Math.max(0, panel.displayTabs.length - 1))
         / Math.max(1, panel.displayTabs.length))
+    // Too narrow for a readable name (all seven sections as tabs): the
+    // glyph alone, the name in a tooltip.
+    readonly property bool glyphOnly: tabWidth < Style.space(80)
 
     Repeater {
       model: panel.displayTabs
 
       Rectangle {
+        id: tabItem
         required property string modelData
         readonly property bool selected: modelData === panel.currentTab
         width: tabStrip.tabWidth
@@ -44,17 +48,36 @@ Column {
         color: selected || tabMouse.containsMouse
           ? Style.hoverFillFor(panel.foreground, Color.accent) : "transparent"
 
-        Text {
+        // The section's glyph, then its name (if there is room).
+        Row {
           anchors.centerIn: parent
+          spacing: Style.space(4)
           width: Math.min(implicitWidth, parent.width - Style.space(8))
-          text: panel.sectionTabLabel(modelData)
-          color: parent.selected
-            ? Style.hoverStateColor(panel.foreground, Color.accent)
-            : panel.mutedText
-          font.family: panel.fontFamily
-          font.pixelSize: Style.font.caption
-          font.bold: parent.selected
-          elide: Text.ElideRight
+
+          Text {
+            id: tabGlyph
+            anchors.verticalCenter: parent.verticalCenter
+            text: panel.sectionTabGlyph(parent.parent.modelData)
+            color: parent.parent.selected
+              ? Style.hoverStateColor(panel.foreground, Color.accent)
+              : panel.mutedText
+            font.family: panel.fontFamily
+            font.pixelSize: Style.font.body
+          }
+
+          Text {
+            visible: !tabStrip.glyphOnly
+            anchors.verticalCenter: parent.verticalCenter
+            width: Math.min(implicitWidth, parent.parent.width - Style.space(8) - tabGlyph.width - parent.spacing)
+            text: panel.sectionTabLabel(parent.parent.modelData)
+            color: parent.parent.selected
+              ? Style.hoverStateColor(panel.foreground, Color.accent)
+              : panel.mutedText
+            font.family: panel.fontFamily
+            font.pixelSize: Style.font.caption
+            font.bold: parent.parent.selected
+            elide: Text.ElideRight
+          }
         }
 
         MouseArea {
@@ -62,7 +85,13 @@ Column {
           anchors.fill: parent
           hoverEnabled: true
           cursorShape: Qt.PointingHandCursor
-          onClicked: panel.activeTab = modelData
+          onClicked: panel.activeTab = parent.modelData
+        }
+
+        PanelToolTip {
+          visible: tabStrip.glyphOnly && tabMouse.containsMouse
+          text: panel.sectionTabLabel(tabItem.modelData)
+          fontFamily: panel.fontFamily
         }
       }
     }

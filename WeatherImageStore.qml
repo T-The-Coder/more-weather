@@ -23,9 +23,12 @@ QtObject {
   // minutes, so stay at three.
   readonly property int maxParallel: 3
   readonly property int timeoutSeconds: 20
-  readonly property string userAgent: "more-weather/2.1 (+https://github.com/T-The-Coder/more-weather)"
+  readonly property string userAgent: "more-weather/3.0 (+https://github.com/T-The-Coder/more-weather)"
   readonly property string cacheDir: (Quickshell.env("XDG_CACHE_HOME") || (Quickshell.env("HOME") + "/.cache"))
     + "/more-weather/map-images"
+
+  // MORE_PLUGINS_OFFLINE=1 (the screenshot runs in tests/) downloads nothing.
+  readonly property bool offline: Quickshell.env("MORE_PLUGINS_OFFLINE") === "1"
 
   // Bumped whenever a picture's state changes; consumers bind to it.
   property int revision: 0
@@ -108,9 +111,10 @@ QtObject {
       active++
       fetchComponent.createObject(store, {
         url: url,
-        command: ["bash", "-c", script, "more-weather-image", url, record.path,
-          String(maxBytes), String(maxDimension), String(timeoutSeconds), userAgent,
-          record.reuse ? "1" : "0"]
+        command: offline ? ["bash", "-c", "exit 7"]
+          : ["bash", "-c", script, "more-weather-image", url, record.path,
+            String(maxBytes), String(maxDimension), String(timeoutSeconds), userAgent,
+            record.reuse ? "1" : "0"]
       })
     }
   }
@@ -121,7 +125,7 @@ QtObject {
     if (record && record.state === "loading") {
       record.state = exitCode === 0 ? "ready" : "failed"
       if (exitCode === 63 || exitCode === 65)
-        console.warn("weather: map image rejected (" + (exitCode === 63 ? "too large" : "not a valid PNG") + "):", url.split("?")[0])
+        console.warn("more-weather: map image rejected (" + (exitCode === 63 ? "too large" : "not a valid PNG") + "):", url.split("?")[0])
       revision++
     }
     pump()

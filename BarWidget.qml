@@ -47,15 +47,34 @@ BarWidget {
   }
 
   // --- hover ------------------------------------------------------------
-  // Entries set to "on hover" show while the pointer rests on the widget,
+  // Entries set to "Hover" show while the pointer rests on the widget,
   // and the popup can open from hover alone. Once the popup is open it covers
   // the bar, so the panel's hover zones (widget spot, and the stretch from
   // it to the card) stand in for the button.
   readonly property bool pointerOnWidget: button.tooltipHovered
   // Text and symbols in the bar turn bold while the pointer rests on them,
-  // also with the popup open over the widget's spot.
-  readonly property bool barBold: pointerOnWidget
-    || (opened && !!panelLoader.item && panelLoader.item.popupPointerOnAnchor)
+  // also with the popup open over the widget's spot (menu bar setting
+  // "Bold while hovered").
+  readonly property bool barHoverHeld: !!panelLoader.item
+    && (pointerOnWidget || (opened && panelLoader.item.popupPointerOnAnchor))
+  readonly property bool barBold: barHoverHeld && panelLoader.item.menubarBoldOnHover
+  // The values take the popup's colour accents always, or while the bar
+  // would turn bold (menu bar setting "Colour the values"), never with the
+  // global colour switch off.
+  readonly property bool barAccents: !!panelLoader.item && panelLoader.item.colorAccents
+    && (panelLoader.item.menubarAccents === "always"
+      || (panelLoader.item.menubarAccents === "hover" && barHoverHeld))
+  // An entry's accent, or the bar's text colour.
+  function accentColor(key) {
+    var accent = barAccents ? panelLoader.item.menubarAccentFor(key) : ""
+    return accent !== "" ? accent : button.foreground
+  }
+  // A value in its accent inside a styled line; plain without one.
+  function accentSpan(value, key) {
+    var escaped = String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    var accent = barAccents ? panelLoader.item.menubarAccentFor(key) : ""
+    return accent !== "" ? "<font color=\"" + String(accent) + "\">" + escaped + "</font>" : escaped
+  }
   // Opened while the pointer was on the widget; holds until the popup's
   // zones have seen the pointer, since they only learn of it once it moves.
   property bool hoverLatched: false
@@ -207,9 +226,29 @@ BarWidget {
 
         Text {
           readonly property string entryKey: parent ? parent.modelData : ""
-          property bool entryVisible: !root.vertical && text !== ""
+          property bool entryVisible: !root.vertical && plainText !== ""
           visible: entryVisible
-          text: {
+          // Label and value with the value in its accent, for the entries
+          // the popup colours; "" for the rest and with accents off.
+          readonly property string accentText: {
+            if (!root.barAccents || plainText === "") return ""
+            var p = panelLoader.item
+            if (entryKey === "currentTemperature") return root.accentSpan(plainText, entryKey)
+            if (entryKey === "currentFeelsLike")
+              return root.accentSpan(p.i18n("feelsLikeShort") + " ", "") + root.accentSpan(p.menubarReportFeels, entryKey)
+            if (entryKey === "currentWind")
+              return root.accentSpan(p.i18n("wind") + " ", "") + root.accentSpan(p.menubarReportWind, entryKey)
+            if (entryKey === "currentUv") return "UV " + root.accentSpan(plainText.slice(3), entryKey)
+            if (entryKey === "currentDayRange") {
+              var ends = plainText.split(" / ")
+              if (ends.length !== 2) return ""
+              return root.accentSpan(ends[0], "currentDayMin") + " / " + root.accentSpan(ends[1], "currentDayMax")
+            }
+            return ""
+          }
+          text: accentText !== "" ? accentText : plainText
+          textFormat: accentText !== "" ? Text.StyledText : Text.PlainText
+          readonly property string plainText: {
             if (!panelLoader.item) return ""
             if (entryKey === "currentLocation") return panelLoader.item.menubarShowLocation ? panelLoader.item.reportLocation : ""
             if (entryKey === "currentTemperature") return panelLoader.item.menubarShowTemperature ? panelLoader.item.menubarTemperatureText : ""
@@ -425,7 +464,7 @@ BarWidget {
           Text {
             anchors.verticalCenter: parent.verticalCenter
             text: panelLoader.item ? panelLoader.item.menubarRainBadgeText : ""
-            color: button.foreground
+            color: root.accentColor("currentRain")
             font.family: root.bar ? root.bar.fontFamily : Style.font.family
             font.pixelSize: Style.font.body
             font.bold: root.barBold

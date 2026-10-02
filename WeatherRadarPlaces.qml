@@ -87,7 +87,7 @@ Item {
       }
       panel.radarPlacesLoading = false
       if (exitCode !== 0 || !panel.radarPlacesResponseAccepted)
-        console.warn("weather: all OSM place providers failed; retaining last good labels")
+        console.warn("more-weather: all OSM place providers failed; retaining last good labels")
       var moved = Model.geographicDistanceKm(panel.mapViewLatitude, panel.mapViewLongitude,
         panel.radarPlacesRequestLatitude, panel.radarPlacesRequestLongitude)
       var requestedExtentChanged = moved + panel.mapRadiusKm * 1.18 > panel.radarPlacesRequestRadiusKm
@@ -100,12 +100,12 @@ Item {
       try {
         var response = JSON.parse(raw)
         if (!response || !Array.isArray(response.elements)) {
-          console.warn("weather: OSM place query returned no element list")
+          console.warn("more-weather: OSM place query returned no element list")
           return
         }
         var places = Model.parseOverpassPlaces(raw, panel.radarPlacesRequestLanguage)
         if (!places.length) {
-          console.warn("weather: OSM place query returned no usable places")
+          console.warn("more-weather: OSM place query returned no usable places")
           return
         }
         var cache = {
@@ -120,7 +120,7 @@ Item {
         panel.radarPlaceCache = cache
         panel.radarPlacesCacheFile.setText(JSON.stringify(cache) + "\n")
       } catch (e) {
-        console.warn("weather: could not parse OSM place response:", e)
+        console.warn("more-weather: could not parse OSM place response:", e)
       }
     }
   }

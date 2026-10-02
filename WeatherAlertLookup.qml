@@ -68,7 +68,7 @@ QtObject {
       delete calls[message.id]
       lookup.pendingCalls = calls
       if (!call || call.generation !== lookup.generation) return
-      if (message.error) console.warn("weather: warning parser failed:", message.error)
+      if (message.error) console.warn("more-weather: warning parser failed:", message.error)
       call.done(message.error ? null : message.result)
     }
   }

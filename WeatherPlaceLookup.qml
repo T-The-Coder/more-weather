@@ -73,7 +73,7 @@ Item {
       return
     }
     if (panel.placeRetries >= 2) {
-      console.warn("weather: place lookup failed:", panel.placeRequestKind)
+      console.warn("more-weather: place lookup failed:", panel.placeRequestKind)
       // Without coordinates there is no forecast to fetch at all; that makes
       // this the definitive refresh failure and may unlock the cache.
       if (!panel.hasConfiguredCoordinates && !panel.areaInfo) panel.recordForecastRefreshFailure()

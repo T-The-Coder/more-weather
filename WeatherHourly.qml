@@ -31,7 +31,7 @@ Column {
       Text {
         id: hourlyTitle
         anchors.left: parent.left
-        text: panel.i18n("hourly")
+        text: panel.upperLabel(panel.i18n("hourly"))
         color: panel.mutedText
         font.family: panel.fontFamily
         font.pixelSize: Style.font.bodySmall

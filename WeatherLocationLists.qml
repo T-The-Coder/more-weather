@@ -184,7 +184,7 @@ Column {
             panel.searchFocusSection = "suggestions"
             panel.suggestionIndex = index
           }
-          onClicked: panel.pickSuggestion(modelData)
+          onClicked: panel.placeSearchPick(index)
         }
 
         Rectangle {

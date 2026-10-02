@@ -35,7 +35,7 @@ Item {
 
   property Process entryProc: Process {
     onExited: function(exitCode) {
-      if (exitCode !== 0) console.warn("weather: app launcher entry command failed with exit code", exitCode)
+      if (exitCode !== 0) console.warn("more-weather: app launcher entry command failed with exit code", exitCode)
       busy = false
       desktopFileView.reload()
     }

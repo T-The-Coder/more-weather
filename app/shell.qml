@@ -22,7 +22,7 @@ ShellRoot {
         }
       }
     } catch (e) {
-      console.warn("weather app: could not read shell settings:", e)
+      console.warn("more-weather app: could not read shell settings:", e)
     }
     return ({ refreshMinutes: 15, unit: "metric" })
   }

@@ -15,7 +15,7 @@ Rectangle {
 
   MouseArea { anchors.fill: parent }
 
-  // Menu bar entries have two switch columns, "always" and "on hover"; both
+  // Menu bar entries have two switch columns, "Always" and "Hover"; both
   // columns take the width of the longer heading.
   TextMetrics {
     id: alwaysHeadingMetrics
@@ -79,6 +79,7 @@ Rectangle {
       title: panel.upperLabel(panel.i18n("barBehavior")),
       masterKey: "",
       options: [
+        { key: "boldOnHover", title: panel.i18n("boldOnHover"), accentsBelow: true },
         { key: "openWidgetOnHover", title: panel.i18n("openWidgetOnHover") }
       ],
       hint: panel.i18n("openWidgetOnHoverHint"),
@@ -101,7 +102,7 @@ Rectangle {
     // move but not be hidden or become a tab (it holds place, refresh
     // and settings), so its card has no master switch.
     {
-      title: panel.i18n("currentWeather"),
+      title: panel.upperLabel(panel.i18n("currentWeather")),
       masterKey: "",
       sectionKey: "current",
       fixedSection: true,
@@ -146,7 +147,7 @@ Rectangle {
       hasDefaultTab: false
     },
     {
-      title: panel.i18n("hourly"),
+      title: panel.upperLabel(panel.i18n("hourly")),
       masterKey: "showHourly",
       sectionKey: "hourly",
       options: [
@@ -162,7 +163,7 @@ Rectangle {
       hasDefaultTab: false
     },
     {
-      title: panel.i18n("daily"),
+      title: panel.upperLabel(panel.i18n("daily")),
       masterKey: "showDaily",
       sectionKey: "daily",
       options: [
@@ -294,6 +295,13 @@ Rectangle {
   readonly property bool barPositionUsable: panel.barPlacement.section !== "" && !panel.barPlacement.busy
   // Set by the hover-unit dropdown, which sits inside a card delegate.
   property var hoverUnitDropdown: null
+  // "Colour the values" in the menu bar, below "Bold while hovered".
+  readonly property var barAccentsOptions: [
+    { value: "off", label: panel.i18n("menubarAccents_off") },
+    { value: "hover", label: panel.i18n("menubarAccents_hover") },
+    { value: "always", label: panel.i18n("menubarAccents_always") }
+  ]
+  property var barAccentsDropdown: null
 
   function cardRowsEnabled(card) {
     var enabled = card.masterKey === "" || panel.settingsDisplaySetting(card.masterKey, true)
@@ -312,6 +320,8 @@ Rectangle {
         { id: "radarRefresh", type: "dropdown" }, { id: "launcher", type: "launcher" },
         { id: "transferPath", type: "path" }, { id: "exportSettings", type: "button" },
         { id: "importSettings", type: "button" })
+      if (panel.cityImport.available) general.push({ id: "importCities", type: "button" })
+      if (!panel.displayOptionsStore.generalIsDefault()) general.push({ id: "restoreGeneral", type: "button" })
       return general
     }
     if (panel.settingsPage !== "display") return []
@@ -338,6 +348,7 @@ Rectangle {
             orderListKey: panel.orderListKeyForSetting(option.key),
             orderEntry: panel.orderKeyForSetting(option.key)
           })
+          if (option.accentsBelow) items.push({ id: "barAccents", type: "dropdown" })
         }
         if (card.hasHoverUnit) items.push({ id: "hoverUnit", type: "dropdown" })
         if (card.hasMapStyle) items.push({ id: "mapStyle", type: "dropdown" })
@@ -357,8 +368,8 @@ Rectangle {
     return null
   }
 
-  // Columns of a menu bar row: always, when relevant (if it has a rule),
-  // on hover. Other rows have the one switch.
+  // Columns of a menu bar row: "Always", "Relevant" (if it has a rule),
+  // "Hover". Other rows have the one switch.
   function switchColumns(item) {
     var columns = []
     if (item.key !== "") columns.push(item.key)
@@ -408,6 +419,7 @@ Rectangle {
     if (id === "rainThreshold") return spec(rainThresholdOptions, rainThresholdDropdown, display("rainAlertThreshold", "any"))
     if (id === "rainRadius") return spec(rainRadiusOptions, rainRadiusDropdown, display("rainAlertRadius", "25"))
     if (id === "mapStyle") return spec(mapStyleOptions, mapStyleDropdown, display("mapStyle", "drawn"))
+    if (id === "barAccents") return spec(barAccentsOptions, barAccentsDropdown, display("menubarAccents", "hover"))
     return spec(hoverUnitOptions, hoverUnitDropdown, display("hoverUnitSystem", ""))
   }
 
@@ -429,7 +441,7 @@ Rectangle {
     else if (item.type === "switch") {
       var columns = switchColumns(item)
       var next = focusColumn + delta
-      // Rows without a "when relevant" rule skip that column.
+      // Rows without a "Relevant" rule skip that column.
       if (next === 1 && columns[1] === "") next += delta
       if (next >= 0 && next < columns.length) focusColumn = next
     } else if (item.type === "placement") {
@@ -465,6 +477,10 @@ Rectangle {
       exportButton.press()
     } else if (item.id === "importSettings") {
       importButton.press()
+    } else if (item.id === "importCities") {
+      importCitiesButton.press()
+    } else if (item.id === "restoreGeneral") {
+      restoreGeneralButton.press()
     } else if (item.id === "restoreOrder") {
       restoreOrderButton.press()
     } else if (item.id === "restoreDefaults") {
@@ -481,7 +497,7 @@ Rectangle {
   // takes the keyboard focus.
   function ensureVisible(target) {
     if (!target) return
-    Qt.callLater(function() {
+    panel.defer(function() {
       var top = target.mapToItem(settingsColumn, 0, 0).y - Style.space(8)
       var bottom = top + target.height + Style.space(16)
       var maximum = Math.max(0, settingsFlick.contentHeight - settingsFlick.height)
@@ -652,9 +668,9 @@ Rectangle {
             Text {
               id: pageLabel
               anchors.centerIn: parent
-              text: panel.i18n(parent.modelData === "shortcuts" ? "settingsPageShortcuts"
+              text: panel.upperLabel(panel.i18n(parent.modelData === "shortcuts" ? "settingsPageShortcuts"
                 : (parent.modelData === "sources" ? "settingsPageSources"
-                  : (parent.modelData === "general" ? "settingsPageGeneral" : "settingsPageDisplay"))).toUpperCase()
+                  : (parent.modelData === "general" ? "settingsPageGeneral" : "settingsPageDisplay"))))
               color: parent.selected
                 ? Style.hoverStateColor(panel.foreground, Color.accent)
                 : panel.mutedText
@@ -727,7 +743,7 @@ Rectangle {
           spacing: Style.space(8)
 
           Text {
-            text: panel.i18n("general")
+            text: panel.upperLabel(panel.i18n("general"))
             color: panel.foreground
             font.family: panel.fontFamily
             font.pixelSize: Style.font.bodySmall
@@ -965,7 +981,7 @@ Rectangle {
           Row {
             spacing: Style.space(10)
 
-            WeatherSettingsButton {
+            WeatherButton {
               id: exportButton
               panel: settingsView.panel
               enabled: !panel.settingsTransfer.busy
@@ -975,7 +991,7 @@ Rectangle {
               onActivated: panel.settingsTransfer.exportTo(transferPathField.text)
             }
 
-            WeatherSettingsButton {
+            WeatherButton {
               id: importButton
               panel: settingsView.panel
               enabled: !panel.settingsTransfer.busy
@@ -1009,6 +1025,59 @@ Rectangle {
             wrapMode: Text.Wrap
           }
 
+          // Places: More Time's world clock cities as saved places.
+          Text {
+            topPadding: Style.space(6)
+            text: panel.upperLabel(panel.i18n("placesSettings"))
+            color: panel.foreground
+            font.family: panel.fontFamily
+            font.pixelSize: Style.font.bodySmall
+            font.bold: true
+            font.letterSpacing: 1
+          }
+
+          WeatherButton {
+            id: importCitiesButton
+            panel: settingsView.panel
+            enabled: panel.cityImport.available
+            label: panel.i18n("importCitiesFromTime")
+            kbFocused: settingsView.focusId === "importCities"
+            onKbFocusedChanged: if (kbFocused) settingsView.ensureVisible(this)
+            onActivated: panel.cityImport.run()
+          }
+
+          // How the last import went.
+          Text {
+            readonly property var status: panel.cityImport.status
+            visible: status !== null
+            width: parent.width
+            text: status ? panel.i18n("importCitiesResult", { added: status.added, existing: status.existing }) : ""
+            color: panel.foreground
+            font.family: panel.fontFamily
+            font.pixelSize: Style.font.caption
+            wrapMode: Text.Wrap
+          }
+
+          Text {
+            width: parent.width
+            text: panel.i18n(panel.cityImport.available ? "importCitiesHint" : "importCitiesMissing")
+            color: panel.mutedText
+            font.family: panel.fontFamily
+            font.pixelSize: Style.font.caption
+            wrapMode: Text.Wrap
+          }
+
+          // Only while a general option differs from its default.
+          WeatherButton {
+            id: restoreGeneralButton
+            visible: !panel.displayOptionsStore.generalIsDefault()
+            panel: settingsView.panel
+            label: panel.i18n("restoreGeneralDefaults")
+            confirmLabel: panel.i18n("restoreDefaultsConfirm")
+            kbFocused: settingsView.focusId === "restoreGeneral"
+            onKbFocusedChanged: if (kbFocused) settingsView.ensureVisible(this)
+            onActivated: panel.displayOptionsStore.restoreGeneralDefaults()
+          }
         }
       }
 
@@ -1179,7 +1248,7 @@ Rectangle {
               opacity: 0.12
             }
 
-            // Column headings over the "always" and "on hover" switches.
+            // Column headings over the "Always" and "Hover" switches.
             Item {
               readonly property bool hasHoverColumn: {
                 var options = settingsCard.groupData.options
@@ -1217,23 +1286,78 @@ Rectangle {
             Repeater {
               model: panel.settingsOrderedOptions(settingsCard.groupData.options)
 
-              WeatherSwitchRow {
-                panel: settingsView.panel
+              // A switch row; "Bold while hovered" carries the bar's
+              // colour choice right under it.
+              Column {
+                id: optionBlock
                 required property var modelData
                 width: settingsCardContent.width
-                settingKey: modelData.key
-                title: modelData.title
-                relevantKey: modelData.relevant ? modelData.key + "WhenRelevant" : ""
-                orderListKey: panel.orderListKeyForSetting(modelData.key)
-                orderEntry: panel.orderKeyForSetting(modelData.key)
-                hoverKey: modelData.hover ? modelData.key + "OnHover" : ""
-                kbFocused: settingsView.focusId === "switch:" + modelData.key
-                kbColumn: settingsView.focusColumn
-                onKbFocusedChanged: if (kbFocused) settingsView.ensureVisible(this)
-                columnWidth: settingsView.switchColumnWidth
-                rowEnabled: (settingsCard.groupData.masterKey === ""
-                  || panel.settingsDisplaySetting(settingsCard.groupData.masterKey, true))
-                  && settingsCard.cardEnabled
+
+                WeatherSwitchRow {
+                  panel: settingsView.panel
+                  readonly property var modelData: optionBlock.modelData
+                  width: settingsCardContent.width
+                  settingKey: modelData.key
+                  title: modelData.title
+                  relevantKey: modelData.relevant ? modelData.key + "WhenRelevant" : ""
+                  orderListKey: panel.orderListKeyForSetting(modelData.key)
+                  orderEntry: panel.orderKeyForSetting(modelData.key)
+                  hoverKey: modelData.hover ? modelData.key + "OnHover" : ""
+                  kbFocused: settingsView.focusId === "switch:" + modelData.key
+                  kbColumn: settingsView.focusColumn
+                  onKbFocusedChanged: if (kbFocused) settingsView.ensureVisible(this)
+                  columnWidth: settingsView.switchColumnWidth
+                  rowEnabled: (settingsCard.groupData.masterKey === ""
+                    || panel.settingsDisplaySetting(settingsCard.groupData.masterKey, true))
+                    && settingsCard.cardEnabled
+                }
+
+                Item {
+                  visible: !!optionBlock.modelData.accentsBelow
+                  width: parent.width
+                  height: visible ? Style.space(40) : 0
+
+                  Text {
+                    anchors.left: parent.left
+                    anchors.leftMargin: Style.space(12)
+                    anchors.right: barAccentsDropdownItem.left
+                    anchors.rightMargin: Style.space(8)
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: panel.i18n("menubarAccents")
+                    color: panel.foreground
+                    font.family: panel.fontFamily
+                    font.pixelSize: Style.font.bodySmall
+                    elide: Text.ElideRight
+                  }
+
+                  Dropdown {
+                    id: barAccentsDropdownItem
+                    anchors.right: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
+                    width: Style.space(150)
+                    showLabel: false
+                    fontFamily: panel.fontFamily
+                    hasCursor: settingsView.focusId === "barAccents"
+                    onHasCursorChanged: if (hasCursor) settingsView.ensureVisible(this)
+                    onPopupOpenChanged: if (!popupOpen) panel.restoreKeyFocus()
+                    Component.onCompleted: if (optionBlock.modelData.accentsBelow) settingsView.barAccentsDropdown = this
+                    value: String(panel.settingsDisplaySetting("menubarAccents", "hover"))
+                    options: settingsView.barAccentsOptions
+                    onChanged: function(value) { panel.displayOptionsStore.setSettingsDisplaySetting("menubarAccents", value) }
+                  }
+                }
+
+                Text {
+                  visible: !!optionBlock.modelData.accentsBelow
+                  x: Style.space(12)
+                  width: parent.width - Style.space(24)
+                  bottomPadding: visible ? Style.space(6) : 0
+                  text: panel.i18n("menubarAccentsHint")
+                  color: panel.mutedText
+                  font.family: panel.fontFamily
+                  font.pixelSize: Style.font.caption
+                  wrapMode: Text.WordWrap
+                }
               }
             }
 
@@ -1550,7 +1674,7 @@ Rectangle {
         spacing: Style.space(10)
 
       // Order only: one press, since nothing switches off with it.
-      WeatherSettingsButton {
+      WeatherButton {
         id: restoreOrderButton
         panel: settingsView.panel
         width: Math.min((settingsColumn.width - Style.space(10)) / 2, implicitWidth)
@@ -1563,7 +1687,7 @@ Rectangle {
 
       // Two-step reset: the first press arms it, a second one within a few
       // seconds restores the selected view's factory defaults.
-      WeatherSettingsButton {
+      WeatherButton {
         id: restoreDefaultsButton
         readonly property bool isDefault: panel.displayOptionsStore.settingsDisplayIsDefault()
         panel: settingsView.panel

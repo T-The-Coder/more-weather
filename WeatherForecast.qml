@@ -33,14 +33,13 @@ Column {
 
     Text {
       id: forecastTitle
-      text: forecastSection.isRadar
+      text: panel.upperLabel(forecastSection.isRadar
         ? (panel.radarUsesModelFallback
           ? panel.i18n("precipitationModelCurrent")
           : (panel.radarActiveProviderId === "dwd"
             ? panel.i18n("rainForecastTwoHours")
             : panel.i18n("rainRadarPastTwoHours")))
-        : (forecastSection.isRain ? panel.i18n("rainForecastTwoHours")
-          : panel.upperLabel(panel.i18n("wind")))
+        : (forecastSection.isRain ? panel.i18n("rainForecastTwoHours") : panel.i18n("wind")))
       color: panel.mutedText
       font.family: panel.fontFamily
       font.pixelSize: Style.font.bodySmall

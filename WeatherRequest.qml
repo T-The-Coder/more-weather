@@ -1,4 +1,5 @@
 import QtQuick
+import Quickshell
 import Quickshell.Io
 
 // One HTTP request, run through curl in a child process. The response size is
@@ -39,9 +40,8 @@ QtObject {
   // Error bodies are only read for short reasons such as Open-Meteo's 429.
   readonly property int maxErrorChars: 4096
 
-  // Identifies this client to services that require it (MET Norway, NWS,
-  // Overpass); harmless everywhere else.
-  readonly property string userAgent: "more-weather/2.1 (+https://github.com/T-The-Coder/more-weather)"
+  // Identifies this client to services that require it; harmless everywhere else.
+  readonly property string userAgent: "more-weather/3.0 (+https://github.com/T-The-Coder/more-weather)"
 
   // $1 is the stdout ceiling; the rest are curl's arguments, passed as argv so
   // nothing from a request is ever parsed by the shell. The ceiling leaves room
@@ -55,6 +55,9 @@ QtObject {
     + "trap 'pkill -TERM -P $$; exit 143' TERM; "
     + "curl \"$@\" | head -c \"$limit\" | base64 -w0 & wait $!"
   property bool binaryResponse: false
+  // MORE_PLUGINS_OFFLINE=1 (the screenshot runs in tests/) never starts curl:
+  // every request ends at once as a network failure (exit code 7).
+  readonly property bool offline: Quickshell.env("MORE_PLUGINS_OFFLINE") === "1"
 
   property bool pendingExit: false
   property bool pendingStream: false
@@ -95,8 +98,9 @@ QtObject {
     pendingCode = 0
     if (proc.running) proc.running = false
     binaryResponse = !!spec.binary
-    proc.command = ["bash", "-c", binaryResponse ? binaryScript : script,
-      "more-weather-request", String(maxBytes + 16)].concat(args)
+    proc.command = offline ? ["bash", "-c", "exit 7"]
+      : ["bash", "-c", binaryResponse ? binaryScript : script,
+        "more-weather-request", String(maxBytes + 16)].concat(args)
     proc.token = generation
     // curl's --max-time is the real timeout; this only catches a stuck process.
     timeoutTimer.interval = timeoutMs + 5000
@@ -114,7 +118,7 @@ QtObject {
     var body = cut >= 0 ? out.slice(0, cut) : ""
     var ok = exitCode === 0 && httpStatus >= 200 && httpStatus < 300
     if (exitCode === 0 && !ok) exitCode = httpStatus > 0 ? 22 : 7
-    if (exitCode === 63) console.warn("weather: response over size limit dropped:", String(request && request.url || "").split("?")[0])
+    if (exitCode === 63) console.warn("more-weather: response over size limit dropped:", String(request && request.url || "").split("?")[0])
     status = httpStatus
     errorText = !ok && exitCode === 22 ? body.slice(0, maxErrorChars) : ""
     complete(exitCode, ok ? body : "")

@@ -6,7 +6,74 @@ All notable changes to More Weather are documented here.
 
 - While the pointer rests on the weather in the menu bar, its text and
   symbols turn bold (the sun-event arrow with a heavier line), also with the
-  popup open over the widget.
+  popup open over the widget. A new switch, **Bold while hovered** (on by
+  default), sits above "Open the widget on hover" in the menu bar settings,
+  is reached by the keyboard and travels with export and import.
+- The place search runs through `WeatherPlaceSearch.qml` with
+  `PlaceSearch.js`, shared with More Time: Open-Meteo's geocoder with up to
+  eight results, Nominatim when it fails or finds nothing, duplicates (same
+  spot, or the same name a few kilometres off) removed, 350 ms after the last
+  keystroke, one request at a time. Its keys, now the same in both plugins
+  and on the Shortcuts page: ↑ ↓ move within the results or the saved
+  places, Tab / ⇧ Tab switch between them, Enter uses the result or
+  switches to the saved place, Esc closes. `+` (add the marked result) and
+  `−` (remove the marked saved place) act only while the saved places have
+  the focus (after Tab); in the results they are typed into the field, so
+  names like "Saint-Denis" can be searched. Results carry the country code
+  (`countryCode`) besides name, region, country and time zone.
+- Settings → General → Places: **Import cities from More Time** adds More
+  Time's world clock cities with coordinates that are not saved yet, in
+  their order, and says how many were added and how many were there
+  already. Without More Time's city list the button is off, with a hint.
+- The values in the menu bar can take the popup's colour accents: a new
+  menu bar setting **Colour the values** (right below "Bold while hovered",
+  keyboard-reachable, part of export, import and reset) is off, while
+  hovered (default, the same moment the bar turns bold) or always.
+  Temperature, the day's low and high, feels-like, wind, UV and the rain
+  chance use the popup's own accent functions, so bar and popup agree; the
+  symbol, sun times, moon, rain amount and pollen stay plain, the warning
+  mark and the air quality dot keep their own colours, and the global
+  "Colour accents" switch turns it off as well.
+- The tabs show their section's symbol next to the name (places, air,
+  hourly, daily, rain, radar, wind), in the style of More Time's tabs. When
+  the strip is too narrow for the names (all seven sections as tabs, where
+  "My places" was cut short), it shows the symbols alone, the name as a
+  tooltip.
+- In the popup, a button beside the gear opens the app (as do `o` and a
+  click on the symbol or the temperature). All four controls of that line
+  (service link, refresh, app, gear) share one muted colour, hover colour and
+  size; the refresh arrow is now a symbol from the same icon set.
+- Settings → General has a **Reset general settings** button while a general
+  option differs from its default (the wind map's height stays).
+- Texts shared with More Time now read like More Time's, in all 30
+  languages but in More Weather's own words for settings, widget, app and
+  menu bar (French "paramètres", Finnish "pienoissovellus", Hungarian
+  "minialkalmazás" and so on; older texts that used another word, such as
+  the French "réglages" or the European Portuguese "definições", now use the
+  same one): "What the menu bar / widget / app shows", "Each view has its own
+  settings.", "Reset this view", "Reset order", "Relevant" and "Hover" for the
+  switch columns (the hints quote them), "Open the widget on hover", "Tab on
+  opening", "To the top / bottom", and the keyboard hints on the settings
+  pages. The app launcher hint says what the app shares with the bar, and the
+  shortcut texts for Esc, Ctrl + , and the click that opens the app were
+  reworded.
+- Headings stored in capitals (General, Hourly, Daily, the rain chart titles,
+  the shortcut groups, the warning levels, In use, Coverage…) are now stored
+  in normal case and set in capitals where they are shown, so Greek loses
+  its accents there as it should.
+- README: a Keyboard table and an IPC section, the fixed path to the app
+  launcher switch (Settings → General), and one section order shared with
+  More Time.
+- Log lines start with `more-weather:`; the user agent says `more-weather/3.0`.
+- Development: the popup moved into `WeatherPopup.qml`, loaded only in the
+  bar, so the panel also loads offscreen. `tests/ui-shots.sh` shoots every
+  view offscreen with synthetic weather and no network, plus the menu bar
+  with coloured values
+  (`MORE_PLUGINS_OFFLINE=1`); a new i18n test checks that every key the QML
+  asks for exists, another that no language has keys English lacks.
+  `WeatherSettingsButton` is now `WeatherButton`, and the files shared with
+  More Time are kept in step by `tools/sync-shared.sh` and checked by
+  `tests/shared-files.test.mjs`.
 
 ## 3.0.0 — 2026-09-30
 

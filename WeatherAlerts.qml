@@ -91,7 +91,7 @@ Column {
 
         Text {
           width: parent.width
-          text: panel.warningSeverityLabel(modelData.severity) + " · " + modelData.event
+          text: panel.upperLabel(panel.warningSeverityLabel(modelData.severity)) + " · " + modelData.event
             + (panel.displayAlertProviderId !== ""
               ? " · " + panel.i18n(Providers.alertLabelKey(panel.displayAlertProviderId)) : "")
           color: panel.warningColorForSeverity(modelData.severity)

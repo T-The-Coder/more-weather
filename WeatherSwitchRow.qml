@@ -131,9 +131,7 @@ Rectangle {
     ColumnCursor { visible: switchRow.kbFocused && switchRow.columned && switchRow.kbColumn === 0 }
   }
 
-  // Entries without a rule for "stands out" (place, temperature, humidity,
-  // warnings) leave this column empty rather than offer a switch that would
-  // mean the same as the one beside it.
+  // Entries without a rule for “relevant” leave this column empty rather than offer a switch that would mean the same as the one beside it.
   Item {
     id: relevantColumn
     visible: switchRow.columned

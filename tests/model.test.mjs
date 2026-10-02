@@ -114,3 +114,21 @@ test("clock times are the place's", () => {
   assert.strictEqual(Model.placeClock(instant, 9 * 3600), "07:10")
   assert.strictEqual(Model.placeClock(instant, -5 * 3600), "17:10")
 })
+
+test("More Time's cities join the saved places once, in their order", () => {
+  const saved = [{ name: "Reykjavík", latitude: 64.1466, longitude: -21.9426 }]
+  const raw = JSON.stringify([
+    { name: "Tokyo", country: "Japan", tz: "Asia/Tokyo", lat: 35.6895, lon: 139.6917 },
+    { name: "Reykjavik", country: "Iceland", tz: "Atlantic/Reykjavik", lat: 64.13, lon: -21.9 },
+    { name: "UTC", country: "", tz: "Etc/UTC", lat: null, lon: null },
+    { name: "Nairobi", country: "Kenya", tz: "Africa/Nairobi", lat: -1.2833, lon: 36.8167 },
+    { name: "Tokio again", country: "Japan", tz: "Asia/Tokyo", lat: 35.69, lon: 139.69 }
+  ])
+  const result = Model.importedCities(saved, raw)
+  assert.deepEqual(result.list.map((p) => p.name), ["Reykjavík", "Tokyo", "Nairobi"])
+  assert.equal(result.added, 2)
+  assert.equal(result.existing, 2)
+  assert.equal(result.skipped, 1)
+  assert.equal(saved.length, 1)
+  assert.equal(Model.importedCities(saved, "not json").added, 0)
+})

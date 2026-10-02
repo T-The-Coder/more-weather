@@ -7,10 +7,10 @@
 var catalog = {
   en: {
     weather: "Weather",
-    warningExtreme: "EXTREME",
-    warningSevere: "SEVERE",
-    warningModerate: "MODERATE",
-    warningMinor: "MINOR",
+    warningExtreme: "Extreme",
+    warningSevere: "Severe",
+    warningModerate: "Moderate",
+    warningMinor: "Minor",
     effectiveNow: "effective now",
     untilFurtherNotice: "until further notice",
     updating: "updating…",
@@ -21,23 +21,23 @@ var catalog = {
     current: "current",
     now: "now",
     searchCity: "Search city",
-    feelsLike: "FEELS LIKE",
+    feelsLike: "Feels like",
     wind: "Wind",
     humidity: "Humidity",
     autoDetected: "Auto-detected",
     fetchingForecast: "Fetching forecast…",
-    hourly: "HOURLY",
-    daily: "DAILY",
-    forecast: "FORECAST",
+    hourly: "Hourly",
+    daily: "Daily",
+    forecast: "Forecast",
     settings: "Settings",
     app: "App",
     widget: "Widget",
     menubar: "Menu bar",
-    widgetSettings: "Widget settings",
-    appSettings: "App settings",
-    menubarSettings: "Menu bar settings",
-    displaySettingsHint: "Choose what the selected view shows.",
-    general: "GENERAL",
+    widgetSettings: "What the widget shows",
+    appSettings: "What the app shows",
+    menubarSettings: "What the menu bar shows",
+    displaySettingsHint: "Each view has its own settings.",
+    general: "General",
     unitSystem: "Unit system",
     metricUnits: "Metric",
     metricUnitsSummary: "°C · mm · km/h · km",
@@ -48,7 +48,7 @@ var catalog = {
     weatherSymbol: "Weather symbol",
     temperature: "Temperature",
     feelsLikeTemperature: "Feels-like temperature",
-    currentWeather: "CURRENT WEATHER",
+    currentWeather: "Current weather",
     location: "Location",
     precipitation: "Precipitation",
     weatherWarnings: "Weather warnings",
@@ -59,10 +59,10 @@ var catalog = {
     uvIndex: "UV index",
     sunriseSunset: "Sunrise / sunset",
     twoHourTotal: "Two-hour total",
-    defaultTab: "Default forecast tab",
-    rainForecastTwoHours: "RAIN FORECAST · 2 HOURS",
-    rainRadarPastTwoHours: "RAIN RADAR · PAST 2 HOURS",
-    precipitationModelCurrent: "PRECIPITATION MODEL · CURRENT",
+    defaultTab: "Tab on opening",
+    rainForecastTwoHours: "Rain forecast · 2 hours",
+    rainRadarPastTwoHours: "Rain radar · past 2 hours",
+    precipitationModelCurrent: "Precipitation model · current",
     sourceMosmix: "DWD MOSMIX",
     sourceRadar: "DWD RADAR",
     sourceBestMatch: "OPEN-METEO · BEST MATCH",
@@ -105,7 +105,7 @@ var catalog = {
     noWindData: "No wind model data available",
     cachedDataNotice: "Italic values come from the cache (max. 3 days old).",
     // Settings pages: keyboard shortcuts and data sources.
-    restoreDefaults: "Restore defaults",
+    restoreDefaults: "Reset this view",
     restoreDefaultsConfirm: "Click again to reset",
     defaultsActive: "Default settings active",
     useCurrentLocation: "Current location",
@@ -155,11 +155,11 @@ var catalog = {
     airQualityColor: "Color indicator",
     openInApp: "Open in app",
     shortcutOpenApp: "Open the app (widget)",
-    shortcutMouseOpenApp: "Symbol or temperature in the widget: open the app",
+    shortcutMouseOpenApp: "Open the app (click on the weather in the widget)",
     language: "Language",
     languageAuto: "Automatic ({language})",
     appLauncherEntry: "Show in app launcher",
-    appLauncherEntryHint: "Adds the More Weather app to the app launcher. If the plugin is removed, the entry deletes itself when it is next opened.",
+    appLauncherEntryHint: "Adds the More Weather app to the app launcher. The app shares its places, data and settings with the bar. If the plugin is removed, the entry deletes itself when it is next opened.",
     notifications: "Notifications",
     settingsPageDisplay: "Display",
     settingsPageShortcuts: "Shortcuts",
@@ -167,31 +167,31 @@ var catalog = {
     shortcutsSubtitle: "Keyboard and mouse",
     sourcesSubtitle: "Where the data comes from",
     shortcutsHint: "The same keys work in the widget and in the app.",
-    shortcutsGroupGeneral: "GENERAL",
-    shortcutsGroupNavigation: "SCROLLING",
-    shortcutsGroupForecast: "RAIN, RADAR & WIND",
-    shortcutsGroupSearch: "PLACE SEARCH",
-    shortcutsGroupSettings: "SETTINGS",
-    shortcutsGroupMouse: "MENU BAR",
-    shortcutClose: "Close search, settings or list, then the panel",
+    shortcutsGroupGeneral: "General",
+    shortcutsGroupNavigation: "Scrolling",
+    shortcutsGroupForecast: "Tabs & maps",
+    shortcutsGroupSearch: "Place search",
+    shortcutsGroupSettings: "Settings",
+    shortcutsGroupMouse: "Menu bar",
+    shortcutClose: "Close the search, the settings or the list, then the panel",
     shortcutSwitchPanel: "Next / previous bar panel (widget)",
-    shortcutSettings: "Open settings",
+    shortcutSettings: "Open the settings",
     shortcutRefresh: "Refresh now",
     shortcutSearch: "Search a place",
     shortcutScroll: "Scroll",
     shortcutPage: "Scroll a page",
-    shortcutJump: "Jump to top / bottom",
+    shortcutJump: "To the top / bottom",
     shortcutScrollDaily: "Scroll the daily forecast",
     shortcutViews: "Rain / radar / wind view",
     shortcutRadarStep: "Radar: previous / next frame",
     shortcutRadarPlay: "Radar: play / pause",
     shortcutZoom: "Map: zoom in / out",
     shortcutZoomReset: "Map: default zoom",
-    shortcutSearchSelect: "Choose a result",
-    shortcutSearchSection: "Switch between results and favorites",
-    shortcutSearchPick: "Show the chosen place",
-    shortcutSearchFavorite: "Add / remove favorite",
-    shortcutSearchCancel: "Cancel the search",
+    shortcutSearchSelect: "Move within the results or the saved places",
+    shortcutSearchSection: "Switch between results and saved places",
+    shortcutSearchPick: "Use the result, or switch to the saved place",
+    shortcutSearchAdd: "In the saved places (Tab): add the marked result",
+    shortcutSearchCancel: "Close the search",
     shortcutSettingsPages: "Previous / next settings page",
     shortcutSettingsClose: "Close settings",
     mouseLeft: "Left click",
@@ -201,11 +201,11 @@ var catalog = {
     shortcutMouseRefresh: "Refresh now",
     shortcutMouseNotify: "Weather as a notification",
     sourcesHint: "Sources are chosen per place and fall back automatically when one fails.",
-    sourceInUse: "IN USE",
-    sourceNotInUse: "not in use",
+    sourceInUse: "In use",
+    sourceNotInUse: "Not in use",
     sourceGroupForecast: "Current weather and forecast",
     sourceGroupForecastDetails: "Open-Meteo Best Match (the best national model per region), with MET Norway as fallback. In Norway, Sweden, Finland and Denmark MET Norway comes first, backed by its 1 km MET Nordic model. In the DWD area, DWD MOSMIX (via Bright Sky) refines temperature, rain and symbols.",
-    sourceCoverage: "COVERAGE",
+    sourceCoverage: "Coverage",
     sourceGroupForecastCoverage: "Worldwide. MET Norway first in NO, SE, FI, DK. DWD MOSMIX only in the DWD area (about 46.5–55.5° N, 5–16° E, beyond Germany too).",
     sourceGroupUvCoverage: "Worldwide.",
     sourceGroupNowcastCoverage: "Worldwide. MOSMIX rain values and the DWD radar amount only in the DWD area.",
@@ -234,7 +234,7 @@ var catalog = {
     sourceGroupMapDetails: "Satellite background: DWD GeoServer Blue Marble. City labels: OpenStreetMap via the Overpass API, cached for 30 days.",
     sourceGroupMoon: "Moon phase",
     sourceGroupMoonDetails: "Calculated locally (Meeus); mirrored for places south of the equator.",
-    sourceLocalCalculation: "LOCAL CALCULATION",
+    sourceLocalCalculation: "Local calculation",
     sourceRefreshInfo: "Refreshed every {minutes} min, the DWD radar every 5 min, shared between widget and app. Last update: {updated}.",
     barPosition: "Position in the bar",
     barPositionLeft: "Left",
@@ -245,34 +245,41 @@ var catalog = {
     barPositionHint: "Moves the widget within Omarchy's bar.",
     barPositionMissing: "The widget is not on the bar.",
     showAlways: "Always",
-    showOnHover: "On hover",
-    menubarHoverHint: "Entries set to “On hover” appear while the pointer rests on the weather in the bar.",
+    showOnHover: "Hover",
+    menubarHoverHint: "Entries set to “Hover” appear while the pointer rests on the weather in the bar.",
     barBehavior: "Behavior",
-    openWidgetOnHover: "Open widget on hover",
+    openWidgetOnHover: "Open the widget on hover",
     openWidgetOnHoverHint: "Opens the widget when the pointer rests on the weather in the bar, and closes it once the pointer moves away. A click keeps it open.",
     rainIntensity: "Rain intensity",
-    showWhenRelevant: "When relevant",
-    menubarRelevantCurrentHint: "“When relevant” shows an entry only when it stands out: feels-like 3° off the temperature, wind from 20 km/h, UV from 6.",
-    menubarRelevantRainHint: "“When relevant”: probability from 30 %, intensity while it rains, rain start within two hours. The rain start and the intensity take the probability's place.",
-    menubarRelevantAirHint: "“When relevant”: air quality from “poor”, pollen at a high level.",
+    showWhenRelevant: "Relevant",
+    menubarRelevantCurrentHint: "“Relevant” shows an entry only when it stands out: feels-like 3° off the temperature, wind from 20 km/h, UV from 6.",
+    menubarRelevantRainHint: "“Relevant”: probability from 30 %, intensity while it rains, rain start within two hours. The rain start and the intensity take the probability's place.",
+    menubarRelevantAirHint: "“Relevant”: air quality from “poor”, pollen at a high level.",
     kelvinUnits: "Kelvin",
     kelvinUnitsSummary: "K · mm · km/h · km",
     hoverUnitSystem: "Other units on hover",
     hoverUnitSystemOff: "Off",
     hoverUnitSystemHint: "While the pointer rests on the widget, the bar switches to this unit system. Kelvin changes temperatures only.",
-    restoreOrder: "Restore order",
+    restoreOrder: "Reset order",
     sunNext: "Next sun event",
     sunrise: "Sunrise",
     sunset: "Sunset",
     moonPhase: "Moon phase",
-    moon: "Moon"
+    moon: "Moon",
+    restoreGeneralDefaults: "Reset general settings",
+    boldOnHover: "Bold while hovered",
+    menubarAccents: "Colour the values",
+    menubarAccents_off: "Off",
+    menubarAccents_hover: "While hovered",
+    menubarAccents_always: "Always",
+    menubarAccentsHint: "The same accents as in the popup; with “Colour accents” (General) off, the bar stays plain."
   },
   de: {
     weather: "Wetter",
-    warningExtreme: "EXTREM",
-    warningSevere: "SCHWER",
-    warningModerate: "MÄSSIG",
-    warningMinor: "GERING",
+    warningExtreme: "Extrem",
+    warningSevere: "Schwer",
+    warningModerate: "Mäßig",
+    warningMinor: "Gering",
     effectiveNow: "ab sofort",
     untilFurtherNotice: "bis auf Weiteres",
     updating: "wird aktualisiert…",
@@ -283,23 +290,23 @@ var catalog = {
     current: "aktuell",
     now: "jetzt",
     searchCity: "Stadt suchen",
-    feelsLike: "GEFÜHLT",
+    feelsLike: "Gefühlt",
     wind: "Wind",
     humidity: "Feuchte",
     autoDetected: "Automatisch erkannt",
     fetchingForecast: "Vorhersage wird geladen…",
-    hourly: "STÜNDLICH",
-    daily: "TÄGLICH",
-    forecast: "VORHERSAGE",
+    hourly: "Stündlich",
+    daily: "Täglich",
+    forecast: "Vorhersage",
     settings: "Einstellungen",
     app: "App",
     widget: "Widget",
     menubar: "Menüleiste",
-    widgetSettings: "Widget-Einstellungen",
-    appSettings: "App-Einstellungen",
-    menubarSettings: "Menüleisten-Einstellungen",
-    displaySettingsHint: "Lege fest, was in der ausgewählten Ansicht angezeigt wird.",
-    general: "ALLGEMEIN",
+    widgetSettings: "Was das Widget zeigt",
+    appSettings: "Was die App zeigt",
+    menubarSettings: "Was die Menüleiste zeigt",
+    displaySettingsHint: "Jede Ansicht hat eigene Einstellungen.",
+    general: "Allgemein",
     unitSystem: "Einheitensystem",
     metricUnits: "Metrisch",
     metricUnitsSummary: "°C · mm · km/h · km",
@@ -310,7 +317,7 @@ var catalog = {
     weatherSymbol: "Wettersymbol",
     temperature: "Temperatur",
     feelsLikeTemperature: "Gefühlte Temperatur",
-    currentWeather: "AKTUELLES WETTER",
+    currentWeather: "Aktuelles Wetter",
     location: "Ort",
     precipitation: "Niederschlag",
     weatherWarnings: "Wetterwarnungen",
@@ -321,10 +328,10 @@ var catalog = {
     uvIndex: "UV-Index",
     sunriseSunset: "Sonnenauf- / -untergang",
     twoHourTotal: "2-Stunden-Summe",
-    defaultTab: "Standard-Tab im Forecast",
-    rainForecastTwoHours: "REGENVORSCHAU · 2 STUNDEN",
-    rainRadarPastTwoHours: "REGENRADAR · LETZTE 2 STUNDEN",
-    precipitationModelCurrent: "NIEDERSCHLAGSMODELL · AKTUELL",
+    defaultTab: "Tab beim Öffnen",
+    rainForecastTwoHours: "Regenvorschau · 2 Stunden",
+    rainRadarPastTwoHours: "Regenradar · letzte 2 Stunden",
+    precipitationModelCurrent: "Niederschlagsmodell · aktuell",
     sourceMosmix: "DWD MOSMIX",
     sourceRadar: "DWD RADAR",
     sourceBestMatch: "OPEN-METEO · BEST MATCH",
@@ -366,7 +373,7 @@ var catalog = {
     windDataLoading: "Winddaten werden geladen…",
     noWindData: "Keine Windmodelldaten verfügbar",
     cachedDataNotice: "Kursive Werte stammen aus dem Cache (max. 3 Tage alt).",
-    restoreDefaults: "Standardwerte wiederherstellen",
+    restoreDefaults: "Diese Ansicht zurücksetzen",
     restoreDefaultsConfirm: "Zum Zurücksetzen erneut klicken",
     defaultsActive: "Standardwerte aktiv",
     useCurrentLocation: "Aktueller Standort",
@@ -416,11 +423,11 @@ var catalog = {
     airQualityColor: "Farbindikator",
     openInApp: "In App öffnen",
     shortcutOpenApp: "App öffnen (Widget)",
-    shortcutMouseOpenApp: "Symbol oder Temperatur im Widget: App öffnen",
+    shortcutMouseOpenApp: "Die App öffnen (Klick auf das Wetter im Widget)",
     language: "Sprache",
     languageAuto: "Automatisch ({language})",
     appLauncherEntry: "Im App-Starter anzeigen",
-    appLauncherEntryHint: "Fügt die More-Weather-App dem App-Starter hinzu. Wird das Plugin entfernt, löscht sich der Eintrag beim nächsten Öffnen selbst.",
+    appLauncherEntryHint: "Fügt die More-Weather-App dem App-Starter hinzu. Die App teilt Orte, Daten und Einstellungen mit der Leiste. Wird das Plugin entfernt, löscht sich der Eintrag beim nächsten Öffnen selbst.",
     notifications: "Benachrichtigungen",
     settingsPageDisplay: "Anzeige",
     settingsPageShortcuts: "Tastenkürzel",
@@ -428,31 +435,31 @@ var catalog = {
     shortcutsSubtitle: "Tastatur und Maus",
     sourcesSubtitle: "Woher die Daten stammen",
     shortcutsHint: "Die Tasten gelten im Widget und in der App gleichermaßen.",
-    shortcutsGroupGeneral: "ALLGEMEIN",
-    shortcutsGroupNavigation: "SCROLLEN",
-    shortcutsGroupForecast: "REGEN, RADAR & WIND",
-    shortcutsGroupSearch: "ORTSSUCHE",
-    shortcutsGroupSettings: "EINSTELLUNGEN",
-    shortcutsGroupMouse: "MENÜLEISTE",
+    shortcutsGroupGeneral: "Allgemein",
+    shortcutsGroupNavigation: "Scrollen",
+    shortcutsGroupForecast: "Tabs & Karten",
+    shortcutsGroupSearch: "Ortssuche",
+    shortcutsGroupSettings: "Einstellungen",
+    shortcutsGroupMouse: "Menüleiste",
     shortcutClose: "Suche, Einstellungen oder Liste schließen, dann das Panel",
     shortcutSwitchPanel: "Nächstes / vorheriges Panel der Leiste (Widget)",
-    shortcutSettings: "Einstellungen öffnen",
+    shortcutSettings: "Die Einstellungen öffnen",
     shortcutRefresh: "Jetzt aktualisieren",
     shortcutSearch: "Ort suchen",
     shortcutScroll: "Scrollen",
     shortcutPage: "Seitenweise scrollen",
-    shortcutJump: "Zum Anfang / Ende",
+    shortcutJump: "Nach oben / unten",
     shortcutScrollDaily: "Tagesvorschau scrollen",
     shortcutViews: "Ansicht Regen / Radar / Wind",
     shortcutRadarStep: "Radar: Bild zurück / vor",
     shortcutRadarPlay: "Radar: abspielen / anhalten",
     shortcutZoom: "Karte: hinein- / herauszoomen",
     shortcutZoomReset: "Karte: Standard-Zoom",
-    shortcutSearchSelect: "Treffer auswählen",
-    shortcutSearchSection: "Zwischen Treffern und Favoriten wechseln",
-    shortcutSearchPick: "Gewählten Ort anzeigen",
-    shortcutSearchFavorite: "Favorit hinzufügen / entfernen",
-    shortcutSearchCancel: "Suche abbrechen",
+    shortcutSearchSelect: "In den Treffern oder gespeicherten Orten bewegen",
+    shortcutSearchSection: "Zwischen Treffern und gespeicherten Orten wechseln",
+    shortcutSearchPick: "Treffer übernehmen oder zum gespeicherten Ort wechseln",
+    shortcutSearchAdd: "In den gespeicherten Orten (Tab): markierten Treffer hinzufügen",
+    shortcutSearchCancel: "Suche schließen",
     shortcutSettingsPages: "Vorherige / nächste Einstellungsseite",
     shortcutSettingsClose: "Einstellungen schließen",
     mouseLeft: "Linksklick",
@@ -462,11 +469,11 @@ var catalog = {
     shortcutMouseRefresh: "Jetzt aktualisieren",
     shortcutMouseNotify: "Wetter als Benachrichtigung",
     sourcesHint: "Die Quellen werden je nach Ort gewählt; fällt eine aus, springt automatisch die nächste ein.",
-    sourceInUse: "AKTIV",
-    sourceNotInUse: "nicht aktiv",
+    sourceInUse: "In Gebrauch",
+    sourceNotInUse: "Nicht in Gebrauch",
     sourceGroupForecast: "Aktuelles Wetter und Vorhersage",
     sourceGroupForecastDetails: "Open-Meteo Best Match (das beste nationale Modell je Region), bei Ausfall MET Norway. In Norwegen, Schweden, Finnland und Dänemark hat MET Norway Vorrang, gestützt auf sein 1-km-Modell MET Nordic. Im DWD-Gebiet verfeinert DWD MOSMIX (über Bright Sky) Temperatur, Regen und Symbole.",
-    sourceCoverage: "ABDECKUNG",
+    sourceCoverage: "Abdeckung",
     sourceGroupForecastCoverage: "Weltweit. MET Norway zuerst in NO, SE, FI, DK. DWD MOSMIX nur im DWD-Gebiet (ca. 46,5–55,5° N, 5–16° O, also auch über Deutschland hinaus).",
     sourceGroupUvCoverage: "Weltweit.",
     sourceGroupNowcastCoverage: "Weltweit. MOSMIX-Regenwerte und die DWD-Radarmenge nur im DWD-Gebiet.",
@@ -495,7 +502,7 @@ var catalog = {
     sourceGroupMapDetails: "Satellitenhintergrund: DWD-GeoServer Blue Marble. Städtenamen: OpenStreetMap über die Overpass API, 30 Tage zwischengespeichert.",
     sourceGroupMoon: "Mondphase",
     sourceGroupMoonDetails: "Lokal berechnet (Meeus); südlich des Äquators gespiegelt.",
-    sourceLocalCalculation: "LOKALE BERECHNUNG",
+    sourceLocalCalculation: "Lokale Berechnung",
     sourceRefreshInfo: "Aktualisierung alle {minutes} min, das DWD-Radar alle 5 min, gemeinsam für Widget und App. Letzte Aktualisierung: {updated}.",
     barPosition: "Position in der Leiste",
     barPositionLeft: "Links",
@@ -506,16 +513,16 @@ var catalog = {
     barPositionHint: "Verschiebt das Widget innerhalb der Omarchy-Leiste.",
     barPositionMissing: "Das Widget ist nicht in der Leiste.",
     showAlways: "Immer",
-    showOnHover: "Beim Überfahren",
-    menubarHoverHint: "Einträge mit „Beim Überfahren“ erscheinen, solange der Mauszeiger auf dem Wetter in der Leiste ruht.",
+    showOnHover: "Hover",
+    menubarHoverHint: "Einträge mit „Hover“ erscheinen, solange der Mauszeiger auf dem Wetter in der Leiste ruht.",
     barBehavior: "Verhalten",
     openWidgetOnHover: "Widget beim Überfahren öffnen",
     openWidgetOnHoverHint: "Öffnet das Widget, wenn der Mauszeiger auf dem Wetter in der Leiste ruht, und schließt es, sobald er sich entfernt. Ein Klick hält es offen.",
     rainIntensity: "Regenintensität",
-    showWhenRelevant: "Wenn relevant",
-    menubarRelevantCurrentHint: "„Wenn relevant“ zeigt einen Eintrag nur, wenn er auffällt: gefühlte Temperatur 3° neben der Temperatur, Wind ab 20 km/h, UV ab 6.",
-    menubarRelevantRainHint: "„Wenn relevant“: Wahrscheinlichkeit ab 30 %, Intensität solange es regnet, Regenbeginn innerhalb von zwei Stunden. Regenbeginn und Intensität nehmen den Platz der Wahrscheinlichkeit ein.",
-    menubarRelevantAirHint: "„Wenn relevant“: Luftqualität ab „schlecht“, Pollen bei hoher Belastung.",
+    showWhenRelevant: "Relevant",
+    menubarRelevantCurrentHint: "„Relevant“ zeigt einen Eintrag nur, wenn er auffällt: gefühlte Temperatur 3° neben der Temperatur, Wind ab 20 km/h, UV ab 6.",
+    menubarRelevantRainHint: "„Relevant“: Wahrscheinlichkeit ab 30 %, Intensität solange es regnet, Regenbeginn innerhalb von zwei Stunden. Regenbeginn und Intensität nehmen den Platz der Wahrscheinlichkeit ein.",
+    menubarRelevantAirHint: "„Relevant“: Luftqualität ab „schlecht“, Pollen bei hoher Belastung.",
     kelvinUnits: "Kelvin",
     kelvinUnitsSummary: "K · mm · km/h · km",
     hoverUnitSystem: "Beim Überfahren andere Einheiten",
@@ -526,7 +533,14 @@ var catalog = {
     sunrise: "Sonnenaufgang",
     sunset: "Sonnenuntergang",
     moonPhase: "Mondphase",
-    moon: "Mond"
+    moon: "Mond",
+    restoreGeneralDefaults: "Allgemeine Einstellungen zurücksetzen",
+    boldOnHover: "Fett beim Überfahren",
+    menubarAccents: "Werte einfärben",
+    menubarAccents_off: "Aus",
+    menubarAccents_hover: "Beim Überfahren",
+    menubarAccents_always: "Immer",
+    menubarAccentsHint: "Dieselben Akzente wie im Popup; ist „Farbakzente“ (Allgemein) aus, bleibt die Leiste einfarbig."
   }
 }
 
@@ -591,225 +605,225 @@ function addCompactCatalog(language, values) {
 }
 
 addCompactCatalog("es", [
-  "Tiempo", "EXTREMO", "GRAVE", "MODERADO", "LEVE", "vigente ahora", "hasta nuevo aviso", "actualizando…", "ahora mismo", "hace {count} min", "hace {count} h", "Hoy", "actual", "ahora", "Buscar ciudad",
-  "SENSACIÓN", "Viento", "Humedad", "Detectado automáticamente", "Obteniendo pronóstico…", "POR HORAS", "DIARIO", "PRONÓSTICO", "Ajustes", "Aplicación", "Widget", "Barra de menú", "Ajustes del widget", "Ajustes de la aplicación", "Ajustes de la barra de menú", "Elige qué muestra la vista seleccionada.",
-  "GENERAL", "Sistema de unidades", "Métrico", "EE. UU. / Imperial", "Hora", "Día de la semana", "Símbolo meteorológico", "Temperatura", "Sensación térmica", "TIEMPO ACTUAL", "Ubicación", "Precipitación", "Avisos meteorológicos", "Sens.", "Temperatura mín. / máx.", "Probabilidad de lluvia", "Cantidad de lluvia", "Índice UV", "Amanecer / atardecer", "Total de dos horas", "Pestaña de pronóstico predeterminada",
-  "PRONÓSTICO DE LLUVIA · 2 HORAS", "RADAR DE LLUVIA · ÚLTIMAS 2 HORAS", "MODELO DE PRECIPITACIÓN · ACTUAL", "Lluvia", "Probabilidad", "Intensidad", "Sin lluvia", "Débil", "Moderada", "Fuerte", "Extrema", "Radar",
+  "Tiempo", "Extremo", "Grave", "Moderado", "Leve", "vigente ahora", "hasta nuevo aviso", "actualizando…", "ahora mismo", "hace {count} min", "hace {count} h", "Hoy", "actual", "ahora", "Buscar ciudad",
+  "Sensación", "Viento", "Humedad", "Detectado automáticamente", "Obteniendo pronóstico…", "Por horas", "Diario", "Pronóstico", "Ajustes", "Aplicación", "Widget", "Barra de menú", "Lo que muestra el widget", "Lo que muestra la aplicación", "Lo que muestra la barra de menú", "Cada vista tiene sus propios ajustes.",
+  "General", "Sistema de unidades", "Métrico", "EE. UU. / Imperial", "Hora", "Día de la semana", "Símbolo meteorológico", "Temperatura", "Sensación térmica", "Tiempo actual", "Ubicación", "Precipitación", "Avisos meteorológicos", "Sens.", "Temperatura mín. / máx.", "Probabilidad de lluvia", "Cantidad de lluvia", "Índice UV", "Amanecer / atardecer", "Total de dos horas", "Pestaña al abrir",
+  "Pronóstico de lluvia · 2 horas", "Radar de lluvia · últimas 2 horas", "Modelo de precipitación · actual", "Lluvia", "Probabilidad", "Intensidad", "Sin lluvia", "Débil", "Moderada", "Fuerte", "Extrema", "Radar",
   "No se espera lluvia · {amount} {unit} / 2 h", "Total: {amount} {unit} / 2 h", "Sin datos; esperando actualización…", "Cargando mapa de radar…", "No hay datos de radar disponibles en esta ubicación", "{location} · {speed} {unit} desde {direction} · ráfagas {gust} {unit}", "Cargando datos de viento…", "No hay datos del modelo de viento", "Los valores en cursiva vienen de la caché (máx. 3 días)."
 ])
 
 addCompactCatalog("fr", [
-  "Météo", "EXTRÊME", "SÉVÈRE", "MODÉRÉE", "MINEURE", "en vigueur maintenant", "jusqu’à nouvel ordre", "actualisation…", "à l’instant", "il y a {count} min", "il y a {count} h", "Aujourd’hui", "actuel", "maintenant", "Rechercher une ville",
-  "RESSENTI", "Vent", "Humidité", "Détecté automatiquement", "Chargement des prévisions…", "PAR HEURE", "QUOTIDIEN", "PRÉVISIONS", "Paramètres", "Application", "Widget", "Barre de menus", "Paramètres du widget", "Paramètres de l’application", "Paramètres de la barre de menus", "Choisissez ce qu’affiche la vue sélectionnée.",
-  "GÉNÉRAL", "Système d’unités", "Métrique", "US / Impérial", "Heure", "Jour de la semaine", "Symbole météo", "Température", "Température ressentie", "MÉTÉO ACTUELLE", "Lieu", "Précipitations", "Alertes météo", "Ressenti", "Température min. / max.", "Probabilité de pluie", "Quantité de pluie", "Indice UV", "Lever / coucher du soleil", "Total sur deux heures", "Onglet de prévision par défaut",
-  "PRÉVISION DE PLUIE · 2 HEURES", "RADAR DE PLUIE · 2 DERNIÈRES HEURES", "MODÈLE DE PRÉCIPITATIONS · ACTUEL", "Pluie", "Probabilité", "Intensité", "Pas de pluie", "Faible", "Modérée", "Forte", "Extrême", "Radar",
+  "Météo", "Extrême", "Sévère", "Modérée", "Mineure", "en vigueur maintenant", "jusqu’à nouvel ordre", "actualisation…", "à l’instant", "il y a {count} min", "il y a {count} h", "Aujourd’hui", "actuel", "maintenant", "Rechercher une ville",
+  "Ressenti", "Vent", "Humidité", "Détecté automatiquement", "Chargement des prévisions…", "Par heure", "Quotidien", "Prévisions", "Paramètres", "Application", "Widget", "Barre de menus", "Ce qu’affiche le widget", "Ce qu’affiche l’application", "Ce qu’affiche la barre de menus", "Chaque vue a ses propres réglages.",
+  "Général", "Système d’unités", "Métrique", "US / Impérial", "Heure", "Jour de la semaine", "Symbole météo", "Température", "Température ressentie", "Météo actuelle", "Lieu", "Précipitations", "Alertes météo", "Ressenti", "Température min. / max.", "Probabilité de pluie", "Quantité de pluie", "Indice UV", "Lever / coucher du soleil", "Total sur deux heures", "Onglet à l’ouverture",
+  "Prévision de pluie · 2 heures", "Radar de pluie · 2 dernières heures", "Modèle de précipitations · actuel", "Pluie", "Probabilité", "Intensité", "Pas de pluie", "Faible", "Modérée", "Forte", "Extrême", "Radar",
   "Aucune pluie prévue · {amount} {unit} / 2 h", "Total : {amount} {unit} / 2 h", "Aucune donnée – en attente d’actualisation…", "Chargement de la carte radar…", "Aucune donnée radar disponible à cet endroit", "{location} · {speed} {unit} de {direction} · rafales {gust} {unit}", "Chargement des données de vent…", "Aucune donnée de modèle de vent disponible", "Les valeurs en italique viennent du cache (3 jours max.)."
 ])
 
 addCompactCatalog("pt", [
-  "Tempo", "EXTREMO", "SEVERO", "MODERADO", "LEVE", "em vigor agora", "até novo aviso", "atualizando…", "agora mesmo", "há {count} min", "há {count} h", "Hoje", "atual", "agora", "Buscar cidade",
-  "SENSAÇÃO", "Vento", "Umidade", "Detectado automaticamente", "Obtendo previsão…", "POR HORA", "DIÁRIO", "PREVISÃO", "Configurações", "Aplicativo", "Widget", "Barra de menu", "Configurações do widget", "Configurações do aplicativo", "Configurações da barra de menu", "Escolha o que a visualização selecionada mostra.",
-  "GERAL", "Sistema de unidades", "Métrico", "EUA / Imperial", "Hora", "Dia da semana", "Símbolo do tempo", "Temperatura", "Sensação térmica", "TEMPO ATUAL", "Local", "Precipitação", "Alertas meteorológicos", "Sensação", "Temperatura mín. / máx.", "Probabilidade de chuva", "Volume de chuva", "Índice UV", "Nascer / pôr do sol", "Total de duas horas", "Aba de previsão padrão",
-  "PREVISÃO DE CHUVA · 2 HORAS", "RADAR DE CHUVA · ÚLTIMAS 2 HORAS", "MODELO DE PRECIPITAÇÃO · ATUAL", "Chuva", "Probabilidade", "Intensidade", "Sem chuva", "Fraca", "Moderada", "Forte", "Extrema", "Radar",
+  "Tempo", "Extremo", "Severo", "Moderado", "Leve", "em vigor agora", "até novo aviso", "atualizando…", "agora mesmo", "há {count} min", "há {count} h", "Hoje", "atual", "agora", "Buscar cidade",
+  "Sensação", "Vento", "Umidade", "Detectado automaticamente", "Obtendo previsão…", "Por hora", "Diário", "Previsão", "Configurações", "Aplicativo", "Widget", "Barra de menu", "O que o widget mostra", "O que o aplicativo mostra", "O que a barra de menu mostra", "Cada vista tem as suas configurações.",
+  "Geral", "Sistema de unidades", "Métrico", "EUA / Imperial", "Hora", "Dia da semana", "Símbolo do tempo", "Temperatura", "Sensação térmica", "Tempo atual", "Local", "Precipitação", "Alertas meteorológicos", "Sensação", "Temperatura mín. / máx.", "Probabilidade de chuva", "Volume de chuva", "Índice UV", "Nascer / pôr do sol", "Total de duas horas", "Aba ao abrir",
+  "Previsão de chuva · 2 horas", "Radar de chuva · últimas 2 horas", "Modelo de precipitação · atual", "Chuva", "Probabilidade", "Intensidade", "Sem chuva", "Fraca", "Moderada", "Forte", "Extrema", "Radar",
   "Sem chuva prevista · {amount} {unit} / 2 h", "Total: {amount} {unit} / 2 h", "Sem dados – aguardando atualização…", "Carregando mapa do radar…", "Não há dados de radar disponíveis neste local", "{location} · {speed} {unit} de {direction} · rajadas {gust} {unit}", "Carregando dados de vento…", "Não há dados do modelo de vento", "Os valores em itálico vêm do cache (até 3 dias)."
 ])
 
 addCompactCatalog("ru", [
-  "Погода", "ЭКСТРЕМАЛЬНАЯ", "ОПАСНАЯ", "УМЕРЕННАЯ", "НЕЗНАЧИТЕЛЬНАЯ", "действует сейчас", "до дальнейшего уведомления", "обновление…", "только что", "{count} мин назад", "{count} ч назад", "Сегодня", "текущая", "сейчас", "Поиск города",
-  "ОЩУЩАЕТСЯ", "Ветер", "Влажность", "Определено автоматически", "Загрузка прогноза…", "ПО ЧАСАМ", "ПО ДНЯМ", "ПРОГНОЗ", "Настройки", "Приложение", "Виджет", "Строка меню", "Настройки виджета", "Настройки приложения", "Настройки строки меню", "Выберите, что показывать в выбранном представлении.",
-  "ОБЩИЕ", "Система единиц", "Метрическая", "США / Имперская", "Время", "День недели", "Значок погоды", "Температура", "Ощущаемая температура", "ТЕКУЩАЯ ПОГОДА", "Местоположение", "Осадки", "Предупреждения о погоде", "Ощущ.", "Мин. / макс. температура", "Вероятность дождя", "Количество осадков", "УФ-индекс", "Восход / закат", "Сумма за два часа", "Вкладка прогноза по умолчанию",
-  "ПРОГНОЗ ДОЖДЯ · 2 ЧАСА", "РАДАР ОСАДКОВ · ПОСЛЕДНИЕ 2 ЧАСА", "МОДЕЛЬ ОСАДКОВ · ТЕКУЩАЯ", "Дождь", "Вероятность", "Интенсивность", "Без дождя", "Слабая", "Умеренная", "Сильная", "Экстремальная", "Радар",
+  "Погода", "Экстремальная", "Опасная", "Умеренная", "Незначительная", "действует сейчас", "до дальнейшего уведомления", "обновление…", "только что", "{count} мин назад", "{count} ч назад", "Сегодня", "текущая", "сейчас", "Поиск города",
+  "Ощущается", "Ветер", "Влажность", "Определено автоматически", "Загрузка прогноза…", "По часам", "По дням", "Прогноз", "Настройки", "Приложение", "Виджет", "Строка меню", "Что показывает виджет", "Что показывает приложение", "Что показывает строка меню", "У каждого вида свои настройки.",
+  "Общие", "Система единиц", "Метрическая", "США / Имперская", "Время", "День недели", "Значок погоды", "Температура", "Ощущаемая температура", "Текущая погода", "Местоположение", "Осадки", "Предупреждения о погоде", "Ощущ.", "Мин. / макс. температура", "Вероятность дождя", "Количество осадков", "УФ-индекс", "Восход / закат", "Сумма за два часа", "Вкладка при открытии",
+  "Прогноз дождя · 2 часа", "Радар осадков · последние 2 часа", "Модель осадков · текущая", "Дождь", "Вероятность", "Интенсивность", "Без дождя", "Слабая", "Умеренная", "Сильная", "Экстремальная", "Радар",
   "Дождь не ожидается · {amount} {unit} / 2 ч", "Всего: {amount} {unit} / 2 ч", "Нет данных — ожидание обновления…", "Загрузка карты радара…", "Для этого места нет радиолокационных данных", "{location} · {speed} {unit}, направление {direction} · порывы {gust} {unit}", "Загрузка данных о ветре…", "Нет данных модели ветра", "Значения курсивом взяты из кэша (не старше 3 дней)."
 ])
 
 addCompactCatalog("uk", [
-  "Погода", "ЕКСТРЕМАЛЬНА", "НЕБЕЗПЕЧНА", "ПОМІРНА", "НЕЗНАЧНА", "діє зараз", "до подальшого повідомлення", "оновлення…", "щойно", "{count} хв тому", "{count} год тому", "Сьогодні", "поточна", "зараз", "Пошук міста",
-  "ВІДЧУВАЄТЬСЯ", "Вітер", "Вологість", "Визначено автоматично", "Завантаження прогнозу…", "ЩОГОДИНИ", "ЩОДНЯ", "ПРОГНОЗ", "Налаштування", "Застосунок", "Віджет", "Панель меню", "Налаштування віджета", "Налаштування застосунку", "Налаштування панелі меню", "Виберіть, що показувати у вибраному поданні.",
-  "ЗАГАЛЬНІ", "Система одиниць", "Метрична", "США / Імперська", "Час", "День тижня", "Символ погоди", "Температура", "Відчутна температура", "ПОТОЧНА ПОГОДА", "Розташування", "Опади", "Попередження про погоду", "Відч.", "Мін. / макс. температура", "Імовірність дощу", "Кількість опадів", "УФ-індекс", "Схід / захід сонця", "Сума за дві години", "Типова вкладка прогнозу",
-  "ПРОГНОЗ ДОЩУ · 2 ГОДИНИ", "РАДАР ОПАДІВ · ОСТАННІ 2 ГОДИНИ", "МОДЕЛЬ ОПАДІВ · ПОТОЧНА", "Дощ", "Імовірність", "Інтенсивність", "Без дощу", "Слабка", "Помірна", "Сильна", "Екстремальна", "Радар",
+  "Погода", "Екстремальна", "Небезпечна", "Помірна", "Незначна", "діє зараз", "до подальшого повідомлення", "оновлення…", "щойно", "{count} хв тому", "{count} год тому", "Сьогодні", "поточна", "зараз", "Пошук міста",
+  "Відчувається", "Вітер", "Вологість", "Визначено автоматично", "Завантаження прогнозу…", "Щогодини", "Щодня", "Прогноз", "Налаштування", "Застосунок", "Віджет", "Панель меню", "Що показує віджет", "Що показує застосунок", "Що показує панель меню", "Кожен вигляд має власні налаштування.",
+  "Загальні", "Система одиниць", "Метрична", "США / Імперська", "Час", "День тижня", "Символ погоди", "Температура", "Відчутна температура", "Поточна погода", "Розташування", "Опади", "Попередження про погоду", "Відч.", "Мін. / макс. температура", "Імовірність дощу", "Кількість опадів", "УФ-індекс", "Схід / захід сонця", "Сума за дві години", "Вкладка під час відкриття",
+  "Прогноз дощу · 2 години", "Радар опадів · останні 2 години", "Модель опадів · поточна", "Дощ", "Імовірність", "Інтенсивність", "Без дощу", "Слабка", "Помірна", "Сильна", "Екстремальна", "Радар",
   "Дощ не очікується · {amount} {unit} / 2 год", "Усього: {amount} {unit} / 2 год", "Немає даних — очікування оновлення…", "Завантаження карти радара…", "Для цього місця немає радарних даних", "{location} · {speed} {unit} з {direction} · пориви {gust} {unit}", "Завантаження даних про вітер…", "Немає даних моделі вітру", "Значення курсивом узято з кешу (не старше 3 днів)."
 ])
 
 addCompactCatalog("pl", [
-  "Pogoda", "EKSTREMALNE", "POWAŻNE", "UMIARKOWANE", "NIEWIELKIE", "obowiązuje teraz", "do odwołania", "aktualizowanie…", "przed chwilą", "{count} min temu", "{count} godz. temu", "Dzisiaj", "bieżące", "teraz", "Szukaj miasta",
-  "ODCZUWALNA", "Wiatr", "Wilgotność", "Wykryto automatycznie", "Pobieranie prognozy…", "GODZINOWO", "DZIENNIE", "PROGNOZA", "Ustawienia", "Aplikacja", "Widżet", "Pasek menu", "Ustawienia widżetu", "Ustawienia aplikacji", "Ustawienia paska menu", "Wybierz, co ma pokazywać wybrany widok.",
-  "OGÓLNE", "System jednostek", "Metryczny", "USA / Imperialny", "Czas", "Dzień tygodnia", "Symbol pogody", "Temperatura", "Temperatura odczuwalna", "AKTUALNA POGODA", "Położenie", "Opady", "Ostrzeżenia pogodowe", "Odczuw.", "Temperatura min. / maks.", "Prawdopodobieństwo deszczu", "Suma opadów", "Indeks UV", "Wschód / zachód słońca", "Suma dwugodzinna", "Domyślna karta prognozy",
-  "PROGNOZA DESZCZU · 2 GODZINY", "RADAR OPADÓW · OSTATNIE 2 GODZINY", "MODEL OPADÓW · BIEŻĄCY", "Deszcz", "Prawdopodobieństwo", "Natężenie", "Bez deszczu", "Słabe", "Umiarkowane", "Silne", "Ekstremalne", "Radar",
+  "Pogoda", "Ekstremalne", "Poważne", "Umiarkowane", "Niewielkie", "obowiązuje teraz", "do odwołania", "aktualizowanie…", "przed chwilą", "{count} min temu", "{count} godz. temu", "Dzisiaj", "bieżące", "teraz", "Szukaj miasta",
+  "Odczuwalna", "Wiatr", "Wilgotność", "Wykryto automatycznie", "Pobieranie prognozy…", "Godzinowo", "Dziennie", "Prognoza", "Ustawienia", "Aplikacja", "Widżet", "Pasek menu", "Co pokazuje widżet", "Co pokazuje aplikacja", "Co pokazuje pasek menu", "Każdy widok ma własne ustawienia.",
+  "Ogólne", "System jednostek", "Metryczny", "USA / Imperialny", "Czas", "Dzień tygodnia", "Symbol pogody", "Temperatura", "Temperatura odczuwalna", "Aktualna pogoda", "Położenie", "Opady", "Ostrzeżenia pogodowe", "Odczuw.", "Temperatura min. / maks.", "Prawdopodobieństwo deszczu", "Suma opadów", "Indeks UV", "Wschód / zachód słońca", "Suma dwugodzinna", "Karta przy otwarciu",
+  "Prognoza deszczu · 2 godziny", "Radar opadów · ostatnie 2 godziny", "Model opadów · bieżący", "Deszcz", "Prawdopodobieństwo", "Natężenie", "Bez deszczu", "Słabe", "Umiarkowane", "Silne", "Ekstremalne", "Radar",
   "Brak spodziewanego deszczu · {amount} {unit} / 2 godz.", "Suma: {amount} {unit} / 2 godz.", "Brak danych — oczekiwanie na odświeżenie…", "Ładowanie mapy radarowej…", "Brak danych radarowych dla tej lokalizacji", "{location} · {speed} {unit} z {direction} · porywy {gust} {unit}", "Ładowanie danych o wietrze…", "Brak danych modelu wiatru", "Wartości kursywą pochodzą z pamięci podręcznej (do 3 dni)."
 ])
 
 addCompactCatalog("it", [
-  "Meteo", "ESTREMA", "GRAVE", "MODERATA", "MINORE", "in vigore ora", "fino a nuovo avviso", "aggiornamento…", "proprio ora", "{count} min fa", "{count} h fa", "Oggi", "attuale", "ora", "Cerca città",
-  "PERCEPITA", "Vento", "Umidità", "Rilevato automaticamente", "Caricamento previsioni…", "ORARIE", "GIORNALIERE", "PREVISIONI", "Impostazioni", "App", "Widget", "Barra dei menu", "Impostazioni widget", "Impostazioni app", "Impostazioni barra dei menu", "Scegli cosa mostra la vista selezionata.",
-  "GENERALI", "Sistema di unità", "Metrico", "USA / Imperiale", "Ora", "Giorno della settimana", "Simbolo meteo", "Temperatura", "Temperatura percepita", "METEO ATTUALE", "Posizione", "Precipitazioni", "Avvisi meteo", "Percepita", "Temperatura min. / max.", "Probabilità di pioggia", "Quantità di pioggia", "Indice UV", "Alba / tramonto", "Totale di due ore", "Scheda previsioni predefinita",
-  "PREVISIONE PIOGGIA · 2 ORE", "RADAR PIOGGIA · ULTIME 2 ORE", "MODELLO PRECIPITAZIONI · ATTUALE", "Pioggia", "Probabilità", "Intensità", "Nessuna pioggia", "Debole", "Moderata", "Forte", "Estrema", "Radar",
+  "Meteo", "Estrema", "Grave", "Moderata", "Minore", "in vigore ora", "fino a nuovo avviso", "aggiornamento…", "proprio ora", "{count} min fa", "{count} h fa", "Oggi", "attuale", "ora", "Cerca città",
+  "Percepita", "Vento", "Umidità", "Rilevato automaticamente", "Caricamento previsioni…", "Orarie", "Giornaliere", "Previsioni", "Impostazioni", "App", "Widget", "Barra dei menu", "Cosa mostra il widget", "Cosa mostra l’app", "Cosa mostra la barra dei menu", "Ogni vista ha le sue impostazioni.",
+  "Generale", "Sistema di unità", "Metrico", "USA / Imperiale", "Ora", "Giorno della settimana", "Simbolo meteo", "Temperatura", "Temperatura percepita", "Meteo attuale", "Posizione", "Precipitazioni", "Avvisi meteo", "Percepita", "Temperatura min. / max.", "Probabilità di pioggia", "Quantità di pioggia", "Indice UV", "Alba / tramonto", "Totale di due ore", "Scheda all’apertura",
+  "Previsione pioggia · 2 ore", "Radar pioggia · ultime 2 ore", "Modello precipitazioni · attuale", "Pioggia", "Probabilità", "Intensità", "Nessuna pioggia", "Debole", "Moderata", "Forte", "Estrema", "Radar",
   "Nessuna pioggia prevista · {amount} {unit} / 2 h", "Totale: {amount} {unit} / 2 h", "Nessun dato — in attesa di aggiornamento…", "Caricamento mappa radar…", "Nessun dato radar disponibile in questa posizione", "{location} · {speed} {unit} da {direction} · raffiche {gust} {unit}", "Caricamento dati del vento…", "Nessun dato del modello del vento", "I valori in corsivo vengono dalla cache (max 3 giorni)."
 ])
 
 addCompactCatalog("nl", [
-  "Weer", "EXTREEM", "ERNSTIG", "MATIG", "LICHT", "nu van kracht", "tot nader order", "bijwerken…", "zojuist", "{count} min geleden", "{count} u geleden", "Vandaag", "actueel", "nu", "Stad zoeken",
-  "GEVOELSTEMPERATUUR", "Wind", "Luchtvochtigheid", "Automatisch gedetecteerd", "Voorspelling ophalen…", "PER UUR", "DAGELIJKS", "VOORSPELLING", "Instellingen", "App", "Widget", "Menubalk", "Widgetinstellingen", "App-instellingen", "Menubalkinstellingen", "Kies wat de geselecteerde weergave toont.",
-  "ALGEMEEN", "Eenhedenstelsel", "Metrisch", "VS / Imperiaal", "Tijd", "Weekdag", "Weersymbool", "Temperatuur", "Gevoelstemperatuur", "HUIDIG WEER", "Locatie", "Neerslag", "Weerwaarschuwingen", "Gevoel", "Min. / max. temperatuur", "Kans op regen", "Hoeveelheid regen", "UV-index", "Zonsopkomst / zonsondergang", "Totaal over twee uur", "Standaardtabblad voorspelling",
-  "REGENVERWACHTING · 2 UUR", "REGENRADAR · AFGELOPEN 2 UUR", "NEERSLAGMODEL · ACTUEEL", "Regen", "Kans", "Intensiteit", "Geen regen", "Licht", "Matig", "Zwaar", "Extreem", "Radar",
+  "Weer", "Extreem", "Ernstig", "Matig", "Licht", "nu van kracht", "tot nader order", "bijwerken…", "zojuist", "{count} min geleden", "{count} u geleden", "Vandaag", "actueel", "nu", "Stad zoeken",
+  "Gevoelstemperatuur", "Wind", "Luchtvochtigheid", "Automatisch gedetecteerd", "Voorspelling ophalen…", "Per uur", "Dagelijks", "Voorspelling", "Instellingen", "App", "Widget", "Menubalk", "Wat de widget toont", "Wat de app toont", "Wat de menubalk toont", "Elke weergave heeft eigen instellingen.",
+  "Algemeen", "Eenhedenstelsel", "Metrisch", "VS / Imperiaal", "Tijd", "Weekdag", "Weersymbool", "Temperatuur", "Gevoelstemperatuur", "Huidig weer", "Locatie", "Neerslag", "Weerwaarschuwingen", "Gevoel", "Min. / max. temperatuur", "Kans op regen", "Hoeveelheid regen", "UV-index", "Zonsopkomst / zonsondergang", "Totaal over twee uur", "Tabblad bij openen",
+  "Regenverwachting · 2 uur", "Regenradar · afgelopen 2 uur", "Neerslagmodel · actueel", "Regen", "Kans", "Intensiteit", "Geen regen", "Licht", "Matig", "Zwaar", "Extreem", "Radar",
   "Geen regen verwacht · {amount} {unit} / 2 u", "Totaal: {amount} {unit} / 2 u", "Geen gegevens — wachten op vernieuwing…", "Radarkaart wordt geladen…", "Geen radargegevens beschikbaar op deze locatie", "{location} · {speed} {unit} uit {direction} · windstoten {gust} {unit}", "Windgegevens worden geladen…", "Geen windmodelgegevens beschikbaar", "Cursieve waarden komen uit de cache (max. 3 dagen)."
 ])
 
 addCompactCatalog("tr", [
-  "Hava Durumu", "AŞIRI", "CİDDİ", "ORTA", "HAFİF", "şimdi geçerli", "ikinci bir duyuruya kadar", "güncelleniyor…", "az önce", "{count} dk önce", "{count} sa önce", "Bugün", "güncel", "şimdi", "Şehir ara",
-  "HİSSEDİLEN", "Rüzgâr", "Nem", "Otomatik algılandı", "Tahmin alınıyor…", "SAATLİK", "GÜNLÜK", "TAHMİN", "Ayarlar", "Uygulama", "Bileşen", "Menü çubuğu", "Bileşen ayarları", "Uygulama ayarları", "Menü çubuğu ayarları", "Seçili görünümde nelerin gösterileceğini seçin.",
-  "GENEL", "Birim sistemi", "Metrik", "ABD / İngiliz", "Saat", "Haftanın günü", "Hava durumu simgesi", "Sıcaklık", "Hissedilen sıcaklık", "GÜNCEL HAVA", "Konum", "Yağış", "Hava durumu uyarıları", "Hissedilen", "Min. / maks. sıcaklık", "Yağmur olasılığı", "Yağmur miktarı", "UV indeksi", "Gün doğumu / gün batımı", "İki saatlik toplam", "Varsayılan tahmin sekmesi",
-  "YAĞMUR TAHMİNİ · 2 SAAT", "YAĞMUR RADARI · SON 2 SAAT", "YAĞIŞ MODELİ · GÜNCEL", "Yağmur", "Olasılık", "Yoğunluk", "Yağmur yok", "Hafif", "Orta", "Şiddetli", "Aşırı", "Radar",
+  "Hava Durumu", "Aşırı", "Ciddi", "Orta", "Hafif", "şimdi geçerli", "ikinci bir duyuruya kadar", "güncelleniyor…", "az önce", "{count} dk önce", "{count} sa önce", "Bugün", "güncel", "şimdi", "Şehir ara",
+  "Hissedilen", "Rüzgâr", "Nem", "Otomatik algılandı", "Tahmin alınıyor…", "Saatlik", "Günlük", "Tahmin", "Ayarlar", "Uygulama", "Bileşen", "Menü çubuğu", "Bileşenin gösterdikleri", "Uygulamanın gösterdikleri", "Menü çubuğunun gösterdikleri", "Her görünümün kendi ayarları var.",
+  "Genel", "Birim sistemi", "Metrik", "ABD / İngiliz", "Saat", "Haftanın günü", "Hava durumu simgesi", "Sıcaklık", "Hissedilen sıcaklık", "Güncel hava", "Konum", "Yağış", "Hava durumu uyarıları", "Hissedilen", "Min. / maks. sıcaklık", "Yağmur olasılığı", "Yağmur miktarı", "UV indeksi", "Gün doğumu / gün batımı", "İki saatlik toplam", "Açılıştaki sekme",
+  "Yağmur tahmini · 2 saat", "Yağmur radarı · son 2 saat", "Yağış modeli · güncel", "Yağmur", "Olasılık", "Yoğunluk", "Yağmur yok", "Hafif", "Orta", "Şiddetli", "Aşırı", "Radar",
   "Yağmur beklenmiyor · {amount} {unit} / 2 sa", "Toplam: {amount} {unit} / 2 sa", "Veri yok — yenileme bekleniyor…", "Radar haritası yükleniyor…", "Bu konumda radar verisi yok", "{location} · {direction} yönünden {speed} {unit} · hamleler {gust} {unit}", "Rüzgâr verileri yükleniyor…", "Rüzgâr modeli verisi yok", "İtalik değerler önbellekten gelir (en fazla 3 günlük)."
 ])
 
 addCompactCatalog("cs", [
-  "Počasí", "EXTRÉMNÍ", "VÁŽNÉ", "MÍRNÉ", "MALÉ", "platí nyní", "do odvolání", "aktualizace…", "právě teď", "před {count} min", "před {count} h", "Dnes", "aktuální", "nyní", "Hledat město",
-  "POCITOVĚ", "Vítr", "Vlhkost", "Zjištěno automaticky", "Načítání předpovědi…", "HODINOVĚ", "DENNĚ", "PŘEDPOVĚĎ", "Nastavení", "Aplikace", "Widget", "Panel nabídky", "Nastavení widgetu", "Nastavení aplikace", "Nastavení panelu nabídky", "Vyberte, co se má ve zvoleném zobrazení ukázat.",
-  "OBECNÉ", "Systém jednotek", "Metrické", "USA / Imperiální", "Čas", "Den v týdnu", "Symbol počasí", "Teplota", "Pocitová teplota", "AKTUÁLNÍ POČASÍ", "Poloha", "Srážky", "Výstrahy počasí", "Pocitově", "Min. / max. teplota", "Pravděpodobnost deště", "Množství srážek", "UV index", "Východ / západ slunce", "Úhrn za dvě hodiny", "Výchozí karta předpovědi",
-  "PŘEDPOVĚĎ DEŠTĚ · 2 HODINY", "SRÁŽKOVÝ RADAR · POSLEDNÍ 2 HODINY", "MODEL SRÁŽEK · AKTUÁLNÍ", "Déšť", "Pravděpodobnost", "Intenzita", "Bez deště", "Slabá", "Mírná", "Silná", "Extrémní", "Radar",
+  "Počasí", "Extrémní", "Vážné", "Mírné", "Malé", "platí nyní", "do odvolání", "aktualizace…", "právě teď", "před {count} min", "před {count} h", "Dnes", "aktuální", "nyní", "Hledat město",
+  "Pocitově", "Vítr", "Vlhkost", "Zjištěno automaticky", "Načítání předpovědi…", "Hodinově", "Denně", "Předpověď", "Nastavení", "Aplikace", "Widget", "Panel nabídky", "Co ukazuje widget", "Co ukazuje aplikace", "Co ukazuje panel nabídky", "Každé zobrazení má vlastní nastavení.",
+  "Obecné", "Systém jednotek", "Metrické", "USA / Imperiální", "Čas", "Den v týdnu", "Symbol počasí", "Teplota", "Pocitová teplota", "Aktuální počasí", "Poloha", "Srážky", "Výstrahy počasí", "Pocitově", "Min. / max. teplota", "Pravděpodobnost deště", "Množství srážek", "UV index", "Východ / západ slunce", "Úhrn za dvě hodiny", "Karta při otevření",
+  "Předpověď deště · 2 hodiny", "Srážkový radar · poslední 2 hodiny", "Model srážek · aktuální", "Déšť", "Pravděpodobnost", "Intenzita", "Bez deště", "Slabá", "Mírná", "Silná", "Extrémní", "Radar",
   "Déšť se neočekává · {amount} {unit} / 2 h", "Celkem: {amount} {unit} / 2 h", "Žádná data — čeká se na obnovení…", "Načítání radarové mapy…", "Pro tuto polohu nejsou dostupná radarová data", "{location} · {speed} {unit} ze směru {direction} · nárazy {gust} {unit}", "Načítání dat o větru…", "Nejsou dostupná data modelu větru", "Hodnoty kurzívou pocházejí z mezipaměti (max. 3 dny)."
 ])
 
 addCompactCatalog("sv", [
-  "Väder", "EXTREM", "ALLVARLIG", "MÅTTLIG", "MINDRE", "gäller nu", "tills vidare", "uppdaterar…", "just nu", "för {count} min sedan", "för {count} tim sedan", "I dag", "aktuell", "nu", "Sök stad",
-  "KÄNNS SOM", "Vind", "Luftfuktighet", "Identifierad automatiskt", "Hämtar prognos…", "PER TIMME", "DAGLIG", "PROGNOS", "Inställningar", "App", "Widget", "Menyrad", "Widgetinställningar", "Appinställningar", "Menyradsinställningar", "Välj vad den valda vyn visar.",
-  "ALLMÄNT", "Enhetssystem", "Metriskt", "USA / Brittiskt", "Tid", "Veckodag", "Vädersymbol", "Temperatur", "Känns som-temperatur", "AKTUELLT VÄDER", "Plats", "Nederbörd", "Vädervarningar", "Känns", "Min. / max. temperatur", "Sannolikhet för regn", "Regnmängd", "UV-index", "Soluppgång / solnedgång", "Totalt för två timmar", "Standardflik för prognos",
-  "REGNPROGNOS · 2 TIMMAR", "REGNRADAR · SENASTE 2 TIMMARNA", "NEDERBÖRDSMODELL · AKTUELL", "Regn", "Sannolikhet", "Intensitet", "Inget regn", "Lätt", "Måttligt", "Kraftigt", "Extremt", "Radar",
+  "Väder", "Extrem", "Allvarlig", "Måttlig", "Mindre", "gäller nu", "tills vidare", "uppdaterar…", "just nu", "för {count} min sedan", "för {count} tim sedan", "I dag", "aktuell", "nu", "Sök stad",
+  "Känns som", "Vind", "Luftfuktighet", "Identifierad automatiskt", "Hämtar prognos…", "Per timme", "Daglig", "Prognos", "Inställningar", "App", "Widget", "Menyrad", "Vad widgeten visar", "Vad appen visar", "Vad menyraden visar", "Varje vy har egna inställningar.",
+  "Allmänt", "Enhetssystem", "Metriskt", "USA / Brittiskt", "Tid", "Veckodag", "Vädersymbol", "Temperatur", "Känns som-temperatur", "Aktuellt väder", "Plats", "Nederbörd", "Vädervarningar", "Känns", "Min. / max. temperatur", "Sannolikhet för regn", "Regnmängd", "UV-index", "Soluppgång / solnedgång", "Totalt för två timmar", "Flik vid öppning",
+  "Regnprognos · 2 timmar", "Regnradar · senaste 2 timmarna", "Nederbördsmodell · aktuell", "Regn", "Sannolikhet", "Intensitet", "Inget regn", "Lätt", "Måttligt", "Kraftigt", "Extremt", "Radar",
   "Inget regn väntas · {amount} {unit} / 2 tim", "Totalt: {amount} {unit} / 2 tim", "Inga data — väntar på uppdatering…", "Radarkartan laddas…", "Inga radardata finns för den här platsen", "{location} · {speed} {unit} från {direction} · byar {gust} {unit}", "Vinddata laddas…", "Inga vindmodelldata finns", "Kursiva värden kommer från cachen (max 3 dagar)."
 ])
 
 addCompactCatalog("fi", [
-  "Sää", "ÄÄRIMMÄINEN", "VAKAVA", "KOHTALAINEN", "VÄHÄINEN", "voimassa nyt", "toistaiseksi", "päivitetään…", "juuri nyt", "{count} min sitten", "{count} t sitten", "Tänään", "nykyinen", "nyt", "Hae kaupunkia",
-  "TUNTUU KUIN", "Tuuli", "Kosteus", "Tunnistettu automaattisesti", "Haetaan ennustetta…", "TUNNEITTAIN", "PÄIVITTÄIN", "ENNUSTE", "Asetukset", "Sovellus", "Pienoissovellus", "Valikkorivi", "Pienoissovelluksen asetukset", "Sovelluksen asetukset", "Valikkorivin asetukset", "Valitse, mitä valittu näkymä näyttää.",
-  "YLEISET", "Yksikköjärjestelmä", "Metrinen", "Yhdysvaltalainen / Imperiaalinen", "Aika", "Viikonpäivä", "Sääsymboli", "Lämpötila", "Tuntuu kuin -lämpötila", "NYKYINEN SÄÄ", "Sijainti", "Sademäärä", "Säävaroitukset", "Tuntuu", "Min. / maks. lämpötila", "Sateen todennäköisyys", "Sademäärä", "UV-indeksi", "Auringonnousu / -lasku", "Kahden tunnin summa", "Ennusteen oletusvälilehti",
-  "SADE-ENNUSTE · 2 TUNTIA", "SADETUTKA · VIIMEISET 2 TUNTIA", "SADEMALLI · NYKYINEN", "Sade", "Todennäköisyys", "Voimakkuus", "Ei sadetta", "Heikko", "Kohtalainen", "Voimakas", "Äärimmäinen", "Tutka",
+  "Sää", "Äärimmäinen", "Vakava", "Kohtalainen", "Vähäinen", "voimassa nyt", "toistaiseksi", "päivitetään…", "juuri nyt", "{count} min sitten", "{count} t sitten", "Tänään", "nykyinen", "nyt", "Hae kaupunkia",
+  "Tuntuu kuin", "Tuuli", "Kosteus", "Tunnistettu automaattisesti", "Haetaan ennustetta…", "Tunneittain", "Päivittäin", "Ennuste", "Asetukset", "Sovellus", "Pienoissovellus", "Valikkorivi", "Mitä pienoissovellus näyttää", "Mitä sovellus näyttää", "Mitä valikkorivi näyttää", "Jokaisella näkymällä on omat asetuksensa.",
+  "Yleiset", "Yksikköjärjestelmä", "Metrinen", "Yhdysvaltalainen / Imperiaalinen", "Aika", "Viikonpäivä", "Sääsymboli", "Lämpötila", "Tuntuu kuin -lämpötila", "Nykyinen sää", "Sijainti", "Sademäärä", "Säävaroitukset", "Tuntuu", "Min. / maks. lämpötila", "Sateen todennäköisyys", "Sademäärä", "UV-indeksi", "Auringonnousu / -lasku", "Kahden tunnin summa", "Välilehti avattaessa",
+  "Sade-ennuste · 2 tuntia", "Sadetutka · viimeiset 2 tuntia", "Sademalli · nykyinen", "Sade", "Todennäköisyys", "Voimakkuus", "Ei sadetta", "Heikko", "Kohtalainen", "Voimakas", "Äärimmäinen", "Tutka",
   "Sadetta ei odoteta · {amount} {unit} / 2 t", "Yhteensä: {amount} {unit} / 2 t", "Ei tietoja — odotetaan päivitystä…", "Tutkakarttaa ladataan…", "Tutkatietoja ei ole saatavilla tässä sijainnissa", "{location} · {speed} {unit} suunnasta {direction} · puuskat {gust} {unit}", "Tuulitietoja ladataan…", "Tuulimallin tietoja ei ole saatavilla", "Kursivoidut arvot ovat välimuistista (enintään 3 päivää)."
 ])
 
 addCompactCatalog("nb", [
-  "Vær", "EKSTREM", "ALVORLIG", "MODERAT", "MINDRE", "gjelder nå", "inntil videre", "oppdaterer…", "akkurat nå", "for {count} min siden", "for {count} t siden", "I dag", "gjeldende", "nå", "Søk etter by",
-  "FØLES SOM", "Vind", "Luftfuktighet", "Oppdaget automatisk", "Henter værmelding…", "TIME FOR TIME", "DAGLIG", "VÆRMELDING", "Innstillinger", "App", "Miniprogram", "Menylinje", "Innstillinger for miniprogram", "Appinnstillinger", "Innstillinger for menylinje", "Velg hva den valgte visningen skal vise.",
-  "GENERELT", "Enhetssystem", "Metrisk", "USA / Britisk", "Tid", "Ukedag", "Værsymbol", "Temperatur", "Følt temperatur", "VÆRET NÅ", "Sted", "Nedbør", "Værvarsler", "Føles", "Min. / maks. temperatur", "Sannsynlighet for regn", "Regnmengde", "UV-indeks", "Soloppgang / solnedgang", "Totalt for to timer", "Standardfane for værmelding",
-  "REGNVARSEL · 2 TIMER", "REGNRADAR · SISTE 2 TIMER", "NEDBØRSMODELL · NÅ", "Regn", "Sannsynlighet", "Intensitet", "Ingen regn", "Lett", "Moderat", "Kraftig", "Ekstrem", "Radar",
+  "Vær", "Ekstrem", "Alvorlig", "Moderat", "Mindre", "gjelder nå", "inntil videre", "oppdaterer…", "akkurat nå", "for {count} min siden", "for {count} t siden", "I dag", "gjeldende", "nå", "Søk etter by",
+  "Føles som", "Vind", "Luftfuktighet", "Oppdaget automatisk", "Henter værmelding…", "Time for time", "Daglig", "Værmelding", "Innstillinger", "App", "Miniprogram", "Menylinje", "Hva miniprogrammet viser", "Hva appen viser", "Hva menylinjen viser", "Hver visning har egne innstillinger.",
+  "Generelt", "Enhetssystem", "Metrisk", "USA / Britisk", "Tid", "Ukedag", "Værsymbol", "Temperatur", "Følt temperatur", "Været nå", "Sted", "Nedbør", "Værvarsler", "Føles", "Min. / maks. temperatur", "Sannsynlighet for regn", "Regnmengde", "UV-indeks", "Soloppgang / solnedgang", "Totalt for to timer", "Fane ved åpning",
+  "Regnvarsel · 2 timer", "Regnradar · siste 2 timer", "Nedbørsmodell · nå", "Regn", "Sannsynlighet", "Intensitet", "Ingen regn", "Lett", "Moderat", "Kraftig", "Ekstrem", "Radar",
   "Ingen regn forventet · {amount} {unit} / 2 t", "Totalt: {amount} {unit} / 2 t", "Ingen data — venter på oppdatering…", "Radarkartet lastes…", "Ingen radardata er tilgjengelig for dette stedet", "{location} · {speed} {unit} fra {direction} · vindkast {gust} {unit}", "Vinddata lastes…", "Ingen vindmodelldata er tilgjengelig", "Kursive verdier kommer fra bufferen (maks. 3 dager)."
 ])
 
 addCompactCatalog("da", [
-  "Vejr", "EKSTREM", "ALVORLIG", "MODERAT", "MINDRE", "gælder nu", "indtil videre", "opdaterer…", "lige nu", "for {count} min siden", "for {count} t siden", "I dag", "aktuel", "nu", "Søg efter by",
-  "FØLES SOM", "Vind", "Luftfugtighed", "Registreret automatisk", "Henter vejrudsigt…", "TIME FOR TIME", "DAGLIG", "VEJRUDSIGT", "Indstillinger", "App", "Widget", "Menulinje", "Widgetindstillinger", "Appindstillinger", "Indstillinger for menulinje", "Vælg, hvad den valgte visning skal vise.",
-  "GENERELT", "Enhedssystem", "Metrisk", "USA / Britisk", "Tid", "Ugedag", "Vejrsymbol", "Temperatur", "Føles som-temperatur", "AKTUELT VEJR", "Placering", "Nedbør", "Vejrvarsler", "Føles", "Min. / maks. temperatur", "Sandsynlighed for regn", "Regnmængde", "UV-indeks", "Solopgang / solnedgang", "Total for to timer", "Standardfane for vejrudsigt",
-  "REGNPROGNOSE · 2 TIMER", "REGNRADAR · SENESTE 2 TIMER", "NEDBØRSMODEL · AKTUEL", "Regn", "Sandsynlighed", "Intensitet", "Ingen regn", "Let", "Moderat", "Kraftig", "Ekstrem", "Radar",
+  "Vejr", "Ekstrem", "Alvorlig", "Moderat", "Mindre", "gælder nu", "indtil videre", "opdaterer…", "lige nu", "for {count} min siden", "for {count} t siden", "I dag", "aktuel", "nu", "Søg efter by",
+  "Føles som", "Vind", "Luftfugtighed", "Registreret automatisk", "Henter vejrudsigt…", "Time for time", "Daglig", "Vejrudsigt", "Indstillinger", "App", "Widget", "Menulinje", "Hvad widgetten viser", "Hvad appen viser", "Hvad menulinjen viser", "Hver visning har sine egne indstillinger.",
+  "Generelt", "Enhedssystem", "Metrisk", "USA / Britisk", "Tid", "Ugedag", "Vejrsymbol", "Temperatur", "Føles som-temperatur", "Aktuelt vejr", "Placering", "Nedbør", "Vejrvarsler", "Føles", "Min. / maks. temperatur", "Sandsynlighed for regn", "Regnmængde", "UV-indeks", "Solopgang / solnedgang", "Total for to timer", "Fane ved åbning",
+  "Regnprognose · 2 timer", "Regnradar · seneste 2 timer", "Nedbørsmodel · aktuel", "Regn", "Sandsynlighed", "Intensitet", "Ingen regn", "Let", "Moderat", "Kraftig", "Ekstrem", "Radar",
   "Ingen regn forventet · {amount} {unit} / 2 t", "Total: {amount} {unit} / 2 t", "Ingen data — venter på opdatering…", "Radarkortet indlæses…", "Ingen radardata er tilgængelige for denne placering", "{location} · {speed} {unit} fra {direction} · vindstød {gust} {unit}", "Vinddata indlæses…", "Ingen vindmodeldata er tilgængelige", "Kursive værdier kommer fra cachen (maks. 3 dage)."
 ])
 
 addCompactCatalog("ro", [
-  "Vreme", "EXTREM", "SEVER", "MODERAT", "MINOR", "în vigoare acum", "până la noi informații", "se actualizează…", "chiar acum", "acum {count} min", "acum {count} h", "Astăzi", "actual", "acum", "Caută oraș",
-  "SE SIMTE CA", "Vânt", "Umiditate", "Detectat automat", "Se preia prognoza…", "ORAR", "ZILNIC", "PROGNOZĂ", "Setări", "Aplicație", "Widget", "Bară de meniu", "Setări widget", "Setări aplicație", "Setări bară de meniu", "Alegeți ce afișează vizualizarea selectată.",
-  "GENERAL", "Sistem de unități", "Metric", "SUA / Imperial", "Ora", "Ziua săptămânii", "Simbol meteo", "Temperatură", "Temperatură resimțită", "VREMEA ACTUALĂ", "Locație", "Precipitații", "Avertizări meteo", "Resimțită", "Temperatura min. / max.", "Probabilitate de ploaie", "Cantitate de ploaie", "Indice UV", "Răsărit / apus", "Total pe două ore", "Fila implicită de prognoză",
-  "PROGNOZĂ PLOAIE · 2 ORE", "RADAR PLOAIE · ULTIMELE 2 ORE", "MODEL PRECIPITAȚII · ACTUAL", "Ploaie", "Probabilitate", "Intensitate", "Fără ploaie", "Slabă", "Moderată", "Puternică", "Extremă", "Radar",
+  "Vreme", "Extrem", "Sever", "Moderat", "Minor", "în vigoare acum", "până la noi informații", "se actualizează…", "chiar acum", "acum {count} min", "acum {count} h", "Astăzi", "actual", "acum", "Caută oraș",
+  "Se simte ca", "Vânt", "Umiditate", "Detectat automat", "Se preia prognoza…", "Orar", "Zilnic", "Prognoză", "Setări", "Aplicație", "Widget", "Bară de meniu", "Ce arată widgetul", "Ce arată aplicația", "Ce arată bara de meniu", "Fiecare vedere are setările ei.",
+  "General", "Sistem de unități", "Metric", "SUA / Imperial", "Ora", "Ziua săptămânii", "Simbol meteo", "Temperatură", "Temperatură resimțită", "Vremea actuală", "Locație", "Precipitații", "Avertizări meteo", "Resimțită", "Temperatura min. / max.", "Probabilitate de ploaie", "Cantitate de ploaie", "Indice UV", "Răsărit / apus", "Total pe două ore", "Fila la deschidere",
+  "Prognoză ploaie · 2 ore", "Radar ploaie · ultimele 2 ore", "Model precipitații · actual", "Ploaie", "Probabilitate", "Intensitate", "Fără ploaie", "Slabă", "Moderată", "Puternică", "Extremă", "Radar",
   "Nu se așteaptă ploaie · {amount} {unit} / 2 h", "Total: {amount} {unit} / 2 h", "Nu există date — se așteaptă reîmprospătarea…", "Se încarcă harta radar…", "Nu există date radar pentru această locație", "{location} · {speed} {unit} din {direction} · rafale {gust} {unit}", "Se încarcă datele despre vânt…", "Nu există date ale modelului de vânt", "Valorile cursive provin din cache (max. 3 zile)."
 ])
 
 addCompactCatalog("hu", [
-  "Időjárás", "RENDKÍVÜLI", "SÚLYOS", "MÉRSÉKELT", "ENYHE", "most érvényes", "további értesítésig", "frissítés…", "éppen most", "{count} perce", "{count} órája", "Ma", "aktuális", "most", "Város keresése",
-  "HŐÉRZET", "Szél", "Páratartalom", "Automatikusan észlelve", "Előrejelzés lekérése…", "ÓRÁNKÉNT", "NAPONTA", "ELŐREJELZÉS", "Beállítások", "Alkalmazás", "Minialkalmazás", "Menüsáv", "Minialkalmazás beállításai", "Alkalmazásbeállítások", "Menüsáv beállításai", "Válassza ki, mit mutasson a kijelölt nézet.",
-  "ÁLTALÁNOS", "Mértékegységrendszer", "Metrikus", "USA / Angolszász", "Idő", "A hét napja", "Időjárási szimbólum", "Hőmérséklet", "Hőérzet", "AKTUÁLIS IDŐJÁRÁS", "Hely", "Csapadék", "Időjárási figyelmeztetések", "Hőérzet", "Min. / max. hőmérséklet", "Eső valószínűsége", "Csapadékmennyiség", "UV-index", "Napkelte / napnyugta", "Kétórás összeg", "Alapértelmezett előrejelzési lap",
-  "ESŐ-ELŐREJELZÉS · 2 ÓRA", "CSAPADÉKRADAR · ELMÚLT 2 ÓRA", "CSAPADÉKMODELL · AKTUÁLIS", "Eső", "Valószínűség", "Intenzitás", "Nincs eső", "Gyenge", "Mérsékelt", "Erős", "Rendkívüli", "Radar",
+  "Időjárás", "Rendkívüli", "Súlyos", "Mérsékelt", "Enyhe", "most érvényes", "további értesítésig", "frissítés…", "éppen most", "{count} perce", "{count} órája", "Ma", "aktuális", "most", "Város keresése",
+  "Hőérzet", "Szél", "Páratartalom", "Automatikusan észlelve", "Előrejelzés lekérése…", "Óránként", "Naponta", "Előrejelzés", "Beállítások", "Alkalmazás", "Minialkalmazás", "Menüsáv", "Amit a minialkalmazás mutat", "Amit az alkalmazás mutat", "Amit a menüsáv mutat", "Minden nézetnek saját beállításai vannak.",
+  "Általános", "Mértékegységrendszer", "Metrikus", "USA / Angolszász", "Idő", "A hét napja", "Időjárási szimbólum", "Hőmérséklet", "Hőérzet", "Aktuális időjárás", "Hely", "Csapadék", "Időjárási figyelmeztetések", "Hőérzet", "Min. / max. hőmérséklet", "Eső valószínűsége", "Csapadékmennyiség", "UV-index", "Napkelte / napnyugta", "Kétórás összeg", "Lap megnyitáskor",
+  "Eső-előrejelzés · 2 óra", "Csapadékradar · elmúlt 2 óra", "Csapadékmodell · aktuális", "Eső", "Valószínűség", "Intenzitás", "Nincs eső", "Gyenge", "Mérsékelt", "Erős", "Rendkívüli", "Radar",
   "Nem várható eső · {amount} {unit} / 2 ó", "Összesen: {amount} {unit} / 2 ó", "Nincs adat — várakozás a frissítésre…", "A radartérkép betöltése…", "Ehhez a helyhez nem érhetők el radaradatok", "{location} · {speed} {unit}, irány: {direction} · széllökések {gust} {unit}", "Széladatok betöltése…", "Nem érhetők el szélmodell-adatok", "A dőlt értékek a gyorsítótárból származnak (max. 3 napos)."
 ])
 
 addCompactCatalog("el", [
-  "Καιρός", "ΑΚΡΑΙΟ", "ΣΟΒΑΡΟ", "ΜΕΤΡΙΟ", "ΗΠΙΟ", "ισχύει τώρα", "μέχρι νεωτέρας", "ενημέρωση…", "μόλις τώρα", "πριν από {count} λεπ.", "πριν από {count} ώρ.", "Σήμερα", "τρέχον", "τώρα", "Αναζήτηση πόλης",
-  "ΑΙΣΘΗΣΗ", "Άνεμος", "Υγρασία", "Αυτόματος εντοπισμός", "Λήψη πρόγνωσης…", "ΑΝΑ ΩΡΑ", "ΗΜΕΡΗΣΙΑ", "ΠΡΟΓΝΩΣΗ", "Ρυθμίσεις", "Εφαρμογή", "Γραφικό στοιχείο", "Γραμμή μενού", "Ρυθμίσεις γραφικού στοιχείου", "Ρυθμίσεις εφαρμογής", "Ρυθμίσεις γραμμής μενού", "Επιλέξτε τι εμφανίζει η επιλεγμένη προβολή.",
-  "ΓΕΝΙΚΑ", "Σύστημα μονάδων", "Μετρικό", "ΗΠΑ / Αυτοκρατορικό", "Ώρα", "Ημέρα εβδομάδας", "Σύμβολο καιρού", "Θερμοκρασία", "Αισθητή θερμοκρασία", "ΤΡΕΧΩΝ ΚΑΙΡΟΣ", "Τοποθεσία", "Υετός", "Προειδοποιήσεις καιρού", "Αίσθηση", "Ελάχ. / μέγ. θερμοκρασία", "Πιθανότητα βροχής", "Ποσότητα βροχής", "Δείκτης UV", "Ανατολή / δύση ηλίου", "Σύνολο δύο ωρών", "Προεπιλεγμένη καρτέλα πρόγνωσης",
-  "ΠΡΟΓΝΩΣΗ ΒΡΟΧΗΣ · 2 ΩΡΕΣ", "ΡΑΝΤΑΡ ΒΡΟΧΗΣ · ΤΕΛΕΥΤΑΙΕΣ 2 ΩΡΕΣ", "ΜΟΝΤΕΛΟ ΥΕΤΟΥ · ΤΡΕΧΟΝ", "Βροχή", "Πιθανότητα", "Ένταση", "Χωρίς βροχή", "Ασθενής", "Μέτρια", "Ισχυρή", "Ακραία", "Ραντάρ",
+  "Καιρός", "Ακραίο", "Σοβαρό", "Μέτριο", "Ήπιο", "ισχύει τώρα", "μέχρι νεωτέρας", "ενημέρωση…", "μόλις τώρα", "πριν από {count} λεπ.", "πριν από {count} ώρ.", "Σήμερα", "τρέχον", "τώρα", "Αναζήτηση πόλης",
+  "Αίσθηση", "Άνεμος", "Υγρασία", "Αυτόματος εντοπισμός", "Λήψη πρόγνωσης…", "Ανά ώρα", "Ημερήσια", "Πρόγνωση", "Ρυθμίσεις", "Εφαρμογή", "Γραφικό στοιχείο", "Γραμμή μενού", "Τι δείχνει το γραφικό στοιχείο", "Τι δείχνει η εφαρμογή", "Τι δείχνει η γραμμή μενού", "Κάθε προβολή έχει δικές της ρυθμίσεις.",
+  "Γενικά", "Σύστημα μονάδων", "Μετρικό", "ΗΠΑ / Αυτοκρατορικό", "Ώρα", "Ημέρα εβδομάδας", "Σύμβολο καιρού", "Θερμοκρασία", "Αισθητή θερμοκρασία", "Τρέχων καιρός", "Τοποθεσία", "Υετός", "Προειδοποιήσεις καιρού", "Αίσθηση", "Ελάχ. / μέγ. θερμοκρασία", "Πιθανότητα βροχής", "Ποσότητα βροχής", "Δείκτης UV", "Ανατολή / δύση ηλίου", "Σύνολο δύο ωρών", "Καρτέλα στο άνοιγμα",
+  "Πρόγνωση βροχής · 2 ώρες", "Ραντάρ βροχής · τελευταίες 2 ώρες", "Μοντέλο υετού · τρέχον", "Βροχή", "Πιθανότητα", "Ένταση", "Χωρίς βροχή", "Ασθενής", "Μέτρια", "Ισχυρή", "Ακραία", "Ραντάρ",
   "Δεν αναμένεται βροχή · {amount} {unit} / 2 ώρ.", "Σύνολο: {amount} {unit} / 2 ώρ.", "Δεν υπάρχουν δεδομένα — αναμονή ανανέωσης…", "Φόρτωση χάρτη ραντάρ…", "Δεν υπάρχουν δεδομένα ραντάρ σε αυτή την τοποθεσία", "{location} · {speed} {unit} από {direction} · ριπές {gust} {unit}", "Φόρτωση δεδομένων ανέμου…", "Δεν υπάρχουν δεδομένα μοντέλου ανέμου", "Οι πλάγιες τιμές είναι από την προσωρινή μνήμη (έως 3 ημέρες)."
 ])
 
 addCompactCatalog("zh_CN", [
   "天气", "极端", "严重", "中等", "轻微", "当前生效", "直至另行通知", "正在更新…", "刚刚", "{count} 分钟前", "{count} 小时前", "今天", "当前", "现在", "搜索城市",
-  "体感", "风", "湿度", "自动检测", "正在获取预报…", "每小时", "每日", "预报", "设置", "应用", "小组件", "菜单栏", "小组件设置", "应用设置", "菜单栏设置", "选择当前视图显示的内容。",
-  "通用", "单位制", "公制", "美国 / 英制", "时间", "星期", "天气图标", "温度", "体感温度", "当前天气", "位置", "降水", "天气预警", "体感", "最低 / 最高温度", "降雨概率", "降雨量", "紫外线指数", "日出 / 日落", "两小时总量", "默认预报标签页",
+  "体感", "风", "湿度", "自动检测", "正在获取预报…", "每小时", "每日", "预报", "设置", "应用", "小组件", "菜单栏", "小组件显示的内容", "应用显示的内容", "菜单栏显示的内容", "每个视图都有自己的设置。",
+  "通用", "单位制", "公制", "美国 / 英制", "时间", "星期", "天气图标", "温度", "体感温度", "当前天气", "位置", "降水", "天气预警", "体感", "最低 / 最高温度", "降雨概率", "降雨量", "紫外线指数", "日出 / 日落", "两小时总量", "打开时的标签",
   "降雨预报 · 2 小时", "降雨雷达 · 过去 2 小时", "降水模型 · 当前", "降雨", "概率", "强度", "无降雨", "小雨", "中雨", "大雨", "极端", "雷达",
   "预计无降雨 · {amount} {unit} / 2 小时", "总计：{amount} {unit} / 2 小时", "暂无数据——等待刷新…", "正在加载雷达图…", "此位置没有可用的雷达数据", "{location} · {direction}风 {speed} {unit} · 阵风 {gust} {unit}", "正在加载风力数据…", "没有可用的风力模型数据", "斜体数值来自缓存（最长 3 天）。"
 ])
 
 addCompactCatalog("zh_TW", [
   "天氣", "極端", "嚴重", "中等", "輕微", "目前生效", "直至另行通知", "正在更新…", "剛剛", "{count} 分鐘前", "{count} 小時前", "今天", "目前", "現在", "搜尋城市",
-  "體感", "風", "濕度", "自動偵測", "正在取得預報…", "每小時", "每日", "預報", "設定", "應用程式", "小工具", "選單列", "小工具設定", "應用程式設定", "選單列設定", "選擇目前檢視要顯示的內容。",
-  "一般", "單位制", "公制", "美制 / 英制", "時間", "星期", "天氣圖示", "溫度", "體感溫度", "目前天氣", "位置", "降水", "天氣警報", "體感", "最低 / 最高溫度", "降雨機率", "降雨量", "紫外線指數", "日出 / 日落", "兩小時總量", "預設預報分頁",
+  "體感", "風", "濕度", "自動偵測", "正在取得預報…", "每小時", "每日", "預報", "設定", "應用程式", "小工具", "選單列", "小工具顯示的內容", "應用程式顯示的內容", "選單列顯示的內容", "每個檢視都有自己的設定。",
+  "一般", "單位制", "公制", "美制 / 英制", "時間", "星期", "天氣圖示", "溫度", "體感溫度", "目前天氣", "位置", "降水", "天氣警報", "體感", "最低 / 最高溫度", "降雨機率", "降雨量", "紫外線指數", "日出 / 日落", "兩小時總量", "開啟時的分頁",
   "降雨預報 · 2 小時", "降雨雷達 · 過去 2 小時", "降水模型 · 目前", "降雨", "機率", "強度", "無降雨", "小雨", "中雨", "大雨", "極端", "雷達",
   "預計無降雨 · {amount} {unit} / 2 小時", "總計：{amount} {unit} / 2 小時", "沒有資料——等待重新整理…", "正在載入雷達圖…", "此位置沒有可用的雷達資料", "{location} · {direction}風 {speed} {unit} · 陣風 {gust} {unit}", "正在載入風力資料…", "沒有可用的風力模型資料", "斜體數值來自快取（最長 3 天）。"
 ])
 
 addCompactCatalog("ja", [
   "天気", "極端", "重大", "中程度", "軽度", "現在有効", "追って通知があるまで", "更新中…", "たった今", "{count}分前", "{count}時間前", "今日", "現在", "今", "都市を検索",
-  "体感", "風", "湿度", "自動検出", "予報を取得中…", "1時間ごと", "毎日", "予報", "設定", "アプリ", "ウィジェット", "メニューバー", "ウィジェット設定", "アプリ設定", "メニューバー設定", "選択した表示に出す項目を選びます。",
-  "一般", "単位系", "メートル法", "米国 / ヤード・ポンド法", "時刻", "曜日", "天気記号", "気温", "体感温度", "現在の天気", "場所", "降水", "気象警報", "体感", "最低 / 最高気温", "降水確率", "降水量", "UV指数", "日の出 / 日の入り", "2時間合計", "既定の予報タブ",
+  "体感", "風", "湿度", "自動検出", "予報を取得中…", "1時間ごと", "毎日", "予報", "設定", "アプリ", "ウィジェット", "メニューバー", "ウィジェットに表示する内容", "アプリに表示する内容", "メニューバーに表示する内容", "表示ごとに設定があります。",
+  "一般", "単位系", "メートル法", "米国 / ヤード・ポンド法", "時刻", "曜日", "天気記号", "気温", "体感温度", "現在の天気", "場所", "降水", "気象警報", "体感", "最低 / 最高気温", "降水確率", "降水量", "UV指数", "日の出 / 日の入り", "2時間合計", "開いたときのタブ",
   "降雨予報 · 2時間", "雨雲レーダー · 過去2時間", "降水モデル · 現在", "雨", "確率", "強度", "雨なし", "弱い", "中程度", "強い", "極端", "レーダー",
   "雨の予報はありません · {amount} {unit} / 2時間", "合計：{amount} {unit} / 2時間", "データなし — 更新を待っています…", "レーダーマップを読み込み中…", "この場所ではレーダーデータを利用できません", "{location} · {direction}から {speed} {unit} · 最大瞬間風速 {gust} {unit}", "風データを読み込み中…", "風モデルデータを利用できません", "斜体の値はキャッシュから（最大3日）。"
 ])
 
 addCompactCatalog("ko", [
   "날씨", "극심", "심각", "보통", "경미", "현재 발효 중", "추후 공지 시까지", "업데이트 중…", "방금", "{count}분 전", "{count}시간 전", "오늘", "현재", "지금", "도시 검색",
-  "체감", "바람", "습도", "자동 감지", "예보 가져오는 중…", "시간별", "일별", "예보", "설정", "앱", "위젯", "메뉴 모음", "위젯 설정", "앱 설정", "메뉴 모음 설정", "선택한 보기에 표시할 항목을 선택하세요.",
-  "일반", "단위 체계", "미터법", "미국 / 야드파운드법", "시간", "요일", "날씨 기호", "기온", "체감 온도", "현재 날씨", "위치", "강수", "기상 경보", "체감", "최저 / 최고 기온", "비 올 확률", "강수량", "자외선 지수", "일출 / 일몰", "2시간 합계", "기본 예보 탭",
+  "체감", "바람", "습도", "자동 감지", "예보 가져오는 중…", "시간별", "일별", "예보", "설정", "앱", "위젯", "메뉴 모음", "위젯에 보이는 것", "앱에 보이는 것", "메뉴 모음에 보이는 것", "보기마다 설정이 따로 있습니다.",
+  "일반", "단위 체계", "미터법", "미국 / 야드파운드법", "시간", "요일", "날씨 기호", "기온", "체감 온도", "현재 날씨", "위치", "강수", "기상 경보", "체감", "최저 / 최고 기온", "비 올 확률", "강수량", "자외선 지수", "일출 / 일몰", "2시간 합계", "열 때의 탭",
   "강수 예보 · 2시간", "강우 레이더 · 지난 2시간", "강수 모델 · 현재", "비", "확률", "강도", "비 없음", "약함", "보통", "강함", "극심", "레이더",
   "비가 예상되지 않음 · {amount} {unit} / 2시간", "합계: {amount} {unit} / 2시간", "데이터 없음 — 새로 고침 대기 중…", "레이더 지도 로드 중…", "이 위치에는 레이더 데이터가 없습니다", "{location} · {direction}에서 {speed} {unit} · 돌풍 {gust} {unit}", "바람 데이터 로드 중…", "바람 모델 데이터가 없습니다", "기울임꼴 값은 캐시에서 가져온 것입니다(최대 3일)."
 ])
 
 addCompactCatalog("ar", [
   "الطقس", "قصوى", "شديدة", "متوسطة", "طفيفة", "ساري الآن", "حتى إشعار آخر", "جارٍ التحديث…", "الآن", "منذ {count} د", "منذ {count} س", "اليوم", "الحالي", "الآن", "البحث عن مدينة",
-  "المحسوسة", "الرياح", "الرطوبة", "تم الاكتشاف تلقائيًا", "جارٍ جلب التوقعات…", "كل ساعة", "يومي", "التوقعات", "الإعدادات", "التطبيق", "الأداة", "شريط القوائم", "إعدادات الأداة", "إعدادات التطبيق", "إعدادات شريط القوائم", "اختر ما تعرضه الواجهة المحددة.",
-  "عام", "نظام الوحدات", "متري", "أمريكي / إمبراطوري", "الوقت", "يوم الأسبوع", "رمز الطقس", "درجة الحرارة", "درجة الحرارة المحسوسة", "الطقس الحالي", "الموقع", "الهطول", "تحذيرات الطقس", "المحسوسة", "درجة الحرارة الصغرى / العظمى", "احتمال المطر", "كمية المطر", "مؤشر الأشعة فوق البنفسجية", "الشروق / الغروب", "مجموع ساعتين", "علامة تبويب التوقعات الافتراضية",
+  "المحسوسة", "الرياح", "الرطوبة", "تم الاكتشاف تلقائيًا", "جارٍ جلب التوقعات…", "كل ساعة", "يومي", "التوقعات", "الإعدادات", "التطبيق", "الأداة", "شريط القوائم", "ما تعرضه الأداة", "ما يعرضه التطبيق", "ما يعرضه شريط القوائم", "لكل عرض إعداداته.",
+  "عام", "نظام الوحدات", "متري", "أمريكي / إمبراطوري", "الوقت", "يوم الأسبوع", "رمز الطقس", "درجة الحرارة", "درجة الحرارة المحسوسة", "الطقس الحالي", "الموقع", "الهطول", "تحذيرات الطقس", "المحسوسة", "درجة الحرارة الصغرى / العظمى", "احتمال المطر", "كمية المطر", "مؤشر الأشعة فوق البنفسجية", "الشروق / الغروب", "مجموع ساعتين", "اللسان عند الفتح",
   "توقع المطر · ساعتان", "رادار المطر · آخر ساعتين", "نموذج الهطول · الحالي", "المطر", "الاحتمال", "الشدة", "لا مطر", "خفيفة", "متوسطة", "غزيرة", "قصوى", "الرادار",
   "لا يُتوقع هطول مطر · {amount} {unit} / ساعتين", "المجموع: {amount} {unit} / ساعتين", "لا توجد بيانات — في انتظار التحديث…", "جارٍ تحميل خريطة الرادار…", "لا تتوفر بيانات رادار لهذا الموقع", "{location} · {speed} {unit} من {direction} · هبّات {gust} {unit}", "جارٍ تحميل بيانات الرياح…", "لا تتوفر بيانات نموذج الرياح", "القيم المائلة من الذاكرة المؤقتة (حتى 3 أيام)."
 ])
 
 addCompactCatalog("he", [
   "מזג אוויר", "קיצונית", "חמורה", "בינונית", "קלה", "בתוקף כעת", "עד להודעה חדשה", "מתעדכן…", "ממש עכשיו", "לפני {count} דק׳", "לפני {count} שע׳", "היום", "נוכחי", "עכשיו", "חיפוש עיר",
-  "מרגיש כמו", "רוח", "לחות", "זוהה אוטומטית", "התחזית נטענת…", "שעתי", "יומי", "תחזית", "הגדרות", "יישום", "יישומון", "שורת תפריטים", "הגדרות יישומון", "הגדרות יישום", "הגדרות שורת תפריטים", "בחרו מה יוצג בתצוגה שנבחרה.",
-  "כללי", "מערכת יחידות", "מטרית", "אמריקאית / אימפריאלית", "שעה", "יום בשבוע", "סמל מזג אוויר", "טמפרטורה", "טמפרטורה מורגשת", "מזג האוויר כעת", "מיקום", "משקעים", "אזהרות מזג אוויר", "מרגיש", "טמפרטורת מינ׳ / מקס׳", "הסתברות לגשם", "כמות גשם", "מדד UV", "זריחה / שקיעה", "סך הכול לשעתיים", "לשונית תחזית כברירת מחדל",
+  "מרגיש כמו", "רוח", "לחות", "זוהה אוטומטית", "התחזית נטענת…", "שעתי", "יומי", "תחזית", "הגדרות", "יישום", "יישומון", "שורת תפריטים", "מה היישומון מציג", "מה היישום מציג", "מה שורת התפריטים מציגה", "לכל תצוגה הגדרות משלה.",
+  "כללי", "מערכת יחידות", "מטרית", "אמריקאית / אימפריאלית", "שעה", "יום בשבוע", "סמל מזג אוויר", "טמפרטורה", "טמפרטורה מורגשת", "מזג האוויר כעת", "מיקום", "משקעים", "אזהרות מזג אוויר", "מרגיש", "טמפרטורת מינ׳ / מקס׳", "הסתברות לגשם", "כמות גשם", "מדד UV", "זריחה / שקיעה", "סך הכול לשעתיים", "לשונית בפתיחה",
   "תחזית גשם · שעתיים", "מכ״ם גשם · שעתיים אחרונות", "מודל משקעים · נוכחי", "גשם", "הסתברות", "עוצמה", "ללא גשם", "קלה", "בינונית", "חזקה", "קיצונית", "מכ״ם",
   "לא צפוי גשם · {amount} {unit} / שעתיים", "סך הכול: {amount} {unit} / שעתיים", "אין נתונים — ממתין לרענון…", "מפת המכ״ם נטענת…", "אין נתוני מכ״ם זמינים במיקום זה", "{location} · {speed} {unit} מכיוון {direction} · משבים {gust} {unit}", "נתוני הרוח נטענים…", "אין נתוני מודל רוח זמינים", "ערכים נטויים מהמטמון (עד 3 ימים)."
 ])
 
 addCompactCatalog("fa", [
   "آب‌وهوا", "بسیار شدید", "شدید", "متوسط", "خفیف", "اکنون برقرار", "تا اطلاع بعدی", "در حال به‌روزرسانی…", "همین حالا", "{count} دقیقه پیش", "{count} ساعت پیش", "امروز", "فعلی", "اکنون", "جست‌وجوی شهر",
-  "دمای حسی", "باد", "رطوبت", "تشخیص خودکار", "در حال دریافت پیش‌بینی…", "ساعتی", "روزانه", "پیش‌بینی", "تنظیمات", "برنامه", "ویجت", "نوار منو", "تنظیمات ویجت", "تنظیمات برنامه", "تنظیمات نوار منو", "موارد قابل نمایش در نمای انتخاب‌شده را برگزینید.",
-  "عمومی", "سامانهٔ یکاها", "متریک", "آمریکایی / امپریال", "زمان", "روز هفته", "نماد آب‌وهوا", "دما", "دمای حسی", "آب‌وهوای فعلی", "مکان", "بارش", "هشدارهای هواشناسی", "حسی", "کمینه / بیشینهٔ دما", "احتمال باران", "مقدار باران", "شاخص فرابنفش", "طلوع / غروب خورشید", "مجموع دو ساعت", "زبانهٔ پیش‌فرض پیش‌بینی",
+  "دمای حسی", "باد", "رطوبت", "تشخیص خودکار", "در حال دریافت پیش‌بینی…", "ساعتی", "روزانه", "پیش‌بینی", "تنظیمات", "برنامه", "ویجت", "نوار منو", "آنچه ویجت نشان می‌دهد", "آنچه برنامه نشان می‌دهد", "آنچه نوار منو نشان می‌دهد", "هر نما تنظیمات خودش را دارد.",
+  "عمومی", "سامانهٔ یکاها", "متریک", "آمریکایی / امپریال", "زمان", "روز هفته", "نماد آب‌وهوا", "دما", "دمای حسی", "آب‌وهوای فعلی", "مکان", "بارش", "هشدارهای هواشناسی", "حسی", "کمینه / بیشینهٔ دما", "احتمال باران", "مقدار باران", "شاخص فرابنفش", "طلوع / غروب خورشید", "مجموع دو ساعت", "زبانه هنگام باز شدن",
   "پیش‌بینی باران · 2 ساعت", "رادار باران · 2 ساعت گذشته", "مدل بارش · فعلی", "باران", "احتمال", "شدت", "بدون باران", "کم", "متوسط", "زیاد", "بسیار شدید", "رادار",
   "بارانی پیش‌بینی نمی‌شود · {amount} {unit} / 2 ساعت", "مجموع: {amount} {unit} / 2 ساعت", "داده‌ای نیست — در انتظار نوسازی…", "نقشهٔ رادار در حال بارگیری است…", "دادهٔ رادار برای این مکان موجود نیست", "{location} · {speed} {unit} از {direction} · تندباد {gust} {unit}", "داده‌های باد در حال بارگیری است…", "دادهٔ مدل باد موجود نیست", "مقادیر مورب از حافظهٔ نهان (حداکثر 3 روز)."
 ])
 
 addCompactCatalog("hi", [
   "मौसम", "अत्यधिक", "गंभीर", "मध्यम", "मामूली", "अभी प्रभावी", "अगली सूचना तक", "अपडेट हो रहा है…", "अभी-अभी", "{count} मिनट पहले", "{count} घंटे पहले", "आज", "वर्तमान", "अभी", "शहर खोजें",
-  "महसूस", "हवा", "आर्द्रता", "अपने-आप पता लगाया", "पूर्वानुमान लाया जा रहा है…", "प्रति घंटा", "दैनिक", "पूर्वानुमान", "सेटिंग्स", "ऐप", "विजेट", "मेन्यू बार", "विजेट सेटिंग्स", "ऐप सेटिंग्स", "मेन्यू बार सेटिंग्स", "चुनें कि चयनित दृश्य में क्या दिखे।",
-  "सामान्य", "इकाई प्रणाली", "मीट्रिक", "अमेरिकी / इम्पीरियल", "समय", "सप्ताह का दिन", "मौसम चिह्न", "तापमान", "महसूस होने वाला तापमान", "वर्तमान मौसम", "स्थान", "वर्षण", "मौसम चेतावनियाँ", "महसूस", "न्यून. / अधिक. तापमान", "बारिश की संभावना", "बारिश की मात्रा", "यूवी सूचकांक", "सूर्योदय / सूर्यास्त", "दो घंटे का कुल", "डिफ़ॉल्ट पूर्वानुमान टैब",
+  "महसूस", "हवा", "आर्द्रता", "अपने-आप पता लगाया", "पूर्वानुमान लाया जा रहा है…", "प्रति घंटा", "दैनिक", "पूर्वानुमान", "सेटिंग्स", "ऐप", "विजेट", "मेन्यू बार", "विजेट क्या दिखाता है", "ऐप क्या दिखाता है", "मेन्यू बार क्या दिखाता है", "हर दृश्य की अपनी सेटिंग्स हैं।",
+  "सामान्य", "इकाई प्रणाली", "मीट्रिक", "अमेरिकी / इम्पीरियल", "समय", "सप्ताह का दिन", "मौसम चिह्न", "तापमान", "महसूस होने वाला तापमान", "वर्तमान मौसम", "स्थान", "वर्षण", "मौसम चेतावनियाँ", "महसूस", "न्यून. / अधिक. तापमान", "बारिश की संभावना", "बारिश की मात्रा", "यूवी सूचकांक", "सूर्योदय / सूर्यास्त", "दो घंटे का कुल", "खोलने पर टैब",
   "बारिश का पूर्वानुमान · 2 घंटे", "वर्षा रडार · पिछले 2 घंटे", "वर्षण मॉडल · वर्तमान", "बारिश", "संभावना", "तीव्रता", "बारिश नहीं", "हल्की", "मध्यम", "तेज़", "अत्यधिक", "रडार",
   "बारिश की उम्मीद नहीं · {amount} {unit} / 2 घंटे", "कुल: {amount} {unit} / 2 घंटे", "कोई डेटा नहीं — रीफ़्रेश की प्रतीक्षा…", "रडार मानचित्र लोड हो रहा है…", "इस स्थान पर रडार डेटा उपलब्ध नहीं है", "{location} · {direction} से {speed} {unit} · झोंके {gust} {unit}", "हवा का डेटा लोड हो रहा है…", "हवा के मॉडल का डेटा उपलब्ध नहीं है", "तिरछे मान कैश से हैं (अधिकतम 3 दिन पुराने)।"
 ])
 
 addCompactCatalog("id", [
-  "Cuaca", "EKSTREM", "PARAH", "SEDANG", "RINGAN", "berlaku sekarang", "hingga pemberitahuan lebih lanjut", "memperbarui…", "baru saja", "{count} mnt lalu", "{count} jam lalu", "Hari ini", "saat ini", "sekarang", "Cari kota",
-  "TERASA", "Angin", "Kelembapan", "Terdeteksi otomatis", "Mengambil prakiraan…", "PER JAM", "HARIAN", "PRAKIRAAN", "Pengaturan", "Aplikasi", "Widget", "Bilah menu", "Pengaturan widget", "Pengaturan aplikasi", "Pengaturan bilah menu", "Pilih yang ditampilkan oleh tampilan terpilih.",
-  "UMUM", "Sistem satuan", "Metrik", "AS / Imperial", "Waktu", "Hari", "Simbol cuaca", "Suhu", "Suhu terasa", "CUACA SAAT INI", "Lokasi", "Presipitasi", "Peringatan cuaca", "Terasa", "Suhu min. / maks.", "Peluang hujan", "Jumlah hujan", "Indeks UV", "Matahari terbit / terbenam", "Total dua jam", "Tab prakiraan bawaan",
-  "PRAKIRAAN HUJAN · 2 JAM", "RADAR HUJAN · 2 JAM TERAKHIR", "MODEL PRESIPITASI · SAAT INI", "Hujan", "Peluang", "Intensitas", "Tidak ada hujan", "Ringan", "Sedang", "Lebat", "Ekstrem", "Radar",
+  "Cuaca", "Ekstrem", "Parah", "Sedang", "Ringan", "berlaku sekarang", "hingga pemberitahuan lebih lanjut", "memperbarui…", "baru saja", "{count} mnt lalu", "{count} jam lalu", "Hari ini", "saat ini", "sekarang", "Cari kota",
+  "Terasa", "Angin", "Kelembapan", "Terdeteksi otomatis", "Mengambil prakiraan…", "Per jam", "Harian", "Prakiraan", "Pengaturan", "Aplikasi", "Widget", "Bilah menu", "Yang ditampilkan widget", "Yang ditampilkan aplikasi", "Yang ditampilkan bilah menu", "Setiap tampilan punya pengaturannya sendiri.",
+  "Umum", "Sistem satuan", "Metrik", "AS / Imperial", "Waktu", "Hari", "Simbol cuaca", "Suhu", "Suhu terasa", "Cuaca saat ini", "Lokasi", "Presipitasi", "Peringatan cuaca", "Terasa", "Suhu min. / maks.", "Peluang hujan", "Jumlah hujan", "Indeks UV", "Matahari terbit / terbenam", "Total dua jam", "Tab saat dibuka",
+  "Prakiraan hujan · 2 jam", "Radar hujan · 2 jam terakhir", "Model presipitasi · saat ini", "Hujan", "Peluang", "Intensitas", "Tidak ada hujan", "Ringan", "Sedang", "Lebat", "Ekstrem", "Radar",
   "Hujan tidak diperkirakan · {amount} {unit} / 2 jam", "Total: {amount} {unit} / 2 jam", "Tidak ada data — menunggu penyegaran…", "Peta radar sedang dimuat…", "Data radar tidak tersedia di lokasi ini", "{location} · {speed} {unit} dari {direction} · embusan {gust} {unit}", "Data angin sedang dimuat…", "Data model angin tidak tersedia", "Nilai miring berasal dari cache (maks. 3 hari)."
 ])
 
 addCompactCatalog("vi", [
-  "Thời tiết", "CỰC ĐOAN", "NGHIÊM TRỌNG", "TRUNG BÌNH", "NHẸ", "có hiệu lực ngay", "cho đến khi có thông báo mới", "đang cập nhật…", "vừa xong", "{count} phút trước", "{count} giờ trước", "Hôm nay", "hiện tại", "bây giờ", "Tìm thành phố",
-  "CẢM GIÁC", "Gió", "Độ ẩm", "Tự động phát hiện", "Đang tải dự báo…", "HÀNG GIỜ", "HÀNG NGÀY", "DỰ BÁO", "Cài đặt", "Ứng dụng", "Tiện ích", "Thanh menu", "Cài đặt tiện ích", "Cài đặt ứng dụng", "Cài đặt thanh menu", "Chọn nội dung hiển thị trong chế độ xem đã chọn.",
-  "CHUNG", "Hệ đơn vị", "Mét", "Mỹ / Anh", "Thời gian", "Thứ", "Biểu tượng thời tiết", "Nhiệt độ", "Nhiệt độ cảm nhận", "THỜI TIẾT HIỆN TẠI", "Vị trí", "Lượng mưa", "Cảnh báo thời tiết", "Cảm giác", "Nhiệt độ thấp / cao", "Xác suất mưa", "Lượng mưa", "Chỉ số UV", "Bình minh / hoàng hôn", "Tổng hai giờ", "Thẻ dự báo mặc định",
-  "DỰ BÁO MƯA · 2 GIỜ", "RADAR MƯA · 2 GIỜ QUA", "MÔ HÌNH MƯA · HIỆN TẠI", "Mưa", "Xác suất", "Cường độ", "Không mưa", "Nhẹ", "Vừa", "Mạnh", "Cực đoan", "Radar",
+  "Thời tiết", "Cực đoan", "Nghiêm trọng", "Trung bình", "Nhẹ", "có hiệu lực ngay", "cho đến khi có thông báo mới", "đang cập nhật…", "vừa xong", "{count} phút trước", "{count} giờ trước", "Hôm nay", "hiện tại", "bây giờ", "Tìm thành phố",
+  "Cảm giác", "Gió", "Độ ẩm", "Tự động phát hiện", "Đang tải dự báo…", "Hàng giờ", "Hàng ngày", "Dự báo", "Cài đặt", "Ứng dụng", "Tiện ích", "Thanh menu", "Tiện ích hiển thị gì", "Ứng dụng hiển thị gì", "Thanh menu hiển thị gì", "Mỗi chế độ xem có cài đặt riêng.",
+  "Chung", "Hệ đơn vị", "Mét", "Mỹ / Anh", "Thời gian", "Thứ", "Biểu tượng thời tiết", "Nhiệt độ", "Nhiệt độ cảm nhận", "Thời tiết hiện tại", "Vị trí", "Lượng mưa", "Cảnh báo thời tiết", "Cảm giác", "Nhiệt độ thấp / cao", "Xác suất mưa", "Lượng mưa", "Chỉ số UV", "Bình minh / hoàng hôn", "Tổng hai giờ", "Thẻ khi mở",
+  "Dự báo mưa · 2 giờ", "Radar mưa · 2 giờ qua", "Mô hình mưa · hiện tại", "Mưa", "Xác suất", "Cường độ", "Không mưa", "Nhẹ", "Vừa", "Mạnh", "Cực đoan", "Radar",
   "Không dự kiến có mưa · {amount} {unit} / 2 giờ", "Tổng: {amount} {unit} / 2 giờ", "Không có dữ liệu — đang chờ làm mới…", "Đang tải bản đồ radar…", "Không có dữ liệu radar tại vị trí này", "{location} · {speed} {unit} từ {direction} · gió giật {gust} {unit}", "Đang tải dữ liệu gió…", "Không có dữ liệu mô hình gió", "Giá trị in nghiêng lấy từ bộ nhớ đệm (tối đa 3 ngày)."
 ])
 
 addCompactCatalog("th", [
   "สภาพอากาศ", "รุนแรงที่สุด", "รุนแรง", "ปานกลาง", "เล็กน้อย", "มีผลขณะนี้", "จนกว่าจะมีประกาศเพิ่มเติม", "กำลังอัปเดต…", "เมื่อสักครู่", "{count} นาทีที่แล้ว", "{count} ชั่วโมงที่แล้ว", "วันนี้", "ปัจจุบัน", "ขณะนี้", "ค้นหาเมือง",
-  "รู้สึกเหมือน", "ลม", "ความชื้น", "ตรวจพบอัตโนมัติ", "กำลังดึงพยากรณ์…", "รายชั่วโมง", "รายวัน", "พยากรณ์", "การตั้งค่า", "แอป", "วิดเจ็ต", "แถบเมนู", "การตั้งค่าวิดเจ็ต", "การตั้งค่าแอป", "การตั้งค่าแถบเมนู", "เลือกสิ่งที่จะแสดงในมุมมองที่เลือก",
-  "ทั่วไป", "ระบบหน่วย", "เมตริก", "สหรัฐฯ / อิมพีเรียล", "เวลา", "วันในสัปดาห์", "สัญลักษณ์สภาพอากาศ", "อุณหภูมิ", "อุณหภูมิที่รู้สึก", "สภาพอากาศปัจจุบัน", "ตำแหน่ง", "หยาดน้ำฟ้า", "คำเตือนสภาพอากาศ", "รู้สึก", "อุณหภูมิต่ำสุด / สูงสุด", "โอกาสฝนตก", "ปริมาณฝน", "ดัชนี UV", "พระอาทิตย์ขึ้น / ตก", "ยอดรวมสองชั่วโมง", "แท็บพยากรณ์เริ่มต้น",
+  "รู้สึกเหมือน", "ลม", "ความชื้น", "ตรวจพบอัตโนมัติ", "กำลังดึงพยากรณ์…", "รายชั่วโมง", "รายวัน", "พยากรณ์", "การตั้งค่า", "แอป", "วิดเจ็ต", "แถบเมนู", "สิ่งที่วิดเจ็ตแสดง", "สิ่งที่แอปแสดง", "สิ่งที่แถบเมนูแสดง", "แต่ละมุมมองมีการตั้งค่าของตัวเอง",
+  "ทั่วไป", "ระบบหน่วย", "เมตริก", "สหรัฐฯ / อิมพีเรียล", "เวลา", "วันในสัปดาห์", "สัญลักษณ์สภาพอากาศ", "อุณหภูมิ", "อุณหภูมิที่รู้สึก", "สภาพอากาศปัจจุบัน", "ตำแหน่ง", "หยาดน้ำฟ้า", "คำเตือนสภาพอากาศ", "รู้สึก", "อุณหภูมิต่ำสุด / สูงสุด", "โอกาสฝนตก", "ปริมาณฝน", "ดัชนี UV", "พระอาทิตย์ขึ้น / ตก", "ยอดรวมสองชั่วโมง", "แท็บเมื่อเปิด",
   "พยากรณ์ฝน · 2 ชั่วโมง", "เรดาร์ฝน · 2 ชั่วโมงที่ผ่านมา", "แบบจำลองหยาดน้ำฟ้า · ปัจจุบัน", "ฝน", "ความน่าจะเป็น", "ความแรง", "ไม่มีฝน", "เบา", "ปานกลาง", "หนัก", "รุนแรงที่สุด", "เรดาร์",
   "ไม่คาดว่าจะมีฝน · {amount} {unit} / 2 ชม.", "รวม: {amount} {unit} / 2 ชม.", "ไม่มีข้อมูล — กำลังรอรีเฟรช…", "กำลังโหลดแผนที่เรดาร์…", "ไม่มีข้อมูลเรดาร์สำหรับตำแหน่งนี้", "{location} · {speed} {unit} จาก {direction} · ลมกระโชก {gust} {unit}", "กำลังโหลดข้อมูลลม…", "ไม่มีข้อมูลแบบจำลองลม", "ค่าตัวเอียงมาจากแคช (ไม่เกิน 3 วัน)"
 ])
@@ -829,31 +843,31 @@ addCatalogEntries("es", {
   "shortcutsSubtitle": "Teclado y ratón",
   "sourcesSubtitle": "De dónde proceden los datos",
   "shortcutsHint": "Las mismas teclas funcionan en el widget y en la aplicación.",
-  "shortcutsGroupGeneral": "GENERAL",
-  "shortcutsGroupNavigation": "DESPLAZAMIENTO",
-  "shortcutsGroupForecast": "LLUVIA, RADAR Y VIENTO",
-  "shortcutsGroupSearch": "BÚSQUEDA DE LUGAR",
-  "shortcutsGroupSettings": "AJUSTES",
-  "shortcutsGroupMouse": "BARRA DE MENÚ",
+  "shortcutsGroupGeneral": "General",
+  "shortcutsGroupNavigation": "Desplazamiento",
+  "shortcutsGroupForecast": "Pestañas y mapas",
+  "shortcutsGroupSearch": "Búsqueda de lugar",
+  "shortcutsGroupSettings": "Ajustes",
+  "shortcutsGroupMouse": "Barra de menú",
   "shortcutClose": "Cerrar la búsqueda, los ajustes o la lista y después el panel",
   "shortcutSwitchPanel": "Panel siguiente / anterior de la barra (widget)",
-  "shortcutSettings": "Abrir ajustes",
+  "shortcutSettings": "Abrir los ajustes",
   "shortcutRefresh": "Actualizar ahora",
   "shortcutSearch": "Buscar un lugar",
   "shortcutScroll": "Desplazar",
   "shortcutPage": "Desplazar una página",
-  "shortcutJump": "Ir al principio / al final",
+  "shortcutJump": "Arriba / abajo del todo",
   "shortcutScrollDaily": "Desplazar el pronóstico diario",
   "shortcutViews": "Vista lluvia / radar / viento",
   "shortcutRadarStep": "Radar: imagen anterior / siguiente",
   "shortcutRadarPlay": "Radar: reproducir / pausar",
   "shortcutZoom": "Mapa: acercar / alejar",
   "shortcutZoomReset": "Mapa: zoom predeterminado",
-  "shortcutSearchSelect": "Elegir un resultado",
-  "shortcutSearchSection": "Cambiar entre resultados y favoritos",
-  "shortcutSearchPick": "Mostrar el lugar elegido",
-  "shortcutSearchFavorite": "Añadir / quitar favorito",
-  "shortcutSearchCancel": "Cancelar la búsqueda",
+  "shortcutSearchSelect": "Moverse por los resultados o los lugares guardados",
+  "shortcutSearchSection": "Cambiar entre resultados y lugares guardados",
+  "shortcutSearchPick": "Usar el resultado o cambiar al lugar guardado",
+  "shortcutSearchAdd": "En los lugares guardados (Tab): añadir el resultado marcado",
+  "shortcutSearchCancel": "Cerrar la búsqueda",
   "shortcutSettingsPages": "Página de ajustes anterior / siguiente",
   "shortcutSettingsClose": "Cerrar ajustes",
   "mouseLeft": "Clic izquierdo",
@@ -863,11 +877,11 @@ addCatalogEntries("es", {
   "shortcutMouseRefresh": "Actualizar ahora",
   "shortcutMouseNotify": "El tiempo como notificación",
   "sourcesHint": "Las fuentes se eligen según el lugar y, si una falla, se pasa automáticamente a la siguiente.",
-  "sourceInUse": "EN USO",
-  "sourceNotInUse": "sin usar",
+  "sourceInUse": "En uso",
+  "sourceNotInUse": "Sin uso",
   "sourceGroupForecast": "Tiempo actual y pronóstico",
   "sourceGroupForecastDetails": "Open-Meteo Best Match (el mejor modelo nacional de cada región), con MET Norway como respaldo. En Noruega, Suecia, Finlandia y Dinamarca MET Norway va primero, respaldado por su modelo MET Nordic de 1 km. En la zona del DWD, DWD MOSMIX (vía Bright Sky) afina temperatura, lluvia y símbolos.",
-  "sourceCoverage": "COBERTURA",
+  "sourceCoverage": "Cobertura",
   "sourceGroupForecastCoverage": "Mundial. MET Norway primero en NO, SE, FI, DK. DWD MOSMIX solo en la zona del DWD (aprox. 46,5–55,5° N, 5–16° E, también fuera de Alemania).",
   "sourceGroupUvCoverage": "Mundial.",
   "sourceGroupNowcastCoverage": "Mundial. Valores de lluvia de MOSMIX y cantidad del radar del DWD solo en la zona del DWD.",
@@ -896,7 +910,7 @@ addCatalogEntries("es", {
   "sourceGroupMapDetails": "Fondo satelital: DWD GeoServer Blue Marble. Nombres de ciudades: OpenStreetMap vía la API Overpass, en caché durante 30 días.",
   "sourceGroupMoon": "Fase lunar",
   "sourceGroupMoonDetails": "Calculada localmente (Meeus); reflejada para lugares al sur del ecuador.",
-  "sourceLocalCalculation": "CÁLCULO LOCAL",
+  "sourceLocalCalculation": "Cálculo local",
   "sourceRefreshInfo": "Se actualiza cada {minutes} min, el radar del DWD cada 5 min, compartido entre el widget y la aplicación. Última actualización: {updated}.",
   "barPosition": "Posición en la barra",
   "barPositionLeft": "Izquierda",
@@ -907,22 +921,22 @@ addCatalogEntries("es", {
   "barPositionHint": "Mueve el widget dentro de la barra de Omarchy.",
   "barPositionMissing": "El widget no está en la barra.",
   "showAlways": "Siempre",
-  "showOnHover": "Al pasar el ratón",
-  "menubarHoverHint": "Las entradas con «Al pasar el ratón» aparecen mientras el puntero está sobre el tiempo en la barra.",
+  "showOnHover": "Al pasar",
+  "menubarHoverHint": "Las entradas con «Al pasar» aparecen mientras el puntero está sobre el tiempo en la barra.",
   "barBehavior": "Comportamiento",
-  "openWidgetOnHover": "Abrir el widget al pasar el ratón",
+  "openWidgetOnHover": "Abrir el widget al pasar el puntero",
   "openWidgetOnHoverHint": "Abre el widget cuando el puntero se detiene sobre el tiempo en la barra y lo cierra al alejarse. Un clic lo mantiene abierto.",
   "rainIntensity": "Intensidad de la lluvia",
-  "showWhenRelevant": "Cuando sea relevante",
-  "menubarRelevantCurrentHint": "«Cuando sea relevante» muestra una entrada solo si destaca: sensación térmica a 3° de la temperatura, viento desde 20 km/h, UV desde 6.",
-  "menubarRelevantRainHint": "«Cuando sea relevante»: probabilidad desde 30 %, intensidad mientras llueve, inicio de la lluvia dentro de dos horas. El inicio de la lluvia y la intensidad ocupan el lugar de la probabilidad.",
-  "menubarRelevantAirHint": "«Cuando sea relevante»: calidad del aire desde «mala», polen en nivel alto.",
+  "showWhenRelevant": "Relevante",
+  "menubarRelevantCurrentHint": "«Relevante» muestra una entrada solo si destaca: sensación térmica a 3° de la temperatura, viento desde 20 km/h, UV desde 6.",
+  "menubarRelevantRainHint": "«Relevante»: probabilidad desde 30 %, intensidad mientras llueve, inicio de la lluvia dentro de dos horas. El inicio de la lluvia y la intensidad ocupan el lugar de la probabilidad.",
+  "menubarRelevantAirHint": "«Relevante»: calidad del aire desde «mala», polen en nivel alto.",
   "kelvinUnits": "Kelvin",
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "Otras unidades al pasar el ratón",
   "hoverUnitSystemOff": "Desactivado",
   "hoverUnitSystemHint": "Mientras el puntero está sobre el widget, la barra cambia a este sistema de unidades. Kelvin solo afecta a las temperaturas.",
-  "restoreOrder": "Restablecer el orden",
+  "restoreOrder": "Restablecer orden",
   "sunNext": "Próximo evento solar",
   "sunrise": "Amanecer",
   "sunset": "Atardecer",
@@ -937,12 +951,12 @@ addCatalogEntries("fr", {
   "shortcutsSubtitle": "Clavier et souris",
   "sourcesSubtitle": "D’où viennent les données",
   "shortcutsHint": "Les mêmes touches fonctionnent dans le widget et dans l’application.",
-  "shortcutsGroupGeneral": "GÉNÉRAL",
-  "shortcutsGroupNavigation": "DÉFILEMENT",
-  "shortcutsGroupForecast": "PLUIE, RADAR ET VENT",
-  "shortcutsGroupSearch": "RECHERCHE DE LIEU",
-  "shortcutsGroupSettings": "PARAMÈTRES",
-  "shortcutsGroupMouse": "BARRE DE MENUS",
+  "shortcutsGroupGeneral": "Général",
+  "shortcutsGroupNavigation": "Défilement",
+  "shortcutsGroupForecast": "Onglets et cartes",
+  "shortcutsGroupSearch": "Recherche de lieu",
+  "shortcutsGroupSettings": "Paramètres",
+  "shortcutsGroupMouse": "Barre de menus",
   "shortcutClose": "Fermer la recherche, les paramètres ou la liste, puis le panneau",
   "shortcutSwitchPanel": "Panneau suivant / précédent de la barre (widget)",
   "shortcutSettings": "Ouvrir les paramètres",
@@ -950,18 +964,18 @@ addCatalogEntries("fr", {
   "shortcutSearch": "Rechercher un lieu",
   "shortcutScroll": "Faire défiler",
   "shortcutPage": "Défiler d’une page",
-  "shortcutJump": "Aller au début / à la fin",
+  "shortcutJump": "Tout en haut / en bas",
   "shortcutScrollDaily": "Faire défiler les prévisions quotidiennes",
   "shortcutViews": "Vue pluie / radar / vent",
   "shortcutRadarStep": "Radar : image précédente / suivante",
   "shortcutRadarPlay": "Radar : lecture / pause",
   "shortcutZoom": "Carte : zoom avant / arrière",
   "shortcutZoomReset": "Carte : zoom par défaut",
-  "shortcutSearchSelect": "Choisir un résultat",
-  "shortcutSearchSection": "Basculer entre résultats et favoris",
-  "shortcutSearchPick": "Afficher le lieu choisi",
-  "shortcutSearchFavorite": "Ajouter / retirer un favori",
-  "shortcutSearchCancel": "Annuler la recherche",
+  "shortcutSearchSelect": "Se déplacer dans les résultats ou les lieux enregistrés",
+  "shortcutSearchSection": "Basculer entre résultats et lieux enregistrés",
+  "shortcutSearchPick": "Utiliser le résultat ou passer au lieu enregistré",
+  "shortcutSearchAdd": "Dans les lieux enregistrés (Tab) : ajouter le résultat marqué",
+  "shortcutSearchCancel": "Fermer la recherche",
   "shortcutSettingsPages": "Page de paramètres précédente / suivante",
   "shortcutSettingsClose": "Fermer les paramètres",
   "mouseLeft": "Clic gauche",
@@ -971,11 +985,11 @@ addCatalogEntries("fr", {
   "shortcutMouseRefresh": "Actualiser maintenant",
   "shortcutMouseNotify": "Météo en notification",
   "sourcesHint": "Les sources sont choisies selon le lieu ; si l’une échoue, la suivante prend automatiquement le relais.",
-  "sourceInUse": "UTILISÉE",
-  "sourceNotInUse": "inutilisée",
+  "sourceInUse": "Utilisé",
+  "sourceNotInUse": "Non utilisé",
   "sourceGroupForecast": "Météo actuelle et prévisions",
   "sourceGroupForecastDetails": "Open-Meteo Best Match (le meilleur modèle national par région), avec MET Norway en secours. En Norvège, Suède, Finlande et Danemark, MET Norway passe en premier grâce à son modèle MET Nordic à 1 km. Dans la zone DWD, DWD MOSMIX (via Bright Sky) affine température, pluie et symboles.",
-  "sourceCoverage": "COUVERTURE",
+  "sourceCoverage": "Couverture",
   "sourceGroupForecastCoverage": "Mondiale. MET Norway en premier en NO, SE, FI, DK. DWD MOSMIX seulement dans la zone DWD (env. 46,5–55,5° N, 5–16° E, aussi au-delà de l’Allemagne).",
   "sourceGroupUvCoverage": "Mondiale.",
   "sourceGroupNowcastCoverage": "Mondiale. Valeurs de pluie MOSMIX et cumul du radar DWD seulement dans la zone DWD.",
@@ -1004,7 +1018,7 @@ addCatalogEntries("fr", {
   "sourceGroupMapDetails": "Fond satellite : DWD GeoServer Blue Marble. Noms de villes : OpenStreetMap via l’API Overpass, en cache pendant 30 jours.",
   "sourceGroupMoon": "Phase de la Lune",
   "sourceGroupMoonDetails": "Calculée localement (Meeus) ; inversée pour les lieux au sud de l’équateur.",
-  "sourceLocalCalculation": "CALCUL LOCAL",
+  "sourceLocalCalculation": "Calcul local",
   "sourceRefreshInfo": "Actualisation toutes les {minutes} min, le radar DWD toutes les 5 min, partagée entre le widget et l’application. Dernière mise à jour : {updated}.",
   "barPosition": "Position dans la barre",
   "barPositionLeft": "Gauche",
@@ -1015,22 +1029,22 @@ addCatalogEntries("fr", {
   "barPositionHint": "Déplace le widget dans la barre d’Omarchy.",
   "barPositionMissing": "Le widget n’est pas dans la barre.",
   "showAlways": "Toujours",
-  "showOnHover": "Au survol",
-  "menubarHoverHint": "Les éléments « Au survol » apparaissent tant que le pointeur survole la météo dans la barre.",
+  "showOnHover": "Survol",
+  "menubarHoverHint": "Les éléments « Survol » apparaissent tant que le pointeur survole la météo dans la barre.",
   "barBehavior": "Comportement",
   "openWidgetOnHover": "Ouvrir le widget au survol",
   "openWidgetOnHoverHint": "Ouvre le widget quand le pointeur survole la météo dans la barre et le ferme dès qu’il s’éloigne. Un clic le garde ouvert.",
   "rainIntensity": "Intensité de la pluie",
-  "showWhenRelevant": "Si pertinent",
-  "menubarRelevantCurrentHint": "« Si pertinent » n’affiche un élément que s’il se démarque : ressenti à 3° de la température, vent à partir de 20 km/h, UV à partir de 6.",
-  "menubarRelevantRainHint": "« Si pertinent » : probabilité à partir de 30 %, intensité tant qu’il pleut, début de pluie dans les deux heures. Le début de pluie et l’intensité prennent la place de la probabilité.",
-  "menubarRelevantAirHint": "« Si pertinent » : qualité de l’air à partir de « mauvaise », pollen à un niveau élevé.",
+  "showWhenRelevant": "Pertinent",
+  "menubarRelevantCurrentHint": "« Pertinent » n’affiche un élément que s’il se démarque : ressenti à 3° de la température, vent à partir de 20 km/h, UV à partir de 6.",
+  "menubarRelevantRainHint": "« Pertinent » : probabilité à partir de 30 %, intensité tant qu’il pleut, début de pluie dans les deux heures. Le début de pluie et l’intensité prennent la place de la probabilité.",
+  "menubarRelevantAirHint": "« Pertinent » : qualité de l’air à partir de « mauvaise », pollen à un niveau élevé.",
   "kelvinUnits": "Kelvin",
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "Autres unités au survol",
   "hoverUnitSystemOff": "Désactivé",
   "hoverUnitSystemHint": "Tant que le pointeur survole le widget, la barre passe à ce système d’unités. Kelvin ne change que les températures.",
-  "restoreOrder": "Rétablir l’ordre",
+  "restoreOrder": "Réinitialiser l’ordre",
   "sunNext": "Prochain événement solaire",
   "sunrise": "Lever du soleil",
   "sunset": "Coucher du soleil",
@@ -1045,31 +1059,31 @@ addCatalogEntries("pt", {
   "shortcutsSubtitle": "Teclado e mouse",
   "sourcesSubtitle": "De onde vêm os dados",
   "shortcutsHint": "As mesmas teclas funcionam no widget e no aplicativo.",
-  "shortcutsGroupGeneral": "GERAL",
-  "shortcutsGroupNavigation": "ROLAGEM",
-  "shortcutsGroupForecast": "CHUVA, RADAR E VENTO",
-  "shortcutsGroupSearch": "BUSCA DE LOCAL",
-  "shortcutsGroupSettings": "CONFIGURAÇÕES",
-  "shortcutsGroupMouse": "BARRA DE MENU",
+  "shortcutsGroupGeneral": "Geral",
+  "shortcutsGroupNavigation": "Rolagem",
+  "shortcutsGroupForecast": "Abas e mapas",
+  "shortcutsGroupSearch": "Busca de local",
+  "shortcutsGroupSettings": "Configurações",
+  "shortcutsGroupMouse": "Barra de menu",
   "shortcutClose": "Fechar a busca, as configurações ou a lista e depois o painel",
   "shortcutSwitchPanel": "Painel seguinte / anterior da barra (widget)",
-  "shortcutSettings": "Abrir configurações",
+  "shortcutSettings": "Abrir as configurações",
   "shortcutRefresh": "Atualizar agora",
   "shortcutSearch": "Buscar um local",
   "shortcutScroll": "Rolar",
   "shortcutPage": "Rolar uma página",
-  "shortcutJump": "Ir para o início / fim",
+  "shortcutJump": "Para o topo / fim",
   "shortcutScrollDaily": "Rolar a previsão diária",
   "shortcutViews": "Visualização chuva / radar / vento",
   "shortcutRadarStep": "Radar: imagem anterior / seguinte",
   "shortcutRadarPlay": "Radar: reproduzir / pausar",
   "shortcutZoom": "Mapa: aproximar / afastar",
   "shortcutZoomReset": "Mapa: zoom padrão",
-  "shortcutSearchSelect": "Escolher um resultado",
-  "shortcutSearchSection": "Alternar entre resultados e favoritos",
-  "shortcutSearchPick": "Mostrar o local escolhido",
-  "shortcutSearchFavorite": "Adicionar / remover favorito",
-  "shortcutSearchCancel": "Cancelar a busca",
+  "shortcutSearchSelect": "Mover-se nos resultados ou nos locais salvos",
+  "shortcutSearchSection": "Alternar entre resultados e locais salvos",
+  "shortcutSearchPick": "Usar o resultado ou mudar para o local salvo",
+  "shortcutSearchAdd": "Nos locais salvos (Tab): adicionar o resultado marcado",
+  "shortcutSearchCancel": "Fechar a busca",
   "shortcutSettingsPages": "Página de configurações anterior / seguinte",
   "shortcutSettingsClose": "Fechar configurações",
   "mouseLeft": "Clique esquerdo",
@@ -1079,11 +1093,11 @@ addCatalogEntries("pt", {
   "shortcutMouseRefresh": "Atualizar agora",
   "shortcutMouseNotify": "Tempo como notificação",
   "sourcesHint": "As fontes são escolhidas conforme o local e, se uma falhar, a próxima assume automaticamente.",
-  "sourceInUse": "EM USO",
-  "sourceNotInUse": "sem uso",
+  "sourceInUse": "Em uso",
+  "sourceNotInUse": "Fora de uso",
   "sourceGroupForecast": "Tempo atual e previsão",
   "sourceGroupForecastDetails": "Open-Meteo Best Match (o melhor modelo nacional de cada região), com MET Norway como reserva. Na Noruega, Suécia, Finlândia e Dinamarca o MET Norway vem primeiro, apoiado pelo seu modelo MET Nordic de 1 km. Na área do DWD, o DWD MOSMIX (via Bright Sky) refina temperatura, chuva e símbolos.",
-  "sourceCoverage": "COBERTURA",
+  "sourceCoverage": "Cobertura",
   "sourceGroupForecastCoverage": "Mundial. MET Norway primeiro em NO, SE, FI, DK. DWD MOSMIX só na área do DWD (cerca de 46,5–55,5° N, 5–16° E, também além da Alemanha).",
   "sourceGroupUvCoverage": "Mundial.",
   "sourceGroupNowcastCoverage": "Mundial. Valores de chuva do MOSMIX e volume do radar do DWD só na área do DWD.",
@@ -1112,7 +1126,7 @@ addCatalogEntries("pt", {
   "sourceGroupMapDetails": "Fundo de satélite: DWD GeoServer Blue Marble. Nomes de cidades: OpenStreetMap via API Overpass, em cache por 30 dias.",
   "sourceGroupMoon": "Fase da Lua",
   "sourceGroupMoonDetails": "Calculada localmente (Meeus); espelhada para locais ao sul do equador.",
-  "sourceLocalCalculation": "CÁLCULO LOCAL",
+  "sourceLocalCalculation": "Cálculo local",
   "sourceRefreshInfo": "Atualizado a cada {minutes} min, o radar do DWD a cada 5 min, compartilhado entre widget e aplicativo. Última atualização: {updated}.",
   "barPosition": "Posição na barra",
   "barPositionLeft": "Esquerda",
@@ -1123,22 +1137,22 @@ addCatalogEntries("pt", {
   "barPositionHint": "Move o widget dentro da barra do Omarchy.",
   "barPositionMissing": "O widget não está na barra.",
   "showAlways": "Sempre",
-  "showOnHover": "Ao passar o mouse",
-  "menubarHoverHint": "Itens com “Ao passar o mouse” aparecem enquanto o ponteiro está sobre o clima na barra.",
+  "showOnHover": "Ao passar",
+  "menubarHoverHint": "Itens com “Ao passar” aparecem enquanto o ponteiro está sobre o clima na barra.",
   "barBehavior": "Comportamento",
-  "openWidgetOnHover": "Abrir o widget ao passar o mouse",
+  "openWidgetOnHover": "Abrir o widget ao passar o ponteiro",
   "openWidgetOnHoverHint": "Abre o widget quando o ponteiro para sobre o clima na barra e o fecha quando ele se afasta. Um clique o mantém aberto.",
   "rainIntensity": "Intensidade da chuva",
-  "showWhenRelevant": "Quando relevante",
-  "menubarRelevantCurrentHint": "“Quando relevante” mostra um item apenas se ele se destacar: sensação a 3° da temperatura, vento a partir de 20 km/h, UV a partir de 6.",
-  "menubarRelevantRainHint": "“Quando relevante”: probabilidade a partir de 30 %, intensidade enquanto chove, início da chuva em até duas horas. O início da chuva e a intensidade ocupam o lugar da probabilidade.",
-  "menubarRelevantAirHint": "“Quando relevante”: qualidade do ar a partir de “ruim”, pólen em nível alto.",
+  "showWhenRelevant": "Relevante",
+  "menubarRelevantCurrentHint": "“Relevante” mostra um item apenas se ele se destacar: sensação a 3° da temperatura, vento a partir de 20 km/h, UV a partir de 6.",
+  "menubarRelevantRainHint": "“Relevante”: probabilidade a partir de 30 %, intensidade enquanto chove, início da chuva em até duas horas. O início da chuva e a intensidade ocupam o lugar da probabilidade.",
+  "menubarRelevantAirHint": "“Relevante”: qualidade do ar a partir de “ruim”, pólen em nível alto.",
   "kelvinUnits": "Kelvin",
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "Outras unidades ao passar o mouse",
   "hoverUnitSystemOff": "Desligado",
   "hoverUnitSystemHint": "Enquanto o ponteiro está sobre o widget, a barra muda para este sistema de unidades. Kelvin afeta apenas as temperaturas.",
-  "restoreOrder": "Restaurar a ordem",
+  "restoreOrder": "Redefinir ordem",
   "sunNext": "Próximo evento solar",
   "sunrise": "Nascer do sol",
   "sunset": "Pôr do sol",
@@ -1153,12 +1167,12 @@ addCatalogEntries("ru", {
   "shortcutsSubtitle": "Клавиатура и мышь",
   "sourcesSubtitle": "Откуда берутся данные",
   "shortcutsHint": "Одни и те же клавиши работают в виджете и в приложении.",
-  "shortcutsGroupGeneral": "ОБЩИЕ",
-  "shortcutsGroupNavigation": "ПРОКРУТКА",
-  "shortcutsGroupForecast": "ДОЖДЬ, РАДАР И ВЕТЕР",
-  "shortcutsGroupSearch": "ПОИСК МЕСТА",
-  "shortcutsGroupSettings": "НАСТРОЙКИ",
-  "shortcutsGroupMouse": "СТРОКА МЕНЮ",
+  "shortcutsGroupGeneral": "Общие",
+  "shortcutsGroupNavigation": "Прокрутка",
+  "shortcutsGroupForecast": "Вкладки и карты",
+  "shortcutsGroupSearch": "Поиск места",
+  "shortcutsGroupSettings": "Настройки",
+  "shortcutsGroupMouse": "Строка меню",
   "shortcutClose": "Закрыть поиск, настройки или список, затем панель",
   "shortcutSwitchPanel": "Следующая / предыдущая панель строки (виджет)",
   "shortcutSettings": "Открыть настройки",
@@ -1166,18 +1180,18 @@ addCatalogEntries("ru", {
   "shortcutSearch": "Найти место",
   "shortcutScroll": "Прокрутка",
   "shortcutPage": "Прокрутить на страницу",
-  "shortcutJump": "В начало / в конец",
+  "shortcutJump": "В начало / конец",
   "shortcutScrollDaily": "Прокрутить прогноз по дням",
   "shortcutViews": "Вид дождь / радар / ветер",
   "shortcutRadarStep": "Радар: предыдущий / следующий кадр",
   "shortcutRadarPlay": "Радар: воспроизвести / пауза",
   "shortcutZoom": "Карта: приблизить / отдалить",
   "shortcutZoomReset": "Карта: масштаб по умолчанию",
-  "shortcutSearchSelect": "Выбрать результат",
-  "shortcutSearchSection": "Переключиться между результатами и избранным",
-  "shortcutSearchPick": "Показать выбранное место",
-  "shortcutSearchFavorite": "Добавить / удалить избранное",
-  "shortcutSearchCancel": "Отменить поиск",
+  "shortcutSearchSelect": "Перемещаться по результатам или сохранённым местам",
+  "shortcutSearchSection": "Переключаться между результатами и сохранёнными местами",
+  "shortcutSearchPick": "Выбрать результат или перейти к сохранённому месту",
+  "shortcutSearchAdd": "В сохранённых местах (Tab): добавить отмеченный результат",
+  "shortcutSearchCancel": "Закрыть поиск",
   "shortcutSettingsPages": "Предыдущая / следующая страница настроек",
   "shortcutSettingsClose": "Закрыть настройки",
   "mouseLeft": "Левый клик",
@@ -1187,11 +1201,11 @@ addCatalogEntries("ru", {
   "shortcutMouseRefresh": "Обновить сейчас",
   "shortcutMouseNotify": "Погода в уведомлении",
   "sourcesHint": "Источники выбираются по месту; если один не отвечает, автоматически подключается следующий.",
-  "sourceInUse": "ИСПОЛЬЗУЕТСЯ",
-  "sourceNotInUse": "не используется",
+  "sourceInUse": "Используется",
+  "sourceNotInUse": "Не используется",
   "sourceGroupForecast": "Текущая погода и прогноз",
   "sourceGroupForecastDetails": "Open-Meteo Best Match (лучшая национальная модель для региона), резерв — MET Norway. В Норвегии, Швеции, Финляндии и Дании первым идёт MET Norway на основе собственной модели MET Nordic с шагом 1 км. В зоне DWD модель DWD MOSMIX (через Bright Sky) уточняет температуру, осадки и значки.",
-  "sourceCoverage": "ОХВАТ",
+  "sourceCoverage": "Охват",
   "sourceGroupForecastCoverage": "Весь мир. MET Norway первым в NO, SE, FI, DK. DWD MOSMIX только в зоне DWD (примерно 46,5–55,5° с. ш., 5–16° в. д., в том числе за пределами Германии).",
   "sourceGroupUvCoverage": "Весь мир.",
   "sourceGroupNowcastCoverage": "Весь мир. Значения осадков MOSMIX и количество по радару DWD только в зоне DWD.",
@@ -1220,7 +1234,7 @@ addCatalogEntries("ru", {
   "sourceGroupMapDetails": "Спутниковый фон: DWD GeoServer Blue Marble. Названия городов: OpenStreetMap через Overpass API, кэшируются на 30 дней.",
   "sourceGroupMoon": "Фаза Луны",
   "sourceGroupMoonDetails": "Рассчитывается локально (Меус); зеркально для мест к югу от экватора.",
-  "sourceLocalCalculation": "ЛОКАЛЬНЫЙ РАСЧЁТ",
+  "sourceLocalCalculation": "Локальный расчёт",
   "sourceRefreshInfo": "Обновление каждые {minutes} мин, радар DWD каждые 5 мин, общее для виджета и приложения. Последнее обновление: {updated}.",
   "barPosition": "Положение на панели",
   "barPositionLeft": "Слева",
@@ -1231,16 +1245,16 @@ addCatalogEntries("ru", {
   "barPositionHint": "Перемещает виджет на панели Omarchy.",
   "barPositionMissing": "Виджета нет на панели.",
   "showAlways": "Всегда",
-  "showOnHover": "При наведении",
-  "menubarHoverHint": "Элементы «При наведении» появляются, пока указатель находится над погодой на панели.",
+  "showOnHover": "Наведение",
+  "menubarHoverHint": "Элементы «Наведение» появляются, пока указатель находится над погодой на панели.",
   "barBehavior": "Поведение",
   "openWidgetOnHover": "Открывать виджет при наведении",
   "openWidgetOnHoverHint": "Открывает виджет, когда указатель задерживается над погодой на панели, и закрывает, когда он уходит. Щелчок оставляет виджет открытым.",
   "rainIntensity": "Интенсивность дождя",
-  "showWhenRelevant": "При значимости",
-  "menubarRelevantCurrentHint": "«При значимости» показывает элемент, только когда он выделяется: ощущаемая температура на 3° от фактической, ветер от 20 км/ч, УФ от 6.",
-  "menubarRelevantRainHint": "«При значимости»: вероятность от 30 %, интенсивность пока идёт дождь, начало дождя в ближайшие два часа. Начало дождя и интенсивность занимают место вероятности.",
-  "menubarRelevantAirHint": "«При значимости»: качество воздуха от «плохого», высокий уровень пыльцы.",
+  "showWhenRelevant": "Важно",
+  "menubarRelevantCurrentHint": "«Важно» показывает элемент, только когда он выделяется: ощущаемая температура на 3° от фактической, ветер от 20 км/ч, УФ от 6.",
+  "menubarRelevantRainHint": "«Важно»: вероятность от 30 %, интенсивность пока идёт дождь, начало дождя в ближайшие два часа. Начало дождя и интенсивность занимают место вероятности.",
+  "menubarRelevantAirHint": "«Важно»: качество воздуха от «плохого», высокий уровень пыльцы.",
   "kelvinUnits": "Кельвин",
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "Другие единицы при наведении",
@@ -1261,12 +1275,12 @@ addCatalogEntries("uk", {
   "shortcutsSubtitle": "Клавіатура й миша",
   "sourcesSubtitle": "Звідки беруться дані",
   "shortcutsHint": "Ті самі клавіші працюють у віджеті та в застосунку.",
-  "shortcutsGroupGeneral": "ЗАГАЛЬНІ",
-  "shortcutsGroupNavigation": "ПРОКРУЧУВАННЯ",
-  "shortcutsGroupForecast": "ДОЩ, РАДАР І ВІТЕР",
-  "shortcutsGroupSearch": "ПОШУК МІСЦЯ",
-  "shortcutsGroupSettings": "НАЛАШТУВАННЯ",
-  "shortcutsGroupMouse": "ПАНЕЛЬ МЕНЮ",
+  "shortcutsGroupGeneral": "Загальні",
+  "shortcutsGroupNavigation": "Прокручування",
+  "shortcutsGroupForecast": "Вкладки й мапи",
+  "shortcutsGroupSearch": "Пошук місця",
+  "shortcutsGroupSettings": "Налаштування",
+  "shortcutsGroupMouse": "Панель меню",
   "shortcutClose": "Закрити пошук, налаштування або список, потім панель",
   "shortcutSwitchPanel": "Наступна / попередня панель смуги (віджет)",
   "shortcutSettings": "Відкрити налаштування",
@@ -1274,18 +1288,18 @@ addCatalogEntries("uk", {
   "shortcutSearch": "Знайти місце",
   "shortcutScroll": "Прокручування",
   "shortcutPage": "Прокрутити на сторінку",
-  "shortcutJump": "На початок / в кінець",
+  "shortcutJump": "На початок / кінець",
   "shortcutScrollDaily": "Прокрутити прогноз на дні",
   "shortcutViews": "Вигляд дощ / радар / вітер",
   "shortcutRadarStep": "Радар: попередній / наступний кадр",
   "shortcutRadarPlay": "Радар: відтворити / пауза",
   "shortcutZoom": "Мапа: наблизити / віддалити",
   "shortcutZoomReset": "Мапа: типовий масштаб",
-  "shortcutSearchSelect": "Вибрати результат",
-  "shortcutSearchSection": "Перемкнутися між результатами й обраним",
-  "shortcutSearchPick": "Показати вибране місце",
-  "shortcutSearchFavorite": "Додати / вилучити обране",
-  "shortcutSearchCancel": "Скасувати пошук",
+  "shortcutSearchSelect": "Рухатися результатами або збереженими місцями",
+  "shortcutSearchSection": "Перемикатися між результатами й збереженими місцями",
+  "shortcutSearchPick": "Вибрати результат або перейти до збереженого місця",
+  "shortcutSearchAdd": "У збережених місцях (Tab): додати позначений результат",
+  "shortcutSearchCancel": "Закрити пошук",
   "shortcutSettingsPages": "Попередня / наступна сторінка налаштувань",
   "shortcutSettingsClose": "Закрити налаштування",
   "mouseLeft": "Лівий клік",
@@ -1295,11 +1309,11 @@ addCatalogEntries("uk", {
   "shortcutMouseRefresh": "Оновити зараз",
   "shortcutMouseNotify": "Погода як сповіщення",
   "sourcesHint": "Джерела добираються за місцем; якщо одне не відповідає, автоматично вмикається наступне.",
-  "sourceInUse": "ВИКОРИСТОВУЄТЬСЯ",
-  "sourceNotInUse": "не використовується",
+  "sourceInUse": "Використовується",
+  "sourceNotInUse": "Не використовується",
   "sourceGroupForecast": "Поточна погода й прогноз",
   "sourceGroupForecastDetails": "Open-Meteo Best Match (найкраща національна модель для регіону), резерв — MET Norway. У Норвегії, Швеції, Фінляндії та Данії першим іде MET Norway на основі власної моделі MET Nordic із кроком 1 км. У зоні DWD модель DWD MOSMIX (через Bright Sky) уточнює температуру, опади й значки.",
-  "sourceCoverage": "ОХОПЛЕННЯ",
+  "sourceCoverage": "Охоплення",
   "sourceGroupForecastCoverage": "Увесь світ. MET Norway першим у NO, SE, FI, DK. DWD MOSMIX лише в зоні DWD (приблизно 46,5–55,5° пн. ш., 5–16° сх. д., зокрема й поза Німеччиною).",
   "sourceGroupUvCoverage": "Увесь світ.",
   "sourceGroupNowcastCoverage": "Увесь світ. Значення опадів MOSMIX і кількість за радаром DWD лише в зоні DWD.",
@@ -1328,7 +1342,7 @@ addCatalogEntries("uk", {
   "sourceGroupMapDetails": "Супутникове тло: DWD GeoServer Blue Marble. Назви міст: OpenStreetMap через Overpass API, кешуються на 30 днів.",
   "sourceGroupMoon": "Фаза Місяця",
   "sourceGroupMoonDetails": "Обчислюється локально (Меус); дзеркально для місць на південь від екватора.",
-  "sourceLocalCalculation": "ЛОКАЛЬНИЙ РОЗРАХУНОК",
+  "sourceLocalCalculation": "Локальний розрахунок",
   "sourceRefreshInfo": "Оновлення кожні {minutes} хв, радар DWD кожні 5 хв, спільне для віджета й застосунку. Останнє оновлення: {updated}.",
   "barPosition": "Розташування на панелі",
   "barPositionLeft": "Ліворуч",
@@ -1339,16 +1353,16 @@ addCatalogEntries("uk", {
   "barPositionHint": "Переміщує віджет на панелі Omarchy.",
   "barPositionMissing": "Віджета немає на панелі.",
   "showAlways": "Завжди",
-  "showOnHover": "При наведенні",
-  "menubarHoverHint": "Елементи «При наведенні» з’являються, поки вказівник над погодою на панелі.",
+  "showOnHover": "Наведення",
+  "menubarHoverHint": "Елементи «Наведення» з’являються, поки вказівник над погодою на панелі.",
   "barBehavior": "Поведінка",
   "openWidgetOnHover": "Відкривати віджет при наведенні",
   "openWidgetOnHoverHint": "Відкриває віджет, коли вказівник затримується над погодою на панелі, і закриває, коли він відходить. Клацання залишає віджет відкритим.",
   "rainIntensity": "Інтенсивність дощу",
-  "showWhenRelevant": "Коли важливо",
-  "menubarRelevantCurrentHint": "«Коли важливо» показує запис, лише коли він виділяється: відчутна температура за 3° від фактичної, вітер від 20 км/год, УФ від 6.",
-  "menubarRelevantRainHint": "«Коли важливо»: ймовірність від 30 %, інтенсивність поки йде дощ, початок дощу протягом двох годин. Початок дощу та інтенсивність займають місце ймовірності.",
-  "menubarRelevantAirHint": "«Коли важливо»: якість повітря від «поганої», високий рівень пилку.",
+  "showWhenRelevant": "Важливо",
+  "menubarRelevantCurrentHint": "«Важливо» показує запис, лише коли він виділяється: відчутна температура за 3° від фактичної, вітер від 20 км/год, УФ від 6.",
+  "menubarRelevantRainHint": "«Важливо»: ймовірність від 30 %, інтенсивність поки йде дощ, початок дощу протягом двох годин. Початок дощу та інтенсивність займають місце ймовірності.",
+  "menubarRelevantAirHint": "«Важливо»: якість повітря від «поганої», високий рівень пилку.",
   "kelvinUnits": "Кельвін",
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "Інші одиниці при наведенні",
@@ -1369,12 +1383,12 @@ addCatalogEntries("pl", {
   "shortcutsSubtitle": "Klawiatura i mysz",
   "sourcesSubtitle": "Skąd pochodzą dane",
   "shortcutsHint": "Te same klawisze działają w widżecie i w aplikacji.",
-  "shortcutsGroupGeneral": "OGÓLNE",
-  "shortcutsGroupNavigation": "PRZEWIJANIE",
-  "shortcutsGroupForecast": "DESZCZ, RADAR I WIATR",
-  "shortcutsGroupSearch": "WYSZUKIWANIE MIEJSCA",
-  "shortcutsGroupSettings": "USTAWIENIA",
-  "shortcutsGroupMouse": "PASEK MENU",
+  "shortcutsGroupGeneral": "Ogólne",
+  "shortcutsGroupNavigation": "Przewijanie",
+  "shortcutsGroupForecast": "Karty i mapy",
+  "shortcutsGroupSearch": "Wyszukiwanie miejsca",
+  "shortcutsGroupSettings": "Ustawienia",
+  "shortcutsGroupMouse": "Pasek menu",
   "shortcutClose": "Zamknij wyszukiwanie, ustawienia lub listę, potem panel",
   "shortcutSwitchPanel": "Następny / poprzedni panel paska (widżet)",
   "shortcutSettings": "Otwórz ustawienia",
@@ -1382,18 +1396,18 @@ addCatalogEntries("pl", {
   "shortcutSearch": "Szukaj miejsca",
   "shortcutScroll": "Przewijanie",
   "shortcutPage": "Przewiń o stronę",
-  "shortcutJump": "Na początek / koniec",
+  "shortcutJump": "Na górę / dół",
   "shortcutScrollDaily": "Przewiń prognozę dzienną",
   "shortcutViews": "Widok deszcz / radar / wiatr",
   "shortcutRadarStep": "Radar: poprzedni / następny obraz",
   "shortcutRadarPlay": "Radar: odtwórz / pauza",
   "shortcutZoom": "Mapa: przybliż / oddal",
   "shortcutZoomReset": "Mapa: domyślne powiększenie",
-  "shortcutSearchSelect": "Wybierz wynik",
-  "shortcutSearchSection": "Przełącz między wynikami a ulubionymi",
-  "shortcutSearchPick": "Pokaż wybrane miejsce",
-  "shortcutSearchFavorite": "Dodaj / usuń ulubione",
-  "shortcutSearchCancel": "Anuluj wyszukiwanie",
+  "shortcutSearchSelect": "Poruszanie się po wynikach lub zapisanych miejscach",
+  "shortcutSearchSection": "Przełącz między wynikami a zapisanymi miejscami",
+  "shortcutSearchPick": "Użyj wyniku lub przejdź do zapisanego miejsca",
+  "shortcutSearchAdd": "W zapisanych miejscach (Tab): dodaj zaznaczony wynik",
+  "shortcutSearchCancel": "Zamknij wyszukiwanie",
   "shortcutSettingsPages": "Poprzednia / następna strona ustawień",
   "shortcutSettingsClose": "Zamknij ustawienia",
   "mouseLeft": "Lewy klik",
@@ -1403,11 +1417,11 @@ addCatalogEntries("pl", {
   "shortcutMouseRefresh": "Odśwież teraz",
   "shortcutMouseNotify": "Pogoda jako powiadomienie",
   "sourcesHint": "Źródła są dobierane do miejsca; gdy któreś zawiedzie, automatycznie przejmuje następne.",
-  "sourceInUse": "UŻYWANE",
-  "sourceNotInUse": "nieużywane",
+  "sourceInUse": "W użyciu",
+  "sourceNotInUse": "Nieużywane",
   "sourceGroupForecast": "Bieżąca pogoda i prognoza",
   "sourceGroupForecastDetails": "Open-Meteo Best Match (najlepszy model krajowy dla regionu), z MET Norway jako zapasem. W Norwegii, Szwecji, Finlandii i Danii pierwszeństwo ma MET Norway, oparte na własnym modelu MET Nordic 1 km. W obszarze DWD DWD MOSMIX (przez Bright Sky) uściśla temperaturę, opady i symbole.",
-  "sourceCoverage": "ZASIĘG",
+  "sourceCoverage": "Zasięg",
   "sourceGroupForecastCoverage": "Cały świat. MET Norway najpierw w NO, SE, FI, DK. DWD MOSMIX tylko w obszarze DWD (ok. 46,5–55,5° N, 5–16° E, także poza Niemcami).",
   "sourceGroupUvCoverage": "Cały świat.",
   "sourceGroupNowcastCoverage": "Cały świat. Wartości opadów MOSMIX i ilość z radaru DWD tylko w obszarze DWD.",
@@ -1436,7 +1450,7 @@ addCatalogEntries("pl", {
   "sourceGroupMapDetails": "Tło satelitarne: DWD GeoServer Blue Marble. Nazwy miast: OpenStreetMap przez API Overpass, przechowywane 30 dni.",
   "sourceGroupMoon": "Faza Księżyca",
   "sourceGroupMoonDetails": "Obliczana lokalnie (Meeus); odbita dla miejsc na południe od równika.",
-  "sourceLocalCalculation": "OBLICZENIE LOKALNE",
+  "sourceLocalCalculation": "Obliczenie lokalne",
   "sourceRefreshInfo": "Odświeżanie co {minutes} min, radar DWD co 5 min, wspólne dla widżetu i aplikacji. Ostatnia aktualizacja: {updated}.",
   "barPosition": "Położenie na pasku",
   "barPositionLeft": "Z lewej",
@@ -1447,16 +1461,16 @@ addCatalogEntries("pl", {
   "barPositionHint": "Przenosi widżet w obrębie paska Omarchy.",
   "barPositionMissing": "Widżetu nie ma na pasku.",
   "showAlways": "Zawsze",
-  "showOnHover": "Po najechaniu",
-  "menubarHoverHint": "Elementy „Po najechaniu” pojawiają się, gdy wskaźnik znajduje się nad pogodą na pasku.",
+  "showOnHover": "Najechanie",
+  "menubarHoverHint": "Elementy „Najechanie” pojawiają się, gdy wskaźnik znajduje się nad pogodą na pasku.",
   "barBehavior": "Zachowanie",
-  "openWidgetOnHover": "Otwieraj widżet po najechaniu",
+  "openWidgetOnHover": "Otwórz widżet po najechaniu",
   "openWidgetOnHoverHint": "Otwiera widżet, gdy wskaźnik zatrzyma się nad pogodą na pasku, i zamyka go, gdy się oddali. Kliknięcie pozostawia go otwartym.",
   "rainIntensity": "Natężenie deszczu",
-  "showWhenRelevant": "Gdy istotne",
-  "menubarRelevantCurrentHint": "„Gdy istotne” pokazuje pozycję tylko wtedy, gdy się wyróżnia: temperatura odczuwalna 3° od rzeczywistej, wiatr od 20 km/h, UV od 6.",
-  "menubarRelevantRainHint": "„Gdy istotne”: prawdopodobieństwo od 30 %, natężenie gdy pada, początek deszczu w ciągu dwóch godzin. Początek deszczu i natężenie zajmują miejsce prawdopodobieństwa.",
-  "menubarRelevantAirHint": "„Gdy istotne”: jakość powietrza od „złej”, pyłki na wysokim poziomie.",
+  "showWhenRelevant": "Istotne",
+  "menubarRelevantCurrentHint": "„Istotne” pokazuje pozycję tylko wtedy, gdy się wyróżnia: temperatura odczuwalna 3° od rzeczywistej, wiatr od 20 km/h, UV od 6.",
+  "menubarRelevantRainHint": "„Istotne”: prawdopodobieństwo od 30 %, natężenie gdy pada, początek deszczu w ciągu dwóch godzin. Początek deszczu i natężenie zajmują miejsce prawdopodobieństwa.",
+  "menubarRelevantAirHint": "„Istotne”: jakość powietrza od „złej”, pyłki na wysokim poziomie.",
   "kelvinUnits": "Kelwin",
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "Inne jednostki po najechaniu",
@@ -1477,31 +1491,31 @@ addCatalogEntries("it", {
   "shortcutsSubtitle": "Tastiera e mouse",
   "sourcesSubtitle": "Da dove provengono i dati",
   "shortcutsHint": "Gli stessi tasti funzionano nel widget e nell’app.",
-  "shortcutsGroupGeneral": "GENERALI",
-  "shortcutsGroupNavigation": "SCORRIMENTO",
-  "shortcutsGroupForecast": "PIOGGIA, RADAR E VENTO",
-  "shortcutsGroupSearch": "RICERCA LUOGO",
-  "shortcutsGroupSettings": "IMPOSTAZIONI",
-  "shortcutsGroupMouse": "BARRA DEI MENU",
-  "shortcutClose": "Chiudi ricerca, impostazioni o elenco, poi il pannello",
+  "shortcutsGroupGeneral": "Generale",
+  "shortcutsGroupNavigation": "Scorrimento",
+  "shortcutsGroupForecast": "Schede e mappe",
+  "shortcutsGroupSearch": "Ricerca luogo",
+  "shortcutsGroupSettings": "Impostazioni",
+  "shortcutsGroupMouse": "Barra dei menu",
+  "shortcutClose": "Chiudi la ricerca, le impostazioni o l’elenco, poi il pannello",
   "shortcutSwitchPanel": "Pannello successivo / precedente della barra (widget)",
-  "shortcutSettings": "Apri impostazioni",
+  "shortcutSettings": "Apri le impostazioni",
   "shortcutRefresh": "Aggiorna ora",
   "shortcutSearch": "Cerca un luogo",
   "shortcutScroll": "Scorri",
   "shortcutPage": "Scorri di una pagina",
-  "shortcutJump": "Vai all’inizio / alla fine",
+  "shortcutJump": "In cima / in fondo",
   "shortcutScrollDaily": "Scorri le previsioni giornaliere",
   "shortcutViews": "Vista pioggia / radar / vento",
   "shortcutRadarStep": "Radar: immagine precedente / successiva",
   "shortcutRadarPlay": "Radar: riproduci / pausa",
   "shortcutZoom": "Mappa: ingrandisci / riduci",
   "shortcutZoomReset": "Mappa: zoom predefinito",
-  "shortcutSearchSelect": "Scegli un risultato",
-  "shortcutSearchSection": "Passa tra risultati e preferiti",
-  "shortcutSearchPick": "Mostra il luogo scelto",
-  "shortcutSearchFavorite": "Aggiungi / rimuovi preferito",
-  "shortcutSearchCancel": "Annulla la ricerca",
+  "shortcutSearchSelect": "Muoversi tra i risultati o i luoghi salvati",
+  "shortcutSearchSection": "Passa tra risultati e luoghi salvati",
+  "shortcutSearchPick": "Usa il risultato o passa al luogo salvato",
+  "shortcutSearchAdd": "Nei luoghi salvati (Tab): aggiungi il risultato marcato",
+  "shortcutSearchCancel": "Chiudi la ricerca",
   "shortcutSettingsPages": "Pagina delle impostazioni precedente / successiva",
   "shortcutSettingsClose": "Chiudi impostazioni",
   "mouseLeft": "Clic sinistro",
@@ -1511,11 +1525,11 @@ addCatalogEntries("it", {
   "shortcutMouseRefresh": "Aggiorna ora",
   "shortcutMouseNotify": "Meteo come notifica",
   "sourcesHint": "Le fonti sono scelte in base al luogo; se una non risponde, subentra automaticamente la successiva.",
-  "sourceInUse": "IN USO",
-  "sourceNotInUse": "non in uso",
+  "sourceInUse": "In uso",
+  "sourceNotInUse": "Non in uso",
   "sourceGroupForecast": "Meteo attuale e previsioni",
   "sourceGroupForecastDetails": "Open-Meteo Best Match (il miglior modello nazionale per regione), con MET Norway come riserva. In Norvegia, Svezia, Finlandia e Danimarca MET Norway ha la precedenza, grazie al suo modello MET Nordic a 1 km. Nell’area DWD, DWD MOSMIX (tramite Bright Sky) affina temperatura, pioggia e simboli.",
-  "sourceCoverage": "COPERTURA",
+  "sourceCoverage": "Copertura",
   "sourceGroupForecastCoverage": "Mondiale. MET Norway per primo in NO, SE, FI, DK. DWD MOSMIX solo nell’area DWD (circa 46,5–55,5° N, 5–16° E, anche oltre la Germania).",
   "sourceGroupUvCoverage": "Mondiale.",
   "sourceGroupNowcastCoverage": "Mondiale. Valori di pioggia MOSMIX e quantità del radar DWD solo nell’area DWD.",
@@ -1544,7 +1558,7 @@ addCatalogEntries("it", {
   "sourceGroupMapDetails": "Sfondo satellitare: DWD GeoServer Blue Marble. Nomi delle città: OpenStreetMap tramite API Overpass, in cache per 30 giorni.",
   "sourceGroupMoon": "Fase lunare",
   "sourceGroupMoonDetails": "Calcolata localmente (Meeus); speculare per i luoghi a sud dell’equatore.",
-  "sourceLocalCalculation": "CALCOLO LOCALE",
+  "sourceLocalCalculation": "Calcolo locale",
   "sourceRefreshInfo": "Aggiornamento ogni {minutes} min, il radar DWD ogni 5 min, condiviso tra widget e app. Ultimo aggiornamento: {updated}.",
   "barPosition": "Posizione nella barra",
   "barPositionLeft": "Sinistra",
@@ -1558,19 +1572,19 @@ addCatalogEntries("it", {
   "showOnHover": "Al passaggio",
   "menubarHoverHint": "Le voci «Al passaggio» compaiono mentre il puntatore è sul meteo nella barra.",
   "barBehavior": "Comportamento",
-  "openWidgetOnHover": "Apri il widget al passaggio del mouse",
+  "openWidgetOnHover": "Apri il widget al passaggio",
   "openWidgetOnHoverHint": "Apre il widget quando il puntatore si ferma sul meteo nella barra e lo chiude quando si allontana. Un clic lo tiene aperto.",
   "rainIntensity": "Intensità della pioggia",
-  "showWhenRelevant": "Quando rilevante",
-  "menubarRelevantCurrentHint": "«Quando rilevante» mostra una voce solo se si distingue: percepita a 3° dalla temperatura, vento da 20 km/h, UV da 6.",
-  "menubarRelevantRainHint": "«Quando rilevante»: probabilità dal 30 %, intensità mentre piove, inizio della pioggia entro due ore. L’inizio della pioggia e l’intensità prendono il posto della probabilità.",
-  "menubarRelevantAirHint": "«Quando rilevante»: qualità dell’aria da «scarsa», polline a livello alto.",
+  "showWhenRelevant": "Rilevante",
+  "menubarRelevantCurrentHint": "«Rilevante» mostra una voce solo se si distingue: percepita a 3° dalla temperatura, vento da 20 km/h, UV da 6.",
+  "menubarRelevantRainHint": "«Rilevante»: probabilità dal 30 %, intensità mentre piove, inizio della pioggia entro due ore. L’inizio della pioggia e l’intensità prendono il posto della probabilità.",
+  "menubarRelevantAirHint": "«Rilevante»: qualità dell’aria da «scarsa», polline a livello alto.",
   "kelvinUnits": "Kelvin",
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "Altre unità al passaggio",
   "hoverUnitSystemOff": "Disattivato",
   "hoverUnitSystemHint": "Mentre il puntatore è sul widget, la barra passa a questo sistema di unità. Kelvin cambia solo le temperature.",
-  "restoreOrder": "Ripristina l’ordine",
+  "restoreOrder": "Ripristina ordine",
   "sunNext": "Prossimo evento solare",
   "sunrise": "Alba",
   "sunset": "Tramonto",
@@ -1585,31 +1599,31 @@ addCatalogEntries("nl", {
   "shortcutsSubtitle": "Toetsenbord en muis",
   "sourcesSubtitle": "Waar de gegevens vandaan komen",
   "shortcutsHint": "Dezelfde toetsen werken in de widget en in de app.",
-  "shortcutsGroupGeneral": "ALGEMEEN",
-  "shortcutsGroupNavigation": "SCROLLEN",
-  "shortcutsGroupForecast": "REGEN, RADAR EN WIND",
-  "shortcutsGroupSearch": "PLAATS ZOEKEN",
-  "shortcutsGroupSettings": "INSTELLINGEN",
-  "shortcutsGroupMouse": "MENUBALK",
-  "shortcutClose": "Zoeken, instellingen of lijst sluiten, daarna het paneel",
+  "shortcutsGroupGeneral": "Algemeen",
+  "shortcutsGroupNavigation": "Scrollen",
+  "shortcutsGroupForecast": "Tabbladen & kaarten",
+  "shortcutsGroupSearch": "Plaats zoeken",
+  "shortcutsGroupSettings": "Instellingen",
+  "shortcutsGroupMouse": "Menubalk",
+  "shortcutClose": "Het zoeken, de instellingen of de lijst sluiten, daarna het paneel",
   "shortcutSwitchPanel": "Volgend / vorig paneel in de balk (widget)",
-  "shortcutSettings": "Instellingen openen",
+  "shortcutSettings": "De instellingen openen",
   "shortcutRefresh": "Nu verversen",
   "shortcutSearch": "Plaats zoeken",
   "shortcutScroll": "Scrollen",
   "shortcutPage": "Een pagina scrollen",
-  "shortcutJump": "Naar begin / einde",
+  "shortcutJump": "Naar boven / onder",
   "shortcutScrollDaily": "Dagverwachting scrollen",
   "shortcutViews": "Weergave regen / radar / wind",
   "shortcutRadarStep": "Radar: vorig / volgend beeld",
   "shortcutRadarPlay": "Radar: afspelen / pauzeren",
   "shortcutZoom": "Kaart: in- / uitzoomen",
   "shortcutZoomReset": "Kaart: standaardzoom",
-  "shortcutSearchSelect": "Resultaat kiezen",
-  "shortcutSearchSection": "Wisselen tussen resultaten en favorieten",
-  "shortcutSearchPick": "Gekozen plaats tonen",
-  "shortcutSearchFavorite": "Favoriet toevoegen / verwijderen",
-  "shortcutSearchCancel": "Zoeken annuleren",
+  "shortcutSearchSelect": "Door de resultaten of opgeslagen plaatsen bewegen",
+  "shortcutSearchSection": "Wisselen tussen resultaten en opgeslagen plaatsen",
+  "shortcutSearchPick": "Resultaat gebruiken of naar de opgeslagen plaats gaan",
+  "shortcutSearchAdd": "In de opgeslagen plaatsen (Tab): gemarkeerd resultaat toevoegen",
+  "shortcutSearchCancel": "Zoeken sluiten",
   "shortcutSettingsPages": "Vorige / volgende instellingenpagina",
   "shortcutSettingsClose": "Instellingen sluiten",
   "mouseLeft": "Linksklik",
@@ -1619,11 +1633,11 @@ addCatalogEntries("nl", {
   "shortcutMouseRefresh": "Nu verversen",
   "shortcutMouseNotify": "Weer als melding",
   "sourcesHint": "Bronnen worden per plaats gekozen; valt er een uit, dan neemt de volgende het automatisch over.",
-  "sourceInUse": "IN GEBRUIK",
-  "sourceNotInUse": "niet in gebruik",
+  "sourceInUse": "In gebruik",
+  "sourceNotInUse": "Niet in gebruik",
   "sourceGroupForecast": "Actueel weer en verwachting",
   "sourceGroupForecastDetails": "Open-Meteo Best Match (het beste nationale model per regio), met MET Norway als reserve. In Noorwegen, Zweden, Finland en Denemarken gaat MET Norway voor, gesteund door zijn MET Nordic-model van 1 km. In het DWD-gebied verfijnt DWD MOSMIX (via Bright Sky) temperatuur, regen en symbolen.",
-  "sourceCoverage": "DEKKING",
+  "sourceCoverage": "Dekking",
   "sourceGroupForecastCoverage": "Wereldwijd. MET Norway eerst in NO, SE, FI, DK. DWD MOSMIX alleen in het DWD-gebied (ca. 46,5–55,5° N, 5–16° O, ook buiten Duitsland).",
   "sourceGroupUvCoverage": "Wereldwijd.",
   "sourceGroupNowcastCoverage": "Wereldwijd. MOSMIX-regenwaarden en de DWD-radarhoeveelheid alleen in het DWD-gebied.",
@@ -1652,7 +1666,7 @@ addCatalogEntries("nl", {
   "sourceGroupMapDetails": "Satellietachtergrond: DWD GeoServer Blue Marble. Plaatsnamen: OpenStreetMap via de Overpass-API, 30 dagen in cache.",
   "sourceGroupMoon": "Maanfase",
   "sourceGroupMoonDetails": "Lokaal berekend (Meeus); gespiegeld voor plaatsen ten zuiden van de evenaar.",
-  "sourceLocalCalculation": "LOKALE BEREKENING",
+  "sourceLocalCalculation": "Lokale berekening",
   "sourceRefreshInfo": "Elke {minutes} min ververst, de DWD-radar elke 5 min, gedeeld tussen widget en app. Laatste update: {updated}.",
   "barPosition": "Positie in de balk",
   "barPositionLeft": "Links",
@@ -1663,16 +1677,16 @@ addCatalogEntries("nl", {
   "barPositionHint": "Verplaatst de widget binnen de balk van Omarchy.",
   "barPositionMissing": "De widget staat niet in de balk.",
   "showAlways": "Altijd",
-  "showOnHover": "Bij aanwijzen",
-  "menubarHoverHint": "Items met ‘Bij aanwijzen’ verschijnen zolang de aanwijzer op het weer in de balk staat.",
+  "showOnHover": "Hover",
+  "menubarHoverHint": "Items met ‘Hover’ verschijnen zolang de aanwijzer op het weer in de balk staat.",
   "barBehavior": "Gedrag",
   "openWidgetOnHover": "Widget openen bij aanwijzen",
   "openWidgetOnHoverHint": "Opent de widget wanneer de aanwijzer op het weer in de balk rust en sluit hem zodra de aanwijzer weggaat. Een klik houdt hem open.",
   "rainIntensity": "Regenintensiteit",
-  "showWhenRelevant": "Als het opvalt",
-  "menubarRelevantCurrentHint": "‘Als het opvalt’ toont een item alleen als het opvalt: gevoelstemperatuur 3° van de temperatuur, wind vanaf 20 km/u, UV vanaf 6.",
-  "menubarRelevantRainHint": "‘Als het opvalt’: kans vanaf 30 %, intensiteit zolang het regent, begin van de regen binnen twee uur. Het begin van de regen en de intensiteit nemen de plaats van de kans in.",
-  "menubarRelevantAirHint": "‘Als het opvalt’: luchtkwaliteit vanaf ‘slecht’, pollen op een hoog niveau.",
+  "showWhenRelevant": "Relevant",
+  "menubarRelevantCurrentHint": "‘Relevant’ toont een item alleen als het opvalt: gevoelstemperatuur 3° van de temperatuur, wind vanaf 20 km/u, UV vanaf 6.",
+  "menubarRelevantRainHint": "‘Relevant’: kans vanaf 30 %, intensiteit zolang het regent, begin van de regen binnen twee uur. Het begin van de regen en de intensiteit nemen de plaats van de kans in.",
+  "menubarRelevantAirHint": "‘Relevant’: luchtkwaliteit vanaf ‘slecht’, pollen op een hoog niveau.",
   "kelvinUnits": "Kelvin",
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "Andere eenheden bij aanwijzen",
@@ -1693,12 +1707,12 @@ addCatalogEntries("tr", {
   "shortcutsSubtitle": "Klavye ve fare",
   "sourcesSubtitle": "Verilerin nereden geldiği",
   "shortcutsHint": "Aynı tuşlar bileşende ve uygulamada çalışır.",
-  "shortcutsGroupGeneral": "GENEL",
-  "shortcutsGroupNavigation": "KAYDIRMA",
-  "shortcutsGroupForecast": "YAĞMUR, RADAR VE RÜZGÂR",
-  "shortcutsGroupSearch": "YER ARAMA",
-  "shortcutsGroupSettings": "AYARLAR",
-  "shortcutsGroupMouse": "MENÜ ÇUBUĞU",
+  "shortcutsGroupGeneral": "Genel",
+  "shortcutsGroupNavigation": "Kaydırma",
+  "shortcutsGroupForecast": "Sekmeler ve haritalar",
+  "shortcutsGroupSearch": "Yer arama",
+  "shortcutsGroupSettings": "Ayarlar",
+  "shortcutsGroupMouse": "Menü çubuğu",
   "shortcutClose": "Aramayı, ayarları veya listeyi, ardından paneli kapat",
   "shortcutSwitchPanel": "Çubuktaki sonraki / önceki panel (bileşen)",
   "shortcutSettings": "Ayarları aç",
@@ -1706,18 +1720,18 @@ addCatalogEntries("tr", {
   "shortcutSearch": "Yer ara",
   "shortcutScroll": "Kaydır",
   "shortcutPage": "Bir sayfa kaydır",
-  "shortcutJump": "Başa / sona git",
+  "shortcutJump": "En üste / alta",
   "shortcutScrollDaily": "Günlük tahmini kaydır",
   "shortcutViews": "Yağmur / radar / rüzgâr görünümü",
   "shortcutRadarStep": "Radar: önceki / sonraki kare",
   "shortcutRadarPlay": "Radar: oynat / duraklat",
   "shortcutZoom": "Harita: yakınlaştır / uzaklaştır",
   "shortcutZoomReset": "Harita: varsayılan yakınlaştırma",
-  "shortcutSearchSelect": "Bir sonuç seç",
-  "shortcutSearchSection": "Sonuçlar ve favoriler arasında geçiş yap",
-  "shortcutSearchPick": "Seçilen yeri göster",
-  "shortcutSearchFavorite": "Favori ekle / kaldır",
-  "shortcutSearchCancel": "Aramayı iptal et",
+  "shortcutSearchSelect": "Sonuçlarda veya kayıtlı yerlerde gezin",
+  "shortcutSearchSection": "Sonuçlar ve kayıtlı yerler arasında geçiş yap",
+  "shortcutSearchPick": "Sonucu kullan veya kayıtlı yere geç",
+  "shortcutSearchAdd": "Kayıtlı yerlerde (Tab): işaretli sonucu ekle",
+  "shortcutSearchCancel": "Aramayı kapat",
   "shortcutSettingsPages": "Önceki / sonraki ayarlar sayfası",
   "shortcutSettingsClose": "Ayarları kapat",
   "mouseLeft": "Sol tık",
@@ -1727,11 +1741,11 @@ addCatalogEntries("tr", {
   "shortcutMouseRefresh": "Şimdi yenile",
   "shortcutMouseNotify": "Hava durumunu bildirim olarak göster",
   "sourcesHint": "Kaynaklar yere göre seçilir; biri yanıt vermezse sıradaki otomatik olarak devreye girer.",
-  "sourceInUse": "KULLANIMDA",
-  "sourceNotInUse": "kullanılmıyor",
+  "sourceInUse": "Kullanımda",
+  "sourceNotInUse": "Kullanılmıyor",
   "sourceGroupForecast": "Güncel hava ve tahmin",
   "sourceGroupForecastDetails": "Open-Meteo Best Match (her bölge için en iyi ulusal model), yedek olarak MET Norway. Norveç, İsveç, Finlandiya ve Danimarka'da 1 km'lik MET Nordic modeline dayanan MET Norway önce gelir. DWD bölgesinde DWD MOSMIX (Bright Sky üzerinden) sıcaklığı, yağışı ve simgeleri iyileştirir.",
-  "sourceCoverage": "KAPSAM",
+  "sourceCoverage": "Kapsam",
   "sourceGroupForecastCoverage": "Dünya geneli. NO, SE, FI, DK'de önce MET Norway. DWD MOSMIX yalnızca DWD bölgesinde (yaklaşık 46,5–55,5° K, 5–16° D; Almanya dışı dahil).",
   "sourceGroupUvCoverage": "Dünya geneli.",
   "sourceGroupNowcastCoverage": "Dünya geneli. MOSMIX yağış değerleri ve DWD radar miktarı yalnızca DWD bölgesinde.",
@@ -1760,7 +1774,7 @@ addCatalogEntries("tr", {
   "sourceGroupMapDetails": "Uydu arka planı: DWD GeoServer Blue Marble. Şehir adları: Overpass API üzerinden OpenStreetMap, 30 gün önbellekte.",
   "sourceGroupMoon": "Ay evresi",
   "sourceGroupMoonDetails": "Yerel olarak hesaplanır (Meeus); ekvatorun güneyindeki yerler için ayna görüntüsü.",
-  "sourceLocalCalculation": "YEREL HESAPLAMA",
+  "sourceLocalCalculation": "Yerel hesaplama",
   "sourceRefreshInfo": "Her {minutes} dakikada bir yenilenir, DWD radarı her 5 dakikada bir; bileşen ve uygulama arasında paylaşılır. Son güncelleme: {updated}.",
   "barPosition": "Çubuktaki konum",
   "barPositionLeft": "Sol",
@@ -1771,16 +1785,16 @@ addCatalogEntries("tr", {
   "barPositionHint": "Bileşeni Omarchy çubuğunda taşır.",
   "barPositionMissing": "Bileşen çubukta değil.",
   "showAlways": "Her zaman",
-  "showOnHover": "Üzerine gelince",
-  "menubarHoverHint": "“Üzerine gelince” öğeleri, işaretçi çubuktaki hava durumunun üzerindeyken görünür.",
+  "showOnHover": "Üzerinde",
+  "menubarHoverHint": "“Üzerinde” öğeleri, işaretçi çubuktaki hava durumunun üzerindeyken görünür.",
   "barBehavior": "Davranış",
   "openWidgetOnHover": "Üzerine gelince bileşeni aç",
   "openWidgetOnHoverHint": "İşaretçi çubuktaki hava durumunun üzerinde durduğunda bileşeni açar, işaretçi ayrıldığında kapatır. Tıklamak açık tutar.",
   "rainIntensity": "Yağış şiddeti",
-  "showWhenRelevant": "Önemliyken",
-  "menubarRelevantCurrentHint": "“Önemliyken” bir öğeyi yalnızca dikkat çektiğinde gösterir: hissedilen sıcaklık 3° farklıysa, rüzgâr 20 km/sa’ten, UV 6’dan itibaren.",
-  "menubarRelevantRainHint": "“Önemliyken”: olasılık %30’dan, yağış sürerken şiddet, iki saat içindeki yağış başlangıcı. Yağış başlangıcı ve şiddet, olasılığın yerini alır.",
-  "menubarRelevantAirHint": "“Önemliyken”: hava kalitesi “kötü”den itibaren, polen yüksek düzeyde.",
+  "showWhenRelevant": "Önemli",
+  "menubarRelevantCurrentHint": "“Önemli” bir öğeyi yalnızca dikkat çektiğinde gösterir: hissedilen sıcaklık 3° farklıysa, rüzgâr 20 km/sa’ten, UV 6’dan itibaren.",
+  "menubarRelevantRainHint": "“Önemli”: olasılık %30’dan, yağış sürerken şiddet, iki saat içindeki yağış başlangıcı. Yağış başlangıcı ve şiddet, olasılığın yerini alır.",
+  "menubarRelevantAirHint": "“Önemli”: hava kalitesi “kötü”den itibaren, polen yüksek düzeyde.",
   "kelvinUnits": "Kelvin",
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "Üzerine gelince başka birimler",
@@ -1801,12 +1815,12 @@ addCatalogEntries("cs", {
   "shortcutsSubtitle": "Klávesnice a myš",
   "sourcesSubtitle": "Odkud data pocházejí",
   "shortcutsHint": "Stejné klávesy fungují ve widgetu i v aplikaci.",
-  "shortcutsGroupGeneral": "OBECNÉ",
-  "shortcutsGroupNavigation": "POSOUVÁNÍ",
-  "shortcutsGroupForecast": "DÉŠŤ, RADAR A VÍTR",
-  "shortcutsGroupSearch": "HLEDÁNÍ MÍSTA",
-  "shortcutsGroupSettings": "NASTAVENÍ",
-  "shortcutsGroupMouse": "PANEL NABÍDKY",
+  "shortcutsGroupGeneral": "Obecné",
+  "shortcutsGroupNavigation": "Posouvání",
+  "shortcutsGroupForecast": "Karty a mapy",
+  "shortcutsGroupSearch": "Hledání místa",
+  "shortcutsGroupSettings": "Nastavení",
+  "shortcutsGroupMouse": "Panel nabídky",
   "shortcutClose": "Zavřít hledání, nastavení nebo seznam, pak panel",
   "shortcutSwitchPanel": "Další / předchozí panel lišty (widget)",
   "shortcutSettings": "Otevřít nastavení",
@@ -1814,18 +1828,18 @@ addCatalogEntries("cs", {
   "shortcutSearch": "Hledat místo",
   "shortcutScroll": "Posouvat",
   "shortcutPage": "Posunout o stránku",
-  "shortcutJump": "Na začátek / konec",
+  "shortcutJump": "Nahoru / dolů",
   "shortcutScrollDaily": "Posouvat denní předpověď",
   "shortcutViews": "Zobrazení déšť / radar / vítr",
   "shortcutRadarStep": "Radar: předchozí / další snímek",
   "shortcutRadarPlay": "Radar: přehrát / pozastavit",
   "shortcutZoom": "Mapa: přiblížit / oddálit",
   "shortcutZoomReset": "Mapa: výchozí přiblížení",
-  "shortcutSearchSelect": "Vybrat výsledek",
-  "shortcutSearchSection": "Přepnout mezi výsledky a oblíbenými",
-  "shortcutSearchPick": "Zobrazit vybrané místo",
-  "shortcutSearchFavorite": "Přidat / odebrat oblíbené",
-  "shortcutSearchCancel": "Zrušit hledání",
+  "shortcutSearchSelect": "Pohyb ve výsledcích nebo uložených místech",
+  "shortcutSearchSection": "Přepnout mezi výsledky a uloženými místy",
+  "shortcutSearchPick": "Použít výsledek nebo přejít na uložené místo",
+  "shortcutSearchAdd": "V uložených místech (Tab): přidat označený výsledek",
+  "shortcutSearchCancel": "Zavřít hledání",
   "shortcutSettingsPages": "Předchozí / další stránka nastavení",
   "shortcutSettingsClose": "Zavřít nastavení",
   "mouseLeft": "Levé kliknutí",
@@ -1835,11 +1849,11 @@ addCatalogEntries("cs", {
   "shortcutMouseRefresh": "Aktualizovat nyní",
   "shortcutMouseNotify": "Počasí jako oznámení",
   "sourcesHint": "Zdroje se volí podle místa; když některý selže, automaticky převezme další.",
-  "sourceInUse": "POUŽÍVÁ SE",
-  "sourceNotInUse": "nepoužívá se",
+  "sourceInUse": "Používá se",
+  "sourceNotInUse": "Nepoužívá se",
   "sourceGroupForecast": "Aktuální počasí a předpověď",
   "sourceGroupForecastDetails": "Open-Meteo Best Match (nejlepší národní model pro danou oblast), záložně MET Norway. V Norsku, Švédsku, Finsku a Dánsku má přednost MET Norway s vlastním modelem MET Nordic s rozlišením 1 km. V oblasti DWD zpřesňuje DWD MOSMIX (přes Bright Sky) teplotu, srážky a symboly.",
-  "sourceCoverage": "POKRYTÍ",
+  "sourceCoverage": "Pokrytí",
   "sourceGroupForecastCoverage": "Celosvětově. MET Norway jako první v NO, SE, FI, DK. DWD MOSMIX jen v oblasti DWD (asi 46,5–55,5° s. š., 5–16° v. d., i mimo Německo).",
   "sourceGroupUvCoverage": "Celosvětově.",
   "sourceGroupNowcastCoverage": "Celosvětově. Srážkové hodnoty MOSMIX a úhrn z radaru DWD jen v oblasti DWD.",
@@ -1868,7 +1882,7 @@ addCatalogEntries("cs", {
   "sourceGroupMapDetails": "Satelitní podklad: DWD GeoServer Blue Marble. Názvy měst: OpenStreetMap přes Overpass API, uložené na 30 dní.",
   "sourceGroupMoon": "Fáze Měsíce",
   "sourceGroupMoonDetails": "Počítána lokálně (Meeus); pro místa jižně od rovníku zrcadlově.",
-  "sourceLocalCalculation": "MÍSTNÍ VÝPOČET",
+  "sourceLocalCalculation": "Místní výpočet",
   "sourceRefreshInfo": "Aktualizace každých {minutes} min, radar DWD každých 5 min, společně pro widget a aplikaci. Poslední aktualizace: {updated}.",
   "barPosition": "Umístění na liště",
   "barPositionLeft": "Vlevo",
@@ -1879,16 +1893,16 @@ addCatalogEntries("cs", {
   "barPositionHint": "Přesune widget v rámci lišty Omarchy.",
   "barPositionMissing": "Widget není na liště.",
   "showAlways": "Vždy",
-  "showOnHover": "Při najetí",
-  "menubarHoverHint": "Položky „Při najetí“ se zobrazí, dokud je ukazatel nad počasím v liště.",
+  "showOnHover": "Najetí",
+  "menubarHoverHint": "Položky „Najetí“ se zobrazí, dokud je ukazatel nad počasím v liště.",
   "barBehavior": "Chování",
   "openWidgetOnHover": "Otevřít widget při najetí",
   "openWidgetOnHoverHint": "Otevře widget, když se ukazatel zastaví nad počasím v liště, a zavře ho, jakmile se vzdálí. Kliknutím zůstane otevřený.",
   "rainIntensity": "Intenzita deště",
-  "showWhenRelevant": "Když je to důležité",
-  "menubarRelevantCurrentHint": "„Když je to důležité“ zobrazí položku jen tehdy, když vyčnívá: pocitová teplota 3° od skutečné, vítr od 20 km/h, UV od 6.",
-  "menubarRelevantRainHint": "„Když je to důležité“: pravděpodobnost od 30 %, intenzita po dobu deště, začátek deště do dvou hodin. Začátek deště a intenzita zaujmou místo pravděpodobnosti.",
-  "menubarRelevantAirHint": "„Když je to důležité“: kvalita ovzduší od „špatné“, pyl na vysoké úrovni.",
+  "showWhenRelevant": "Důležité",
+  "menubarRelevantCurrentHint": "„Důležité“ zobrazí položku jen tehdy, když vyčnívá: pocitová teplota 3° od skutečné, vítr od 20 km/h, UV od 6.",
+  "menubarRelevantRainHint": "„Důležité“: pravděpodobnost od 30 %, intenzita po dobu deště, začátek deště do dvou hodin. Začátek deště a intenzita zaujmou místo pravděpodobnosti.",
+  "menubarRelevantAirHint": "„Důležité“: kvalita ovzduší od „špatné“, pyl na vysoké úrovni.",
   "kelvinUnits": "Kelvin",
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "Jiné jednotky při najetí",
@@ -1909,15 +1923,15 @@ addCatalogEntries("sv", {
   "shortcutsSubtitle": "Tangentbord och mus",
   "sourcesSubtitle": "Var data kommer ifrån",
   "shortcutsHint": "Samma tangenter fungerar i widgeten och i appen.",
-  "shortcutsGroupGeneral": "ALLMÄNT",
-  "shortcutsGroupNavigation": "RULLNING",
-  "shortcutsGroupForecast": "REGN, RADAR OCH VIND",
-  "shortcutsGroupSearch": "PLATSSÖKNING",
-  "shortcutsGroupSettings": "INSTÄLLNINGAR",
-  "shortcutsGroupMouse": "MENYRAD",
-  "shortcutClose": "Stäng sökning, inställningar eller lista, sedan panelen",
+  "shortcutsGroupGeneral": "Allmänt",
+  "shortcutsGroupNavigation": "Rullning",
+  "shortcutsGroupForecast": "Flikar & kartor",
+  "shortcutsGroupSearch": "Platssökning",
+  "shortcutsGroupSettings": "Inställningar",
+  "shortcutsGroupMouse": "Menyrad",
+  "shortcutClose": "Stäng sökningen, inställningarna eller listan, sedan panelen",
   "shortcutSwitchPanel": "Nästa / föregående panel i fältet (widget)",
-  "shortcutSettings": "Öppna inställningar",
+  "shortcutSettings": "Öppna inställningarna",
   "shortcutRefresh": "Uppdatera nu",
   "shortcutSearch": "Sök en plats",
   "shortcutScroll": "Rulla",
@@ -1929,11 +1943,11 @@ addCatalogEntries("sv", {
   "shortcutRadarPlay": "Radar: spela upp / pausa",
   "shortcutZoom": "Karta: zooma in / ut",
   "shortcutZoomReset": "Karta: standardzoom",
-  "shortcutSearchSelect": "Välj ett resultat",
-  "shortcutSearchSection": "Växla mellan resultat och favoriter",
-  "shortcutSearchPick": "Visa vald plats",
-  "shortcutSearchFavorite": "Lägg till / ta bort favorit",
-  "shortcutSearchCancel": "Avbryt sökningen",
+  "shortcutSearchSelect": "Flytta i resultaten eller de sparade platserna",
+  "shortcutSearchSection": "Växla mellan resultat och sparade platser",
+  "shortcutSearchPick": "Använd resultatet eller byt till den sparade platsen",
+  "shortcutSearchAdd": "I de sparade platserna (Tab): lägg till markerat resultat",
+  "shortcutSearchCancel": "Stäng sökningen",
   "shortcutSettingsPages": "Föregående / nästa inställningssida",
   "shortcutSettingsClose": "Stäng inställningar",
   "mouseLeft": "Vänsterklick",
@@ -1943,11 +1957,11 @@ addCatalogEntries("sv", {
   "shortcutMouseRefresh": "Uppdatera nu",
   "shortcutMouseNotify": "Väder som avisering",
   "sourcesHint": "Källor väljs per plats; om en slutar svara tar nästa över automatiskt.",
-  "sourceInUse": "ANVÄNDS",
-  "sourceNotInUse": "används inte",
+  "sourceInUse": "Används",
+  "sourceNotInUse": "Används inte",
   "sourceGroupForecast": "Aktuellt väder och prognos",
   "sourceGroupForecastDetails": "Open-Meteo Best Match (bästa nationella modell per region), med MET Norway som reserv. I Norge, Sverige, Finland och Danmark går MET Norway först, med sin egen MET Nordic-modell på 1 km. I DWD-området förfinar DWD MOSMIX (via Bright Sky) temperatur, regn och symboler.",
-  "sourceCoverage": "TÄCKNING",
+  "sourceCoverage": "Täckning",
   "sourceGroupForecastCoverage": "Hela världen. MET Norway först i NO, SE, FI, DK. DWD MOSMIX bara i DWD-området (ca 46,5–55,5° N, 5–16° O, även utanför Tyskland).",
   "sourceGroupUvCoverage": "Hela världen.",
   "sourceGroupNowcastCoverage": "Hela världen. Regnvärden från MOSMIX och mängden från DWD-radarn bara i DWD-området.",
@@ -1976,7 +1990,7 @@ addCatalogEntries("sv", {
   "sourceGroupMapDetails": "Satellitbakgrund: DWD GeoServer Blue Marble. Stadsnamn: OpenStreetMap via Overpass-API:t, cachade i 30 dagar.",
   "sourceGroupMoon": "Månfas",
   "sourceGroupMoonDetails": "Beräknas lokalt (Meeus); spegelvänd för platser söder om ekvatorn.",
-  "sourceLocalCalculation": "LOKAL BERÄKNING",
+  "sourceLocalCalculation": "Lokal beräkning",
   "sourceRefreshInfo": "Uppdateras var {minutes}:e min, DWD-radarn var 5:e min, gemensamt för widget och app. Senaste uppdatering: {updated}.",
   "barPosition": "Placering i fältet",
   "barPositionLeft": "Vänster",
@@ -1987,22 +2001,22 @@ addCatalogEntries("sv", {
   "barPositionHint": "Flyttar widgeten i Omarchys fält.",
   "barPositionMissing": "Widgeten finns inte i fältet.",
   "showAlways": "Alltid",
-  "showOnHover": "Vid hovring",
-  "menubarHoverHint": "Poster med ”Vid hovring” visas medan pekaren vilar på vädret i fältet.",
+  "showOnHover": "Hovra",
+  "menubarHoverHint": "Poster med ”Hovra” visas medan pekaren vilar på vädret i fältet.",
   "barBehavior": "Beteende",
   "openWidgetOnHover": "Öppna widgeten vid hovring",
   "openWidgetOnHoverHint": "Öppnar widgeten när pekaren vilar på vädret i fältet och stänger den när pekaren flyttas bort. Ett klick håller den öppen.",
   "rainIntensity": "Regnintensitet",
-  "showWhenRelevant": "När det märks",
-  "menubarRelevantCurrentHint": "”När det märks” visar en post bara när den sticker ut: känns som 3° från temperaturen, vind från 20 km/h, UV från 6.",
-  "menubarRelevantRainHint": "”När det märks”: sannolikhet från 30 %, intensitet medan det regnar, regnstart inom två timmar. Regnstarten och intensiteten tar sannolikhetens plats.",
-  "menubarRelevantAirHint": "”När det märks”: luftkvalitet från ”dålig”, pollen på hög nivå.",
+  "showWhenRelevant": "Relevant",
+  "menubarRelevantCurrentHint": "”Relevant” visar en post bara när den sticker ut: känns som 3° från temperaturen, vind från 20 km/h, UV från 6.",
+  "menubarRelevantRainHint": "”Relevant”: sannolikhet från 30 %, intensitet medan det regnar, regnstart inom två timmar. Regnstarten och intensiteten tar sannolikhetens plats.",
+  "menubarRelevantAirHint": "”Relevant”: luftkvalitet från ”dålig”, pollen på hög nivå.",
   "kelvinUnits": "Kelvin",
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "Andra enheter vid hovring",
   "hoverUnitSystemOff": "Av",
   "hoverUnitSystemHint": "Medan pekaren vilar på widgeten byter fältet till detta enhetssystem. Kelvin ändrar bara temperaturer.",
-  "restoreOrder": "Återställ ordningen",
+  "restoreOrder": "Återställ ordning",
   "sunNext": "Nästa solhändelse",
   "sunrise": "Soluppgång",
   "sunset": "Solnedgång",
@@ -2017,12 +2031,12 @@ addCatalogEntries("fi", {
   "shortcutsSubtitle": "Näppäimistö ja hiiri",
   "sourcesSubtitle": "Mistä tiedot tulevat",
   "shortcutsHint": "Samat näppäimet toimivat pienoissovelluksessa ja sovelluksessa.",
-  "shortcutsGroupGeneral": "YLEISET",
-  "shortcutsGroupNavigation": "VIERITYS",
-  "shortcutsGroupForecast": "SADE, TUTKA JA TUULI",
-  "shortcutsGroupSearch": "PAIKKAHAKU",
-  "shortcutsGroupSettings": "ASETUKSET",
-  "shortcutsGroupMouse": "VALIKKORIVI",
+  "shortcutsGroupGeneral": "Yleiset",
+  "shortcutsGroupNavigation": "Vieritys",
+  "shortcutsGroupForecast": "Välilehdet ja kartat",
+  "shortcutsGroupSearch": "Paikkahaku",
+  "shortcutsGroupSettings": "Asetukset",
+  "shortcutsGroupMouse": "Valikkorivi",
   "shortcutClose": "Sulje haku, asetukset tai luettelo, sitten paneeli",
   "shortcutSwitchPanel": "Palkin seuraava / edellinen paneeli (pienoissovellus)",
   "shortcutSettings": "Avaa asetukset",
@@ -2037,11 +2051,11 @@ addCatalogEntries("fi", {
   "shortcutRadarPlay": "Tutka: toista / tauko",
   "shortcutZoom": "Kartta: lähennä / loitonna",
   "shortcutZoomReset": "Kartta: oletuszoomaus",
-  "shortcutSearchSelect": "Valitse tulos",
-  "shortcutSearchSection": "Vaihda tulosten ja suosikkien välillä",
-  "shortcutSearchPick": "Näytä valittu paikka",
-  "shortcutSearchFavorite": "Lisää / poista suosikki",
-  "shortcutSearchCancel": "Peru haku",
+  "shortcutSearchSelect": "Liiku tuloksissa tai tallennetuissa paikoissa",
+  "shortcutSearchSection": "Vaihda tulosten ja tallennettujen paikkojen välillä",
+  "shortcutSearchPick": "Käytä tulosta tai siirry tallennettuun paikkaan",
+  "shortcutSearchAdd": "Tallennetuissa paikoissa (Tab): lisää merkitty tulos",
+  "shortcutSearchCancel": "Sulje haku",
   "shortcutSettingsPages": "Edellinen / seuraava asetussivu",
   "shortcutSettingsClose": "Sulje asetukset",
   "mouseLeft": "Vasen napsautus",
@@ -2051,11 +2065,11 @@ addCatalogEntries("fi", {
   "shortcutMouseRefresh": "Päivitä nyt",
   "shortcutMouseNotify": "Sää ilmoituksena",
   "sourcesHint": "Lähteet valitaan paikan mukaan; jos yksi ei vastaa, seuraava ottaa automaattisesti vastuun.",
-  "sourceInUse": "KÄYTÖSSÄ",
-  "sourceNotInUse": "ei käytössä",
+  "sourceInUse": "Käytössä",
+  "sourceNotInUse": "Ei käytössä",
   "sourceGroupForecast": "Nykyinen sää ja ennuste",
   "sourceGroupForecastDetails": "Open-Meteo Best Match (alueen paras kansallinen malli), varalla MET Norway. Norjassa, Ruotsissa, Suomessa ja Tanskassa MET Norway on ensisijainen oman 1 km:n MET Nordic -mallinsa ansiosta. DWD-alueella DWD MOSMIX (Bright Skyn kautta) tarkentaa lämpötilaa, sadetta ja symboleja.",
-  "sourceCoverage": "KATTAVUUS",
+  "sourceCoverage": "Kattavuus",
   "sourceGroupForecastCoverage": "Koko maailma. MET Norway ensin maissa NO, SE, FI, DK. DWD MOSMIX vain DWD-alueella (n. 46,5–55,5° N, 5–16° E, myös Saksan ulkopuolella).",
   "sourceGroupUvCoverage": "Koko maailma.",
   "sourceGroupNowcastCoverage": "Koko maailma. MOSMIX-sadearvot ja DWD-tutkan sademäärä vain DWD-alueella.",
@@ -2084,7 +2098,7 @@ addCatalogEntries("fi", {
   "sourceGroupMapDetails": "Satelliittitausta: DWD GeoServer Blue Marble. Kaupunkien nimet: OpenStreetMap Overpass-rajapinnan kautta, välimuistissa 30 päivää.",
   "sourceGroupMoon": "Kuun vaihe",
   "sourceGroupMoonDetails": "Lasketaan paikallisesti (Meeus); peilattuna päiväntasaajan eteläpuolisille paikoille.",
-  "sourceLocalCalculation": "PAIKALLINEN LASKENTA",
+  "sourceLocalCalculation": "Paikallinen laskenta",
   "sourceRefreshInfo": "Päivitys {minutes} min välein, DWD-tutka 5 min välein, yhteinen pienoissovellukselle ja sovellukselle. Viimeisin päivitys: {updated}.",
   "barPosition": "Sijainti palkissa",
   "barPositionLeft": "Vasen",
@@ -2101,10 +2115,10 @@ addCatalogEntries("fi", {
   "openWidgetOnHover": "Avaa pienoissovellus osoitettaessa",
   "openWidgetOnHoverHint": "Avaa pienoissovelluksen, kun osoitin pysähtyy palkin sään päälle, ja sulkee sen, kun osoitin siirtyy pois. Napsautus pitää sen auki.",
   "rainIntensity": "Sateen voimakkuus",
-  "showWhenRelevant": "Kun on oleellista",
-  "menubarRelevantCurrentHint": "”Kun on oleellista” näyttää kohteen vain, kun se erottuu: tuntuu kuin 3° lämpötilasta, tuuli 20 km/h alkaen, UV 6 alkaen.",
-  "menubarRelevantRainHint": "”Kun on oleellista”: todennäköisyys 30 %:sta, voimakkuus sateen ajan, sateen alku kahden tunnin sisällä. Sateen alku ja voimakkuus vievät todennäköisyyden paikan.",
-  "menubarRelevantAirHint": "”Kun on oleellista”: ilmanlaatu ”huonosta” alkaen, siitepöly korkealla tasolla.",
+  "showWhenRelevant": "Olennainen",
+  "menubarRelevantCurrentHint": "”Olennainen” näyttää kohteen vain, kun se erottuu: tuntuu kuin 3° lämpötilasta, tuuli 20 km/h alkaen, UV 6 alkaen.",
+  "menubarRelevantRainHint": "”Olennainen”: todennäköisyys 30 %:sta, voimakkuus sateen ajan, sateen alku kahden tunnin sisällä. Sateen alku ja voimakkuus vievät todennäköisyyden paikan.",
+  "menubarRelevantAirHint": "”Olennainen”: ilmanlaatu ”huonosta” alkaen, siitepöly korkealla tasolla.",
   "kelvinUnits": "Kelvin",
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "Muut yksiköt osoitettaessa",
@@ -2125,31 +2139,31 @@ addCatalogEntries("nb", {
   "shortcutsSubtitle": "Tastatur og mus",
   "sourcesSubtitle": "Hvor dataene kommer fra",
   "shortcutsHint": "De samme tastene virker i miniprogrammet og i appen.",
-  "shortcutsGroupGeneral": "GENERELT",
-  "shortcutsGroupNavigation": "RULLING",
-  "shortcutsGroupForecast": "REGN, RADAR OG VIND",
-  "shortcutsGroupSearch": "STEDSSØK",
-  "shortcutsGroupSettings": "INNSTILLINGER",
-  "shortcutsGroupMouse": "MENYLINJE",
-  "shortcutClose": "Lukk søk, innstillinger eller liste, deretter panelet",
+  "shortcutsGroupGeneral": "Generelt",
+  "shortcutsGroupNavigation": "Rulling",
+  "shortcutsGroupForecast": "Faner og kart",
+  "shortcutsGroupSearch": "Stedssøk",
+  "shortcutsGroupSettings": "Innstillinger",
+  "shortcutsGroupMouse": "Menylinje",
+  "shortcutClose": "Lukk søket, innstillingene eller listen, deretter panelet",
   "shortcutSwitchPanel": "Neste / forrige panel i linjen (miniprogram)",
-  "shortcutSettings": "Åpne innstillinger",
+  "shortcutSettings": "Åpne innstillingene",
   "shortcutRefresh": "Oppdater nå",
   "shortcutSearch": "Søk etter et sted",
   "shortcutScroll": "Rull",
   "shortcutPage": "Rull en side",
-  "shortcutJump": "Til start / slutt",
+  "shortcutJump": "Til toppen / bunnen",
   "shortcutScrollDaily": "Rull dagsvarselet",
   "shortcutViews": "Visning regn / radar / vind",
   "shortcutRadarStep": "Radar: forrige / neste bilde",
   "shortcutRadarPlay": "Radar: spill av / pause",
   "shortcutZoom": "Kart: zoom inn / ut",
   "shortcutZoomReset": "Kart: standardzoom",
-  "shortcutSearchSelect": "Velg et resultat",
-  "shortcutSearchSection": "Bytt mellom resultater og favoritter",
-  "shortcutSearchPick": "Vis valgt sted",
-  "shortcutSearchFavorite": "Legg til / fjern favoritt",
-  "shortcutSearchCancel": "Avbryt søket",
+  "shortcutSearchSelect": "Flytt i resultatene eller de lagrede stedene",
+  "shortcutSearchSection": "Bytt mellom resultater og lagrede steder",
+  "shortcutSearchPick": "Bruk resultatet eller bytt til det lagrede stedet",
+  "shortcutSearchAdd": "I de lagrede stedene (Tab): legg til det merkede resultatet",
+  "shortcutSearchCancel": "Lukk søket",
   "shortcutSettingsPages": "Forrige / neste innstillingsside",
   "shortcutSettingsClose": "Lukk innstillinger",
   "mouseLeft": "Venstreklikk",
@@ -2159,11 +2173,11 @@ addCatalogEntries("nb", {
   "shortcutMouseRefresh": "Oppdater nå",
   "shortcutMouseNotify": "Været som varsel",
   "sourcesHint": "Kildene velges etter sted; svikter én, tar den neste over automatisk.",
-  "sourceInUse": "I BRUK",
-  "sourceNotInUse": "ikke i bruk",
+  "sourceInUse": "I bruk",
+  "sourceNotInUse": "Ikke i bruk",
   "sourceGroupForecast": "Været nå og varsel",
   "sourceGroupForecastDetails": "Open-Meteo Best Match (den beste nasjonale modellen per region), med MET Norway som reserve. I Norge, Sverige, Finland og Danmark kommer MET Norway først, støttet av sin MET Nordic-modell på 1 km. I DWD-området finjusterer DWD MOSMIX (via Bright Sky) temperatur, regn og symboler.",
-  "sourceCoverage": "DEKNING",
+  "sourceCoverage": "Dekning",
   "sourceGroupForecastCoverage": "Hele verden. MET Norway først i NO, SE, FI, DK. DWD MOSMIX bare i DWD-området (ca. 46,5–55,5° N, 5–16° Ø, også utenfor Tyskland).",
   "sourceGroupUvCoverage": "Hele verden.",
   "sourceGroupNowcastCoverage": "Hele verden. Regnverdier fra MOSMIX og mengden fra DWD-radaren bare i DWD-området.",
@@ -2192,7 +2206,7 @@ addCatalogEntries("nb", {
   "sourceGroupMapDetails": "Satellittbakgrunn: DWD GeoServer Blue Marble. Bynavn: OpenStreetMap via Overpass-API-et, bufret i 30 dager.",
   "sourceGroupMoon": "Månefase",
   "sourceGroupMoonDetails": "Beregnet lokalt (Meeus); speilvendt for steder sør for ekvator.",
-  "sourceLocalCalculation": "LOKAL BEREGNING",
+  "sourceLocalCalculation": "Lokal beregning",
   "sourceRefreshInfo": "Oppdateres hver {minutes}. min, DWD-radaren hver 5. min, felles for miniprogram og app. Siste oppdatering: {updated}.",
   "barPosition": "Plassering i linjen",
   "barPositionLeft": "Venstre",
@@ -2203,22 +2217,22 @@ addCatalogEntries("nb", {
   "barPositionHint": "Flytter miniprogrammet i Omarchy-linjen.",
   "barPositionMissing": "Miniprogrammet er ikke i linjen.",
   "showAlways": "Alltid",
-  "showOnHover": "Ved peking",
-  "menubarHoverHint": "Oppføringer med «Ved peking» vises mens pekeren hviler på været i linjen.",
+  "showOnHover": "Peker",
+  "menubarHoverHint": "Oppføringer med «Peker» vises mens pekeren hviler på været i linjen.",
   "barBehavior": "Oppførsel",
-  "openWidgetOnHover": "Åpne miniprogrammet ved peking",
+  "openWidgetOnHover": "Åpne miniprogrammet ved peker",
   "openWidgetOnHoverHint": "Åpner miniprogrammet når pekeren hviler på været i linjen, og lukker det når pekeren flyttes bort. Et klikk holder det åpent.",
   "rainIntensity": "Regnintensitet",
-  "showWhenRelevant": "Når det merkes",
-  "menubarRelevantCurrentHint": "«Når det merkes» viser en oppføring bare når den skiller seg ut: føles som 3° fra temperaturen, vind fra 20 km/t, UV fra 6.",
-  "menubarRelevantRainHint": "«Når det merkes»: sannsynlighet fra 30 %, intensitet mens det regner, regnstart innen to timer. Regnstarten og intensiteten tar sannsynlighetens plass.",
-  "menubarRelevantAirHint": "«Når det merkes»: luftkvalitet fra «dårlig», pollen på høyt nivå.",
+  "showWhenRelevant": "Relevant",
+  "menubarRelevantCurrentHint": "«Relevant» viser en oppføring bare når den skiller seg ut: føles som 3° fra temperaturen, vind fra 20 km/t, UV fra 6.",
+  "menubarRelevantRainHint": "«Relevant»: sannsynlighet fra 30 %, intensitet mens det regner, regnstart innen to timer. Regnstarten og intensiteten tar sannsynlighetens plass.",
+  "menubarRelevantAirHint": "«Relevant»: luftkvalitet fra «dårlig», pollen på høyt nivå.",
   "kelvinUnits": "Kelvin",
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "Andre enheter ved peking",
   "hoverUnitSystemOff": "Av",
   "hoverUnitSystemHint": "Mens pekeren hviler på miniprogrammet, bytter linjen til dette enhetssystemet. Kelvin endrer bare temperaturer.",
-  "restoreOrder": "Tilbakestill rekkefølgen",
+  "restoreOrder": "Tilbakestill rekkefølge",
   "sunNext": "Neste solhendelse",
   "sunrise": "Soloppgang",
   "sunset": "Solnedgang",
@@ -2233,31 +2247,31 @@ addCatalogEntries("da", {
   "shortcutsSubtitle": "Tastatur og mus",
   "sourcesSubtitle": "Hvor dataene kommer fra",
   "shortcutsHint": "De samme taster virker i widgetten og i appen.",
-  "shortcutsGroupGeneral": "GENERELT",
-  "shortcutsGroupNavigation": "RULNING",
-  "shortcutsGroupForecast": "REGN, RADAR OG VIND",
-  "shortcutsGroupSearch": "STEDSSØGNING",
-  "shortcutsGroupSettings": "INDSTILLINGER",
-  "shortcutsGroupMouse": "MENULINJE",
-  "shortcutClose": "Luk søgning, indstillinger eller liste, derefter panelet",
+  "shortcutsGroupGeneral": "Generelt",
+  "shortcutsGroupNavigation": "Rulning",
+  "shortcutsGroupForecast": "Faner og kort",
+  "shortcutsGroupSearch": "Stedssøgning",
+  "shortcutsGroupSettings": "Indstillinger",
+  "shortcutsGroupMouse": "Menulinje",
+  "shortcutClose": "Luk søgningen, indstillingerne eller listen, derefter panelet",
   "shortcutSwitchPanel": "Næste / forrige panel i linjen (widget)",
-  "shortcutSettings": "Åbn indstillinger",
+  "shortcutSettings": "Åbn indstillingerne",
   "shortcutRefresh": "Opdater nu",
   "shortcutSearch": "Søg efter et sted",
   "shortcutScroll": "Rul",
   "shortcutPage": "Rul en side",
-  "shortcutJump": "Til start / slut",
+  "shortcutJump": "Til top / bund",
   "shortcutScrollDaily": "Rul dagsprognosen",
   "shortcutViews": "Visning regn / radar / vind",
   "shortcutRadarStep": "Radar: forrige / næste billede",
   "shortcutRadarPlay": "Radar: afspil / pause",
   "shortcutZoom": "Kort: zoom ind / ud",
   "shortcutZoomReset": "Kort: standardzoom",
-  "shortcutSearchSelect": "Vælg et resultat",
-  "shortcutSearchSection": "Skift mellem resultater og favoritter",
-  "shortcutSearchPick": "Vis det valgte sted",
-  "shortcutSearchFavorite": "Tilføj / fjern favorit",
-  "shortcutSearchCancel": "Annuller søgningen",
+  "shortcutSearchSelect": "Flyt i resultaterne eller de gemte steder",
+  "shortcutSearchSection": "Skift mellem resultater og gemte steder",
+  "shortcutSearchPick": "Brug resultatet eller skift til det gemte sted",
+  "shortcutSearchAdd": "I de gemte steder (Tab): tilføj det markerede resultat",
+  "shortcutSearchCancel": "Luk søgningen",
   "shortcutSettingsPages": "Forrige / næste indstillingsside",
   "shortcutSettingsClose": "Luk indstillinger",
   "mouseLeft": "Venstreklik",
@@ -2267,11 +2281,11 @@ addCatalogEntries("da", {
   "shortcutMouseRefresh": "Opdater nu",
   "shortcutMouseNotify": "Vejret som notifikation",
   "sourcesHint": "Kilderne vælges efter sted; svigter en, tager den næste automatisk over.",
-  "sourceInUse": "I BRUG",
-  "sourceNotInUse": "ikke i brug",
+  "sourceInUse": "I brug",
+  "sourceNotInUse": "Ikke i brug",
   "sourceGroupForecast": "Aktuelt vejr og prognose",
   "sourceGroupForecastDetails": "Open-Meteo Best Match (den bedste nationale model pr. region), med MET Norway som reserve. I Norge, Sverige, Finland og Danmark kommer MET Norway først, bakket op af sin MET Nordic-model på 1 km. I DWD-området forfiner DWD MOSMIX (via Bright Sky) temperatur, regn og symboler.",
-  "sourceCoverage": "DÆKNING",
+  "sourceCoverage": "Dækning",
   "sourceGroupForecastCoverage": "Hele verden. MET Norway først i NO, SE, FI, DK. DWD MOSMIX kun i DWD-området (ca. 46,5–55,5° N, 5–16° Ø, også uden for Tyskland).",
   "sourceGroupUvCoverage": "Hele verden.",
   "sourceGroupNowcastCoverage": "Hele verden. Regnværdier fra MOSMIX og mængden fra DWD-radaren kun i DWD-området.",
@@ -2300,7 +2314,7 @@ addCatalogEntries("da", {
   "sourceGroupMapDetails": "Satellitbaggrund: DWD GeoServer Blue Marble. Bynavne: OpenStreetMap via Overpass-API'et, gemt i 30 dage.",
   "sourceGroupMoon": "Månefase",
   "sourceGroupMoonDetails": "Beregnet lokalt (Meeus); spejlvendt for steder syd for ækvator.",
-  "sourceLocalCalculation": "LOKAL BEREGNING",
+  "sourceLocalCalculation": "Lokal beregning",
   "sourceRefreshInfo": "Opdateres hver {minutes}. min, DWD-radaren hver 5. min, fælles for widget og app. Seneste opdatering: {updated}.",
   "barPosition": "Placering i linjen",
   "barPositionLeft": "Venstre",
@@ -2311,22 +2325,22 @@ addCatalogEntries("da", {
   "barPositionHint": "Flytter widgetten i Omarchys linje.",
   "barPositionMissing": "Widgetten er ikke i linjen.",
   "showAlways": "Altid",
-  "showOnHover": "Ved peg",
-  "menubarHoverHint": "Punkter med »Ved peg« vises, mens markøren hviler på vejret i linjen.",
+  "showOnHover": "Peger",
+  "menubarHoverHint": "Punkter med »Peger« vises, mens markøren hviler på vejret i linjen.",
   "barBehavior": "Adfærd",
-  "openWidgetOnHover": "Åbn widgetten ved peg",
+  "openWidgetOnHover": "Åbn widgetten ved peger",
   "openWidgetOnHoverHint": "Åbner widgetten, når markøren hviler på vejret i linjen, og lukker den, når markøren flyttes væk. Et klik holder den åben.",
   "rainIntensity": "Regnintensitet",
-  "showWhenRelevant": "Når det er relevant",
-  "menubarRelevantCurrentHint": "»Når det er relevant« viser et punkt kun, når det skiller sig ud: føles som 3° fra temperaturen, vind fra 20 km/t, UV fra 6.",
-  "menubarRelevantRainHint": "»Når det er relevant«: sandsynlighed fra 30 %, intensitet mens det regner, regnstart inden for to timer. Regnstarten og intensiteten tager sandsynlighedens plads.",
-  "menubarRelevantAirHint": "»Når det er relevant«: luftkvalitet fra »dårlig«, pollen på højt niveau.",
+  "showWhenRelevant": "Relevant",
+  "menubarRelevantCurrentHint": "»Relevant« viser et punkt kun, når det skiller sig ud: føles som 3° fra temperaturen, vind fra 20 km/t, UV fra 6.",
+  "menubarRelevantRainHint": "»Relevant«: sandsynlighed fra 30 %, intensitet mens det regner, regnstart inden for to timer. Regnstarten og intensiteten tager sandsynlighedens plads.",
+  "menubarRelevantAirHint": "»Relevant«: luftkvalitet fra »dårlig«, pollen på højt niveau.",
   "kelvinUnits": "Kelvin",
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "Andre enheder ved peg",
   "hoverUnitSystemOff": "Fra",
   "hoverUnitSystemHint": "Mens markøren hviler på widgetten, skifter linjen til dette enhedssystem. Kelvin ændrer kun temperaturer.",
-  "restoreOrder": "Nulstil rækkefølgen",
+  "restoreOrder": "Nulstil rækkefølge",
   "sunNext": "Næste solhændelse",
   "sunrise": "Solopgang",
   "sunset": "Solnedgang",
@@ -2341,12 +2355,12 @@ addCatalogEntries("ro", {
   "shortcutsSubtitle": "Tastatură și mouse",
   "sourcesSubtitle": "De unde provin datele",
   "shortcutsHint": "Aceleași taste funcționează în widget și în aplicație.",
-  "shortcutsGroupGeneral": "GENERAL",
-  "shortcutsGroupNavigation": "DERULARE",
-  "shortcutsGroupForecast": "PLOAIE, RADAR ȘI VÂNT",
-  "shortcutsGroupSearch": "CĂUTARE LOC",
-  "shortcutsGroupSettings": "SETĂRI",
-  "shortcutsGroupMouse": "BARĂ DE MENIU",
+  "shortcutsGroupGeneral": "General",
+  "shortcutsGroupNavigation": "Derulare",
+  "shortcutsGroupForecast": "File și hărți",
+  "shortcutsGroupSearch": "Căutare loc",
+  "shortcutsGroupSettings": "Setări",
+  "shortcutsGroupMouse": "Bară de meniu",
   "shortcutClose": "Închide căutarea, setările sau lista, apoi panoul",
   "shortcutSwitchPanel": "Panoul următor / anterior din bară (widget)",
   "shortcutSettings": "Deschide setările",
@@ -2354,18 +2368,18 @@ addCatalogEntries("ro", {
   "shortcutSearch": "Caută un loc",
   "shortcutScroll": "Derulare",
   "shortcutPage": "Derulare cu o pagină",
-  "shortcutJump": "Salt la început / sfârșit",
+  "shortcutJump": "Sus / jos de tot",
   "shortcutScrollDaily": "Derulează prognoza zilnică",
   "shortcutViews": "Vizualizare ploaie / radar / vânt",
   "shortcutRadarStep": "Radar: imaginea anterioară / următoare",
   "shortcutRadarPlay": "Radar: redare / pauză",
   "shortcutZoom": "Hartă: mărire / micșorare",
   "shortcutZoomReset": "Hartă: zoom implicit",
-  "shortcutSearchSelect": "Alege un rezultat",
-  "shortcutSearchSection": "Comută între rezultate și favorite",
-  "shortcutSearchPick": "Afișează locul ales",
-  "shortcutSearchFavorite": "Adaugă / elimină favorit",
-  "shortcutSearchCancel": "Anulează căutarea",
+  "shortcutSearchSelect": "Deplasare în rezultate sau în locurile salvate",
+  "shortcutSearchSection": "Comută între rezultate și locurile salvate",
+  "shortcutSearchPick": "Folosește rezultatul sau treci la locul salvat",
+  "shortcutSearchAdd": "În locurile salvate (Tab): adaugă rezultatul marcat",
+  "shortcutSearchCancel": "Închide căutarea",
   "shortcutSettingsPages": "Pagina de setări anterioară / următoare",
   "shortcutSettingsClose": "Închide setările",
   "mouseLeft": "Clic stânga",
@@ -2375,11 +2389,11 @@ addCatalogEntries("ro", {
   "shortcutMouseRefresh": "Actualizează acum",
   "shortcutMouseNotify": "Vremea ca notificare",
   "sourcesHint": "Sursele sunt alese în funcție de loc; dacă una nu răspunde, următoarea preia automat.",
-  "sourceInUse": "ÎN UZ",
-  "sourceNotInUse": "neutilizată",
+  "sourceInUse": "În uz",
+  "sourceNotInUse": "Nefolosit",
   "sourceGroupForecast": "Vremea actuală și prognoza",
   "sourceGroupForecastDetails": "Open-Meteo Best Match (cel mai bun model național pe regiune), cu MET Norway ca rezervă. În Norvegia, Suedia, Finlanda și Danemarca MET Norway are prioritate, sprijinit de modelul său MET Nordic de 1 km. În zona DWD, DWD MOSMIX (prin Bright Sky) rafinează temperatura, ploaia și simbolurile.",
-  "sourceCoverage": "ACOPERIRE",
+  "sourceCoverage": "Acoperire",
   "sourceGroupForecastCoverage": "Global. MET Norway primul în NO, SE, FI, DK. DWD MOSMIX doar în zona DWD (aprox. 46,5–55,5° N, 5–16° E, și dincolo de Germania).",
   "sourceGroupUvCoverage": "Global.",
   "sourceGroupNowcastCoverage": "Global. Valorile de ploaie MOSMIX și cantitatea radarului DWD doar în zona DWD.",
@@ -2408,7 +2422,7 @@ addCatalogEntries("ro", {
   "sourceGroupMapDetails": "Fundal din satelit: DWD GeoServer Blue Marble. Nume de orașe: OpenStreetMap prin API-ul Overpass, păstrate 30 de zile.",
   "sourceGroupMoon": "Faza Lunii",
   "sourceGroupMoonDetails": "Calculată local (Meeus); în oglindă pentru locurile de la sud de ecuator.",
-  "sourceLocalCalculation": "CALCUL LOCAL",
+  "sourceLocalCalculation": "Calcul local",
   "sourceRefreshInfo": "Actualizare la fiecare {minutes} min, radarul DWD la fiecare 5 min, comună pentru widget și aplicație. Ultima actualizare: {updated}.",
   "barPosition": "Poziția în bară",
   "barPositionLeft": "Stânga",
@@ -2422,19 +2436,19 @@ addCatalogEntries("ro", {
   "showOnHover": "La trecere",
   "menubarHoverHint": "Elementele „La trecere” apar cât timp cursorul stă pe vremea din bară.",
   "barBehavior": "Comportament",
-  "openWidgetOnHover": "Deschide widgetul la trecerea cursorului",
+  "openWidgetOnHover": "Deschide widgetul la trecere",
   "openWidgetOnHoverHint": "Deschide widgetul când cursorul stă pe vremea din bară și îl închide când cursorul se îndepărtează. Un clic îl menține deschis.",
   "rainIntensity": "Intensitatea ploii",
-  "showWhenRelevant": "Când contează",
-  "menubarRelevantCurrentHint": "„Când contează” arată un element doar când iese în evidență: temperatura resimțită la 3° de cea reală, vânt de la 20 km/h, UV de la 6.",
-  "menubarRelevantRainHint": "„Când contează”: probabilitate de la 30 %, intensitate cât plouă, începutul ploii în două ore. Începutul ploii și intensitatea iau locul probabilității.",
-  "menubarRelevantAirHint": "„Când contează”: calitatea aerului de la „slabă”, polen la nivel ridicat.",
+  "showWhenRelevant": "Relevant",
+  "menubarRelevantCurrentHint": "„Relevant” arată un element doar când iese în evidență: temperatura resimțită la 3° de cea reală, vânt de la 20 km/h, UV de la 6.",
+  "menubarRelevantRainHint": "„Relevant”: probabilitate de la 30 %, intensitate cât plouă, începutul ploii în două ore. Începutul ploii și intensitatea iau locul probabilității.",
+  "menubarRelevantAirHint": "„Relevant”: calitatea aerului de la „slabă”, polen la nivel ridicat.",
   "kelvinUnits": "Kelvin",
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "Alte unități la trecerea cursorului",
   "hoverUnitSystemOff": "Oprit",
   "hoverUnitSystemHint": "Cât timp cursorul stă pe widget, bara trece la acest sistem de unități. Kelvin schimbă doar temperaturile.",
-  "restoreOrder": "Restabilește ordinea",
+  "restoreOrder": "Resetează ordinea",
   "sunNext": "Următorul eveniment solar",
   "sunrise": "Răsărit",
   "sunset": "Apus",
@@ -2449,31 +2463,31 @@ addCatalogEntries("hu", {
   "shortcutsSubtitle": "Billentyűzet és egér",
   "sourcesSubtitle": "Honnan származnak az adatok",
   "shortcutsHint": "Ugyanazok a billentyűk működnek a minialkalmazásban és az alkalmazásban.",
-  "shortcutsGroupGeneral": "ÁLTALÁNOS",
-  "shortcutsGroupNavigation": "GÖRGETÉS",
-  "shortcutsGroupForecast": "ESŐ, RADAR ÉS SZÉL",
-  "shortcutsGroupSearch": "HELYKERESÉS",
-  "shortcutsGroupSettings": "BEÁLLÍTÁSOK",
-  "shortcutsGroupMouse": "MENÜSÁV",
-  "shortcutClose": "Keresés, beállítások vagy lista bezárása, majd a panelé",
+  "shortcutsGroupGeneral": "Általános",
+  "shortcutsGroupNavigation": "Görgetés",
+  "shortcutsGroupForecast": "Lapok és térképek",
+  "shortcutsGroupSearch": "Helykeresés",
+  "shortcutsGroupSettings": "Beállítások",
+  "shortcutsGroupMouse": "Menüsáv",
+  "shortcutClose": "A keresés, a beállítások vagy a lista bezárása, majd a panelé",
   "shortcutSwitchPanel": "A sáv következő / előző panelje (minialkalmazás)",
-  "shortcutSettings": "Beállítások megnyitása",
+  "shortcutSettings": "A beállítások megnyitása",
   "shortcutRefresh": "Frissítés most",
   "shortcutSearch": "Hely keresése",
   "shortcutScroll": "Görgetés",
   "shortcutPage": "Görgetés egy oldalnyit",
-  "shortcutJump": "Ugrás az elejére / végére",
+  "shortcutJump": "Az elejére / végére",
   "shortcutScrollDaily": "Napi előrejelzés görgetése",
   "shortcutViews": "Nézet: eső / radar / szél",
   "shortcutRadarStep": "Radar: előző / következő kép",
   "shortcutRadarPlay": "Radar: lejátszás / szünet",
   "shortcutZoom": "Térkép: nagyítás / kicsinyítés",
   "shortcutZoomReset": "Térkép: alapértelmezett nagyítás",
-  "shortcutSearchSelect": "Találat kiválasztása",
-  "shortcutSearchSection": "Váltás a találatok és a kedvencek között",
-  "shortcutSearchPick": "A kiválasztott hely megjelenítése",
-  "shortcutSearchFavorite": "Kedvenc hozzáadása / eltávolítása",
-  "shortcutSearchCancel": "Keresés megszakítása",
+  "shortcutSearchSelect": "Mozgás a találatok vagy a mentett helyek között",
+  "shortcutSearchSection": "Váltás a találatok és a mentett helyek között",
+  "shortcutSearchPick": "A találat használata vagy váltás a mentett helyre",
+  "shortcutSearchAdd": "A mentett helyeknél (Tab): a kijelölt találat hozzáadása",
+  "shortcutSearchCancel": "A keresés bezárása",
   "shortcutSettingsPages": "Előző / következő beállításoldal",
   "shortcutSettingsClose": "Beállítások bezárása",
   "mouseLeft": "Bal kattintás",
@@ -2483,11 +2497,11 @@ addCatalogEntries("hu", {
   "shortcutMouseRefresh": "Frissítés most",
   "shortcutMouseNotify": "Időjárás értesítésként",
   "sourcesHint": "A források helyenként kerülnek kiválasztásra; ha egy nem válaszol, automatikusan a következő lép a helyébe.",
-  "sourceInUse": "HASZNÁLATBAN",
-  "sourceNotInUse": "nincs használatban",
+  "sourceInUse": "Használatban",
+  "sourceNotInUse": "Nincs használatban",
   "sourceGroupForecast": "Aktuális időjárás és előrejelzés",
   "sourceGroupForecastDetails": "Open-Meteo Best Match (régiónként a legjobb nemzeti modell), tartalékként MET Norway. Norvégiában, Svédországban, Finnországban és Dániában a MET Norway az első, saját 1 km-es MET Nordic modelljével. A DWD-területen a DWD MOSMIX (Bright Skyon keresztül) pontosítja a hőmérsékletet, a csapadékot és a szimbólumokat.",
-  "sourceCoverage": "LEFEDETTSÉG",
+  "sourceCoverage": "Lefedettség",
   "sourceGroupForecastCoverage": "Világszerte. MET Norway az első ezekben: NO, SE, FI, DK. DWD MOSMIX csak a DWD-területen (kb. é. sz. 46,5–55,5°, k. h. 5–16°, Németországon túl is).",
   "sourceGroupUvCoverage": "Világszerte.",
   "sourceGroupNowcastCoverage": "Világszerte. MOSMIX-csapadékértékek és a DWD-radar mennyisége csak a DWD-területen.",
@@ -2516,7 +2530,7 @@ addCatalogEntries("hu", {
   "sourceGroupMapDetails": "Műholdas háttér: DWD GeoServer Blue Marble. Városnevek: OpenStreetMap az Overpass API-n keresztül, 30 napig gyorsítótárazva.",
   "sourceGroupMoon": "Holdfázis",
   "sourceGroupMoonDetails": "Helyben számolva (Meeus); az Egyenlítőtől délre fekvő helyeken tükrözve.",
-  "sourceLocalCalculation": "HELYI SZÁMÍTÁS",
+  "sourceLocalCalculation": "Helyi számítás",
   "sourceRefreshInfo": "Frissítés {minutes} percenként, a DWD-radar 5 percenként, közösen a minialkalmazás és az alkalmazás számára. Utolsó frissítés: {updated}.",
   "barPosition": "Hely a sávban",
   "barPositionLeft": "Bal",
@@ -2527,16 +2541,16 @@ addCatalogEntries("hu", {
   "barPositionHint": "Áthelyezi a minialkalmazást az Omarchy sávjában.",
   "barPositionMissing": "A minialkalmazás nincs a sávban.",
   "showAlways": "Mindig",
-  "showOnHover": "Rámutatáskor",
-  "menubarHoverHint": "A „Rámutatáskor” elemek akkor jelennek meg, amikor a mutató a sáv időjárásán áll.",
+  "showOnHover": "Rámutatás",
+  "menubarHoverHint": "A „Rámutatás” elemek akkor jelennek meg, amikor a mutató a sáv időjárásán áll.",
   "barBehavior": "Viselkedés",
   "openWidgetOnHover": "Minialkalmazás megnyitása rámutatáskor",
   "openWidgetOnHoverHint": "Megnyitja a minialkalmazást, amikor a mutató a sáv időjárásán áll, és bezárja, amikor elmozdul. Kattintással nyitva marad.",
   "rainIntensity": "Eső intenzitása",
-  "showWhenRelevant": "Ha fontos",
-  "menubarRelevantCurrentHint": "A „Ha fontos” csak akkor mutat egy elemet, ha kitűnik: a hőérzet 3°-kal tér el, a szél 20 km/h-tól, az UV 6-tól.",
-  "menubarRelevantRainHint": "„Ha fontos”: valószínűség 30%-tól, intenzitás amíg esik, esőkezdet két órán belül. Az esőkezdet és az intenzitás a valószínűség helyére lép.",
-  "menubarRelevantAirHint": "„Ha fontos”: levegőminőség a „rossz” szinttől, pollen magas szinten.",
+  "showWhenRelevant": "Fontos",
+  "menubarRelevantCurrentHint": "A „Fontos” csak akkor mutat egy elemet, ha kitűnik: a hőérzet 3°-kal tér el, a szél 20 km/h-tól, az UV 6-tól.",
+  "menubarRelevantRainHint": "„Fontos”: valószínűség 30%-tól, intenzitás amíg esik, esőkezdet két órán belül. Az esőkezdet és az intenzitás a valószínűség helyére lép.",
+  "menubarRelevantAirHint": "„Fontos”: levegőminőség a „rossz” szinttől, pollen magas szinten.",
   "kelvinUnits": "Kelvin",
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "Más mértékegységek rámutatáskor",
@@ -2557,15 +2571,15 @@ addCatalogEntries("el", {
   "shortcutsSubtitle": "Πληκτρολόγιο και ποντίκι",
   "sourcesSubtitle": "Από πού προέρχονται τα δεδομένα",
   "shortcutsHint": "Τα ίδια πλήκτρα λειτουργούν στο γραφικό στοιχείο και στην εφαρμογή.",
-  "shortcutsGroupGeneral": "ΓΕΝΙΚΑ",
-  "shortcutsGroupNavigation": "ΚΥΛΙΣΗ",
-  "shortcutsGroupForecast": "ΒΡΟΧΗ, ΡΑΝΤΑΡ ΚΑΙ ΑΝΕΜΟΣ",
-  "shortcutsGroupSearch": "ΑΝΑΖΗΤΗΣΗ ΤΟΠΟΘΕΣΙΑΣ",
-  "shortcutsGroupSettings": "ΡΥΘΜΙΣΕΙΣ",
-  "shortcutsGroupMouse": "ΓΡΑΜΜΗ ΜΕΝΟΥ",
-  "shortcutClose": "Κλείσιμο αναζήτησης, ρυθμίσεων ή λίστας και μετά του πάνελ",
+  "shortcutsGroupGeneral": "Γενικά",
+  "shortcutsGroupNavigation": "Κύλιση",
+  "shortcutsGroupForecast": "Καρτέλες και χάρτες",
+  "shortcutsGroupSearch": "Αναζήτηση τοποθεσίας",
+  "shortcutsGroupSettings": "Ρυθμίσεις",
+  "shortcutsGroupMouse": "Γραμμή μενού",
+  "shortcutClose": "Κλείσιμο της αναζήτησης, των ρυθμίσεων ή της λίστας και μετά του πάνελ",
   "shortcutSwitchPanel": "Επόμενο / προηγούμενο πάνελ της γραμμής (γραφικό στοιχείο)",
-  "shortcutSettings": "Άνοιγμα ρυθμίσεων",
+  "shortcutSettings": "Άνοιγμα των ρυθμίσεων",
   "shortcutRefresh": "Ανανέωση τώρα",
   "shortcutSearch": "Αναζήτηση τοποθεσίας",
   "shortcutScroll": "Κύλιση",
@@ -2577,11 +2591,11 @@ addCatalogEntries("el", {
   "shortcutRadarPlay": "Ραντάρ: αναπαραγωγή / παύση",
   "shortcutZoom": "Χάρτης: μεγέθυνση / σμίκρυνση",
   "shortcutZoomReset": "Χάρτης: προεπιλεγμένη μεγέθυνση",
-  "shortcutSearchSelect": "Επιλογή αποτελέσματος",
-  "shortcutSearchSection": "Εναλλαγή μεταξύ αποτελεσμάτων και αγαπημένων",
-  "shortcutSearchPick": "Εμφάνιση επιλεγμένης τοποθεσίας",
-  "shortcutSearchFavorite": "Προσθήκη / αφαίρεση αγαπημένου",
-  "shortcutSearchCancel": "Ακύρωση αναζήτησης",
+  "shortcutSearchSelect": "Μετακίνηση στα αποτελέσματα ή στις αποθηκευμένες τοποθεσίες",
+  "shortcutSearchSection": "Εναλλαγή μεταξύ αποτελεσμάτων και αποθηκευμένων τοποθεσιών",
+  "shortcutSearchPick": "Χρήση του αποτελέσματος ή μετάβαση στην αποθηκευμένη τοποθεσία",
+  "shortcutSearchAdd": "Στις αποθηκευμένες τοποθεσίες (Tab): προσθήκη του επισημασμένου αποτελέσματος",
+  "shortcutSearchCancel": "Κλείσιμο της αναζήτησης",
   "shortcutSettingsPages": "Προηγούμενη / επόμενη σελίδα ρυθμίσεων",
   "shortcutSettingsClose": "Κλείσιμο ρυθμίσεων",
   "mouseLeft": "Αριστερό κλικ",
@@ -2591,11 +2605,11 @@ addCatalogEntries("el", {
   "shortcutMouseRefresh": "Ανανέωση τώρα",
   "shortcutMouseNotify": "Ο καιρός ως ειδοποίηση",
   "sourcesHint": "Οι πηγές επιλέγονται ανά τοποθεσία· αν μία δεν απαντά, αναλαμβάνει αυτόματα η επόμενη.",
-  "sourceInUse": "ΣΕ ΧΡΗΣΗ",
-  "sourceNotInUse": "εκτός χρήσης",
+  "sourceInUse": "Σε χρήση",
+  "sourceNotInUse": "Εκτός χρήσης",
   "sourceGroupForecast": "Τρέχων καιρός και πρόγνωση",
   "sourceGroupForecastDetails": "Open-Meteo Best Match (το καλύτερο εθνικό μοντέλο ανά περιοχή), με εφεδρεία το MET Norway. Σε Νορβηγία, Σουηδία, Φινλανδία και Δανία προηγείται το MET Norway, με το δικό του μοντέλο MET Nordic 1 km. Στην περιοχή του DWD, το DWD MOSMIX (μέσω Bright Sky) βελτιώνει θερμοκρασία, βροχή και σύμβολα.",
-  "sourceCoverage": "ΚΑΛΥΨΗ",
+  "sourceCoverage": "Κάλυψη",
   "sourceGroupForecastCoverage": "Παγκοσμίως. Πρώτα MET Norway σε NO, SE, FI, DK. DWD MOSMIX μόνο στην περιοχή του DWD (περίπου 46,5–55,5° Β, 5–16° Α, και εκτός Γερμανίας).",
   "sourceGroupUvCoverage": "Παγκοσμίως.",
   "sourceGroupNowcastCoverage": "Παγκοσμίως. Τιμές βροχής MOSMIX και ποσότητα από το ραντάρ του DWD μόνο στην περιοχή του DWD.",
@@ -2624,7 +2638,7 @@ addCatalogEntries("el", {
   "sourceGroupMapDetails": "Δορυφορικό φόντο: DWD GeoServer Blue Marble. Ονόματα πόλεων: OpenStreetMap μέσω του Overpass API, αποθηκευμένα για 30 ημέρες.",
   "sourceGroupMoon": "Φάση της Σελήνης",
   "sourceGroupMoonDetails": "Υπολογίζεται τοπικά (Meeus)· κατοπτρισμένη για τοποθεσίες νότια του ισημερινού.",
-  "sourceLocalCalculation": "ΤΟΠΙΚΟΣ ΥΠΟΛΟΓΙΣΜΟΣ",
+  "sourceLocalCalculation": "Τοπικός υπολογισμός",
   "sourceRefreshInfo": "Ανανέωση κάθε {minutes} λεπτά, το ραντάρ του DWD κάθε 5 λεπτά, κοινή για γραφικό στοιχείο και εφαρμογή. Τελευταία ενημέρωση: {updated}.",
   "barPosition": "Θέση στη γραμμή",
   "barPositionLeft": "Αριστερά",
@@ -2635,16 +2649,16 @@ addCatalogEntries("el", {
   "barPositionHint": "Μετακινεί το γραφικό στοιχείο μέσα στη γραμμή του Omarchy.",
   "barPositionMissing": "Το γραφικό στοιχείο δεν βρίσκεται στη γραμμή.",
   "showAlways": "Πάντα",
-  "showOnHover": "Στο πέρασμα",
-  "menubarHoverHint": "Τα στοιχεία «Στο πέρασμα» εμφανίζονται όσο ο δείκτης βρίσκεται πάνω στον καιρό της γραμμής.",
+  "showOnHover": "Κατάδειξη",
+  "menubarHoverHint": "Τα στοιχεία «Κατάδειξη» εμφανίζονται όσο ο δείκτης βρίσκεται πάνω στον καιρό της γραμμής.",
   "barBehavior": "Συμπεριφορά",
-  "openWidgetOnHover": "Άνοιγμα γραφικού στοιχείου στο πέρασμα",
+  "openWidgetOnHover": "Άνοιγμα γραφικού στοιχείου στην κατάδειξη",
   "openWidgetOnHoverHint": "Ανοίγει το γραφικό στοιχείο όταν ο δείκτης σταθεί πάνω στον καιρό της γραμμής και το κλείνει όταν απομακρυνθεί. Ένα κλικ το κρατά ανοιχτό.",
   "rainIntensity": "Ένταση βροχής",
-  "showWhenRelevant": "Όταν ξεχωρίζει",
-  "menubarRelevantCurrentHint": "Το «Όταν ξεχωρίζει» δείχνει μια καταχώριση μόνο όταν ξεχωρίζει: αίσθηση 3° από τη θερμοκρασία, άνεμος από 20 χλμ/ώρα, UV από 6.",
-  "menubarRelevantRainHint": "«Όταν ξεχωρίζει»: πιθανότητα από 30 %, ένταση όσο βρέχει, έναρξη βροχής μέσα σε δύο ώρες. Η έναρξη της βροχής και η ένταση παίρνουν τη θέση της πιθανότητας.",
-  "menubarRelevantAirHint": "«Όταν ξεχωρίζει»: ποιότητα αέρα από «κακή», γύρη σε υψηλό επίπεδο.",
+  "showWhenRelevant": "Σχετικό",
+  "menubarRelevantCurrentHint": "Το «Σχετικό» δείχνει μια καταχώριση μόνο όταν ξεχωρίζει: αίσθηση 3° από τη θερμοκρασία, άνεμος από 20 χλμ/ώρα, UV από 6.",
+  "menubarRelevantRainHint": "«Σχετικό»: πιθανότητα από 30 %, ένταση όσο βρέχει, έναρξη βροχής μέσα σε δύο ώρες. Η έναρξη της βροχής και η ένταση παίρνουν τη θέση της πιθανότητας.",
+  "menubarRelevantAirHint": "«Σχετικό»: ποιότητα αέρα από «κακή», γύρη σε υψηλό επίπεδο.",
   "kelvinUnits": "Κέλβιν",
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "Άλλες μονάδες στο πέρασμα",
@@ -2667,7 +2681,7 @@ addCatalogEntries("zh_CN", {
   "shortcutsHint": "同样的按键在小组件和应用中都有效。",
   "shortcutsGroupGeneral": "通用",
   "shortcutsGroupNavigation": "滚动",
-  "shortcutsGroupForecast": "降雨、雷达和风",
+  "shortcutsGroupForecast": "标签页与地图",
   "shortcutsGroupSearch": "地点搜索",
   "shortcutsGroupSettings": "设置",
   "shortcutsGroupMouse": "菜单栏",
@@ -2678,18 +2692,18 @@ addCatalogEntries("zh_CN", {
   "shortcutSearch": "搜索地点",
   "shortcutScroll": "滚动",
   "shortcutPage": "滚动一页",
-  "shortcutJump": "跳到开头 / 结尾",
+  "shortcutJump": "到顶部 / 底部",
   "shortcutScrollDaily": "滚动每日预报",
   "shortcutViews": "降雨 / 雷达 / 风 视图",
   "shortcutRadarStep": "雷达：上一帧 / 下一帧",
   "shortcutRadarPlay": "雷达：播放 / 暂停",
   "shortcutZoom": "地图：放大 / 缩小",
   "shortcutZoomReset": "地图：默认缩放",
-  "shortcutSearchSelect": "选择结果",
-  "shortcutSearchSection": "在结果和收藏之间切换",
-  "shortcutSearchPick": "显示所选地点",
-  "shortcutSearchFavorite": "添加 / 移除收藏",
-  "shortcutSearchCancel": "取消搜索",
+  "shortcutSearchSelect": "在结果或已保存地点中移动",
+  "shortcutSearchSection": "在结果和已保存地点之间切换",
+  "shortcutSearchPick": "使用结果，或切换到已保存地点",
+  "shortcutSearchAdd": "在已保存地点中（Tab）：添加标记的结果",
+  "shortcutSearchCancel": "关闭搜索",
   "shortcutSettingsPages": "上一个 / 下一个设置页面",
   "shortcutSettingsClose": "关闭设置",
   "mouseLeft": "左键单击",
@@ -2743,22 +2757,22 @@ addCatalogEntries("zh_CN", {
   "barPositionHint": "在 Omarchy 栏中移动小组件。",
   "barPositionMissing": "小组件不在栏中。",
   "showAlways": "始终",
-  "showOnHover": "悬停时",
-  "menubarHoverHint": "设为“悬停时”的项目在指针停留在栏中天气上时显示。",
+  "showOnHover": "悬停",
+  "menubarHoverHint": "设为“悬停”的项目在指针停留在栏中天气上时显示。",
   "barBehavior": "行为",
   "openWidgetOnHover": "悬停时打开小组件",
   "openWidgetOnHoverHint": "指针停留在栏中天气上时打开小组件，移开后关闭。单击可保持打开。",
   "rainIntensity": "降雨强度",
-  "showWhenRelevant": "重要时",
-  "menubarRelevantCurrentHint": "“重要时”只在数值突出时显示：体感与气温相差 3°、风速从 20 km/h 起、紫外线从 6 起。",
-  "menubarRelevantRainHint": "“重要时”：概率从 30 % 起、下雨时显示强度、两小时内的降雨开始时间。降雨开始时间和强度会取代概率。",
-  "menubarRelevantAirHint": "“重要时”：空气质量从“差”起、花粉为高水平。",
+  "showWhenRelevant": "相关时",
+  "menubarRelevantCurrentHint": "“相关时”只在数值突出时显示：体感与气温相差 3°、风速从 20 km/h 起、紫外线从 6 起。",
+  "menubarRelevantRainHint": "“相关时”：概率从 30 % 起、下雨时显示强度、两小时内的降雨开始时间。降雨开始时间和强度会取代概率。",
+  "menubarRelevantAirHint": "“相关时”：空气质量从“差”起、花粉为高水平。",
   "kelvinUnits": "开尔文",
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "悬停时换用其他单位",
   "hoverUnitSystemOff": "关闭",
   "hoverUnitSystemHint": "指针停留在小组件上时，栏中切换到该单位制。开尔文只影响温度。",
-  "restoreOrder": "恢复顺序",
+  "restoreOrder": "重置顺序",
   "sunNext": "下一次日出/日落",
   "sunrise": "日出",
   "sunset": "日落",
@@ -2775,7 +2789,7 @@ addCatalogEntries("zh_TW", {
   "shortcutsHint": "相同的按鍵在小工具與應用程式中都能使用。",
   "shortcutsGroupGeneral": "一般",
   "shortcutsGroupNavigation": "捲動",
-  "shortcutsGroupForecast": "降雨、雷達與風",
+  "shortcutsGroupForecast": "分頁與地圖",
   "shortcutsGroupSearch": "地點搜尋",
   "shortcutsGroupSettings": "設定",
   "shortcutsGroupMouse": "選單列",
@@ -2786,18 +2800,18 @@ addCatalogEntries("zh_TW", {
   "shortcutSearch": "搜尋地點",
   "shortcutScroll": "捲動",
   "shortcutPage": "捲動一頁",
-  "shortcutJump": "跳到開頭 / 結尾",
+  "shortcutJump": "到頂部 / 底部",
   "shortcutScrollDaily": "捲動每日預報",
   "shortcutViews": "降雨 / 雷達 / 風 檢視",
   "shortcutRadarStep": "雷達：上一張 / 下一張",
   "shortcutRadarPlay": "雷達：播放 / 暫停",
   "shortcutZoom": "地圖：放大 / 縮小",
   "shortcutZoomReset": "地圖：預設縮放",
-  "shortcutSearchSelect": "選擇結果",
-  "shortcutSearchSection": "在結果與我的最愛之間切換",
-  "shortcutSearchPick": "顯示所選地點",
-  "shortcutSearchFavorite": "加入 / 移除我的最愛",
-  "shortcutSearchCancel": "取消搜尋",
+  "shortcutSearchSelect": "在結果或已儲存地點中移動",
+  "shortcutSearchSection": "在結果與已儲存地點之間切換",
+  "shortcutSearchPick": "使用結果，或切換到已儲存地點",
+  "shortcutSearchAdd": "在已儲存地點中（Tab）：加入標記的結果",
+  "shortcutSearchCancel": "關閉搜尋",
   "shortcutSettingsPages": "上一個 / 下一個設定頁面",
   "shortcutSettingsClose": "關閉設定",
   "mouseLeft": "左鍵點按",
@@ -2851,22 +2865,22 @@ addCatalogEntries("zh_TW", {
   "barPositionHint": "在 Omarchy 列中移動小工具。",
   "barPositionMissing": "小工具不在列中。",
   "showAlways": "永遠",
-  "showOnHover": "滑過時",
-  "menubarHoverHint": "設為「滑過時」的項目會在指標停留於列中天氣上時顯示。",
+  "showOnHover": "懸停",
+  "menubarHoverHint": "設為「懸停」的項目會在指標停留於列中天氣上時顯示。",
   "barBehavior": "行為",
-  "openWidgetOnHover": "滑過時開啟小工具",
+  "openWidgetOnHover": "懸停時開啟小工具",
   "openWidgetOnHoverHint": "指標停留於列中天氣上時開啟小工具，移開後關閉。按一下可保持開啟。",
   "rainIntensity": "降雨強度",
-  "showWhenRelevant": "重要時",
-  "menubarRelevantCurrentHint": "「重要時」只在數值突出時顯示：體感與氣溫相差 3°、風速從 20 km/h 起、紫外線從 6 起。",
-  "menubarRelevantRainHint": "「重要時」：機率從 30 % 起、下雨時顯示強度、兩小時內的降雨開始時間。降雨開始時間與強度會取代機率。",
-  "menubarRelevantAirHint": "「重要時」：空氣品質從「差」起、花粉為高濃度。",
+  "showWhenRelevant": "相關時",
+  "menubarRelevantCurrentHint": "「相關時」只在數值突出時顯示：體感與氣溫相差 3°、風速從 20 km/h 起、紫外線從 6 起。",
+  "menubarRelevantRainHint": "「相關時」：機率從 30 % 起、下雨時顯示強度、兩小時內的降雨開始時間。降雨開始時間與強度會取代機率。",
+  "menubarRelevantAirHint": "「相關時」：空氣品質從「差」起、花粉為高濃度。",
   "kelvinUnits": "克耳文",
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "滑過時改用其他單位",
   "hoverUnitSystemOff": "關閉",
   "hoverUnitSystemHint": "指標停留於小工具上時，列中切換為此單位制。克耳文只影響溫度。",
-  "restoreOrder": "還原順序",
+  "restoreOrder": "重設順序",
   "sunNext": "下一次日出／日落",
   "sunrise": "日出",
   "sunset": "日落",
@@ -2883,7 +2897,7 @@ addCatalogEntries("ja", {
   "shortcutsHint": "ウィジェットとアプリで同じキーが使えます。",
   "shortcutsGroupGeneral": "一般",
   "shortcutsGroupNavigation": "スクロール",
-  "shortcutsGroupForecast": "雨・レーダー・風",
+  "shortcutsGroupForecast": "タブと地図",
   "shortcutsGroupSearch": "場所の検索",
   "shortcutsGroupSettings": "設定",
   "shortcutsGroupMouse": "メニューバー",
@@ -2894,18 +2908,18 @@ addCatalogEntries("ja", {
   "shortcutSearch": "場所を検索",
   "shortcutScroll": "スクロール",
   "shortcutPage": "1ページ分スクロール",
-  "shortcutJump": "先頭 / 末尾へ移動",
+  "shortcutJump": "先頭 / 末尾へ",
   "shortcutScrollDaily": "日ごとの予報をスクロール",
   "shortcutViews": "雨 / レーダー / 風 の表示",
   "shortcutRadarStep": "レーダー：前 / 次の画像",
   "shortcutRadarPlay": "レーダー：再生 / 一時停止",
   "shortcutZoom": "地図：拡大 / 縮小",
   "shortcutZoomReset": "地図：既定の縮尺",
-  "shortcutSearchSelect": "結果を選ぶ",
-  "shortcutSearchSection": "結果とお気に入りを切り替え",
-  "shortcutSearchPick": "選んだ場所を表示",
-  "shortcutSearchFavorite": "お気に入りに追加 / 削除",
-  "shortcutSearchCancel": "検索をキャンセル",
+  "shortcutSearchSelect": "結果または保存した場所の中を移動",
+  "shortcutSearchSection": "結果と保存した場所を切り替え",
+  "shortcutSearchPick": "結果を使う、または保存した場所に切り替え",
+  "shortcutSearchAdd": "保存した場所で（Tab）：マークした結果を追加",
+  "shortcutSearchCancel": "検索を閉じる",
   "shortcutSettingsPages": "前 / 次の設定ページ",
   "shortcutSettingsClose": "設定を閉じる",
   "mouseLeft": "左クリック",
@@ -2959,22 +2973,22 @@ addCatalogEntries("ja", {
   "barPositionHint": "Omarchy のバー内でウィジェットを移動します。",
   "barPositionMissing": "ウィジェットはバーにありません。",
   "showAlways": "常に",
-  "showOnHover": "ホバー時",
-  "menubarHoverHint": "「ホバー時」の項目は、ポインターがバーの天気の上にある間だけ表示されます。",
+  "showOnHover": "ホバー",
+  "menubarHoverHint": "「ホバー」の項目は、ポインターがバーの天気の上にある間だけ表示されます。",
   "barBehavior": "動作",
   "openWidgetOnHover": "ホバーでウィジェットを開く",
   "openWidgetOnHoverHint": "ポインターがバーの天気の上に留まるとウィジェットを開き、離れると閉じます。クリックすると開いたままになります。",
   "rainIntensity": "雨の強さ",
-  "showWhenRelevant": "目立つとき",
-  "menubarRelevantCurrentHint": "「目立つとき」は値が目立つ場合だけ表示します。体感が気温と3°違う、風速20 km/h以上、UV6以上。",
-  "menubarRelevantRainHint": "「目立つとき」: 降水確率30 %以上、雨の間は強さ、2時間以内の降り出し。降り出しと強さは確率の場所を使います。",
-  "menubarRelevantAirHint": "「目立つとき」: 大気質が「悪い」以上、花粉が多いとき。",
+  "showWhenRelevant": "関連時",
+  "menubarRelevantCurrentHint": "「関連時」は値が目立つ場合だけ表示します。体感が気温と3°違う、風速20 km/h以上、UV6以上。",
+  "menubarRelevantRainHint": "「関連時」: 降水確率30 %以上、雨の間は強さ、2時間以内の降り出し。降り出しと強さは確率の場所を使います。",
+  "menubarRelevantAirHint": "「関連時」: 大気質が「悪い」以上、花粉が多いとき。",
   "kelvinUnits": "ケルビン",
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "ホバー時は別の単位",
   "hoverUnitSystemOff": "オフ",
   "hoverUnitSystemHint": "ポインターがウィジェットの上にある間、バーはこの単位系に切り替わります。ケルビンは気温だけに効きます。",
-  "restoreOrder": "並び順を戻す",
+  "restoreOrder": "順序をリセット",
   "sunNext": "次の日の出・日の入り",
   "sunrise": "日の出",
   "sunset": "日の入り",
@@ -2991,10 +3005,10 @@ addCatalogEntries("ko", {
   "shortcutsHint": "위젯과 앱에서 같은 키를 사용할 수 있습니다.",
   "shortcutsGroupGeneral": "일반",
   "shortcutsGroupNavigation": "스크롤",
-  "shortcutsGroupForecast": "비, 레이더, 바람",
+  "shortcutsGroupForecast": "탭 및 지도",
   "shortcutsGroupSearch": "장소 검색",
   "shortcutsGroupSettings": "설정",
-  "shortcutsGroupMouse": "메뉴 막대",
+  "shortcutsGroupMouse": "메뉴 모음",
   "shortcutClose": "검색, 설정 또는 목록을 닫고, 다음에 패널 닫기",
   "shortcutSwitchPanel": "막대의 다음 / 이전 패널(위젯)",
   "shortcutSettings": "설정 열기",
@@ -3002,18 +3016,18 @@ addCatalogEntries("ko", {
   "shortcutSearch": "장소 검색",
   "shortcutScroll": "스크롤",
   "shortcutPage": "한 페이지씩 스크롤",
-  "shortcutJump": "처음 / 끝으로 이동",
+  "shortcutJump": "맨 위 / 맨 아래로",
   "shortcutScrollDaily": "일별 예보 스크롤",
   "shortcutViews": "비 / 레이더 / 바람 보기",
   "shortcutRadarStep": "레이더: 이전 / 다음 이미지",
   "shortcutRadarPlay": "레이더: 재생 / 일시 정지",
   "shortcutZoom": "지도: 확대 / 축소",
   "shortcutZoomReset": "지도: 기본 배율",
-  "shortcutSearchSelect": "결과 선택",
-  "shortcutSearchSection": "결과와 즐겨찾기 사이 전환",
-  "shortcutSearchPick": "선택한 장소 보기",
-  "shortcutSearchFavorite": "즐겨찾기 추가 / 삭제",
-  "shortcutSearchCancel": "검색 취소",
+  "shortcutSearchSelect": "결과 또는 저장한 장소 안에서 이동",
+  "shortcutSearchSection": "결과와 저장한 장소 사이 전환",
+  "shortcutSearchPick": "결과 사용 또는 저장한 장소로 전환",
+  "shortcutSearchAdd": "저장한 장소에서(Tab): 표시한 결과 추가",
+  "shortcutSearchCancel": "검색 닫기",
   "shortcutSettingsPages": "이전 / 다음 설정 페이지",
   "shortcutSettingsClose": "설정 닫기",
   "mouseLeft": "왼쪽 클릭",
@@ -3067,22 +3081,22 @@ addCatalogEntries("ko", {
   "barPositionHint": "Omarchy 막대 안에서 위젯을 옮깁니다.",
   "barPositionMissing": "위젯이 막대에 없습니다.",
   "showAlways": "항상",
-  "showOnHover": "마우스를 올리면",
-  "menubarHoverHint": "‘마우스를 올리면’ 항목은 포인터가 막대의 날씨 위에 있는 동안 표시됩니다.",
+  "showOnHover": "마우스 오버",
+  "menubarHoverHint": "‘마우스 오버’ 항목은 포인터가 막대의 날씨 위에 있는 동안 표시됩니다.",
   "barBehavior": "동작",
-  "openWidgetOnHover": "마우스를 올리면 위젯 열기",
+  "openWidgetOnHover": "마우스 오버 시 위젯 열기",
   "openWidgetOnHoverHint": "포인터가 막대의 날씨 위에 머무르면 위젯을 열고, 벗어나면 닫습니다. 클릭하면 열린 상태로 유지됩니다.",
   "rainIntensity": "강우 강도",
-  "showWhenRelevant": "눈에 띌 때",
-  "menubarRelevantCurrentHint": "‘눈에 띌 때’는 값이 두드러질 때만 표시합니다. 체감이 기온과 3° 차이, 바람 20 km/h 이상, 자외선 6 이상.",
-  "menubarRelevantRainHint": "‘눈에 띌 때’: 확률 30 % 이상, 비가 오는 동안 강도, 두 시간 이내 강우 시작. 강우 시작과 강도가 확률 자리를 차지합니다.",
-  "menubarRelevantAirHint": "‘눈에 띌 때’: 대기질 ‘나쁨’ 이상, 꽃가루 높음.",
+  "showWhenRelevant": "관련 시",
+  "menubarRelevantCurrentHint": "‘관련 시’는 값이 두드러질 때만 표시합니다. 체감이 기온과 3° 차이, 바람 20 km/h 이상, 자외선 6 이상.",
+  "menubarRelevantRainHint": "‘관련 시’: 확률 30 % 이상, 비가 오는 동안 강도, 두 시간 이내 강우 시작. 강우 시작과 강도가 확률 자리를 차지합니다.",
+  "menubarRelevantAirHint": "‘관련 시’: 대기질 ‘나쁨’ 이상, 꽃가루 높음.",
   "kelvinUnits": "켈빈",
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "마우스를 올리면 다른 단위",
   "hoverUnitSystemOff": "끔",
   "hoverUnitSystemHint": "포인터가 위젯 위에 있는 동안 막대가 이 단위계로 바뀝니다. 켈빈은 기온에만 적용됩니다.",
-  "restoreOrder": "순서 되돌리기",
+  "restoreOrder": "순서 초기화",
   "sunNext": "다음 일출·일몰",
   "sunrise": "일출",
   "sunset": "일몰",
@@ -3099,7 +3113,7 @@ addCatalogEntries("ar", {
   "shortcutsHint": "تعمل المفاتيح نفسها في الأداة وفي التطبيق.",
   "shortcutsGroupGeneral": "عام",
   "shortcutsGroupNavigation": "التمرير",
-  "shortcutsGroupForecast": "المطر والرادار والرياح",
+  "shortcutsGroupForecast": "علامات التبويب والخرائط",
   "shortcutsGroupSearch": "البحث عن مكان",
   "shortcutsGroupSettings": "الإعدادات",
   "shortcutsGroupMouse": "شريط القوائم",
@@ -3110,18 +3124,18 @@ addCatalogEntries("ar", {
   "shortcutSearch": "البحث عن مكان",
   "shortcutScroll": "تمرير",
   "shortcutPage": "تمرير صفحة",
-  "shortcutJump": "الانتقال إلى البداية / النهاية",
+  "shortcutJump": "إلى الأعلى / الأسفل",
   "shortcutScrollDaily": "تمرير التوقعات اليومية",
   "shortcutViews": "عرض المطر / الرادار / الرياح",
   "shortcutRadarStep": "الرادار: الصورة السابقة / التالية",
   "shortcutRadarPlay": "الرادار: تشغيل / إيقاف مؤقت",
   "shortcutZoom": "الخريطة: تكبير / تصغير",
   "shortcutZoomReset": "الخريطة: التكبير الافتراضي",
-  "shortcutSearchSelect": "اختيار نتيجة",
-  "shortcutSearchSection": "التبديل بين النتائج والمفضلة",
-  "shortcutSearchPick": "عرض المكان المختار",
-  "shortcutSearchFavorite": "إضافة إلى المفضلة / إزالة منها",
-  "shortcutSearchCancel": "إلغاء البحث",
+  "shortcutSearchSelect": "التنقل في النتائج أو الأماكن المحفوظة",
+  "shortcutSearchSection": "التبديل بين النتائج والأماكن المحفوظة",
+  "shortcutSearchPick": "استخدام النتيجة أو الانتقال إلى المكان المحفوظ",
+  "shortcutSearchAdd": "في الأماكن المحفوظة (Tab): إضافة النتيجة المحددة",
+  "shortcutSearchCancel": "إغلاق البحث",
   "shortcutSettingsPages": "صفحة الإعدادات السابقة / التالية",
   "shortcutSettingsClose": "إغلاق الإعدادات",
   "mouseLeft": "نقرة يسرى",
@@ -3190,7 +3204,7 @@ addCatalogEntries("ar", {
   "hoverUnitSystem": "وحدات أخرى عند التمرير",
   "hoverUnitSystemOff": "معطّل",
   "hoverUnitSystemHint": "ما دام المؤشر فوق الأداة، يتحول الشريط إلى نظام الوحدات هذا. كلفن يغيّر درجات الحرارة فقط.",
-  "restoreOrder": "استعادة الترتيب",
+  "restoreOrder": "إعادة ضبط الترتيب",
   "sunNext": "الحدث الشمسي التالي",
   "sunrise": "الشروق",
   "sunset": "الغروب",
@@ -3207,7 +3221,7 @@ addCatalogEntries("he", {
   "shortcutsHint": "אותם מקשים פועלים ביישומון וביישום.",
   "shortcutsGroupGeneral": "כללי",
   "shortcutsGroupNavigation": "גלילה",
-  "shortcutsGroupForecast": "גשם, מכ״ם ורוח",
+  "shortcutsGroupForecast": "לשוניות ומפות",
   "shortcutsGroupSearch": "חיפוש מקום",
   "shortcutsGroupSettings": "הגדרות",
   "shortcutsGroupMouse": "שורת תפריטים",
@@ -3218,18 +3232,18 @@ addCatalogEntries("he", {
   "shortcutSearch": "חיפוש מקום",
   "shortcutScroll": "גלילה",
   "shortcutPage": "גלילה בעמוד",
-  "shortcutJump": "מעבר להתחלה / לסוף",
+  "shortcutJump": "להתחלה / לסוף",
   "shortcutScrollDaily": "גלילת התחזית היומית",
   "shortcutViews": "תצוגת גשם / מכ״ם / רוח",
   "shortcutRadarStep": "מכ״ם: תמונה קודמת / הבאה",
   "shortcutRadarPlay": "מכ״ם: הפעלה / השהיה",
   "shortcutZoom": "מפה: התקרבות / התרחקות",
   "shortcutZoomReset": "מפה: זום ברירת מחדל",
-  "shortcutSearchSelect": "בחירת תוצאה",
-  "shortcutSearchSection": "מעבר בין תוצאות למועדפים",
-  "shortcutSearchPick": "הצגת המקום שנבחר",
-  "shortcutSearchFavorite": "הוספה / הסרה של מועדף",
-  "shortcutSearchCancel": "ביטול החיפוש",
+  "shortcutSearchSelect": "תנועה בתוצאות או במקומות השמורים",
+  "shortcutSearchSection": "מעבר בין תוצאות למקומות שמורים",
+  "shortcutSearchPick": "שימוש בתוצאה או מעבר למקום השמור",
+  "shortcutSearchAdd": "במקומות השמורים (Tab): הוספת התוצאה המסומנת",
+  "shortcutSearchCancel": "סגירת החיפוש",
   "shortcutSettingsPages": "עמוד הגדרות קודם / הבא",
   "shortcutSettingsClose": "סגירת ההגדרות",
   "mouseLeft": "לחיצה שמאלית",
@@ -3283,22 +3297,22 @@ addCatalogEntries("he", {
   "barPositionHint": "מעביר את היישומון בתוך הסרגל של Omarchy.",
   "barPositionMissing": "היישומון אינו בסרגל.",
   "showAlways": "תמיד",
-  "showOnHover": "במעבר עכבר",
-  "menubarHoverHint": "פריטים שהוגדרו „במעבר עכבר” מופיעים כל עוד הסמן נמצא מעל מזג האוויר בסרגל.",
+  "showOnHover": "ריחוף",
+  "menubarHoverHint": "פריטים שהוגדרו „ריחוף” מופיעים כל עוד הסמן נמצא מעל מזג האוויר בסרגל.",
   "barBehavior": "התנהגות",
-  "openWidgetOnHover": "פתיחת היישומון במעבר עכבר",
+  "openWidgetOnHover": "פתיחת היישומון בריחוף",
   "openWidgetOnHoverHint": "פותח את היישומון כשהסמן נח מעל מזג האוויר בסרגל וסוגר אותו כשהוא מתרחק. לחיצה משאירה אותו פתוח.",
   "rainIntensity": "עוצמת הגשם",
-  "showWhenRelevant": "כשזה בולט",
-  "menubarRelevantCurrentHint": "„כשזה בולט” מציג פריט רק כשהוא בולט: תחושה במרחק 3° מהטמפרטורה, רוח מ‑20 קמ״ש, UV מ‑6.",
-  "menubarRelevantRainHint": "„כשזה בולט”: סיכוי מ‑30 %, עוצמה כל עוד יורד גשם, תחילת גשם בתוך שעתיים. תחילת הגשם והעוצמה תופסות את מקום הסיכוי.",
-  "menubarRelevantAirHint": "„כשזה בולט”: איכות אוויר מ„גרועה”, אבקנים ברמה גבוהה.",
+  "showWhenRelevant": "רלוונטי",
+  "menubarRelevantCurrentHint": "„רלוונטי” מציג פריט רק כשהוא בולט: תחושה במרחק 3° מהטמפרטורה, רוח מ‑20 קמ״ש, UV מ‑6.",
+  "menubarRelevantRainHint": "„רלוונטי”: סיכוי מ‑30 %, עוצמה כל עוד יורד גשם, תחילת גשם בתוך שעתיים. תחילת הגשם והעוצמה תופסות את מקום הסיכוי.",
+  "menubarRelevantAirHint": "„רלוונטי”: איכות אוויר מ„גרועה”, אבקנים ברמה גבוהה.",
   "kelvinUnits": "קלווין",
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "יחידות אחרות במעבר עכבר",
   "hoverUnitSystemOff": "כבוי",
   "hoverUnitSystemHint": "כל עוד הסמן נח על היישומון, הסרגל עובר למערכת היחידות הזו. קלווין משנה רק טמפרטורות.",
-  "restoreOrder": "שחזור הסדר",
+  "restoreOrder": "איפוס סדר",
   "sunNext": "אירוע השמש הבא",
   "sunrise": "זריחה",
   "sunset": "שקיעה",
@@ -3315,7 +3329,7 @@ addCatalogEntries("fa", {
   "shortcutsHint": "همین کلیدها در ویجت و در برنامه کار می‌کنند.",
   "shortcutsGroupGeneral": "عمومی",
   "shortcutsGroupNavigation": "پیمایش",
-  "shortcutsGroupForecast": "باران، رادار و باد",
+  "shortcutsGroupForecast": "زبانه‌ها و نقشه‌ها",
   "shortcutsGroupSearch": "جست‌وجوی مکان",
   "shortcutsGroupSettings": "تنظیمات",
   "shortcutsGroupMouse": "نوار منو",
@@ -3326,18 +3340,18 @@ addCatalogEntries("fa", {
   "shortcutSearch": "جست‌وجوی مکان",
   "shortcutScroll": "پیمایش",
   "shortcutPage": "پیمایش یک صفحه",
-  "shortcutJump": "رفتن به ابتدا / انتها",
+  "shortcutJump": "به ابتدا / انتها",
   "shortcutScrollDaily": "پیمایش پیش‌بینی روزانه",
   "shortcutViews": "نمای باران / رادار / باد",
   "shortcutRadarStep": "رادار: تصویر قبلی / بعدی",
   "shortcutRadarPlay": "رادار: پخش / مکث",
   "shortcutZoom": "نقشه: بزرگ‌نمایی / کوچک‌نمایی",
   "shortcutZoomReset": "نقشه: بزرگ‌نمایی پیش‌فرض",
-  "shortcutSearchSelect": "انتخاب نتیجه",
-  "shortcutSearchSection": "جابه‌جایی میان نتایج و برگزیده‌ها",
-  "shortcutSearchPick": "نمایش مکان انتخاب‌شده",
-  "shortcutSearchFavorite": "افزودن / حذف برگزیده",
-  "shortcutSearchCancel": "لغو جست‌وجو",
+  "shortcutSearchSelect": "حرکت در نتایج یا مکان‌های ذخیره‌شده",
+  "shortcutSearchSection": "جابه‌جایی میان نتایج و مکان‌های ذخیره‌شده",
+  "shortcutSearchPick": "استفاده از نتیجه یا رفتن به مکان ذخیره‌شده",
+  "shortcutSearchAdd": "در مکان‌های ذخیره‌شده (Tab): افزودن نتیجهٔ علامت‌خورده",
+  "shortcutSearchCancel": "بستن جست‌وجو",
   "shortcutSettingsPages": "صفحهٔ تنظیمات قبلی / بعدی",
   "shortcutSettingsClose": "بستن تنظیمات",
   "mouseLeft": "کلیک چپ",
@@ -3391,10 +3405,10 @@ addCatalogEntries("fa", {
   "barPositionHint": "ویجت را درون نوار Omarchy جابه‌جا می‌کند.",
   "barPositionMissing": "ویجت در نوار نیست.",
   "showAlways": "همیشه",
-  "showOnHover": "هنگام نگه‌داشتن نشانگر",
-  "menubarHoverHint": "موارد «هنگام نگه‌داشتن نشانگر» تا وقتی نشانگر روی آب‌وهوای نوار است نمایش داده می‌شوند.",
+  "showOnHover": "هنگام اشاره",
+  "menubarHoverHint": "موارد «هنگام اشاره» تا وقتی نشانگر روی آب‌وهوای نوار است نمایش داده می‌شوند.",
   "barBehavior": "رفتار",
-  "openWidgetOnHover": "باز کردن ویجت با نگه‌داشتن نشانگر",
+  "openWidgetOnHover": "باز کردن ویجت هنگام اشاره",
   "openWidgetOnHoverHint": "وقتی نشانگر روی آب‌وهوای نوار بماند ویجت را باز می‌کند و با دور شدن آن را می‌بندد. با کلیک باز می‌ماند.",
   "rainIntensity": "شدت باران",
   "showWhenRelevant": "هنگام اهمیت",
@@ -3406,7 +3420,7 @@ addCatalogEntries("fa", {
   "hoverUnitSystem": "واحدهای دیگر هنگام نگه‌داشتن نشانگر",
   "hoverUnitSystemOff": "خاموش",
   "hoverUnitSystemHint": "تا وقتی نشانگر روی ویجت بماند، نوار به این نظام واحدها تغییر می‌کند. کلوین فقط دما را تغییر می‌دهد.",
-  "restoreOrder": "بازگرداندن ترتیب",
+  "restoreOrder": "بازنشانی ترتیب",
   "sunNext": "رویداد بعدی خورشید",
   "sunrise": "طلوع آفتاب",
   "sunset": "غروب آفتاب",
@@ -3423,7 +3437,7 @@ addCatalogEntries("hi", {
   "shortcutsHint": "विजेट और ऐप में वही कुंजियाँ काम करती हैं।",
   "shortcutsGroupGeneral": "सामान्य",
   "shortcutsGroupNavigation": "स्क्रॉल",
-  "shortcutsGroupForecast": "बारिश, रडार और हवा",
+  "shortcutsGroupForecast": "टैब और मानचित्र",
   "shortcutsGroupSearch": "स्थान खोज",
   "shortcutsGroupSettings": "सेटिंग्स",
   "shortcutsGroupMouse": "मेन्यू बार",
@@ -3434,18 +3448,18 @@ addCatalogEntries("hi", {
   "shortcutSearch": "स्थान खोजें",
   "shortcutScroll": "स्क्रॉल करें",
   "shortcutPage": "एक पेज स्क्रॉल करें",
-  "shortcutJump": "शुरुआत / अंत पर जाएँ",
+  "shortcutJump": "ऊपर / नीचे तक",
   "shortcutScrollDaily": "दैनिक पूर्वानुमान स्क्रॉल करें",
   "shortcutViews": "बारिश / रडार / हवा दृश्य",
   "shortcutRadarStep": "रडार: पिछली / अगली छवि",
   "shortcutRadarPlay": "रडार: चलाएँ / रोकें",
   "shortcutZoom": "मानचित्र: ज़ूम इन / आउट",
   "shortcutZoomReset": "मानचित्र: डिफ़ॉल्ट ज़ूम",
-  "shortcutSearchSelect": "परिणाम चुनें",
-  "shortcutSearchSection": "परिणामों और पसंदीदा के बीच बदलें",
-  "shortcutSearchPick": "चुना गया स्थान दिखाएँ",
-  "shortcutSearchFavorite": "पसंदीदा जोड़ें / हटाएँ",
-  "shortcutSearchCancel": "खोज रद्द करें",
+  "shortcutSearchSelect": "परिणामों या सहेजी गई जगहों में चलें",
+  "shortcutSearchSection": "परिणामों और सहेजी गई जगहों के बीच बदलें",
+  "shortcutSearchPick": "परिणाम इस्तेमाल करें या सहेजी गई जगह पर जाएँ",
+  "shortcutSearchAdd": "सहेजी गई जगहों में (Tab): चिह्नित परिणाम जोड़ें",
+  "shortcutSearchCancel": "खोज बंद करें",
   "shortcutSettingsPages": "पिछला / अगला सेटिंग्स पेज",
   "shortcutSettingsClose": "सेटिंग्स बंद करें",
   "mouseLeft": "बायाँ क्लिक",
@@ -3499,22 +3513,22 @@ addCatalogEntries("hi", {
   "barPositionHint": "विजेट को Omarchy बार के भीतर खिसकाता है।",
   "barPositionMissing": "विजेट बार में नहीं है।",
   "showAlways": "हमेशा",
-  "showOnHover": "होवर करने पर",
-  "menubarHoverHint": "“होवर करने पर” वाली प्रविष्टियाँ तब दिखती हैं जब पॉइंटर बार में मौसम पर हो।",
+  "showOnHover": "होवर",
+  "menubarHoverHint": "“होवर” वाली प्रविष्टियाँ तब दिखती हैं जब पॉइंटर बार में मौसम पर हो।",
   "barBehavior": "व्यवहार",
-  "openWidgetOnHover": "होवर करने पर विजेट खोलें",
+  "openWidgetOnHover": "होवर पर विजेट खोलें",
   "openWidgetOnHoverHint": "पॉइंटर बार में मौसम पर रुकने पर विजेट खोलता है और हटने पर बंद करता है। क्लिक करने से यह खुला रहता है।",
   "rainIntensity": "बारिश की तीव्रता",
-  "showWhenRelevant": "जब अहम हो",
-  "menubarRelevantCurrentHint": "“जब अहम हो” किसी प्रविष्टि को तभी दिखाता है जब वह अलग दिखे: महसूस तापमान 3° का अंतर, हवा 20 किमी/घंटा से, UV 6 से।",
-  "menubarRelevantRainHint": "“जब अहम हो”: संभावना 30 % से, बारिश के दौरान तीव्रता, दो घंटे के भीतर बारिश की शुरुआत। बारिश की शुरुआत और तीव्रता संभावना की जगह लेती हैं।",
-  "menubarRelevantAirHint": "“जब अहम हो”: वायु गुणवत्ता “खराब” से, पराग उच्च स्तर पर।",
+  "showWhenRelevant": "प्रासंगिक",
+  "menubarRelevantCurrentHint": "“प्रासंगिक” किसी प्रविष्टि को तभी दिखाता है जब वह अलग दिखे: महसूस तापमान 3° का अंतर, हवा 20 किमी/घंटा से, UV 6 से।",
+  "menubarRelevantRainHint": "“प्रासंगिक”: संभावना 30 % से, बारिश के दौरान तीव्रता, दो घंटे के भीतर बारिश की शुरुआत। बारिश की शुरुआत और तीव्रता संभावना की जगह लेती हैं।",
+  "menubarRelevantAirHint": "“प्रासंगिक”: वायु गुणवत्ता “खराब” से, पराग उच्च स्तर पर।",
   "kelvinUnits": "केल्विन",
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "होवर करने पर दूसरी इकाइयाँ",
   "hoverUnitSystemOff": "बंद",
   "hoverUnitSystemHint": "जब तक पॉइंटर विजेट पर रहता है, बार इस इकाई प्रणाली में बदल जाता है। केल्विन केवल तापमान बदलता है।",
-  "restoreOrder": "क्रम पुनर्स्थापित करें",
+  "restoreOrder": "क्रम रीसेट करें",
   "sunNext": "अगली सूर्य घटना",
   "sunrise": "सूर्योदय",
   "sunset": "सूर्यास्त",
@@ -3529,12 +3543,12 @@ addCatalogEntries("id", {
   "shortcutsSubtitle": "Papan ketik dan tetikus",
   "sourcesSubtitle": "Asal data",
   "shortcutsHint": "Tombol yang sama berfungsi di widget dan di aplikasi.",
-  "shortcutsGroupGeneral": "UMUM",
-  "shortcutsGroupNavigation": "GULIR",
-  "shortcutsGroupForecast": "HUJAN, RADAR, DAN ANGIN",
-  "shortcutsGroupSearch": "PENCARIAN TEMPAT",
-  "shortcutsGroupSettings": "PENGATURAN",
-  "shortcutsGroupMouse": "BILAH MENU",
+  "shortcutsGroupGeneral": "Umum",
+  "shortcutsGroupNavigation": "Gulir",
+  "shortcutsGroupForecast": "Tab & peta",
+  "shortcutsGroupSearch": "Pencarian tempat",
+  "shortcutsGroupSettings": "Pengaturan",
+  "shortcutsGroupMouse": "Bilah menu",
   "shortcutClose": "Tutup pencarian, pengaturan, atau daftar, lalu panel",
   "shortcutSwitchPanel": "Panel bilah berikutnya / sebelumnya (widget)",
   "shortcutSettings": "Buka pengaturan",
@@ -3542,18 +3556,18 @@ addCatalogEntries("id", {
   "shortcutSearch": "Cari tempat",
   "shortcutScroll": "Gulir",
   "shortcutPage": "Gulir satu halaman",
-  "shortcutJump": "Ke awal / akhir",
+  "shortcutJump": "Ke atas / bawah",
   "shortcutScrollDaily": "Gulir prakiraan harian",
   "shortcutViews": "Tampilan hujan / radar / angin",
   "shortcutRadarStep": "Radar: gambar sebelumnya / berikutnya",
   "shortcutRadarPlay": "Radar: putar / jeda",
   "shortcutZoom": "Peta: perbesar / perkecil",
   "shortcutZoomReset": "Peta: zoom bawaan",
-  "shortcutSearchSelect": "Pilih hasil",
-  "shortcutSearchSection": "Beralih antara hasil dan favorit",
-  "shortcutSearchPick": "Tampilkan tempat yang dipilih",
-  "shortcutSearchFavorite": "Tambah / hapus favorit",
-  "shortcutSearchCancel": "Batalkan pencarian",
+  "shortcutSearchSelect": "Bergerak di hasil atau tempat tersimpan",
+  "shortcutSearchSection": "Beralih antara hasil dan tempat tersimpan",
+  "shortcutSearchPick": "Gunakan hasil, atau beralih ke tempat tersimpan",
+  "shortcutSearchAdd": "Di tempat tersimpan (Tab): tambahkan hasil yang ditandai",
+  "shortcutSearchCancel": "Tutup pencarian",
   "shortcutSettingsPages": "Halaman pengaturan sebelumnya / berikutnya",
   "shortcutSettingsClose": "Tutup pengaturan",
   "mouseLeft": "Klik kiri",
@@ -3563,11 +3577,11 @@ addCatalogEntries("id", {
   "shortcutMouseRefresh": "Segarkan sekarang",
   "shortcutMouseNotify": "Cuaca sebagai notifikasi",
   "sourcesHint": "Sumber dipilih per tempat; jika satu gagal, sumber berikutnya otomatis mengambil alih.",
-  "sourceInUse": "DIGUNAKAN",
-  "sourceNotInUse": "tidak digunakan",
+  "sourceInUse": "Dipakai",
+  "sourceNotInUse": "Tidak dipakai",
   "sourceGroupForecast": "Cuaca saat ini dan prakiraan",
   "sourceGroupForecastDetails": "Open-Meteo Best Match (model nasional terbaik per wilayah), dengan MET Norway sebagai cadangan. Di Norwegia, Swedia, Finlandia, dan Denmark MET Norway didahulukan, didukung model MET Nordic 1 km miliknya. Di wilayah DWD, DWD MOSMIX (melalui Bright Sky) menyempurnakan suhu, hujan, dan simbol.",
-  "sourceCoverage": "CAKUPAN",
+  "sourceCoverage": "Cakupan",
   "sourceGroupForecastCoverage": "Seluruh dunia. MET Norway didahulukan di NO, SE, FI, DK. DWD MOSMIX hanya di wilayah DWD (sekitar 46,5–55,5° LU, 5–16° BT, juga di luar Jerman).",
   "sourceGroupUvCoverage": "Seluruh dunia.",
   "sourceGroupNowcastCoverage": "Seluruh dunia. Nilai hujan MOSMIX dan jumlah dari radar DWD hanya di wilayah DWD.",
@@ -3596,7 +3610,7 @@ addCatalogEntries("id", {
   "sourceGroupMapDetails": "Latar satelit: DWD GeoServer Blue Marble. Nama kota: OpenStreetMap melalui API Overpass, disimpan selama 30 hari.",
   "sourceGroupMoon": "Fase bulan",
   "sourceGroupMoonDetails": "Dihitung secara lokal (Meeus); dicerminkan untuk tempat di selatan khatulistiwa.",
-  "sourceLocalCalculation": "PERHITUNGAN LOKAL",
+  "sourceLocalCalculation": "Perhitungan lokal",
   "sourceRefreshInfo": "Diperbarui setiap {minutes} menit, radar DWD setiap 5 menit, dibagikan antara widget dan aplikasi. Pembaruan terakhir: {updated}.",
   "barPosition": "Posisi di bilah",
   "barPositionLeft": "Kiri",
@@ -3607,22 +3621,22 @@ addCatalogEntries("id", {
   "barPositionHint": "Memindahkan widget di dalam bilah Omarchy.",
   "barPositionMissing": "Widget tidak ada di bilah.",
   "showAlways": "Selalu",
-  "showOnHover": "Saat diarahkan",
-  "menubarHoverHint": "Entri “Saat diarahkan” muncul selama penunjuk berada di atas cuaca pada bilah.",
+  "showOnHover": "Arahkan",
+  "menubarHoverHint": "Entri “Arahkan” muncul selama penunjuk berada di atas cuaca pada bilah.",
   "barBehavior": "Perilaku",
   "openWidgetOnHover": "Buka widget saat diarahkan",
   "openWidgetOnHoverHint": "Membuka widget saat penunjuk berhenti di atas cuaca pada bilah dan menutupnya saat penunjuk menjauh. Klik membuatnya tetap terbuka.",
   "rainIntensity": "Intensitas hujan",
-  "showWhenRelevant": "Saat menonjol",
-  "menubarRelevantCurrentHint": "“Saat menonjol” hanya menampilkan entri bila nilainya menonjol: terasa 3° dari suhu, angin dari 20 km/jam, UV dari 6.",
-  "menubarRelevantRainHint": "“Saat menonjol”: peluang dari 30 %, intensitas selama hujan, awal hujan dalam dua jam. Awal hujan dan intensitas menggantikan peluang.",
-  "menubarRelevantAirHint": "“Saat menonjol”: kualitas udara dari “buruk”, serbuk sari pada tingkat tinggi.",
+  "showWhenRelevant": "Relevan",
+  "menubarRelevantCurrentHint": "“Relevan” hanya menampilkan entri bila nilainya menonjol: terasa 3° dari suhu, angin dari 20 km/jam, UV dari 6.",
+  "menubarRelevantRainHint": "“Relevan”: peluang dari 30 %, intensitas selama hujan, awal hujan dalam dua jam. Awal hujan dan intensitas menggantikan peluang.",
+  "menubarRelevantAirHint": "“Relevan”: kualitas udara dari “buruk”, serbuk sari pada tingkat tinggi.",
   "kelvinUnits": "Kelvin",
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "Satuan lain saat diarahkan",
   "hoverUnitSystemOff": "Mati",
   "hoverUnitSystemHint": "Selama penunjuk berada di atas widget, bilah beralih ke sistem satuan ini. Kelvin hanya mengubah suhu.",
-  "restoreOrder": "Pulihkan urutan",
+  "restoreOrder": "Atur ulang urutan",
   "sunNext": "Peristiwa matahari berikutnya",
   "sunrise": "Matahari terbit",
   "sunset": "Matahari terbenam",
@@ -3637,12 +3651,12 @@ addCatalogEntries("vi", {
   "shortcutsSubtitle": "Bàn phím và chuột",
   "sourcesSubtitle": "Dữ liệu đến từ đâu",
   "shortcutsHint": "Cùng các phím này hoạt động trong tiện ích và trong ứng dụng.",
-  "shortcutsGroupGeneral": "CHUNG",
-  "shortcutsGroupNavigation": "CUỘN",
-  "shortcutsGroupForecast": "MƯA, RADAR VÀ GIÓ",
-  "shortcutsGroupSearch": "TÌM ĐỊA ĐIỂM",
-  "shortcutsGroupSettings": "CÀI ĐẶT",
-  "shortcutsGroupMouse": "THANH MENU",
+  "shortcutsGroupGeneral": "Chung",
+  "shortcutsGroupNavigation": "Cuộn",
+  "shortcutsGroupForecast": "Thẻ & bản đồ",
+  "shortcutsGroupSearch": "Tìm địa điểm",
+  "shortcutsGroupSettings": "Cài đặt",
+  "shortcutsGroupMouse": "Thanh menu",
   "shortcutClose": "Đóng tìm kiếm, cài đặt hoặc danh sách, sau đó đóng bảng",
   "shortcutSwitchPanel": "Bảng tiếp theo / trước đó trên thanh (tiện ích)",
   "shortcutSettings": "Mở cài đặt",
@@ -3650,18 +3664,18 @@ addCatalogEntries("vi", {
   "shortcutSearch": "Tìm địa điểm",
   "shortcutScroll": "Cuộn",
   "shortcutPage": "Cuộn một trang",
-  "shortcutJump": "Về đầu / cuối",
+  "shortcutJump": "Lên đầu / xuống cuối",
   "shortcutScrollDaily": "Cuộn dự báo theo ngày",
   "shortcutViews": "Chế độ xem mưa / radar / gió",
   "shortcutRadarStep": "Radar: ảnh trước / sau",
   "shortcutRadarPlay": "Radar: phát / tạm dừng",
   "shortcutZoom": "Bản đồ: phóng to / thu nhỏ",
   "shortcutZoomReset": "Bản đồ: mức thu phóng mặc định",
-  "shortcutSearchSelect": "Chọn kết quả",
-  "shortcutSearchSection": "Chuyển giữa kết quả và mục yêu thích",
-  "shortcutSearchPick": "Hiển thị địa điểm đã chọn",
-  "shortcutSearchFavorite": "Thêm / xóa mục yêu thích",
-  "shortcutSearchCancel": "Hủy tìm kiếm",
+  "shortcutSearchSelect": "Di chuyển trong kết quả hoặc địa điểm đã lưu",
+  "shortcutSearchSection": "Chuyển giữa kết quả và địa điểm đã lưu",
+  "shortcutSearchPick": "Dùng kết quả, hoặc chuyển sang địa điểm đã lưu",
+  "shortcutSearchAdd": "Trong địa điểm đã lưu (Tab): thêm kết quả đã đánh dấu",
+  "shortcutSearchCancel": "Đóng tìm kiếm",
   "shortcutSettingsPages": "Trang cài đặt trước / sau",
   "shortcutSettingsClose": "Đóng cài đặt",
   "mouseLeft": "Nhấp chuột trái",
@@ -3671,11 +3685,11 @@ addCatalogEntries("vi", {
   "shortcutMouseRefresh": "Làm mới ngay",
   "shortcutMouseNotify": "Thời tiết dưới dạng thông báo",
   "sourcesHint": "Nguồn được chọn theo từng địa điểm; nếu một nguồn không phản hồi, nguồn tiếp theo tự động thay thế.",
-  "sourceInUse": "ĐANG DÙNG",
-  "sourceNotInUse": "không dùng",
+  "sourceInUse": "Đang dùng",
+  "sourceNotInUse": "Không dùng",
   "sourceGroupForecast": "Thời tiết hiện tại và dự báo",
   "sourceGroupForecastDetails": "Open-Meteo Best Match (mô hình quốc gia tốt nhất cho từng khu vực), dự phòng là MET Norway. Tại Na Uy, Thụy Điển, Phần Lan và Đan Mạch, MET Norway được ưu tiên nhờ mô hình MET Nordic độ phân giải 1 km. Trong vùng DWD, DWD MOSMIX (qua Bright Sky) tinh chỉnh nhiệt độ, mưa và biểu tượng.",
-  "sourceCoverage": "PHẠM VI",
+  "sourceCoverage": "Phạm vi",
   "sourceGroupForecastCoverage": "Toàn cầu. MET Norway được ưu tiên ở NO, SE, FI, DK. DWD MOSMIX chỉ trong vùng DWD (khoảng 46,5–55,5° B, 5–16° Đ, cả ngoài nước Đức).",
   "sourceGroupUvCoverage": "Toàn cầu.",
   "sourceGroupNowcastCoverage": "Toàn cầu. Giá trị mưa MOSMIX và lượng mưa từ radar DWD chỉ trong vùng DWD.",
@@ -3704,7 +3718,7 @@ addCatalogEntries("vi", {
   "sourceGroupMapDetails": "Nền vệ tinh: DWD GeoServer Blue Marble. Tên thành phố: OpenStreetMap qua API Overpass, lưu đệm 30 ngày.",
   "sourceGroupMoon": "Tuần trăng",
   "sourceGroupMoonDetails": "Tính cục bộ (Meeus); lật gương cho địa điểm ở phía nam xích đạo.",
-  "sourceLocalCalculation": "TÍNH CỤC BỘ",
+  "sourceLocalCalculation": "Tính cục bộ",
   "sourceRefreshInfo": "Làm mới mỗi {minutes} phút, radar DWD mỗi 5 phút, dùng chung cho tiện ích và ứng dụng. Cập nhật lần cuối: {updated}.",
   "barPosition": "Vị trí trên thanh",
   "barPositionLeft": "Trái",
@@ -3715,22 +3729,22 @@ addCatalogEntries("vi", {
   "barPositionHint": "Di chuyển tiện ích trong thanh Omarchy.",
   "barPositionMissing": "Tiện ích không có trên thanh.",
   "showAlways": "Luôn luôn",
-  "showOnHover": "Khi rê chuột",
-  "menubarHoverHint": "Các mục “Khi rê chuột” hiện ra khi con trỏ nằm trên thời tiết ở thanh.",
+  "showOnHover": "Rê chuột",
+  "menubarHoverHint": "Các mục “Rê chuột” hiện ra khi con trỏ nằm trên thời tiết ở thanh.",
   "barBehavior": "Hành vi",
   "openWidgetOnHover": "Mở tiện ích khi rê chuột",
   "openWidgetOnHoverHint": "Mở tiện ích khi con trỏ dừng trên thời tiết ở thanh và đóng lại khi con trỏ rời đi. Nhấp chuột để giữ mở.",
   "rainIntensity": "Cường độ mưa",
-  "showWhenRelevant": "Khi đáng chú ý",
-  "menubarRelevantCurrentHint": "“Khi đáng chú ý” chỉ hiện một mục khi nó nổi bật: cảm giác lệch 3° so với nhiệt độ, gió từ 20 km/h, UV từ 6.",
-  "menubarRelevantRainHint": "“Khi đáng chú ý”: xác suất từ 30 %, cường độ khi đang mưa, thời điểm mưa trong hai giờ tới. Thời điểm mưa và cường độ thay chỗ của xác suất.",
-  "menubarRelevantAirHint": "“Khi đáng chú ý”: chất lượng không khí từ “kém”, phấn hoa ở mức cao.",
+  "showWhenRelevant": "Liên quan",
+  "menubarRelevantCurrentHint": "“Liên quan” chỉ hiện một mục khi nó nổi bật: cảm giác lệch 3° so với nhiệt độ, gió từ 20 km/h, UV từ 6.",
+  "menubarRelevantRainHint": "“Liên quan”: xác suất từ 30 %, cường độ khi đang mưa, thời điểm mưa trong hai giờ tới. Thời điểm mưa và cường độ thay chỗ của xác suất.",
+  "menubarRelevantAirHint": "“Liên quan”: chất lượng không khí từ “kém”, phấn hoa ở mức cao.",
   "kelvinUnits": "Kelvin",
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "Đơn vị khác khi rê chuột",
   "hoverUnitSystemOff": "Tắt",
   "hoverUnitSystemHint": "Khi con trỏ còn trên tiện ích, thanh chuyển sang hệ đơn vị này. Kelvin chỉ đổi nhiệt độ.",
-  "restoreOrder": "Khôi phục thứ tự",
+  "restoreOrder": "Đặt lại thứ tự",
   "sunNext": "Sự kiện mặt trời kế tiếp",
   "sunrise": "Mặt trời mọc",
   "sunset": "Mặt trời lặn",
@@ -3747,7 +3761,7 @@ addCatalogEntries("th", {
   "shortcutsHint": "ปุ่มชุดเดียวกันใช้ได้ทั้งในวิดเจ็ตและในแอป",
   "shortcutsGroupGeneral": "ทั่วไป",
   "shortcutsGroupNavigation": "การเลื่อน",
-  "shortcutsGroupForecast": "ฝน เรดาร์ และลม",
+  "shortcutsGroupForecast": "แท็บและแผนที่",
   "shortcutsGroupSearch": "ค้นหาสถานที่",
   "shortcutsGroupSettings": "การตั้งค่า",
   "shortcutsGroupMouse": "แถบเมนู",
@@ -3758,18 +3772,18 @@ addCatalogEntries("th", {
   "shortcutSearch": "ค้นหาสถานที่",
   "shortcutScroll": "เลื่อน",
   "shortcutPage": "เลื่อนหนึ่งหน้า",
-  "shortcutJump": "ไปที่ต้น / ท้าย",
+  "shortcutJump": "ไปบนสุด / ล่างสุด",
   "shortcutScrollDaily": "เลื่อนพยากรณ์รายวัน",
   "shortcutViews": "มุมมองฝน / เรดาร์ / ลม",
   "shortcutRadarStep": "เรดาร์: ภาพก่อนหน้า / ถัดไป",
   "shortcutRadarPlay": "เรดาร์: เล่น / หยุดชั่วคราว",
   "shortcutZoom": "แผนที่: ซูมเข้า / ซูมออก",
   "shortcutZoomReset": "แผนที่: ระดับซูมเริ่มต้น",
-  "shortcutSearchSelect": "เลือกผลลัพธ์",
-  "shortcutSearchSection": "สลับระหว่างผลลัพธ์กับรายการโปรด",
-  "shortcutSearchPick": "แสดงสถานที่ที่เลือก",
-  "shortcutSearchFavorite": "เพิ่ม / ลบรายการโปรด",
-  "shortcutSearchCancel": "ยกเลิกการค้นหา",
+  "shortcutSearchSelect": "เลื่อนในผลลัพธ์หรือสถานที่ที่บันทึกไว้",
+  "shortcutSearchSection": "สลับระหว่างผลลัพธ์กับสถานที่ที่บันทึกไว้",
+  "shortcutSearchPick": "ใช้ผลลัพธ์ หรือสลับไปยังสถานที่ที่บันทึกไว้",
+  "shortcutSearchAdd": "ในสถานที่ที่บันทึกไว้ (Tab): เพิ่มผลลัพธ์ที่ทำเครื่องหมาย",
+  "shortcutSearchCancel": "ปิดการค้นหา",
   "shortcutSettingsPages": "หน้าการตั้งค่าก่อนหน้า / ถัดไป",
   "shortcutSettingsClose": "ปิดการตั้งค่า",
   "mouseLeft": "คลิกซ้าย",
@@ -3779,7 +3793,7 @@ addCatalogEntries("th", {
   "shortcutMouseRefresh": "รีเฟรชตอนนี้",
   "shortcutMouseNotify": "แสดงสภาพอากาศเป็นการแจ้งเตือน",
   "sourcesHint": "แหล่งข้อมูลถูกเลือกตามสถานที่ หากแหล่งหนึ่งล้มเหลว แหล่งถัดไปจะทำงานแทนโดยอัตโนมัติ",
-  "sourceInUse": "กำลังใช้",
+  "sourceInUse": "ใช้งานอยู่",
   "sourceNotInUse": "ไม่ได้ใช้",
   "sourceGroupForecast": "สภาพอากาศปัจจุบันและพยากรณ์",
   "sourceGroupForecastDetails": "Open-Meteo Best Match (แบบจำลองระดับชาติที่ดีที่สุดของแต่ละภูมิภาค) โดยมี MET Norway เป็นแหล่งสำรอง ในนอร์เวย์ สวีเดน ฟินแลนด์ และเดนมาร์ก MET Norway จะมาก่อน โดยใช้แบบจำลอง MET Nordic ความละเอียด 1 กม. ของตนเอง ในพื้นที่ DWD นั้น DWD MOSMIX (ผ่าน Bright Sky) จะปรับอุณหภูมิ ฝน และสัญลักษณ์ให้แม่นยำขึ้น",
@@ -3823,22 +3837,22 @@ addCatalogEntries("th", {
   "barPositionHint": "ย้ายวิดเจ็ตภายในแถบของ Omarchy",
   "barPositionMissing": "วิดเจ็ตไม่ได้อยู่ในแถบ",
   "showAlways": "เสมอ",
-  "showOnHover": "เมื่อชี้",
-  "menubarHoverHint": "รายการ “เมื่อชี้” จะแสดงขณะที่ตัวชี้อยู่บนสภาพอากาศในแถบ",
+  "showOnHover": "ชี้เมาส์",
+  "menubarHoverHint": "รายการ “ชี้เมาส์” จะแสดงขณะที่ตัวชี้อยู่บนสภาพอากาศในแถบ",
   "barBehavior": "การทำงาน",
-  "openWidgetOnHover": "เปิดวิดเจ็ตเมื่อชี้",
+  "openWidgetOnHover": "เปิดวิดเจ็ตเมื่อชี้เมาส์",
   "openWidgetOnHoverHint": "เปิดวิดเจ็ตเมื่อตัวชี้หยุดบนสภาพอากาศในแถบ และปิดเมื่อตัวชี้ออกไป คลิกเพื่อให้เปิดค้างไว้",
   "rainIntensity": "ความแรงของฝน",
-  "showWhenRelevant": "เมื่อสำคัญ",
-  "menubarRelevantCurrentHint": "“เมื่อสำคัญ” จะแสดงรายการเฉพาะเมื่อค่าโดดเด่น เช่น อุณหภูมิที่รู้สึกต่างจากจริง 3° ลมตั้งแต่ 20 กม./ชม. ยูวีตั้งแต่ 6",
-  "menubarRelevantRainHint": "“เมื่อสำคัญ”: โอกาสตั้งแต่ 30 % ความแรงขณะฝนตก และเวลาที่ฝนจะเริ่มภายในสองชั่วโมง เวลาเริ่มฝนและความแรงจะแทนที่โอกาส",
-  "menubarRelevantAirHint": "“เมื่อสำคัญ”: คุณภาพอากาศตั้งแต่ “แย่” และละอองเกสรระดับสูง",
+  "showWhenRelevant": "สำคัญ",
+  "menubarRelevantCurrentHint": "“สำคัญ” จะแสดงรายการเฉพาะเมื่อค่าโดดเด่น เช่น อุณหภูมิที่รู้สึกต่างจากจริง 3° ลมตั้งแต่ 20 กม./ชม. ยูวีตั้งแต่ 6",
+  "menubarRelevantRainHint": "“สำคัญ”: โอกาสตั้งแต่ 30 % ความแรงขณะฝนตก และเวลาที่ฝนจะเริ่มภายในสองชั่วโมง เวลาเริ่มฝนและความแรงจะแทนที่โอกาส",
+  "menubarRelevantAirHint": "“สำคัญ”: คุณภาพอากาศตั้งแต่ “แย่” และละอองเกสรระดับสูง",
   "kelvinUnits": "เคลวิน",
   "kelvinUnitsSummary": "K · mm · km/h · km",
   "hoverUnitSystem": "ใช้หน่วยอื่นเมื่อชี้",
   "hoverUnitSystemOff": "ปิด",
   "hoverUnitSystemHint": "ขณะที่ตัวชี้อยู่บนวิดเจ็ต แถบจะเปลี่ยนไปใช้ระบบหน่วยนี้ เคลวินมีผลกับอุณหภูมิเท่านั้น",
-  "restoreOrder": "คืนค่าลำดับ",
+  "restoreOrder": "รีเซ็ตลำดับ",
   "sunNext": "เหตุการณ์ดวงอาทิตย์ถัดไป",
   "sunrise": "ดวงอาทิตย์ขึ้น",
   "sunset": "ดวงอาทิตย์ตก",
@@ -3848,142 +3862,142 @@ addCatalogEntries("th", {
 
 // Restore-defaults button on the display settings page.
 addCatalogEntries("es", {
-  "restoreDefaults": "Restaurar valores predeterminados",
+  "restoreDefaults": "Restablecer esta vista",
   "restoreDefaultsConfirm": "Haz clic de nuevo para restablecer",
   "defaultsActive": "Valores predeterminados activos"
 })
 addCatalogEntries("fr", {
-  "restoreDefaults": "Rétablir les valeurs par défaut",
+  "restoreDefaults": "Réinitialiser cette vue",
   "restoreDefaultsConfirm": "Cliquez à nouveau pour réinitialiser",
   "defaultsActive": "Valeurs par défaut actives"
 })
 addCatalogEntries("pt", {
-  "restoreDefaults": "Restaurar predefinições",
+  "restoreDefaults": "Redefinir esta visualização",
   "restoreDefaultsConfirm": "Clique novamente para repor",
-  "defaultsActive": "Predefinições ativas"
+  "defaultsActive": "Padrões ativos"
 })
 addCatalogEntries("ru", {
-  "restoreDefaults": "Восстановить настройки по умолчанию",
+  "restoreDefaults": "Сбросить этот вид",
   "restoreDefaultsConfirm": "Нажмите ещё раз для сброса",
   "defaultsActive": "Используются настройки по умолчанию"
 })
 addCatalogEntries("uk", {
-  "restoreDefaults": "Відновити типові налаштування",
+  "restoreDefaults": "Скинути цей вигляд",
   "restoreDefaultsConfirm": "Натисніть ще раз для скидання",
   "defaultsActive": "Використовуються типові налаштування"
 })
 addCatalogEntries("pl", {
-  "restoreDefaults": "Przywróć ustawienia domyślne",
+  "restoreDefaults": "Przywróć ten widok",
   "restoreDefaultsConfirm": "Kliknij ponownie, aby zresetować",
   "defaultsActive": "Aktywne ustawienia domyślne"
 })
 addCatalogEntries("it", {
-  "restoreDefaults": "Ripristina impostazioni predefinite",
+  "restoreDefaults": "Ripristina questa vista",
   "restoreDefaultsConfirm": "Fai clic di nuovo per ripristinare",
   "defaultsActive": "Impostazioni predefinite attive"
 })
 addCatalogEntries("nl", {
-  "restoreDefaults": "Standaardwaarden herstellen",
+  "restoreDefaults": "Deze weergave herstellen",
   "restoreDefaultsConfirm": "Klik nogmaals om te resetten",
   "defaultsActive": "Standaardwaarden actief"
 })
 addCatalogEntries("tr", {
-  "restoreDefaults": "Varsayılanları geri yükle",
+  "restoreDefaults": "Bu görünümü sıfırla",
   "restoreDefaultsConfirm": "Sıfırlamak için tekrar tıklayın",
   "defaultsActive": "Varsayılan ayarlar etkin"
 })
 addCatalogEntries("cs", {
-  "restoreDefaults": "Obnovit výchozí nastavení",
+  "restoreDefaults": "Obnovit toto zobrazení",
   "restoreDefaultsConfirm": "Klikněte znovu pro obnovení",
   "defaultsActive": "Výchozí nastavení je aktivní"
 })
 addCatalogEntries("sv", {
-  "restoreDefaults": "Återställ standardvärden",
+  "restoreDefaults": "Återställ den här vyn",
   "restoreDefaultsConfirm": "Klicka igen för att återställa",
   "defaultsActive": "Standardvärden aktiva"
 })
 addCatalogEntries("fi", {
-  "restoreDefaults": "Palauta oletusasetukset",
+  "restoreDefaults": "Palauta tämä näkymä",
   "restoreDefaultsConfirm": "Palauta napsauttamalla uudelleen",
   "defaultsActive": "Oletusasetukset käytössä"
 })
 addCatalogEntries("nb", {
-  "restoreDefaults": "Gjenopprett standardverdier",
+  "restoreDefaults": "Tilbakestill denne visningen",
   "restoreDefaultsConfirm": "Klikk igjen for å tilbakestille",
   "defaultsActive": "Standardverdier er aktive"
 })
 addCatalogEntries("da", {
-  "restoreDefaults": "Gendan standardindstillinger",
+  "restoreDefaults": "Nulstil denne visning",
   "restoreDefaultsConfirm": "Klik igen for at nulstille",
   "defaultsActive": "Standardindstillinger er aktive"
 })
 addCatalogEntries("ro", {
-  "restoreDefaults": "Restabilește valorile implicite",
+  "restoreDefaults": "Resetează această vedere",
   "restoreDefaultsConfirm": "Dă clic din nou pentru resetare",
   "defaultsActive": "Valori implicite active"
 })
 addCatalogEntries("hu", {
-  "restoreDefaults": "Alapértékek visszaállítása",
+  "restoreDefaults": "Nézet visszaállítása",
   "restoreDefaultsConfirm": "Kattints újra a visszaállításhoz",
   "defaultsActive": "Alapértékek érvényben"
 })
 addCatalogEntries("el", {
-  "restoreDefaults": "Επαναφορά προεπιλογών",
+  "restoreDefaults": "Επαναφορά αυτής της προβολής",
   "restoreDefaultsConfirm": "Κάντε ξανά κλικ για επαναφορά",
   "defaultsActive": "Ενεργές προεπιλογές"
 })
 addCatalogEntries("zh_CN", {
-  "restoreDefaults": "恢复默认设置",
+  "restoreDefaults": "重置此视图",
   "restoreDefaultsConfirm": "再次点击以重置",
   "defaultsActive": "已使用默认设置"
 })
 addCatalogEntries("zh_TW", {
-  "restoreDefaults": "還原預設值",
+  "restoreDefaults": "重設此檢視",
   "restoreDefaultsConfirm": "再按一下以重設",
   "defaultsActive": "已使用預設值"
 })
 addCatalogEntries("ja", {
-  "restoreDefaults": "デフォルトに戻す",
+  "restoreDefaults": "この表示をリセット",
   "restoreDefaultsConfirm": "もう一度クリックでリセット",
   "defaultsActive": "デフォルト設定を使用中"
 })
 addCatalogEntries("ko", {
-  "restoreDefaults": "기본값 복원",
+  "restoreDefaults": "이 보기 초기화",
   "restoreDefaultsConfirm": "다시 클릭하면 초기화됩니다",
   "defaultsActive": "기본 설정 사용 중"
 })
 addCatalogEntries("ar", {
-  "restoreDefaults": "استعادة الإعدادات الافتراضية",
+  "restoreDefaults": "إعادة ضبط هذا العرض",
   "restoreDefaultsConfirm": "انقر مرة أخرى لإعادة التعيين",
   "defaultsActive": "الإعدادات الافتراضية مفعّلة"
 })
 addCatalogEntries("he", {
-  "restoreDefaults": "שחזור ברירות המחדל",
+  "restoreDefaults": "איפוס תצוגה זו",
   "restoreDefaultsConfirm": "לחצו שוב לאיפוס",
   "defaultsActive": "ברירות המחדל פעילות"
 })
 addCatalogEntries("fa", {
-  "restoreDefaults": "بازگرداندن تنظیمات پیش‌فرض",
+  "restoreDefaults": "بازنشانی این نما",
   "restoreDefaultsConfirm": "برای بازنشانی دوباره کلیک کنید",
   "defaultsActive": "تنظیمات پیش‌فرض فعال است"
 })
 addCatalogEntries("hi", {
-  "restoreDefaults": "डिफ़ॉल्ट सेटिंग्स बहाल करें",
+  "restoreDefaults": "यह दृश्य रीसेट करें",
   "restoreDefaultsConfirm": "रीसेट करने के लिए फिर से क्लिक करें",
   "defaultsActive": "डिफ़ॉल्ट सेटिंग्स सक्रिय हैं"
 })
 addCatalogEntries("id", {
-  "restoreDefaults": "Pulihkan pengaturan bawaan",
+  "restoreDefaults": "Atur ulang tampilan ini",
   "restoreDefaultsConfirm": "Klik lagi untuk mengatur ulang",
   "defaultsActive": "Pengaturan bawaan aktif"
 })
 addCatalogEntries("vi", {
-  "restoreDefaults": "Khôi phục mặc định",
+  "restoreDefaults": "Đặt lại chế độ xem này",
   "restoreDefaultsConfirm": "Nhấp lần nữa để đặt lại",
   "defaultsActive": "Đang dùng cài đặt mặc định"
 })
 addCatalogEntries("th", {
-  "restoreDefaults": "คืนค่าเริ่มต้น",
+  "restoreDefaults": "รีเซ็ตมุมมองนี้",
   "restoreDefaultsConfirm": "คลิกอีกครั้งเพื่อรีเซ็ต",
   "defaultsActive": "ใช้ค่าเริ่มต้นอยู่"
 })
@@ -5483,34 +5497,34 @@ addCatalogEntries("vi", { "airQualityColor": "Chỉ báo màu" })
 addCatalogEntries("th", { "airQualityColor": "ตัวบ่งชี้สี" })
 
 // Open the app from the widget.
-addCatalogEntries("es", {"openInApp": "Abrir en la aplicación", "shortcutOpenApp": "Abrir la aplicación (widget)", "shortcutMouseOpenApp": "Símbolo o temperatura en el widget: abrir la aplicación"})
-addCatalogEntries("fr", {"openInApp": "Ouvrir dans l’application", "shortcutOpenApp": "Ouvrir l’application (widget)", "shortcutMouseOpenApp": "Symbole ou température dans le widget : ouvrir l’application"})
-addCatalogEntries("pt", {"openInApp": "Abrir no aplicativo", "shortcutOpenApp": "Abrir o aplicativo (widget)", "shortcutMouseOpenApp": "Símbolo ou temperatura no widget: abrir o aplicativo"})
-addCatalogEntries("ru", {"openInApp": "Открыть в приложении", "shortcutOpenApp": "Открыть приложение (виджет)", "shortcutMouseOpenApp": "Значок или температура в виджете: открыть приложение"})
-addCatalogEntries("uk", {"openInApp": "Відкрити в застосунку", "shortcutOpenApp": "Відкрити застосунок (віджет)", "shortcutMouseOpenApp": "Значок або температура у віджеті: відкрити застосунок"})
-addCatalogEntries("pl", {"openInApp": "Otwórz w aplikacji", "shortcutOpenApp": "Otwórz aplikację (widżet)", "shortcutMouseOpenApp": "Symbol lub temperatura w widżecie: otwórz aplikację"})
-addCatalogEntries("it", {"openInApp": "Apri nell’app", "shortcutOpenApp": "Apri l’app (widget)", "shortcutMouseOpenApp": "Simbolo o temperatura nel widget: apri l’app"})
-addCatalogEntries("nl", {"openInApp": "Openen in app", "shortcutOpenApp": "App openen (widget)", "shortcutMouseOpenApp": "Symbool of temperatuur in de widget: app openen"})
-addCatalogEntries("tr", {"openInApp": "Uygulamada aç", "shortcutOpenApp": "Uygulamayı aç (widget)", "shortcutMouseOpenApp": "Widget'taki simge veya sıcaklık: uygulamayı aç"})
-addCatalogEntries("cs", {"openInApp": "Otevřít v aplikaci", "shortcutOpenApp": "Otevřít aplikaci (widget)", "shortcutMouseOpenApp": "Symbol nebo teplota ve widgetu: otevřít aplikaci"})
-addCatalogEntries("sv", {"openInApp": "Öppna i appen", "shortcutOpenApp": "Öppna appen (widget)", "shortcutMouseOpenApp": "Symbol eller temperatur i widgeten: öppna appen"})
-addCatalogEntries("fi", {"openInApp": "Avaa sovelluksessa", "shortcutOpenApp": "Avaa sovellus (widget)", "shortcutMouseOpenApp": "Widgetin symboli tai lämpötila: avaa sovellus"})
-addCatalogEntries("nb", {"openInApp": "Åpne i appen", "shortcutOpenApp": "Åpne appen (widget)", "shortcutMouseOpenApp": "Symbol eller temperatur i widgeten: åpne appen"})
-addCatalogEntries("da", {"openInApp": "Åbn i appen", "shortcutOpenApp": "Åbn appen (widget)", "shortcutMouseOpenApp": "Symbol eller temperatur i widgetten: åbn appen"})
-addCatalogEntries("ro", {"openInApp": "Deschide în aplicație", "shortcutOpenApp": "Deschide aplicația (widget)", "shortcutMouseOpenApp": "Simbolul sau temperatura din widget: deschide aplicația"})
-addCatalogEntries("hu", {"openInApp": "Megnyitás az alkalmazásban", "shortcutOpenApp": "Alkalmazás megnyitása (widget)", "shortcutMouseOpenApp": "Szimbólum vagy hőmérséklet a widgetben: alkalmazás megnyitása"})
-addCatalogEntries("el", {"openInApp": "Άνοιγμα στην εφαρμογή", "shortcutOpenApp": "Άνοιγμα της εφαρμογής (widget)", "shortcutMouseOpenApp": "Σύμβολο ή θερμοκρασία στο widget: άνοιγμα της εφαρμογής"})
-addCatalogEntries("zh_CN", {"openInApp": "在应用中打开", "shortcutOpenApp": "打开应用（小组件）", "shortcutMouseOpenApp": "小组件中的图标或温度：打开应用"})
-addCatalogEntries("zh_TW", {"openInApp": "在應用程式中開啟", "shortcutOpenApp": "開啟應用程式（小工具）", "shortcutMouseOpenApp": "小工具中的圖示或溫度：開啟應用程式"})
-addCatalogEntries("ja", {"openInApp": "アプリで開く", "shortcutOpenApp": "アプリを開く（ウィジェット）", "shortcutMouseOpenApp": "ウィジェットの記号または気温：アプリを開く"})
-addCatalogEntries("ko", {"openInApp": "앱에서 열기", "shortcutOpenApp": "앱 열기(위젯)", "shortcutMouseOpenApp": "위젯의 기호 또는 기온: 앱 열기"})
-addCatalogEntries("ar", {"openInApp": "فتح في التطبيق", "shortcutOpenApp": "فتح التطبيق (الأداة)", "shortcutMouseOpenApp": "الرمز أو درجة الحرارة في الأداة: فتح التطبيق"})
-addCatalogEntries("he", {"openInApp": "פתיחה ביישום", "shortcutOpenApp": "פתיחת היישום (יישומון)", "shortcutMouseOpenApp": "סמל או טמפרטורה ביישומון: פתיחת היישום"})
-addCatalogEntries("fa", {"openInApp": "باز کردن در برنامه", "shortcutOpenApp": "باز کردن برنامه (ابزارک)", "shortcutMouseOpenApp": "نماد یا دما در ابزارک: باز کردن برنامه"})
-addCatalogEntries("hi", {"openInApp": "ऐप में खोलें", "shortcutOpenApp": "ऐप खोलें (विजेट)", "shortcutMouseOpenApp": "विजेट में चिह्न या तापमान: ऐप खोलें"})
-addCatalogEntries("id", {"openInApp": "Buka di aplikasi", "shortcutOpenApp": "Buka aplikasi (widget)", "shortcutMouseOpenApp": "Simbol atau suhu di widget: buka aplikasi"})
-addCatalogEntries("vi", {"openInApp": "Mở trong ứng dụng", "shortcutOpenApp": "Mở ứng dụng (tiện ích)", "shortcutMouseOpenApp": "Biểu tượng hoặc nhiệt độ trong tiện ích: mở ứng dụng"})
-addCatalogEntries("th", {"openInApp": "เปิดในแอป", "shortcutOpenApp": "เปิดแอป (วิดเจ็ต)", "shortcutMouseOpenApp": "สัญลักษณ์หรืออุณหภูมิในวิดเจ็ต: เปิดแอป"})
+addCatalogEntries("es", {"openInApp": "Abrir en la aplicación", "shortcutOpenApp": "Abrir la aplicación (widget)", "shortcutMouseOpenApp": "Abrir la aplicación (clic en el tiempo del widget)"})
+addCatalogEntries("fr", {"openInApp": "Ouvrir dans l’application", "shortcutOpenApp": "Ouvrir l’application (widget)", "shortcutMouseOpenApp": "Ouvrir l’application (clic sur la météo dans le widget)"})
+addCatalogEntries("pt", {"openInApp": "Abrir no aplicativo", "shortcutOpenApp": "Abrir o aplicativo (widget)", "shortcutMouseOpenApp": "Abrir o aplicativo (clique no clima no widget)"})
+addCatalogEntries("ru", {"openInApp": "Открыть в приложении", "shortcutOpenApp": "Открыть приложение (виджет)", "shortcutMouseOpenApp": "Открыть приложение (щелчок по погоде в виджете)"})
+addCatalogEntries("uk", {"openInApp": "Відкрити в застосунку", "shortcutOpenApp": "Відкрити застосунок (віджет)", "shortcutMouseOpenApp": "Відкрити застосунок (клацання по погоді у віджеті)"})
+addCatalogEntries("pl", {"openInApp": "Otwórz w aplikacji", "shortcutOpenApp": "Otwórz aplikację (widżet)", "shortcutMouseOpenApp": "Otwórz aplikację (kliknięcie pogody w widżecie)"})
+addCatalogEntries("it", {"openInApp": "Apri nell’app", "shortcutOpenApp": "Apri l’app (widget)", "shortcutMouseOpenApp": "Apri l’app (clic sul meteo nel widget)"})
+addCatalogEntries("nl", {"openInApp": "Openen in app", "shortcutOpenApp": "App openen (widget)", "shortcutMouseOpenApp": "De app openen (klik op het weer in de widget)"})
+addCatalogEntries("tr", {"openInApp": "Uygulamada aç", "shortcutOpenApp": "Uygulamayı aç (bileşen)", "shortcutMouseOpenApp": "Uygulamayı aç (bileşendeki hava durumuna tıklayın)"})
+addCatalogEntries("cs", {"openInApp": "Otevřít v aplikaci", "shortcutOpenApp": "Otevřít aplikaci (widget)", "shortcutMouseOpenApp": "Otevřít aplikaci (kliknutí na počasí ve widgetu)"})
+addCatalogEntries("sv", {"openInApp": "Öppna i appen", "shortcutOpenApp": "Öppna appen (widget)", "shortcutMouseOpenApp": "Öppna appen (klick på vädret i widgeten)"})
+addCatalogEntries("fi", {"openInApp": "Avaa sovelluksessa", "shortcutOpenApp": "Avaa sovellus (pienoissovellus)", "shortcutMouseOpenApp": "Avaa sovellus (napsautus pienoissovelluksen säähän)"})
+addCatalogEntries("nb", {"openInApp": "Åpne i appen", "shortcutOpenApp": "Åpne appen (miniprogram)", "shortcutMouseOpenApp": "Åpne appen (klikk på været i miniprogrammet)"})
+addCatalogEntries("da", {"openInApp": "Åbn i appen", "shortcutOpenApp": "Åbn appen (widget)", "shortcutMouseOpenApp": "Åbn appen (klik på vejret i widgetten)"})
+addCatalogEntries("ro", {"openInApp": "Deschide în aplicație", "shortcutOpenApp": "Deschide aplicația (widget)", "shortcutMouseOpenApp": "Deschide aplicația (clic pe vremea din widget)"})
+addCatalogEntries("hu", {"openInApp": "Megnyitás az alkalmazásban", "shortcutOpenApp": "Alkalmazás megnyitása (minialkalmazás)", "shortcutMouseOpenApp": "Az alkalmazás megnyitása (kattintás az időjárásra a minialkalmazásban)"})
+addCatalogEntries("el", {"openInApp": "Άνοιγμα στην εφαρμογή", "shortcutOpenApp": "Άνοιγμα της εφαρμογής (γραφικό στοιχείο)", "shortcutMouseOpenApp": "Άνοιγμα της εφαρμογής (κλικ στον καιρό στο γραφικό στοιχείο)"})
+addCatalogEntries("zh_CN", {"openInApp": "在应用中打开", "shortcutOpenApp": "打开应用（小组件）", "shortcutMouseOpenApp": "打开应用（点击小组件中的天气）"})
+addCatalogEntries("zh_TW", {"openInApp": "在應用程式中開啟", "shortcutOpenApp": "開啟應用程式（小工具）", "shortcutMouseOpenApp": "開啟應用程式（點按小工具中的天氣）"})
+addCatalogEntries("ja", {"openInApp": "アプリで開く", "shortcutOpenApp": "アプリを開く（ウィジェット）", "shortcutMouseOpenApp": "アプリを開く（ウィジェットの天気をクリック）"})
+addCatalogEntries("ko", {"openInApp": "앱에서 열기", "shortcutOpenApp": "앱 열기(위젯)", "shortcutMouseOpenApp": "앱 열기 (위젯의 날씨 클릭)"})
+addCatalogEntries("ar", {"openInApp": "فتح في التطبيق", "shortcutOpenApp": "فتح التطبيق (الأداة)", "shortcutMouseOpenApp": "فتح التطبيق (انقر على الطقس في الأداة)"})
+addCatalogEntries("he", {"openInApp": "פתיחה ביישום", "shortcutOpenApp": "פתיחת היישום (יישומון)", "shortcutMouseOpenApp": "פתיחת היישום (לחיצה על מזג האוויר ביישומון)"})
+addCatalogEntries("fa", {"openInApp": "باز کردن در برنامه", "shortcutOpenApp": "باز کردن برنامه (ویجت)", "shortcutMouseOpenApp": "باز کردن برنامه (کلیک روی آب‌وهوا در ویجت)"})
+addCatalogEntries("hi", {"openInApp": "ऐप में खोलें", "shortcutOpenApp": "ऐप खोलें (विजेट)", "shortcutMouseOpenApp": "ऐप खोलें (विजेट में मौसम पर क्लिक)"})
+addCatalogEntries("id", {"openInApp": "Buka di aplikasi", "shortcutOpenApp": "Buka aplikasi (widget)", "shortcutMouseOpenApp": "Buka aplikasi (klik cuaca di widget)"})
+addCatalogEntries("vi", {"openInApp": "Mở trong ứng dụng", "shortcutOpenApp": "Mở ứng dụng (tiện ích)", "shortcutMouseOpenApp": "Mở ứng dụng (nhấp vào thời tiết trong tiện ích)"})
+addCatalogEntries("th", {"openInApp": "เปิดในแอป", "shortcutOpenApp": "เปิดแอป (วิดเจ็ต)", "shortcutMouseOpenApp": "เปิดแอป (คลิกที่สภาพอากาศในวิดเจ็ต)"})
 
 // Language picker.
 addCatalogEntries("es", {"language": "Idioma", "languageAuto": "Automático ({language})"})
@@ -5543,34 +5557,34 @@ addCatalogEntries("vi", {"language": "Ngôn ngữ", "languageAuto": "Tự độn
 addCatalogEntries("th", {"language": "ภาษา", "languageAuto": "อัตโนมัติ ({language})"})
 
 // App launcher entry switch in the general settings.
-addCatalogEntries("es", {"appLauncherEntry": "Mostrar en el lanzador de aplicaciones", "appLauncherEntryHint": "Añade la aplicación More Weather al lanzador. Si se elimina el plugin, la entrada se borra sola la próxima vez que se abra."})
-addCatalogEntries("fr", {"appLauncherEntry": "Afficher dans le lanceur d’applications", "appLauncherEntryHint": "Ajoute l’application More Weather au lanceur. Si le plugin est supprimé, l’entrée s’efface d’elle-même à sa prochaine ouverture."})
-addCatalogEntries("pt", {"appLauncherEntry": "Mostrar no lançador de aplicativos", "appLauncherEntryHint": "Adiciona o app More Weather ao lançador. Se o plugin for removido, a entrada se apaga sozinha na próxima vez que for aberta."})
-addCatalogEntries("ru", {"appLauncherEntry": "Показывать в меню приложений", "appLauncherEntryHint": "Добавляет приложение More Weather в меню приложений. Если плагин удалён, запись удалит себя при следующем открытии."})
-addCatalogEntries("uk", {"appLauncherEntry": "Показувати в меню застосунків", "appLauncherEntryHint": "Додає застосунок More Weather до меню застосунків. Якщо плагін видалено, запис видалить себе під час наступного відкриття."})
-addCatalogEntries("pl", {"appLauncherEntry": "Pokaż w programie uruchamiającym", "appLauncherEntryHint": "Dodaje aplikację More Weather do programu uruchamiającego. Po usunięciu wtyczki wpis usunie się sam przy następnym otwarciu."})
-addCatalogEntries("it", {"appLauncherEntry": "Mostra nel launcher delle app", "appLauncherEntryHint": "Aggiunge l’app More Weather al launcher. Se il plugin viene rimosso, la voce si elimina da sola alla successiva apertura."})
-addCatalogEntries("nl", {"appLauncherEntry": "Tonen in de app-starter", "appLauncherEntryHint": "Voegt de More Weather-app toe aan de app-starter. Als de plug-in is verwijderd, verwijdert het item zichzelf bij de volgende keer openen."})
-addCatalogEntries("tr", {"appLauncherEntry": "Uygulama başlatıcıda göster", "appLauncherEntryHint": "More Weather uygulamasını başlatıcıya ekler. Eklenti kaldırılırsa girdi bir sonraki açılışta kendini siler."})
-addCatalogEntries("cs", {"appLauncherEntry": "Zobrazit ve spouštěči aplikací", "appLauncherEntryHint": "Přidá aplikaci More Weather do spouštěče. Pokud je plugin odebrán, položka se při dalším otevření sama smaže."})
-addCatalogEntries("sv", {"appLauncherEntry": "Visa i appstartaren", "appLauncherEntryHint": "Lägger till More Weather-appen i appstartaren. Om pluginet tas bort raderar posten sig själv nästa gång den öppnas."})
-addCatalogEntries("fi", {"appLauncherEntry": "Näytä sovelluskäynnistimessä", "appLauncherEntryHint": "Lisää More Weather -sovelluksen käynnistimeen. Jos laajennus poistetaan, merkintä poistaa itsensä, kun se avataan seuraavan kerran."})
-addCatalogEntries("nb", {"appLauncherEntry": "Vis i appstarteren", "appLauncherEntryHint": "Legger More Weather-appen til i appstarteren. Hvis programtillegget fjernes, sletter oppføringen seg selv neste gang den åpnes."})
-addCatalogEntries("da", {"appLauncherEntry": "Vis i appstarteren", "appLauncherEntryHint": "Tilføjer More Weather-appen til appstarteren. Hvis pluginet fjernes, sletter posten sig selv, næste gang den åbnes."})
-addCatalogEntries("ro", {"appLauncherEntry": "Afișează în lansatorul de aplicații", "appLauncherEntryHint": "Adaugă aplicația More Weather în lansator. Dacă pluginul este eliminat, intrarea se șterge singură la următoarea deschidere."})
-addCatalogEntries("hu", {"appLauncherEntry": "Megjelenítés az alkalmazásindítóban", "appLauncherEntryHint": "Hozzáadja a More Weather alkalmazást az indítóhoz. Ha a bővítményt eltávolítják, a bejegyzés a következő megnyitáskor törli magát."})
-addCatalogEntries("el", {"appLauncherEntry": "Εμφάνιση στην εκκίνηση εφαρμογών", "appLauncherEntryHint": "Προσθέτει την εφαρμογή More Weather στην εκκίνηση εφαρμογών. Αν αφαιρεθεί το πρόσθετο, η καταχώριση διαγράφεται μόνη της στο επόμενο άνοιγμα."})
-addCatalogEntries("zh_CN", {"appLauncherEntry": "在应用启动器中显示", "appLauncherEntryHint": "将 More Weather 应用添加到应用启动器。如果插件已被移除，该条目会在下次打开时自行删除。"})
-addCatalogEntries("zh_TW", {"appLauncherEntry": "在應用程式啟動器中顯示", "appLauncherEntryHint": "將 More Weather 應用程式加入啟動器。如果外掛已移除，此項目會在下次開啟時自行刪除。"})
-addCatalogEntries("ja", {"appLauncherEntry": "アプリランチャーに表示", "appLauncherEntryHint": "More Weather アプリをランチャーに追加します。プラグインを削除した場合、次に開いたときに項目が自動で削除されます。"})
-addCatalogEntries("ko", {"appLauncherEntry": "앱 실행기에 표시", "appLauncherEntryHint": "More Weather 앱을 앱 실행기에 추가합니다. 플러그인이 제거되면 다음에 열 때 항목이 스스로 삭제됩니다."})
-addCatalogEntries("ar", {"appLauncherEntry": "إظهار في مشغّل التطبيقات", "appLauncherEntryHint": "يضيف تطبيق More Weather إلى مشغّل التطبيقات. إذا أُزيلت الإضافة، يحذف الإدخال نفسه عند فتحه في المرة التالية."})
-addCatalogEntries("he", {"appLauncherEntry": "הצגה במפעיל היישומים", "appLauncherEntryHint": "מוסיף את היישום More Weather למפעיל היישומים. אם התוסף הוסר, הרשומה תמחק את עצמה בפתיחה הבאה."})
-addCatalogEntries("fa", {"appLauncherEntry": "نمایش در اجراکننده برنامه‌ها", "appLauncherEntryHint": "برنامه More Weather را به اجراکننده برنامه‌ها اضافه می‌کند. اگر افزونه حذف شود، این مورد دفعه بعد که باز شود خودش را پاک می‌کند."})
-addCatalogEntries("hi", {"appLauncherEntry": "ऐप लॉन्चर में दिखाएँ", "appLauncherEntryHint": "More Weather ऐप को ऐप लॉन्चर में जोड़ता है। प्लगइन हटाए जाने पर प्रविष्टि अगली बार खोलने पर स्वयं हट जाती है।"})
-addCatalogEntries("id", {"appLauncherEntry": "Tampilkan di peluncur aplikasi", "appLauncherEntryHint": "Menambahkan aplikasi More Weather ke peluncur aplikasi. Jika plugin dihapus, entri akan menghapus dirinya saat dibuka berikutnya."})
-addCatalogEntries("vi", {"appLauncherEntry": "Hiển thị trong trình khởi chạy ứng dụng", "appLauncherEntryHint": "Thêm ứng dụng More Weather vào trình khởi chạy. Nếu plugin bị gỡ, mục này sẽ tự xóa vào lần mở tiếp theo."})
-addCatalogEntries("th", {"appLauncherEntry": "แสดงในตัวเปิดแอป", "appLauncherEntryHint": "เพิ่มแอป More Weather ลงในตัวเปิดแอป หากลบปลั๊กอินแล้ว รายการจะลบตัวเองเมื่อเปิดครั้งถัดไป"})
+addCatalogEntries("es", {"appLauncherEntry": "Mostrar en el lanzador de aplicaciones", "appLauncherEntryHint": "Añade la aplicación More Weather al lanzador. La aplicación comparte lugares, datos y ajustes con la barra. Si se elimina el plugin, la entrada se borra sola la próxima vez que se abra."})
+addCatalogEntries("fr", {"appLauncherEntry": "Afficher dans le lanceur d’applications", "appLauncherEntryHint": "Ajoute l’application More Weather au lanceur. L’application partage ses lieux, ses données et ses paramètres avec la barre. Si le plugin est supprimé, l’entrée s’efface d’elle-même à sa prochaine ouverture."})
+addCatalogEntries("pt", {"appLauncherEntry": "Mostrar no lançador de aplicativos", "appLauncherEntryHint": "Adiciona o aplicativo More Weather ao lançador. O aplicativo compartilha locais, dados e configurações com a barra. Se o plugin for removido, a entrada se apaga sozinha na próxima vez que for aberta."})
+addCatalogEntries("ru", {"appLauncherEntry": "Показывать в меню приложений", "appLauncherEntryHint": "Добавляет приложение More Weather в меню приложений. Приложение использует те же места, данные и настройки, что и панель. Если плагин удалён, запись удалит себя при следующем открытии."})
+addCatalogEntries("uk", {"appLauncherEntry": "Показувати в меню застосунків", "appLauncherEntryHint": "Додає застосунок More Weather до меню застосунків. Застосунок має ті самі місця, дані й налаштування, що й панель. Якщо плагін видалено, запис видалить себе під час наступного відкриття."})
+addCatalogEntries("pl", {"appLauncherEntry": "Pokaż w programie uruchamiającym", "appLauncherEntryHint": "Dodaje aplikację More Weather do programu uruchamiającego. Aplikacja dzieli z paskiem miejsca, dane i ustawienia. Po usunięciu wtyczki wpis usunie się sam przy następnym otwarciu."})
+addCatalogEntries("it", {"appLauncherEntry": "Mostra nel launcher delle app", "appLauncherEntryHint": "Aggiunge l’app More Weather al launcher. L’app condivide luoghi, dati e impostazioni con la barra. Se il plugin viene rimosso, la voce si elimina da sola alla successiva apertura."})
+addCatalogEntries("nl", {"appLauncherEntry": "Tonen in de app-starter", "appLauncherEntryHint": "Voegt de More Weather-app toe aan de app-starter. De app deelt plaatsen, gegevens en instellingen met de balk. Als de plug-in is verwijderd, verwijdert het item zichzelf bij de volgende keer openen."})
+addCatalogEntries("tr", {"appLauncherEntry": "Uygulama başlatıcıda göster", "appLauncherEntryHint": "More Weather uygulamasını başlatıcıya ekler. Uygulama yerleri, verileri ve ayarları çubukla paylaşır. Eklenti kaldırılırsa girdi bir sonraki açılışta kendini siler."})
+addCatalogEntries("cs", {"appLauncherEntry": "Zobrazit ve spouštěči aplikací", "appLauncherEntryHint": "Přidá aplikaci More Weather do spouštěče. Aplikace sdílí s lištou místa, data i nastavení. Pokud je plugin odebrán, položka se při dalším otevření sama smaže."})
+addCatalogEntries("sv", {"appLauncherEntry": "Visa i appstartaren", "appLauncherEntryHint": "Lägger till More Weather-appen i appstartaren. Appen delar platser, data och inställningar med fältet. Om pluginet tas bort raderar posten sig själv nästa gång den öppnas."})
+addCatalogEntries("fi", {"appLauncherEntry": "Näytä sovelluskäynnistimessä", "appLauncherEntryHint": "Lisää More Weather -sovelluksen käynnistimeen. Sovellus jakaa paikat, tiedot ja asetukset palkin kanssa. Jos laajennus poistetaan, merkintä poistaa itsensä, kun se avataan seuraavan kerran."})
+addCatalogEntries("nb", {"appLauncherEntry": "Vis i appstarteren", "appLauncherEntryHint": "Legger More Weather-appen til i appstarteren. Appen deler steder, data og innstillinger med linjen. Hvis programtillegget fjernes, sletter oppføringen seg selv neste gang den åpnes."})
+addCatalogEntries("da", {"appLauncherEntry": "Vis i appstarteren", "appLauncherEntryHint": "Tilføjer More Weather-appen til appstarteren. Appen deler steder, data og indstillinger med linjen. Hvis pluginet fjernes, sletter posten sig selv, næste gang den åbnes."})
+addCatalogEntries("ro", {"appLauncherEntry": "Afișează în lansatorul de aplicații", "appLauncherEntryHint": "Adaugă aplicația More Weather în lansator. Aplicația împarte cu bara locurile, datele și setările. Dacă pluginul este eliminat, intrarea se șterge singură la următoarea deschidere."})
+addCatalogEntries("hu", {"appLauncherEntry": "Megjelenítés az alkalmazásindítóban", "appLauncherEntryHint": "Hozzáadja a More Weather alkalmazást az indítóhoz. Az alkalmazás ugyanazokat a helyeket, adatokat és beállításokat használja, mint a sáv. Ha a bővítményt eltávolítják, a bejegyzés a következő megnyitáskor törli magát."})
+addCatalogEntries("el", {"appLauncherEntry": "Εμφάνιση στην εκκίνηση εφαρμογών", "appLauncherEntryHint": "Προσθέτει την εφαρμογή More Weather στην εκκίνηση εφαρμογών. Η εφαρμογή μοιράζεται τοποθεσίες, δεδομένα και ρυθμίσεις με τη γραμμή. Αν αφαιρεθεί το πρόσθετο, η καταχώριση διαγράφεται μόνη της στο επόμενο άνοιγμα."})
+addCatalogEntries("zh_CN", {"appLauncherEntry": "在应用启动器中显示", "appLauncherEntryHint": "将 More Weather 应用添加到应用启动器。应用与栏共享地点、数据和设置。如果插件已被移除，该条目会在下次打开时自行删除。"})
+addCatalogEntries("zh_TW", {"appLauncherEntry": "在應用程式啟動器中顯示", "appLauncherEntryHint": "將 More Weather 應用程式加入啟動器。應用程式與列共用地點、資料和設定。如果外掛已移除，此項目會在下次開啟時自行刪除。"})
+addCatalogEntries("ja", {"appLauncherEntry": "アプリランチャーに表示", "appLauncherEntryHint": "More Weather アプリをランチャーに追加します。アプリは場所・データ・設定をバーと共有します。プラグインを削除した場合、次に開いたときに項目が自動で削除されます。"})
+addCatalogEntries("ko", {"appLauncherEntry": "앱 실행기에 표시", "appLauncherEntryHint": "More Weather 앱을 앱 실행기에 추가합니다. 앱은 장소, 데이터, 설정을 막대와 공유합니다. 플러그인이 제거되면 다음에 열 때 항목이 스스로 삭제됩니다."})
+addCatalogEntries("ar", {"appLauncherEntry": "إظهار في مشغّل التطبيقات", "appLauncherEntryHint": "يضيف تطبيق More Weather إلى مشغّل التطبيقات. يشارك التطبيق الأماكن والبيانات والإعدادات مع الشريط. إذا أُزيلت الإضافة، يحذف الإدخال نفسه عند فتحه في المرة التالية."})
+addCatalogEntries("he", {"appLauncherEntry": "הצגה במפעיל היישומים", "appLauncherEntryHint": "מוסיף את היישום More Weather למפעיל היישומים. היישום חולק עם הסרגל את המקומות, הנתונים וההגדרות. אם התוסף הוסר, הרשומה תמחק את עצמה בפתיחה הבאה."})
+addCatalogEntries("fa", {"appLauncherEntry": "نمایش در اجراکننده برنامه‌ها", "appLauncherEntryHint": "برنامه More Weather را به اجراکننده برنامه‌ها اضافه می‌کند. برنامه مکان‌ها، داده‌ها و تنظیمات را با نوار به اشتراک می‌گذارد. اگر افزونه حذف شود، این مورد دفعه بعد که باز شود خودش را پاک می‌کند."})
+addCatalogEntries("hi", {"appLauncherEntry": "ऐप लॉन्चर में दिखाएँ", "appLauncherEntryHint": "More Weather ऐप को ऐप लॉन्चर में जोड़ता है। ऐप अपनी जगहें, डेटा और सेटिंग्स बार के साथ साझा करता है। प्लगइन हटाए जाने पर प्रविष्टि अगली बार खोलने पर स्वयं हट जाती है।"})
+addCatalogEntries("id", {"appLauncherEntry": "Tampilkan di peluncur aplikasi", "appLauncherEntryHint": "Menambahkan aplikasi More Weather ke peluncur aplikasi. Aplikasi berbagi tempat, data, dan pengaturan dengan bilah. Jika plugin dihapus, entri akan menghapus dirinya saat dibuka berikutnya."})
+addCatalogEntries("vi", {"appLauncherEntry": "Hiển thị trong trình khởi chạy ứng dụng", "appLauncherEntryHint": "Thêm ứng dụng More Weather vào trình khởi chạy. Ứng dụng dùng chung địa điểm, dữ liệu và cài đặt với thanh. Nếu plugin bị gỡ, mục này sẽ tự xóa vào lần mở tiếp theo."})
+addCatalogEntries("th", {"appLauncherEntry": "แสดงในตัวเปิดแอป", "appLauncherEntryHint": "เพิ่มแอป More Weather ลงในตัวเปิดแอป แอปใช้สถานที่ ข้อมูล และการตั้งค่าร่วมกับแถบ หากลบปลั๊กอินแล้ว รายการจะลบตัวเองเมื่อเปิดครั้งถัดไป"})
 
 // Notifications card title.
 addCatalogEntries("es", { "notifications": "Notificaciones" })
@@ -5610,7 +5624,7 @@ addCatalogEntries("en", {
   "showAs": "Show",
   "placementWindow": "In window",
   "placementTab": "As tab",
-  "defaultTab": "Opens on",
+  "defaultTab": "Tab on opening",
   "shortcutViews": "Tab 1–9 in their order"
 })
 addCatalogEntries("de", {
@@ -5620,7 +5634,7 @@ addCatalogEntries("de", {
   "showAs": "Anzeige",
   "placementWindow": "Im Fenster",
   "placementTab": "Als Tab",
-  "defaultTab": "Öffnet mit",
+  "defaultTab": "Tab beim Öffnen",
   "shortcutViews": "Tab 1–9 in ihrer Reihenfolge"
 })
 addCatalogEntries("es", {
@@ -5630,7 +5644,7 @@ addCatalogEntries("es", {
   "showAs": "Mostrar",
   "placementWindow": "En la ventana",
   "placementTab": "Como pestaña",
-  "defaultTab": "Abre con",
+  "defaultTab": "Pestaña al abrir",
   "shortcutViews": "Pestaña 1–9 en su orden"
 })
 addCatalogEntries("fr", {
@@ -5640,7 +5654,7 @@ addCatalogEntries("fr", {
   "showAs": "Affichage",
   "placementWindow": "Dans la fenêtre",
   "placementTab": "En onglet",
-  "defaultTab": "S’ouvre sur",
+  "defaultTab": "Onglet à l’ouverture",
   "shortcutViews": "Onglet 1–9 dans leur ordre"
 })
 addCatalogEntries("pt", {
@@ -5650,7 +5664,7 @@ addCatalogEntries("pt", {
   "showAs": "Mostrar",
   "placementWindow": "Na janela",
   "placementTab": "Como aba",
-  "defaultTab": "Abre em",
+  "defaultTab": "Aba ao abrir",
   "shortcutViews": "Aba 1–9 na sua ordem"
 })
 addCatalogEntries("ru", {
@@ -5660,7 +5674,7 @@ addCatalogEntries("ru", {
   "showAs": "Показ",
   "placementWindow": "В окне",
   "placementTab": "Вкладкой",
-  "defaultTab": "Открывать",
+  "defaultTab": "Вкладка при открытии",
   "shortcutViews": "Вкладка 1–9 по порядку"
 })
 addCatalogEntries("uk", {
@@ -5670,7 +5684,7 @@ addCatalogEntries("uk", {
   "showAs": "Показ",
   "placementWindow": "У вікні",
   "placementTab": "Вкладкою",
-  "defaultTab": "Відкривати",
+  "defaultTab": "Вкладка під час відкриття",
   "shortcutViews": "Вкладка 1–9 за порядком"
 })
 addCatalogEntries("pl", {
@@ -5680,7 +5694,7 @@ addCatalogEntries("pl", {
   "showAs": "Pokaż",
   "placementWindow": "W oknie",
   "placementTab": "Jako karta",
-  "defaultTab": "Otwiera się na",
+  "defaultTab": "Karta przy otwarciu",
   "shortcutViews": "Karta 1–9 w kolejności"
 })
 addCatalogEntries("it", {
@@ -5690,7 +5704,7 @@ addCatalogEntries("it", {
   "showAs": "Mostra",
   "placementWindow": "Nella finestra",
   "placementTab": "Come scheda",
-  "defaultTab": "Apre su",
+  "defaultTab": "Scheda all’apertura",
   "shortcutViews": "Scheda 1–9 nel loro ordine"
 })
 addCatalogEntries("nl", {
@@ -5700,7 +5714,7 @@ addCatalogEntries("nl", {
   "showAs": "Tonen",
   "placementWindow": "In venster",
   "placementTab": "Als tabblad",
-  "defaultTab": "Opent op",
+  "defaultTab": "Tabblad bij openen",
   "shortcutViews": "Tabblad 1–9 in volgorde"
 })
 addCatalogEntries("tr", {
@@ -5710,7 +5724,7 @@ addCatalogEntries("tr", {
   "showAs": "Göster",
   "placementWindow": "Pencerede",
   "placementTab": "Sekme olarak",
-  "defaultTab": "Açılış",
+  "defaultTab": "Açılıştaki sekme",
   "shortcutViews": "Sekme 1–9 sırayla"
 })
 addCatalogEntries("cs", {
@@ -5720,7 +5734,7 @@ addCatalogEntries("cs", {
   "showAs": "Zobrazit",
   "placementWindow": "V okně",
   "placementTab": "Jako karta",
-  "defaultTab": "Otevře se na",
+  "defaultTab": "Karta při otevření",
   "shortcutViews": "Karta 1–9 v pořadí"
 })
 addCatalogEntries("sv", {
@@ -5730,7 +5744,7 @@ addCatalogEntries("sv", {
   "showAs": "Visa",
   "placementWindow": "I fönstret",
   "placementTab": "Som flik",
-  "defaultTab": "Öppnas på",
+  "defaultTab": "Flik vid öppning",
   "shortcutViews": "Flik 1–9 i ordning"
 })
 addCatalogEntries("fi", {
@@ -5740,7 +5754,7 @@ addCatalogEntries("fi", {
   "showAs": "Näytä",
   "placementWindow": "Ikkunassa",
   "placementTab": "Välilehtenä",
-  "defaultTab": "Avautuu",
+  "defaultTab": "Välilehti avattaessa",
   "shortcutViews": "Välilehti 1–9 järjestyksessä"
 })
 addCatalogEntries("nb", {
@@ -5750,7 +5764,7 @@ addCatalogEntries("nb", {
   "showAs": "Vis",
   "placementWindow": "I vinduet",
   "placementTab": "Som fane",
-  "defaultTab": "Åpner på",
+  "defaultTab": "Fane ved åpning",
   "shortcutViews": "Fane 1–9 i rekkefølge"
 })
 addCatalogEntries("da", {
@@ -5760,7 +5774,7 @@ addCatalogEntries("da", {
   "showAs": "Vis",
   "placementWindow": "I vinduet",
   "placementTab": "Som fane",
-  "defaultTab": "Åbner på",
+  "defaultTab": "Fane ved åbning",
   "shortcutViews": "Fane 1–9 i rækkefølge"
 })
 addCatalogEntries("ro", {
@@ -5770,7 +5784,7 @@ addCatalogEntries("ro", {
   "showAs": "Afișare",
   "placementWindow": "În fereastră",
   "placementTab": "Ca filă",
-  "defaultTab": "Se deschide pe",
+  "defaultTab": "Fila la deschidere",
   "shortcutViews": "Fila 1–9 în ordine"
 })
 addCatalogEntries("hu", {
@@ -5780,7 +5794,7 @@ addCatalogEntries("hu", {
   "showAs": "Megjelenítés",
   "placementWindow": "Az ablakban",
   "placementTab": "Lapként",
-  "defaultTab": "Nyitáskor",
+  "defaultTab": "Lap megnyitáskor",
   "shortcutViews": "1–9. lap sorrendben"
 })
 addCatalogEntries("el", {
@@ -5790,7 +5804,7 @@ addCatalogEntries("el", {
   "showAs": "Εμφάνιση",
   "placementWindow": "Στο παράθυρο",
   "placementTab": "Ως καρτέλα",
-  "defaultTab": "Ανοίγει σε",
+  "defaultTab": "Καρτέλα στο άνοιγμα",
   "shortcutViews": "Καρτέλα 1–9 με τη σειρά"
 })
 addCatalogEntries("zh_CN", {
@@ -5800,7 +5814,7 @@ addCatalogEntries("zh_CN", {
   "showAs": "显示",
   "placementWindow": "在窗口中",
   "placementTab": "作为标签页",
-  "defaultTab": "打开时显示",
+  "defaultTab": "打开时的标签",
   "shortcutViews": "按顺序切换标签页 1–9"
 })
 addCatalogEntries("zh_TW", {
@@ -5810,7 +5824,7 @@ addCatalogEntries("zh_TW", {
   "showAs": "顯示",
   "placementWindow": "在視窗中",
   "placementTab": "作為分頁",
-  "defaultTab": "開啟時顯示",
+  "defaultTab": "開啟時的分頁",
   "shortcutViews": "依順序切換分頁 1–9"
 })
 addCatalogEntries("ja", {
@@ -5820,7 +5834,7 @@ addCatalogEntries("ja", {
   "showAs": "表示",
   "placementWindow": "ウィンドウ内",
   "placementTab": "タブ",
-  "defaultTab": "最初に開く",
+  "defaultTab": "開いたときのタブ",
   "shortcutViews": "タブ 1–9（並び順）"
 })
 addCatalogEntries("ko", {
@@ -5830,7 +5844,7 @@ addCatalogEntries("ko", {
   "showAs": "표시",
   "placementWindow": "창에",
   "placementTab": "탭으로",
-  "defaultTab": "처음 열 탭",
+  "defaultTab": "열 때의 탭",
   "shortcutViews": "순서대로 탭 1–9"
 })
 addCatalogEntries("ar", {
@@ -5840,7 +5854,7 @@ addCatalogEntries("ar", {
   "showAs": "العرض",
   "placementWindow": "في النافذة",
   "placementTab": "كعلامة تبويب",
-  "defaultTab": "يفتح على",
+  "defaultTab": "اللسان عند الفتح",
   "shortcutViews": "علامة التبويب 1–9 بالترتيب"
 })
 addCatalogEntries("he", {
@@ -5850,7 +5864,7 @@ addCatalogEntries("he", {
   "showAs": "הצגה",
   "placementWindow": "בחלון",
   "placementTab": "כלשונית",
-  "defaultTab": "נפתח על",
+  "defaultTab": "לשונית בפתיחה",
   "shortcutViews": "לשונית 1–9 לפי הסדר"
 })
 addCatalogEntries("fa", {
@@ -5860,7 +5874,7 @@ addCatalogEntries("fa", {
   "showAs": "نمایش",
   "placementWindow": "در پنجره",
   "placementTab": "به‌صورت زبانه",
-  "defaultTab": "باز شدن با",
+  "defaultTab": "زبانه هنگام باز شدن",
   "shortcutViews": "زبانهٔ ۱–۹ به ترتیب"
 })
 addCatalogEntries("hi", {
@@ -5870,7 +5884,7 @@ addCatalogEntries("hi", {
   "showAs": "दिखाएँ",
   "placementWindow": "विंडो में",
   "placementTab": "टैब के रूप में",
-  "defaultTab": "इससे खुलता है",
+  "defaultTab": "खोलने पर टैब",
   "shortcutViews": "क्रम में टैब 1–9"
 })
 addCatalogEntries("id", {
@@ -5880,7 +5894,7 @@ addCatalogEntries("id", {
   "showAs": "Tampilkan",
   "placementWindow": "Di jendela",
   "placementTab": "Sebagai tab",
-  "defaultTab": "Dibuka di",
+  "defaultTab": "Tab saat dibuka",
   "shortcutViews": "Tab 1–9 sesuai urutan"
 })
 addCatalogEntries("vi", {
@@ -5890,7 +5904,7 @@ addCatalogEntries("vi", {
   "showAs": "Hiển thị",
   "placementWindow": "Trong cửa sổ",
   "placementTab": "Dạng thẻ",
-  "defaultTab": "Mở ở",
+  "defaultTab": "Thẻ khi mở",
   "shortcutViews": "Thẻ 1–9 theo thứ tự"
 })
 addCatalogEntries("th", {
@@ -5900,187 +5914,187 @@ addCatalogEntries("th", {
   "showAs": "แสดง",
   "placementWindow": "ในหน้าต่าง",
   "placementTab": "เป็นแท็บ",
-  "defaultTab": "เปิดที่",
+  "defaultTab": "แท็บเมื่อเปิด",
   "shortcutViews": "แท็บ 1–9 ตามลำดับ"
 })
 
 // Movable current weather, section explanations (2.5).
 addCatalogEntries("en", {
-  "displaySettingsHint": "Choose what the selected view shows; the arrows set the order.",
+  "displaySettingsHint": "Each view has its own settings.",
   "displaySectionsHint": "Each section appears in the window or as a tab. Tabs share one strip where the first tabbed section stands.",
   "currentWeatherHint": "Always shown, in the window: it holds the place, refresh and settings. Warnings appear right below it.",
-  "shortcutsGroupForecast": "TABS & MAPS"
+  "shortcutsGroupForecast": "Tabs & maps"
 })
 addCatalogEntries("de", {
-  "displaySettingsHint": "Lege fest, was die ausgewählte Ansicht zeigt; die Pfeile bestimmen die Reihenfolge.",
+  "displaySettingsHint": "Jede Ansicht hat eigene Einstellungen.",
   "displaySectionsHint": "Jede Rubrik erscheint im Fenster oder als Tab. Tabs teilen sich eine Leiste an der Stelle der ersten Tab-Rubrik.",
   "currentWeatherHint": "Immer sichtbar, im Fenster: Hier liegen Ort, Aktualisieren und Einstellungen. Warnungen erscheinen direkt darunter.",
-  "shortcutsGroupForecast": "TABS & KARTEN"
+  "shortcutsGroupForecast": "Tabs & Karten"
 })
 addCatalogEntries("es", {
-  "displaySettingsHint": "Elige qué muestra la vista seleccionada; las flechas fijan el orden.",
+  "displaySettingsHint": "Cada vista tiene sus propios ajustes.",
   "displaySectionsHint": "Cada sección aparece en la ventana o como pestaña. Las pestañas comparten una barra donde está la primera sección en pestaña.",
   "currentWeatherHint": "Siempre visible, en la ventana: contiene el lugar, la actualización y los ajustes. Los avisos aparecen justo debajo.",
-  "shortcutsGroupForecast": "PESTAÑAS Y MAPAS"
+  "shortcutsGroupForecast": "Pestañas y mapas"
 })
 addCatalogEntries("fr", {
-  "displaySettingsHint": "Choisissez ce qu’affiche la vue sélectionnée ; les flèches fixent l’ordre.",
+  "displaySettingsHint": "Chaque vue a ses propres paramètres.",
   "displaySectionsHint": "Chaque section s’affiche dans la fenêtre ou en onglet. Les onglets partagent une barre à la place de la première section en onglet.",
-  "currentWeatherHint": "Toujours affiché, dans la fenêtre : il contient le lieu, l’actualisation et les réglages. Les alertes apparaissent juste en dessous.",
-  "shortcutsGroupForecast": "ONGLETS ET CARTES"
+  "currentWeatherHint": "Toujours affiché, dans la fenêtre : il contient le lieu, l’actualisation et les paramètres. Les alertes apparaissent juste en dessous.",
+  "shortcutsGroupForecast": "Onglets et cartes"
 })
 addCatalogEntries("pt", {
-  "displaySettingsHint": "Escolha o que a visualização selecionada mostra; as setas definem a ordem.",
+  "displaySettingsHint": "Cada visualização tem suas configurações.",
   "displaySectionsHint": "Cada seção aparece na janela ou como aba. As abas compartilham uma barra onde fica a primeira seção em aba.",
   "currentWeatherHint": "Sempre visível, na janela: contém o local, a atualização e as configurações. Os alertas aparecem logo abaixo.",
-  "shortcutsGroupForecast": "ABAS E MAPAS"
+  "shortcutsGroupForecast": "Abas e mapas"
 })
 addCatalogEntries("ru", {
-  "displaySettingsHint": "Выберите, что показывает выбранный вид; стрелки задают порядок.",
+  "displaySettingsHint": "У каждого вида свои настройки.",
   "displaySectionsHint": "Каждый раздел показывается в окне или вкладкой. Вкладки делят одну панель на месте первого раздела-вкладки.",
   "currentWeatherHint": "Всегда видно, в окне: здесь место, обновление и настройки. Предупреждения — сразу под ним.",
-  "shortcutsGroupForecast": "ВКЛАДКИ И КАРТЫ"
+  "shortcutsGroupForecast": "Вкладки и карты"
 })
 addCatalogEntries("uk", {
-  "displaySettingsHint": "Виберіть, що показує вибраний вигляд; стрілки задають порядок.",
+  "displaySettingsHint": "Кожен вигляд має власні налаштування.",
   "displaySectionsHint": "Кожен розділ показується у вікні або вкладкою. Вкладки ділять одну панель на місці першого розділу-вкладки.",
   "currentWeatherHint": "Завжди видно, у вікні: тут місце, оновлення та налаштування. Попередження — одразу під ним.",
-  "shortcutsGroupForecast": "ВКЛАДКИ Й МАПИ"
+  "shortcutsGroupForecast": "Вкладки й мапи"
 })
 addCatalogEntries("pl", {
-  "displaySettingsHint": "Wybierz, co pokazuje wybrany widok; strzałki ustalają kolejność.",
+  "displaySettingsHint": "Każdy widok ma własne ustawienia.",
   "displaySectionsHint": "Każda sekcja pojawia się w oknie lub jako karta. Karty dzielą jeden pasek w miejscu pierwszej sekcji jako karta.",
   "currentWeatherHint": "Zawsze widoczne, w oknie: zawiera miejsce, odświeżanie i ustawienia. Ostrzeżenia pojawiają się tuż pod nim.",
-  "shortcutsGroupForecast": "KARTY I MAPY"
+  "shortcutsGroupForecast": "Karty i mapy"
 })
 addCatalogEntries("it", {
-  "displaySettingsHint": "Scegli cosa mostra la vista selezionata; le frecce fissano l’ordine.",
+  "displaySettingsHint": "Ogni vista ha le sue impostazioni.",
   "displaySectionsHint": "Ogni sezione appare nella finestra o come scheda. Le schede condividono una barra dove sta la prima sezione a scheda.",
   "currentWeatherHint": "Sempre visibile, nella finestra: contiene il luogo, l’aggiornamento e le impostazioni. Gli avvisi compaiono subito sotto.",
-  "shortcutsGroupForecast": "SCHEDE E MAPPE"
+  "shortcutsGroupForecast": "Schede e mappe"
 })
 addCatalogEntries("nl", {
-  "displaySettingsHint": "Kies wat de gekozen weergave toont; de pijlen bepalen de volgorde.",
+  "displaySettingsHint": "Elke weergave heeft eigen instellingen.",
   "displaySectionsHint": "Elke sectie verschijnt in het venster of als tabblad. Tabbladen delen één balk op de plek van de eerste sectie als tabblad.",
   "currentWeatherHint": "Altijd zichtbaar, in het venster: hier staan plaats, verversen en instellingen. Waarschuwingen staan er direct onder.",
-  "shortcutsGroupForecast": "TABBLADEN & KAARTEN"
+  "shortcutsGroupForecast": "Tabbladen & kaarten"
 })
 addCatalogEntries("tr", {
-  "displaySettingsHint": "Seçili görünümün neyi gösterdiğini seçin; oklar sırayı belirler.",
+  "displaySettingsHint": "Her görünümün kendi ayarları var.",
   "displaySectionsHint": "Her bölüm pencerede ya da sekme olarak görünür. Sekmeler, ilk sekme bölümünün yerinde tek bir çubuğu paylaşır.",
   "currentWeatherHint": "Her zaman görünür, pencerede: konum, yenileme ve ayarlar buradadır. Uyarılar hemen altında görünür.",
-  "shortcutsGroupForecast": "SEKMELER VE HARİTALAR"
+  "shortcutsGroupForecast": "Sekmeler ve haritalar"
 })
 addCatalogEntries("cs", {
-  "displaySettingsHint": "Vyberte, co zvolený pohled ukazuje; šipky určují pořadí.",
+  "displaySettingsHint": "Každé zobrazení má vlastní nastavení.",
   "displaySectionsHint": "Každá sekce se zobrazí v okně nebo jako karta. Karty sdílejí jednu lištu v místě první sekce jako karta.",
   "currentWeatherHint": "Vždy viditelné, v okně: obsahuje místo, obnovení a nastavení. Výstrahy jsou hned pod ním.",
-  "shortcutsGroupForecast": "KARTY A MAPY"
+  "shortcutsGroupForecast": "Karty a mapy"
 })
 addCatalogEntries("sv", {
-  "displaySettingsHint": "Välj vad den valda vyn visar; pilarna bestämmer ordningen.",
+  "displaySettingsHint": "Varje vy har egna inställningar.",
   "displaySectionsHint": "Varje avsnitt visas i fönstret eller som flik. Flikarna delar en list där det första flikavsnittet står.",
   "currentWeatherHint": "Alltid synligt, i fönstret: här finns plats, uppdatering och inställningar. Varningar visas direkt under.",
-  "shortcutsGroupForecast": "FLIKAR & KARTOR"
+  "shortcutsGroupForecast": "Flikar & kartor"
 })
 addCatalogEntries("fi", {
-  "displaySettingsHint": "Valitse, mitä valittu näkymä näyttää; nuolet määräävät järjestyksen.",
+  "displaySettingsHint": "Jokaisella näkymällä on omat asetuksensa.",
   "displaySectionsHint": "Jokainen osio näkyy ikkunassa tai välilehtenä. Välilehdet jakavat yhden palkin ensimmäisen välilehtiosion kohdalla.",
   "currentWeatherHint": "Aina näkyvissä, ikkunassa: siinä ovat paikka, päivitys ja asetukset. Varoitukset näkyvät heti sen alla.",
-  "shortcutsGroupForecast": "VÄLILEHDET JA KARTAT"
+  "shortcutsGroupForecast": "Välilehdet ja kartat"
 })
 addCatalogEntries("nb", {
-  "displaySettingsHint": "Velg hva den valgte visningen viser; pilene bestemmer rekkefølgen.",
+  "displaySettingsHint": "Hver visning har egne innstillinger.",
   "displaySectionsHint": "Hver seksjon vises i vinduet eller som fane. Fanene deler én linje der den første faneseksjonen står.",
   "currentWeatherHint": "Alltid synlig, i vinduet: her er sted, oppdatering og innstillinger. Farevarsler vises rett under.",
-  "shortcutsGroupForecast": "FANER OG KART"
+  "shortcutsGroupForecast": "Faner og kart"
 })
 addCatalogEntries("da", {
-  "displaySettingsHint": "Vælg, hvad den valgte visning viser; pilene bestemmer rækkefølgen.",
+  "displaySettingsHint": "Hver visning har sine egne indstillinger.",
   "displaySectionsHint": "Hver sektion vises i vinduet eller som fane. Fanerne deler én bjælke, hvor den første fanesektion står.",
   "currentWeatherHint": "Altid synlig, i vinduet: her er sted, opdatering og indstillinger. Varsler vises lige nedenunder.",
-  "shortcutsGroupForecast": "FANER OG KORT"
+  "shortcutsGroupForecast": "Faner og kort"
 })
 addCatalogEntries("ro", {
-  "displaySettingsHint": "Alege ce arată vizualizarea selectată; săgețile stabilesc ordinea.",
+  "displaySettingsHint": "Fiecare vedere are setările ei.",
   "displaySectionsHint": "Fiecare secțiune apare în fereastră sau ca filă. Filele împart o bară în locul primei secțiuni ca filă.",
   "currentWeatherHint": "Mereu vizibil, în fereastră: conține locul, actualizarea și setările. Avertizările apar imediat dedesubt.",
-  "shortcutsGroupForecast": "FILE ȘI HĂRȚI"
+  "shortcutsGroupForecast": "File și hărți"
 })
 addCatalogEntries("hu", {
-  "displaySettingsHint": "Válaszd ki, mit mutat a kijelölt nézet; a nyilak adják a sorrendet.",
+  "displaySettingsHint": "Minden nézetnek saját beállításai vannak.",
   "displaySectionsHint": "Minden rész az ablakban vagy lapként jelenik meg. A lapok egy sávon osztoznak az első lapként megjelenő rész helyén.",
   "currentWeatherHint": "Mindig látható, az ablakban: itt van a hely, a frissítés és a beállítások. A figyelmeztetések közvetlenül alatta jelennek meg.",
-  "shortcutsGroupForecast": "LAPOK ÉS TÉRKÉPEK"
+  "shortcutsGroupForecast": "Lapok és térképek"
 })
 addCatalogEntries("el", {
-  "displaySettingsHint": "Επιλέξτε τι δείχνει η επιλεγμένη προβολή· τα βέλη ορίζουν τη σειρά.",
+  "displaySettingsHint": "Κάθε προβολή έχει δικές της ρυθμίσεις.",
   "displaySectionsHint": "Κάθε ενότητα εμφανίζεται στο παράθυρο ή ως καρτέλα. Οι καρτέλες μοιράζονται μία γραμμή στη θέση της πρώτης ενότητας-καρτέλας.",
   "currentWeatherHint": "Πάντα ορατό, στο παράθυρο: περιέχει τοποθεσία, ανανέωση και ρυθμίσεις. Οι προειδοποιήσεις εμφανίζονται ακριβώς από κάτω.",
-  "shortcutsGroupForecast": "ΚΑΡΤΕΛΕΣ ΚΑΙ ΧΑΡΤΕΣ"
+  "shortcutsGroupForecast": "Καρτέλες και χάρτες"
 })
 addCatalogEntries("zh_CN", {
-  "displaySettingsHint": "选择所选视图显示的内容；箭头调整顺序。",
+  "displaySettingsHint": "每个视图都有自己的设置。",
   "displaySectionsHint": "每个栏目可显示在窗口中或作为标签页。标签页共用一个标签栏，位于第一个标签页栏目处。",
   "currentWeatherHint": "始终显示在窗口中：包含地点、刷新和设置。预警紧随其下。",
   "shortcutsGroupForecast": "标签页与地图"
 })
 addCatalogEntries("zh_TW", {
-  "displaySettingsHint": "選擇所選檢視顯示的內容；箭頭調整順序。",
+  "displaySettingsHint": "每個檢視都有自己的設定。",
   "displaySectionsHint": "每個欄目可顯示在視窗中或作為分頁。分頁共用一個分頁列，位於第一個分頁欄目處。",
   "currentWeatherHint": "一律顯示在視窗中：包含地點、重新整理和設定。警報緊接其下。",
   "shortcutsGroupForecast": "分頁與地圖"
 })
 addCatalogEntries("ja", {
-  "displaySettingsHint": "選択したビューに表示する内容を選びます。矢印で順番を変えられます。",
+  "displaySettingsHint": "表示ごとに設定があります。",
   "displaySectionsHint": "各セクションはウィンドウ内またはタブとして表示されます。タブは最初のタブセクションの位置で1つのタブバーを共有します。",
   "currentWeatherHint": "常にウィンドウ内に表示：場所、更新、設定があります。警報はそのすぐ下に表示されます。",
   "shortcutsGroupForecast": "タブと地図"
 })
 addCatalogEntries("ko", {
-  "displaySettingsHint": "선택한 보기에 표시할 항목을 고릅니다. 화살표로 순서를 정합니다.",
+  "displaySettingsHint": "보기마다 설정이 따로 있습니다.",
   "displaySectionsHint": "각 섹션은 창 안이나 탭으로 표시됩니다. 탭은 첫 번째 탭 섹션 자리에서 하나의 탭 막대를 공유합니다.",
   "currentWeatherHint": "항상 창 안에 표시: 위치, 새로 고침, 설정이 있습니다. 경보는 바로 아래에 표시됩니다.",
   "shortcutsGroupForecast": "탭 및 지도"
 })
 addCatalogEntries("ar", {
-  "displaySettingsHint": "اختر ما يعرضه العرض المحدد؛ الأسهم تحدد الترتيب.",
+  "displaySettingsHint": "لكل عرض إعداداته.",
   "displaySectionsHint": "يظهر كل قسم في النافذة أو كعلامة تبويب. تتشارك علامات التبويب شريطًا واحدًا في مكان أول قسم معروض كعلامة تبويب.",
   "currentWeatherHint": "يظهر دائمًا في النافذة: يضم الموقع والتحديث والإعدادات. تظهر التحذيرات أسفله مباشرة.",
   "shortcutsGroupForecast": "علامات التبويب والخرائط"
 })
 addCatalogEntries("he", {
-  "displaySettingsHint": "בחרו מה התצוגה הנבחרת מציגה; החצים קובעים את הסדר.",
+  "displaySettingsHint": "לכל תצוגה הגדרות משלה.",
   "displaySectionsHint": "כל מקטע מוצג בחלון או כלשונית. הלשוניות חולקות סרגל אחד במקום המקטע הראשון שמוצג כלשונית.",
   "currentWeatherHint": "תמיד מוצג, בחלון: כולל מיקום, רענון והגדרות. האזהרות מופיעות מיד מתחתיו.",
   "shortcutsGroupForecast": "לשוניות ומפות"
 })
 addCatalogEntries("fa", {
-  "displaySettingsHint": "انتخاب کنید نمای انتخاب‌شده چه چیزی نشان دهد؛ پیکان‌ها ترتیب را تعیین می‌کنند.",
+  "displaySettingsHint": "هر نما تنظیمات خودش را دارد.",
   "displaySectionsHint": "هر بخش در پنجره یا به‌صورت زبانه نمایش داده می‌شود. زبانه‌ها یک نوار مشترک در جای نخستین بخش زبانه‌ای دارند.",
   "currentWeatherHint": "همیشه در پنجره نمایش داده می‌شود: مکان، به‌روزرسانی و تنظیمات اینجاست. هشدارها درست زیر آن می‌آیند.",
   "shortcutsGroupForecast": "زبانه‌ها و نقشه‌ها"
 })
 addCatalogEntries("hi", {
-  "displaySettingsHint": "चुनें कि चयनित दृश्य क्या दिखाए; तीर क्रम तय करते हैं।",
+  "displaySettingsHint": "हर दृश्य की अपनी सेटिंग्स हैं।",
   "displaySectionsHint": "हर अनुभाग विंडो में या टैब के रूप में दिखता है। टैब पहले टैब-अनुभाग की जगह एक पट्टी साझा करते हैं।",
   "currentWeatherHint": "हमेशा विंडो में दिखता है: इसमें स्थान, रीफ़्रेश और सेटिंग्स हैं। चेतावनियाँ ठीक इसके नीचे दिखती हैं।",
   "shortcutsGroupForecast": "टैब और मानचित्र"
 })
 addCatalogEntries("id", {
-  "displaySettingsHint": "Pilih apa yang ditampilkan tampilan terpilih; panah menentukan urutan.",
+  "displaySettingsHint": "Setiap tampilan punya pengaturannya sendiri.",
   "displaySectionsHint": "Setiap bagian tampil di jendela atau sebagai tab. Tab berbagi satu bilah di tempat bagian tab pertama.",
   "currentWeatherHint": "Selalu tampil, di jendela: berisi lokasi, penyegaran, dan pengaturan. Peringatan muncul tepat di bawahnya.",
-  "shortcutsGroupForecast": "TAB & PETA"
+  "shortcutsGroupForecast": "Tab & peta"
 })
 addCatalogEntries("vi", {
-  "displaySettingsHint": "Chọn nội dung chế độ xem đã chọn hiển thị; mũi tên đặt thứ tự.",
+  "displaySettingsHint": "Mỗi chế độ xem có cài đặt riêng.",
   "displaySectionsHint": "Mỗi mục hiển thị trong cửa sổ hoặc dạng thẻ. Các thẻ dùng chung một thanh tại vị trí của mục dạng thẻ đầu tiên.",
   "currentWeatherHint": "Luôn hiển thị trong cửa sổ: chứa địa điểm, làm mới và cài đặt. Cảnh báo hiện ngay bên dưới.",
-  "shortcutsGroupForecast": "THẺ & BẢN ĐỒ"
+  "shortcutsGroupForecast": "Thẻ & bản đồ"
 })
 addCatalogEntries("th", {
-  "displaySettingsHint": "เลือกสิ่งที่มุมมองที่เลือกแสดง ลูกศรใช้กำหนดลำดับ",
+  "displaySettingsHint": "แต่ละมุมมองมีการตั้งค่าของตัวเอง",
   "displaySectionsHint": "แต่ละส่วนแสดงในหน้าต่างหรือเป็นแท็บ แท็บใช้แถบเดียวกันที่ตำแหน่งของส่วนแท็บแรก",
   "currentWeatherHint": "แสดงในหน้าต่างเสมอ: มีตำแหน่ง รีเฟรช และการตั้งค่า คำเตือนแสดงอยู่ด้านล่างทันที",
   "shortcutsGroupForecast": "แท็บและแผนที่"
@@ -6088,8 +6102,8 @@ addCatalogEntries("th", {
 
 // Settings by keyboard (2.5).
 addCatalogEntries("en", {
-  "settingsPagesKeysHint": "Tab / ⇧ Tab switch pages · Esc closes",
-  "settingsKeysHint": "Keyboard: 1–3 pick the view · ↑↓ go to a setting · ←→ change it or pick the column · Space switches · ⇧↑↓ moves the entry",
+  "settingsPagesKeysHint": "Tab / ⇧ Tab next / previous page · Esc close",
+  "settingsKeysHint": "1 2 3 menu bar / widget / app · ↑↓ choose · ← → column · Space switch · ⇧↑↓ move",
   "shortcutSettingsSurface": "Menu bar / widget / app settings",
   "shortcutSettingsMove": "Previous / next setting",
   "shortcutSettingsChange": "Change the value or pick the switch column",
@@ -6097,8 +6111,8 @@ addCatalogEntries("en", {
   "shortcutSettingsReorder": "Move the entry up / down"
 })
 addCatalogEntries("de", {
-  "settingsPagesKeysHint": "Tab / ⇧ Tab wechseln die Seite · Esc schließt",
-  "settingsKeysHint": "Tastatur: 1–3 wählen die Ansicht · ↑↓ zur Einstellung · ←→ ändern oder Spalte wählen · Leertaste schaltet · ⇧↑↓ verschiebt den Eintrag",
+  "settingsPagesKeysHint": "Tab / ⇧ Tab nächste / vorige Seite · Esc schließen",
+  "settingsKeysHint": "1 2 3 Menüleiste / Widget / App · ↑↓ wählen · ← → Spalte · Leertaste umschalten · ⇧↑↓ verschieben",
   "shortcutSettingsSurface": "Einstellungen für Menüleiste / Widget / App",
   "shortcutSettingsMove": "Vorherige / nächste Einstellung",
   "shortcutSettingsChange": "Wert ändern oder Schalterspalte wählen",
@@ -6106,8 +6120,8 @@ addCatalogEntries("de", {
   "shortcutSettingsReorder": "Eintrag nach oben / unten verschieben"
 })
 addCatalogEntries("es", {
-  "settingsPagesKeysHint": "Tab / ⇧ Tab cambian de página · Esc cierra",
-  "settingsKeysHint": "Teclado: 1–3 eligen la vista · ↑↓ ir a un ajuste · ←→ cambiarlo o elegir la columna · Espacio conmuta · ⇧↑↓ mueve la entrada",
+  "settingsPagesKeysHint": "Tab / ⇧ Tab página siguiente / anterior · Esc cerrar",
+  "settingsKeysHint": "1 2 3 barra de menú / widget / aplicación · ↑↓ elegir · ← → columna · Espacio alternar · ⇧↑↓ mover",
   "shortcutSettingsSurface": "Ajustes de barra / widget / aplicación",
   "shortcutSettingsMove": "Ajuste anterior / siguiente",
   "shortcutSettingsChange": "Cambiar el valor o elegir la columna",
@@ -6115,26 +6129,26 @@ addCatalogEntries("es", {
   "shortcutSettingsReorder": "Mover la entrada arriba / abajo"
 })
 addCatalogEntries("fr", {
-  "settingsPagesKeysHint": "Tab / ⇧ Tab changent de page · Échap ferme",
-  "settingsKeysHint": "Clavier : 1–3 choisissent la vue · ↑↓ vers un réglage · ←→ le modifient ou choisissent la colonne · Espace bascule · ⇧↑↓ déplace l’entrée",
-  "shortcutSettingsSurface": "Réglages barre / widget / application",
-  "shortcutSettingsMove": "Réglage précédent / suivant",
+  "settingsPagesKeysHint": "Tab / ⇧ Tab page suivante / précédente · Échap fermer",
+  "settingsKeysHint": "1 2 3 barre de menus / widget / application · ↑↓ choisir · ← → colonne · Espace basculer · ⇧↑↓ déplacer",
+  "shortcutSettingsSurface": "Paramètres barre / widget / application",
+  "shortcutSettingsMove": "Paramètre précédent / suivant",
   "shortcutSettingsChange": "Modifier la valeur ou choisir la colonne",
   "shortcutSettingsToggle": "Basculer, ouvrir la liste ou appuyer sur le bouton",
   "shortcutSettingsReorder": "Déplacer l’entrée vers le haut / bas"
 })
 addCatalogEntries("pt", {
-  "settingsPagesKeysHint": "Tab / ⇧ Tab mudam de página · Esc fecha",
-  "settingsKeysHint": "Teclado: 1–3 escolhem a visualização · ↑↓ ir a uma opção · ←→ alterá-la ou escolher a coluna · Espaço alterna · ⇧↑↓ move a entrada",
-  "shortcutSettingsSurface": "Configurações de barra / widget / app",
+  "settingsPagesKeysHint": "Tab / ⇧ Tab página seguinte / anterior · Esc fechar",
+  "settingsKeysHint": "1 2 3 barra de menu / widget / aplicativo · ↑↓ escolher · ← → coluna · Espaço alternar · ⇧↑↓ mover",
+  "shortcutSettingsSurface": "Configurações de barra / widget / aplicativo",
   "shortcutSettingsMove": "Opção anterior / seguinte",
   "shortcutSettingsChange": "Alterar o valor ou escolher a coluna",
   "shortcutSettingsToggle": "Alternar, abrir a lista ou apertar o botão",
   "shortcutSettingsReorder": "Mover a entrada para cima / baixo"
 })
 addCatalogEntries("ru", {
-  "settingsPagesKeysHint": "Tab / ⇧ Tab — смена страницы · Esc — закрыть",
-  "settingsKeysHint": "Клавиатура: 1–3 — вид · ↑↓ — к настройке · ←→ — изменить или выбрать столбец · Пробел — переключить · ⇧↑↓ — переместить",
+  "settingsPagesKeysHint": "Tab / ⇧ Tab следующая / предыдущая страница · Esc закрыть",
+  "settingsKeysHint": "1 2 3 строка меню / виджет / приложение · ↑↓ выбрать · ← → столбец · Пробел переключить · ⇧↑↓ переместить",
   "shortcutSettingsSurface": "Настройки панели / виджета / приложения",
   "shortcutSettingsMove": "Предыдущая / следующая настройка",
   "shortcutSettingsChange": "Изменить значение или выбрать столбец",
@@ -6142,8 +6156,8 @@ addCatalogEntries("ru", {
   "shortcutSettingsReorder": "Переместить пункт вверх / вниз"
 })
 addCatalogEntries("uk", {
-  "settingsPagesKeysHint": "Tab / ⇧ Tab — зміна сторінки · Esc — закрити",
-  "settingsKeysHint": "Клавіатура: 1–3 — вигляд · ↑↓ — до налаштування · ←→ — змінити або вибрати стовпець · Пробіл — перемкнути · ⇧↑↓ — перемістити",
+  "settingsPagesKeysHint": "Tab / ⇧ Tab наступна / попередня сторінка · Esc закрити",
+  "settingsKeysHint": "1 2 3 панель меню / віджет / застосунок · ↑↓ вибрати · ← → стовпець · Пробіл перемкнути · ⇧↑↓ перемістити",
   "shortcutSettingsSurface": "Налаштування панелі / віджета / застосунку",
   "shortcutSettingsMove": "Попереднє / наступне налаштування",
   "shortcutSettingsChange": "Змінити значення або вибрати стовпець",
@@ -6151,8 +6165,8 @@ addCatalogEntries("uk", {
   "shortcutSettingsReorder": "Перемістити пункт угору / вниз"
 })
 addCatalogEntries("pl", {
-  "settingsPagesKeysHint": "Tab / ⇧ Tab zmieniają stronę · Esc zamyka",
-  "settingsKeysHint": "Klawiatura: 1–3 wybierają widok · ↑↓ do ustawienia · ←→ zmiana lub wybór kolumny · Spacja przełącza · ⇧↑↓ przesuwa wpis",
+  "settingsPagesKeysHint": "Tab / ⇧ Tab następna / poprzednia strona · Esc zamknij",
+  "settingsKeysHint": "1 2 3 pasek menu / widżet / aplikacja · ↑↓ wybierz · ← → kolumna · Spacja przełącz · ⇧↑↓ przesuń",
   "shortcutSettingsSurface": "Ustawienia paska / widżetu / aplikacji",
   "shortcutSettingsMove": "Poprzednie / następne ustawienie",
   "shortcutSettingsChange": "Zmień wartość lub wybierz kolumnę",
@@ -6160,8 +6174,8 @@ addCatalogEntries("pl", {
   "shortcutSettingsReorder": "Przesuń wpis w górę / w dół"
 })
 addCatalogEntries("it", {
-  "settingsPagesKeysHint": "Tab / ⇧ Tab cambiano pagina · Esc chiude",
-  "settingsKeysHint": "Tastiera: 1–3 scelgono la vista · ↑↓ a un’impostazione · ←→ la cambiano o scelgono la colonna · Spazio commuta · ⇧↑↓ sposta la voce",
+  "settingsPagesKeysHint": "Tab / ⇧ Tab pagina successiva / precedente · Esc chiudi",
+  "settingsKeysHint": "1 2 3 barra dei menu / widget / app · ↑↓ scegli · ← → colonna · Spazio alterna · ⇧↑↓ sposta",
   "shortcutSettingsSurface": "Impostazioni barra / widget / app",
   "shortcutSettingsMove": "Impostazione precedente / successiva",
   "shortcutSettingsChange": "Cambia il valore o scegli la colonna",
@@ -6169,8 +6183,8 @@ addCatalogEntries("it", {
   "shortcutSettingsReorder": "Sposta la voce su / giù"
 })
 addCatalogEntries("nl", {
-  "settingsPagesKeysHint": "Tab / ⇧ Tab wisselen van pagina · Esc sluit",
-  "settingsKeysHint": "Toetsenbord: 1–3 kiezen de weergave · ↑↓ naar een instelling · ←→ wijzigen of kolom kiezen · Spatie schakelt · ⇧↑↓ verplaatst het item",
+  "settingsPagesKeysHint": "Tab / ⇧ Tab volgende / vorige pagina · Esc sluiten",
+  "settingsKeysHint": "1 2 3 menubalk / widget / app · ↑↓ kiezen · ← → kolom · Spatie schakelen · ⇧↑↓ verplaatsen",
   "shortcutSettingsSurface": "Instellingen balk / widget / app",
   "shortcutSettingsMove": "Vorige / volgende instelling",
   "shortcutSettingsChange": "Waarde wijzigen of kolom kiezen",
@@ -6178,17 +6192,17 @@ addCatalogEntries("nl", {
   "shortcutSettingsReorder": "Item omhoog / omlaag verplaatsen"
 })
 addCatalogEntries("tr", {
-  "settingsPagesKeysHint": "Tab / ⇧ Tab sayfa değiştirir · Esc kapatır",
-  "settingsKeysHint": "Klavye: 1–3 görünümü seçer · ↑↓ ayara gider · ←→ değiştirir veya sütun seçer · Boşluk açar/kapatır · ⇧↑↓ girdiyi taşır",
-  "shortcutSettingsSurface": "Çubuk / widget / uygulama ayarları",
+  "settingsPagesKeysHint": "Tab / ⇧ Tab sonraki / önceki sayfa · Esc kapat",
+  "settingsKeysHint": "1 2 3 menü çubuğu / bileşen / uygulama · ↑↓ seç · ← → sütun · Boşluk aç/kapat · ⇧↑↓ taşı",
+  "shortcutSettingsSurface": "Çubuk / bileşen / uygulama ayarları",
   "shortcutSettingsMove": "Önceki / sonraki ayar",
   "shortcutSettingsChange": "Değeri değiştir veya sütun seç",
   "shortcutSettingsToggle": "Aç/kapat, listeyi aç veya düğmeye bas",
   "shortcutSettingsReorder": "Girdiyi yukarı / aşağı taşı"
 })
 addCatalogEntries("cs", {
-  "settingsPagesKeysHint": "Tab / ⇧ Tab mění stránku · Esc zavře",
-  "settingsKeysHint": "Klávesnice: 1–3 volí pohled · ↑↓ na nastavení · ←→ změna nebo volba sloupce · Mezerník přepíná · ⇧↑↓ přesouvá položku",
+  "settingsPagesKeysHint": "Tab / ⇧ Tab další / předchozí stránka · Esc zavřít",
+  "settingsKeysHint": "1 2 3 panel nabídky / widget / aplikace · ↑↓ vybrat · ← → sloupec · mezerník přepnout · ⇧↑↓ přesunout",
   "shortcutSettingsSurface": "Nastavení lišty / widgetu / aplikace",
   "shortcutSettingsMove": "Předchozí / další nastavení",
   "shortcutSettingsChange": "Změnit hodnotu nebo zvolit sloupec",
@@ -6196,8 +6210,8 @@ addCatalogEntries("cs", {
   "shortcutSettingsReorder": "Posunout položku nahoru / dolů"
 })
 addCatalogEntries("sv", {
-  "settingsPagesKeysHint": "Tab / ⇧ Tab byter sida · Esc stänger",
-  "settingsKeysHint": "Tangentbord: 1–3 väljer vy · ↑↓ till en inställning · ←→ ändrar eller väljer kolumn · Mellanslag växlar · ⇧↑↓ flyttar posten",
+  "settingsPagesKeysHint": "Tab / ⇧ Tab nästa / föregående sida · Esc stäng",
+  "settingsKeysHint": "1 2 3 menyrad / widget / app · ↑↓ välj · ← → kolumn · blanksteg växla · ⇧↑↓ flytta",
   "shortcutSettingsSurface": "Inställningar för list / widget / app",
   "shortcutSettingsMove": "Föregående / nästa inställning",
   "shortcutSettingsChange": "Ändra värdet eller välj kolumn",
@@ -6205,26 +6219,26 @@ addCatalogEntries("sv", {
   "shortcutSettingsReorder": "Flytta posten upp / ned"
 })
 addCatalogEntries("fi", {
-  "settingsPagesKeysHint": "Tab / ⇧ Tab vaihtavat sivua · Esc sulkee",
-  "settingsKeysHint": "Näppäimistö: 1–3 valitsee näkymän · ↑↓ asetukseen · ←→ muuttaa tai valitsee sarakkeen · Välilyönti vaihtaa · ⇧↑↓ siirtää kohdetta",
-  "shortcutSettingsSurface": "Palkin / pienoisohjelman / sovelluksen asetukset",
+  "settingsPagesKeysHint": "Tab / ⇧ Tab seuraava / edellinen sivu · Esc sulje",
+  "settingsKeysHint": "1 2 3 valikkorivi / pienoissovellus / sovellus · ↑↓ valitse · ← → sarake · välilyönti vaihda · ⇧↑↓ siirrä",
+  "shortcutSettingsSurface": "Palkin / pienoissovelluksen / sovelluksen asetukset",
   "shortcutSettingsMove": "Edellinen / seuraava asetus",
   "shortcutSettingsChange": "Muuta arvoa tai valitse sarake",
   "shortcutSettingsToggle": "Vaihda, avaa luettelo tai paina painiketta",
   "shortcutSettingsReorder": "Siirrä kohdetta ylös / alas"
 })
 addCatalogEntries("nb", {
-  "settingsPagesKeysHint": "Tab / ⇧ Tab bytter side · Esc lukker",
-  "settingsKeysHint": "Tastatur: 1–3 velger visning · ↑↓ til en innstilling · ←→ endrer eller velger kolonne · Mellomrom slår av/på · ⇧↑↓ flytter oppføringen",
-  "shortcutSettingsSurface": "Innstillinger for linje / widget / app",
+  "settingsPagesKeysHint": "Tab / ⇧ Tab neste / forrige side · Esc lukk",
+  "settingsKeysHint": "1 2 3 menylinje / miniprogram / app · ↑↓ velg · ← → kolonne · mellomrom veksle · ⇧↑↓ flytt",
+  "shortcutSettingsSurface": "Innstillinger for linje / miniprogram / app",
   "shortcutSettingsMove": "Forrige / neste innstilling",
   "shortcutSettingsChange": "Endre verdien eller velg kolonne",
   "shortcutSettingsToggle": "Slå av/på, åpne listen eller trykk på knappen",
   "shortcutSettingsReorder": "Flytt oppføringen opp / ned"
 })
 addCatalogEntries("da", {
-  "settingsPagesKeysHint": "Tab / ⇧ Tab skifter side · Esc lukker",
-  "settingsKeysHint": "Tastatur: 1–3 vælger visning · ↑↓ til en indstilling · ←→ ændrer eller vælger kolonne · Mellemrum slår til/fra · ⇧↑↓ flytter posten",
+  "settingsPagesKeysHint": "Tab / ⇧ Tab næste / forrige side · Esc luk",
+  "settingsKeysHint": "1 2 3 menulinje / widget / app · ↑↓ vælg · ← → kolonne · mellemrum skift · ⇧↑↓ flyt",
   "shortcutSettingsSurface": "Indstillinger for bjælke / widget / app",
   "shortcutSettingsMove": "Forrige / næste indstilling",
   "shortcutSettingsChange": "Ændr værdien eller vælg kolonne",
@@ -6232,8 +6246,8 @@ addCatalogEntries("da", {
   "shortcutSettingsReorder": "Flyt posten op / ned"
 })
 addCatalogEntries("ro", {
-  "settingsPagesKeysHint": "Tab / ⇧ Tab schimbă pagina · Esc închide",
-  "settingsKeysHint": "Tastatură: 1–3 aleg vizualizarea · ↑↓ la o setare · ←→ o modifică sau aleg coloana · Spațiu comută · ⇧↑↓ mută intrarea",
+  "settingsPagesKeysHint": "Tab / ⇧ Tab pagina următoare / anterioară · Esc închide",
+  "settingsKeysHint": "1 2 3 bara de meniu / widget / aplicație · ↑↓ alege · ← → coloană · Spațiu comută · ⇧↑↓ mută",
   "shortcutSettingsSurface": "Setări bară / widget / aplicație",
   "shortcutSettingsMove": "Setarea anterioară / următoare",
   "shortcutSettingsChange": "Modifică valoarea sau alege coloana",
@@ -6241,26 +6255,26 @@ addCatalogEntries("ro", {
   "shortcutSettingsReorder": "Mută intrarea în sus / în jos"
 })
 addCatalogEntries("hu", {
-  "settingsPagesKeysHint": "Tab / ⇧ Tab lapoz · Esc bezár",
-  "settingsKeysHint": "Billentyűzet: 1–3 nézetet választ · ↑↓ beállításhoz lép · ←→ módosít vagy oszlopot választ · Szóköz kapcsol · ⇧↑↓ mozgatja a tételt",
-  "shortcutSettingsSurface": "Sáv / widget / alkalmazás beállításai",
+  "settingsPagesKeysHint": "Tab / ⇧ Tab következő / előző oldal · Esc bezárás",
+  "settingsKeysHint": "1 2 3 menüsáv / minialkalmazás / alkalmazás · ↑↓ választás · ← → oszlop · Szóköz váltás · ⇧↑↓ áthelyezés",
+  "shortcutSettingsSurface": "Sáv / minialkalmazás / alkalmazás beállításai",
   "shortcutSettingsMove": "Előző / következő beállítás",
   "shortcutSettingsChange": "Érték módosítása vagy oszlop választása",
   "shortcutSettingsToggle": "Kapcsolás, lista megnyitása vagy gomb megnyomása",
   "shortcutSettingsReorder": "Tétel mozgatása fel / le"
 })
 addCatalogEntries("el", {
-  "settingsPagesKeysHint": "Tab / ⇧ Tab αλλάζουν σελίδα · Esc κλείνει",
-  "settingsKeysHint": "Πληκτρολόγιο: 1–3 επιλέγουν προβολή · ↑↓ σε ρύθμιση · ←→ αλλαγή ή επιλογή στήλης · Διάστημα εναλλάσσει · ⇧↑↓ μετακινεί την καταχώριση",
-  "shortcutSettingsSurface": "Ρυθμίσεις γραμμής / widget / εφαρμογής",
+  "settingsPagesKeysHint": "Tab / ⇧ Tab επόμενη / προηγούμενη σελίδα · Esc κλείσιμο",
+  "settingsKeysHint": "1 2 3 γραμμή μενού / γραφικό στοιχείο / εφαρμογή · ↑↓ επιλογή · ← → στήλη · Διάστημα εναλλαγή · ⇧↑↓ μετακίνηση",
+  "shortcutSettingsSurface": "Ρυθμίσεις γραμμής / γραφικού στοιχείου / εφαρμογής",
   "shortcutSettingsMove": "Προηγούμενη / επόμενη ρύθμιση",
   "shortcutSettingsChange": "Αλλαγή τιμής ή επιλογή στήλης",
   "shortcutSettingsToggle": "Εναλλαγή, άνοιγμα λίστας ή πάτημα κουμπιού",
   "shortcutSettingsReorder": "Μετακίνηση καταχώρισης πάνω / κάτω"
 })
 addCatalogEntries("zh_CN", {
-  "settingsPagesKeysHint": "Tab / ⇧ Tab 切换页面 · Esc 关闭",
-  "settingsKeysHint": "键盘：1–3 选择视图 · ↑↓ 移到设置项 · ←→ 更改或选择列 · 空格切换 · ⇧↑↓ 移动条目",
+  "settingsPagesKeysHint": "Tab / ⇧ Tab 下一页 / 上一页 · Esc 关闭",
+  "settingsKeysHint": "1 2 3 菜单栏 / 小组件 / 应用 · ↑↓ 选择 · ← → 列 · 空格 切换 · ⇧↑↓ 移动",
   "shortcutSettingsSurface": "菜单栏 / 小组件 / 应用设置",
   "shortcutSettingsMove": "上一个 / 下一个设置项",
   "shortcutSettingsChange": "更改数值或选择开关列",
@@ -6268,8 +6282,8 @@ addCatalogEntries("zh_CN", {
   "shortcutSettingsReorder": "上移 / 下移条目"
 })
 addCatalogEntries("zh_TW", {
-  "settingsPagesKeysHint": "Tab / ⇧ Tab 切換頁面 · Esc 關閉",
-  "settingsKeysHint": "鍵盤：1–3 選擇檢視 · ↑↓ 移到設定項 · ←→ 變更或選擇欄 · 空白鍵切換 · ⇧↑↓ 移動項目",
+  "settingsPagesKeysHint": "Tab / ⇧ Tab 下一頁 / 上一頁 · Esc 關閉",
+  "settingsKeysHint": "1 2 3 選單列 / 小工具 / 應用程式 · ↑↓ 選擇 · ← → 欄 · 空白鍵 切換 · ⇧↑↓ 移動",
   "shortcutSettingsSurface": "選單列 / 小工具 / 應用程式設定",
   "shortcutSettingsMove": "上一個 / 下一個設定項",
   "shortcutSettingsChange": "變更數值或選擇開關欄",
@@ -6277,8 +6291,8 @@ addCatalogEntries("zh_TW", {
   "shortcutSettingsReorder": "上移 / 下移項目"
 })
 addCatalogEntries("ja", {
-  "settingsPagesKeysHint": "Tab / ⇧ Tab でページ切替 · Esc で閉じる",
-  "settingsKeysHint": "キーボード：1–3 で表示先を選択 · ↑↓ で設定へ移動 · ←→ で変更・列の選択 · Space で切替 · ⇧↑↓ で項目を移動",
+  "settingsPagesKeysHint": "Tab / ⇧ Tab 次 / 前のページ · Esc 閉じる",
+  "settingsKeysHint": "1 2 3 メニューバー / ウィジェット / アプリ · ↑↓ 選択 · ← → 列 · スペース 切替 · ⇧↑↓ 移動",
   "shortcutSettingsSurface": "メニューバー / ウィジェット / アプリの設定",
   "shortcutSettingsMove": "前 / 次の設定",
   "shortcutSettingsChange": "値を変更、またはスイッチ列を選択",
@@ -6286,17 +6300,17 @@ addCatalogEntries("ja", {
   "shortcutSettingsReorder": "項目を上 / 下へ移動"
 })
 addCatalogEntries("ko", {
-  "settingsPagesKeysHint": "Tab / ⇧ Tab 페이지 전환 · Esc 닫기",
-  "settingsKeysHint": "키보드: 1–3 보기 선택 · ↑↓ 설정으로 이동 · ←→ 변경 또는 열 선택 · Space 전환 · ⇧↑↓ 항목 이동",
-  "shortcutSettingsSurface": "메뉴 막대 / 위젯 / 앱 설정",
+  "settingsPagesKeysHint": "Tab / ⇧ Tab 다음 / 이전 페이지 · Esc 닫기",
+  "settingsKeysHint": "1 2 3 메뉴 모음 / 위젯 / 앱 · ↑↓ 선택 · ← → 열 · 스페이스 전환 · ⇧↑↓ 이동",
+  "shortcutSettingsSurface": "메뉴 모음 / 위젯 / 앱 설정",
   "shortcutSettingsMove": "이전 / 다음 설정",
   "shortcutSettingsChange": "값 변경 또는 스위치 열 선택",
   "shortcutSettingsToggle": "전환, 목록 열기 또는 버튼 누르기",
   "shortcutSettingsReorder": "항목을 위 / 아래로 이동"
 })
 addCatalogEntries("ar", {
-  "settingsPagesKeysHint": "Tab / ⇧ Tab لتبديل الصفحة · Esc للإغلاق",
-  "settingsKeysHint": "لوحة المفاتيح: 1–3 لاختيار العرض · ↑↓ للانتقال إلى إعداد · ←→ للتغيير أو اختيار العمود · المسافة للتبديل · ⇧↑↓ لنقل العنصر",
+  "settingsPagesKeysHint": "Tab / ⇧ Tab الصفحة التالية / السابقة · Esc إغلاق",
+  "settingsKeysHint": "1 2 3 شريط القوائم / الأداة / التطبيق · ↑↓ اختيار · ← → عمود · المسافة تبديل · ⇧↑↓ نقل",
   "shortcutSettingsSurface": "إعدادات الشريط / الأداة / التطبيق",
   "shortcutSettingsMove": "الإعداد السابق / التالي",
   "shortcutSettingsChange": "تغيير القيمة أو اختيار العمود",
@@ -6304,26 +6318,26 @@ addCatalogEntries("ar", {
   "shortcutSettingsReorder": "نقل العنصر لأعلى / لأسفل"
 })
 addCatalogEntries("he", {
-  "settingsPagesKeysHint": "Tab / ⇧ Tab מחליפים עמוד · Esc סוגר",
-  "settingsKeysHint": "מקלדת: 1–3 בוחרים תצוגה · ↑↓ להגדרה · ←→ שינוי או בחירת עמודה · רווח מחליף · ⇧↑↓ מזיז את הפריט",
-  "shortcutSettingsSurface": "הגדרות סרגל / וידג׳ט / אפליקציה",
+  "settingsPagesKeysHint": "Tab / ⇧ Tab העמוד הבא / הקודם · Esc סגירה",
+  "settingsKeysHint": "1 2 3 שורת תפריטים / יישומון / יישום · ↑↓ בחירה · ← → עמודה · רווח החלפה · ⇧↑↓ הזזה",
+  "shortcutSettingsSurface": "הגדרות סרגל / יישומון / יישום",
   "shortcutSettingsMove": "הגדרה קודמת / הבאה",
   "shortcutSettingsChange": "שינוי הערך או בחירת עמודה",
   "shortcutSettingsToggle": "החלפה, פתיחת רשימה או לחיצה על כפתור",
   "shortcutSettingsReorder": "הזזת הפריט למעלה / למטה"
 })
 addCatalogEntries("fa", {
-  "settingsPagesKeysHint": "Tab / ⇧ Tab صفحه را عوض می‌کنند · Esc می‌بندد",
-  "settingsKeysHint": "صفحه‌کلید: ۱–۳ انتخاب نما · ↑↓ رفتن به تنظیم · ←→ تغییر یا انتخاب ستون · فاصله تغییر وضعیت · ⇧↑↓ جابه‌جایی مورد",
-  "shortcutSettingsSurface": "تنظیمات نوار / ابزارک / برنامه",
+  "settingsPagesKeysHint": "Tab / ⇧ Tab صفحه بعد / قبل · Esc بستن",
+  "settingsKeysHint": "1 2 3 نوار منو / ویجت / برنامه · ↑↓ انتخاب · ← → ستون · فاصله تغییر حالت · ⇧↑↓ جابه‌جایی",
+  "shortcutSettingsSurface": "تنظیمات نوار / ویجت / برنامه",
   "shortcutSettingsMove": "تنظیم قبلی / بعدی",
   "shortcutSettingsChange": "تغییر مقدار یا انتخاب ستون",
   "shortcutSettingsToggle": "تغییر وضعیت، باز کردن فهرست یا زدن دکمه",
   "shortcutSettingsReorder": "جابه‌جایی مورد به بالا / پایین"
 })
 addCatalogEntries("hi", {
-  "settingsPagesKeysHint": "Tab / ⇧ Tab पेज बदलते हैं · Esc बंद करता है",
-  "settingsKeysHint": "कीबोर्ड: 1–3 दृश्य चुनें · ↑↓ सेटिंग पर जाएँ · ←→ बदलें या कॉलम चुनें · Space टॉगल · ⇧↑↓ प्रविष्टि खिसकाएँ",
+  "settingsPagesKeysHint": "Tab / ⇧ Tab अगला / पिछला पेज · Esc बंद करें",
+  "settingsKeysHint": "1 2 3 मेन्यू बार / विजेट / ऐप · ↑↓ चुनें · ← → कॉलम · स्पेस बदलें · ⇧↑↓ खिसकाएँ",
   "shortcutSettingsSurface": "मेनू बार / विजेट / ऐप सेटिंग्स",
   "shortcutSettingsMove": "पिछली / अगली सेटिंग",
   "shortcutSettingsChange": "मान बदलें या स्विच कॉलम चुनें",
@@ -6331,8 +6345,8 @@ addCatalogEntries("hi", {
   "shortcutSettingsReorder": "प्रविष्टि ऊपर / नीचे खिसकाएँ"
 })
 addCatalogEntries("id", {
-  "settingsPagesKeysHint": "Tab / ⇧ Tab ganti halaman · Esc menutup",
-  "settingsKeysHint": "Keyboard: 1–3 pilih tampilan · ↑↓ ke pengaturan · ←→ ubah atau pilih kolom · Spasi mengalihkan · ⇧↑↓ memindahkan entri",
+  "settingsPagesKeysHint": "Tab / ⇧ Tab halaman berikut / sebelumnya · Esc tutup",
+  "settingsKeysHint": "1 2 3 bilah menu / widget / aplikasi · ↑↓ pilih · ← → kolom · Spasi alihkan · ⇧↑↓ pindah",
   "shortcutSettingsSurface": "Pengaturan bilah / widget / aplikasi",
   "shortcutSettingsMove": "Pengaturan sebelumnya / berikutnya",
   "shortcutSettingsChange": "Ubah nilai atau pilih kolom",
@@ -6340,8 +6354,8 @@ addCatalogEntries("id", {
   "shortcutSettingsReorder": "Pindahkan entri ke atas / bawah"
 })
 addCatalogEntries("vi", {
-  "settingsPagesKeysHint": "Tab / ⇧ Tab chuyển trang · Esc đóng",
-  "settingsKeysHint": "Bàn phím: 1–3 chọn chế độ xem · ↑↓ tới cài đặt · ←→ thay đổi hoặc chọn cột · Space bật/tắt · ⇧↑↓ di chuyển mục",
+  "settingsPagesKeysHint": "Tab / ⇧ Tab trang sau / trước · Esc đóng",
+  "settingsKeysHint": "1 2 3 thanh menu / tiện ích / ứng dụng · ↑↓ chọn · ← → cột · Cách chuyển · ⇧↑↓ di chuyển",
   "shortcutSettingsSurface": "Cài đặt thanh / tiện ích / ứng dụng",
   "shortcutSettingsMove": "Cài đặt trước / sau",
   "shortcutSettingsChange": "Đổi giá trị hoặc chọn cột",
@@ -6349,8 +6363,8 @@ addCatalogEntries("vi", {
   "shortcutSettingsReorder": "Di chuyển mục lên / xuống"
 })
 addCatalogEntries("th", {
-  "settingsPagesKeysHint": "Tab / ⇧ Tab เปลี่ยนหน้า · Esc ปิด",
-  "settingsKeysHint": "แป้นพิมพ์: 1–3 เลือกมุมมอง · ↑↓ ไปยังการตั้งค่า · ←→ เปลี่ยนค่าหรือเลือกคอลัมน์ · Space สลับ · ⇧↑↓ ย้ายรายการ",
+  "settingsPagesKeysHint": "Tab / ⇧ Tab หน้าถัดไป / ก่อนหน้า · Esc ปิด",
+  "settingsKeysHint": "1 2 3 แถบเมนู / วิดเจ็ต / แอป · ↑↓ เลือก · ← → คอลัมน์ · Space สลับ · ⇧↑↓ ย้าย",
   "shortcutSettingsSurface": "การตั้งค่าแถบ / วิดเจ็ต / แอป",
   "shortcutSettingsMove": "การตั้งค่าก่อนหน้า / ถัดไป",
   "shortcutSettingsChange": "เปลี่ยนค่าหรือเลือกคอลัมน์สวิตช์",
@@ -7723,7 +7737,7 @@ addCatalogEntries("th", { "dayLengthChange": "การเปลี่ยนแ�
 addCatalogEntries("en", {
   "settingsPageGeneral": "General",
   "generalSubtitle": "For the menu bar, widget and app",
-  "settingsGeneralKeysHint": "Keyboard: ↑↓ go to a setting · ←→ change it · Space / Enter open the list",
+  "settingsGeneralKeysHint": "↑↓ choose · ← → change · Enter open · Space switch",
   "refreshForecast": "Forecast",
   "refreshRadar": "Radar and rain nowcast",
   "radarRefreshAuto": "Every new measurement (about 5 min)",
@@ -7732,7 +7746,7 @@ addCatalogEntries("en", {
 addCatalogEntries("de", {
   "settingsPageGeneral": "Allgemein",
   "generalSubtitle": "Für Menüleiste, Widget und App",
-  "settingsGeneralKeysHint": "Tastatur: ↑↓ zur Einstellung · ←→ ändern · Leertaste / Enter öffnet die Liste",
+  "settingsGeneralKeysHint": "↑↓ wählen · ← → ändern · Enter öffnen · Leertaste umschalten",
   "refreshForecast": "Vorhersage",
   "refreshRadar": "Radar und Regen-Nowcast",
   "radarRefreshAuto": "Jede neue Messung (ca. 5 min)",
@@ -7741,7 +7755,7 @@ addCatalogEntries("de", {
 addCatalogEntries("es", {
   "settingsPageGeneral": "General",
   "generalSubtitle": "Para la barra, el widget y la aplicación",
-  "settingsGeneralKeysHint": "Teclado: ↑↓ ir a un ajuste · ←→ cambiarlo · Espacio / Intro abre la lista",
+  "settingsGeneralKeysHint": "↑↓ elegir · ← → cambiar · Enter abrir · Espacio alternar",
   "refreshForecast": "Previsión",
   "refreshRadar": "Radar y nowcast de lluvia",
   "radarRefreshAuto": "Cada nueva medición (unos 5 min)",
@@ -7750,7 +7764,7 @@ addCatalogEntries("es", {
 addCatalogEntries("fr", {
   "settingsPageGeneral": "Général",
   "generalSubtitle": "Pour la barre, le widget et l’application",
-  "settingsGeneralKeysHint": "Clavier : ↑↓ vers un réglage · ←→ le modifier · Espace / Entrée ouvre la liste",
+  "settingsGeneralKeysHint": "↑↓ choisir · ← → changer · Entrée ouvrir · Espace basculer",
   "refreshForecast": "Prévision",
   "refreshRadar": "Radar et nowcast de pluie",
   "radarRefreshAuto": "Chaque nouvelle mesure (env. 5 min)",
@@ -7758,8 +7772,8 @@ addCatalogEntries("fr", {
 })
 addCatalogEntries("pt", {
   "settingsPageGeneral": "Geral",
-  "generalSubtitle": "Para a barra, o widget e o app",
-  "settingsGeneralKeysHint": "Teclado: ↑↓ ir a uma opção · ←→ alterá-la · Espaço / Enter abre a lista",
+  "generalSubtitle": "Para a barra, o widget e o aplicativo",
+  "settingsGeneralKeysHint": "↑↓ escolher · ← → mudar · Enter abrir · Espaço alternar",
   "refreshForecast": "Previsão",
   "refreshRadar": "Radar e nowcast de chuva",
   "radarRefreshAuto": "Cada nova medição (cerca de 5 min)",
@@ -7768,7 +7782,7 @@ addCatalogEntries("pt", {
 addCatalogEntries("ru", {
   "settingsPageGeneral": "Общие",
   "generalSubtitle": "Для панели, виджета и приложения",
-  "settingsGeneralKeysHint": "Клавиатура: ↑↓ — к настройке · ←→ — изменить · Пробел / Enter — открыть список",
+  "settingsGeneralKeysHint": "↑↓ выбрать · ← → изменить · Enter открыть · Пробел переключить",
   "refreshForecast": "Прогноз",
   "refreshRadar": "Радар и наукаст осадков",
   "radarRefreshAuto": "Каждое новое измерение (около 5 мин)",
@@ -7777,7 +7791,7 @@ addCatalogEntries("ru", {
 addCatalogEntries("uk", {
   "settingsPageGeneral": "Загальні",
   "generalSubtitle": "Для панелі, віджета й застосунку",
-  "settingsGeneralKeysHint": "Клавіатура: ↑↓ — до налаштування · ←→ — змінити · Пробіл / Enter — відкрити список",
+  "settingsGeneralKeysHint": "↑↓ вибрати · ← → змінити · Enter відкрити · Пробіл перемкнути",
   "refreshForecast": "Прогноз",
   "refreshRadar": "Радар і наукаст опадів",
   "radarRefreshAuto": "Кожне нове вимірювання (близько 5 хв)",
@@ -7786,7 +7800,7 @@ addCatalogEntries("uk", {
 addCatalogEntries("pl", {
   "settingsPageGeneral": "Ogólne",
   "generalSubtitle": "Dla paska, widżetu i aplikacji",
-  "settingsGeneralKeysHint": "Klawiatura: ↑↓ do ustawienia · ←→ zmiana · Spacja / Enter otwiera listę",
+  "settingsGeneralKeysHint": "↑↓ wybierz · ← → zmień · Enter otwórz · Spacja przełącz",
   "refreshForecast": "Prognoza",
   "refreshRadar": "Radar i nowcast opadów",
   "radarRefreshAuto": "Każdy nowy pomiar (ok. 5 min)",
@@ -7795,7 +7809,7 @@ addCatalogEntries("pl", {
 addCatalogEntries("it", {
   "settingsPageGeneral": "Generali",
   "generalSubtitle": "Per barra, widget e app",
-  "settingsGeneralKeysHint": "Tastiera: ↑↓ a un’impostazione · ←→ cambiarla · Spazio / Invio apre l’elenco",
+  "settingsGeneralKeysHint": "↑↓ scegli · ← → cambia · Invio apri · Spazio alterna",
   "refreshForecast": "Previsione",
   "refreshRadar": "Radar e nowcast della pioggia",
   "radarRefreshAuto": "Ogni nuova misura (circa 5 min)",
@@ -7804,7 +7818,7 @@ addCatalogEntries("it", {
 addCatalogEntries("nl", {
   "settingsPageGeneral": "Algemeen",
   "generalSubtitle": "Voor balk, widget en app",
-  "settingsGeneralKeysHint": "Toetsenbord: ↑↓ naar een instelling · ←→ wijzigen · Spatie / Enter opent de lijst",
+  "settingsGeneralKeysHint": "↑↓ kiezen · ← → wijzigen · Enter openen · Spatie schakelen",
   "refreshForecast": "Verwachting",
   "refreshRadar": "Radar en regen-nowcast",
   "radarRefreshAuto": "Elke nieuwe meting (ca. 5 min)",
@@ -7812,8 +7826,8 @@ addCatalogEntries("nl", {
 })
 addCatalogEntries("tr", {
   "settingsPageGeneral": "Genel",
-  "generalSubtitle": "Çubuk, widget ve uygulama için",
-  "settingsGeneralKeysHint": "Klavye: ↑↓ ayara git · ←→ değiştir · Boşluk / Enter listeyi açar",
+  "generalSubtitle": "Çubuk, bileşen ve uygulama için",
+  "settingsGeneralKeysHint": "↑↓ seç · ← → değiştir · Enter aç · Boşluk aç/kapat",
   "refreshForecast": "Tahmin",
   "refreshRadar": "Radar ve yağış anlık tahmini",
   "radarRefreshAuto": "Her yeni ölçüm (yaklaşık 5 dk)",
@@ -7822,7 +7836,7 @@ addCatalogEntries("tr", {
 addCatalogEntries("cs", {
   "settingsPageGeneral": "Obecné",
   "generalSubtitle": "Pro lištu, widget a aplikaci",
-  "settingsGeneralKeysHint": "Klávesnice: ↑↓ na nastavení · ←→ změnit · Mezerník / Enter otevře seznam",
+  "settingsGeneralKeysHint": "↑↓ vybrat · ← → změnit · Enter otevřít · mezerník přepnout",
   "refreshForecast": "Předpověď",
   "refreshRadar": "Radar a nowcast srážek",
   "radarRefreshAuto": "Každé nové měření (asi 5 min)",
@@ -7831,7 +7845,7 @@ addCatalogEntries("cs", {
 addCatalogEntries("sv", {
   "settingsPageGeneral": "Allmänt",
   "generalSubtitle": "För listen, widgeten och appen",
-  "settingsGeneralKeysHint": "Tangentbord: ↑↓ till en inställning · ←→ ändra · Mellanslag / Enter öppnar listan",
+  "settingsGeneralKeysHint": "↑↓ välj · ← → ändra · Enter öppna · blanksteg växla",
   "refreshForecast": "Prognos",
   "refreshRadar": "Radar och regn-nowcast",
   "radarRefreshAuto": "Varje ny mätning (ca 5 min)",
@@ -7839,8 +7853,8 @@ addCatalogEntries("sv", {
 })
 addCatalogEntries("fi", {
   "settingsPageGeneral": "Yleiset",
-  "generalSubtitle": "Palkille, pienoisohjelmalle ja sovellukselle",
-  "settingsGeneralKeysHint": "Näppäimistö: ↑↓ asetukseen · ←→ muuta · Välilyönti / Enter avaa luettelon",
+  "generalSubtitle": "Palkille, pienoissovellukselle ja sovellukselle",
+  "settingsGeneralKeysHint": "↑↓ valitse · ← → muuta · Enter avaa · välilyönti vaihda",
   "refreshForecast": "Ennuste",
   "refreshRadar": "Tutka ja sadenowcast",
   "radarRefreshAuto": "Jokainen uusi mittaus (n. 5 min)",
@@ -7848,8 +7862,8 @@ addCatalogEntries("fi", {
 })
 addCatalogEntries("nb", {
   "settingsPageGeneral": "Generelt",
-  "generalSubtitle": "For linjen, widgeten og appen",
-  "settingsGeneralKeysHint": "Tastatur: ↑↓ til en innstilling · ←→ endre · Mellomrom / Enter åpner listen",
+  "generalSubtitle": "For linjen, miniprogrammet og appen",
+  "settingsGeneralKeysHint": "↑↓ velg · ← → endre · Enter åpne · mellomrom veksle",
   "refreshForecast": "Varsel",
   "refreshRadar": "Radar og regn-nowcast",
   "radarRefreshAuto": "Hver ny måling (ca. 5 min)",
@@ -7858,7 +7872,7 @@ addCatalogEntries("nb", {
 addCatalogEntries("da", {
   "settingsPageGeneral": "Generelt",
   "generalSubtitle": "Til bjælken, widgetten og appen",
-  "settingsGeneralKeysHint": "Tastatur: ↑↓ til en indstilling · ←→ ændr · Mellemrum / Enter åbner listen",
+  "settingsGeneralKeysHint": "↑↓ vælg · ← → ændr · Enter åbn · mellemrum skift",
   "refreshForecast": "Udsigt",
   "refreshRadar": "Radar og regn-nowcast",
   "radarRefreshAuto": "Hver ny måling (ca. 5 min)",
@@ -7867,7 +7881,7 @@ addCatalogEntries("da", {
 addCatalogEntries("ro", {
   "settingsPageGeneral": "General",
   "generalSubtitle": "Pentru bară, widget și aplicație",
-  "settingsGeneralKeysHint": "Tastatură: ↑↓ la o setare · ←→ modifică · Spațiu / Enter deschide lista",
+  "settingsGeneralKeysHint": "↑↓ alege · ← → schimbă · Enter deschide · Spațiu comută",
   "refreshForecast": "Prognoză",
   "refreshRadar": "Radar și nowcast de ploaie",
   "radarRefreshAuto": "Fiecare măsurătoare nouă (circa 5 min)",
@@ -7875,8 +7889,8 @@ addCatalogEntries("ro", {
 })
 addCatalogEntries("hu", {
   "settingsPageGeneral": "Általános",
-  "generalSubtitle": "A sávhoz, a widgethez és az alkalmazáshoz",
-  "settingsGeneralKeysHint": "Billentyűzet: ↑↓ beállításhoz · ←→ módosít · Szóköz / Enter megnyitja a listát",
+  "generalSubtitle": "A sávhoz, a minialkalmazáshoz és az alkalmazáshoz",
+  "settingsGeneralKeysHint": "↑↓ választás · ← → módosítás · Enter megnyitás · Szóköz váltás",
   "refreshForecast": "Előrejelzés",
   "refreshRadar": "Radar és csapadék-nowcast",
   "radarRefreshAuto": "Minden új mérés (kb. 5 perc)",
@@ -7884,8 +7898,8 @@ addCatalogEntries("hu", {
 })
 addCatalogEntries("el", {
   "settingsPageGeneral": "Γενικά",
-  "generalSubtitle": "Για γραμμή, widget και εφαρμογή",
-  "settingsGeneralKeysHint": "Πληκτρολόγιο: ↑↓ σε ρύθμιση · ←→ αλλαγή · Διάστημα / Enter ανοίγει τη λίστα",
+  "generalSubtitle": "Για γραμμή, γραφικό στοιχείο και εφαρμογή",
+  "settingsGeneralKeysHint": "↑↓ επιλογή · ← → αλλαγή · Enter άνοιγμα · Διάστημα εναλλαγή",
   "refreshForecast": "Πρόγνωση",
   "refreshRadar": "Ραντάρ και nowcast βροχής",
   "radarRefreshAuto": "Κάθε νέα μέτρηση (περίπου 5 λεπτά)",
@@ -7894,7 +7908,7 @@ addCatalogEntries("el", {
 addCatalogEntries("zh_CN", {
   "settingsPageGeneral": "通用",
   "generalSubtitle": "适用于菜单栏、小组件和应用",
-  "settingsGeneralKeysHint": "键盘：↑↓ 移到设置项 · ←→ 更改 · 空格 / 回车打开列表",
+  "settingsGeneralKeysHint": "↑↓ 选择 · ← → 调整 · Enter 打开 · 空格 切换",
   "refreshForecast": "预报",
   "refreshRadar": "雷达和降雨临近预报",
   "radarRefreshAuto": "每次新测量（约 5 分钟）",
@@ -7903,7 +7917,7 @@ addCatalogEntries("zh_CN", {
 addCatalogEntries("zh_TW", {
   "settingsPageGeneral": "一般",
   "generalSubtitle": "適用於選單列、小工具與應用程式",
-  "settingsGeneralKeysHint": "鍵盤：↑↓ 移到設定項 · ←→ 變更 · 空白鍵 / Enter 開啟清單",
+  "settingsGeneralKeysHint": "↑↓ 選擇 · ← → 調整 · Enter 開啟 · 空白鍵 切換",
   "refreshForecast": "預報",
   "refreshRadar": "雷達與降雨即時預報",
   "radarRefreshAuto": "每次新測量（約 5 分鐘）",
@@ -7912,7 +7926,7 @@ addCatalogEntries("zh_TW", {
 addCatalogEntries("ja", {
   "settingsPageGeneral": "一般",
   "generalSubtitle": "メニューバー、ウィジェット、アプリ共通",
-  "settingsGeneralKeysHint": "キーボード：↑↓ で設定へ · ←→ で変更 · Space / Enter でリストを開く",
+  "settingsGeneralKeysHint": "↑↓ 選択 · ← → 変更 · Enter 開く · スペース 切替",
   "refreshForecast": "予報",
   "refreshRadar": "レーダーと降水ナウキャスト",
   "radarRefreshAuto": "新しい観測ごと（約5分）",
@@ -7920,8 +7934,8 @@ addCatalogEntries("ja", {
 })
 addCatalogEntries("ko", {
   "settingsPageGeneral": "일반",
-  "generalSubtitle": "메뉴 막대, 위젯, 앱 공통",
-  "settingsGeneralKeysHint": "키보드: ↑↓ 설정으로 이동 · ←→ 변경 · Space / Enter 목록 열기",
+  "generalSubtitle": "메뉴 모음, 위젯, 앱 공통",
+  "settingsGeneralKeysHint": "↑↓ 선택 · ← → 변경 · Enter 열기 · 스페이스 전환",
   "refreshForecast": "예보",
   "refreshRadar": "레이더 및 강수 초단기 예보",
   "radarRefreshAuto": "새 관측마다(약 5분)",
@@ -7930,7 +7944,7 @@ addCatalogEntries("ko", {
 addCatalogEntries("ar", {
   "settingsPageGeneral": "عام",
   "generalSubtitle": "للشريط والأداة والتطبيق",
-  "settingsGeneralKeysHint": "لوحة المفاتيح: ↑↓ إلى إعداد · ←→ للتغيير · المسافة / Enter لفتح القائمة",
+  "settingsGeneralKeysHint": "↑↓ اختيار · ← → تغيير · Enter فتح · المسافة تبديل",
   "refreshForecast": "التوقعات",
   "refreshRadar": "الرادار والتنبؤ الآني بالمطر",
   "radarRefreshAuto": "كل قياس جديد (نحو 5 دقائق)",
@@ -7938,8 +7952,8 @@ addCatalogEntries("ar", {
 })
 addCatalogEntries("he", {
   "settingsPageGeneral": "כללי",
-  "generalSubtitle": "לסרגל, לווידג׳ט ולאפליקציה",
-  "settingsGeneralKeysHint": "מקלדת: ↑↓ להגדרה · ←→ שינוי · רווח / Enter פותח את הרשימה",
+  "generalSubtitle": "לסרגל, ליישומון וליישום",
+  "settingsGeneralKeysHint": "↑↓ בחירה · ← → שינוי · Enter פתיחה · רווח החלפה",
   "refreshForecast": "תחזית",
   "refreshRadar": "מכ״ם ו-nowcast גשם",
   "radarRefreshAuto": "כל מדידה חדשה (כ-5 דק׳)",
@@ -7947,8 +7961,8 @@ addCatalogEntries("he", {
 })
 addCatalogEntries("fa", {
   "settingsPageGeneral": "عمومی",
-  "generalSubtitle": "برای نوار، ابزارک و برنامه",
-  "settingsGeneralKeysHint": "صفحه‌کلید: ↑↓ رفتن به تنظیم · ←→ تغییر · فاصله / Enter باز کردن فهرست",
+  "generalSubtitle": "برای نوار، ویجت و برنامه",
+  "settingsGeneralKeysHint": "↑↓ انتخاب · ← → تغییر · Enter باز کردن · فاصله تغییر حالت",
   "refreshForecast": "پیش‌بینی",
   "refreshRadar": "رادار و پیش‌بینی آنی باران",
   "radarRefreshAuto": "هر اندازه‌گیری تازه (حدود ۵ دقیقه)",
@@ -7957,7 +7971,7 @@ addCatalogEntries("fa", {
 addCatalogEntries("hi", {
   "settingsPageGeneral": "सामान्य",
   "generalSubtitle": "मेनू बार, विजेट और ऐप के लिए",
-  "settingsGeneralKeysHint": "कीबोर्ड: ↑↓ सेटिंग पर जाएँ · ←→ बदलें · Space / Enter सूची खोलें",
+  "settingsGeneralKeysHint": "↑↓ चुनें · ← → बदलें · Enter खोलें · स्पेस बदलें",
   "refreshForecast": "पूर्वानुमान",
   "refreshRadar": "रडार और बारिश नाउकास्ट",
   "radarRefreshAuto": "हर नया मापन (लगभग 5 मिनट)",
@@ -7966,7 +7980,7 @@ addCatalogEntries("hi", {
 addCatalogEntries("id", {
   "settingsPageGeneral": "Umum",
   "generalSubtitle": "Untuk bilah, widget, dan aplikasi",
-  "settingsGeneralKeysHint": "Keyboard: ↑↓ ke pengaturan · ←→ ubah · Spasi / Enter buka daftar",
+  "settingsGeneralKeysHint": "↑↓ pilih · ← → ubah · Enter buka · Spasi alihkan",
   "refreshForecast": "Prakiraan",
   "refreshRadar": "Radar dan nowcast hujan",
   "radarRefreshAuto": "Setiap pengukuran baru (sekitar 5 mnt)",
@@ -7975,7 +7989,7 @@ addCatalogEntries("id", {
 addCatalogEntries("vi", {
   "settingsPageGeneral": "Chung",
   "generalSubtitle": "Cho thanh, tiện ích và ứng dụng",
-  "settingsGeneralKeysHint": "Bàn phím: ↑↓ tới cài đặt · ←→ thay đổi · Space / Enter mở danh sách",
+  "settingsGeneralKeysHint": "↑↓ chọn · ← → đổi · Enter mở · Cách chuyển",
   "refreshForecast": "Dự báo",
   "refreshRadar": "Radar và nowcast mưa",
   "radarRefreshAuto": "Mỗi lần đo mới (khoảng 5 phút)",
@@ -7984,7 +7998,7 @@ addCatalogEntries("vi", {
 addCatalogEntries("th", {
   "settingsPageGeneral": "ทั่วไป",
   "generalSubtitle": "สำหรับแถบ วิดเจ็ต และแอป",
-  "settingsGeneralKeysHint": "แป้นพิมพ์: ↑↓ ไปยังการตั้งค่า · ←→ เปลี่ยน · Space / Enter เปิดรายการ",
+  "settingsGeneralKeysHint": "↑↓ เลือก · ← → เปลี่ยน · Enter เปิด · Space สลับ",
   "refreshForecast": "พยากรณ์",
   "refreshRadar": "เรดาร์และ nowcast ฝน",
   "radarRefreshAuto": "ทุกการวัดใหม่ (ราว 5 นาที)",
@@ -8721,7 +8735,7 @@ addCatalogEntries("zh_TW", {
 amendCatalogEntry("en", "colorAccentsHint", function(text) { return text + " The air quality colour dot follows this switch too." })
 amendCatalogEntry("de", "colorAccentsHint", function(text) { return text + " Auch der Farbpunkt der Luftqualität folgt diesem Schalter." })
 amendCatalogEntry("es", "colorAccentsHint", function(text) { return text + " El punto de color de la calidad del aire también sigue este interruptor." })
-amendCatalogEntry("fr", "colorAccentsHint", function(text) { return text + " La pastille de couleur de la qualité de l'air suit aussi ce réglage." })
+amendCatalogEntry("fr", "colorAccentsHint", function(text) { return text + " La pastille de couleur de la qualité de l'air suit aussi ce paramètre." })
 amendCatalogEntry("pt", "colorAccentsHint", function(text) { return text + " O ponto de cor da qualidade do ar também segue este interruptor." })
 amendCatalogEntry("ru", "colorAccentsHint", function(text) { return text + " Цветная точка качества воздуха тоже следует этому переключателю." })
 amendCatalogEntry("uk", "colorAccentsHint", function(text) { return text + " Кольорова точка якості повітря також підкоряється цьому перемикачу." })
@@ -8797,7 +8811,7 @@ addCatalogEntries("pt", {
   "mapStyle": "Estilo do mapa",
   "mapStyleDrawn": "Desenhado (cores do tema)",
   "mapStyleSatellite": "Satélite",
-  "mapStyleHint": "Mapas de radar e vento. O mapa desenhado vem com o plugin (Natural Earth) e segue o tema; a imagem de satélite é carregada do DWD para cada vista.",
+  "mapStyleHint": "Mapas de radar e vento. O mapa desenhado vem com o plugin (Natural Earth) e segue o tema; a imagem de satélite é carregada do DWD para cada visualização.",
   "mouseDrag": "Arrastar",
   "mouseWheel": "Roda do rato",
   "shortcutMapPan": "Mapa: mover",
@@ -9458,7 +9472,7 @@ addCatalogEntries("es", {
   "settingsImportMissing": "No se pudo leer {path}.",
   "settingsImportInvalid": "{path} no es un archivo de ajustes de More Weather.",
   "settingsImported": "Importado de {path}. Los ajustes anteriores están en {backup}.",
-  "settingsTransferHint": "Los ajustes generales, la presentación de la barra de menús, el widget y la app, y tus lugares, en un archivo. Antes de importar, los ajustes actuales se guardan en {backup}; importar ese archivo lo deshace."
+  "settingsTransferHint": "Los ajustes generales, la presentación de la barra de menú, el widget y la aplicación, y tus lugares, en un archivo. Antes de importar, los ajustes actuales se guardan en {backup}; importar ese archivo lo deshace."
 })
 addCatalogEntries("fr", {
   "settingsTransfer": "Exporter et importer",
@@ -9468,25 +9482,25 @@ addCatalogEntries("fr", {
   "settingsImportConfirm": "Vraiment importer ?",
   "settingsExported": "Exporté vers {path}.",
   "settingsExportFailed": "Impossible d'écrire {path}.",
-  "settingsBackupFailed": "Impossible d'enregistrer les réglages actuels dans {path} ; rien n'a été importé.",
+  "settingsBackupFailed": "Impossible d'enregistrer les paramètres actuels dans {path} ; rien n'a été importé.",
   "settingsImportMissing": "Impossible de lire {path}.",
-  "settingsImportInvalid": "{path} n'est pas un fichier de réglages de More Weather.",
-  "settingsImported": "Importé depuis {path}. Les réglages précédents sont dans {backup}.",
-  "settingsTransferHint": "Les réglages généraux, l'affichage de la barre de menus, du widget et de l'app, et vos lieux, dans un seul fichier. Avant une importation, les réglages actuels sont enregistrés dans {backup} ; importer ce fichier l'annule."
+  "settingsImportInvalid": "{path} n'est pas un fichier de paramètres de More Weather.",
+  "settingsImported": "Importé depuis {path}. Les paramètres précédents sont dans {backup}.",
+  "settingsTransferHint": "Les paramètres généraux, l'affichage de la barre de menus, du widget et de l'application, et vos lieux, dans un seul fichier. Avant une importation, les paramètres actuels sont enregistrés dans {backup} ; importer ce fichier l'annule."
 })
 addCatalogEntries("pt", {
   "settingsTransfer": "Exportar e importar",
-  "settingsTransferFile": "Ficheiro",
+  "settingsTransferFile": "Arquivo",
   "settingsExport": "Exportar",
   "settingsImport": "Importar",
   "settingsImportConfirm": "Importar mesmo?",
   "settingsExported": "Exportado para {path}.",
   "settingsExportFailed": "Não foi possível escrever {path}.",
-  "settingsBackupFailed": "Não foi possível guardar as definições atuais em {path}; nada foi importado.",
+  "settingsBackupFailed": "Não foi possível salvar as configurações atuais em {path}; nada foi importado.",
   "settingsImportMissing": "Não foi possível ler {path}.",
-  "settingsImportInvalid": "{path} não é um ficheiro de definições do More Weather.",
-  "settingsImported": "Importado de {path}. As definições anteriores estão em {backup}.",
-  "settingsTransferHint": "As definições gerais, a apresentação da barra de menus, do widget e da app, e os seus locais, num ficheiro. Antes de importar, as definições atuais são guardadas em {backup}; importar esse ficheiro desfaz a importação."
+  "settingsImportInvalid": "{path} não é um arquivo de configurações do More Weather.",
+  "settingsImported": "Importado de {path}. As configurações anteriores estão em {backup}.",
+  "settingsTransferHint": "As configurações gerais, a exibição da barra de menu, do widget e do aplicativo e seus locais, em um arquivo. Antes de importar, as configurações atuais são salvas em {backup}; importar esse arquivo desfaz a importação."
 })
 addCatalogEntries("ru", {
   "settingsTransfer": "Экспорт и импорт",
@@ -9570,7 +9584,7 @@ addCatalogEntries("tr", {
   "settingsImportMissing": "{path} okunamadı.",
   "settingsImportInvalid": "{path} bir More Weather ayar dosyası değil.",
   "settingsImported": "{path} içinden aktarıldı. Önceki ayarlar {backup} içinde.",
-  "settingsTransferHint": "Genel ayarlar, menü çubuğu, widget ve uygulama görünümü ile yerleriniz tek dosyada. İçe aktarmadan önce geçerli ayarlar {backup} konumuna kaydedilir; bu dosyayı içe aktarmak işlemi geri alır."
+  "settingsTransferHint": "Genel ayarlar, menü çubuğu, bileşen ve uygulama görünümü ile yerleriniz tek dosyada. İçe aktarmadan önce geçerli ayarlar {backup} konumuna kaydedilir; bu dosyayı içe aktarmak işlemi geri alır."
 })
 addCatalogEntries("cs", {
   "settingsTransfer": "Export a import",
@@ -9612,7 +9626,7 @@ addCatalogEntries("fi", {
   "settingsImportMissing": "Tiedostoa {path} ei voitu lukea.",
   "settingsImportInvalid": "{path} ei ole More Weatherin asetustiedosto.",
   "settingsImported": "Tuotu tiedostosta {path}. Aiemmat asetukset ovat tiedostossa {backup}.",
-  "settingsTransferHint": "Yleiset asetukset, valikkopalkin, widgetin ja sovelluksen näkymä sekä paikkasi yhdessä tiedostossa. Ennen tuontia nykyiset asetukset tallennetaan tiedostoon {backup}; sen tuominen peruu muutoksen."
+  "settingsTransferHint": "Yleiset asetukset, valikkorivin, pienoissovelluksen ja sovelluksen näkymä sekä paikkasi yhdessä tiedostossa. Ennen tuontia nykyiset asetukset tallennetaan tiedostoon {backup}; sen tuominen peruu muutoksen."
 })
 addCatalogEntries("nb", {
   "settingsTransfer": "Eksporter og importer",
@@ -9626,7 +9640,7 @@ addCatalogEntries("nb", {
   "settingsImportMissing": "{path} kunne ikke leses.",
   "settingsImportInvalid": "{path} er ikke en innstillingsfil for More Weather.",
   "settingsImported": "Importert fra {path}. De forrige innstillingene ligger i {backup}.",
-  "settingsTransferHint": "De generelle innstillingene, visningen i menylinjen, widgeten og appen og stedene dine i én fil. Før en import lagres gjeldende innstillinger i {backup}; å importere den filen angrer det."
+  "settingsTransferHint": "De generelle innstillingene, visningen i menylinjen, miniprogrammet og appen og stedene dine i én fil. Før en import lagres gjeldende innstillinger i {backup}; å importere den filen angrer det."
 })
 addCatalogEntries("da", {
   "settingsTransfer": "Eksportér og importér",
@@ -9668,7 +9682,7 @@ addCatalogEntries("hu", {
   "settingsImportMissing": "A(z) {path} nem olvasható.",
   "settingsImportInvalid": "A(z) {path} nem More Weather beállításfájl.",
   "settingsImported": "Importálva innen: {path}. A korábbi beállítások itt vannak: {backup}.",
-  "settingsTransferHint": "Az általános beállítások, a menüsor, a widget és az alkalmazás megjelenítése és a helyeid egy fájlban. Importálás előtt a jelenlegi beállítások ide mentődnek: {backup}; ennek a fájlnak az importálása visszavonja a változást."
+  "settingsTransferHint": "Az általános beállítások, a menüsáv, a minialkalmazás és az alkalmazás megjelenítése és a helyeid egy fájlban. Importálás előtt a jelenlegi beállítások ide mentődnek: {backup}; ennek a fájlnak az importálása visszavonja a változást."
 })
 addCatalogEntries("el", {
   "settingsTransfer": "Εξαγωγή και εισαγωγή",
@@ -9682,7 +9696,7 @@ addCatalogEntries("el", {
   "settingsImportMissing": "Δεν ήταν δυνατή η ανάγνωση του {path}.",
   "settingsImportInvalid": "Το {path} δεν είναι αρχείο ρυθμίσεων του More Weather.",
   "settingsImported": "Εισήχθη από το {path}. Οι προηγούμενες ρυθμίσεις βρίσκονται στο {backup}.",
-  "settingsTransferHint": "Οι γενικές ρυθμίσεις, η εμφάνιση στη γραμμή μενού, στο widget και στην εφαρμογή και οι τοποθεσίες σας σε ένα αρχείο. Πριν από μια εισαγωγή οι τρέχουσες ρυθμίσεις αποθηκεύονται στο {backup}· η εισαγωγή αυτού του αρχείου την αναιρεί."
+  "settingsTransferHint": "Οι γενικές ρυθμίσεις, η εμφάνιση στη γραμμή μενού, στο γραφικό στοιχείο και στην εφαρμογή και οι τοποθεσίες σας σε ένα αρχείο. Πριν από μια εισαγωγή οι τρέχουσες ρυθμίσεις αποθηκεύονται στο {backup}· η εισαγωγή αυτού του αρχείου την αναιρεί."
 })
 addCatalogEntries("ja", {
   "settingsTransfer": "エクスポートとインポート",
@@ -9710,7 +9724,7 @@ addCatalogEntries("ko", {
   "settingsImportMissing": "{path}을(를) 읽을 수 없습니다.",
   "settingsImportInvalid": "{path}은(는) More Weather 설정 파일이 아닙니다.",
   "settingsImported": "{path}에서 가져왔습니다. 이전 설정은 {backup}에 있습니다.",
-  "settingsTransferHint": "일반 설정, 메뉴 막대·위젯·앱 표시와 저장한 장소를 한 파일에 담습니다. 가져오기 전에 현재 설정을 {backup}에 저장하므로 그 파일을 가져오면 되돌릴 수 있습니다."
+  "settingsTransferHint": "일반 설정, 메뉴 모음·위젯·앱 표시와 저장한 장소를 한 파일에 담습니다. 가져오기 전에 현재 설정을 {backup}에 저장하므로 그 파일을 가져오면 되돌릴 수 있습니다."
 })
 addCatalogEntries("ar", {
   "settingsTransfer": "التصدير والاستيراد",
@@ -9738,7 +9752,7 @@ addCatalogEntries("he", {
   "settingsImportMissing": "לא ניתן לקרוא את {path}.",
   "settingsImportInvalid": "{path} אינו קובץ הגדרות של More Weather.",
   "settingsImported": "יובא מ־{path}. ההגדרות הקודמות נמצאות ב־{backup}.",
-  "settingsTransferHint": "ההגדרות הכלליות, התצוגה בשורת התפריטים, בווידג׳ט ובאפליקציה והמקומות שלך — בקובץ אחד. לפני ייבוא ההגדרות הנוכחיות נשמרות ב־{backup}; ייבוא הקובץ הזה מבטל אותו."
+  "settingsTransferHint": "ההגדרות הכלליות, התצוגה בשורת התפריטים, ביישומון וביישום והמקומות שלך — בקובץ אחד. לפני ייבוא ההגדרות הנוכחיות נשמרות ב־{backup}; ייבוא הקובץ הזה מבטל אותו."
 })
 addCatalogEntries("fa", {
   "settingsTransfer": "برون‌بری و درون‌بری",
@@ -9752,7 +9766,7 @@ addCatalogEntries("fa", {
   "settingsImportMissing": "خواندن {path} ممکن نشد.",
   "settingsImportInvalid": "{path} پروندهٔ تنظیمات More Weather نیست.",
   "settingsImported": "از {path} درون‌بری شد. تنظیمات پیشین در {backup} است.",
-  "settingsTransferHint": "تنظیمات کلی، نمایش نوار منو، ابزارک و برنامه و مکان‌های شما در یک پرونده. پیش از درون‌بری، تنظیمات کنونی در {backup} ذخیره می‌شود؛ درون‌بری همان پرونده آن را برمی‌گرداند."
+  "settingsTransferHint": "تنظیمات کلی، نمایش نوار منو، ویجت و برنامه و مکان‌های شما در یک پرونده. پیش از درون‌بری، تنظیمات کنونی در {backup} ذخیره می‌شود؛ درون‌بری همان پرونده آن را برمی‌گرداند."
 })
 addCatalogEntries("hi", {
   "settingsTransfer": "निर्यात और आयात",
@@ -9794,7 +9808,7 @@ addCatalogEntries("vi", {
   "settingsImportMissing": "Không thể đọc {path}.",
   "settingsImportInvalid": "{path} không phải là tệp cài đặt của More Weather.",
   "settingsImported": "Đã nhập từ {path}. Cài đặt trước đó nằm trong {backup}.",
-  "settingsTransferHint": "Cài đặt chung, hiển thị trên thanh menu, widget và ứng dụng cùng các địa điểm của bạn trong một tệp. Trước khi nhập, cài đặt hiện tại được lưu vào {backup}; nhập tệp đó sẽ hoàn tác."
+  "settingsTransferHint": "Cài đặt chung, hiển thị trên thanh menu, tiện ích và ứng dụng cùng các địa điểm của bạn trong một tệp. Trước khi nhập, cài đặt hiện tại được lưu vào {backup}; nhập tệp đó sẽ hoàn tác."
 })
 addCatalogEntries("th", {
   "settingsTransfer": "ส่งออกและนำเข้า",
@@ -9869,7 +9883,563 @@ addCatalogEntries("vi", { "settingsRestored": "Đã khôi phục từ {path}." }
 addCatalogEntries("th", { "settingsRestored": "กู้คืนจาก {path} แล้ว" })
 addCatalogEntries("zh_CN", { "settingsRestored": "已从 {path} 恢复。" })
 addCatalogEntries("zh_TW", { "settingsRestored": "已從 {path} 還原。" })
+// Settings shared in wording with More Time: the reset of the general
+// settings and the bold menu bar on hover.
+addCatalogEntries("es", {
+  "restoreGeneralDefaults": "Restablecer ajustes generales",
+  "boldOnHover": "Negrita al pasar el puntero"
+})
+addCatalogEntries("fr", {
+  "restoreGeneralDefaults": "Réinitialiser les paramètres généraux",
+  "boldOnHover": "Gras au survol"
+})
+addCatalogEntries("pt", {
+  "restoreGeneralDefaults": "Redefinir configurações gerais",
+  "boldOnHover": "Negrito ao passar o ponteiro"
+})
+addCatalogEntries("ru", {
+  "restoreGeneralDefaults": "Сбросить общие настройки",
+  "boldOnHover": "Жирный при наведении"
+})
+addCatalogEntries("uk", {
+  "restoreGeneralDefaults": "Скинути загальні налаштування",
+  "boldOnHover": "Жирний при наведенні"
+})
+addCatalogEntries("pl", {
+  "restoreGeneralDefaults": "Przywróć ustawienia ogólne",
+  "boldOnHover": "Pogrubienie po najechaniu"
+})
+addCatalogEntries("it", {
+  "restoreGeneralDefaults": "Ripristina impostazioni generali",
+  "boldOnHover": "Grassetto al passaggio"
+})
+addCatalogEntries("nl", {
+  "restoreGeneralDefaults": "Algemene instellingen herstellen",
+  "boldOnHover": "Vet bij aanwijzen"
+})
+addCatalogEntries("tr", {
+  "restoreGeneralDefaults": "Genel ayarları sıfırla",
+  "boldOnHover": "Üzerine gelince kalın"
+})
+addCatalogEntries("cs", {
+  "restoreGeneralDefaults": "Obnovit obecná nastavení",
+  "boldOnHover": "Tučně při najetí"
+})
+addCatalogEntries("sv", {
+  "restoreGeneralDefaults": "Återställ allmänna inställningar",
+  "boldOnHover": "Fetstil vid hovring"
+})
+addCatalogEntries("fi", {
+  "restoreGeneralDefaults": "Palauta yleiset asetukset",
+  "boldOnHover": "Lihavoitu osoitettaessa"
+})
+addCatalogEntries("nb", {
+  "restoreGeneralDefaults": "Tilbakestill generelle innstillinger",
+  "boldOnHover": "Fet ved peker"
+})
+addCatalogEntries("da", {
+  "restoreGeneralDefaults": "Nulstil generelle indstillinger",
+  "boldOnHover": "Fed ved peger"
+})
+addCatalogEntries("ro", {
+  "restoreGeneralDefaults": "Resetează setările generale",
+  "boldOnHover": "Îngroșat la trecere"
+})
+addCatalogEntries("hu", {
+  "restoreGeneralDefaults": "Általános beállítások visszaállítása",
+  "boldOnHover": "Félkövér rámutatáskor"
+})
+addCatalogEntries("el", {
+  "restoreGeneralDefaults": "Επαναφορά γενικών ρυθμίσεων",
+  "boldOnHover": "Έντονα στην κατάδειξη"
+})
+addCatalogEntries("zh_CN", {
+  "restoreGeneralDefaults": "重置通用设置",
+  "boldOnHover": "悬停时加粗"
+})
+addCatalogEntries("zh_TW", {
+  "restoreGeneralDefaults": "重設一般設定",
+  "boldOnHover": "懸停時加粗"
+})
+addCatalogEntries("ja", {
+  "restoreGeneralDefaults": "一般設定をリセット",
+  "boldOnHover": "ホバー時に太字"
+})
+addCatalogEntries("ko", {
+  "restoreGeneralDefaults": "일반 설정 초기화",
+  "boldOnHover": "마우스 오버 시 굵게"
+})
+addCatalogEntries("ar", {
+  "restoreGeneralDefaults": "إعادة ضبط الإعدادات العامة",
+  "boldOnHover": "عريض عند التمرير"
+})
+addCatalogEntries("he", {
+  "restoreGeneralDefaults": "איפוס הגדרות כלליות",
+  "boldOnHover": "מודגש בריחוף"
+})
+addCatalogEntries("fa", {
+  "restoreGeneralDefaults": "بازنشانی تنظیمات عمومی",
+  "boldOnHover": "پررنگ هنگام اشاره"
+})
+addCatalogEntries("hi", {
+  "restoreGeneralDefaults": "सामान्य सेटिंग्स रीसेट करें",
+  "boldOnHover": "होवर पर मोटा"
+})
+addCatalogEntries("id", {
+  "restoreGeneralDefaults": "Atur ulang pengaturan umum",
+  "boldOnHover": "Tebal saat diarahkan"
+})
+addCatalogEntries("vi", {
+  "restoreGeneralDefaults": "Đặt lại cài đặt chung",
+  "boldOnHover": "In đậm khi rê chuột"
+})
+addCatalogEntries("th", {
+  "restoreGeneralDefaults": "รีเซ็ตการตั้งค่าทั่วไป",
+  "boldOnHover": "ตัวหนาเมื่อชี้เมาส์"
+})
+
 // Each language in its own name, for the language picker.
+// The menu bar's "Colour the values" choice (off / while hovered / always).
+addCatalogEntries("es", {
+  "menubarAccents": "Colorear los valores",
+  "menubarAccents_off": "Desactivado",
+  "menubarAccents_hover": "Al pasar el puntero",
+  "menubarAccents_always": "Siempre",
+  "menubarAccentsHint": "Los mismos acentos que en la ventana emergente; con «Acentos de color» (General) desactivado, la barra queda sin color."
+})
+addCatalogEntries("fr", {
+  "menubarAccents": "Colorer les valeurs",
+  "menubarAccents_off": "Désactivé",
+  "menubarAccents_hover": "Au survol",
+  "menubarAccents_always": "Toujours",
+  "menubarAccentsHint": "Les mêmes accents que dans la fenêtre ; si « Accents de couleur » (Général) est désactivé, la barre reste sans couleur."
+})
+addCatalogEntries("pt", {
+  "menubarAccents": "Colorir os valores",
+  "menubarAccents_off": "Desligado",
+  "menubarAccents_hover": "Ao passar o ponteiro",
+  "menubarAccents_always": "Sempre",
+  "menubarAccentsHint": "Os mesmos destaques do pop-up; com “Destaques de cor” (Geral) desligado, a barra fica sem cor."
+})
+addCatalogEntries("ru", {
+  "menubarAccents": "Раскрашивать значения",
+  "menubarAccents_off": "Выключено",
+  "menubarAccents_hover": "При наведении",
+  "menubarAccents_always": "Всегда",
+  "menubarAccentsHint": "Те же акценты, что и во всплывающем окне; если «Цветовые акценты» (Общие) выключены, панель остаётся без цвета."
+})
+addCatalogEntries("uk", {
+  "menubarAccents": "Розфарбовувати значення",
+  "menubarAccents_off": "Вимкнено",
+  "menubarAccents_hover": "При наведенні",
+  "menubarAccents_always": "Завжди",
+  "menubarAccentsHint": "Ті самі акценти, що й у спливному вікні; якщо «Кольорові акценти» (Загальні) вимкнено, панель лишається без кольору."
+})
+addCatalogEntries("pl", {
+  "menubarAccents": "Koloruj wartości",
+  "menubarAccents_off": "Wyłączone",
+  "menubarAccents_hover": "Po najechaniu",
+  "menubarAccents_always": "Zawsze",
+  "menubarAccentsHint": "Te same akcenty co w okienku; gdy „Akcenty kolorystyczne” (Ogólne) są wyłączone, pasek pozostaje bez koloru."
+})
+addCatalogEntries("it", {
+  "menubarAccents": "Colora i valori",
+  "menubarAccents_off": "Disattivato",
+  "menubarAccents_hover": "Al passaggio",
+  "menubarAccents_always": "Sempre",
+  "menubarAccentsHint": "Gli stessi accenti del popup; con «Accenti di colore» (Generali) disattivato, la barra resta senza colore."
+})
+addCatalogEntries("nl", {
+  "menubarAccents": "Waarden kleuren",
+  "menubarAccents_off": "Uit",
+  "menubarAccents_hover": "Bij aanwijzen",
+  "menubarAccents_always": "Altijd",
+  "menubarAccentsHint": "Dezelfde accenten als in de pop-up; met ‘Kleuraccenten’ (Algemeen) uit blijft de balk zonder kleur."
+})
+addCatalogEntries("tr", {
+  "menubarAccents": "Değerleri renklendir",
+  "menubarAccents_off": "Kapalı",
+  "menubarAccents_hover": "Üzerine gelince",
+  "menubarAccents_always": "Her zaman",
+  "menubarAccentsHint": "Açılır penceredeki vurguların aynısı; “Renk vurguları” (Genel) kapalıyken çubuk renksiz kalır."
+})
+addCatalogEntries("cs", {
+  "menubarAccents": "Obarvit hodnoty",
+  "menubarAccents_off": "Vypnuto",
+  "menubarAccents_hover": "Při najetí",
+  "menubarAccents_always": "Vždy",
+  "menubarAccentsHint": "Stejné akcenty jako ve vyskakovacím okně; když jsou „Barevné akcenty“ (Obecné) vypnuté, lišta zůstane bez barev."
+})
+addCatalogEntries("sv", {
+  "menubarAccents": "Färga värdena",
+  "menubarAccents_off": "Av",
+  "menubarAccents_hover": "Vid hovring",
+  "menubarAccents_always": "Alltid",
+  "menubarAccentsHint": "Samma accenter som i popupen; med ”Färgaccenter” (Allmänt) av förblir fältet ofärgat."
+})
+addCatalogEntries("fi", {
+  "menubarAccents": "Väritä arvot",
+  "menubarAccents_off": "Pois",
+  "menubarAccents_hover": "Osoitettaessa",
+  "menubarAccents_always": "Aina",
+  "menubarAccentsHint": "Samat korostukset kuin ponnahdusikkunassa; kun ”Väriaksentit” (Yleiset) on pois, palkki pysyy värittömänä."
+})
+addCatalogEntries("nb", {
+  "menubarAccents": "Fargelegg verdiene",
+  "menubarAccents_off": "Av",
+  "menubarAccents_hover": "Ved peker",
+  "menubarAccents_always": "Alltid",
+  "menubarAccentsHint": "De samme aksentene som i hurtigvinduet; med «Fargeaksenter» (Generelt) av forblir linjen uten farge."
+})
+addCatalogEntries("da", {
+  "menubarAccents": "Farv værdierne",
+  "menubarAccents_off": "Fra",
+  "menubarAccents_hover": "Ved peger",
+  "menubarAccents_always": "Altid",
+  "menubarAccentsHint": "De samme accenter som i pop op-vinduet; med »Farveaccenter« (Generelt) slået fra forbliver bjælken uden farve."
+})
+addCatalogEntries("ro", {
+  "menubarAccents": "Colorează valorile",
+  "menubarAccents_off": "Oprit",
+  "menubarAccents_hover": "La trecere",
+  "menubarAccents_always": "Mereu",
+  "menubarAccentsHint": "Aceleași accente ca în fereastra pop-up; cu „Accente de culoare” (General) oprit, bara rămâne necolorată."
+})
+addCatalogEntries("hu", {
+  "menubarAccents": "Értékek színezése",
+  "menubarAccents_off": "Ki",
+  "menubarAccents_hover": "Rámutatáskor",
+  "menubarAccents_always": "Mindig",
+  "menubarAccentsHint": "Ugyanazok a kiemelések, mint a felugró ablakban; ha a „Színkiemelések” (Általános) ki van kapcsolva, a sáv színtelen marad."
+})
+addCatalogEntries("el", {
+  "menubarAccents": "Χρωματισμός τιμών",
+  "menubarAccents_off": "Ανενεργό",
+  "menubarAccents_hover": "Στην κατάδειξη",
+  "menubarAccents_always": "Πάντα",
+  "menubarAccentsHint": "Οι ίδιες πινελιές όπως στο αναδυόμενο παράθυρο· με τις «Χρωματικές πινελιές» (Γενικά) ανενεργές, η γραμμή μένει χωρίς χρώμα."
+})
+addCatalogEntries("zh_CN", {
+  "menubarAccents": "为数值着色",
+  "menubarAccents_off": "关闭",
+  "menubarAccents_hover": "悬停时",
+  "menubarAccents_always": "始终",
+  "menubarAccentsHint": "与弹出窗口相同的强调色；“色彩强调”（通用）关闭时，栏保持无色。"
+})
+addCatalogEntries("zh_TW", {
+  "menubarAccents": "為數值上色",
+  "menubarAccents_off": "關閉",
+  "menubarAccents_hover": "懸停時",
+  "menubarAccents_always": "永遠",
+  "menubarAccentsHint": "與彈出視窗相同的強調色；「色彩強調」（一般）關閉時，列保持無色。"
+})
+addCatalogEntries("ja", {
+  "menubarAccents": "値に色を付ける",
+  "menubarAccents_off": "オフ",
+  "menubarAccents_hover": "ホバー時",
+  "menubarAccents_always": "常に",
+  "menubarAccentsHint": "ポップアップと同じアクセントです。「カラーアクセント」（一般）がオフのとき、バーは色なしのままです。"
+})
+addCatalogEntries("ko", {
+  "menubarAccents": "값에 색상 표시",
+  "menubarAccents_off": "끔",
+  "menubarAccents_hover": "마우스 오버 시",
+  "menubarAccents_always": "항상",
+  "menubarAccentsHint": "팝업과 같은 강조 색상입니다. ‘색상 강조’(일반)가 꺼져 있으면 막대는 색 없이 표시됩니다."
+})
+addCatalogEntries("ar", {
+  "menubarAccents": "تلوين القيم",
+  "menubarAccents_off": "معطّل",
+  "menubarAccents_hover": "عند التمرير",
+  "menubarAccents_always": "دائمًا",
+  "menubarAccentsHint": "اللمسات نفسها كما في النافذة المنبثقة؛ عند تعطيل «لمسات لونية» (عام) يبقى الشريط بلا ألوان."
+})
+addCatalogEntries("he", {
+  "menubarAccents": "צביעת הערכים",
+  "menubarAccents_off": "כבוי",
+  "menubarAccents_hover": "בריחוף",
+  "menubarAccents_always": "תמיד",
+  "menubarAccentsHint": "אותן הדגשות כמו בחלון הקופץ; כאשר „הדגשות צבע” (כללי) כבוי, הסרגל נשאר ללא צבע."
+})
+addCatalogEntries("fa", {
+  "menubarAccents": "رنگی کردن مقادیر",
+  "menubarAccents_off": "خاموش",
+  "menubarAccents_hover": "هنگام اشاره",
+  "menubarAccents_always": "همیشه",
+  "menubarAccentsHint": "همان تأکیدهای پنجرهٔ بازشو؛ وقتی «تأکیدهای رنگی» (عمومی) خاموش است، نوار بی‌رنگ می‌ماند."
+})
+addCatalogEntries("hi", {
+  "menubarAccents": "मानों को रंगें",
+  "menubarAccents_off": "बंद",
+  "menubarAccents_hover": "होवर पर",
+  "menubarAccents_always": "हमेशा",
+  "menubarAccentsHint": "पॉपअप जैसे ही रंग उभार; “रंग उभार” (सामान्य) बंद होने पर बार बिना रंग के रहता है।"
+})
+addCatalogEntries("id", {
+  "menubarAccents": "Warnai nilai",
+  "menubarAccents_off": "Mati",
+  "menubarAccents_hover": "Saat diarahkan",
+  "menubarAccents_always": "Selalu",
+  "menubarAccentsHint": "Aksen yang sama seperti di popup; jika “Aksen warna” (Umum) mati, bilah tetap tanpa warna."
+})
+addCatalogEntries("vi", {
+  "menubarAccents": "Tô màu các giá trị",
+  "menubarAccents_off": "Tắt",
+  "menubarAccents_hover": "Khi rê chuột",
+  "menubarAccents_always": "Luôn luôn",
+  "menubarAccentsHint": "Cùng điểm nhấn như trong cửa sổ bật lên; khi tắt “Điểm nhấn màu” (Chung), thanh không có màu."
+})
+addCatalogEntries("th", {
+  "menubarAccents": "ใส่สีให้ค่า",
+  "menubarAccents_off": "ปิด",
+  "menubarAccents_hover": "เมื่อชี้เมาส์",
+  "menubarAccents_always": "เสมอ",
+  "menubarAccentsHint": "สีเน้นเดียวกับในป๊อปอัป เมื่อปิด “สีเน้น” (ทั่วไป) แถบจะไม่มีสี"
+})
+
+// Place search: removing a saved place; Settings → General → Places,
+// the import of More Time's cities.
+addCatalogEntries("en", {
+  "shortcutSearchRemove": "In the saved places (Tab): remove the marked place",
+  "placesSettings": "Places",
+  "importCitiesFromTime": "Import cities from More Time",
+  "importCitiesResult": "Added: {added} · already there: {existing}",
+  "importCitiesHint": "Adds More Time's world clock cities that have coordinates and are not saved yet, in their order.",
+  "importCitiesMissing": "More Time's city list was not found, so there is nothing to import."
+})
+addCatalogEntries("de", {
+  "shortcutSearchRemove": "In den gespeicherten Orten (Tab): markierten Ort entfernen",
+  "placesSettings": "Orte",
+  "importCitiesFromTime": "Städte aus More Time übernehmen",
+  "importCitiesResult": "Hinzugefügt: {added} · schon vorhanden: {existing}",
+  "importCitiesHint": "Fügt die Städte der Weltuhr von More Time hinzu, die Koordinaten haben und noch nicht gespeichert sind, in ihrer Reihenfolge.",
+  "importCitiesMissing": "Die Städteliste von More Time wurde nicht gefunden; es gibt nichts zu übernehmen."
+})
+addCatalogEntries("es", {
+  "shortcutSearchRemove": "En los lugares guardados (Tab): quitar el lugar marcado",
+  "placesSettings": "Lugares",
+  "importCitiesFromTime": "Importar ciudades de More Time",
+  "importCitiesResult": "Añadidos: {added} · ya estaban: {existing}",
+  "importCitiesHint": "Añade las ciudades del reloj mundial de More Time que tienen coordenadas y aún no están guardadas, en su orden.",
+  "importCitiesMissing": "No se encontró la lista de ciudades de More Time; no hay nada que importar."
+})
+addCatalogEntries("fr", {
+  "shortcutSearchRemove": "Dans les lieux enregistrés (Tab) : retirer le lieu marqué",
+  "placesSettings": "Lieux",
+  "importCitiesFromTime": "Importer les villes de More Time",
+  "importCitiesResult": "Ajoutés : {added} · déjà présents : {existing}",
+  "importCitiesHint": "Ajoute les villes de l’horloge mondiale de More Time qui ont des coordonnées et ne sont pas encore enregistrées, dans leur ordre.",
+  "importCitiesMissing": "La liste des villes de More Time est introuvable ; il n’y a rien à importer."
+})
+addCatalogEntries("pt", {
+  "shortcutSearchRemove": "Nos locais salvos (Tab): remover o local marcado",
+  "placesSettings": "Locais",
+  "importCitiesFromTime": "Importar cidades do More Time",
+  "importCitiesResult": "Adicionados: {added} · já existentes: {existing}",
+  "importCitiesHint": "Adiciona as cidades do relógio mundial do More Time que têm coordenadas e ainda não estão salvas, na ordem delas.",
+  "importCitiesMissing": "A lista de cidades do More Time não foi encontrada; não há nada para importar."
+})
+addCatalogEntries("ru", {
+  "shortcutSearchRemove": "В сохранённых местах (Tab): удалить отмеченное место",
+  "placesSettings": "Места",
+  "importCitiesFromTime": "Импортировать города из More Time",
+  "importCitiesResult": "Добавлено: {added} · уже были: {existing}",
+  "importCitiesHint": "Добавляет города мировых часов More Time, у которых есть координаты и которые ещё не сохранены, в их порядке.",
+  "importCitiesMissing": "Список городов More Time не найден, импортировать нечего."
+})
+addCatalogEntries("uk", {
+  "shortcutSearchRemove": "У збережених місцях (Tab): вилучити позначене місце",
+  "placesSettings": "Місця",
+  "importCitiesFromTime": "Імпортувати міста з More Time",
+  "importCitiesResult": "Додано: {added} · уже були: {existing}",
+  "importCitiesHint": "Додає міста світового годинника More Time, які мають координати й ще не збережені, у їхньому порядку.",
+  "importCitiesMissing": "Список міст More Time не знайдено, імпортувати нічого."
+})
+addCatalogEntries("pl", {
+  "shortcutSearchRemove": "W zapisanych miejscach (Tab): usuń zaznaczone miejsce",
+  "placesSettings": "Miejsca",
+  "importCitiesFromTime": "Importuj miasta z More Time",
+  "importCitiesResult": "Dodano: {added} · już były: {existing}",
+  "importCitiesHint": "Dodaje miasta zegara światowego More Time, które mają współrzędne i nie są jeszcze zapisane, w ich kolejności.",
+  "importCitiesMissing": "Nie znaleziono listy miast More Time; nie ma czego importować."
+})
+addCatalogEntries("it", {
+  "shortcutSearchRemove": "Nei luoghi salvati (Tab): rimuovi il luogo marcato",
+  "placesSettings": "Luoghi",
+  "importCitiesFromTime": "Importa città da More Time",
+  "importCitiesResult": "Aggiunti: {added} · già presenti: {existing}",
+  "importCitiesHint": "Aggiunge le città dell’orologio mondiale di More Time che hanno coordinate e non sono ancora salvate, nel loro ordine.",
+  "importCitiesMissing": "L’elenco delle città di More Time non è stato trovato: non c’è nulla da importare."
+})
+addCatalogEntries("nl", {
+  "shortcutSearchRemove": "In de opgeslagen plaatsen (Tab): gemarkeerde plaats verwijderen",
+  "placesSettings": "Plaatsen",
+  "importCitiesFromTime": "Steden uit More Time importeren",
+  "importCitiesResult": "Toegevoegd: {added} · al aanwezig: {existing}",
+  "importCitiesHint": "Voegt de steden van de wereldklok van More Time toe die coördinaten hebben en nog niet zijn opgeslagen, in hun volgorde.",
+  "importCitiesMissing": "De stedenlijst van More Time is niet gevonden; er is niets te importeren."
+})
+addCatalogEntries("tr", {
+  "shortcutSearchRemove": "Kayıtlı yerlerde (Tab): işaretli yeri kaldır",
+  "placesSettings": "Yerler",
+  "importCitiesFromTime": "More Time’dan şehirleri içe aktar",
+  "importCitiesResult": "Eklenen: {added} · zaten var: {existing}",
+  "importCitiesHint": "More Time dünya saatinin koordinatı olan ve henüz kaydedilmemiş şehirlerini sırasıyla ekler.",
+  "importCitiesMissing": "More Time şehir listesi bulunamadı; içe aktarılacak bir şey yok."
+})
+addCatalogEntries("cs", {
+  "shortcutSearchRemove": "V uložených místech (Tab): odebrat označené místo",
+  "placesSettings": "Místa",
+  "importCitiesFromTime": "Importovat města z More Time",
+  "importCitiesResult": "Přidáno: {added} · už existují: {existing}",
+  "importCitiesHint": "Přidá města ze světových hodin More Time, která mají souřadnice a ještě nejsou uložená, v jejich pořadí.",
+  "importCitiesMissing": "Seznam měst More Time nebyl nalezen, není co importovat."
+})
+addCatalogEntries("sv", {
+  "shortcutSearchRemove": "I de sparade platserna (Tab): ta bort markerad plats",
+  "placesSettings": "Platser",
+  "importCitiesFromTime": "Importera städer från More Time",
+  "importCitiesResult": "Tillagda: {added} · fanns redan: {existing}",
+  "importCitiesHint": "Lägger till städerna i More Times världsklocka som har koordinater och inte är sparade än, i deras ordning.",
+  "importCitiesMissing": "More Times stadslista hittades inte, så det finns inget att importera."
+})
+addCatalogEntries("fi", {
+  "shortcutSearchRemove": "Tallennetuissa paikoissa (Tab): poista merkitty paikka",
+  "placesSettings": "Paikat",
+  "importCitiesFromTime": "Tuo kaupungit More Timesta",
+  "importCitiesResult": "Lisätty: {added} · jo olemassa: {existing}",
+  "importCitiesHint": "Lisää More Timen maailmankellon kaupungit, joilla on koordinaatit ja joita ei ole vielä tallennettu, niiden järjestyksessä.",
+  "importCitiesMissing": "More Timen kaupunkiluetteloa ei löytynyt, joten tuotavaa ei ole."
+})
+addCatalogEntries("nb", {
+  "shortcutSearchRemove": "I de lagrede stedene (Tab): fjern det merkede stedet",
+  "placesSettings": "Steder",
+  "importCitiesFromTime": "Importer byer fra More Time",
+  "importCitiesResult": "Lagt til: {added} · fantes fra før: {existing}",
+  "importCitiesHint": "Legger til byene i More Times verdensklokke som har koordinater og ikke er lagret ennå, i deres rekkefølge.",
+  "importCitiesMissing": "Bylisten til More Time ble ikke funnet, så det er ingenting å importere."
+})
+addCatalogEntries("da", {
+  "shortcutSearchRemove": "I de gemte steder (Tab): fjern det markerede sted",
+  "placesSettings": "Steder",
+  "importCitiesFromTime": "Importér byer fra More Time",
+  "importCitiesResult": "Tilføjet: {added} · fandtes allerede: {existing}",
+  "importCitiesHint": "Tilføjer byerne i More Times verdensur, som har koordinater og ikke er gemt endnu, i deres rækkefølge.",
+  "importCitiesMissing": "More Times byliste blev ikke fundet, så der er intet at importere."
+})
+addCatalogEntries("ro", {
+  "shortcutSearchRemove": "În locurile salvate (Tab): elimină locul marcat",
+  "placesSettings": "Locuri",
+  "importCitiesFromTime": "Importă orașe din More Time",
+  "importCitiesResult": "Adăugate: {added} · existau deja: {existing}",
+  "importCitiesHint": "Adaugă orașele ceasului mondial din More Time care au coordonate și nu sunt încă salvate, în ordinea lor.",
+  "importCitiesMissing": "Lista de orașe More Time nu a fost găsită, nu este nimic de importat."
+})
+addCatalogEntries("hu", {
+  "shortcutSearchRemove": "A mentett helyeknél (Tab): a kijelölt hely eltávolítása",
+  "placesSettings": "Helyek",
+  "importCitiesFromTime": "Városok importálása a More Time-ból",
+  "importCitiesResult": "Hozzáadva: {added} · már megvolt: {existing}",
+  "importCitiesHint": "Hozzáadja a More Time világórájának azon városait, amelyeknek vannak koordinátái és még nincsenek mentve, a sorrendjükben.",
+  "importCitiesMissing": "A More Time városlistája nem található, nincs mit importálni."
+})
+addCatalogEntries("el", {
+  "shortcutSearchRemove": "Στις αποθηκευμένες τοποθεσίες (Tab): αφαίρεση της επισημασμένης τοποθεσίας",
+  "placesSettings": "Τοποθεσίες",
+  "importCitiesFromTime": "Εισαγωγή πόλεων από το More Time",
+  "importCitiesResult": "Προστέθηκαν: {added} · υπήρχαν ήδη: {existing}",
+  "importCitiesHint": "Προσθέτει τις πόλεις του παγκόσμιου ρολογιού του More Time που έχουν συντεταγμένες και δεν έχουν αποθηκευτεί ακόμη, με τη σειρά τους.",
+  "importCitiesMissing": "Η λίστα πόλεων του More Time δεν βρέθηκε· δεν υπάρχει τίποτα για εισαγωγή."
+})
+addCatalogEntries("zh_CN", {
+  "shortcutSearchRemove": "在已保存地点中（Tab）：移除标记的地点",
+  "placesSettings": "地点",
+  "importCitiesFromTime": "从 More Time 导入城市",
+  "importCitiesResult": "已添加：{added} · 已存在：{existing}",
+  "importCitiesHint": "按顺序添加 More Time 世界时钟中有坐标且尚未保存的城市。",
+  "importCitiesMissing": "未找到 More Time 的城市列表，没有可导入的内容。"
+})
+addCatalogEntries("zh_TW", {
+  "shortcutSearchRemove": "在已儲存地點中（Tab）：移除標記的地點",
+  "placesSettings": "地點",
+  "importCitiesFromTime": "從 More Time 匯入城市",
+  "importCitiesResult": "已加入：{added} · 已存在：{existing}",
+  "importCitiesHint": "依順序加入 More Time 世界時鐘中有座標且尚未儲存的城市。",
+  "importCitiesMissing": "找不到 More Time 的城市清單，沒有可匯入的內容。"
+})
+addCatalogEntries("ja", {
+  "shortcutSearchRemove": "保存した場所で（Tab）：マークした場所を削除",
+  "placesSettings": "場所",
+  "importCitiesFromTime": "More Time から都市を読み込む",
+  "importCitiesResult": "追加：{added} · 既存：{existing}",
+  "importCitiesHint": "More Time の世界時計の都市のうち、座標があってまだ保存されていないものを順に追加します。",
+  "importCitiesMissing": "More Time の都市リストが見つからないため、読み込むものはありません。"
+})
+addCatalogEntries("ko", {
+  "shortcutSearchRemove": "저장한 장소에서(Tab): 표시한 장소 삭제",
+  "placesSettings": "장소",
+  "importCitiesFromTime": "More Time에서 도시 가져오기",
+  "importCitiesResult": "추가됨: {added} · 이미 있음: {existing}",
+  "importCitiesHint": "More Time 세계 시계의 도시 중 좌표가 있고 아직 저장되지 않은 도시를 순서대로 추가합니다.",
+  "importCitiesMissing": "More Time의 도시 목록을 찾을 수 없어 가져올 것이 없습니다."
+})
+addCatalogEntries("ar", {
+  "shortcutSearchRemove": "في الأماكن المحفوظة (Tab): إزالة المكان المحدد",
+  "placesSettings": "الأماكن",
+  "importCitiesFromTime": "استيراد المدن من More Time",
+  "importCitiesResult": "أُضيف: {added} · موجود مسبقًا: {existing}",
+  "importCitiesHint": "يضيف مدن الساعة العالمية في More Time التي لها إحداثيات ولم تُحفظ بعد، بترتيبها.",
+  "importCitiesMissing": "لم يُعثر على قائمة مدن More Time، فلا شيء للاستيراد."
+})
+addCatalogEntries("he", {
+  "shortcutSearchRemove": "במקומות השמורים (Tab): הסרת המקום המסומן",
+  "placesSettings": "מקומות",
+  "importCitiesFromTime": "ייבוא ערים מ־More Time",
+  "importCitiesResult": "נוספו: {added} · כבר קיימים: {existing}",
+  "importCitiesHint": "מוסיף את ערי שעון העולם של More Time שיש להן קואורדינטות ועדיין לא נשמרו, לפי הסדר שלהן.",
+  "importCitiesMissing": "רשימת הערים של More Time לא נמצאה, ולכן אין מה לייבא."
+})
+addCatalogEntries("fa", {
+  "shortcutSearchRemove": "در مکان‌های ذخیره‌شده (Tab): حذف مکان علامت‌خورده",
+  "placesSettings": "مکان‌ها",
+  "importCitiesFromTime": "درون‌بری شهرها از More Time",
+  "importCitiesResult": "افزوده شد: {added} · از قبل بود: {existing}",
+  "importCitiesHint": "شهرهای ساعت جهانی More Time را که مختصات دارند و هنوز ذخیره نشده‌اند، به ترتیب خودشان می‌افزاید.",
+  "importCitiesMissing": "فهرست شهرهای More Time پیدا نشد؛ چیزی برای درون‌بری نیست."
+})
+addCatalogEntries("hi", {
+  "shortcutSearchRemove": "सहेजी गई जगहों में (Tab): चिह्नित जगह हटाएँ",
+  "placesSettings": "जगहें",
+  "importCitiesFromTime": "More Time से शहर आयात करें",
+  "importCitiesResult": "जोड़े गए: {added} · पहले से मौजूद: {existing}",
+  "importCitiesHint": "More Time की विश्व घड़ी के वे शहर उनके क्रम में जोड़ता है जिनके निर्देशांक हैं और जो अभी सहेजे नहीं गए हैं।",
+  "importCitiesMissing": "More Time की शहर सूची नहीं मिली, इसलिए आयात करने को कुछ नहीं है।"
+})
+addCatalogEntries("id", {
+  "shortcutSearchRemove": "Di tempat tersimpan (Tab): hapus tempat yang ditandai",
+  "placesSettings": "Tempat",
+  "importCitiesFromTime": "Impor kota dari More Time",
+  "importCitiesResult": "Ditambahkan: {added} · sudah ada: {existing}",
+  "importCitiesHint": "Menambahkan kota jam dunia More Time yang memiliki koordinat dan belum disimpan, sesuai urutannya.",
+  "importCitiesMissing": "Daftar kota More Time tidak ditemukan, jadi tidak ada yang bisa diimpor."
+})
+addCatalogEntries("vi", {
+  "shortcutSearchRemove": "Trong địa điểm đã lưu (Tab): xóa địa điểm đã đánh dấu",
+  "placesSettings": "Địa điểm",
+  "importCitiesFromTime": "Nhập thành phố từ More Time",
+  "importCitiesResult": "Đã thêm: {added} · đã có: {existing}",
+  "importCitiesHint": "Thêm các thành phố trong đồng hồ thế giới của More Time có tọa độ và chưa được lưu, theo thứ tự của chúng.",
+  "importCitiesMissing": "Không tìm thấy danh sách thành phố của More Time nên không có gì để nhập."
+})
+addCatalogEntries("th", {
+  "shortcutSearchRemove": "ในสถานที่ที่บันทึกไว้ (Tab): ลบสถานที่ที่ทำเครื่องหมาย",
+  "placesSettings": "สถานที่",
+  "importCitiesFromTime": "นำเข้าเมืองจาก More Time",
+  "importCitiesResult": "เพิ่มแล้ว: {added} · มีอยู่แล้ว: {existing}",
+  "importCitiesHint": "เพิ่มเมืองจากนาฬิกาโลกของ More Time ที่มีพิกัดและยังไม่ได้บันทึก ตามลำดับเดิม",
+  "importCitiesMissing": "ไม่พบรายชื่อเมืองของ More Time จึงไม่มีอะไรให้นำเข้า"
+})
+
 var languageNames = {
   "en": "English",
   "de": "Deutsch",

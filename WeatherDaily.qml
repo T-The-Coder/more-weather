@@ -35,7 +35,7 @@ Column {
       id: dailyTitle
       anchors.left: parent.left
       anchors.top: parent.top
-      text: panel.i18n("daily")
+      text: panel.upperLabel(panel.i18n("daily"))
       color: panel.mutedText
       font.family: panel.fontFamily
       font.pixelSize: Style.font.bodySmall

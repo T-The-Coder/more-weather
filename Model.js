@@ -74,6 +74,53 @@ function addSavedLocation(list, entry) {
   return current.concat([{ name: entry.name, latitude: latitude, longitude: longitude }])
 }
 
+// More Time's cities ([{ name, country, tz, lat, lon }], its
+// more-time-cities.json) added to the saved places: in their order, those
+// with coordinates that are not saved yet (same coordinates to two
+// decimals, or the same name). Returns the new list and the counts.
+function importedCities(list, raw) {
+  var current = Array.isArray(list) ? list.slice() : []
+  var cities
+  try { cities = JSON.parse(String(raw || "")) } catch (e) { cities = null }
+  if (!Array.isArray(cities)) return { list: current, added: 0, existing: 0, skipped: 0 }
+  function fold(name) {
+    var text = String(name || "").trim().toLowerCase()
+    return typeof text.normalize === "function" ? text.normalize("NFD").replace(/[\u0300-\u036f]/g, "") : text
+  }
+  function spot(latitude, longitude) {
+    return Number(latitude).toFixed(2) + "," + Number(longitude).toFixed(2)
+  }
+  var names = {}
+  var spots = {}
+  for (var i = 0; i < current.length; i++) {
+    names[fold(current[i].name)] = true
+    spots[spot(current[i].latitude, current[i].longitude)] = true
+  }
+  var added = 0
+  var existing = 0
+  var skipped = 0
+  for (var c = 0; c < cities.length; c++) {
+    var city = cities[c]
+    var latitude = city && city.lat !== null && city.lat !== "" ? Number(city.lat) : NaN
+    var longitude = city && city.lon !== null && city.lon !== "" ? Number(city.lon) : NaN
+    var name = city && typeof city.name === "string" ? city.name.trim().slice(0, 60) : ""
+    if (name === "" || !isFinite(latitude) || !isFinite(longitude)
+        || Math.abs(latitude) > 90 || Math.abs(longitude) > 180) {
+      skipped++
+      continue
+    }
+    if (names[fold(name)] || spots[spot(latitude, longitude)]) {
+      existing++
+      continue
+    }
+    current.push({ name: name, latitude: latitude, longitude: longitude })
+    names[fold(name)] = true
+    spots[spot(latitude, longitude)] = true
+    added++
+  }
+  return { list: current, added: added, existing: existing, skipped: skipped }
+}
+
 // Remove the entry at `index`. Returns a new array; does not mutate `list`.
 // Index-based (entries have no stable id), matching the existing
 // suggestionIndex/Repeater convention used for search suggestions.
@@ -298,31 +345,6 @@ function locationQueryKey(location, latitude, longitude) {
 
   var name = String(location || "").replace(/^\s+|\s+$/g, "")
   return name === "" ? "" : encodeURIComponent(name)
-}
-
-// Open-Meteo geocoding response → suggestion rows for the location picker.
-function parseGeocodingResults(raw) {
-  try {
-    var data = JSON.parse(String(raw || "{}"))
-    var results = data.results
-    if (!results || !results.length) return []
-
-    var out = []
-    for (var i = 0; i < results.length; i++) {
-      var r = results[i]
-      if (!r || !r.name || r.latitude === undefined || r.longitude === undefined) continue
-      var region = [r.admin1, r.country].filter(function(part) { return !!part }).join(", ")
-      out.push({
-        name: String(r.name),
-        description: region,
-        latitude: r.latitude,
-        longitude: r.longitude
-      })
-    }
-    return out
-  } catch (e) {
-    return []
-  }
 }
 
 // Normalize the compact subset of OpenStreetMap place data used by the radar
@@ -3524,6 +3546,7 @@ if (typeof module !== "undefined") {
     parseSavedLocations: parseSavedLocations,
     defaultSavedLocations: defaultSavedLocations,
     addSavedLocation: addSavedLocation,
+    importedCities: importedCities,
     removeSavedLocationAt: removeSavedLocationAt,
     WEATHER_CACHE_MAX_AGE_MS: WEATHER_CACHE_MAX_AGE_MS,
     WEATHER_CACHE_FALLBACK_DELAY_MS: WEATHER_CACHE_FALLBACK_DELAY_MS,
@@ -3538,7 +3561,6 @@ if (typeof module !== "undefined") {
     stripWeatherCacheMetadata: stripWeatherCacheMetadata,
     mergeWeatherSnapshotForStorage: mergeWeatherSnapshotForStorage,
     locationQueryKey: locationQueryKey,
-    parseGeocodingResults: parseGeocodingResults,
     parseOverpassPlaces: parseOverpassPlaces,
     parseRadarPlaceCache: parseRadarPlaceCache,
     geographicDistanceKm: geographicDistanceKm,

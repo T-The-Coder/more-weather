@@ -53,9 +53,10 @@ Column {
       title: "shortcutsGroupSearch",
       rows: [
         { keys: ["↑ ↓"], action: "shortcutSearchSelect" },
-        { keys: ["Tab"], action: "shortcutSearchSection" },
+        { keys: ["Tab", "⇧ Tab"], action: "shortcutSearchSection" },
         { keys: ["Enter"], action: "shortcutSearchPick" },
-        { keys: ["+", "−"], action: "shortcutSearchFavorite" },
+        { keys: ["+"], action: "shortcutSearchAdd" },
+        { keys: ["−"], action: "shortcutSearchRemove" },
         { keys: ["Esc"], action: "shortcutSearchCancel" }
       ]
     },
@@ -114,7 +115,7 @@ Column {
         spacing: Style.space(6)
 
         Text {
-          text: shortcutsPage.panel.i18n(groupCard.modelData.title)
+          text: shortcutsPage.panel.upperLabel(shortcutsPage.panel.i18n(groupCard.modelData.title))
           color: shortcutsPage.panel.foreground
           font.family: shortcutsPage.panel.fontFamily
           font.pixelSize: Style.font.bodySmall

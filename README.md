@@ -16,6 +16,15 @@ runs as a standalone app window.
   probability: outline below 25 %, half full from 25 %, full from 75 %.
 - Optional hints: rain starting soon, poor air quality, high pollen and a colored
   warning mark while an official warning is active.
+- While the pointer rests on the weather, its text and symbols turn bold (switch
+  **Bold while hovered** in the menu bar settings). Entries set to **Hover**
+  appear only then, entries set to **Relevant** only when they stand out, and the
+  popup can open on hover too.
+- **Colour the values** (menu bar settings, below **Bold while hovered**): off, while
+  hovered (default) or always. Temperature, the day's low and high, feels-like, wind,
+  UV and the rain chance then take the popup's colour accents; the symbol, sun times,
+  moon and pollen stay plain, the warning mark keeps its colour, and the global
+  **Colour accents** switch turns this off too.
 - Left click opens the popup, middle click refreshes, right click sends a short
   status notification.
 
@@ -23,7 +32,9 @@ runs as a standalone app window.
 - **Current conditions:** Temperature, feels-like, wind, humidity, the moon phase with
   its lit share, the change against yesterday at the same hour and the next full or
   new moon, plus the moon behind the weather symbol at night. A button (or `w`) opens
-  the place at a weather service: NWS in the USA, ECCC in Canada, yr.no elsewhere.
+  the place at a weather service: NWS in the USA, ECCC in Canada, yr.no elsewhere. In
+  the popup, the button beside the gear (or `o`, or a click on the symbol or the
+  temperature) opens the same view in the app.
 - **Official warnings:** Severity, time window, description and instructions, from the
   national weather service in Germany, the 39 MeteoAlarm countries, the USA, Canada,
   Australia, New Zealand, Japan, Brazil and Argentina, and elsewhere from the official
@@ -70,13 +81,13 @@ runs as a standalone app window.
   grid over the visible area, at 10 m, 120 m or the 850, 700, 500 and 250 hPa levels
   (about 1.5 to 10 km). The wind under the pointer shows its speed and direction. The
   animation takes about a fifth of a processor core while it is on screen.
-- **Locations:** Search for places, keep a list of favorites or detect your location
-  automatically.
+- **Locations:** Search for places (Open-Meteo's geocoder, Nominatim when it finds
+  nothing), keep a list of favorites or detect your location automatically. Settings →
+  General → Places imports the cities of [More Time](https://github.com/T-The-Coder/more-time)'s
+  world clock as favorites.
 - **My places:** All favorites at a glance, one line each with symbol, temperature,
   feels-like, wind, humidity and moon. A click, Alt+1–9 or Alt+←/→ switches to a
-  place. For global keys, bind the IPC calls `favorite <n>`, `nextFavorite` and
-  `previousFavorite` of the `more-weather` target, e.g.
-  `qs ipc -p /usr/share/omarchy/shell call more-weather favorite 1`.
+  place; for global keys see [IPC](#ipc).
 - **Notifications:** Desktop notifications for severe and extreme warnings and for
   rain on its way. For rain you choose the strength (any, moderate or more, heavy only)
   and a radius of 10 to 100 km: rain moves at about 50 km/h, so the radius sets how far
@@ -90,7 +101,8 @@ runs as a standalone app window.
   rain nowcast each have their own update interval in the settings.
 - **Colour accents** in the theme's palette: temperatures by warmth, rain chance from the
   text colour through cyan, dark blue and magenta to violet, UV and strong wind by level,
-  a weekly temperature bar and the air quality dot; one switch turns them off.
+  a weekly temperature bar and the air quality dot, and in the bar on request; one
+  switch turns them off.
 - **Separate display settings** for the bar, the popup and the app, and the widget's
   position in the bar (left, center or right).
 - **Export and import** of all settings and your places as one JSON file (Settings →
@@ -98,13 +110,17 @@ runs as a standalone app window.
 - **Sections your way:** Current weather, my places, air quality, hourly, daily, rain,
   radar and wind can be put in any order. All but the current weather can also be
   shown as a tab; the tabs share one strip that has its own place in the order, and
-  keys 1–9 pick them in their order. The current weather, with place, refresh,
-  settings and the warnings below it, always stays in the window.
+  keys 1–9 pick them in their order. Each tab carries its section's symbol next to
+  its name; when the strip gets too narrow for the names (all seven sections as
+  tabs), it shows the symbols alone and the name as a tooltip. The current weather, with place, refresh, settings and the warnings
+  below it, always stays in the window.
 - **Offline cache:** When a service or the network is down, the last data (up to
   three days old) stays visible, marked in italics.
 - **Full keyboard control,** settings included; every shortcut is listed under
   Settings → Shortcuts, and the settings name their keys where they apply.
 - **Settings → Sources** shows which service is serving each kind of data right now.
+
+## Screenshots
 
 | Chicago in °F, with an NWS warning | Tokyo in the rain, JMA radar | Tórshavn in a gale, wind map |
 |---|---|---|
@@ -113,6 +129,62 @@ runs as a standalone app window.
 | Menu bar and widget | Settings | Data sources |
 |---|---|---|
 | ![Menu bar and widget](screenshots/menubar-widget.png) | ![Settings](screenshots/settings.png) | ![Sources](screenshots/sources.png) |
+
+## Keyboard
+
+The same keys work in the popup and in the app; Settings → Shortcuts lists them
+too, and the settings name their keys where they apply.
+
+| Keys | Action |
+|---|---|
+| **General** | |
+| `Esc` | Close the search, the settings or the list, then the panel |
+| `Tab` / `⇧ Tab` | Next / previous bar panel (popup) |
+| `Ctrl ,` | Open the settings |
+| `r` / `F5` | Refresh now |
+| `o` | Open the app (popup) |
+| `w` | Open the place at its weather service |
+| `Alt 1`–`9` | Show favourite 1 to 9 |
+| `Alt ← →` | Previous / next favourite |
+| `/` / `Enter` | Search a place |
+| **Scrolling** | |
+| `↑ ↓` / `j k` | Scroll |
+| `PgUp` / `PgDn` | Scroll a page |
+| `Home` / `End` | To the top / bottom |
+| `← →` / `h l` | Scroll the daily forecast |
+| `⇧ ← →` | Show another hour in the current weather |
+| `⌫` / `Esc` | Back to now |
+| **Tabs and maps** | |
+| `1`–`9` | The tabs, in their order |
+| `← →` / `h l` | Radar: previous / next frame |
+| `Space` | Radar: play / pause |
+| `+` / `−` | Map: zoom in / out |
+| `0` | Map: back to the place |
+| `Ctrl` + arrows, drag | Map: move |
+| `Ctrl` + wheel | Map: zoom towards the pointer |
+| `⇧` + wheel | Daily forecast and radar timeline: sideways |
+| `⇧ ↑ ↓` | Wind map: higher / lower |
+| **Place search** | |
+| `↑ ↓` | Move within the results or the saved places |
+| `Tab` / `⇧ Tab` | Switch between results and saved places |
+| `Enter` | Use the result, or switch to the saved place |
+| `+` | In the saved places (`Tab`): add the marked result |
+| `−` | In the saved places (`Tab`): remove the marked place |
+| `Esc` | Close the search |
+| **Settings** | |
+| `Tab` / `⇧ Tab` | Next / previous settings page |
+| `1` `2` `3` | Menu bar / widget / app settings (Display) |
+| `↑ ↓` / `j k` | Previous / next setting |
+| `← →` / `h l` | Change the value or pick the switch column |
+| `Space` / `Enter` | Switch, open the list or press the button |
+| `⇧ ↑ ↓` / `J K` | Move the entry up / down |
+| `PgUp` / `PgDn` | Scroll a page |
+| `Esc` | Close the settings |
+| **Mouse** | |
+| Left click on the weather in the bar | Open / close the popup |
+| Left click on the weather in the popup | Open the app |
+| Middle click on the weather in the bar | Refresh now |
+| Right click on the weather in the bar | The weather as a notification |
 
 ## Data sources
 
@@ -157,17 +229,17 @@ omarchy plugin enable more-weather
 The location is shared with Omarchy's built-in weather widget. If you only want
 More Weather in the bar, remove the built-in weather widget from the bar layout.
 
-### Standalone app (optional)
+## Standalone app
 
 The app shows the same view in a normal window. To open it, click the weather symbol
-or temperature in the popup, or run:
+or temperature in the popup, the app button beside the gear, press `o`, or run:
 
 ```bash
 ~/.config/omarchy/plugins/more-weather/app/more-weather
 ```
 
-To add the app to the app launcher, turn on **Settings → Display → General → Show in
-app launcher**. This creates a desktop entry and an icon in your theme's colors; turning
+To add the app to the app launcher, turn on **Settings → General → Show in app
+launcher**. This creates a desktop entry and an icon in your theme's colors; turning
 the switch off removes them again. Nothing is added to the launcher unless you turn the
 switch on. The same works from a terminal:
 
@@ -215,10 +287,35 @@ Omarchy's built-in weather widget and is left in place.
 | `~/.local/state/omarchy/settings/weather.json` | Location (shared with Omarchy, written via `omarchy-weather-location`) |
 | `~/.config/omarchy/shell.json` | Omarchy's bar layout; changed only through `omarchy-bar move` when you pick a position under Settings → General |
 | `~/.local/state/omarchy/settings/more-weather-*.json` | Display settings, favorites, cache, data shared between bar and app; `more-weather-settings-backup.json` holds the settings from before the last import |
+| `~/.local/state/omarchy/settings/more-time-cities.json` | More Time's cities; only read, when you import them under Settings → General → Places |
 | `~/Downloads/more-weather-settings.json` | Exported settings (the default path; any other can be typed in) |
 | `~/.cache/more-weather/map-images/` | Downloaded radar and map pictures, removed after three hours |
 | `$XDG_RUNTIME_DIR/more-weather-app/` | Temporary app configuration (links to the plugin and the Omarchy shell) |
 | `~/.local/share/applications/more-weather.desktop`, `~/.local/share/more-weather/launch`, `~/.local/share/icons/hicolor/scalable/apps/more-weather.svg` | App launcher entry, only while **Show in app launcher** is on |
+
+## IPC
+
+The popup answers to Quickshell IPC under the target `more-weather`, for global key
+bindings and scripts:
+
+```bash
+qs ipc -p /usr/share/omarchy/shell call more-weather toggle
+qs ipc -p /usr/share/omarchy/shell call more-weather tab radar
+qs ipc -p /usr/share/omarchy/shell call more-weather favorite 2
+qs ipc -p /usr/share/omarchy/shell call more-weather nextFavorite
+qs ipc -p /usr/share/omarchy/shell call more-weather refresh
+```
+
+| Call | Effect |
+|---|---|
+| `open`, `close`, `toggle` (`show`, `hide`) | The popup |
+| `edit` | Opens the popup with the place search |
+| `settings` | Opens the popup with the settings |
+| `refresh` | Fetches the forecast now |
+| `favorite <n>` | Opens the popup on favourite *n* (from 1) |
+| `nextFavorite`, `previousFavorite` | Opens the popup on the next / previous favourite |
+| `tab <name>` | Picks a tab and scrolls it into view: `favorites`, `airQuality`, `hourly`, `daily`, `rain`, `radar`, `wind` (only sections shown as a tab); the popup is not opened |
+| `providerStatus` | A JSON diagnosis: sources in use, cache, keyboard state |
 
 ## Development
 
@@ -229,7 +326,24 @@ test runner, with nothing to install:
 ```bash
 node --test tests/*.test.mjs
 tests/qml-syntax.sh    # every QML file parses (qmllint)
+tests/ui-shots.sh /tmp/shots    # screenshots of every view, offscreen
 ```
+
+`tests/ui-shots.sh` runs the app view offscreen with a throwaway home and
+runtime directory, synthetic weather for Tórshavn (`tests/ui/fixtures/state.py`)
+and no network (`MORE_PLUGINS_OFFLINE=1`), and saves a picture of every tab,
+the search, every settings page and the popup's view; radar pictures are not
+downloaded, so the radar tab shows its model fallback.
+
+Some files are shared word for word with the sibling plugin
+[More Time](https://github.com/T-The-Coder/more-time) apart from their names
+(the switch rows, buttons, the bar placement, the app launcher entry, the
+request component, the place search with its parsers and their tests, the test
+helpers and the CI workflow).
+`tools/sync-shared.sh from-sibling` or `to-sibling` copies them when both
+repositories sit side by side, and `tests/shared-files.test.mjs` fails when
+they drift apart (it is skipped without the sibling, and per file while the
+sibling lacks a newly shared one).
 
 They also run on GitHub for every push. The drawn map's data is built from
 Natural Earth with `python3 tools/build-basemap.py` (only needed when the

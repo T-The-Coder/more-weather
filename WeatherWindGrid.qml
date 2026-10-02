@@ -188,7 +188,7 @@ Item {
         panel.noteOpenMeteoResponse(windGridProc)
         panel.windGridFailed = true
         panel.sharedLive.releaseWindGridClaim(panel.windGridRequestKey)
-        console.warn("weather: Best Match wind grid request failed with exit code", exitCode)
+        console.warn("more-weather: Best Match wind grid request failed with exit code", exitCode)
       }
       if (panel.windGridRefreshPending) {
         panel.windGridRefreshPending = false

@@ -1,9 +1,9 @@
 import QtQuick
 import qs.Commons
 
-// A button of the settings page, reachable by keyboard (kbFocused). With a
-// confirmLabel, the first press arms it and a second one within four seconds
-// acts, for actions that replace settings.
+// A button of the panel and the settings, reachable by keyboard
+// (kbFocused). With a confirmLabel, the first press arms it and a second one
+// within four seconds acts, for actions that replace settings.
 Rectangle {
   id: button
   required property var panel

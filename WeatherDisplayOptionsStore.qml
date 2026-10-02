@@ -26,15 +26,36 @@ Item {
     var parsed = ({})
     try { parsed = JSON.parse(String(raw || "{}")) || ({}) }
     catch (e) { parsed = ({}) }
-    panel.generalOptions = {
-      unitSystem: normalizedUnitSystem(parsed.unitSystem),
-      language: normalizedLanguage(parsed.language),
-      windUnit: normalizedWindUnit(parsed.windUnit),
-      refreshMinutes: normalizedRefreshMinutes(parsed.refreshMinutes),
-      radarMinutes: normalizedRadarMinutes(parsed.radarMinutes),
-      colorAccents: parsed.colorAccents !== false,
-      windLevel: normalizedWindLevel(parsed.windLevel)
+    panel.generalOptions = sanitizedGeneral(parsed)
+  }
+
+  function sanitizedGeneral(raw) {
+    var source = raw && typeof raw === "object" ? raw : ({})
+    return {
+      unitSystem: normalizedUnitSystem(source.unitSystem),
+      language: normalizedLanguage(source.language),
+      windUnit: normalizedWindUnit(source.windUnit),
+      refreshMinutes: normalizedRefreshMinutes(source.refreshMinutes),
+      radarMinutes: normalizedRadarMinutes(source.radarMinutes),
+      colorAccents: source.colorAccents !== false,
+      windLevel: normalizedWindLevel(source.windLevel)
     }
+  }
+
+  // The General page's options at their defaults? The wind map's height is
+  // set on the map itself and stays out of it.
+  function generalIsDefault() {
+    var defaults = sanitizedGeneral({})
+    var current = sanitizedGeneral(panel.generalOptions)
+    for (var key in defaults)
+      if (key !== "windLevel" && current[key] !== defaults[key]) return false
+    return true
+  }
+
+  function restoreGeneralDefaults() {
+    var next = sanitizedGeneral({ windLevel: panel.generalOptions ? panel.generalOptions.windLevel : "" })
+    panel.generalOptions = next
+    generalOptionsFile.setText(JSON.stringify(next) + "\n")
   }
 
   // Height of the wind map (Model.WIND_LEVELS).
@@ -174,7 +195,7 @@ Item {
         source.currentPollenOnHover = source.currentAirQualityAlertOnHover
     }
     // Up to 2.2: rain start and intensity only ever showed when there was
-    // something to show, which is what "when relevant" means now.
+    // something to show, which is what "Relevant" means now.
     var eventKeys = ["currentRainStart", "currentRainIntensity"]
     for (var i = 0; i < eventKeys.length; i++) {
       var key = eventKeys[i]
@@ -189,7 +210,8 @@ Item {
   readonly property var choiceKeys: ({
     rainAlertThreshold: ["any", "moderate", "heavy"],
     rainAlertRadius: ["10", "25", "50", "100"],
-    mapStyle: ["drawn", "satellite"]
+    mapStyle: ["drawn", "satellite"],
+    menubarAccents: ["off", "hover", "always"]
   })
   function normalizedChoice(key, value, fallback) {
     var text = String(value === undefined || value === null ? "" : value)
@@ -318,7 +340,7 @@ Item {
         : (key === "hoverUnitSystem" ? normalizedHoverUnitSystem(value)
           : (choiceKeys[key] ? normalizedChoice(key, value, next[key])
             : (key.indexOf("Order") > 0 ? panel.sanitizedOrder(value, key) : !!value))))
-    // A menu bar entry shows always, when relevant, or on hover: switching
+    // A menu bar entry is "Always", "Relevant" or "Hover": switching
     // one on switches the other two off.
     if (surface === "menubar" && next[key] === true) {
       var base = key.replace(/(WhenRelevant|OnHover)$/, "")

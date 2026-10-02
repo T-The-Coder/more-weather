@@ -55,7 +55,7 @@ Item {
 
   property Process moveProc: Process {
     onExited: function(exitCode) {
-      if (exitCode !== 0) console.warn("weather: moving the bar widget failed with exit code", exitCode)
+      if (exitCode !== 0) console.warn("more-weather: moving the bar widget failed with exit code", exitCode)
       busy = false
       shellConfigView.reload()
     }

@@ -594,15 +594,17 @@ Panel {
   property bool editingLocation: false
   property bool savingLocation: false
   property bool savingLocationQueryStarted: false
-  property var locationSuggestions: []
-  property int suggestionIndex: 0
+  // Search results while the location is being edited (the shared
+  // WeatherPlaceSearch), as suggestion rows: name, "region, country" and
+  // the coordinates.
+  readonly property var locationSuggestions: editingLocation
+    ? placeSearch.results.map(suggestionForPlace) : []
+  property alias suggestionIndex: placeSearch.index
   property bool locationSearchPristine: true
   // Logical keyboard focus while the location search is open. The text field
   // remains available for typing; Tab/arrow/+/- operate on the selected list.
   property string searchFocusSection: "suggestions"
   property int savedLocationIndex: 0
-  property string geocodePendingQuery: ""
-  property string geocodeActiveQuery: ""
 
   // Multi-location management ("Ortsverwaltung"): a separate, plugin-owned
   // list of saved locations, independent of configuredLocationState (the
@@ -705,6 +707,17 @@ Panel {
     var wanted = String(settingsDisplaySetting("defaultTab", "rain"))
     return settingsTabs.indexOf(wanted) >= 0 ? wanted : (settingsTabs.length ? settingsTabs[0] : "")
   }
+  // Material Design Icons from the bar's Nerd Font, one per section.
+  function sectionTabGlyph(key) {
+    if (key === "favorites") return "\u{f0350}"    // map-marker-multiple
+    if (key === "airQuality") return "\u{f032a}"   // leaf
+    if (key === "hourly") return "\u{f0150}"       // clock-outline
+    if (key === "daily") return "\u{f00ed}"        // calendar
+    if (key === "rain") return "\u{f0596}"         // weather-pouring
+    if (key === "radar") return "\u{f0437}"        // radar
+    if (key === "wind") return "\u{f059d}"         // weather-windy
+    return ""
+  }
   function sectionTabLabel(key) {
     return upperLabel(i18n(key === "airQuality" ? "airTab" : (key === "favorites" ? "myPlaces" : key)))
   }
@@ -712,7 +725,7 @@ Panel {
   readonly property string settingsHoverUnitSystem: String(settingsDisplaySetting("hoverUnitSystem", ""))
 
   // Set by the bar widget while the pointer rests on it: entries switched to
-  // "on hover" join the permanent ones for that time.
+  // "Hover" join the permanent ones for that time.
   property bool menubarHovered: false
   // Menu bar entries. Each is shown always ("<key>"), only when it stands
   // out ("<key>WhenRelevant") or only under the pointer ("<key>OnHover").
@@ -724,9 +737,32 @@ Panel {
     "currentAirQuality", "currentAirQualityColor", "currentPollen", "currentWarnings"
   ]
   readonly property bool menubarShowCurrent: menubarDisplaySetting("showCurrent", true)
+  // Text and symbols in the bar turn bold while the pointer rests on them.
+  readonly property bool menubarBoldOnHover: menubarDisplaySetting("boldOnHover", true) !== false
+  // The values in the bar in the popup's colour accents: "off", "hover"
+  // (while the bar turns bold) or "always". The global colour switch
+  // (colorAccents) still has the last word.
+  readonly property string menubarAccents: {
+    var value = String(menubarDisplaySetting("menubarAccents", "hover"))
+    return value === "off" || value === "always" ? value : "hover"
+  }
+  // Each coloured entry's accent, from the same functions as the popup;
+  // "" leaves the entry in the bar's text colour.
+  function menubarAccentFor(key) {
+    if (!current) return ""
+    if (key === "currentTemperature") return absoluteTemperatureAccent(current.temp_C)
+    if (key === "currentFeelsLike") return absoluteTemperatureAccent(current.FeelsLikeC)
+    if (key === "currentWind") return windAccent(current.windspeedKmph)
+    if (key === "currentUv") return uvAccent(currentUvIndex)
+    if (key === "currentDayMin") return todayForecast ? absoluteTemperatureAccent(todayForecast.mintempC) : ""
+    if (key === "currentDayMax") return todayForecast ? absoluteTemperatureAccent(todayForecast.maxtempC) : ""
+    // The rain spot only while it shows the probability (the drop does).
+    if (key === "currentRain") return menubarRainDropLevel >= 0 ? rainProbabilityAccent(nextHourRainProbability) : ""
+    return ""
+  }
   readonly property bool menubarOpenWidgetOnHover: !standaloneMode
     && menubarDisplaySetting("openWidgetOnHover", false)
-  // Nothing always shown but something on hover: the weather symbol stays as
+  // Nothing always shown but something on "Hover": the weather symbol stays as
   // the spot to point at.
   readonly property bool menubarHoverHandle: {
     var anyHover = false
@@ -1790,6 +1826,8 @@ Panel {
       currentWarningsOnHover: false,
       entryOrder: defaultMenubarEntryOrder(),
       hoverUnitSystem: "",
+      boldOnHover: true,
+      menubarAccents: "hover",
       openWidgetOnHover: false,
       notifySevereWarnings: true,
       notifyRainSoon: true,
@@ -2059,7 +2097,7 @@ Panel {
     return menubarDisplaySetting(key + "WhenRelevant", false) === true && menubarEntryRelevant(key)
   }
 
-  // What "when relevant" means per entry: the value stands out enough to be
+  // What "Relevant" means per entry: the value stands out enough to be
   // worth the space. Entries without a rule (symbol, place, temperature,
   // humidity, warnings) offer the choice greyed out in settings.
   function menubarEntryRelevant(key) {
@@ -2507,7 +2545,7 @@ Panel {
     else until = now.getTime() + 60 * 60 * 1000
     if (until > openMeteoBlockedUntilMs) {
       openMeteoBlockedUntilMs = until
-      console.warn("weather: Open-Meteo rate limited until", new Date(until).toISOString())
+      console.warn("more-weather: Open-Meteo rate limited until", new Date(until).toISOString())
     }
     return true
   }
@@ -2748,13 +2786,13 @@ Panel {
     alertReport = parsed
     alertResponseAccepted = true
     alertActiveProviderId = providerId
-    console.info("weather: warning provider active:", alertActiveProviderId)
+    console.info("more-weather: warning provider active:", alertActiveProviderId)
     scheduleWeatherCachePersist()
   }
 
   function alertLookupFailed(providerId) {
     if (providerId !== alertProviderId) return
-    console.warn("weather: warning provider failed:", providerId)
+    console.warn("more-weather: warning provider failed:", providerId)
     advanceAlertProvider()
   }
 
@@ -2776,8 +2814,7 @@ Panel {
     showSavedLocations = false
     savingLocation = false
     savingLocationQueryStarted = false
-    locationSuggestions = []
-    suggestionIndex = 0
+    placeSearch.query = ""
     searchFocusSection = "suggestions"
     savedLocationIndex = 0
     locationSearchPristine = !startsWithTypedText
@@ -2795,11 +2832,10 @@ Panel {
     editingLocation = false
     savingLocation = false
     savingLocationQueryStarted = false
-    locationSuggestions = []
+    placeSearch.query = ""
     locationSearchPristine = true
     searchFocusSection = "suggestions"
     savedLocationIndex = 0
-    geocodeDebounce.stop()
     root.defer(function() { if (keyCatcher) keyCatcher.forceActiveFocus() })
   }
 
@@ -2847,10 +2883,9 @@ Panel {
     })
   }
 
+  // "+" in the saved places: the result marked in the list above joins them.
   function addMarkedSearchLocation() {
-    var entry = searchFocusSection === "saved"
-      ? (savedLocations[savedLocationIndex] || null)
-      : (locationSuggestions[suggestionIndex] || null)
+    var entry = locationSuggestions[suggestionIndex] || null
     if (!entry) return false
 
     addSavedLocation(entry)
@@ -2861,10 +2896,11 @@ Panel {
     return true
   }
 
+  // "−" removes the marked saved place (not a result that happens to be
+  // saved too).
   function removeMarkedSearchLocation() {
-    var entry = searchFocusSection === "saved"
-      ? (savedLocations[savedLocationIndex] || null)
-      : (locationSuggestions[suggestionIndex] || null)
+    if (searchFocusSection !== "saved") return false
+    var entry = savedLocations[savedLocationIndex] || null
     var savedIndex = savedLocationIndexFor(entry)
     if (savedIndex < 0) return false
 
@@ -2876,8 +2912,24 @@ Panel {
   // the controller needs from them.
   readonly property var locationField: hero ? hero.locationField : null
 
+  // The search field's text goes to the place search, which waits for a
+  // pause in typing.
   function scheduleGeocode() {
-    geocodeDebounce.restart()
+    placeSearch.query = locationField ? locationField.text : ""
+  }
+
+  // A click on a result row.
+  function placeSearchPick(i) {
+    placeSearch.pick(i)
+  }
+
+  function suggestionForPlace(place) {
+    return {
+      name: place.name,
+      description: [place.region, place.country].filter(function(part) { return !!part }).join(", "),
+      latitude: place.lat,
+      longitude: place.lon
+    }
   }
 
   // Widget only: hand over to the standalone app. Its launcher raises a
@@ -2945,19 +2997,38 @@ Panel {
     scroller.contentX = Math.max(0, Math.min(maximum, scroller.contentX + columns * step))
   }
 
-  // Keyboard map, identical in the popup and the app:
-  //   Esc              close search, settings or the saved list, then the panel
-  //   Tab / Shift+Tab  next / previous bar panel (Omarchy convention);
-  //                    while searching: switch between results and favorites
-  //   1 2 3            rain, radar, wind view
-  //   r, F5            refresh                 Ctrl+,  settings
-  //   /, Enter         search a place
-  //   ↑ ↓, j k         scroll                  PgUp PgDn Home End  page / jump
-  //   ← →, h l         radar: step frames; otherwise scroll the daily strip
-  //   Space            radar: play / pause
-  //   + − 0            map zoom in / out / reset (radar and wind)
-  //   ← → (settings)   previous / next settings page
-  // WeatherShortcutsPage.qml lists these for the user; keep it in sync.
+  // Keyboard map, identical in the popup and the app. The groups follow the
+  // Shortcuts page (WeatherShortcutsPage.qml), which lists them for the
+  // user; keep both in sync with the code below.
+  // General
+  //   Esc                close the search, the settings or the list, then
+  //                      the panel (first it clears the hour cursor)
+  //   Tab / ⇧ Tab        next / previous bar panel (Omarchy convention)
+  //   Ctrl+,             open the settings
+  //   r, F5              refresh
+  //   o                  open the app (widget only)
+  //   w                  the place at its weather service
+  //   Alt+1–9            favourite 1–9; Alt+← / Alt+→ previous / next one
+  //   /, Enter           search a place
+  // Scrolling
+  //   ↑ ↓, j k           scroll               PgUp PgDn  a page
+  //   Home End           to the top / bottom
+  //   ← →, h l           scroll the daily strip (radar shown: see below)
+  //   ⇧ ← →              move the hour cursor; ⌫ or Esc back to now
+  // Tabs and maps
+  //   1–9                the tabs, in their order
+  //   ← →, h l           radar: previous / next frame
+  //   Space              radar: play / pause
+  //   + − 0              map zoom in / out / reset (radar and wind)
+  //   Ctrl+arrows        move the map by a quarter of the view
+  //   ⇧ ↑ ↓              wind map: height above ground
+  // Place search (while editing the place)
+  //   ↑ ↓                choose          Tab  results / favourites
+  //   Enter              take the place  + −  add / remove favourite
+  //   Esc                cancel
+  // Settings: WeatherSettings.handleKey (Tab / ⇧ Tab pages, 1 2 3 view,
+  //   ↑ ↓ / j k choose, ← → / h l change, Space / Enter switch or open,
+  //   ⇧ ↑ ↓ / J K move, PgUp PgDn Home End scroll, Esc close).
   function handlePanelKey(event) {
     var control = !!(event.modifiers & Qt.ControlModifier)
     var command = !!(event.modifiers & Qt.MetaModifier)
@@ -3007,15 +3078,23 @@ Panel {
       if (plain && (event.key === Qt.Key_Tab || event.key === Qt.Key_Backtab)) {
         toggleSearchFocus()
         event.accepted = true
-      } else if (plain && (plusKey || minusKey)) {
+      } else if (plain && (plusKey || minusKey) && searchFocusSection === "saved") {
+        // Only in the saved places (after Tab): elsewhere "+" and "−" are
+        // part of a name ("Saint-Denis") and go into the field.
         if (plusKey) addMarkedSearchLocation()
         else removeMarkedSearchLocation()
         event.accepted = true
+      } else if (plain && (plusKey || minusKey)) {
+        if (locationField && !locationField.activeFocus && text !== "") {
+          locationField.insert(locationField.cursorPosition, text)
+          focusCityNameField()
+          event.accepted = true
+        }
       } else if (event.key === Qt.Key_Down) {
         if (searchFocusSection === "saved" && savedLocations.length > 0) {
           savedLocationIndex = Math.min(savedLocations.length - 1, savedLocationIndex + 1)
         } else if (locationSuggestions.length > 0) {
-          suggestionIndex = Math.min(locationSuggestions.length - 1, suggestionIndex + 1)
+          placeSearch.step(1)
           locationSearchPristine = false
         }
         event.accepted = true
@@ -3023,7 +3102,7 @@ Panel {
         if (searchFocusSection === "saved" && savedLocations.length > 0) {
           savedLocationIndex = Math.max(0, savedLocationIndex - 1)
         } else if (locationSuggestions.length > 0) {
-          suggestionIndex = Math.max(0, suggestionIndex - 1)
+          placeSearch.step(-1)
           locationSearchPristine = false
         }
         event.accepted = true
@@ -3036,6 +3115,7 @@ Panel {
             // affordance: first Enter marks it, immediate second Enter exits
             // at that same place without rewriting or dropping coordinates.
             if (locationSearchPristine) cancelEditingLocation()
+            else if (locationSuggestions.length > 0 && locationField.text.trim() !== "") placeSearch.pick()
             else commitLocation()
           }
         }
@@ -3377,6 +3457,13 @@ Panel {
     savedLocationCache.savedCacheSchedule.restart()
   }
 
+  // The whole saved list at once (the import of More Time's cities).
+  function replaceSavedLocations(list) {
+    root.savedLocations = list
+    savedLocationsFile.setText(JSON.stringify(root.savedLocations, null, 2) + "\n")
+    savedLocationCache.savedCacheSchedule.restart()
+  }
+
   function finishSavingLocation() {
     if (savingLocation && savingLocationQueryStarted) cancelEditingLocation()
   }
@@ -3389,28 +3476,6 @@ Panel {
     else
       locationSaveProc.command = ["omarchy-weather-location", "--clear"]
     locationSaveProc.running = true
-  }
-
-  // Debounced geocoding. Only one curl runs at a time; if the query moved on
-  // while a fetch was in flight, the latest query is fetched right after.
-  function requestGeocode() {
-    var query = locationField.text.trim()
-    if (query.length < 2) {
-      locationSuggestions = []
-      return
-    }
-    geocodePendingQuery = query
-    if (!geocodeProc.running) startGeocode()
-  }
-
-  function startGeocode() {
-    geocodeActiveQuery = geocodePendingQuery
-    geocodeProc.request = {
-      url: "https://geocoding-api.open-meteo.com/v1/search?name=" + encodeURIComponent(geocodeActiveQuery)
-        + "&count=5&language=" + encodeURIComponent(I18n.serviceLanguage(interfaceLanguage)) + "&format=json",
-      timeoutMs: 5000
-    }
-    geocodeProc.running = true
   }
 
   function dayName(dateString, short) {
@@ -3796,13 +3861,13 @@ Panel {
   function noteRadarFrameError(frame) {
     if (frame && frame.wmsProvider) {
       regionalRadarFailed = true
-      console.warn("weather: regional radar image failed, falling back:", frame.wmsProvider)
+      console.warn("more-weather: regional radar image failed, falling back:", frame.wmsProvider)
     } else if (radarActiveProviderId === "dwd") {
       regionalRadarFailed = true
-      console.warn("weather: DWD radar image failed, falling back to RainViewer")
+      console.warn("more-weather: DWD radar image failed, falling back to RainViewer")
     } else if (frame && frame.rainViewer) {
       rainViewerFailed = true
-      console.warn("weather: RainViewer image failed, using model precipitation fallback")
+      console.warn("more-weather: RainViewer image failed, using model precipitation fallback")
     }
   }
 
@@ -3859,7 +3924,7 @@ Panel {
       forecastProviderIndex++
       dailyForecastRetries = 0
     } else {
-      console.warn("weather: all forecast providers failed; retaining last good data")
+      console.warn("more-weather: all forecast providers failed; retaining last good data")
       root.recordForecastRefreshFailure()
       return
     }
@@ -3934,7 +3999,7 @@ Panel {
         parsed._providerId = root.forecastRequestProviderId
         root.dailyForecastReport = parsed
         root.forecastProviderId = root.forecastRequestProviderId
-        console.info("weather: forecast provider active:", root.forecastProviderId)
+        console.info("more-weather: forecast provider active:", root.forecastProviderId)
         root.recordForecastRefreshSuccess(Date.now())
         root.dailyForecastRetries = 0
         root.scheduleWeatherCachePersist()
@@ -4008,14 +4073,14 @@ Panel {
       // A result for a location the user has since left is dropped.
       if (message.token !== root.locationQuery) return
       if (!message.motion) {
-        console.warn("weather: radar motion response unreadable")
+        console.warn("more-weather: radar motion response unreadable")
         return
       }
       root.radarMotion = message.motion
       root.radarWet = message.wet
       root.radarMotionAtMs = Number(message.at) || Date.now()
       root.sharedLive.publishSharedRadar()
-      console.info("weather: radar drift tracked for", message.motion.length, "of 8 steps")
+      console.info("more-weather: radar drift tracked for", message.motion.length, "of 8 steps")
       root.scheduleWeatherCachePersist()
     }
   }
@@ -4072,7 +4137,7 @@ Panel {
     onExited: function(exitCode) {
       if (exitCode !== 0 || !root.regionalRadarResponseAccepted) {
         root.regionalRadarFailed = true
-        console.warn("weather: regional radar provider failed:", root.regionalRadarProviderId, exitCode)
+        console.warn("more-weather: regional radar provider failed:", root.regionalRadarProviderId, exitCode)
       }
     }
     onFinished: function(text) {
@@ -4082,7 +4147,7 @@ Panel {
         root.regionalRadarFrames = frames
         root.regionalRadarResponseAccepted = true
         root.regionalRadarFailed = false
-        console.info("weather: regional radar provider active:", root.regionalRadarProviderId)
+        console.info("more-weather: regional radar provider active:", root.regionalRadarProviderId)
       }
     }
   }
@@ -4093,7 +4158,7 @@ Panel {
       if (root.pendingAlertProviderIndex >= 0) {
         alertFallbackTimer.restart()
       } else if (exitCode !== 0 || !root.alertResponseAccepted) {
-        console.warn("weather: warning provider failed:", root.alertProviderId, exitCode)
+        console.warn("more-weather: warning provider failed:", root.alertProviderId, exitCode)
         root.advanceAlertProvider()
       }
     }
@@ -4127,21 +4192,12 @@ Panel {
     }
   }
 
-  WeatherRequest {
-    id: geocodeProc
-    onFinished: function(text) {
-      root.locationSuggestions = root.editingLocation ? Model.parseGeocodingResults(text) : []
-      root.suggestionIndex = 0
-      if (root.savedLocations.length > 0)
-        root.savedLocationIndex = Math.min(root.savedLocations.length - 1, root.savedLocationIndex)
-      if (root.geocodePendingQuery !== root.geocodeActiveQuery) root.defer(root.startGeocode)
-    }
-  }
-
-  Timer {
-    id: geocodeDebounce
-    interval: 300
-    onTriggered: root.requestGeocode()
+  // Finding a place by name (shared with More Time): Open-Meteo, then
+  // Nominatim. A pick is used like a click on its row.
+  WeatherPlaceSearch {
+    id: placeSearch
+    panel: root
+    onPicked: function(place) { root.pickSuggestion(root.suggestionForPlace(place)) }
   }
 
   Process {
@@ -4202,6 +4258,7 @@ Panel {
   property WeatherSharedLiveData sharedLive: WeatherSharedLiveData { panel: root }
   property WeatherDisplayOptionsStore displayOptionsStore: WeatherDisplayOptionsStore { panel: root }
   property WeatherSettingsTransfer settingsTransfer: WeatherSettingsTransfer { panel: root }
+  property WeatherCityImport cityImport: WeatherCityImport { panel: root }
   property WeatherAirQuality airQuality: WeatherAirQuality { panel: root }
   property WeatherRegionalNowcast regionalNowcast: WeatherRegionalNowcast { panel: root }
   property WeatherAlertLookup alertLookup: WeatherAlertLookup { panel: root }
@@ -4281,79 +4338,23 @@ Panel {
     }
   }
 
-  KeyboardPanel {
-    id: panel
-    anchorItem: root.anchorItem
-    owner: root.barIdentity
-    bar: root.bar
-    open: !root.standaloneMode && root.opened
-    centerOnBar: true
-    focusTarget: keyCatcher
-    contentWidth: panel.fittedContentWidth(Style.space(480))
-    contentHeight: panel.fittedContentHeight(root.settingsOpen
-      ? Style.space(650)
-      : weatherColumn.implicitHeight)
-
-    Item {
-      id: popupContentHost
-      anchors.fill: parent
-
-      // The open popup covers the whole screen, bar included, so the bar
-      // widget stops seeing the pointer. These zones follow it instead: one
-      // over the widget's spot in the bar, one spanning widget and card.
-      // They hold only HoverHandlers, which neither take clicks nor keep
-      // hover from the content below.
-      Item {
-        id: popupHoverZones
-        z: 1000
-        // Window position of this host: the card, plus the content holder's
-        // inset within it. Read off the chain so it follows the card's moves.
-        readonly property point hostOrigin: {
-          var holder = popupContentHost.parent
-          var card = holder ? holder.parent : null
-          return card ? Qt.point(card.x + holder.x, card.y + holder.y) : panel.cardOrigin
-        }
-        readonly property rect anchorRect: {
-          if (panel.barPos === "bottom")
-            return Qt.rect(panel.anchorScreenPos.x, panel.screenH - panel.barH, panel.anchorW, panel.barH)
-          if (panel.barPos === "left")
-            return Qt.rect(0, panel.anchorScreenPos.y, panel.barW, panel.anchorH)
-          if (panel.barPos === "right")
-            return Qt.rect(panel.screenW - panel.barW, panel.anchorScreenPos.y, panel.barW, panel.anchorH)
-          return Qt.rect(panel.anchorScreenPos.x, 0, panel.anchorW, panel.barH)
-        }
-        readonly property rect spanRect: {
-          var left = Math.min(anchorRect.x, panel.cardOrigin.x)
-          var top = Math.min(anchorRect.y, panel.cardOrigin.y)
-          var right = Math.max(anchorRect.x + anchorRect.width, panel.cardOrigin.x + panel.contentWidth)
-          var bottom = Math.max(anchorRect.y + anchorRect.height, panel.cardOrigin.y + panel.contentHeight)
-          return Qt.rect(left, top, right - left, bottom - top)
-        }
-
-        Item {
-          x: popupHoverZones.spanRect.x - popupHoverZones.hostOrigin.x
-          y: popupHoverZones.spanRect.y - popupHoverZones.hostOrigin.y
-          width: popupHoverZones.spanRect.width
-          height: popupHoverZones.spanRect.height
-          HoverHandler { id: popupSpanHover }
-        }
-
-        Item {
-          x: popupHoverZones.anchorRect.x - popupHoverZones.hostOrigin.x
-          y: popupHoverZones.anchorRect.y - popupHoverZones.hostOrigin.y
-          width: popupHoverZones.anchorRect.width
-          height: popupHoverZones.anchorRect.height
-          HoverHandler { id: popupAnchorHover }
-        }
-      }
-    }
+  // The bar's popup (WeatherPopup.qml), loaded by URL so the app, which has
+  // its own window, never resolves the layer-shell types (they cannot exist
+  // offscreen either, in the screenshot run).
+  Loader {
+    id: popupLoader
+    active: !root.standaloneMode
+    Component.onCompleted: setSource(Qt.resolvedUrl("WeatherPopup.qml"), { weatherPanel: root })
   }
+  readonly property Item popupContentHost: popupLoader.item ? popupLoader.item.contentHost : null
+  readonly property real contentHeight: weatherColumn.implicitHeight
+
 
   // Pointer over the popup or the stretch between it and the bar widget, and
   // over the widget itself, while the popup is open.
-  readonly property bool popupPointerInside: !standaloneMode && opened && popupSpanHover.hovered
+  readonly property bool popupPointerInside: !standaloneMode && opened && !!popupLoader.item && popupLoader.item.spanHovered
   // Not tied to `opened`: the bar widget reads it while the popup closes.
-  readonly property bool popupPointerOnAnchor: !standaloneMode && popupAnchorHover.hovered
+  readonly property bool popupPointerOnAnchor: !standaloneMode && !!popupLoader.item && popupLoader.item.anchorHovered
 
   FloatingWindow {
     id: standaloneWindow
@@ -4383,6 +4384,9 @@ Panel {
 
   // The current-weather block, wherever the section order puts it.
   property Item hero: null
+  // Everything the panel shows, in the popup or the app window (the
+  // screenshot run in tests/ grabs it).
+  readonly property Item contentRoot: keyCatcher
 
   function sectionComponent(key) {
     if (key === "current") return currentSectionComponent
@@ -4400,7 +4404,7 @@ Panel {
   // window. All future layout and feature work therefore lands in both.
   Item {
     id: keyCatcher
-    parent: root.standaloneMode ? standaloneContentHost : popupContentHost
+    parent: root.standaloneMode ? standaloneContentHost : root.popupContentHost
     anchors.fill: parent
     focus: true
     // The tree is reparented into a popup or window outside this item, so

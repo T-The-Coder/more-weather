@@ -9,7 +9,58 @@ Column {
   required property var panel
   readonly property alias locationField: locationField
 
-  function spinRefresh() { refreshSpin.restart() }
+  function spinRefresh() { refreshButton.spin() }
+
+  // A glyph of the meta line (service, refresh, app, settings): all four
+  // muted at rest and in the accent's hover colour, at one size, so the
+  // line reads as one row of equal controls.
+  component MetaGlyphButton: Item {
+    id: metaButton
+    // Inline components do not see the file's ids: the panel comes in.
+    property var panel: null
+    property string glyph: ""
+    property string tip: ""
+    signal activated()
+    function spin() { metaSpin.restart() }
+
+    width: Style.space(18)
+    height: Style.space(18)
+    anchors.verticalCenter: parent ? parent.verticalCenter : undefined
+
+    Text {
+      id: metaGlyph
+      anchors.centerIn: parent
+      text: metaButton.glyph
+      color: metaMouse.containsMouse
+        ? Style.hoverStateColor(metaButton.panel.foreground, Color.accent)
+        : metaButton.panel.mutedText
+      font.family: metaButton.panel.fontFamily
+      font.pixelSize: Style.font.body
+    }
+
+    RotationAnimation {
+      id: metaSpin
+      target: metaGlyph
+      property: "rotation"
+      from: 0
+      to: 360
+      duration: 500
+    }
+
+    MouseArea {
+      id: metaMouse
+      anchors.fill: parent
+      hoverEnabled: true
+      cursorShape: Qt.PointingHandCursor
+      onClicked: metaButton.activated()
+    }
+
+    PanelToolTip {
+      visible: metaMouse.containsMouse && metaButton.tip !== ""
+      text: metaButton.tip
+      fontFamily: metaButton.panel.fontFamily
+    }
+  }
 
   // ---- The value columns beside the temperature, one entry per option.
   function statLabel(key) {
@@ -439,99 +490,41 @@ Column {
       }
 
       // The place at its weather service (yr.no, NWS, ECCC); also key w.
-      Item {
+      MetaGlyphButton {
+        panel: heroBlock.panel
         visible: panel.displaySetting("heroServiceLink", true) && !!panel.serviceLink
-        width: Style.space(18)
-        height: Style.space(18)
-        anchors.verticalCenter: parent.verticalCenter
+        glyph: "\u{f059f}"  // nf-md-web
+        tip: panel.i18n("openAtService", { service: panel.serviceLink ? panel.serviceLink.name : "" })
+        onActivated: panel.openServiceLink()
+      }
 
-        Text {
-          anchors.centerIn: parent
-          text: "󰖟"  // nf-md-web
-          color: serviceMouse.containsMouse
-            ? Style.hoverStateColor(panel.foreground, Color.accent)
-            : panel.mutedText
-          font.family: panel.fontFamily
-          font.pixelSize: Style.font.body
-        }
-
-        MouseArea {
-          id: serviceMouse
-          anchors.fill: parent
-          hoverEnabled: true
-          cursorShape: Qt.PointingHandCursor
-          onClicked: panel.openServiceLink()
-        }
-
-        PanelToolTip {
-          visible: serviceMouse.containsMouse
-          text: panel.i18n("openAtService", { service: panel.serviceLink ? panel.serviceLink.name : "" })
-          fontFamily: panel.fontFamily
+      MetaGlyphButton {
+        id: refreshButton
+        panel: heroBlock.panel
+        glyph: "\u{f0450}"  // nf-md-refresh
+        onActivated: {
+          refreshButton.spin()
+          panel.manualRefresh()
         }
       }
 
-      Item {
-        width: Style.space(18)
-        height: Style.space(18)
-        anchors.verticalCenter: parent.verticalCenter
-
-        Text {
-          id: refreshIcon
-          anchors.centerIn: parent
-          text: "↻"
-          color: refreshMouse.containsMouse
-            ? Style.hoverStateColor(panel.foreground, Color.accent)
-            : panel.mutedText
-          font.family: panel.fontFamily
-          font.pixelSize: Style.font.body
-        }
-
-        RotationAnimation {
-          id: refreshSpin
-          target: refreshIcon
-          property: "rotation"
-          from: 0
-          to: 360
-          duration: 500
-        }
-
-        MouseArea {
-          id: refreshMouse
-          anchors.fill: parent
-          hoverEnabled: true
-          cursorShape: Qt.PointingHandCursor
-          onClicked: {
-            refreshSpin.restart()
-            panel.manualRefresh()
-          }
-        }
+      // Widget only: the same place in the standalone app (as a click on
+      // the symbol or the temperature).
+      MetaGlyphButton {
+        panel: heroBlock.panel
+        visible: !panel.standaloneMode
+        glyph: "\u{f03cc}"  // nf-md-open_in_new
+        tip: panel.i18n("openInApp")
+        onActivated: panel.openApp()
       }
 
-      Item {
-        width: Style.space(18)
-        height: Style.space(18)
-        anchors.verticalCenter: parent.verticalCenter
-
-        Text {
-          anchors.centerIn: parent
-          text: ""  // nf-fa-gear
-          color: settingsIconMouse.containsMouse
-            ? Style.hoverStateColor(panel.foreground, Color.accent)
-            : panel.mutedText
-          font.family: panel.fontFamily
-          font.pixelSize: Style.font.body
-        }
-
-        MouseArea {
-          id: settingsIconMouse
-          anchors.fill: parent
-          hoverEnabled: true
-          cursorShape: Qt.PointingHandCursor
-          onClicked: {
-            if (panel.editingLocation) panel.cancelEditingLocation()
-            panel.showSavedLocations = false
-            panel.openSettings()
-          }
+      MetaGlyphButton {
+        panel: heroBlock.panel
+        glyph: "\u{f0493}"  // nf-md-cog
+        onActivated: {
+          if (panel.editingLocation) panel.cancelEditingLocation()
+          panel.showSavedLocations = false
+          panel.openSettings()
         }
       }
     }
