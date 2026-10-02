@@ -3,6 +3,10 @@
 # (tests/ui-showcase.sh): the app scenes as they are, the menu bar above
 # the widget, and the preview with the feature list beside them. Colours
 # come from the current Omarchy theme, the font is JetBrains Mono.
+# The scenes it expects (tests/ui-showcase.sh with this MW_SCENES):
+#   napa|top|Napa|38.2975|-122.2869;new-orleans-radar|radar|New Orleans|29.9511|-90.0715;
+#   wellington-wind|wind|Wellington|-41.2865|174.7762;settings|settings|||;
+#   my-places|places|New York|40.7128|-74.006;widget|widget|Napa|38.2975|-122.2869
 #   tools/build-preview.sh <showcase-output-dir>
 set -euo pipefail
 root=$(cd "$(dirname "$0")/.." && pwd)
@@ -19,13 +23,13 @@ bold=$(fc-match -f '%{file}' "JetBrainsMono Nerd Font:style=Bold")
 work=$(mktemp -d)
 trap 'rm -rf "$work"' EXIT
 
-for scene in chicago tokyo-radar torshavn-wind settings sources; do
+for scene in napa new-orleans-radar wellington-wind my-places settings; do
   cp "$in/$scene.png" "$root/screenshots/$scene.png"
 done
 
 # The bar (its middle, as wide as the popup) over the popup, which has the
 # accent line of the bar's edge above it.
-magick "$in/bar.png" -gravity center -crop 512x32+0+0 +repage "$work/bar.png"
+magick "$in/widget-bar.png" -gravity center -crop 512x32+0+0 +repage "$work/bar.png"
 magick "$work/bar.png" \( -size 512x2 "xc:$accent" \) \( -size 512x8 "xc:$bg" \) \
   \( "$in/widget.png" -bordercolor "$accent" -border 1 -gravity north -crop 512x1000+0+0 +repage \) \
   -append +repage "$root/screenshots/menubar-widget.png"
@@ -35,20 +39,26 @@ magick "$work/bar.png" \( -size 512x2 "xc:$accent" \) \( -size 512x8 "xc:$bg" \)
 panel() {  # source crop-geometry width output
   magick "$1" -crop "$2" +repage -resize "$3x" -bordercolor "$line" -border 3 "$4"
 }
-panel "$in/chicago.png" 941x225+0+0 900 "$work/p1.png"
-panel "$in/tokyo-radar.png" 941x485+0+665 900 "$work/p2.png"
-panel "$in/torshavn-wind.png" 941x440+0+710 900 "$work/p3.png"
+panel "$in/my-places.png" 941x360+0+0 900 "$work/p1.png"
+panel "$in/new-orleans-radar.png" 941x485+0+665 900 "$work/p2.png"
+panel "$in/wellington-wind.png" 941x440+0+710 900 "$work/p3.png"
 magick "$root/screenshots/menubar-widget.png" -resize x1000 -bordercolor "$line" -border 3 "$work/w.png"
 
-bullets=("Radar & wind maps, pan & zoom" "Drawn in your Omarchy theme" "Coloured values in the bar"
-  "Temperature lines, rain bars" "My places at a glance" "Any section as window or tab"
-  "Rain alerts: threshold & radius" "Official services worldwide")
+# The pitch: three lines, large.
+bullets=("Live radar & wind maps," "  drawn in your theme"
+  "Official warnings," "  worldwide"
+  "Bar, popup & app," "  arranged your way")
 args=()
-y=520
+y=540
 for text in "${bullets[@]}"; do
-  args+=(-font "$font" -pointsize 34 -fill "$fg" -annotate "+156+$y" "$text"
-    -fill "$accent" -annotate "+104+$y" "•")
-  y=$((y + 62))
+  if [ "${text:0:2}" = "  " ]; then
+    args+=(-font "$font" -pointsize 44 -fill "$fg" -annotate "+150+$y" "${text:2}")
+    y=$((y + 96))
+  else
+    args+=(-font "$font" -pointsize 44 -fill "$fg" -annotate "+150+$y" "$text"
+      -fill "$accent" -annotate "+96+$y" "•")
+    case "$text" in *,) y=$((y + 58)) ;; *) y=$((y + 96)) ;; esac
+  fi
 done
 
 magick -size 2400x1350 "xc:$bg" \
@@ -57,11 +67,11 @@ magick -size 2400x1350 "xc:$bg" \
   -font "$bold" -pointsize 92 -fill "$accent" -annotate +86+330 "More Weather" \
   -font "$font" -pointsize 40 -fill "$fg" -annotate +92+398 "for the Omarchy bar" \
   "${args[@]}" \
-  -font "$font" -pointsize 30 -fill "$muted" -annotate +98+1040 "30 languages · °C / °F" \
-  -annotate +98+1080 "full keyboard control" \
+  -font "$font" -pointsize 30 -fill "$muted" -annotate +98+1040 "30 languages · °C / °F · my places" \
+  -annotate +98+1080 "full keyboard control · standalone app" \
   "$work/w.png" -geometry +860+170 -composite \
-  "$work/p1.png" -geometry +1440+110 -composite \
-  "$work/p2.png" -geometry +1440+365 -composite \
-  "$work/p3.png" -geometry +1440+850 -composite \
+  "$work/p1.png" -geometry +1440+40 -composite \
+  "$work/p2.png" -geometry +1440+400 -composite \
+  "$work/p3.png" -geometry +1440+880 -composite \
   "$root/preview.png"
 echo "preview.png and screenshots/ updated"

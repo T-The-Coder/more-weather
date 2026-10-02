@@ -122,13 +122,13 @@ runs as a standalone app window.
 
 ## Screenshots
 
-| Chicago in °F, air quality and the week | Tokyo, JMA radar under the tab strip | Tórshavn, wind map |
+| Napa in a heat wave, with the NWS Heat Advisory | Storms over New Orleans on the NWS radar | Wellington in a gale, gusts of 70 km/h |
 |---|---|---|
-| ![Chicago](screenshots/chicago.png) | ![Tokyo radar](screenshots/tokyo-radar.png) | ![Tórshavn wind](screenshots/torshavn-wind.png) |
+| ![Napa](screenshots/napa.png) | ![New Orleans radar](screenshots/new-orleans-radar.png) | ![Wellington wind](screenshots/wellington-wind.png) |
 
-| Menu bar with coloured values, and the widget | Settings | Data sources |
+| My places: six cities at a glance | The menu bar in colour, over the widget | Each bar entry: Always, Relevant or Hover |
 |---|---|---|
-| ![Menu bar and widget](screenshots/menubar-widget.png) | ![Settings](screenshots/settings.png) | ![Sources](screenshots/sources.png) |
+| ![My places](screenshots/my-places.png) | ![Menu bar and widget](screenshots/menubar-widget.png) | ![Settings](screenshots/settings.png) |
 
 ## Keyboard
 
@@ -329,9 +329,10 @@ tests/qml-syntax.sh    # every QML file parses (qmllint)
 tests/ui-shots.sh /tmp/shots    # screenshots of every view, offscreen
 ```
 
-`tests/ui-showcase.sh` takes the pictures above from live data (Chicago, Tokyo,
-Tórshavn and London as places, the current theme), and `tools/build-preview.sh
-<its output directory>` puts `screenshots/` and `preview.png` together from them.
+`tests/ui-showcase.sh` takes the pictures above from live data (six famous
+cities as places, the current theme, the scenes given in `MW_SCENES`), and
+`tools/build-preview.sh <its output directory>` puts `screenshots/` and
+`preview.png` together from them; its header lists the scenes it expects.
 The version appears in `manifest.json` and in the user agent of
 `WeatherRequest.qml` and `WeatherImageStore.qml` (`more-weather/<major.minor>`).
 

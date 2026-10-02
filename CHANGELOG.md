@@ -99,9 +99,11 @@ In detail:
 - The bar widget's hover (entries on hover, open on hover and closing again,
   the latch while the popup maps under the pointer) moved into
   `WeatherBarHover.qml`, shared with More Time; behaviour unchanged.
-- New README pictures and `preview.png`, from live data:
-  `tests/ui-showcase.sh` takes them, `tools/build-preview.sh` puts them
-  together.
+- New README pictures and `preview.png`, from live data: Napa under an NWS
+  Heat Advisory, storms over New Orleans on the NWS radar, Wellington's wind
+  in a gale, my places with six world cities, the coloured menu bar over the
+  widget, and the menu bar settings. `tests/ui-showcase.sh` takes them,
+  `tools/build-preview.sh` puts them together.
 - Development: the popup moved into `WeatherPopup.qml`, loaded only in the
   bar, so the panel also loads offscreen. `tests/ui-shots.sh` shoots every
   view offscreen with synthetic weather and no network

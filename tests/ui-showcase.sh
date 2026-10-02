@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # The README pictures and preview.png, from live data: like ui-shots.sh a
 # throwaway HOME (with the current theme linked in) and runtime directory,
-# but with the network, four saved places (Chicago, Tokyo, Tórshavn,
-# London) and tests/ui/showcase.qml stepping through the scenes. The
+# but with the network, six famous places saved (New York, London, Tokyo,
+# Dubai, Sydney, Reykjavík) and tests/ui/showcase.qml stepping through the
+# scenes it is told by MW_SCENES (place;lat;lon per scene, see there). The
 # pictures go to the output directory; tools/build-preview.sh puts the
 # preview together from them.
 #   tests/ui-showcase.sh [output-dir]
@@ -22,13 +23,15 @@ theme="$HOME/.local/state/omarchy/current/theme"
 [ -e "$theme" ] && ln -s "$theme" "$work/home/.local/state/omarchy/current/theme"
 cat > "$settings/more-weather-locations.json" <<'JSON'
 [
-  {"name": "Chicago", "latitude": 41.8781, "longitude": -87.6298},
+  {"name": "New York", "latitude": 40.7128, "longitude": -74.006},
+  {"name": "London", "latitude": 51.5074, "longitude": -0.1278},
   {"name": "Tokyo", "latitude": 35.6895, "longitude": 139.6917},
-  {"name": "Tórshavn", "latitude": 62.0107, "longitude": -6.7741},
-  {"name": "London", "latitude": 51.5074, "longitude": -0.1278}
+  {"name": "Dubai", "latitude": 25.2048, "longitude": 55.2708},
+  {"name": "Sydney", "latitude": -33.8688, "longitude": 151.2093},
+  {"name": "Reykjavík", "latitude": 64.1466, "longitude": -21.9426}
 ]
 JSON
-echo '{"name": "Chicago", "latitude": 41.8781, "longitude": -87.6298}' > "$settings/weather.json"
+echo '{"name": "New York", "latitude": 40.7128, "longitude": -74.006}' > "$settings/weather.json"
 # Factory general settings (English from LANG below), the widget in the
 # bar's centre, and More Time's cities for the import button.
 echo '{}' > "$settings/more-weather-general.json"
@@ -38,8 +41,8 @@ echo '{"version": 1, "bar": {"layout": {"left": [], "center": [{"id": "more-weat
 echo '[{"name": "Tokyo", "country": "Japan", "tz": "Asia/Tokyo", "lat": 35.6895, "lon": 139.6917}]' \
   > "$settings/more-time-cities.json"
 env -u DBUS_SESSION_BUS_ADDRESS -u XDG_DATA_HOME -u XDG_CONFIG_HOME -u XDG_STATE_HOME HOME="$work/home" XDG_RUNTIME_DIR="$work/run" XDG_CACHE_HOME="$work/home/.cache" \
-  LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 MW_SHOTS="$out" QT_QPA_PLATFORM=offscreen \
-  timeout 400 qs -n -p "$work/config" >"$work/log.txt" 2>&1
+  MW_SCENES="${MW_SCENES:-}" LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 MW_SHOTS="$out" QT_QPA_PLATFORM=offscreen \
+  timeout 900 qs -n -p "$work/config" >"$work/log.txt" 2>&1
 echo "log: $work/log.txt"
 echo "shots: $out"
 grep -E "SHOT|STEP FAILED" "$work/log.txt"

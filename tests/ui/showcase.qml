@@ -4,12 +4,24 @@ import qs.Commons
 import "Weather" as Weather
 
 // The README pictures (tests/ui-showcase.sh): live data, the app at
-// 941 × 1150, the widget at 480 wide, and the menu bar. Each scene waits
-// for its data; a step is 1.2 s.
+// 941 × 1150, the widget at 480 wide, and the menu bar. MW_SCENES lists the
+// scenes, separated by ";", each "file|kind|place|latitude|longitude":
+//   top       the app from the top (current weather, warnings, hours)
+//   places    the app from the top with my places in the window
+//   radar     the radar tab, scrolled to the end
+//   wind      the wind tab, scrolled to the end
+//   settings  Settings → Display → Menu bar at "Colour the values" (no place)
+//   general   Settings → General (no place needed)
+//   sources   Settings → Sources (no place needed)
+//   widget    the widget's view and, as "<file>-bar", the menu bar
+// A step is 1.2 s; each place gets half a minute for its data. My places
+// fill from the bar's own panel, a few seconds per place: put "places"
+// late.
 ShellRoot {
   id: harness
   readonly property string shots: Quickshell.env("MW_SHOTS") || "/tmp"
   property int step: 0
+  property var steps: []
 
   function shot(name, item) {
     (item || panel.contentRoot.parent.parent).grabToImage(function(result) {
@@ -24,58 +36,76 @@ ShellRoot {
   function press(key) {
     panel.handlePanelKey({ key: key, text: "", modifiers: Qt.NoModifier, accepted: false })
   }
-  function wait(seconds) {
-    var list = []
+  function wait(list, seconds) {
     for (var i = 0; i < Math.ceil(seconds / 1.2); i++) list.push(function() {})
-    return list
+  }
+  function goTo(place, lat, lon) {
+    panel.settingsOpen = false
+    panel.pickSuggestion({ name: place, latitude: Number(lat), longitude: Number(lon) })
   }
 
-  readonly property var steps: [].concat(
-    [function() {
+  function scene(list, spec) {
+    var part = spec.split("|")
+    var file = part[0], kind = part[1], place = part[2], lat = part[3], lon = part[4]
+    if (kind === "settings" || kind === "general" || kind === "sources") {
+      list.push(function() {
+        panel.openSettings(kind === "settings" ? "display" : kind)
+        if (kind === "settings") panel.settingsTargetSurface = "menubar"
+      })
+      wait(list, 2)
+      // Menu bar: down to "Colour the values", the card scrolled into view.
+      if (kind === "settings")
+        list.push(function() { for (var i = 0; i < 23; i++) press(Qt.Key_Down) })
+      wait(list, 2)
+      list.push(function() { shot(file) }, function() { panel.settingsOpen = false })
+      return
+    }
+    if (kind === "widget") {
+      list.push(function() {
+        goTo(place, lat, lon)
+        panel.standaloneMode = false
+        panel.activeTab = "rain"
+        panel.contentRoot.parent = widgetHost
+      })
+      wait(list, 30)
+      list.push(function() { press(Qt.Key_Home) }, function() { shot(file) },
+        function() { shot(file + "-bar", barHost) })
+      return
+    }
+    list.push(function() {
+      onSurface("app", "favoritesAsTab", kind !== "places")
+      goTo(place, lat, lon)
+    })
+    wait(list, 30)
+    if (kind === "radar" || kind === "wind") {
+      list.push(function() { panel.showTab(kind) })
+      wait(list, 12)
+      list.push(function() { press(Qt.Key_End) })
+    } else {
+      list.push(function() { press(Qt.Key_Home) })
+    }
+    wait(list, 2)
+    list.push(function() { shot(file) })
+  }
+
+  Component.onCompleted: {
+    var list = [function() {
       panel.contentRoot.parent = appHost
-      // My places as a tab beside rain, radar and wind (the Tokyo scene).
-      onSurface("app", "favoritesAsTab", true)
       onSurface("app", "showFavorites", true)
       onSurface("app", "showAirQuality", true)
-    }],
-    wait(30),
-    // Chicago in °F (with a warning when NWS has one), from the top.
-    [function() { press(Qt.Key_Home) }, function() { shot("chicago") }],
-    // Settings: General and Sources.
-    [function() { panel.openSettings("general") }],
-    wait(2),
-    [function() { shot("settings") }, function() { panel.settingsPage = "sources" }],
-    wait(2),
-    [function() { shot("sources") }, function() { panel.settingsOpen = false }],
-    // Tokyo's radar: the JMA radar under the tab strip.
-    [function() { panel.showFavorite(1) }],
-    wait(20),
-    [function() { panel.showTab("radar") }],
-    wait(12),
-    [function() { press(Qt.Key_End) }, function() { shot("tokyo-radar") }],
-    // Tórshavn's wind map.
-    [function() { panel.showFavorite(2) }],
-    wait(20),
-    [function() { panel.showTab("wind") }],
-    wait(10),
-    [function() { press(Qt.Key_End) }, function() { shot("torshavn-wind") }],
-    // The widget's view (as in the bar's popup) and the menu bar with
-    // coloured values above it.
-    [function() {
-      panel.settingsOpen = false
+      onSurface("app", "favoritesMoon", true)
       onSurface("menubar", "currentFeelsLike", true)
       onSurface("menubar", "currentWind", true)
       onSurface("menubar", "menubarAccents", "always")
-      panel.standaloneMode = false
-      panel.activeTab = "rain"
-      panel.contentRoot.parent = widgetHost
+      // The bar's own panel fetches the saved places' forecasts for my
+      // places (the app reads them from the shared cache).
       barHost.active = true
-    }],
-    wait(12),
-    [function() { press(Qt.Key_Home) }, function() { shot("widget") },
-      function() { shot("bar", barHost) },
-      function() { Qt.quit() }]
-  )
+    }]
+    var scenes = String(Quickshell.env("MW_SCENES") || "").split(";")
+    for (var i = 0; i < scenes.length; i++) if (scenes[i] !== "") scene(list, scenes[i])
+    list.push(function() { Qt.quit() })
+    steps = list
+  }
 
   Timer {
     interval: 1200
@@ -112,6 +142,7 @@ ShellRoot {
     }
   }
 
+  // The menu bar.
   FloatingWindow {
     visible: true
     implicitWidth: 900
@@ -121,7 +152,6 @@ ShellRoot {
     Rectangle {
       id: barHost
       property alias active: barLoader.active
-      readonly property alias item: barLoader.item
       anchors.fill: parent
       color: Color.bar ? Color.bar.background : Color.popups.background
 
