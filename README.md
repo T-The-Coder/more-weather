@@ -329,6 +329,12 @@ tests/qml-syntax.sh    # every QML file parses (qmllint)
 tests/ui-shots.sh /tmp/shots    # screenshots of every view, offscreen
 ```
 
+The interface texts live in one file per language, `i18n/<language>.js`
+(English and German as full catalogues, the others as a compact list plus
+keyed entries); `I18n.js` imports them all and keeps the lookup functions.
+Every file stays well under the plugin marketplace's 512 KiB limit for a text
+file. `tests/load.mjs` follows the `.import` lines when the tests load a file.
+
 `tests/ui-showcase.sh` takes the pictures above from live data (six famous
 cities as places, the current theme, the scenes given in `MW_SCENES`), and
 `tools/build-preview.sh <its output directory>` puts `screenshots/` and

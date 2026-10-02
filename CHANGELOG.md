@@ -86,6 +86,10 @@ In detail:
 - README: a Keyboard table and an IPC section, the fixed path to the app
   launcher switch (Settings → General), and one section order shared with
   More Time.
+- The translations moved from one 780 KB `I18n.js` into one file per
+  language under `i18n/` (the largest about 37 KB), since the plugin
+  marketplace refuses text files over 512 KiB; `I18n.js` imports them and
+  keeps its functions. The texts are unchanged.
 - Log lines start with `more-weather:`; the user agent says `more-weather/3.1`.
 - Today's moon in the current weather and in my places is a small shaded
   sphere (`WeatherMoonSphere.qml` with `Moon.js`, shared with More Time)
