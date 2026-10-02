@@ -76,46 +76,38 @@ function addSavedLocation(list, entry) {
 
 // More Time's cities ([{ name, country, tz, lat, lon }], its
 // more-time-cities.json) added to the saved places: in their order, those
-// with coordinates that are not saved yet (same coordinates to two
-// decimals, or the same name). Returns the new list and the counts.
-function importedCities(list, raw) {
+// with coordinates that are not saved yet. `samePlace({ name, lat, lon },
+// { name, lat, lon })` is PlaceSearch.samePlace, the rule the place search
+// drops duplicates by. Returns the new list and the counts.
+function importedCities(list, raw, samePlace) {
   var current = Array.isArray(list) ? list.slice() : []
   var cities
   try { cities = JSON.parse(String(raw || "")) } catch (e) { cities = null }
   if (!Array.isArray(cities)) return { list: current, added: 0, existing: 0, skipped: 0 }
-  function fold(name) {
-    var text = String(name || "").trim().toLowerCase()
-    return typeof text.normalize === "function" ? text.normalize("NFD").replace(/[\u0300-\u036f]/g, "") : text
-  }
-  function spot(latitude, longitude) {
-    return Number(latitude).toFixed(2) + "," + Number(longitude).toFixed(2)
-  }
-  var names = {}
-  var spots = {}
-  for (var i = 0; i < current.length; i++) {
-    names[fold(current[i].name)] = true
-    spots[spot(current[i].latitude, current[i].longitude)] = true
-  }
+  var known = current.map(function(saved) {
+    return { name: saved.name, lat: Number(saved.latitude), lon: Number(saved.longitude) }
+  })
   var added = 0
   var existing = 0
   var skipped = 0
   for (var c = 0; c < cities.length; c++) {
-    var city = cities[c]
-    var latitude = city && city.lat !== null && city.lat !== "" ? Number(city.lat) : NaN
-    var longitude = city && city.lon !== null && city.lon !== "" ? Number(city.lon) : NaN
-    var name = city && typeof city.name === "string" ? city.name.trim().slice(0, 60) : ""
-    if (name === "" || !isFinite(latitude) || !isFinite(longitude)
-        || Math.abs(latitude) > 90 || Math.abs(longitude) > 180) {
+    var city = cities[c] || {}
+    var place = {
+      name: typeof city.name === "string" ? city.name.trim().slice(0, 60) : "",
+      lat: city.lat !== null && city.lat !== "" ? Number(city.lat) : NaN,
+      lon: city.lon !== null && city.lon !== "" ? Number(city.lon) : NaN
+    }
+    if (place.name === "" || !isFinite(place.lat) || !isFinite(place.lon)
+        || Math.abs(place.lat) > 90 || Math.abs(place.lon) > 180) {
       skipped++
       continue
     }
-    if (names[fold(name)] || spots[spot(latitude, longitude)]) {
+    if (known.some(function(other) { return samePlace(other, place) })) {
       existing++
       continue
     }
-    current.push({ name: name, latitude: latitude, longitude: longitude })
-    names[fold(name)] = true
-    spots[spot(latitude, longitude)] = true
+    current.push({ name: place.name, latitude: place.lat, longitude: place.lon })
+    known.push(place)
     added++
   }
   return { list: current, added: added, existing: existing, skipped: skipped }

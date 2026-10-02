@@ -68,28 +68,27 @@ function coordinateKey(lat, lon) {
 
 // Names compared without case and accents ("Klaksvík" = "Klaksvik").
 function foldedName(name) {
-  var text = String(name || "").toLowerCase()
+  var text = String(name || "").trim().toLowerCase()
   return typeof text.normalize === "function" ? text.normalize("NFD").replace(/[\u0300-\u036f]/g, "") : text
 }
 
-// The first of every place, in order, at most `limit` of them. Also the
-// same name a few kilometres off counts as the same place, since rounding
-// can split two neighbouring points.
+// The same place: the same spot (coordinates rounded to two decimals), or
+// the same name a few kilometres off, since rounding can split two
+// neighbouring points. Places are { name, lat, lon }.
+function samePlace(a, b) {
+  if (coordinateKey(a.lat, a.lon) === coordinateKey(b.lat, b.lon)) return true
+  return foldedName(a.name) === foldedName(b.name)
+    && Math.abs(a.lat - b.lat) < 0.05 && Math.abs(a.lon - b.lon) < 0.05
+}
+
+// The first of every place, in order, at most `limit` of them.
 function dedupe(places, limit) {
-  var seen = {}
   var out = []
   var max = limit > 0 ? limit : Infinity
   for (var i = 0; i < (places || []).length && out.length < max; i++) {
-    var place = places[i]
-    var key = coordinateKey(place.lat, place.lon)
-    if (seen[key]) continue
     var twin = false
-    for (var j = 0; j < out.length && !twin; j++)
-      twin = foldedName(out[j].name) === foldedName(place.name)
-        && Math.abs(out[j].lat - place.lat) < 0.05 && Math.abs(out[j].lon - place.lon) < 0.05
-    if (twin) continue
-    seen[key] = true
-    out.push(place)
+    for (var j = 0; j < out.length && !twin; j++) twin = samePlace(out[j], places[i])
+    if (!twin) out.push(places[i])
   }
   return out
 }

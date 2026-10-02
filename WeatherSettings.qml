@@ -303,6 +303,71 @@ Rectangle {
   ]
   property var barAccentsDropdown: null
 
+  // A heading inside the General card. Inline components do not see the
+  // file's ids, so the panel comes in.
+  component GeneralHeading: Text {
+    property var panel: null
+    property string textKey: ""
+    text: panel ? panel.upperLabel(panel.i18n(textKey)) : ""
+    color: panel ? panel.foreground : "transparent"
+    font.family: panel ? panel.fontFamily : ""
+    font.pixelSize: Style.font.bodySmall
+    font.bold: true
+    font.letterSpacing: 1
+  }
+
+  Component {
+    id: barAccentsRow
+
+    Column {
+      readonly property alias dropdown: barAccentsDropdownItem
+
+      Item {
+        width: parent.width
+        height: Style.space(40)
+
+        Text {
+          anchors.left: parent.left
+          anchors.leftMargin: Style.space(12)
+          anchors.right: barAccentsDropdownItem.left
+          anchors.rightMargin: Style.space(8)
+          anchors.verticalCenter: parent.verticalCenter
+          text: panel.i18n("menubarAccents")
+          color: panel.foreground
+          font.family: panel.fontFamily
+          font.pixelSize: Style.font.bodySmall
+          elide: Text.ElideRight
+        }
+
+        Dropdown {
+          id: barAccentsDropdownItem
+          anchors.right: parent.right
+          anchors.verticalCenter: parent.verticalCenter
+          width: Style.space(150)
+          showLabel: false
+          fontFamily: panel.fontFamily
+          hasCursor: settingsView.focusId === "barAccents"
+          onHasCursorChanged: if (hasCursor) settingsView.ensureVisible(this)
+          onPopupOpenChanged: if (!popupOpen) panel.restoreKeyFocus()
+          value: String(panel.settingsDisplaySetting("menubarAccents", "hover"))
+          options: settingsView.barAccentsOptions
+          onChanged: function(value) { panel.displayOptionsStore.setSettingsDisplaySetting("menubarAccents", value) }
+        }
+      }
+
+      Text {
+        x: Style.space(12)
+        width: parent.width - Style.space(24)
+        bottomPadding: Style.space(6)
+        text: panel.i18n("menubarAccentsHint")
+        color: panel.mutedText
+        font.family: panel.fontFamily
+        font.pixelSize: Style.font.caption
+        wrapMode: Text.WordWrap
+      }
+    }
+  }
+
   function cardRowsEnabled(card) {
     var enabled = card.masterKey === "" || panel.settingsDisplaySetting(card.masterKey, true)
     return enabled && (!card.dependsOn || panel.settingsDisplaySetting(card.dependsOn, true))
@@ -366,6 +431,14 @@ Rectangle {
   readonly property var focusItem: {
     for (var i = 0; i < focusItems.length; i++) if (focusItems[i].id === focusId) return focusItems[i]
     return null
+  }
+  // Where the cursor was in the list, so it can stay near when its item
+  // goes (the reset buttons disappear once they are used).
+  property int focusIndex: -1
+  onFocusItemChanged: {
+    if (focusItem) focusIndex = focusItems.indexOf(focusItem)
+    else if (focusId !== "" && focusIndex >= 0 && focusItems.length > 0)
+      focusId = focusItems[Math.min(focusIndex, focusItems.length - 1)].id
   }
 
   // Columns of a menu bar row: "Always", "Relevant" (if it has a rule),
@@ -742,14 +815,7 @@ Rectangle {
           anchors.margins: Style.space(10)
           spacing: Style.space(8)
 
-          Text {
-            text: panel.upperLabel(panel.i18n("general"))
-            color: panel.foreground
-            font.family: panel.fontFamily
-            font.pixelSize: Style.font.bodySmall
-            font.bold: true
-            font.letterSpacing: 1
-          }
+          GeneralHeading { panel: settingsView.panel; textKey: "general" }
 
           Text {
             text: panel.i18n("unitSystem")
@@ -866,15 +932,7 @@ Rectangle {
           }
 
           // Updates: the forecast, and radar with the rain nowcast, apart.
-          Text {
-            topPadding: Style.space(6)
-            text: panel.upperLabel(panel.i18n("refreshInterval"))
-            color: panel.foreground
-            font.family: panel.fontFamily
-            font.pixelSize: Style.font.bodySmall
-            font.bold: true
-            font.letterSpacing: 1
-          }
+          GeneralHeading { panel: settingsView.panel; textKey: "refreshInterval"; topPadding: Style.space(6) }
 
           Text {
             text: panel.i18n("refreshForecast")
@@ -948,15 +1006,7 @@ Rectangle {
           }
 
           // Export and import of the settings and places (WeatherSettingsTransfer).
-          Text {
-            topPadding: Style.space(6)
-            text: panel.upperLabel(panel.i18n("settingsTransfer"))
-            color: panel.foreground
-            font.family: panel.fontFamily
-            font.pixelSize: Style.font.bodySmall
-            font.bold: true
-            font.letterSpacing: 1
-          }
+          GeneralHeading { panel: settingsView.panel; textKey: "settingsTransfer"; topPadding: Style.space(6) }
 
           Text {
             text: panel.i18n("settingsTransferFile")
@@ -1026,15 +1076,7 @@ Rectangle {
           }
 
           // Places: More Time's world clock cities as saved places.
-          Text {
-            topPadding: Style.space(6)
-            text: panel.upperLabel(panel.i18n("placesSettings"))
-            color: panel.foreground
-            font.family: panel.fontFamily
-            font.pixelSize: Style.font.bodySmall
-            font.bold: true
-            font.letterSpacing: 1
-          }
+          GeneralHeading { panel: settingsView.panel; textKey: "placesSettings"; topPadding: Style.space(6) }
 
           WeatherButton {
             id: importCitiesButton
@@ -1312,51 +1354,12 @@ Rectangle {
                     && settingsCard.cardEnabled
                 }
 
-                Item {
-                  visible: !!optionBlock.modelData.accentsBelow
+                // "Colour the values", created for that one row only.
+                Loader {
                   width: parent.width
-                  height: visible ? Style.space(40) : 0
-
-                  Text {
-                    anchors.left: parent.left
-                    anchors.leftMargin: Style.space(12)
-                    anchors.right: barAccentsDropdownItem.left
-                    anchors.rightMargin: Style.space(8)
-                    anchors.verticalCenter: parent.verticalCenter
-                    text: panel.i18n("menubarAccents")
-                    color: panel.foreground
-                    font.family: panel.fontFamily
-                    font.pixelSize: Style.font.bodySmall
-                    elide: Text.ElideRight
-                  }
-
-                  Dropdown {
-                    id: barAccentsDropdownItem
-                    anchors.right: parent.right
-                    anchors.verticalCenter: parent.verticalCenter
-                    width: Style.space(150)
-                    showLabel: false
-                    fontFamily: panel.fontFamily
-                    hasCursor: settingsView.focusId === "barAccents"
-                    onHasCursorChanged: if (hasCursor) settingsView.ensureVisible(this)
-                    onPopupOpenChanged: if (!popupOpen) panel.restoreKeyFocus()
-                    Component.onCompleted: if (optionBlock.modelData.accentsBelow) settingsView.barAccentsDropdown = this
-                    value: String(panel.settingsDisplaySetting("menubarAccents", "hover"))
-                    options: settingsView.barAccentsOptions
-                    onChanged: function(value) { panel.displayOptionsStore.setSettingsDisplaySetting("menubarAccents", value) }
-                  }
-                }
-
-                Text {
-                  visible: !!optionBlock.modelData.accentsBelow
-                  x: Style.space(12)
-                  width: parent.width - Style.space(24)
-                  bottomPadding: visible ? Style.space(6) : 0
-                  text: panel.i18n("menubarAccentsHint")
-                  color: panel.mutedText
-                  font.family: panel.fontFamily
-                  font.pixelSize: Style.font.caption
-                  wrapMode: Text.WordWrap
+                  active: !!optionBlock.modelData.accentsBelow
+                  sourceComponent: barAccentsRow
+                  onLoaded: settingsView.barAccentsDropdown = item.dropdown
                 }
               }
             }

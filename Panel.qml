@@ -784,11 +784,16 @@ Panel {
   readonly property bool menubarShowUv: menubarShowCurrent && menubarEntryShown("currentUv")
   // Today's forecast row, for the day's range and its sun events.
   readonly property var todayForecast: forecastDays.length > 0 ? forecastDays[0] : null
-  readonly property string menubarDayRangeText: !menubarShowCurrent
-    || !menubarEntryShown("currentDayRange") || !todayForecast ? ""
-    // Low before high, as in the daily forecast and its week bar.
-    : (Model.tempBare(todayForecast.mintempC, todayForecast.mintempF, menubarTempScale) + " / "
-      + Model.tempBare(todayForecast.maxtempC, todayForecast.maxtempF, menubarTempScale))
+  // The day's low and high, low first as in the daily forecast and its
+  // week bar; the parts for the bar's accents, the whole for the rest.
+  readonly property bool menubarShowDayRange: menubarShowCurrent
+    && menubarEntryShown("currentDayRange") && !!todayForecast
+  readonly property string menubarDayMinText: menubarShowDayRange
+    ? Model.tempBare(todayForecast.mintempC, todayForecast.mintempF, menubarTempScale) : ""
+  readonly property string menubarDayMaxText: menubarShowDayRange
+    ? Model.tempBare(todayForecast.maxtempC, todayForecast.maxtempF, menubarTempScale) : ""
+  readonly property string menubarDayRangeText: menubarShowDayRange
+    ? menubarDayMinText + " / " + menubarDayMaxText : ""
   readonly property string menubarRainAmountText: !menubarShowCurrent
     || !menubarEntryShown("currentRainAmount") || !nextHourForecast ? ""
     : "󰖌 " + precipitationTextForUnit(nextHourForecast.rainAmount, false, menubarUseImperial)
@@ -807,8 +812,9 @@ Panel {
   readonly property string menubarMoonText: menubarShowCurrent && menubarEntryShown("currentMoon")
     ? Model.moonPhaseGlyph(nowDate) : ""
   // "UV 6", or a dash while the forecast carries no value (at night).
-  readonly property string menubarUvText: !menubarShowUv ? ""
-    : "UV " + (currentUvIndex !== "" ? localizedNumber(currentUvIndex) : "–")
+  readonly property string menubarUvValueText: !menubarShowUv ? ""
+    : (currentUvIndex !== "" ? localizedNumber(currentUvIndex) : "–")
+  readonly property string menubarUvText: menubarShowUv ? "UV " + menubarUvValueText : ""
   readonly property bool menubarShowPrecipitation: menubarShowCurrent && menubarEntryShown("currentPrecipitation")
   readonly property bool menubarShowWarnings: menubarShowCurrent && menubarEntryShown("currentWarnings")
   readonly property bool notifySevereWarnings: menubarDisplaySetting("notifySevereWarnings", true)
@@ -2883,6 +2889,27 @@ Panel {
     })
   }
 
+  function isPlusKey(event) {
+    return event.key === Qt.Key_Plus || event.text === "+"
+      || (event.key === Qt.Key_Equal && !!(event.modifiers & Qt.ShiftModifier))
+  }
+  function isMinusKey(event) {
+    return event.key === Qt.Key_Minus || event.text === "-"
+  }
+
+  // "+" and "−" while the saved places have the focus (after Tab): add the
+  // marked result, remove the marked place. Called by the search field
+  // before its text input sees the key; anywhere else the two are part of a
+  // name ("Saint-Denis"). True when the key was used.
+  function searchFieldKey(event) {
+    if (searchFocusSection !== "saved" || (event.modifiers & (Qt.ControlModifier | Qt.AltModifier | Qt.MetaModifier)))
+      return false
+    if (isPlusKey(event)) addMarkedSearchLocation()
+    else if (isMinusKey(event)) removeMarkedSearchLocation()
+    else return false
+    return true
+  }
+
   // "+" in the saved places: the result marked in the list above joins them.
   function addMarkedSearchLocation() {
     var entry = locationSuggestions[suggestionIndex] || null
@@ -2914,7 +2941,7 @@ Panel {
 
   // The search field's text goes to the place search, which waits for a
   // pause in typing.
-  function scheduleGeocode() {
+  function updatePlaceSearch() {
     placeSearch.query = locationField ? locationField.text : ""
   }
 
@@ -3069,27 +3096,15 @@ Panel {
       return
     }
 
-    var plusKey = event.key === Qt.Key_Plus
-      || (event.key === Qt.Key_Equal && !!(event.modifiers & Qt.ShiftModifier))
-      || text === "+"
-    var minusKey = event.key === Qt.Key_Minus || text === "-"
+    var plusKey = isPlusKey(event)
+    var minusKey = isMinusKey(event)
 
     if (editingLocation) {
       if (plain && (event.key === Qt.Key_Tab || event.key === Qt.Key_Backtab)) {
         toggleSearchFocus()
         event.accepted = true
-      } else if (plain && (plusKey || minusKey) && searchFocusSection === "saved") {
-        // Only in the saved places (after Tab): elsewhere "+" and "−" are
-        // part of a name ("Saint-Denis") and go into the field.
-        if (plusKey) addMarkedSearchLocation()
-        else removeMarkedSearchLocation()
+      } else if (searchFieldKey(event)) {
         event.accepted = true
-      } else if (plain && (plusKey || minusKey)) {
-        if (locationField && !locationField.activeFocus && text !== "") {
-          locationField.insert(locationField.cursorPosition, text)
-          focusCityNameField()
-          event.accepted = true
-        }
       } else if (event.key === Qt.Key_Down) {
         if (searchFocusSection === "saved" && savedLocations.length > 0) {
           savedLocationIndex = Math.min(savedLocations.length - 1, savedLocationIndex + 1)
@@ -3115,8 +3130,10 @@ Panel {
             // affordance: first Enter marks it, immediate second Enter exits
             // at that same place without rewriting or dropping coordinates.
             if (locationSearchPristine) cancelEditingLocation()
-            else if (locationSuggestions.length > 0 && locationField.text.trim() !== "") placeSearch.pick()
-            else commitLocation()
+            // No result yet: Nominatim may know it (asked only on Enter);
+            // the next Enter commits what it found, or the name as typed.
+            else if ((locationSuggestions.length > 0 && placeSearch.resultsCurrent) || !placeSearch.submit())
+              commitLocation()
           }
         }
         event.accepted = true
@@ -3456,6 +3473,9 @@ Panel {
     }
     savedLocationCache.savedCacheSchedule.restart()
   }
+
+  // The settings' keyboard cursor (for the screenshot run's checks).
+  readonly property string settingsFocusId: settingsLoader.item ? settingsLoader.item.focusId : ""
 
   // The whole saved list at once (the import of More Time's cities).
   function replaceSavedLocations(list) {

@@ -52,6 +52,12 @@ test("duplicates by rounded coordinates go, the first stays", () => {
   assert.deepStrictEqual(plain(P.dedupe(twins, 8)).map((p) => p.name), ["Klaksvík"])
 })
 
+test("the same place: one spot, or one name a few kilometres off", () => {
+  assert.equal(P.samePlace({ name: "A", lat: 50.001, lon: 8.001 }, { name: "B", lat: 50.004, lon: 7.998 }), true)
+  assert.equal(P.samePlace({ name: "Paris", lat: 48.8566, lon: 2.3522 }, { name: "Paris", lat: 33.66, lon: -95.56 }), false)
+  assert.equal(P.samePlace({ name: "Klaksvík", lat: 62.2255, lon: -6.5838 }, { name: " klaksvik", lat: 62.2262, lon: -6.5858 }), true)
+})
+
 test("the requests ask for eight places in the language", () => {
   const om = P.openMeteoRequest("São Paulo", "pt")
   assert.match(om.url, /count=8/)

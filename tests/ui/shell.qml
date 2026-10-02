@@ -21,6 +21,7 @@ ShellRoot {
     })
   }
 
+  function check(name, ok) { console.log(ok ? "CHECK ok" : "CHECK FAILED", name) }
   function general(key, value) { panel.displayOptionsStore.setGeneralSetting(key, value) }
   function display(key, value) { panel.displayOptionsStore.setSettingsDisplaySetting(key, value) }
   function press(key, text, modifiers) {
@@ -84,6 +85,17 @@ ShellRoot {
     function() { shot("09-tab-wind") },
     function() { panel.startEditingLocation() },
     function() { shot("10-search") },
+    // "−" acts on the saved places only after Tab; in the results it is a
+    // character of the name (the search field hands keys to searchFieldKey).
+    function() {
+      var minus = { key: Qt.Key_Minus, text: "-", modifiers: Qt.NoModifier }
+      var before = panel.savedLocations.slice()
+      panel.searchFocusSection = "suggestions"
+      check("search-minus-in-results", !panel.searchFieldKey(minus) && panel.savedLocations.length === before.length)
+      panel.setSearchFocus("saved")
+      check("search-minus-in-saved", panel.searchFieldKey(minus) && panel.savedLocations.length === before.length - 1)
+      panel.replaceSavedLocations(before)
+    },
     function() { panel.cancelEditingLocation(); panel.openSettings("general") },
     function() { shot("11-settings-general") },
     function() { press(Qt.Key_End) },
@@ -93,7 +105,7 @@ ShellRoot {
     // Down the keyboard list to "Bold while hovered".
     function() { for (var i = 0; i < 22; i++) press(Qt.Key_Down) },
     function() { shot("14-settings-menubar-bold") },
-    function() { press(Qt.Key_Down) },
+    function() { press(Qt.Key_Down); check("accents-dropdown-reached", panel.settingsFocusId === "barAccents") },
     function() { shot("14b-settings-menubar-accents") },
     function() { press(Qt.Key_Home); panel.settingsTargetSurface = "widget" },
     function() { shot("15-settings-widget") },
@@ -140,6 +152,12 @@ ShellRoot {
         console.log("SHOT", "25-bar-accents")
       })
     },
+    // The cursor on "Reset general settings" stays on the page once the
+    // button is gone.
+    function() { panel.openSettings("general"); general("windUnit", "ms") },
+    function() { press(Qt.Key_Up); check("reset-general-focused", panel.settingsFocusId === "restoreGeneral") },
+    function() { press(Qt.Key_Return); press(Qt.Key_Return) },
+    function() { check("reset-general-focus-kept", panel.settingsFocusId !== "" && panel.settingsFocusId !== "restoreGeneral") },
     // Settings → General → Places after importing More Time's cities.
     function() { panel.openSettings("general"); panel.cityImport.run() },
     function() { press(Qt.Key_End) },

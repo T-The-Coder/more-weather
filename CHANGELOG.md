@@ -11,19 +11,24 @@ All notable changes to More Weather are documented here.
   is reached by the keyboard and travels with export and import.
 - The place search runs through `WeatherPlaceSearch.qml` with
   `PlaceSearch.js`, shared with More Time: Open-Meteo's geocoder with up to
-  eight results, Nominatim when it fails or finds nothing, duplicates (same
-  spot, or the same name a few kilometres off) removed, 350 ms after the last
-  keystroke, one request at a time. Its keys, now the same in both plugins
+  eight results 350 ms after the last keystroke, one request at a time (a
+  query that changed meanwhile waits for the pause again), duplicates (same
+  spot, or the same name a few kilometres off) removed. Nominatim is never
+  asked while typing (its usage policy forbids autocomplete): only Enter on
+  a query Open-Meteo found nothing for asks it, at most once a second, and
+  the next Enter takes what it found or the name as typed. Its keys, now the same in both plugins
   and on the Shortcuts page: ↑ ↓ move within the results or the saved
   places, Tab / ⇧ Tab switch between them, Enter uses the result or
   switches to the saved place, Esc closes. `+` (add the marked result) and
   `−` (remove the marked saved place) act only while the saved places have
-  the focus (after Tab); in the results they are typed into the field, so
-  names like "Saint-Denis" can be searched. Results carry the country code
+  the focus (after Tab); the search field hands them to the list before
+  typing them, and in the results they are typed, so names like
+  "Saint-Denis" can be searched. Results carry the country code
   (`countryCode`) besides name, region, country and time zone.
 - Settings → General → Places: **Import cities from More Time** adds More
-  Time's world clock cities with coordinates that are not saved yet, in
-  their order, and says how many were added and how many were there
+  Time's world clock cities with coordinates that are not saved yet (the
+  place search's rule: the same spot, or the same name within a few
+  kilometres, so Paris, Texas joins Paris, France), in their order, and says how many were added and how many were there
   already. Without More Time's city list the button is off, with a hint.
 - The values in the menu bar can take the popup's colour accents: a new
   menu bar setting **Colour the values** (right below "Bold while hovered",
@@ -44,7 +49,8 @@ All notable changes to More Weather are documented here.
   (service link, refresh, app, gear) share one muted colour, hover colour and
   size; the refresh arrow is now a symbol from the same icon set.
 - Settings → General has a **Reset general settings** button while a general
-  option differs from its default (the wind map's height stays).
+  option differs from its default (the wind map's height stays); once used,
+  the keyboard cursor moves to the item before it.
 - Texts shared with More Time now read like More Time's, in all 30
   languages but in More Weather's own words for settings, widget, app and
   menu bar (French "paramètres", Finnish "pienoissovellus", Hungarian
@@ -67,9 +73,10 @@ All notable changes to More Weather are documented here.
 - Log lines start with `more-weather:`; the user agent says `more-weather/3.0`.
 - Development: the popup moved into `WeatherPopup.qml`, loaded only in the
   bar, so the panel also loads offscreen. `tests/ui-shots.sh` shoots every
-  view offscreen with synthetic weather and no network, plus the menu bar
-  with coloured values
-  (`MORE_PLUGINS_OFFLINE=1`); a new i18n test checks that every key the QML
+  view offscreen with synthetic weather and no network
+  (`MORE_PLUGINS_OFFLINE=1`), plus the menu bar with coloured values, and
+  logs `CHECK` lines for the search's `+`/`−`, the accents dropdown and the
+  cursor after a reset; a new i18n test checks that every key the QML
   asks for exists, another that no language has keys English lacks.
   `WeatherSettingsButton` is now `WeatherButton`, and the files shared with
   More Time are kept in step by `tools/sync-shared.sh` and checked by

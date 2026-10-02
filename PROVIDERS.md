@@ -6,6 +6,11 @@ This separation keeps the widget and standalone app on the same policy.
 
 ## Current fallback order
 
+- Place search (WeatherPlaceSearch.qml, shared with More Time): Open-Meteo
+  geocoding while typing (350 ms debounce, one request at a time); Nominatim
+  search only on Enter for a query Open-Meteo found nothing for, at most one
+  request a second, never as type-ahead (its usage policy forbids
+  autocomplete).
 - Place: stored coordinates -> Nominatim reverse geocoding (once per
   location); name-only location -> Open-Meteo geocoding (exact name first);
   auto-detect -> ipwho.is -> ipapi.co -> GeoJS. The result supplies the

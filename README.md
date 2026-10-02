@@ -81,8 +81,8 @@ runs as a standalone app window.
   grid over the visible area, at 10 m, 120 m or the 850, 700, 500 and 250 hPa levels
   (about 1.5 to 10 km). The wind under the pointer shows its speed and direction. The
   animation takes about a fifth of a processor core while it is on screen.
-- **Locations:** Search for places (Open-Meteo's geocoder, Nominatim when it finds
-  nothing), keep a list of favorites or detect your location automatically. Settings →
+- **Locations:** Search for places (Open-Meteo's geocoder while typing, Nominatim on
+  Enter when it finds nothing), keep a list of favorites or detect your location automatically. Settings →
   General → Places imports the cities of [More Time](https://github.com/T-The-Coder/more-time)'s
   world clock as favorites.
 - **My places:** All favorites at a glance, one line each with symbol, temperature,

@@ -426,11 +426,13 @@ Column {
         foreground: panel.foreground
         font.family: panel.fontFamily
 
-        onTextChanged: if (panel.editingLocation && !panel.savingLocation) panel.scheduleGeocode()
+        onTextChanged: if (panel.editingLocation && !panel.savingLocation) panel.updatePlaceSearch()
         onTextEdited: {
           panel.locationSearchPristine = false
           panel.searchFocusSection = "suggestions"
         }
+        // "+" / "−" in the saved places act on the list instead of the text.
+        Keys.onPressed: function(event) { if (panel.searchFieldKey(event)) event.accepted = true }
       }
 
       // Clear back to IP auto-detect. While a committed location is

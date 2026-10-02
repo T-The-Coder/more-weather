@@ -64,16 +64,23 @@ BarWidget {
   readonly property bool barAccents: !!panelLoader.item && panelLoader.item.colorAccents
     && (panelLoader.item.menubarAccents === "always"
       || (panelLoader.item.menubarAccents === "hover" && barHoverHeld))
+  // An entry's accent while the bar is coloured, else "".
+  function accentFor(key) {
+    return barAccents && key !== "" ? panelLoader.item.menubarAccentFor(key) : ""
+  }
   // An entry's accent, or the bar's text colour.
   function accentColor(key) {
-    var accent = barAccents ? panelLoader.item.menubarAccentFor(key) : ""
-    return accent !== "" ? accent : button.foreground
+    return accentFor(key) || button.foreground
   }
   // A value in its accent inside a styled line; plain without one.
   function accentSpan(value, key) {
     var escaped = String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
-    var accent = barAccents ? panelLoader.item.menubarAccentFor(key) : ""
+    var accent = accentFor(key)
     return accent !== "" ? "<font color=\"" + String(accent) + "\">" + escaped + "</font>" : escaped
+  }
+  // "Wind 26 km/h" with only the value in its accent.
+  function labelled(label, value, key) {
+    return accentSpan(label + " ", "") + accentSpan(value, key)
   }
   // Opened while the pointer was on the widget; holds until the popup's
   // zones have seen the pointer, since they only learn of it once it moves.
@@ -234,16 +241,12 @@ BarWidget {
             if (!root.barAccents || plainText === "") return ""
             var p = panelLoader.item
             if (entryKey === "currentTemperature") return root.accentSpan(plainText, entryKey)
-            if (entryKey === "currentFeelsLike")
-              return root.accentSpan(p.i18n("feelsLikeShort") + " ", "") + root.accentSpan(p.menubarReportFeels, entryKey)
-            if (entryKey === "currentWind")
-              return root.accentSpan(p.i18n("wind") + " ", "") + root.accentSpan(p.menubarReportWind, entryKey)
-            if (entryKey === "currentUv") return "UV " + root.accentSpan(plainText.slice(3), entryKey)
-            if (entryKey === "currentDayRange") {
-              var ends = plainText.split(" / ")
-              if (ends.length !== 2) return ""
-              return root.accentSpan(ends[0], "currentDayMin") + " / " + root.accentSpan(ends[1], "currentDayMax")
-            }
+            if (entryKey === "currentFeelsLike") return root.labelled(p.i18n("feelsLikeShort"), p.menubarReportFeels, entryKey)
+            if (entryKey === "currentWind") return root.labelled(p.i18n("wind"), p.menubarReportWind, entryKey)
+            if (entryKey === "currentUv") return root.labelled("UV", p.menubarUvValueText, entryKey)
+            if (entryKey === "currentDayRange")
+              return root.accentSpan(p.menubarDayMinText, "currentDayMin") + " / "
+                + root.accentSpan(p.menubarDayMaxText, "currentDayMax")
             return ""
           }
           text: accentText !== "" ? accentText : plainText

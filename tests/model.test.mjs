@@ -116,19 +116,26 @@ test("clock times are the place's", () => {
 })
 
 test("More Time's cities join the saved places once, in their order", () => {
-  const saved = [{ name: "Reykjavík", latitude: 64.1466, longitude: -21.9426 }]
+  const { samePlace } = load("PlaceSearch.js")
+  const saved = [
+    { name: "Reykjavík", latitude: 64.1466, longitude: -21.9426 },
+    { name: "Paris", latitude: 48.8566, longitude: 2.3522 }
+  ]
   const raw = JSON.stringify([
     { name: "Tokyo", country: "Japan", tz: "Asia/Tokyo", lat: 35.6895, lon: 139.6917 },
+    // The same name a few kilometres off: already there.
     { name: "Reykjavik", country: "Iceland", tz: "Atlantic/Reykjavik", lat: 64.13, lon: -21.9 },
     { name: "UTC", country: "", tz: "Etc/UTC", lat: null, lon: null },
-    { name: "Nairobi", country: "Kenya", tz: "Africa/Nairobi", lat: -1.2833, lon: 36.8167 },
-    { name: "Tokio again", country: "Japan", tz: "Asia/Tokyo", lat: 35.69, lon: 139.69 }
+    // The same name far away: another place.
+    { name: "Paris", country: "United States", tz: "America/Chicago", lat: 33.6609, lon: -95.5555 },
+    // Another name on the same spot: already there.
+    { name: "Tokio", country: "Japan", tz: "Asia/Tokyo", lat: 35.69, lon: 139.69 }
   ])
-  const result = Model.importedCities(saved, raw)
-  assert.deepEqual(result.list.map((p) => p.name), ["Reykjavík", "Tokyo", "Nairobi"])
+  const result = Model.importedCities(saved, raw, samePlace)
+  assert.deepEqual(result.list.map((p) => p.name), ["Reykjavík", "Paris", "Tokyo", "Paris"])
   assert.equal(result.added, 2)
   assert.equal(result.existing, 2)
   assert.equal(result.skipped, 1)
-  assert.equal(saved.length, 1)
-  assert.equal(Model.importedCities(saved, "not json").added, 0)
+  assert.equal(saved.length, 2)
+  assert.equal(Model.importedCities(saved, "not json", samePlace).added, 0)
 })
