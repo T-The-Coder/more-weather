@@ -400,5 +400,11 @@ var entries = {
   "globeThunderstorm": "Gök gürültülü fırtına",
   "globeIsobarsEvery": "{value} aralıkla izobarlar",
   "globeStreaksAt": "{height} yükseklikte çizgiler",
-  "shortcutGlobeWindHeight": "Küre: rüzgâr yüksekliği"
+  "shortcutGlobeWindHeight": "Küre: rüzgâr yüksekliği",
+  "globeTimeline": "Zaman çizelgesi",
+  "globeTimelineHint": "Zaman çizelgesi küreyi ileri sarar: tüm Dünya 3 saatlik adımlarla beş güne kadar, yakından iki gün saatlik; renkler, katmanlar, güneş, ay ve yerlerim gösterilen zamanı izler. Önceden yüklenmiş verileri kullanır.",
+  "globeTimeKeysHint": ", . zaman · Boşluk oynat",
+  "shortcutGlobeStep": "Küre: bir zaman adımı geri veya ileri",
+  "shortcutGlobePlay": "Küre: zaman çizelgesini oynat veya duraklat",
+  "shortcutGlobeNow": "Küre: şimdiye dön"
 }

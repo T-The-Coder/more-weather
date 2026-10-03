@@ -51,7 +51,10 @@ Column {
         { keys: ["+", "−", "ctrlWheel"], translateKeys: true, action: "shortcutGlobeZoom" },
         { keys: ["0"], action: "shortcutGlobeCenter" },
         { keys: ["v"], action: "shortcutGlobeWash" },
-        { keys: ["⇧ ↑ ↓"], action: "shortcutGlobeWindHeight" }
+        { keys: ["⇧ ↑ ↓"], action: "shortcutGlobeWindHeight" },
+        { keys: [",", "."], action: "shortcutGlobeStep" },
+        { keys: ["Space"], action: "shortcutGlobePlay" },
+        { keys: ["n", "⌫"], action: "shortcutGlobeNow" }
       ]
     },
     {

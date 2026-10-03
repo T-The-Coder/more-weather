@@ -217,6 +217,55 @@ ShellRoot {
       panel.setViewDisplaySetting("globeNumbers", false)
       panel.setViewDisplaySetting("globeStorms", true)
     },
+    // The timeline: now, +24 h and +96 h on the whole disc (temperature
+    // with isobars and storms), +12 h close up over the Alps.
+    function() {
+      panel.setViewDisplaySetting("globeIsobars", true)
+      globeView(0, 35, 0)
+      panel.globeData.backToNow()
+    },
+    function() {}, function() {}, function() { shot("09q-time-now-z0") },
+    function() { panel.globeData.pinnedMs = panel.globeData.nowMs + 24 * 3600000 },
+    function() {}, function() {}, function() { shot("09r-time-24h-z0") },
+    function() { panel.globeData.pinnedMs = panel.globeData.nowMs + 96 * 3600000 },
+    function() {}, function() {}, function() { shot("09s-time-96h-z0") },
+    function() {
+      panel.setViewDisplaySetting("globeIsobars", false)
+      globeView(3, 47, 9)
+      panel.globeData.pinnedMs = panel.globeData.nowMs + 12 * 3600000
+    },
+    function() {}, function() {}, function() { shot("09t-time-12h-z3") },
+    // Playback on the whole disc with everything on, five seconds: the
+    // cost of each step and of the frames meanwhile.
+    function() {
+      panel.setViewDisplaySetting("globeIsobars", true)
+      panel.setViewDisplaySetting("globeStreaks", true)
+      globeView(0, 35, 0)
+      panel.globeData.backToNow()
+    },
+    function() {},
+    function() {
+      panel.globeItem.paintStats = { count: 0, total: 0, max: 0 }
+      panel.globeItem.washItem.stats = { count: 0, total: 0, max: 0 }
+      panel.globeItem.overlayItem.stats = { count: 0, total: 0, max: 0 }
+      panel.globeData.messageStats = { count: 0, total: 0, max: 0, latency: 0, latencyMax: 0, steps: 0 }
+      panel.globeData.togglePlay()
+    },
+    function() {}, function() {}, function() {},
+    function() {
+      var d = panel.globeData
+      var st = panel.globeItem.paintStats, ws = panel.globeItem.washItem.stats, os = panel.globeItem.overlayItem.stats
+      var ms = d.messageStats
+      var steps = Math.max(1, ms.steps)
+      console.log("GLOBE playback:", ms.steps, "steps; answers", ms.count, "× mean", (ms.total / Math.max(1, ms.count)).toFixed(1),
+        "ms, max", ms.max, "ms; lattice after", (ms.latency / steps).toFixed(0), "ms (max", ms.latencyMax + ");",
+        "per step: globe", (st.total / steps).toFixed(1), "wash", (ws.total / steps).toFixed(1), "overlay",
+        (os.total / steps).toFixed(1), "answers", (ms.total / steps).toFixed(1), "ms; max frames: globe", st.max,
+        "wash", ws.max, "overlay", os.max, "ms")
+      d.backToNow()
+      panel.setViewDisplaySetting("globeIsobars", false)
+      panel.setViewDisplaySetting("globeStreaks", false)
+    },
     function() { globeView(0, 0, 10) },
     function() { panel.contentRoot.parent = widgetHost },
     // The night side and the moon: the globe turned towards them.

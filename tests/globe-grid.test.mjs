@@ -127,9 +127,14 @@ test("a region takes its tiles and the global lattice where none is loaded", () 
     tilePoints, "tile", key, 0)
   const global = { south: -90, north: 90, west: -180, east: 180, cols: 2, rows: 2, values: [20, 20, 20, 20], wrap: true }
   const box = { south: 40, north: 55, west: 0, east: 20 }
-  const region = G.regionLattice({ [key]: tile }, global, "temperature_2m", 0, box, 3, 21, 16)
+  const at = tile.times[0] * 1000
+  const region = G.regionLattice({ [key]: tile }, global, "temperature_2m", at, box, 3, 21, 16)
   assert.ok(Math.abs(G.latticeValue(region, 47, 8) + 5) < 0.01)
   assert.ok(Math.abs(G.latticeValue(region, 41, 1) - 20) < 0.01)
+  // Past the tile's hours the global data stands in.
+  const later = at + (tile.times[tile.times.length - 1] - tile.times[0]) * 1000 + 3 * 3600 * 1000
+  const beyond = G.regionLattice({ [key]: tile }, global, "temperature_2m", later, box, 3, 21, 16)
+  assert.ok(Math.abs(G.latticeValue(beyond, 47, 8) - 20) < 0.01)
 })
 
 test("wash buckets and ticks", () => {

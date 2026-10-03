@@ -5,6 +5,7 @@ import "GlobeGrid.js" as GlobeGrid
 import "GlobeView.js" as GlobeView
 import "GlobeFields.js" as GlobeFields
 import "GlobeMarine.js" as GlobeMarine
+import "GlobeTimeline.js" as GlobeTimeline
 
 // The weather on the globe: Open-Meteo's model at the global points (seven
 // batches, one every ten seconds) and, close up, at the tiles in view (after
@@ -66,7 +67,60 @@ QtObject {
   property var tileQueue: []
   property var wantedTiles: []
   property int latticeToken: 0
-  property double hourMs: Math.floor(panel.relativeTimeNowMs / 3600000) * 3600000
+
+  // ---- The timeline (WeatherGlobeTimeline.qml): the whole earth now …
+  //      +120 h in 3-hour steps, close up now … +48 h hourly
+  //      (GlobeTimeline.js). One time, displayMs, drives the wash, the
+  //      overlays, the sky and my places' markers; a chosen time stays
+  //      when the zoom changes the steps (the nearest one is shown).
+  readonly property string range: globe && globe.zoom >= 2 ? "regional" : "global"
+  readonly property double nowMs: panel.relativeTimeNowMs
+  readonly property var steps: GlobeTimeline.steps(nowMs, range)
+  readonly property int nowIndex: GlobeTimeline.atNow(steps, nowMs)
+  // The chosen step's time, or -1 for now.
+  property double pinnedMs: -1
+  readonly property bool scrubbed: pinnedMs >= 0
+  readonly property int stepIndex: scrubbed ? GlobeTimeline.nearestIndex(steps, pinnedMs) : nowIndex
+  readonly property double displayMs: scrubbed && stepIndex >= 0 ? steps[stepIndex] : nowMs
+  readonly property double displayHour: Math.round(displayMs / 3600000)
+  property bool playing: false
+  onDisplayHourChanged: { stepStartedMs = Date.now(); requestLattices() }
+  // What a step costs (the screenshot harness reads it): the shell's time
+  // in the worker's answers, and how long after the step the wash's
+  // lattice came.
+  property double stepStartedMs: 0
+  property var messageStats: ({ count: 0, total: 0, max: 0, latency: 0, latencyMax: 0, steps: 0 })
+
+  function showStep(index) {
+    var i = GlobeTimeline.clampIndex(index, steps)
+    if (i < 0) return
+    pinnedMs = i === nowIndex ? -1 : steps[i]
+  }
+  function stepBy(delta) {
+    playing = false
+    showStep(stepIndex + (delta < 0 ? -1 : 1))
+  }
+  function backToNow() {
+    playing = false
+    pinnedMs = -1
+  }
+  // Play from where it stands; at the end it stops, and the next play
+  // starts from now again.
+  function togglePlay() {
+    if (playing) { playing = false; return }
+    if (stepIndex >= steps.length - 1) pinnedMs = -1
+    playing = true
+  }
+  property Timer playTimer: Timer {
+    interval: GlobeTimeline.playbackDelay(loader.range)
+    repeat: true
+    running: loader.playing && loader.active
+    onTriggered: {
+      var next = GlobeTimeline.advance(loader.stepIndex, loader.steps, 1, false)
+      if (next === loader.stepIndex) { loader.playing = false; return }
+      loader.showStep(next)
+    }
+  }
 
   onActiveChanged: if (active) { scheduleGlobal(); viewRested() }
   onWashChanged: { scheduleGlobal(); viewRested() }
@@ -74,7 +128,6 @@ QtObject {
   onStreaksOnChanged: { scheduleGlobal(); requestLattices() }
   onIsobarsOnChanged: requestLattices()
   onStormsOnChanged: requestLattices()
-  onHourMsChanged: requestLattices()
 
   // ---- The view: a move waits for 600 ms of rest.
   property Connections viewWatch: Connections {
@@ -347,20 +400,34 @@ QtObject {
     var name = GlobeFields.variableFor(wash, height)
     if (name !== "") {
       var tag = wash === "wind" && height !== "10m" ? height : ""
-      post({ fn: "lattice", token: "g" + latticeToken, name: name, ms: Date.now(), box: null })
+      post({ fn: "lattice", token: "g" + latticeToken, name: name, ms: loader.displayMs, box: null })
       // The sea's temperature has no tiles: the global lattice serves.
       if (closeUp && wash !== "sst") {
-        post({ fn: "lattice", token: "r" + latticeToken, name: name, ms: Date.now(), box: box,
+        post({ fn: "lattice", token: "r" + latticeToken, name: name, ms: loader.displayMs, box: box,
           level: globe.zoom, cols: 72, rows: 72, height: tag })
       } else {
         regionLattice = null
       }
     }
     if (streaksOn || isobarsOn || stormsOn) {
-      post({ fn: "layers", token: "l" + latticeToken, ms: Date.now(), box: box, level: closeUp ? globe.zoom : 0,
+      post({ fn: "layers", token: "l" + latticeToken, ms: loader.displayMs, box: box, level: closeUp ? globe.zoom : 0,
         height: height, isobars: isobarsOn, storms: stormsOn, streaks: streaksOn })
     } else {
       layers = null
+    }
+    // While playing, the worker gets the next step ready as well, quietly:
+    // it keeps the result and sends nothing back.
+    if (playing && stepIndex + 1 < steps.length) {
+      var ahead = steps[stepIndex + 1]
+      if (name !== "") {
+        post({ fn: "lattice", token: "pg", quiet: true, name: name, ms: ahead, box: null })
+        if (closeUp && wash !== "sst")
+          post({ fn: "lattice", token: "pr", quiet: true, name: name, ms: ahead, box: box, level: globe.zoom, cols: 72, rows: 72,
+            height: wash === "wind" && height !== "10m" ? height : "" })
+      }
+      if (streaksOn || isobarsOn || stormsOn)
+        post({ fn: "layers", token: "pl", quiet: true, ms: ahead, box: box, level: closeUp ? globe.zoom : 0,
+          height: height, isobars: isobarsOn, storms: stormsOn, streaks: streaksOn })
     }
   }
   // The worker starts with the first message: a panel whose globe stays
@@ -375,6 +442,16 @@ QtObject {
   property Component workerComponent: Component { WorkerScript {
     source: "GlobeWorker.js"
     onMessage: function(message) {
+      var started = Date.now()
+      loader.handle(message)
+      var spent = Date.now() - started
+      var st = loader.messageStats
+      if (message.fn === "lattice" || message.fn === "layers")
+        loader.messageStats = { count: st.count + 1, total: st.total + spent, max: Math.max(st.max, spent),
+          latency: st.latency, latencyMax: st.latencyMax, steps: st.steps }
+    }
+  } }
+  function handle(message) {
       if (message.error) console.warn("more-weather: globe worker:", message.fn, message.error)
       if (message.fn === "ingest" || message.fn === "restore") {
         // An answer that would not parse waits like a failed request.
@@ -408,11 +485,20 @@ QtObject {
         // Unknown nodes may arrive as null: NaN, so they colour nothing.
         var values = message.lattice.values
         for (var i = 0; i < values.length; i++) if (values[i] === null || values[i] === undefined) values[i] = NaN
-        if (token.charAt(0) === "g") loader.globalLattice = message.lattice
-        else loader.regionLattice = message.lattice
+        if (token.charAt(0) === "g") {
+          loader.globalLattice = message.lattice
+          if (loader.stepStartedMs > 0) {
+            var late = Date.now() - loader.stepStartedMs
+            var ms = loader.messageStats
+            loader.messageStats = { count: ms.count, total: ms.total, max: ms.max, latency: ms.latency + late,
+              latencyMax: Math.max(ms.latencyMax, late), steps: ms.steps + 1 }
+            loader.stepStartedMs = 0
+          }
+        } else {
+          loader.regionLattice = message.lattice
+        }
       }
-    }
-  } }
+  }
   // Several answers in a row ask for one new lattice.
   property Timer latticeTimer: Timer {
     interval: 200

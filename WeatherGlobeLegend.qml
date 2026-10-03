@@ -172,7 +172,10 @@ Item {
     text: {
       var parts = []
       if (legend.globe.zoom <= 1) parts.push(legend.panel.i18n("globeDataModel"))
-      if (legend.loader.dataAt > 0)
+      // At another time on the timeline: that time, not the data's age.
+      if (legend.loader.scrubbed)
+        parts.push(legend.panel.globeStepLabel(legend.loader.displayMs, false))
+      else if (legend.loader.dataAt > 0)
         parts.push(legend.panel.i18n("globeDataTime", { time: Qt.formatTime(new Date(legend.loader.dataAt), "HH:mm") }))
       else parts.push(legend.panel.i18n("globeDataLoading"))
       if (legend.loader.limitHeld) parts.push(legend.panel.i18n("globeDataLimit"))

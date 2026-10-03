@@ -400,5 +400,11 @@ var entries = {
   "globeThunderstorm": "雷雨",
   "globeIsobarsEvery": "等圧線 {value} ごと",
   "globeStreaksAt": "風の線 {height}",
-  "shortcutGlobeWindHeight": "地球儀：風の高度"
+  "shortcutGlobeWindHeight": "地球儀：風の高度",
+  "globeTimeline": "タイムライン",
+  "globeTimelineHint": "タイムラインで地球儀を先送りします。地球全体は 3 時間ごとに最大 5 日、拡大時は 1 時間ごとに 2 日分。色、オーバーレイ、太陽、月、マイロケーションは表示中の時刻に従います。読み込み済みのデータを使います。",
+  "globeTimeKeysHint": ", . 時刻 · Space 再生",
+  "shortcutGlobeStep": "地球儀：時刻を 1 ステップ戻す・進める",
+  "shortcutGlobePlay": "地球儀：タイムラインを再生・一時停止",
+  "shortcutGlobeNow": "地球儀：現在に戻る"
 }

@@ -400,5 +400,11 @@ var entries = {
   "globeThunderstorm": "Orage",
   "globeIsobarsEvery": "isobares tous les {value}",
   "globeStreaksAt": "lignes à {height}",
-  "shortcutGlobeWindHeight": "Globe : hauteur du vent"
+  "shortcutGlobeWindHeight": "Globe : hauteur du vent",
+  "globeTimeline": "Chronologie",
+  "globeTimelineHint": "La chronologie fait avancer le globe : toute la Terre jusqu’à cinq jours par pas de 3 heures, de près deux jours heure par heure ; couleurs, couches, soleil, lune et mes lieux suivent l’heure affichée. Elle utilise les données déjà chargées.",
+  "globeTimeKeysHint": ", . heure · Espace lecture",
+  "shortcutGlobeStep": "Globe : un pas de temps en arrière ou en avant",
+  "shortcutGlobePlay": "Globe : lire ou mettre en pause la chronologie",
+  "shortcutGlobeNow": "Globe : revenir à maintenant"
 }

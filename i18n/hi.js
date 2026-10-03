@@ -400,5 +400,11 @@ var entries = {
   "globeThunderstorm": "गरज के साथ तूफ़ान",
   "globeIsobarsEvery": "हर {value} पर समदाब रेखाएँ",
   "globeStreaksAt": "{height} पर रेखाएँ",
-  "shortcutGlobeWindHeight": "ग्लोब: हवा की ऊँचाई"
+  "shortcutGlobeWindHeight": "ग्लोब: हवा की ऊँचाई",
+  "globeTimeline": "टाइमलाइन",
+  "globeTimelineHint": "टाइमलाइन ग्लोब को आगे बढ़ाती है: पूरी पृथ्वी तीन-तीन घंटे के चरणों में पाँच दिन तक, पास से दो दिन घंटे-दर-घंटे; रंग, परतें, सूर्य, चंद्रमा और मेरे स्थान दिखाए गए समय का पालन करते हैं। यह पहले से लोड डेटा का उपयोग करती है।",
+  "globeTimeKeysHint": ", . समय · Space चलाएँ",
+  "shortcutGlobeStep": "ग्लोब: एक समय-चरण पीछे या आगे",
+  "shortcutGlobePlay": "ग्लोब: टाइमलाइन चलाएँ या रोकें",
+  "shortcutGlobeNow": "ग्लोब: अभी पर लौटें"
 }

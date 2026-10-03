@@ -400,5 +400,11 @@ var entries = {
   "globeThunderstorm": "Гроза",
   "globeIsobarsEvery": "ізобари через {value}",
   "globeStreaksAt": "лінії на {height}",
-  "shortcutGlobeWindHeight": "Глобус: висота вітру"
+  "shortcutGlobeWindHeight": "Глобус: висота вітру",
+  "globeTimeline": "Шкала часу",
+  "globeTimelineHint": "Шкала часу прокручує глобус уперед: уся Земля до п’яти днів із кроком 3 години, зблизька два дні щогодини; кольори, шари, сонце, місяць і мої місця йдуть за показаним часом. Використовує вже завантажені дані.",
+  "globeTimeKeysHint": ", . час · Пробіл відтворити",
+  "shortcutGlobeStep": "Глобус: крок часу назад або вперед",
+  "shortcutGlobePlay": "Глобус: відтворити або призупинити шкалу",
+  "shortcutGlobeNow": "Глобус: повернутися до зараз"
 }

@@ -400,5 +400,11 @@ var entries = {
   "globeThunderstorm": "סופת רעמים",
   "globeIsobarsEvery": "איזוברים כל {value}",
   "globeStreaksAt": "קווים ב־{height}",
-  "shortcutGlobeWindHeight": "גלובוס: גובה הרוח"
+  "shortcutGlobeWindHeight": "גלובוס: גובה הרוח",
+  "globeTimeline": "ציר זמן",
+  "globeTimelineHint": "ציר הזמן מריץ את הגלובוס קדימה: כל כדור הארץ עד חמישה ימים בצעדים של 3 שעות, מקרוב יומיים שעה אחר שעה; הצבעים, השכבות, השמש, הירח והמקומות שלי עוקבים אחרי הזמן המוצג. הוא משתמש בנתונים שכבר נטענו.",
+  "globeTimeKeysHint": ", . זמן · רווח הפעלה",
+  "shortcutGlobeStep": "גלובוס: צעד זמן אחורה או קדימה",
+  "shortcutGlobePlay": "גלובוס: הפעלה או השהיה של ציר הזמן",
+  "shortcutGlobeNow": "גלובוס: חזרה לעכשיו"
 }

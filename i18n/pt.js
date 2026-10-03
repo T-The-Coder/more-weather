@@ -400,5 +400,11 @@ var entries = {
   "globeThunderstorm": "Trovoada",
   "globeIsobarsEvery": "isóbaras a cada {value}",
   "globeStreaksAt": "linhas a {height}",
-  "shortcutGlobeWindHeight": "Globo: altura do vento"
+  "shortcutGlobeWindHeight": "Globo: altura do vento",
+  "globeTimeline": "Linha do tempo",
+  "globeTimelineHint": "A linha do tempo avança o globo: a Terra inteira até cinco dias em passos de 3 horas, de perto dois dias de hora em hora; cores, camadas, sol, lua e meus lugares seguem a hora mostrada. Usa os dados já carregados.",
+  "globeTimeKeysHint": ", . hora · Espaço reproduzir",
+  "shortcutGlobeStep": "Globo: um passo de tempo para trás ou para a frente",
+  "shortcutGlobePlay": "Globo: reproduzir ou pausar a linha do tempo",
+  "shortcutGlobeNow": "Globo: voltar para agora"
 }

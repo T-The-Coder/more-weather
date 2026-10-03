@@ -400,5 +400,11 @@ var entries = {
   "globeThunderstorm": "Torden",
   "globeIsobarsEvery": "isobarer hver {value}",
   "globeStreaksAt": "linjer i {height}",
-  "shortcutGlobeWindHeight": "Globus: vindhøyde"
+  "shortcutGlobeWindHeight": "Globus: vindhøyde",
+  "globeTimeline": "Tidslinje",
+  "globeTimelineHint": "Tidslinjen spoler globusen fram: hele jorda opptil fem døgn i steg på 3 timer, på nært hold to døgn time for time; farger, lag, sol, måne og mine steder følger den viste tiden. Den bruker data som allerede er lastet.",
+  "globeTimeKeysHint": ", . tid · Mellomrom spill",
+  "shortcutGlobeStep": "Globus: et tidssteg tilbake eller fram",
+  "shortcutGlobePlay": "Globus: spill av eller sett tidslinjen på pause",
+  "shortcutGlobeNow": "Globus: tilbake til nå"
 }

@@ -400,5 +400,11 @@ var entries = {
   "globeThunderstorm": "رعدوبرق",
   "globeIsobarsEvery": "هم‌فشارها هر {value}",
   "globeStreaksAt": "خطوط در {height}",
-  "shortcutGlobeWindHeight": "کره: ارتفاع باد"
+  "shortcutGlobeWindHeight": "کره: ارتفاع باد",
+  "globeTimeline": "خط زمان",
+  "globeTimelineHint": "خط زمان کره را جلو می‌برد: کل زمین تا پنج روز با گام‌های سه‌ساعته، از نزدیک دو روز ساعت‌به‌ساعت؛ رنگ‌ها، لایه‌ها، خورشید، ماه و مکان‌های من زمان نمایش‌داده‌شده را دنبال می‌کنند. از داده‌های بارشده استفاده می‌کند.",
+  "globeTimeKeysHint": ", . زمان · فاصله پخش",
+  "shortcutGlobeStep": "کره: یک گام زمانی عقب یا جلو",
+  "shortcutGlobePlay": "کره: پخش یا توقف خط زمان",
+  "shortcutGlobeNow": "کره: بازگشت به اکنون"
 }

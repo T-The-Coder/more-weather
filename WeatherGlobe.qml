@@ -67,6 +67,8 @@ Column {
       anchors.baseline: globeTitle.baseline
       width: Math.min(implicitWidth, parent.width - globeTitle.implicitWidth - Style.space(12))
       text: panel.i18n("globeKeysHint")
+        + (panel.displaySetting("globeTimeline", true) === true && panel.globeData.active
+          ? " · " + panel.i18n("globeTimeKeysHint") : "")
       color: panel.hintText
       font.family: panel.fontFamily
       font.pixelSize: Style.font.caption
@@ -247,7 +249,9 @@ Column {
 
     // ---- The sky, once a minute: where the sun and the moon stand
     //      overhead, and the twilight layers (Sky.twilightLayers).
-    readonly property double minuteMs: Math.floor(panel.relativeTimeNowMs / 60000) * 60000
+    // The shown time (the timeline's, else now) to the minute: the sun, the
+    // twilight and the moon follow it.
+    readonly property double minuteMs: Math.floor(panel.globeData.displayMs / 60000) * 60000
     function rgbOf(color) { return [color.r, color.g, color.b] }
     readonly property var sky: {
       var sun = Sky.subsolarPoint(minuteMs)
@@ -268,15 +272,21 @@ Column {
       if (!showMarkers) return []
       var list = []
       var rows = panel.favoriteRows
+      // At another time on the timeline each place shows its own forecast
+      // for it; beyond its stored hours the current values, muted.
+      var scrubbed = panel.globeData.scrubbed
+      var at = panel.globeData.displayMs
       for (var i = 0; i < rows.length; i++) {
         var row = rows[i]
         if (!isFinite(row.latitude) || !isFinite(row.longitude)) continue
-        list.push({ index: row.index, name: row.name, lat: row.latitude, lon: row.longitude, symbol: row.symbol,
-          temperature: row.temperature, wind: row.wind, active: row.active })
+        var then = scrubbed ? panel.favoriteForecastAt(row.index, at) : null
+        list.push({ index: row.index, name: row.name, lat: row.latitude, lon: row.longitude,
+          symbol: then ? then.symbol : row.symbol, temperature: then ? then.temperature : row.temperature,
+          wind: then ? "" : row.wind, active: row.active, muted: scrubbed && !then })
       }
       if (panel.activeFavoriteIndex < 0 && panel.reportLocation !== "")
         list.push({ index: -1, name: panel.reportLocation, lat: panel.mapCenterLatitude, lon: panel.mapCenterLongitude,
-          symbol: panel.displayLabel, temperature: panel.reportTempNum, wind: panel.reportWind, active: true })
+          symbol: panel.displayLabel, temperature: panel.reportTempNum, wind: panel.reportWind, active: true, muted: scrubbed })
       return list
     }
 
@@ -390,6 +400,7 @@ Column {
       }
     }
     readonly property bool canRotate: autoRotate && zoom <= 1 && panel.globeShown && onScreen && !mouse.pressed
+      && !panel.globeData.playing
     onCanRotateChanged: if (!canRotate) rotating = false
     readonly property int rotateDelaySeconds: Number(panel.displaySetting("globeRotateDelay", "10")) || 10
     readonly property int rotateTurnMinutes: Number(panel.displaySetting("globeRotateSpeed", "4")) || 4
@@ -761,8 +772,9 @@ Column {
             + (place.temperature !== "" && place.temperature !== undefined ? " " + place.temperature + "°" : "")
           var labels = globe.zoom >= 3 && place.wind ? [label + " · " + place.wind, label] : [label]
           ctx.font = place.active ? boldFont : labelFont
+          var labelColor = place.muted ? rgba(ink, 0.45) : (place.active ? accent : ink)
           for (var v = 0; v < labels.length; v++)
-            if (placeLabel(ctx, labels[v], p, 8, fontPx, taken, place.active ? accent : ink)) break
+            if (placeLabel(ctx, labels[v], p, 8, fontPx, taken, labelColor)) break
         }
         globe.markerHits = hits
         return taken
@@ -1140,6 +1152,14 @@ Column {
       text: globe.hover ? globe.hover.text : ""
       fontFamily: globe.panel.fontFamily
     }
+  }
+
+  // The forecast timeline, while a data layer shows (Settings → Display →
+  // Globe: Timeline).
+  WeatherGlobeTimeline {
+    width: parent.width
+    panel: globeSection.panel
+    visible: globeSection.panel.displaySetting("globeTimeline", true) === true && globeSection.panel.globeData.active
   }
 
   WeatherGlobeLegend {

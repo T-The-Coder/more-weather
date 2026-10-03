@@ -400,5 +400,11 @@ var entries = {
   "globeThunderstorm": "Zivatar",
   "globeIsobarsEvery": "izobárok {value}-onként",
   "globeStreaksAt": "vonalak {height} magasan",
-  "shortcutGlobeWindHeight": "Földgömb: szél magassága"
+  "shortcutGlobeWindHeight": "Földgömb: szél magassága",
+  "globeTimeline": "Idővonal",
+  "globeTimelineHint": "Az idővonal előre pörgeti a földgömböt: az egész Földet öt napig háromórás lépésekben, közelről két napig óránként; a színek, rétegek, nap, hold és helyeim a mutatott időt követik. A már letöltött adatokat használja.",
+  "globeTimeKeysHint": ", . idő · Szóköz lejátszás",
+  "shortcutGlobeStep": "Földgömb: egy időlépés vissza vagy előre",
+  "shortcutGlobePlay": "Földgömb: idővonal lejátszása vagy megállítása",
+  "shortcutGlobeNow": "Földgömb: vissza a mostba"
 }

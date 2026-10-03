@@ -10,6 +10,8 @@
 //       → { fn, token, lattice } (the global one when box is null)
 //   { fn: "layers", token, ms, box, level, height, isobars, storms, streaks }
 //       → { fn, token, layers }
+// With `quiet` (the timeline's look-ahead) lattice and layers are made and
+// kept, not sent.
 //
 // Qt.include puts every file's functions into this one scope. Same-named
 // helpers either match (known, latOf, normalizeLon, valueAt, ringCols) or
@@ -44,9 +46,10 @@ WorkerScript.onMessage = function(message) {
       var lattice = message.box
         ? boxFor(store, message.name, message.ms, message.box, message.level, message.height || "")
         : globalFor(store, message.name, message.ms)
-      WorkerScript.sendMessage({ fn: "lattice", token: message.token, lattice: lattice })
+      if (!message.quiet) WorkerScript.sendMessage({ fn: "lattice", token: message.token, lattice: lattice })
     } else if (message.fn === "layers") {
-      WorkerScript.sendMessage({ fn: "layers", token: message.token, layers: layersFor(store, message) })
+      var layers = layersFor(store, message)
+      if (!message.quiet) WorkerScript.sendMessage({ fn: "layers", token: message.token, layers: layers })
     }
   } catch (e) {
     WorkerScript.sendMessage({ fn: message.fn, key: message.key, token: message.token, ok: false, error: String(e) })

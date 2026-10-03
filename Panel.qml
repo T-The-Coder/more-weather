@@ -1792,6 +1792,7 @@ Panel {
       globeIsobars: false,
       globeStorms: true,
       globeNumbers: false,
+      globeTimeline: true,
       globeRotateDelay: "10",
       globeRotateSpeed: "4",
       airQualityAsTab: false,
@@ -1826,8 +1827,10 @@ Panel {
 
   function defaultWidgetDisplayOptions() {
     var options = defaultDisplayOptions()
-    // The globe is the app's; the popup can switch it on.
+    // The globe is the app's; the popup can switch it on, without the
+    // timeline unless asked.
     options.showGlobe = false
+    options.globeTimeline = false
     options.hourlyRainAmount = false
     options.hourlyUv = false
     options.hourlyWind = false
@@ -3301,6 +3304,26 @@ Panel {
       return
     }
 
+    // The globe's timeline: , and . a step back and forward, Space plays or
+    // pauses, n or Backspace go back to now (Backspace leaves the hour
+    // cursor its own).
+    if (globeKeys && globeItem && globeData.active && displaySetting("globeTimeline", true) === true) {
+      if (text === "," || text === ".") {
+        globeData.stepBy(text === "." ? 1 : -1)
+        event.accepted = true
+        return
+      }
+      if (event.key === Qt.Key_Space) {
+        globeData.togglePlay()
+        event.accepted = true
+        return
+      }
+      if (text === "n" || (event.key === Qt.Key_Backspace && hourCursor < 0)) {
+        globeData.backToNow()
+        event.accepted = true
+        return
+      }
+    }
     // v: the globe's next colour wash.
     if (globeKeys && globeItem && text === "v") {
       setViewDisplaySetting("globeWash", GlobeFields.nextWash(displaySetting("globeWash", "temperature")))
@@ -3477,6 +3500,20 @@ Panel {
   // instead of showing the value of the fetch (on a summer evening the
   // temperature falls several degrees an hour). The stored current values
   // fill in where the forecast has no hour for now.
+  // A saved place's forecast at a time (the globe's timeline): { temperature,
+  // symbol, inRange } from its stored hours, or its current values with
+  // inRange false beyond them; null without any.
+  function favoriteForecastAt(index, ms) {
+    var place = savedLocations[index]
+    if (!place) return null
+    var entries = weatherDataCache && weatherDataCache.entries ? weatherDataCache.entries : ({})
+    var entry = entries[Model.weatherCacheKey(place.name, place.latitude, place.longitude)]
+    var snapshot = entry && entry.snapshot ? entry.snapshot : null
+    var found = snapshot ? Model.hourlyValueAt(snapshot.hourly || [], ms, "tempC") : null
+    if (!found) return null
+    return { temperature: Model.tempNumber(String(Math.round(found.value)), String(Math.round(found.value * 1.8 + 32)), tempScale),
+      symbol: Model.hourlyIcon(found.row), inRange: true }
+  }
   function favoriteValuesNow(snapshot) {
     var stored = snapshot.current || {}
     var hourly = snapshot.hourly || []
@@ -3951,6 +3988,14 @@ Panel {
     var referenceTime = radarReferenceTime(frame)
     if (referenceTime !== "") url += "&DIM_REFERENCE_TIME=" + encodeURIComponent(referenceTime)
     return url
+  }
+
+  // The globe timeline's time: "Sun 15:00 · +27 h", "Today 18:00 · +2 h",
+  // or "… · now" for the step now falls in.
+  function globeStepLabel(ms, isNow) {
+    var day = dailyDayName(Model.placeDate(ms, placeUtcOffsetSeconds), true)
+    var hours = Math.round((ms - relativeTimeNowMs) / 3600000)
+    return day + " " + placeClock(ms) + " · " + (isNow || hours === 0 ? i18n("now") : (hours > 0 ? "+" : "−") + Math.abs(hours) + " h")
   }
 
   function radarFrameClock(frame) {

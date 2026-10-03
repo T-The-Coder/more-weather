@@ -229,10 +229,11 @@ Rectangle {
         { key: "globeStorms", title: panel.i18n("globeStorms") },
         { key: "globeStreaks", title: panel.i18n("globeStreaks") },
         { key: "globeIsobars", title: panel.i18n("globeIsobars") },
-        { key: "globeNumbers", title: panel.i18n("globeNumbers") }
+        { key: "globeNumbers", title: panel.i18n("globeNumbers") },
+        { key: "globeTimeline", title: panel.i18n("globeTimeline") }
       ],
       hint: panel.i18n("globeHint") + " " + panel.i18n("globeZoomHint") + " " + panel.i18n("optionNightHint") + " "
-        + panel.i18n("optionGlobeAutoRotateHint") + " " + panel.i18n("globeLayersHint"),
+        + panel.i18n("optionGlobeAutoRotateHint") + " " + panel.i18n("globeLayersHint") + " " + panel.i18n("globeTimelineHint"),
       hasGlobeRotate: true,
       hasGlobeWash: true,
       hasDefaultTab: false

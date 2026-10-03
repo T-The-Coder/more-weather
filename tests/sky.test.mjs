@@ -132,7 +132,7 @@ test("twilight layers: soft bands, then the night in three steps", () => {
   const all = S.twilightLayers({ golden: true, blue: true, night: true }, bg)
   assert.deepEqual(all.map((l) => [l.high, l.low, l.fill.a]), [
     [6, 4, 0.10], [4, 2, 0.20], [2, 0, 0.28],
-    [0, -3, 0.28], [-3, -6, 0.20], [-6, -8, 0.10],
+    [0, -3, 0.10], [-3, -6, 0.20], [-6, -8, 0.28],
     [0, -6, 0.12], [-6, -12, 0.24], [-12, null, 0.30]])
   // The night steps in the night colour, darker with every step; dark themes
   // take the stronger full night.

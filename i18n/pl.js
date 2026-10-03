@@ -400,5 +400,11 @@ var entries = {
   "globeThunderstorm": "Burza",
   "globeIsobarsEvery": "izobary co {value}",
   "globeStreaksAt": "linie na {height}",
-  "shortcutGlobeWindHeight": "Globus: wysokość wiatru"
+  "shortcutGlobeWindHeight": "Globus: wysokość wiatru",
+  "globeTimeline": "Oś czasu",
+  "globeTimelineHint": "Oś czasu przewija glob do przodu: cała Ziemia do pięciu dni w krokach 3-godzinnych, z bliska dwa dni co godzinę; kolory, warstwy, słońce, księżyc i moje miejsca podążają za pokazanym czasem. Korzysta z już pobranych danych.",
+  "globeTimeKeysHint": ", . czas · Spacja odtwórz",
+  "shortcutGlobeStep": "Globus: krok czasu wstecz lub naprzód",
+  "shortcutGlobePlay": "Globus: odtwórz lub wstrzymaj oś czasu",
+  "shortcutGlobeNow": "Globus: powrót do teraz"
 }

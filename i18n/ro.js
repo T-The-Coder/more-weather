@@ -400,5 +400,11 @@ var entries = {
   "globeThunderstorm": "Oraj",
   "globeIsobarsEvery": "izobare la {value}",
   "globeStreaksAt": "linii la {height}",
-  "shortcutGlobeWindHeight": "Glob: înălțimea vântului"
+  "shortcutGlobeWindHeight": "Glob: înălțimea vântului",
+  "globeTimeline": "Cronologie",
+  "globeTimelineHint": "Cronologia derulează globul înainte: tot Pământul până la cinci zile în pași de 3 ore, de aproape două zile oră cu oră; culorile, straturile, soarele, luna și locurile mele urmează ora afișată. Folosește datele deja încărcate.",
+  "globeTimeKeysHint": ", . oră · Spațiu redare",
+  "shortcutGlobeStep": "Glob: un pas de timp înapoi sau înainte",
+  "shortcutGlobePlay": "Glob: redă sau întrerupe cronologia",
+  "shortcutGlobeNow": "Glob: înapoi la acum"
 }

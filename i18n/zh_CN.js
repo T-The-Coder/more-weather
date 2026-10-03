@@ -400,5 +400,11 @@ var entries = {
   "globeThunderstorm": "雷暴",
   "globeIsobarsEvery": "等压线间隔 {value}",
   "globeStreaksAt": "风线高度 {height}",
-  "shortcutGlobeWindHeight": "地球仪：风的高度"
+  "shortcutGlobeWindHeight": "地球仪：风的高度",
+  "globeTimeline": "时间轴",
+  "globeTimelineHint": "时间轴让地球仪向前推进：整个地球最多五天、每三小时一步，近看时两天、每小时一步；颜色、叠加层、太阳、月亮和我的地点都跟随显示的时间。它使用已加载的数据。",
+  "globeTimeKeysHint": ", . 时间 · 空格 播放",
+  "shortcutGlobeStep": "地球仪：时间后退或前进一步",
+  "shortcutGlobePlay": "地球仪：播放或暂停时间轴",
+  "shortcutGlobeNow": "地球仪：回到现在"
 }

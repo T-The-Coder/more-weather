@@ -386,6 +386,9 @@ function latticeValue(lattice, lat, lon, nearest) {
 // A tile's value at a place inside it (bilinear between its 4 × 4 points).
 function tileValue(tile, name, ms, lat, lon) {
   var b = tileBounds(tile.key)
+  // A time past the tile's 48 hours (or before them) is the global data's.
+  var target = Number(ms) / 1000
+  if (!tile.times.length || target < tile.times[0] - 3600 || target > tile.times[tile.times.length - 1] + 3600) return NaN
   var t = nearestStep(tile.times, ms)
   var n = TILE_POINTS - 1
   var x = wrapLon(lon)

@@ -180,6 +180,10 @@ os.makedirs(globe_dir, exist_ok=True)
 
 
 def field(name, lat, lon, hours):
+    # The weather drifts east, about 30° a day, so the timeline shows
+    # change (the temperature has its day and night instead).
+    if name != "temperature_2m":
+        lon = lon - hours * 1.25
     if name == "temperature_2m":
         return 29 - 0.55 * abs(lat) + 6 * math.sin(math.radians(lon) * 2) + 2 * math.sin(hours / 24 * 2 * math.pi)
     if name == "cloud_cover":
@@ -246,7 +250,7 @@ for ring_lat in range(-81, 82, 9):
 global_points.append((90, 0))
 for k in range(7):
     key = "G9:%d" % k
-    write(key + ".json", compact(key, "global", global_points[k::7], 3, 8), folder=globe_dir)
+    write(key + ".json", compact(key, "global", global_points[k::7], 3, 33), folder=globe_dir)
 
 # Tiles of level 3 (7.5° high) round the Alps.
 size = 7.5
@@ -258,7 +262,7 @@ for row in range(int((40 + 90) // size), int((52 + 90) // size) + 1):
         south, west = -90 + row * size, -180 + col * width
         points = [(south + size * i / 3, west + width * j / 3) for i in range(4) for j in range(4)]
         key = "T3:%d:%d" % (row, col)
-        write(key + ".json", compact(key, "tile", points, 1, 6), folder=globe_dir)
+        write(key + ".json", compact(key, "tile", points, 1, 14), folder=globe_dir)
 
 # The sea's temperature (Open-Meteo Marine) for every global point, in
 # chunks as the loader keys them; hourly from 00 UTC, as Marine answers.

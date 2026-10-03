@@ -400,5 +400,11 @@ var entries = {
   "globeThunderstorm": "Åska",
   "globeIsobarsEvery": "isobarer var {value}",
   "globeStreaksAt": "linjer på {height}",
-  "shortcutGlobeWindHeight": "Glob: vindhöjd"
+  "shortcutGlobeWindHeight": "Glob: vindhöjd",
+  "globeTimeline": "Tidslinje",
+  "globeTimelineHint": "Tidslinjen spolar globen framåt: hela jorden upp till fem dygn i steg om 3 timmar, på nära håll två dygn timme för timme; färger, lager, sol, måne och mina platser följer den visade tiden. Den använder redan laddade data.",
+  "globeTimeKeysHint": ", . tid · Mellanslag spela",
+  "shortcutGlobeStep": "Glob: ett tidssteg bakåt eller framåt",
+  "shortcutGlobePlay": "Glob: spela eller pausa tidslinjen",
+  "shortcutGlobeNow": "Glob: tillbaka till nu"
 }

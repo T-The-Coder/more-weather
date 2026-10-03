@@ -4,6 +4,19 @@ All notable changes to More Weather are documented here.
 
 ## Unreleased
 
+- **The globe's forecast timeline**: under the globe, play / pause and a
+  track to drag or click, the whole earth up to five days ahead in
+  3-hour steps, close up two days hourly (the chosen time stays when the
+  zoom changes). One time drives everything: the colour layer, isobars,
+  streaks, storm and thunderstorm symbols, numbers, the sun, the
+  twilight and the moon, and my places' markers show their own forecast
+  for that hour (muted where their stored hours end). Playback pauses the
+  globe's turning, stops at the end and starts from now again; the
+  worker readies the next step while playing. Keys `,` `.` (a step),
+  `Space` (play), `n` or `⌫` (back to now); the legend names the shown
+  time ("Sun 15:00 · +27 h"). No extra requests: it reads the hours
+  already loaded, and close up past a tile's 48 hours the whole earth's
+  data stands in. On in the app, a switch (Timeline) in the popup.
 - **More on the globe**: the colour layer gains **wind** (in the wind
   map's colours, in your wind unit) and the **sea's temperature** (from
   Open-Meteo Marine, −2 … 32 °C, land drawn over it); four overlays,

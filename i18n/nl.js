@@ -400,5 +400,11 @@ var entries = {
   "globeThunderstorm": "Onweer",
   "globeIsobarsEvery": "isobaren om de {value}",
   "globeStreaksAt": "lijnen op {height}",
-  "shortcutGlobeWindHeight": "Globe: windhoogte"
+  "shortcutGlobeWindHeight": "Globe: windhoogte",
+  "globeTimeline": "Tijdlijn",
+  "globeTimelineHint": "De tijdlijn spoelt de globe vooruit: de hele aarde tot vijf dagen in stappen van 3 uur, van dichtbij twee dagen per uur; kleuren, lagen, zon, maan en mijn plaatsen volgen de getoonde tijd. Hij gebruikt de al geladen gegevens.",
+  "globeTimeKeysHint": ", . tijd · Spatie afspelen",
+  "shortcutGlobeStep": "Globe: een tijdstap terug of vooruit",
+  "shortcutGlobePlay": "Globe: tijdlijn afspelen of pauzeren",
+  "shortcutGlobeNow": "Globe: terug naar nu"
 }

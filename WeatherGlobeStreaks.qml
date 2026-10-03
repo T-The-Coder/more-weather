@@ -57,7 +57,9 @@ Canvas {
     // Drawn with the next tick, not with every frame of a turn.
     if (!tick.running) requestPaint()
   }
-  onULatticeChanged: reseed()
+  // New wind (another time step) moves the particles on; they are seeded
+  // only when there are none.
+  onULatticeChanged: if (!particles.length) reseed()
   onVisibleChanged: if (visible) reseed()
 
   Timer {

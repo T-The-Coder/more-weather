@@ -215,15 +215,17 @@ function bandFill(name) {
 // `high` and not below `low` (low null: below `high`), each the even-odd fill
 // of the caps at those elevations (twilightRings, WorldMap.twilightPolygon,
 // Globe.capPolygonView).
-//  - The golden band (+6° … 0°) and the blue band (0° … −8°), each in three
-//    steps whose alpha grows towards the day/night line, so their outer
-//    edges fade.
+//  - The golden band (+6° … 0°) in three steps, strongest at the day/night
+//    line (the gold is deepest with the sun lowest) and fading towards the
+//    day; the blue band (0° … −8°) in three steps the other way round,
+//    lightest at the line and deepest towards the night, as the blue
+//    deepens while the sun sinks, so it runs into the night steps.
 //  - The night after them, darkening the blue band too: civil twilight
 //    (0° … −6°), nautical (−6° … −12°), then full night below −12°, in the
 //    night colour at growing alpha (nightFill).
 // options: { golden, blue, night } switches; background: [r, g, b].
 var GOLDEN_STEPS = [[6, 4, 0.10], [4, 2, 0.20], [2, 0, 0.28]]
-var BLUE_STEPS = [[0, -3, 0.28], [-3, -6, 0.20], [-6, -8, 0.10]]
+var BLUE_STEPS = [[0, -3, 0.10], [-3, -6, 0.20], [-6, -8, 0.28]]
 var NIGHT_STEPS = [[0, -6, 0.12], [-6, -12, 0.24], [-12, null, 0]]
 
 function twilightLayers(options, background) {

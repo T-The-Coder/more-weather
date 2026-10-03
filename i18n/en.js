@@ -434,5 +434,11 @@ var catalog = {
   "globeThunderstorm": "Thunderstorm",
   "globeIsobarsEvery": "isobars every {value}",
   "globeStreaksAt": "streaks at {height}",
-  "shortcutGlobeWindHeight": "Globe: wind height"
+  "shortcutGlobeWindHeight": "Globe: wind height",
+  "globeTimeline": "Timeline",
+  "globeTimelineHint": "The timeline runs the globe ahead: the whole earth up to five days in 3-hour steps, close up two days hourly; the colours, overlays, sun, moon and my places follow the time shown. It uses the data already loaded.",
+  "globeTimeKeysHint": ", . time · Space play",
+  "shortcutGlobeStep": "Globe: a time step back or forward",
+  "shortcutGlobePlay": "Globe: play or pause the timeline",
+  "shortcutGlobeNow": "Globe: back to now"
 }

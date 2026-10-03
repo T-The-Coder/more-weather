@@ -97,8 +97,12 @@ runs as a standalone app window.
   Over it, each switchable: storm symbols for gusts from 75 km/h and flickering bolts for
   thunderstorms (on by default), drifting wind streaks at a chosen height (10 m up to
   250 hPa, `Shift` `↑` `↓`), isobars every 4 hPa with highs and lows, and the layer's
-  values in numbers from close up. It loads only while the globe is shown, within a daily
-  budget of requests, and bar and app share the data. In the app as a tab after the wind map; the popup
+  values in numbers from close up. A timeline under the globe runs it ahead (the whole
+  earth up to five days in 3-hour steps, close up two days hourly; play, drag, `,` `.`,
+  `Space`, `n` back to now): the colours, overlays, sun, moon and my places' forecasts
+  follow the time shown, from the data already loaded (on in the app, a switch in the
+  popup). It loads only while the globe is shown, within a daily budget of requests, and
+  bar and app share the data. In the app as a tab after the wind map; the popup
   can switch it on.
 - **Locations:** Search for places (Open-Meteo's geocoder while typing, Nominatim on
   Enter when it finds nothing), keep a list of favorites or detect your location automatically. Settings →
@@ -188,6 +192,9 @@ too, and the settings name their keys where they apply.
 | `0` | Globe: the whole globe at the shown place |
 | `v` | Globe: next colour layer (temperature, cloud, precipitation, wind, sea temperature, none) |
 | `Shift` `↑` `↓` | Globe: wind height of the wind layer and the streaks |
+| `,` `.` | Globe: a time step back or forward on the timeline |
+| `Space` | Globe: play or pause the timeline |
+| `n` `⌫` | Globe: back to now |
 | **Place search** | |
 | `↑ ↓` | Move within the results or the saved places |
 | `Tab` / `⇧ Tab` | Switch between results and saved places |

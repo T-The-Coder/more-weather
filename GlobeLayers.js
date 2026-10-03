@@ -57,12 +57,22 @@ function forget(store, keys) {
   store.cache = {}
 }
 
+function boxTag(box) {
+  return box ? [box.south, box.north, box.west, box.east].map(function(v) { return Math.round(v * 100) }).join(",") : "all"
+}
+// Kept per hour and box until new data comes; a timeline played through
+// and many views fill it, so it starts over past 240 entries.
+function trimCache(store) {
+  if (Object.keys(store.cache).length > 240) store.cache = {}
+}
+
 function hourOf(ms) {
   return Math.round(Number(ms) / 3600000)
 }
 
 // The whole earth's lattice of a variable at a time, kept per hour.
 function globalFor(store, name, ms) {
+  trimCache(store)
   var key = "g|" + name + "|" + hourOf(ms)
   if (!store.cache[key]) {
     var list = []
@@ -74,8 +84,7 @@ function globalFor(store, name, ms) {
 
 // A box's lattice (from the tiles of `level`, the global one beneath).
 function boxFor(store, name, ms, box, level, height) {
-  var key = "b|" + name + "|" + hourOf(ms) + "|" + [box.south, box.north, box.west, box.east].map(function(v) {
-    return Math.round(v * 100) }).join(",") + "|" + level + "|" + (height || "")
+  var key = "b|" + name + "|" + hourOf(ms) + "|" + boxTag(box) + "|" + level + "|" + (height || "")
   if (!store.cache[key]) {
     store.cache[key] = regionLattice(store.tiles, globalFor(store, name, ms), name, ms, box, level,
       BOX_NODES, BOX_NODES, height)
@@ -88,6 +97,7 @@ function boxFor(store, name, ms, box, level, height) {
 // `request`: { ms, box (null for the whole earth), level (zoom), height
 // (wind height id), isobars, storms, streaks (booleans) }.
 function layersFor(store, request) {
+  trimCache(store)
   var ms = request.ms
   var box = request.box || null
   var result = {}
@@ -100,17 +110,29 @@ function layersFor(store, request) {
     result.isobars = store.cache[key].isobars
     result.centres = store.cache[key].centres
   }
+  var where = "|" + hourOf(ms) + "|" + boxTag(box) + "|" + (box ? request.level : "")
   if (request.storms) {
-    var pick = function(name) { return box ? boxFor(store, name, ms, box, request.level, "") : globalFor(store, name, ms) }
-    result.storms = storms(pick("wind_gusts_10m"))
-    result.thunderstorms = thunderstorms(pick("weather_code"), pick("cape"), pick("precipitation"))
+    var stormKey = "storms" + where
+    if (!store.cache[stormKey]) {
+      var pick = function(name) { return box ? boxFor(store, name, ms, box, request.level, "") : globalFor(store, name, ms) }
+      store.cache[stormKey] = {
+        storms: storms(pick("wind_gusts_10m")),
+        thunderstorms: thunderstorms(pick("weather_code"), pick("cape"), pick("precipitation"))
+      }
+    }
+    result.storms = store.cache[stormKey].storms
+    result.thunderstorms = store.cache[stormKey].thunderstorms
   }
   if (request.streaks) {
     var height = request.height || "10m"
     var tag = height === "10m" ? "" : height
-    var pickWind = function(name) { return box ? boxFor(store, name, ms, box, request.level, tag) : globalFor(store, name, ms) }
-    result.u = metresPerSecond(pickWind("wind_u_" + height))
-    result.v = metresPerSecond(pickWind("wind_v_" + height))
+    var windKey = "wind" + where + "|" + height
+    if (!store.cache[windKey]) {
+      var pickWind = function(name) { return box ? boxFor(store, name, ms, box, request.level, tag) : globalFor(store, name, ms) }
+      store.cache[windKey] = { u: metresPerSecond(pickWind("wind_u_" + height)), v: metresPerSecond(pickWind("wind_v_" + height)) }
+    }
+    result.u = store.cache[windKey].u
+    result.v = store.cache[windKey].v
   }
   return result
 }

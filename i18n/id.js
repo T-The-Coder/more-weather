@@ -400,5 +400,11 @@ var entries = {
   "globeThunderstorm": "Badai petir",
   "globeIsobarsEvery": "isobar tiap {value}",
   "globeStreaksAt": "garis di {height}",
-  "shortcutGlobeWindHeight": "Bola dunia: ketinggian angin"
+  "shortcutGlobeWindHeight": "Bola dunia: ketinggian angin",
+  "globeTimeline": "Linimasa",
+  "globeTimelineHint": "Linimasa memajukan bola dunia: seluruh bumi hingga lima hari dalam langkah 3 jam, dari dekat dua hari per jam; warna, lapisan, matahari, bulan, dan tempat saya mengikuti waktu yang ditampilkan. Memakai data yang sudah dimuat.",
+  "globeTimeKeysHint": ", . waktu · Spasi putar",
+  "shortcutGlobeStep": "Bola dunia: satu langkah waktu mundur atau maju",
+  "shortcutGlobePlay": "Bola dunia: putar atau jeda linimasa",
+  "shortcutGlobeNow": "Bola dunia: kembali ke sekarang"
 }

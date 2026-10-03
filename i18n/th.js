@@ -400,5 +400,11 @@ var entries = {
   "globeThunderstorm": "พายุฝนฟ้าคะนอง",
   "globeIsobarsEvery": "เส้นความกดอากาศเท่าทุก {value}",
   "globeStreaksAt": "เส้นลมที่ {height}",
-  "shortcutGlobeWindHeight": "ลูกโลก: ความสูงของลม"
+  "shortcutGlobeWindHeight": "ลูกโลก: ความสูงของลม",
+  "globeTimeline": "ไทม์ไลน์",
+  "globeTimelineHint": "ไทม์ไลน์เลื่อนลูกโลกไปข้างหน้า: ทั้งโลกได้ถึงห้าวันทีละสามชั่วโมง เมื่อซูมใกล้สองวันทีละชั่วโมง สี ชั้นซ้อน ดวงอาทิตย์ ดวงจันทร์ และสถานที่ของฉันจะตามเวลาที่แสดง ใช้ข้อมูลที่โหลดไว้แล้ว",
+  "globeTimeKeysHint": ", . เวลา · Space เล่น",
+  "shortcutGlobeStep": "ลูกโลก: ถอยหรือเดินหน้าหนึ่งขั้นเวลา",
+  "shortcutGlobePlay": "ลูกโลก: เล่นหรือหยุดไทม์ไลน์ชั่วคราว",
+  "shortcutGlobeNow": "ลูกโลก: กลับไปที่ตอนนี้"
 }

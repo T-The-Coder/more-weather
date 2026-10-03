@@ -400,5 +400,11 @@ var entries = {
   "globeThunderstorm": "Ukkonen",
   "globeIsobarsEvery": "isobaarit {value} välein",
   "globeStreaksAt": "viivat korkeudella {height}",
-  "shortcutGlobeWindHeight": "Karttapallo: tuulen korkeus"
+  "shortcutGlobeWindHeight": "Karttapallo: tuulen korkeus",
+  "globeTimeline": "Aikajana",
+  "globeTimelineHint": "Aikajana kelaa karttapalloa eteenpäin: koko maapallo viiteen päivään asti kolmen tunnin askelin, läheltä kaksi päivää tunneittain; värit, kerrokset, aurinko, kuu ja paikkani seuraavat näytettyä aikaa. Se käyttää jo ladattuja tietoja.",
+  "globeTimeKeysHint": ", . aika · Välilyönti toista",
+  "shortcutGlobeStep": "Karttapallo: aika-askel taakse tai eteen",
+  "shortcutGlobePlay": "Karttapallo: toista tai keskeytä aikajana",
+  "shortcutGlobeNow": "Karttapallo: takaisin nykyhetkeen"
 }

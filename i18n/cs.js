@@ -400,5 +400,11 @@ var entries = {
   "globeThunderstorm": "Bouřka",
   "globeIsobarsEvery": "izobary po {value}",
   "globeStreaksAt": "čáry v {height}",
-  "shortcutGlobeWindHeight": "Glóbus: výška větru"
+  "shortcutGlobeWindHeight": "Glóbus: výška větru",
+  "globeTimeline": "Časová osa",
+  "globeTimelineHint": "Časová osa posouvá glóbus dopředu: celá Země až na pět dní po 3 hodinách, zblízka dva dny po hodinách; barvy, vrstvy, slunce, měsíc a má místa sledují zobrazený čas. Používá už načtená data.",
+  "globeTimeKeysHint": ", . čas · Mezerník přehrát",
+  "shortcutGlobeStep": "Glóbus: časový krok zpět nebo vpřed",
+  "shortcutGlobePlay": "Glóbus: přehrát nebo pozastavit časovou osu",
+  "shortcutGlobeNow": "Glóbus: zpět na teď"
 }

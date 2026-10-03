@@ -90,6 +90,10 @@ test("isobars, centres, storms and thunderstorms from the store", () => {
   // Kept per hour until new data comes.
   const again = W.layersFor(store, { ms: 0, box: null, isobars: true })
   assert.equal(again.isobars, W.layersFor(store, { ms: 0, box: null, isobars: true }).isobars)
+  // Storms too, per hour and box (the timeline's look-ahead fills these).
+  const s1 = W.layersFor(store, { ms: 0, box: null, storms: true }).storms
+  assert.equal(W.layersFor(store, { ms: 0, box: null, storms: true }).storms, s1)
+  assert.notEqual(W.layersFor(store, { ms: 3 * 3600000, box: null, storms: true }).storms, s1)
   W.keep(store, batch(0, { pressure_msl: () => 1000 }))
   assert.notEqual(W.layersFor(store, { ms: 0, box: null, isobars: true }).isobars, again.isobars)
 })

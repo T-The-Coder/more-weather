@@ -400,5 +400,11 @@ var entries = {
   "globeThunderstorm": "عاصفة رعدية",
   "globeIsobarsEvery": "خطوط الضغط كل {value}",
   "globeStreaksAt": "الخطوط على {height}",
-  "shortcutGlobeWindHeight": "الكرة الأرضية: ارتفاع الرياح"
+  "shortcutGlobeWindHeight": "الكرة الأرضية: ارتفاع الرياح",
+  "globeTimeline": "الخط الزمني",
+  "globeTimelineHint": "يقدّم الخط الزمني الكرة إلى الأمام: الأرض كلها حتى خمسة أيام بخطوات ثلاث ساعات، وعن قرب يومان ساعة بساعة؛ تتبع الألوان والطبقات والشمس والقمر وأماكني الوقت المعروض. يستخدم البيانات المحمّلة مسبقًا.",
+  "globeTimeKeysHint": ", . الوقت · مسافة تشغيل",
+  "shortcutGlobeStep": "الكرة الأرضية: خطوة زمنية للخلف أو للأمام",
+  "shortcutGlobePlay": "الكرة الأرضية: تشغيل الخط الزمني أو إيقافه مؤقتًا",
+  "shortcutGlobeNow": "الكرة الأرضية: العودة إلى الآن"
 }

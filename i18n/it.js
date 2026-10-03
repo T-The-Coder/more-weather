@@ -400,5 +400,11 @@ var entries = {
   "globeThunderstorm": "Temporale",
   "globeIsobarsEvery": "isobare ogni {value}",
   "globeStreaksAt": "linee a {height}",
-  "shortcutGlobeWindHeight": "Globo: quota del vento"
+  "shortcutGlobeWindHeight": "Globo: quota del vento",
+  "globeTimeline": "Linea temporale",
+  "globeTimelineHint": "La linea temporale porta avanti il globo: tutta la Terra fino a cinque giorni a passi di 3 ore, da vicino due giorni ora per ora; colori, livelli, sole, luna e i miei luoghi seguono l’ora mostrata. Usa i dati già caricati.",
+  "globeTimeKeysHint": ", . ora · Spazio riproduci",
+  "shortcutGlobeStep": "Globo: un passo di tempo indietro o avanti",
+  "shortcutGlobePlay": "Globo: riproduci o metti in pausa la linea temporale",
+  "shortcutGlobeNow": "Globo: torna ad adesso"
 }
