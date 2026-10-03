@@ -255,6 +255,33 @@ ShellRoot {
       streaks(false)
       panel.contentRoot.parent = globeHost
     },
+    // What the Canvas still draws per frame while the GPU surface draws
+    // the earth (forced here, without a GPU): temperature, cloud, rain and
+    // storms, turning by itself, no wind lines.
+    function() {
+      layersOn(["temperature", "cloud", "precipitation"])
+      streaks(false)
+      panel.setViewDisplaySetting("globeStorms", true)
+      panel.setViewDisplaySetting("globeIsobars", true)
+      panel.globeItem.forceSurfaceBranch = true
+      panel.setViewDisplaySetting("globeAutoRotate", true)
+      globeView(0, 20, 10)
+      panel.globeItem.rotating = true
+      cpuStart()
+    },
+    function() {}, function() {},
+    function() {
+      cpuReport("500 surface branch")
+      var g = panel.globeItem
+      console.log("GLOBE surface branch per frame: canvas", (g.paintStats.total / Math.max(1, g.paintStats.count)).toFixed(1),
+        "ms, overlay", (g.overlayItem.stats.total / Math.max(1, g.paintStats.count)).toFixed(1), "ms, wash",
+        g.washItem.stats.count, "paints")
+      g.rotating = false
+      g.forceSurfaceBranch = false
+      panel.setViewDisplaySetting("globeAutoRotate", false)
+      panel.setViewDisplaySetting("globeIsobars", false)
+      layersOn(["temperature"])
+    },
     // At rest with nothing animating: no paints at all.
     function() { cpuStart() }, function() {}, function() {},
     function() { cpuReport("500 at rest") },

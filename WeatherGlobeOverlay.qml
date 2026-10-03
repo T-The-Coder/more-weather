@@ -116,7 +116,8 @@ Canvas {
     // Labels stay while the globe turns by itself on the GPU surface (the
     // turn is cheap there); a drag or a turn on the Canvas path drops them.
     var still = !globe.moving || (globe.gpuSurface && globe.rotating && !globe.dragging)
-    if (isobars && data && data.isobars) {
+    // Up to z1 the surface's picture has the isobars.
+    if (isobars && data && data.isobars && !(globe.surfaceDraws && globe.zoom <= 1)) {
       // The lines within the earth's edge, like the colour layers.
       ctx.save()
       P.traceEarth(ctx)

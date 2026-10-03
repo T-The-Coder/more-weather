@@ -32,6 +32,10 @@ Item {
   // The shown time (ms): the sun's position for the night.
   property double displayMs: Date.now()
   property bool night: true
+  // Optional golden and blue hour bands along the day/night line (More
+  // Time's; Sky.twilightLayers' steps and colours), off by default.
+  property bool goldenBand: false
+  property bool blueBand: false
   // The theme: the night's colour and alphas follow it (Sky.twilightLayers
   // over the popup's background); the base under the picture (the sphere's
   // faint fill, premultiplied by the shader input).
@@ -111,6 +115,15 @@ Item {
       var c = surface.baseColor
       return Qt.vector4d(c.r * c.a, c.g * c.a, c.b * c.a, c.a)
     }
+    // The bands' colours and step alphas (zero when off).
+    readonly property var bandLayers: Sky.twilightLayers({ golden: true, blue: true, night: false },
+      [surface.background.r, surface.background.g, surface.background.b])
+    property vector4d goldColor: Qt.vector4d(bandLayers[0].fill.r, bandLayers[0].fill.g, bandLayers[0].fill.b, 1)
+    property vector3d goldAlpha: surface.goldenBand
+      ? Qt.vector3d(bandLayers[0].fill.a, bandLayers[1].fill.a, bandLayers[2].fill.a) : Qt.vector3d(0, 0, 0)
+    property vector4d blueColor: Qt.vector4d(bandLayers[3].fill.r, bandLayers[3].fill.g, bandLayers[3].fill.b, 1)
+    property vector3d blueAlpha: surface.blueBand
+      ? Qt.vector3d(bandLayers[3].fill.a, bandLayers[4].fill.a, bandLayers[5].fill.a) : Qt.vector3d(0, 0, 0)
     property real flatMap: surface.flat ? 1 : 0
     // The flat map's px per map unit: the whole map fits at z0, twice that
     // per level.

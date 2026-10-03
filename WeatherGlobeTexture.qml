@@ -32,6 +32,20 @@ Canvas {
   // Nodes per 2.5° cell of the whole earth's lattice: 1 composes at the
   // lattice's own nodes (about 40 ms), 2 every 1.25° (about 4 × the cost).
   property int oversample: 1
+  // The isobars ({ level, lines }) and centres to draw, or null; their
+  // text and colours.
+  property var isobars: null
+  property var centres: null
+  property var labelText: function(hPa) { return String(Math.round(hPa)) }
+  property string font: "10px sans-serif"
+  property string bigFont: "bold 15px sans-serif"
+  property string highText: "H"
+  property string lowText: "L"
+  property color ink: "white"
+  property color surfaceColor: "black"
+  property color highColor: "white"
+  onIsobarsChanged: requestPaint()
+  onInkChanged: requestPaint()
   // The land's fill; transparent leaves the land out.
   property color landColor: Qt.rgba(1, 1, 1, 0.08)
   // data/globe-land.json as parsed; read here when left null.
@@ -186,6 +200,47 @@ Canvas {
       ctx.fill()
     }
     parts.land += Date.now() - tLand
+    // The isobars and their highs and lows (z0–z1 with the GPU surface:
+    // fixed on the earth, so turning does not redraw them).
+    if (isobars && isobars.length) {
+      ctx.lineWidth = 1
+      ctx.strokeStyle = Qt.rgba(ink.r, ink.g, ink.b, 0.45)
+      ctx.beginPath()
+      var labels = []
+      for (var l = 0; l < isobars.length; l++) {
+        for (var n = 0; n < isobars[l].lines.length; n++) {
+          var line = isobars[l].lines[n]
+          for (var k = 0; k + 1 < line.length; k += 2) {
+            var lx = (line[k] + 180) / 360 * width, ly = (90 - line[k + 1]) / 180 * height
+            var jump = k > 0 && Math.abs(line[k] - line[k - 2]) > 180
+            if (k === 0 || jump) ctx.moveTo(lx, ly)
+            else ctx.lineTo(lx, ly)
+            if (isobars[l].level % 8 === 0 && k === 12 && Math.abs(line[k + 1]) < 70)
+              labels.push({ x: lx, y: ly, text: labelText(isobars[l].level) })
+          }
+        }
+      }
+      ctx.stroke()
+      ctx.font = font
+      ctx.textAlign = "center"
+      ctx.textBaseline = "middle"
+      for (var b = 0; b < labels.length; b++) {
+        var w = ctx.measureText(labels[b].text).width + 4
+        ctx.fillStyle = Qt.rgba(surfaceColor.r, surfaceColor.g, surfaceColor.b, 0.7)
+        ctx.fillRect(labels[b].x - w / 2, labels[b].y - 6, w, 12)
+        ctx.fillStyle = Qt.rgba(ink.r, ink.g, ink.b, 0.8)
+        ctx.fillText(labels[b].text, labels[b].x, labels[b].y + 0.5)
+      }
+      for (var c = 0; c < (centres || []).length; c++) {
+        var centre = centres[c]
+        var cx = (centre.lon + 180) / 360 * width, cy = (90 - centre.lat) / 180 * height
+        ctx.font = bigFont
+        ctx.fillStyle = centre.kind === "high" ? highColor : Qt.rgba(ink.r, ink.g, ink.b, 0.9)
+        ctx.fillText(centre.kind === "high" ? highText : lowText, cx, cy - 4)
+        ctx.font = font
+        ctx.fillText(labelText(centre.value), cx, cy + 9)
+      }
+    }
     var spent = Date.now() - started
     stats = { count: stats.count + 1, total: stats.total + spent, max: Math.max(stats.max, spent), last: spent }
   }

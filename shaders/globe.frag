@@ -37,6 +37,15 @@ layout(std140, binding = 0) uniform buf {
     float flatMap;
     float mapScale;
     vec2 mapCenter;
+    // Optional twilight bands under the night (More Time's golden and blue
+    // hour): rgb straight; the alphas of the three steps of each band,
+    // gold +6..+4, +4..+2, +2..0 and blue 0..-3, -3..-6, -6..-8 degrees of
+    // sun elevation (Sky.GOLDEN_STEPS, Sky.BLUE_STEPS). All zero (the
+    // default): no bands.
+    vec4 goldColor;
+    vec3 goldAlpha;
+    vec4 blueColor;
+    vec3 blueAlpha;
 };
 layout(binding = 1) uniform sampler2D source;
 
@@ -107,6 +116,26 @@ void main() {
     float s0 = below(e, 0.0, fw);
     float s6 = below(e, -6.0, fw);
     float s12 = below(e, -12.0, fw);
+    // The bands, each step over what is under it, then the night on top.
+    float g6 = below(e, 6.0, fw);
+    float g4 = below(e, 4.0, fw);
+    float g2 = below(e, 2.0, fw);
+    float b3 = below(e, -3.0, fw);
+    float b8 = below(e, -8.0, fw);
+    vec3 goldSteps = goldAlpha * vec3(g6 - g4, g4 - g2, g2 - s0);
+    vec3 blueSteps = blueAlpha * vec3(s0 - b3, b3 - s6, s6 - b8);
+    float ga = goldSteps.x;
+    c = vec4(goldColor.rgb * ga, ga) + c * (1.0 - ga);
+    ga = goldSteps.y;
+    c = vec4(goldColor.rgb * ga, ga) + c * (1.0 - ga);
+    ga = goldSteps.z;
+    c = vec4(goldColor.rgb * ga, ga) + c * (1.0 - ga);
+    float ba = blueSteps.x;
+    c = vec4(blueColor.rgb * ba, ba) + c * (1.0 - ba);
+    ba = blueSteps.y;
+    c = vec4(blueColor.rgb * ba, ba) + c * (1.0 - ba);
+    ba = blueSteps.z;
+    c = vec4(blueColor.rgb * ba, ba) + c * (1.0 - ba);
     float a = nightOn * (nightAlpha.x * (s0 - s6) + nightAlpha.y * (s6 - s12) + nightAlpha.z * s12);
     c = vec4(nightColor.rgb * a, a) + c * (1.0 - a);
     fragColor = c * (coverage * qt_Opacity);

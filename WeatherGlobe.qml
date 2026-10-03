@@ -563,6 +563,12 @@ Column {
     // hand-over at z2/z3 never shows a frame without the surface's parts.
     property bool gpuHandover: false
     readonly property bool gpuSurface: gpuWanted || gpuHandover
+    // Whether the surface draws the fixed parts this frame (land, night,
+    // colour layers, coasts, grid, isobars up to z1). The screenshot
+    // harness forces the Canvas into this branch to measure what is left
+    // per frame (it has no GPU).
+    property bool forceSurfaceBranch: false
+    readonly property bool surfaceDraws: (gpuWanted && !gpuHandover) || (forceSurfaceBranch && zoom < 3)
     onGpuWantedChanged: {
       if (gpuWanted) { gpuHandover = false; return }
       gpuHandover = true
@@ -602,6 +608,26 @@ Column {
       palettes: wash.palettes
       landColor: globe.landColor
       landData: globe.landData
+      // The isobars fixed on the earth up to z1.
+      isobars: globe.zoom <= 1 && globe.panel.globeData.isobarsOn && globe.panel.globeData.layers
+        ? globe.panel.globeData.layers.isobars || null : null
+      centres: globe.panel.globeData.layers ? globe.panel.globeData.layers.centres || null : null
+      labelText: function(hPa) { return overlay.pressureText(hPa) }
+      font: globe.panel.canvasFont(Style.font.caption, false, false)
+      bigFont: globe.panel.canvasFont(Math.round(Style.font.caption * 1.6), true, false)
+      highText: globe.panel.i18n("globeHigh")
+      lowText: globe.panel.i18n("globeLow")
+      ink: globe.panel.foreground
+      surfaceColor: Color.popups.background
+      highColor: Color.accent
+    }
+    // The coasts and the grid, fixed on the earth: their own 2048 × 1024
+    // picture, projected by a second surface without night or base.
+    WeatherGlobeLines {
+      id: linesTexture
+      visible: false
+      landData: surface.available ? globe.landData : null
+      ink: globe.panel.foreground
     }
     // The land's fill (Canvas path and texture alike): faint, but opaque
     // when the sea's temperature shows without the air's.
@@ -632,6 +658,26 @@ Column {
       baseColor: globe.isMap ? "transparent" : Qt.rgba(globe.panel.foreground.r, globe.panel.foreground.g,
         globe.panel.foreground.b, 0.04)
       textureSource: surfaceTexture
+    }
+    WeatherGlobeSurface {
+      id: linesSurface
+      x: globe.shiftX
+      y: globe.shiftY
+      width: globe.width
+      height: globe.height
+      visible: globe.gpuSurface
+      style: surface.style
+      centerLat: surface.centerLat
+      centerLon: surface.centerLon
+      zoom: surface.zoom
+      radius: surface.radius
+      centerX: surface.centerX
+      centerY: surface.centerY
+      displayMs: surface.displayMs
+      night: false
+      background: surface.background
+      baseColor: "transparent"
+      textureSource: linesTexture
     }
 
     // ---- What the globe costs, for the IPC status (Panel.providerStatus):
@@ -682,6 +728,7 @@ Column {
           globe.perf = { surface: globe.gpuSurface, fps: Math.round(dFrames / dt * 10000) / 10,
             cpuMsPerFrame: dFrames ? Math.round(dCpu / dFrames * 10) / 10 : 0,
             cpuPercent: Math.round(dCpu / dt * 1000) / 10, textureMs: surfaceTexture.stats.last || 0,
+            linesTextureMs: linesTexture.stats.last || 0,
             turning: { seconds: Math.round(tDt / 1000), fps: tDt ? Math.round(tFrames / tDt * 10000) / 10 : 0,
               cpuPercent: tDt ? Math.round(tCpu / tDt * 1000) / 10 : 0,
               cpuMsPerFrame: tFrames ? Math.round(tCpu / tFrames * 10) / 10 : 0,
@@ -719,7 +766,7 @@ Column {
       cells: globe.panel.standaloneMode ? 128 : 96
       scaleKmh: globe.windScaleKmh
       // The surface draws the layers while it shows.
-      suspended: globe.gpuWanted && !globe.gpuHandover
+      suspended: globe.surfaceDraws
     }
 
     Canvas {
@@ -779,7 +826,7 @@ Column {
         var P = globe.projection()
         canvas.proj = P
         // The surface on the GPU draws the fills (land, night) up to z2.
-        var gpu = globe.gpuWanted && !globe.gpuHandover
+        var gpu = globe.surfaceDraws
         var flat = P.kind === "map"
         var m = flat ? null : P.matrix
         var zoom = globe.zoom
@@ -789,11 +836,13 @@ Column {
         disc(ctx)
         ctx.clip()
 
-        // Meridians and parallels, finer when zoomed in.
+        // Meridians and parallels, finer when zoomed in (the surface's
+        // lines picture has them up to z2).
         ctx.strokeStyle = rgba(ink, 0.07)
         ctx.lineWidth = 1
         ctx.beginPath()
-        if (flat) {
+        if (gpu) {
+        } else if (flat) {
           var graticule = globe.mapGraticule(GlobeView.gridStep(zoom))
           for (var gl = 0; gl < graticule.length; gl++) traceMap(ctx, graticule[gl], false)
         } else if (zoom <= 2) {
@@ -818,12 +867,17 @@ Column {
             ctx.fillRule = Qt.OddEvenFill
             ctx.fill()
           }
-          ctx.beginPath()
-          for (var ml = 0; ml < mapRings.length; ml++)
-            for (var mc = 0; mc < mapRings[ml].lines.length; mc++) traceMap(ctx, mapRings[ml].lines[mc], false)
-          ctx.strokeStyle = rgba(ink, 0.5)
-          ctx.lineWidth = 0.8
-          ctx.stroke()
+          // The coasts too, from the surface's lines picture.
+          if (!gpu) {
+            ctx.beginPath()
+            for (var ml = 0; ml < mapRings.length; ml++)
+              for (var mc = 0; mc < mapRings[ml].lines.length; mc++) traceMap(ctx, mapRings[ml].lines[mc], false)
+            ctx.strokeStyle = rgba(ink, 0.5)
+            ctx.lineWidth = 0.8
+            ctx.stroke()
+          }
+        } else if (gpu) {
+          // Land, coasts and grid all on the surface.
         } else {
           var rings = (globe.moving || zoom >= 3 ? globe.coarseLand : globe.land) || []
           if (rings.length) {

@@ -4,6 +4,12 @@ All notable changes to More Weather are documented here.
 
 ## Unreleased
 
+- Turning the globe on the GPU got cheaper still: the coasts and the grid
+  are a 2048 × 1024 picture of their own on a second surface, and up to z1
+  the isobars with their highs and lows are painted into the colour
+  layers' picture, so while the globe turns the Canvas draws only the sun,
+  the moon, the places and their labels, the symbols and the rim (about
+  2.6 ms per frame in the test harness, down from about 25).
 - One colour means one warmth everywhere: the globe's temperature and
   sea layers use the text's colours (blue … red over −10 … 35 °C), and
   the scale goes on to a blue-violet at −40 °C and a dark magenta at 45 °C
