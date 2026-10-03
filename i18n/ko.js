@@ -356,9 +356,9 @@ var entries = {
   "globe": "지구본",
   "globeMarkers": "내 장소",
   "globeHint": "낮과 밤, 해, 달, 그리고 저장된 예보의 날씨와 함께 내 장소를 보여 주는 지구. 끌거나 Shift + 휠로 돌리고, 장소를 클릭하면 그 장소를 표시합니다.",
-  "globeKeysHint": "Ctrl ← → 회전 · 0 장소로",
-  "shortcutGlobeTurn": "지구본: 15° 회전",
-  "shortcutGlobeCenter": "지구본: 표시된 장소로 돌아가기",
+  "globeKeysHint": "Ctrl 화살표 회전 · + − 확대 · 0 지구 전체",
+  "shortcutGlobeTurn": "지구본: 회전과 기울이기",
+  "shortcutGlobeCenter": "지구본: 표시된 장소에서 지구 전체",
   "optionNight": "밤 지역",
   "optionNightHint": "세 단계로 점점 어둡게: 시민 박명(태양 0°~−6°), 항해 박명(−6°~−12°), 그다음 천문 박명과 밤.",
   "moonWaxing": "달 · {percent} % · 차는 중",
@@ -369,5 +369,6 @@ var entries = {
   "optionGlobeRotateSpeed": "한 바퀴에",
   "secondsShort": "{seconds}초",
   "minutesShort": "{minutes}분",
-  "ctrlLeftRight": "Ctrl ← →"
+  "shortcutGlobeZoom": "지구본: 포인터 위치에서 확대 / 축소",
+  "globeZoomHint": "Ctrl + 휠, 더블 클릭, + − 또는 버튼으로 너비 약 400 km까지 확대합니다. 가까이에서는 해안, 호수, 국경, 도시가 레이더 지도의 데이터에서 옵니다. 조준선은 표시된 장소를 가운데로 가져옵니다."
 }

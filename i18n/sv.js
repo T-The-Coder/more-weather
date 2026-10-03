@@ -356,9 +356,9 @@ var entries = {
   "globe": "Jordglob",
   "globeMarkers": "Mina platser",
   "globeHint": "Jorden med dag och natt, solen, månen och dina platser med vädret från de sparade prognoserna. Dra eller Skift + hjul vrider den; ett klick på en plats visar den.",
-  "globeKeysHint": "Ctrl ← → vrid · 0 platsen",
-  "shortcutGlobeTurn": "Glob: vrid 15°",
-  "shortcutGlobeCenter": "Glob: tillbaka till den visade platsen",
+  "globeKeysHint": "Ctrl pilar vrid · + − zooma · 0 hela jordklotet",
+  "shortcutGlobeTurn": "Glob: vrid och luta",
+  "shortcutGlobeCenter": "Glob: hela jordklotet vid den visade platsen",
   "optionNight": "Nattsida",
   "optionNightHint": "I tre steg, vart och ett mörkare: borgerlig skymning (solen 0° till −6°), nautisk (−6° till −12°), sedan astronomisk skymning och natt.",
   "moonWaxing": "Måne · {percent} % · tilltagande",
@@ -369,5 +369,6 @@ var entries = {
   "optionGlobeRotateSpeed": "Ett varv på",
   "secondsShort": "{seconds} s",
   "minutesShort": "{minutes} min",
-  "ctrlLeftRight": "Ctrl ← →"
+  "shortcutGlobeZoom": "Glob: zooma in / ut vid pekaren",
+  "globeZoomHint": "Ctrl + hjul, ett dubbelklick, + − eller knapparna zoomar in till ungefär 400 km bredd; på nära håll kommer kust, sjöar, gränser och orter från radarkartans data. Hårkorset för den visade platsen till mitten."
 }

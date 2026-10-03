@@ -356,9 +356,9 @@ var entries = {
   "globe": "Földgömb",
   "globeMarkers": "Helyeim",
   "globeHint": "A Föld nappallal és éjszakával, a nap, a hold és a helyeid a mentett előrejelzések időjárásával. Húzással vagy Shift + görgővel forgatható; egy helyre kattintva megjelenik.",
-  "globeKeysHint": "Ctrl ← → forgatás · 0 a hely",
-  "shortcutGlobeTurn": "Földgömb: forgatás 15°-kal",
-  "shortcutGlobeCenter": "Földgömb: vissza a mutatott helyre",
+  "globeKeysHint": "Ctrl nyilak forgatás · + − nagyítás · 0 egész földgömb",
+  "shortcutGlobeTurn": "Földgömb: forgatás és döntés",
+  "shortcutGlobeCenter": "Földgömb: az egész gömb a mutatott helynél",
   "optionNight": "Éjszakai oldal",
   "optionNightHint": "Három, egyre sötétebb fokozatban: polgári szürkület (nap 0° és −6° között), navigációs (−6° és −12°), aztán csillagászati szürkület és éjszaka.",
   "moonWaxing": "Hold · {percent} % · növő",
@@ -369,5 +369,6 @@ var entries = {
   "optionGlobeRotateSpeed": "Egy fordulat",
   "secondsShort": "{seconds} mp",
   "minutesShort": "{minutes} perc",
-  "ctrlLeftRight": "Ctrl ← →"
+  "shortcutGlobeZoom": "Földgömb: nagyítás / kicsinyítés a mutatónál",
+  "globeZoomHint": "Ctrl + görgő, dupla kattintás, + − vagy a gombok körülbelül 400 km szélességig nagyítanak; közelről a part, a tavak, a határok és a települések a radartérkép adataiból jönnek. A célkereszt középre hozza a mutatott helyet."
 }

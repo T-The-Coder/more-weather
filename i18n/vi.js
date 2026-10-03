@@ -356,9 +356,9 @@ var entries = {
   "globe": "Quả địa cầu",
   "globeMarkers": "Địa điểm của tôi",
   "globeHint": "Trái Đất với ngày và đêm, mặt trời, mặt trăng và các địa điểm của bạn kèm thời tiết từ dự báo đã lưu. Kéo hoặc Shift + con lăn để xoay; nhấp vào một địa điểm để hiển thị.",
-  "globeKeysHint": "Ctrl ← → xoay · 0 địa điểm",
-  "shortcutGlobeTurn": "Quả địa cầu: xoay 15°",
-  "shortcutGlobeCenter": "Quả địa cầu: về địa điểm đang hiển thị",
+  "globeKeysHint": "Ctrl mũi tên xoay · + − thu phóng · 0 toàn địa cầu",
+  "shortcutGlobeTurn": "Quả địa cầu: xoay và nghiêng",
+  "shortcutGlobeCenter": "Quả địa cầu: toàn địa cầu tại địa điểm đang hiển thị",
   "optionNight": "Phía ban đêm",
   "optionNightHint": "Ba bậc, mỗi bậc tối hơn: chạng vạng dân dụng (mặt trời 0° đến −6°), hàng hải (−6° đến −12°), rồi chạng vạng thiên văn và đêm.",
   "moonWaxing": "Trăng · {percent} % · đang tròn",
@@ -369,5 +369,6 @@ var entries = {
   "optionGlobeRotateSpeed": "Một vòng trong",
   "secondsShort": "{seconds} giây",
   "minutesShort": "{minutes} phút",
-  "ctrlLeftRight": "Ctrl ← →"
+  "shortcutGlobeZoom": "Quả địa cầu: phóng to / thu nhỏ tại con trỏ",
+  "globeZoomHint": "Ctrl + con lăn, nhấp đúp, + − hoặc các nút phóng to tới khoảng 400 km bề ngang; khi ở gần, bờ biển, hồ, biên giới và thị trấn lấy từ dữ liệu bản đồ radar. Hồng tâm đưa địa điểm đang hiển thị về giữa."
 }

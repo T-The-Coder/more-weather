@@ -356,9 +356,9 @@ var entries = {
   "globe": "Globe",
   "globeMarkers": "Mijn plaatsen",
   "globeHint": "De aarde met dag en nacht, de zon, de maan en je plaatsen met hun weer uit de bewaarde verwachtingen. Slepen of Shift + scrollwiel draait haar; een klik op een plaats toont die.",
-  "globeKeysHint": "Ctrl ← → draaien · 0 de plaats",
-  "shortcutGlobeTurn": "Globe: 15° draaien",
-  "shortcutGlobeCenter": "Globe: terug naar de getoonde plaats",
+  "globeKeysHint": "Ctrl pijlen draaien · + − zoomen · 0 hele globe",
+  "shortcutGlobeTurn": "Globe: draaien en kantelen",
+  "shortcutGlobeCenter": "Globe: de hele globe bij de getoonde plaats",
   "optionNight": "Nachtzijde",
   "optionNightHint": "In drie stappen, elk donkerder: burgerlijke schemering (zon 0° tot −6°), nautische (−6° tot −12°), dan astronomische schemering en nacht.",
   "moonWaxing": "Maan · {percent} % · wassend",
@@ -369,5 +369,6 @@ var entries = {
   "optionGlobeRotateSpeed": "Eén omwenteling in",
   "secondsShort": "{seconds} s",
   "minutesShort": "{minutes} min",
-  "ctrlLeftRight": "Ctrl ← →"
+  "shortcutGlobeZoom": "Globe: in- / uitzoomen bij de aanwijzer",
+  "globeZoomHint": "Ctrl + scrollwiel, dubbelklikken, + − of de knoppen zoomen in tot ongeveer 400 km breed; van dichtbij komen kust, meren, grenzen en plaatsen uit de gegevens van de radarkaart. Het vizier brengt de getoonde plaats naar het midden."
 }

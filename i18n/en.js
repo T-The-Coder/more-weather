@@ -390,9 +390,9 @@ var catalog = {
   "globe": "Globe",
   "globeMarkers": "My places",
   "globeHint": "The earth with day and night, the sun, the moon and your places with their weather from the stored forecasts. A drag or Shift + wheel turns it; a click on a place shows it.",
-  "globeKeysHint": "Ctrl ← → turn · 0 the place",
-  "shortcutGlobeTurn": "Globe: turn by 15°",
-  "shortcutGlobeCenter": "Globe: back to the shown place",
+  "globeKeysHint": "Ctrl arrows turn · + − zoom · 0 whole globe",
+  "shortcutGlobeTurn": "Globe: turn and tilt",
+  "shortcutGlobeCenter": "Globe: the whole globe at the shown place",
   "optionNight": "Night side",
   "optionNightHint": "In three steps, each darker: civil twilight (sun 0° to −6°), nautical twilight (−6° to −12°), then astronomical twilight and night.",
   "moonWaxing": "Moon · {percent} % · waxing",
@@ -403,5 +403,6 @@ var catalog = {
   "optionGlobeRotateSpeed": "One turn in",
   "secondsShort": "{seconds} s",
   "minutesShort": "{minutes} min",
-  "ctrlLeftRight": "Ctrl ← →"
+  "shortcutGlobeZoom": "Globe: zoom in / out at the pointer",
+  "globeZoomHint": "Ctrl + wheel, a double click, + − or the buttons zoom in to about 400 km across; close up the coast, lakes, borders and towns come from the radar map's data. The crosshair brings the shown place to the middle."
 }

@@ -356,9 +356,9 @@ var entries = {
   "globe": "Küre",
   "globeMarkers": "Yerlerim",
   "globeHint": "Gece ve gündüzüyle Dünya, güneş, ay ve kayıtlı tahminlerden hava durumlarıyla yerleriniz. Sürüklemek veya Shift + tekerlek döndürür; bir yere tıklamak onu gösterir.",
-  "globeKeysHint": "Ctrl ← → döndür · 0 yer",
-  "shortcutGlobeTurn": "Küre: 15° döndür",
-  "shortcutGlobeCenter": "Küre: gösterilen yere dön",
+  "globeKeysHint": "Ctrl oklar döndür · + − yakınlaştır · 0 tüm küre",
+  "shortcutGlobeTurn": "Küre: döndür ve eğ",
+  "shortcutGlobeCenter": "Küre: gösterilen yerde tüm küre",
   "optionNight": "Gece tarafı",
   "optionNightHint": "Her biri daha koyu üç adımda: sivil alacakaranlık (güneş 0° ile −6°), denizcilik (−6° ile −12°), ardından astronomik alacakaranlık ve gece.",
   "moonWaxing": "Ay · {percent} % · büyüyen",
@@ -369,5 +369,6 @@ var entries = {
   "optionGlobeRotateSpeed": "Bir tur",
   "secondsShort": "{seconds} sn",
   "minutesShort": "{minutes} dk",
-  "ctrlLeftRight": "Ctrl ← →"
+  "shortcutGlobeZoom": "Küre: işaretçide yakınlaştır / uzaklaştır",
+  "globeZoomHint": "Ctrl + tekerlek, çift tıklama, + − veya düğmeler yaklaşık 400 km genişliğe kadar yakınlaştırır; yakından kıyı, göller, sınırlar ve yerleşimler radar haritasının verilerinden gelir. Nişangâh gösterilen yeri ortaya getirir."
 }

@@ -356,9 +356,9 @@ var entries = {
   "globe": "Bola dunia",
   "globeMarkers": "Tempat saya",
   "globeHint": "Bumi dengan siang dan malam, matahari, bulan, dan tempat Anda dengan cuaca dari prakiraan tersimpan. Seret atau Shift + roda untuk memutar; klik tempat untuk menampilkannya.",
-  "globeKeysHint": "Ctrl ← → putar · 0 tempat",
-  "shortcutGlobeTurn": "Bola dunia: putar 15°",
-  "shortcutGlobeCenter": "Bola dunia: kembali ke tempat yang ditampilkan",
+  "globeKeysHint": "Ctrl panah putar · + − zoom · 0 seluruh bola",
+  "shortcutGlobeTurn": "Bola dunia: putar dan miringkan",
+  "shortcutGlobeCenter": "Bola dunia: seluruh bola di tempat yang ditampilkan",
   "optionNight": "Sisi malam",
   "optionNightHint": "Dalam tiga tahap, masing-masing lebih gelap: senja sipil (matahari 0° sampai −6°), nautika (−6° sampai −12°), lalu senja astronomi dan malam.",
   "moonWaxing": "Bulan · {percent} % · membesar",
@@ -369,5 +369,6 @@ var entries = {
   "optionGlobeRotateSpeed": "Satu putaran dalam",
   "secondsShort": "{seconds} dtk",
   "minutesShort": "{minutes} mnt",
-  "ctrlLeftRight": "Ctrl ← →"
+  "shortcutGlobeZoom": "Bola dunia: perbesar / perkecil di penunjuk",
+  "globeZoomHint": "Ctrl + roda, klik ganda, + − atau tombol memperbesar hingga sekitar 400 km lebar; dari dekat pantai, danau, perbatasan, dan kota berasal dari data peta radar. Bidikan membawa tempat yang ditampilkan ke tengah."
 }

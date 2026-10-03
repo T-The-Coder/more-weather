@@ -227,7 +227,7 @@ Rectangle {
         { key: "globeMarkers", title: panel.i18n("globeMarkers") },
         { key: "globeAutoRotate", title: panel.i18n("optionGlobeAutoRotate") }
       ],
-      hint: panel.i18n("globeHint") + " " + panel.i18n("optionNightHint") + " "
+      hint: panel.i18n("globeHint") + " " + panel.i18n("globeZoomHint") + " " + panel.i18n("optionNightHint") + " "
         + panel.i18n("optionGlobeAutoRotateHint"),
       hasGlobeRotate: true,
       hasDefaultTab: false

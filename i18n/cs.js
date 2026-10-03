@@ -356,9 +356,9 @@ var entries = {
   "globe": "Glóbus",
   "globeMarkers": "Moje místa",
   "globeHint": "Země se dnem a nocí, sluncem, měsícem a vašimi místy s počasím z uložených předpovědí. Tažení nebo Shift + kolečko jí otáčí; kliknutí na místo ho zobrazí.",
-  "globeKeysHint": "Ctrl ← → otočit · 0 místo",
-  "shortcutGlobeTurn": "Glóbus: otočit o 15°",
-  "shortcutGlobeCenter": "Glóbus: zpět na zobrazené místo",
+  "globeKeysHint": "Ctrl šipky otáčet · + − zoom · 0 celý glóbus",
+  "shortcutGlobeTurn": "Glóbus: otáčet a naklánět",
+  "shortcutGlobeCenter": "Glóbus: celý glóbus u zobrazeného místa",
   "optionNight": "Noční strana",
   "optionNightHint": "Ve třech stupních, každý tmavší: občanský soumrak (slunce 0° až −6°), nautický (−6° až −12°), pak astronomický soumrak a noc.",
   "moonWaxing": "Měsíc · {percent} % · dorůstá",
@@ -369,5 +369,6 @@ var entries = {
   "optionGlobeRotateSpeed": "Jedna otáčka za",
   "secondsShort": "{seconds} s",
   "minutesShort": "{minutes} min",
-  "ctrlLeftRight": "Ctrl ← →"
+  "shortcutGlobeZoom": "Glóbus: přiblížit / oddálit u ukazatele",
+  "globeZoomHint": "Ctrl + kolečko, dvojklik, + − nebo tlačítka přibližují až na šířku asi 400 km; zblízka pocházejí pobřeží, jezera, hranice a obce z dat radarové mapy. Zaměřovač vrátí zobrazené místo doprostřed."
 }

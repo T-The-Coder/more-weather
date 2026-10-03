@@ -707,9 +707,9 @@ Panel {
   readonly property bool radarShown: opened && sectionShown("radar")
   readonly property bool windShown: opened && sectionShown("wind")
   readonly property bool globeShown: opened && sectionShown("globe")
-  // The globe takes Ctrl+← → and 0 while it is the tab in view, or the
-  // only map shown.
-  readonly property bool globeKeys: globeShown && (currentTab === "globe" || (!radarShown && !windShown))
+  // The globe takes Ctrl + arrows, + − and 0 while no radar or wind map is
+  // shown (they keep theirs).
+  readonly property bool globeKeys: globeShown && !radarShown && !windShown
   // The globe section, for its keys (WeatherGlobe).
   property Item globeItem: null
   readonly property var settingsTabs: sectionTabsFrom(settingsSectionOrder, settingsDisplaySetting)
@@ -3231,12 +3231,15 @@ Panel {
       }
     }
 
-    // Ctrl+← → turn the globe by 15° while it has the keys.
-    if (control && !alternate && !command && globeKeys && globeItem
-        && (event.key === Qt.Key_Left || event.key === Qt.Key_Right)) {
-      globeItem.turnBy(event.key === Qt.Key_Right ? 15 : -15)
-      event.accepted = true
-      return
+    // Ctrl + arrows turn and tilt the globe while it has the keys.
+    if (control && !alternate && !command && globeKeys && globeItem) {
+      var east = event.key === Qt.Key_Left ? -1 : (event.key === Qt.Key_Right ? 1 : 0)
+      var north = event.key === Qt.Key_Up ? 1 : (event.key === Qt.Key_Down ? -1 : 0)
+      if (east !== 0 || north !== 0) {
+        globeItem.turnStep(east, north)
+        event.accepted = true
+        return
+      }
     }
     // Ctrl+arrows move the radar or wind map by a quarter of the view.
     if (control && !alternate && !command && (radarShown || windShown)) {
@@ -3282,9 +3285,14 @@ Panel {
       return
     }
 
-    // 0: the globe back to the shown place.
-    if (globeKeys && globeItem && text === "0" && (currentTab === "globe" || !(radarShown || windShown))) {
-      globeItem.recenter()
+    // + − zoom the globe, 0 brings back the whole globe at the shown place.
+    if (globeKeys && globeItem && (plusKey || minusKey)) {
+      globeItem.zoomBy(plusKey ? 1 : -1)
+      event.accepted = true
+      return
+    }
+    if (globeKeys && globeItem && text === "0") {
+      globeItem.reset()
       event.accepted = true
       return
     }

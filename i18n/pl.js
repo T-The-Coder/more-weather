@@ -356,9 +356,9 @@ var entries = {
   "globe": "Globus",
   "globeMarkers": "Moje miejsca",
   "globeHint": "Ziemia z dniem i nocą, słońcem, księżycem i twoimi miejscami z pogodą z zapisanych prognoz. Przeciąganie lub Shift + kółko obraca ją; kliknięcie miejsca pokazuje je.",
-  "globeKeysHint": "Ctrl ← → obróć · 0 miejsce",
-  "shortcutGlobeTurn": "Globus: obróć o 15°",
-  "shortcutGlobeCenter": "Globus: z powrotem do pokazanego miejsca",
+  "globeKeysHint": "Ctrl strzałki obracaj · + − zoom · 0 cały glob",
+  "shortcutGlobeTurn": "Globus: obróć i pochyl",
+  "shortcutGlobeCenter": "Globus: cały glob przy pokazanym miejscu",
   "optionNight": "Strona nocna",
   "optionNightHint": "W trzech stopniach, każdy ciemniejszy: zmierzch cywilny (słońce od 0° do −6°), żeglarski (−6° do −12°), potem astronomiczny i noc.",
   "moonWaxing": "Księżyc · {percent} % · przybywa",
@@ -369,5 +369,6 @@ var entries = {
   "optionGlobeRotateSpeed": "Jeden obrót w",
   "secondsShort": "{seconds} s",
   "minutesShort": "{minutes} min",
-  "ctrlLeftRight": "Ctrl ← →"
+  "shortcutGlobeZoom": "Globus: przybliż / oddal przy wskaźniku",
+  "globeZoomHint": "Ctrl + kółko, dwuklik, + − lub przyciski przybliżają do około 400 km szerokości; z bliska wybrzeże, jeziora, granice i miejscowości pochodzą z danych mapy radarowej. Celownik sprowadza pokazane miejsce na środek."
 }

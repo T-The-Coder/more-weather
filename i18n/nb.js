@@ -356,9 +356,9 @@ var entries = {
   "globe": "Globus",
   "globeMarkers": "Mine steder",
   "globeHint": "Jorda med dag og natt, solen, månen og stedene dine med været fra de lagrede varslene. Dra eller Shift + hjul dreier den; et klikk på et sted viser det.",
-  "globeKeysHint": "Ctrl ← → drei · 0 stedet",
-  "shortcutGlobeTurn": "Globus: drei 15°",
-  "shortcutGlobeCenter": "Globus: tilbake til det viste stedet",
+  "globeKeysHint": "Ctrl piler drei · + − zoom · 0 hele kloden",
+  "shortcutGlobeTurn": "Globus: drei og vipp",
+  "shortcutGlobeCenter": "Globus: hele kloden ved det viste stedet",
   "optionNight": "Nattsiden",
   "optionNightHint": "I tre trinn, hvert mørkere: borgerlig skumring (solen 0° til −6°), nautisk (−6° til −12°), så astronomisk skumring og natt.",
   "moonWaxing": "Måne · {percent} % · voksende",
@@ -369,5 +369,6 @@ var entries = {
   "optionGlobeRotateSpeed": "Én runde på",
   "secondsShort": "{seconds} s",
   "minutesShort": "{minutes} min",
-  "ctrlLeftRight": "Ctrl ← →"
+  "shortcutGlobeZoom": "Globus: zoom inn / ut ved pekeren",
+  "globeZoomHint": "Ctrl + hjul, et dobbeltklikk, + − eller knappene zoomer inn til rundt 400 km bredde; på nært hold kommer kyst, innsjøer, grenser og steder fra radarkartets data. Trådkorset henter det viste stedet til midten."
 }

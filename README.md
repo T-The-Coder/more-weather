@@ -86,9 +86,11 @@ runs as a standalone app window.
 - **Globe:** The earth with day and night (civil, nautical twilight and night in three
   steps), the sun and the moon where they stand overhead, and your places with their
   symbol and temperature from the stored forecasts (no requests of its own), the shown
-  place in the accent colour. A drag or Shift + wheel turns it, a click on a place shows
-  that place, and it can turn by itself after a while without a touch (Settings →
-  Display → Globe: delay and speed). In the app as a tab after the wind map; the popup
+  place in the accent colour. A drag turns and tilts it (up to 80°), Shift + wheel turns
+  it, Ctrl + wheel, a double click, `+` `−` or its buttons zoom in to about 400 km
+  across, where the coast, lakes, borders and towns come from the radar map's data; a
+  click on a place shows that place, and on the whole disc it can turn by itself after a
+  while without a touch (Settings → Display → Globe: delay and speed). In the app as a tab after the wind map; the popup
   can switch it on.
 - **Locations:** Search for places (Open-Meteo's geocoder while typing, Nominatim on
   Enter when it finds nothing), keep a list of favorites or detect your location automatically. Settings →
@@ -173,8 +175,9 @@ too, and the settings name their keys where they apply.
 | `Ctrl` + wheel | Map: zoom towards the pointer |
 | `⇧` + wheel | Daily forecast and radar timeline: sideways |
 | `⇧ ↑ ↓` | Wind map: higher / lower |
-| `Ctrl ← →` / drag | Globe: turn by 15° |
-| `0` | Globe: back to the shown place |
+| `Ctrl ← → ↑ ↓` / drag | Globe: turn and tilt (15°, or a quarter of the view when zoomed in) |
+| `+` / `−` / Ctrl + wheel | Globe: zoom in / out (at the pointer with the wheel) |
+| `0` | Globe: the whole globe at the shown place |
 | **Place search** | |
 | `↑ ↓` | Move within the results or the saved places |
 | `Tab` / `⇧ Tab` | Switch between results and saved places |

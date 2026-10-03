@@ -356,9 +356,9 @@ var entries = {
   "globe": "Globo",
   "globeMarkers": "Meus locais",
   "globeHint": "A Terra com dia e noite, o sol, a lua e seus locais com o tempo das previsões salvas. Arrastar ou Shift + roda gira; um clique num local o mostra.",
-  "globeKeysHint": "Ctrl ← → girar · 0 o local",
-  "shortcutGlobeTurn": "Globo: girar 15°",
-  "shortcutGlobeCenter": "Globo: voltar ao local mostrado",
+  "globeKeysHint": "Ctrl setas girar · + − zoom · 0 globo inteiro",
+  "shortcutGlobeTurn": "Globo: girar e inclinar",
+  "shortcutGlobeCenter": "Globo: o globo inteiro no local mostrado",
   "optionNight": "Lado noturno",
   "optionNightHint": "Em três passos, cada um mais escuro: crepúsculo civil (sol de 0° a −6°), náutico (−6° a −12°) e depois astronômico e noite.",
   "moonWaxing": "Lua · {percent} % · crescente",
@@ -369,5 +369,6 @@ var entries = {
   "optionGlobeRotateSpeed": "Uma volta em",
   "secondsShort": "{seconds} s",
   "minutesShort": "{minutes} min",
-  "ctrlLeftRight": "Ctrl ← →"
+  "shortcutGlobeZoom": "Globo: aproximar / afastar no ponteiro",
+  "globeZoomHint": "Ctrl + roda, um clique duplo, + − ou os botões aproximam até cerca de 400 km de largura; de perto, a costa, os lagos, as fronteiras e as cidades vêm dos dados do mapa de radar. A mira traz o local mostrado ao centro."
 }

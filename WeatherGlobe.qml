@@ -4,17 +4,23 @@ import Quickshell.Io
 import qs.Commons
 import qs.Ui
 import "Globe.js" as Globe
+import "GlobeView.js" as GlobeView
 import "Sky.js" as Sky
 import "Moon.js" as Moon
+import "Basemap.js" as Basemap
 
-// The globe section: the earth from above the equator (Globe.js's view, its
-// tilt fixed at 0 for now), the land, day and night with the three twilight
+// The globe section: the earth seen from above (centre latitude and
+// longitude, tilted up to 80°), zoomed from the whole disc (z0) to about
+// 400 km across (z5); the land, day and night with the three twilight
 // steps, the sun and the moon where they stand overhead, and my places with
 // their symbol and temperature from the stored forecasts (no requests of its
-// own). A click on a place turns the globe to it and shows it; a drag or a
-// sideways wheel turns the globe; Ctrl+← → turn it by 15°, 0 brings the
-// shown place back to the middle. With "globeAutoRotate" it turns slowly by
-// itself after a while without a touch, as More Time's globe does.
+// own). From z3 the coast, lakes, borders and towns come from the radar
+// map's Natural Earth data (data/basemap.bin). A drag turns and tilts it,
+// Ctrl + wheel and a double click zoom towards the pointer, the buttons and
+// + − zoom, Ctrl + arrows turn and tilt, 0 goes back to the whole globe at
+// the shown place; a click on a place turns to it and shows it. With
+// "globeAutoRotate" it turns slowly by itself (z0 and z1 only), as More
+// Time's globe does. View arithmetic: GlobeView.js.
 Column {
   id: globeSection
   required property var panel
@@ -67,16 +73,18 @@ Column {
   Item {
     id: globe
     width: parent.width
-    // Room round the disc for the moon, which floats above its point.
-    readonly property real lift: 1.18
     // As wide as the section, and as tall as the page's view less the
     // current weather and the tab strip above it, so the whole globe can
-    // be seen at once.
+    // be seen at once; a zoomed globe is cut to this square.
     readonly property real viewHeight: panel.contentRoot ? panel.contentRoot.height - Style.space(200) : Style.space(420)
-    readonly property real radius: Math.max(Style.space(120), Math.min(width, viewHeight)) / 2 / lift
+    readonly property real viewSize: Math.max(Style.space(160), Math.min(width, viewHeight))
+    height: viewSize
+    clip: true
+    // Room round the whole disc for the moon, which floats above its point.
+    readonly property real lift: 1.18
+    readonly property real radius: GlobeView.radiusFor(zoom, viewSize, lift)
     readonly property real centerX: width / 2
-    readonly property real centerY: radius * lift
-    height: 2 * radius * lift
+    readonly property real centerY: height / 2
     // Maps are never mirrored, whatever the language.
     LayoutMirroring.enabled: false
     LayoutMirroring.childrenInherit: true
@@ -87,8 +95,15 @@ Column {
     readonly property bool showMarkers: panel.displaySetting("globeMarkers", true)
     readonly property bool autoRotate: panel.displaySetting("globeAutoRotate", false)
     readonly property real moonRadius: Style.space(6)
-    // What painting costs (the screenshot harness measures a turn).
+    // What painting costs (the screenshot harness measures it).
     property var paintStats: ({ count: 0, total: 0, max: 0 })
+
+    // ---- The view: where it looks (longitude unwrapped, so turns animate
+    //      the short way) and the zoom level.
+    property real centerLat: 0
+    property real centerLon: 0
+    property int zoom: 0
+    readonly property var placeTarget: ({ lat: panel.mapCenterLatitude, lon: panel.mapCenterLongitude })
 
     Component.onCompleted: {
       panel.globeItem = globe
@@ -100,44 +115,71 @@ Column {
       panel.unregisterWheelArea(globe)
     }
 
-    // The longitude facing the viewer, unwrapped: turns animate through it
-    // the short way and the drawing wraps it.
-    property real centerLon: 0
-    NumberAnimation {
+    ParallelAnimation {
       id: turnAnimation
-      target: globe
-      property: "centerLon"
-      duration: 600
-      easing.type: Easing.InOutCubic
+      NumberAnimation { id: latAnimation; target: globe; property: "centerLat"; duration: 600; easing.type: Easing.InOutCubic }
+      NumberAnimation { id: lonAnimation; target: globe; property: "centerLon"; duration: 600; easing.type: Easing.InOutCubic }
     }
-    function turnTo(lon) {
+    // Turns (and tilts, with a latitude) to a place, the short way round.
+    function turnTo(lat, lon) {
       if (lon === null || lon === undefined || isNaN(lon)) return
       turnAnimation.stop()
-      turnAnimation.from = centerLon
-      turnAnimation.to = centerLon + Globe.shortestTurn(centerLon, lon)
+      latAnimation.from = centerLat
+      latAnimation.to = lat === null || lat === undefined || isNaN(lat) ? centerLat : GlobeView.clampLat(lat)
+      lonAnimation.from = centerLon
+      lonAnimation.to = centerLon + Globe.shortestTurn(centerLon, lon)
       turnAnimation.start()
     }
-    function turnBy(degrees) {
+    // Ctrl + arrows: by 15° on the whole disc, by a quarter of the view
+    // when zoomed in; east/west turns, north/south tilts.
+    function turnStep(east, north) {
       touched()
-      turnTo(Globe.wrapLon((turnAnimation.running ? turnAnimation.to : centerLon) + degrees))
+      var step = GlobeView.stepDegrees(zoom, radius, viewSize)
+      var lat = turnAnimation.running ? latAnimation.to : centerLat
+      var lon = turnAnimation.running ? lonAnimation.to : centerLon
+      var cos = zoom >= 2 ? Math.max(0.2, Math.cos(lat * Math.PI / 180)) : 1
+      turnTo(lat + north * step, Globe.wrapLon(lon + east * step / cos))
     }
+    // The crosshair: the shown place in the middle, at the same zoom.
     function recenter() {
       touched()
-      turnTo(panel.mapCenterLongitude)
+      turnTo(placeTarget.lat, placeTarget.lon)
+    }
+    // 0: the whole globe, upright, the shown place facing.
+    function reset() {
+      touched()
+      zoom = 0
+      turnTo(0, placeTarget.lon)
+    }
+    function zoomBy(delta) {
+      zoomAt(delta, 0, 0)
+    }
+    // Zooms one level towards the point (px, py) from the viewport's middle.
+    function zoomAt(delta, px, py) {
+      touched()
+      var next = GlobeView.clampZoom(zoom + delta)
+      if (next === zoom) return
+      turnAnimation.stop()
+      var r1 = GlobeView.radiusFor(next, viewSize, lift)
+      var centre = GlobeView.zoomedCentre(centerLat, centerLon, radius, r1, px, py)
+      centerLat = centre.lat
+      centerLon = centre.lon
+      zoom = next
     }
     // Ends a running turn at once (the screenshot harness).
     function finishTurn() {
       if (turnAnimation.running) turnAnimation.complete()
     }
     readonly property real placeLon: panel.mapCenterLongitude
-    onPlaceLonChanged: turnTo(placeLon)
+    onPlaceLonChanged: turnTo(zoom >= 2 ? placeTarget.lat : null, placeLon)
 
-    // ---- The land, once per process (Globe.prepareLand), and a coarse copy
-    //      (points at least a degree apart; small islands kept whole) for
-    //      the frames while it turns.
+    // ---- The land: data/globe-land.json once per process (Globe.prepareLand)
+    //      and a coarse copy (points at least a degree apart, small islands
+    //      kept whole) for the frames while it moves; from z3, at rest, the
+    //      basemap's cells in view.
     property var land: null
     property var coarseLand: null
-    readonly property bool moving: rotating || turnAnimation.running || (mouse.pressed && mouse.dragged)
+    readonly property bool moving: rotating || turnAnimation.running || dragging
     onMovingChanged: canvas.requestPaint()
     function coarseRings(data) {
       var scale = data.scale || 100
@@ -176,6 +218,20 @@ Column {
         }
       }
     }
+    // The radar map's Natural Earth data (Basemap.js keeps it for every map
+    // in this shell); read here only when the globe needs it first.
+    property int basemapRevision: Basemap.loaded() ? 1 : 0
+    property FileView basemapFile: FileView {
+      path: globe.zoom >= 3 && globe.basemapRevision === 0
+        ? String(Qt.resolvedUrl("data/basemap.bin")).replace(/^file:\/\//, "") : ""
+      printErrors: false
+      onLoaded: {
+        if (!Basemap.load(data())) return
+        globe.basemapRevision++
+        globe.panel.basemapRevision++
+      }
+    }
+    onBasemapRevisionChanged: canvas.requestPaint()
 
     // ---- The sky, once a minute: where the sun and the moon stand
     //      overhead, and the twilight layers (Sky.twilightLayers).
@@ -194,8 +250,8 @@ Column {
     }
 
     // ---- My places: each saved place with coordinates, its symbol and
-    //      temperature from the stored forecast (Panel.favoriteRows), and
-    //      the shown place when it is not one of them.
+    //      values from the stored forecast (Panel.favoriteRows), and the
+    //      shown place when it is not one of them.
     readonly property var markers: {
       if (!showMarkers) return []
       var list = []
@@ -204,19 +260,22 @@ Column {
         var row = rows[i]
         if (!isFinite(row.latitude) || !isFinite(row.longitude)) continue
         list.push({ index: row.index, name: row.name, lat: row.latitude, lon: row.longitude, symbol: row.symbol,
-          temperature: row.temperature, active: row.active })
+          temperature: row.temperature, wind: row.wind, active: row.active })
       }
       if (panel.activeFavoriteIndex < 0 && panel.reportLocation !== "")
         list.push({ index: -1, name: panel.reportLocation, lat: panel.mapCenterLatitude, lon: panel.mapCenterLongitude,
-          symbol: panel.displayLabel, temperature: panel.reportTempNum, active: true })
+          symbol: panel.displayLabel, temperature: panel.reportTempNum, wind: panel.reportWind, active: true })
       return list
     }
 
     onLandChanged: canvas.requestPaint()
     onSkyChanged: canvas.requestPaint()
     onMarkersChanged: canvas.requestPaint()
-    onCenterLonChanged: canvas.requestPaint()
+    onCenterLonChanged: if (!dragging || zoom < 2) canvas.requestPaint()
+    onCenterLatChanged: if (!dragging || zoom < 2) canvas.requestPaint()
+    onZoomChanged: canvas.requestPaint()
     onWidthChanged: canvas.requestPaint()
+    onHeightChanged: canvas.requestPaint()
     onShowMoonChanged: canvas.requestPaint()
 
     // Where the markers and the moon were drawn, for clicks and the hover.
@@ -224,13 +283,15 @@ Column {
     property var moonHit: null
     property var hover: null
     property var pointer: null
+    property bool dragging: false
 
-    // ---- Turning by itself (as in More Time): after the set delay without
-    //      a touch it turns east, one turn in the set minutes, only while it
-    //      can be seen; a press, drag, wheel or key stops it.
+    // ---- Turning by itself (as in More Time), on the whole disc only:
+    //      after the set delay without a touch it turns east about the
+    //      poles, keeping the tilt, one turn in the set minutes, only while
+    //      it can be seen; a press, drag, wheel or key stops it.
     property bool rotating: false
-    // On screen: the section's top within the page's view, checked once a
-    // second while turning by itself is on.
+    // On screen: the section within the page's view, checked once a second
+    // while turning by itself is on.
     property bool onScreen: true
     Timer {
       interval: 1000
@@ -244,7 +305,7 @@ Column {
         globe.onScreen = top + globe.height > 0 && top < root.height
       }
     }
-    readonly property bool canRotate: autoRotate && panel.globeShown && onScreen && !mouse.pressed
+    readonly property bool canRotate: autoRotate && zoom <= 1 && panel.globeShown && onScreen && !mouse.pressed
     onCanRotateChanged: if (!canRotate) rotating = false
     readonly property int rotateDelaySeconds: Number(panel.displaySetting("globeRotateDelay", "10")) || 10
     readonly property int rotateTurnMinutes: Number(panel.displaySetting("globeRotateSpeed", "4")) || 4
@@ -278,9 +339,11 @@ Column {
 
     Canvas {
       id: canvas
-      anchors.fill: parent
+      width: globe.width
+      height: globe.height
       property color ink: globe.panel.foreground
       property color accent: Color.accent
+      property color surface: Color.popups.background
       onInkChanged: requestPaint()
       onAccentChanged: requestPaint()
 
@@ -309,7 +372,9 @@ Column {
         ctx.reset()
         var R = globe.radius
         if (R <= 0) return
-        var m = Globe.viewMatrix(0, Globe.wrapLon(globe.centerLon))
+        var m = Globe.viewMatrix(globe.centerLat, Globe.wrapLon(globe.centerLon))
+        var zoom = globe.zoom
+        var detail = zoom >= 3 && !globe.moving && Basemap.loaded()
 
         ctx.save()
         disc(ctx)
@@ -317,34 +382,41 @@ Column {
         ctx.fillStyle = rgba(ink, 0.04)
         ctx.fillRect(0, 0, width, height)
 
-        // Meridians and parallels every 15°, faintly.
+        // Meridians and parallels, finer when zoomed in.
         ctx.strokeStyle = rgba(ink, 0.07)
         ctx.lineWidth = 1
-        var lines = Globe.gridLinesView(m, R, 15)
         ctx.beginPath()
-        for (var g = 0; g < lines.length; g++) trace(ctx, lines[g], false)
+        if (zoom <= 2) {
+          var lines = Globe.gridLinesView(m, R, 15)
+          for (var g = 0; g < lines.length; g++) trace(ctx, lines[g], false)
+        } else {
+          traceGrid(ctx, m, GlobeView.gridStep(zoom))
+        }
         ctx.stroke()
 
         // Land: a light fill and a crisp coastline.
-        // While it turns, the coarse coastline: a frame costs a third.
-        var rings = (globe.moving ? globe.coarseLand : globe.land) || []
-        if (rings.length) {
-          ctx.beginPath()
-          for (var r = 0; r < rings.length; r++) {
-            var polys = Globe.frontPolygonsView(rings[r], m, R)
-            for (var p = 0; p < polys.length; p++) trace(ctx, polys[p], true)
+        if (detail) {
+          paintBasemap(ctx, m)
+        } else {
+          var rings = (globe.moving || zoom >= 3 ? globe.coarseLand : globe.land) || []
+          if (rings.length) {
+            ctx.beginPath()
+            for (var r = 0; r < rings.length; r++) {
+              var polys = Globe.frontPolygonsView(rings[r], m, R)
+              for (var p = 0; p < polys.length; p++) trace(ctx, polys[p], true)
+            }
+            ctx.fillStyle = rgba(ink, 0.08)
+            ctx.fillRule = Qt.OddEvenFill
+            ctx.fill()
+            ctx.beginPath()
+            for (var l = 0; l < rings.length; l++) {
+              var coast = Globe.frontLinesView(rings[l], m, R)
+              for (var c = 0; c < coast.length; c++) trace(ctx, coast[c], false)
+            }
+            ctx.strokeStyle = rgba(ink, 0.5)
+            ctx.lineWidth = 0.8
+            ctx.stroke()
           }
-          ctx.fillStyle = rgba(ink, 0.08)
-          ctx.fillRule = Qt.OddEvenFill
-          ctx.fill()
-          ctx.beginPath()
-          for (var l = 0; l < rings.length; l++) {
-            var coast = Globe.frontLinesView(rings[l], m, R)
-            for (var c = 0; c < coast.length; c++) trace(ctx, coast[c], false)
-          }
-          ctx.strokeStyle = rgba(ink, 0.5)
-          ctx.lineWidth = 0.8
-          ctx.stroke()
         }
         var landDone = Date.now()
 
@@ -369,8 +441,8 @@ Column {
         var sun = screenPoint(sky.sun.lat, sky.sun.lon, m)
         if (globe.showNight && sun.visible) Sky.paintSun(ctx, sun.x, sun.y, rgba(accent, 0.95))
         // The moon floats above its sub-lunar point, its shadow on the
-        // surface; hidden behind the globe.
-        var moon = sky.moon
+        // surface; on the whole disc only, hidden behind the globe.
+        var moon = zoom <= 1 ? sky.moon : null
         var moonAt = moon ? screenPoint(moon.lat, moon.lon, m) : null
         if (moon && moonAt.visible) Moon.paintMoonShadow(ctx, moonAt.x, moonAt.y, globe.moonRadius)
         ctx.restore()
@@ -391,7 +463,8 @@ Column {
         ctx.stroke()
         var skyDone = Date.now()
 
-        paintMarkers(ctx, m)
+        var taken = paintMarkers(ctx, m)
+        if (detail) paintTowns(ctx, m, taken)
         mouse.updateHover()
         var done = Date.now()
         var st = globe.paintStats
@@ -400,30 +473,155 @@ Column {
           places: (st.places || 0) + done - skyDone }
       }
 
-      // Each place as a dot with "symbol name 12°" beside it, the shown
-      // place in the accent colour and drawn first, so its label always
-      // gets a spot; a label that would cover another goes elsewhere or
-      // stays out.
+      // From z3: meridians and parallels every `step` degrees, only those
+      // in view, sampled finely.
+      function traceGrid(ctx, m, step) {
+        var box = GlobeView.visibleBounds(globe.centerLat, Globe.wrapLon(globe.centerLon), globe.radius, width, height)
+        var sample = step / 4
+        function line(points) {
+          var drawing = false
+          for (var i = 0; i < points.length; i += 2) {
+            var p = Globe.projectView(points[i], points[i + 1], m, globe.radius)
+            if (!p.visible) { drawing = false; continue }
+            var x = globe.centerX + p.x, y = globe.centerY - p.y
+            if (drawing) ctx.lineTo(x, y)
+            else ctx.moveTo(x, y)
+            drawing = true
+          }
+        }
+        var lat, lon, pts
+        for (lon = Math.floor(box.west / step) * step; lon <= box.east; lon += step) {
+          pts = []
+          for (lat = box.south; lat <= box.north + sample; lat += sample) pts.push(Math.min(90, lat), lon)
+          line(pts)
+        }
+        for (lat = Math.ceil(box.south / step) * step; lat <= box.north; lat += step) {
+          if (Math.abs(lat) >= 90) continue
+          pts = []
+          for (lon = box.west; lon <= box.east + sample; lon += sample) pts.push(lat, lon)
+          line(pts)
+        }
+      }
+
+      // From z3, at rest: land, lakes, the coast and the borders between
+      // countries from the basemap's 5° cells in view, each point projected
+      // through the view; points closer than 0.7 px to the last one drawn
+      // are left out, and edges along a cell's border (where a polygon was
+      // cut) are never stroked.
+      function paintBasemap(ctx, m) {
+        var R = globe.radius
+        var box = GlobeView.visibleBounds(globe.centerLat, Globe.wrapLon(globe.centerLon), R, width, height)
+        var cellDeg = 5
+        var keys = []
+        var firstRow = Math.max(0, Math.floor((box.south + 90) / cellDeg))
+        var lastRow = Math.min(180 / cellDeg - 1, Math.floor((box.north + 90) / cellDeg))
+        var firstCol = Math.floor((box.west + 180) / cellDeg)
+        var lastCol = Math.floor((box.east + 180) / cellDeg)
+        for (var row = firstRow; row <= lastRow; row++)
+          for (var col = firstCol; col <= lastCol; col++) keys.push(row + "_" + (((col % 72) + 72) % 72))
+        var m0 = m[0], m1 = m[1], m2 = m[2], m3 = m[3], m4 = m[4], m5 = m[5], m6 = m[6], m7 = m[7], m8 = m[8]
+        var cx = globe.centerX, cy = globe.centerY
+        var toRad = Math.PI / 180
+
+        function trace(flat, south, west, close, skipEdges) {
+          var x = 0, y = 0
+          var lastX = NaN, lastY = NaN
+          var pen = false
+          var edge = cellDeg * 1000
+          var n = flat.length
+          var firstSx = NaN, firstSy = NaN
+          for (var i = 0; i <= n; i += 2) {
+            var closing = i === n
+            if (closing && !close) break
+            var nx, ny
+            if (closing) { nx = flat[0]; ny = flat[1] } else if (i === 0) { nx = flat[0]; ny = flat[1] } else { nx = x + flat[i]; ny = y + flat[i + 1] }
+            var cut = i > 0 && skipEdges && ((x === nx && (x === 0 || x === edge)) || (y === ny && (y === 0 || y === edge)))
+            var phi = (south + ny / 1000) * toRad, lam = (west + nx / 1000) * toRad
+            var cp = Math.cos(phi)
+            var vx = cp * Math.cos(lam), vy = cp * Math.sin(lam), vz = Math.sin(phi)
+            var front = m6 * vx + m7 * vy + m8 * vz >= 0
+            var sx = cx + R * (m0 * vx + m1 * vy + m2 * vz)
+            var sy = cy - R * (m3 * vx + m4 * vy + m5 * vz)
+            x = nx
+            y = ny
+            if (!front) { pen = false; continue }
+            if (!pen || cut) {
+              ctx.moveTo(sx, sy)
+              pen = true
+              lastX = sx
+              lastY = sy
+              continue
+            }
+            if (!closing && Math.abs(sx - lastX) + Math.abs(sy - lastY) < 0.7 && i + 2 < n) continue
+            ctx.lineTo(sx, sy)
+            lastX = sx
+            lastY = sy
+          }
+        }
+        function eachCell(layer, visit) {
+          for (var k = 0; k < keys.length; k++) {
+            var data = Basemap.cell(keys[k])
+            if (!data || !data[layer]) continue
+            var parts = keys[k].split("_")
+            visit(data[layer], Number(parts[0]) * cellDeg - 90, Number(parts[1]) * cellDeg - 180)
+          }
+        }
+        function outline(layer, style, lineWidth) {
+          ctx.strokeStyle = style
+          ctx.lineWidth = lineWidth
+          ctx.beginPath()
+          eachCell(layer, function(features, south, west) {
+            for (var f = 0; f < features.length; f++)
+              for (var r = 0; r < features[f].length; r++) trace(features[f][r], south, west, true, true)
+          })
+          ctx.stroke()
+        }
+        function stroke(layer, style, lineWidth) {
+          ctx.strokeStyle = style
+          ctx.lineWidth = lineWidth
+          ctx.beginPath()
+          eachCell(layer, function(lines, south, west) {
+            for (var l = 0; l < lines.length; l++) trace(lines[l], south, west, false, false)
+          })
+          ctx.stroke()
+        }
+        ctx.fillRule = Qt.OddEvenFill
+        ctx.lineJoin = "round"
+        ctx.lineCap = "round"
+        // Land with its lakes as holes: one even-odd path.
+        ctx.beginPath()
+        ;["land", "lakes"].forEach(function(layer) {
+          eachCell(layer, function(features, south, west) {
+            for (var f = 0; f < features.length; f++)
+              for (var r = 0; r < features[f].length; r++) {
+                trace(features[f][r], south, west, false, false)
+                ctx.closePath()
+              }
+          })
+        })
+        ctx.fillStyle = rgba(ink, 0.08)
+        ctx.fill()
+        outline("lakes", rgba(ink, 0.35), 0.7)
+        outline("land", rgba(ink, 0.5), 0.8)
+        stroke("admin0", rgba(ink, 0.45), 1)
+      }
+
+      // Each place as a dot with "symbol name 12°" beside it (from z3 with
+      // its wind when there is room), the shown place in the accent colour
+      // and drawn first, so its label always gets a spot; a label that would
+      // cover another goes elsewhere or stays out. Returns the taken spots.
       function paintMarkers(ctx, m) {
         var taken = []
         var hits = []
-        function free(rect) {
-          for (var i = 0; i < taken.length; i++) {
-            var o = taken[i]
-            if (rect.x < o.x + o.w && rect.x + rect.w > o.x && rect.y < o.y + o.h && rect.y + rect.h > o.y) return false
-          }
-          return true
-        }
         var fontPx = Style.font.caption
         var labelFont = globe.panel.canvasFont(fontPx, false, false)
         var boldFont = globe.panel.canvasFont(fontPx, true, false)
         var list = globe.markers.slice(0).sort(function(a, b) { return (b.active ? 1 : 0) - (a.active ? 1 : 0) })
-        var background = Color.popups.background
         for (var k = 0; k < list.length; k++) {
           var place = list[k]
           var p = screenPoint(place.lat, place.lon, m)
-          // Behind the globe: not drawn, not clickable.
-          if (!p.visible) continue
+          // Behind the globe or out of view: not drawn, not clickable.
+          if (!p.visible || p.x < -20 || p.y < -20 || p.x > width + 20 || p.y > height + 20) continue
           ctx.fillStyle = place.active ? accent : ink
           ctx.beginPath()
           ctx.arc(p.x, p.y, place.active ? 4 : 3, 0, Math.PI * 2)
@@ -439,42 +637,84 @@ Column {
           taken.push({ x: p.x - 5, y: p.y - 5, w: 10, h: 10 })
           var label = (place.symbol ? place.symbol + " " : "") + place.name
             + (place.temperature !== "" && place.temperature !== undefined ? " " + place.temperature + "°" : "")
+          var labels = globe.zoom >= 3 && place.wind ? [label + " · " + place.wind, label] : [label]
           ctx.font = place.active ? boldFont : labelFont
-          var w = ctx.measureText(label).width + 6
-          var h = fontPx + 4
-          // Right, left, above, below the dot: the first free spot.
-          var spots = [
-            { x: p.x + 8, y: p.y - h / 2 }, { x: p.x - 8 - w, y: p.y - h / 2 },
-            { x: p.x - w / 2, y: p.y - 8 - h }, { x: p.x - w / 2, y: p.y + 8 }
-          ]
-          for (var s = 0; s < spots.length; s++) {
-            var rect = { x: spots[s].x, y: spots[s].y, w: w, h: h }
-            if (rect.x < 0 || rect.x + w > width || rect.y < 0 || rect.y + h > height) continue
-            if (!free(rect)) continue
-            taken.push(rect)
-            ctx.fillStyle = Qt.rgba(background.r, background.g, background.b, 0.78)
-            ctx.fillRect(rect.x, rect.y, w, h)
-            ctx.fillStyle = place.active ? accent : ink
-            ctx.textAlign = "left"
-            ctx.textBaseline = "middle"
-            ctx.fillText(label, rect.x + 3, rect.y + h / 2 + 0.5)
-            break
-          }
+          for (var v = 0; v < labels.length; v++)
+            if (placeLabel(ctx, labels[v], p, 8, fontPx, taken, place.active ? accent : ink)) break
         }
         globe.markerHits = hits
+        return taken
+      }
+
+      // A label beside a point: right, left, above or below, the first spot
+      // free of the taken ones and inside the view. True when drawn.
+      function placeLabel(ctx, label, p, gap, fontPx, taken, color) {
+        var w = ctx.measureText(label).width + 6
+        var h = fontPx + 4
+        var spots = [
+          { x: p.x + gap, y: p.y - h / 2 }, { x: p.x - gap - w, y: p.y - h / 2 },
+          { x: p.x - w / 2, y: p.y - gap - h }, { x: p.x - w / 2, y: p.y + gap }
+        ]
+        for (var s = 0; s < spots.length; s++) {
+          var rect = { x: spots[s].x, y: spots[s].y, w: w, h: h }
+          if (rect.x < 0 || rect.x + w > width || rect.y < 0 || rect.y + h > height) continue
+          var free = true
+          for (var i = 0; i < taken.length && free; i++) {
+            var o = taken[i]
+            if (rect.x < o.x + o.w && rect.x + rect.w > o.x && rect.y < o.y + o.h && rect.y + rect.h > o.y) free = false
+          }
+          if (!free) continue
+          taken.push(rect)
+          ctx.fillStyle = Qt.rgba(surface.r, surface.g, surface.b, 0.78)
+          ctx.fillRect(rect.x, rect.y, w, h)
+          ctx.fillStyle = color
+          ctx.textAlign = "left"
+          ctx.textBaseline = "middle"
+          ctx.fillText(label, rect.x + 3, rect.y + h / 2 + 0.5)
+          return true
+        }
+        return false
+      }
+
+      // From z3: Natural Earth's towns in view, the larger first, round
+      // my places' labels.
+      function paintTowns(ctx, m, taken) {
+        var box = GlobeView.visibleBounds(globe.centerLat, Globe.wrapLon(globe.centerLon), globe.radius, width, height)
+        var towns = Basemap.placesIn(box.west, box.east, box.south, box.north)
+        towns.sort(function(a, b) { return (b.population || 0) - (a.population || 0) })
+        var fontPx = Style.font.caption
+        ctx.font = globe.panel.canvasFont(fontPx, false, false)
+        var drawn = 0
+        for (var i = 0; i < towns.length && drawn < 40; i++) {
+          var town = towns[i]
+          var p = screenPoint(town.latitude, town.longitude, m)
+          if (!p.visible || p.x < 0 || p.y < 0 || p.x > width || p.y > height) continue
+          var before = taken.length
+          if (!placeLabel(ctx, town.name, p, 5, fontPx, taken, rgba(ink, 0.7))) continue
+          taken.splice(before, 0, { x: p.x - 3, y: p.y - 3, w: 6, h: 6 })
+          ctx.fillStyle = rgba(ink, 0.7)
+          ctx.beginPath()
+          ctx.arc(p.x, p.y, 1.8, 0, Math.PI * 2)
+          ctx.fill()
+          drawn++
+        }
       }
     }
 
-    // A drag or a sideways wheel turns the globe; a click on a place shows
-    // it; the resting pointer names the place or the moon under it.
+    // A drag turns and tilts the globe (at z2 and closer the picture moves
+    // and is drawn anew on release, as on the radar map); a double click
+    // zooms in at the pointer; a click on a place shows it; the resting
+    // pointer names the place or the moon under it.
     MouseArea {
       id: mouse
       anchors.fill: parent
       hoverEnabled: true
       preventStealing: true
+      cursorShape: globe.dragging ? Qt.ClosedHandCursor : Qt.OpenHandCursor
       property real pressX: 0
+      property real pressY: 0
+      property real pressLat: 0
       property real pressLon: 0
-      property bool dragged: false
 
       function markerAt(x, y) {
         var best = null
@@ -500,49 +740,194 @@ Column {
           marker.temperature !== "" ? marker.temperature + " " + globe.panel.tempUnit : "", marker.symbol]
           .filter(function(part) { return !!part }).join(" · ") } : null
       }
+      function dragTo(x, y) {
+        return GlobeView.panned(pressLat, pressLon, x - pressX, y - pressY, globe.radius)
+      }
 
       onPressed: function(event) {
         globe.touched()
         turnAnimation.stop()
         pressX = event.x
+        pressY = event.y
+        pressLat = globe.centerLat
         pressLon = globe.centerLon
-        dragged = false
+        globe.dragging = false
       }
       onPositionChanged: function(event) {
         if (pressed) {
-          if (Math.abs(event.x - pressX) > Style.space(4)) dragged = true
-          // The surface follows the pointer at the centre of the globe.
-          if (dragged) globe.centerLon = pressLon - (event.x - pressX) / Math.max(1, globe.radius) * 180 / Math.PI
+          if (!globe.dragging && Math.abs(event.x - pressX) + Math.abs(event.y - pressY) > Style.space(4)) globe.dragging = true
+          if (globe.dragging) {
+            if (globe.zoom >= 2) {
+              canvas.x = event.x - pressX
+              canvas.y = event.y - pressY
+            } else {
+              var centre = dragTo(event.x, event.y)
+              globe.centerLat = centre.lat
+              globe.centerLon = centre.lon
+            }
+          }
           globe.hover = null
           return
         }
         globe.pointer = { x: event.x, y: event.y }
         updateHover()
       }
+      onReleased: function(event) {
+        if (globe.dragging && globe.zoom >= 2) {
+          var centre = dragTo(event.x, event.y)
+          canvas.x = 0
+          canvas.y = 0
+          globe.centerLat = centre.lat
+          globe.centerLon = centre.lon
+        }
+        if (globe.dragging) {
+          globe.dragging = false
+          canvas.requestPaint()
+        }
+      }
+      onCanceled: {
+        canvas.x = 0
+        canvas.y = 0
+        globe.dragging = false
+        canvas.requestPaint()
+      }
       onExited: {
         globe.pointer = null
         globe.hover = null
       }
       onClicked: function(event) {
-        if (dragged) return
         var marker = markerAt(event.x, event.y)
         if (!marker) return
-        globe.turnTo(marker.lon)
+        globe.turnTo(globe.zoom >= 2 ? marker.lat : null, marker.lon)
         // The place becomes the shown one, the globe stays in view.
         if (marker.index >= 0 && !marker.active)
           globe.panel.selectSavedLocation(globe.panel.savedLocations[marker.index])
       }
+      onDoubleClicked: function(event) {
+        if (markerAt(event.x, event.y)) return
+        globe.zoomAt(1, event.x - globe.centerX, event.y - globe.centerY)
+      }
     }
 
-    // The page routes wheels (Panel.routeWheel): this takes the sideways
-    // ones (a touchpad swipe, a tilting wheel, Shift with the wheel).
+    // The page routes wheels (Panel.routeWheel): Ctrl + wheel zooms towards
+    // the pointer; a sideways one (a touchpad swipe, a tilting wheel, Shift
+    // with the wheel) turns the globe; a plain one scrolls the page and says
+    // how to zoom.
     readonly property bool wheelEnabled: true
-    function wantsWheel(wheel) { return panel.wheelIsSideways(wheel) }
-    function takeWheel(wheel) {
+    property real wheelAccumulated: 0
+    function wantsWheel(wheel) {
+      return (wheel.modifiers & Qt.ControlModifier) !== 0 || panel.wheelIsSideways(wheel)
+    }
+    function declineWheel(wheel) {
+      zoomHint.opacity = 1
+      zoomHintTimer.restart()
+    }
+    function takeWheel(wheel, point) {
       touched()
+      if ((wheel.modifiers & Qt.ControlModifier) !== 0) {
+        // Touchpads send small steps: a level per notch's worth.
+        wheelAccumulated += wheel.angleDelta.y
+        if (Math.abs(wheelAccumulated) < 120) return true
+        var delta = wheelAccumulated > 0 ? 1 : -1
+        wheelAccumulated = 0
+        var at = point || { x: centerX, y: centerY }
+        zoomAt(delta, at.x - centerX, at.y - centerY)
+        return true
+      }
       turnAnimation.stop()
-      centerLon -= panel.wheelSidewaysPixels(wheel) / Math.max(1, radius) * 180 / Math.PI
+      var centre = GlobeView.panned(centerLat, centerLon, panel.wheelSidewaysPixels(wheel), 0, radius)
+      centerLon = centre.lon
       return true
+    }
+
+    // "Ctrl + wheel to zoom", briefly, when a plain wheel passes over it.
+    Rectangle {
+      id: zoomHint
+      anchors.centerIn: parent
+      width: zoomHintText.implicitWidth + Style.space(16)
+      height: zoomHintText.implicitHeight + Style.space(8)
+      radius: Style.cornerRadius
+      color: Color.popups.background
+      border.color: Color.popups.border
+      border.width: Style.spacing.hairline
+      opacity: 0
+      visible: opacity > 0
+      Behavior on opacity { NumberAnimation { duration: 180 } }
+      Text {
+        id: zoomHintText
+        textFormat: Text.PlainText
+        anchors.centerIn: parent
+        text: globe.panel.i18n("mapZoomHint")
+        color: Color.popups.text
+        font.family: globe.panel.fontFamily
+        font.pixelSize: Style.font.caption
+      }
+    }
+    Timer {
+      id: zoomHintTimer
+      interval: 1400
+      onTriggered: zoomHint.opacity = 0
+    }
+
+    // Back to the place (keeping the zoom), zoom out, zoom in.
+    BorderSurface {
+      anchors.top: parent.top
+      anchors.right: parent.right
+      anchors.margins: Style.space(8)
+      width: zoomRow.implicitWidth + Style.space(10)
+      height: Style.space(28)
+      radius: Style.cornerRadius
+      color: Color.popups.background
+      borderSpec: Border.surfaceSpec("popups", "border", Color.popups.border, Style.normalBorderWidth)
+
+      Row {
+        id: zoomRow
+        anchors.centerIn: parent
+        spacing: Style.space(2)
+
+        Repeater {
+          model: [
+            { glyph: "󰆤", action: "recenter", enabled: true },
+            { glyph: "−", action: "out", enabled: globe.zoom > 0 },
+            { glyph: "+", action: "in", enabled: globe.zoom < 5 }
+          ]
+
+          BorderSurface {
+            id: zoomButton
+            required property var modelData
+            width: Style.space(22)
+            height: Style.space(20)
+            radius: Style.cornerRadius
+            enabled: modelData.enabled
+            opacity: enabled ? 1 : 0.38
+            color: Style.controlFill(false, buttonMouse.containsMouse, Color.popups.text, Color.accent)
+            borderSpec: Border.controlSpec(buttonMouse.containsMouse ? "hover-cursor" : "normal", Color.popups.text, Color.accent)
+
+            Text {
+              textFormat: Text.PlainText
+              anchors.centerIn: parent
+              text: zoomButton.modelData.glyph
+              color: buttonMouse.containsMouse ? Style.hoverStateColor(Color.popups.text, Color.accent) : Color.popups.text
+              font.family: globe.panel.fontFamily
+              font.pixelSize: Style.font.caption
+              font.bold: true
+            }
+
+            MouseArea {
+              id: buttonMouse
+              anchors.fill: parent
+              enabled: parent.enabled
+              hoverEnabled: true
+              cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+              onClicked: {
+                var action = zoomButton.modelData.action
+                if (action === "recenter") globe.recenter()
+                else globe.zoomBy(action === "in" ? 1 : -1)
+              }
+            }
+          }
+        }
+      }
     }
 
     PanelToolTip {

@@ -390,9 +390,9 @@ var catalog = {
   "globe": "Globus",
   "globeMarkers": "Meine Orte",
   "globeHint": "Die Erde mit Tag und Nacht, Sonne, Mond und deinen Orten mit ihrem Wetter aus den gespeicherten Vorhersagen. Ziehen oder Umschalt + Mausrad dreht sie; ein Klick auf einen Ort zeigt ihn.",
-  "globeKeysHint": "Strg ← → drehen · 0 der Ort",
-  "shortcutGlobeTurn": "Globus: um 15° drehen",
-  "shortcutGlobeCenter": "Globus: zurück zum gezeigten Ort",
+  "globeKeysHint": "Strg Pfeile drehen · + − zoomen · 0 ganzer Globus",
+  "shortcutGlobeTurn": "Globus: drehen und kippen",
+  "shortcutGlobeCenter": "Globus: der ganze Globus am gezeigten Ort",
   "optionNight": "Nachtseite",
   "optionNightHint": "In drei Stufen, jede dunkler: bürgerliche Dämmerung (Sonne 0° bis −6°), nautische Dämmerung (−6° bis −12°), dann astronomische Dämmerung und Nacht.",
   "moonWaxing": "Mond · {percent} % · zunehmend",
@@ -403,5 +403,6 @@ var catalog = {
   "optionGlobeRotateSpeed": "Eine Umdrehung in",
   "secondsShort": "{seconds} s",
   "minutesShort": "{minutes} min",
-  "ctrlLeftRight": "Strg ← →"
+  "shortcutGlobeZoom": "Globus: am Zeiger hinein / hinaus zoomen",
+  "globeZoomHint": "Strg + Mausrad, ein Doppelklick, + − oder die Knöpfe zoomen bis auf etwa 400 km Breite; von nahem kommen Küste, Seen, Grenzen und Orte aus den Daten der Radarkarte. Das Fadenkreuz holt den gezeigten Ort in die Mitte."
 }

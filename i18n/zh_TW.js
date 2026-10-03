@@ -356,9 +356,9 @@ var entries = {
   "globe": "地球儀",
   "globeMarkers": "我的地點",
   "globeHint": "地球上的晝夜、太陽、月亮，以及你的地點和已儲存預報中的天氣。拖曳或 Shift + 滾輪旋轉；點按地點即可顯示。",
-  "globeKeysHint": "Ctrl ← → 旋轉 · 0 回到地點",
-  "shortcutGlobeTurn": "地球儀：旋轉 15°",
-  "shortcutGlobeCenter": "地球儀：回到顯示的地點",
+  "globeKeysHint": "Ctrl 方向鍵旋轉 · + − 縮放 · 0 整個地球",
+  "shortcutGlobeTurn": "地球儀：旋轉和傾斜",
+  "shortcutGlobeCenter": "地球儀：在顯示的地點顯示整個地球",
   "optionNight": "夜晚區域",
   "optionNightHint": "分三級，一級比一級暗：民用曙暮光（太陽 0° 到 −6°）、航海曙暮光（−6° 到 −12°），然後是天文曙暮光和黑夜。",
   "moonWaxing": "月亮 · {percent} % · 盈",
@@ -369,5 +369,6 @@ var entries = {
   "optionGlobeRotateSpeed": "轉一圈用時",
   "secondsShort": "{seconds} 秒",
   "minutesShort": "{minutes} 分鐘",
-  "ctrlLeftRight": "Ctrl ← →"
+  "shortcutGlobeZoom": "地球儀：在指標處放大 / 縮小",
+  "globeZoomHint": "Ctrl + 滾輪、按兩下、+ − 或按鈕可放大到約 400 公里寬；近看時海岸、湖泊、邊界和城鎮來自雷達地圖的資料。準星會把顯示的地點移到中央。"
 }

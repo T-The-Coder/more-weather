@@ -11,6 +11,17 @@ All notable changes to More Weather are documented here.
   the hourly forecast and as the day's mean in the daily forecast. From
   Open-Meteo (`pressure_msl`, two more variables in the forecast request),
   MET Norway and, in the DWD area, Bright Sky (MOSMIX).
+- The globe **tilts and zooms**: a drag turns and tilts it (up to 80°), Ctrl
+  + wheel and a double click zoom towards the pointer, `+` `−` and its
+  buttons zoom, the crosshair brings the shown place to the middle, `0`
+  goes back to the whole globe; Ctrl + arrows turn and tilt by 15°, or a
+  quarter of the view when zoomed in (while no radar or wind map is
+  shown). Six levels from the whole disc to about 400 km across; from z3
+  the coast, lakes, borders and towns come from the radar map's Natural
+  Earth data, the grid gets finer, and my places show their wind too.
+  From z2 a drag moves the picture and draws it anew on release. Turning
+  by itself stays on the whole disc (z0, z1) and keeps the tilt. View
+  arithmetic in `GlobeView.js` with Node tests.
 - **Globe**, a new section (in the app a tab after the wind map, off in the
   popup): the earth with day and night in three twilight steps, the sun and
   the moon overhead, and my places as markers with their symbol and

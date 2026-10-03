@@ -356,9 +356,9 @@ var entries = {
   "globe": "Karttapallo",
   "globeMarkers": "Omat paikat",
   "globeHint": "Maa päivineen ja öineen, aurinko, kuu ja paikkasi säineen tallennetuista ennusteista. Vetäminen tai Vaihto + rulla kääntää sitä; paikan napsautus näyttää sen.",
-  "globeKeysHint": "Ctrl ← → käännä · 0 paikka",
-  "shortcutGlobeTurn": "Karttapallo: käännä 15°",
-  "shortcutGlobeCenter": "Karttapallo: takaisin näytettyyn paikkaan",
+  "globeKeysHint": "Ctrl nuolet käännä · + − zoom · 0 koko pallo",
+  "shortcutGlobeTurn": "Karttapallo: käännä ja kallista",
+  "shortcutGlobeCenter": "Karttapallo: koko pallo näytetyn paikan kohdalla",
   "optionNight": "Yöpuoli",
   "optionNightHint": "Kolmessa portaassa, kukin tummempi: porvarillinen hämärä (aurinko 0°…−6°), nauttinen (−6°…−12°), sitten tähtitieteellinen hämärä ja yö.",
   "moonWaxing": "Kuu · {percent} % · kasvava",
@@ -369,5 +369,6 @@ var entries = {
   "optionGlobeRotateSpeed": "Kierros",
   "secondsShort": "{seconds} s",
   "minutesShort": "{minutes} min",
-  "ctrlLeftRight": "Ctrl ← →"
+  "shortcutGlobeZoom": "Karttapallo: lähennä / loitonna osoittimen kohdalla",
+  "globeZoomHint": "Ctrl + rulla, kaksoisnapsautus, + − tai painikkeet lähentävät noin 400 km:n levyiseksi; läheltä rannikko, järvet, rajat ja paikkakunnat tulevat tutkakartan tiedoista. Tähtäin tuo näytetyn paikan keskelle."
 }

@@ -356,9 +356,9 @@ var entries = {
   "globe": "גלובוס",
   "globeMarkers": "המקומות שלי",
   "globeHint": "כדור הארץ עם יום ולילה, השמש, הירח והמקומות שלך עם מזג האוויר מהתחזיות השמורות. גרירה או Shift + גלגלת מסובבות אותו; לחיצה על מקום מציגה אותו.",
-  "globeKeysHint": "Ctrl ← → סיבוב · 0 המקום",
-  "shortcutGlobeTurn": "גלובוס: סיבוב ב־15°",
-  "shortcutGlobeCenter": "גלובוס: חזרה למקום המוצג",
+  "globeKeysHint": "Ctrl חצים סיבוב · + − זום · 0 כל הגלובוס",
+  "shortcutGlobeTurn": "גלובוס: סיבוב והטיה",
+  "shortcutGlobeCenter": "גלובוס: כל הגלובוס במקום המוצג",
   "optionNight": "צד הלילה",
   "optionNightHint": "בשלוש מדרגות, כל אחת כהה יותר: דמדומים אזרחיים (השמש 0° עד −6°), ימיים (−6° עד −12°), ואז דמדומים אסטרונומיים ולילה.",
   "moonWaxing": "ירח · {percent} % · מתמלא",
@@ -369,5 +369,6 @@ var entries = {
   "optionGlobeRotateSpeed": "סיבוב אחד ב־",
   "secondsShort": "{seconds} ש׳",
   "minutesShort": "{minutes} דק׳",
-  "ctrlLeftRight": "Ctrl ← →"
+  "shortcutGlobeZoom": "גלובוס: התקרבות / התרחקות במצביע",
+  "globeZoomHint": "Ctrl + גלגלת, לחיצה כפולה, + − או הכפתורים מתקרבים עד רוחב של כ־400 ק״מ; מקרוב החוף, האגמים, הגבולות והיישובים מגיעים מנתוני מפת המכ״ם. הכוונת מחזירה את המקום המוצג למרכז."
 }

@@ -356,9 +356,9 @@ var entries = {
   "globe": "ग्लोब",
   "globeMarkers": "मेरी जगहें",
   "globeHint": "दिन और रात, सूरज, चाँद और सहेजे गए पूर्वानुमानों के मौसम के साथ आपकी जगहों वाली पृथ्वी। खींचने या Shift + व्हील से घूमती है; किसी जगह पर क्लिक उसे दिखाता है।",
-  "globeKeysHint": "Ctrl ← → घुमाएँ · 0 जगह",
-  "shortcutGlobeTurn": "ग्लोब: 15° घुमाएँ",
-  "shortcutGlobeCenter": "ग्लोब: दिखाई गई जगह पर वापस",
+  "globeKeysHint": "Ctrl तीर घुमाएँ · + − ज़ूम · 0 पूरा ग्लोब",
+  "shortcutGlobeTurn": "ग्लोब: घुमाएँ और झुकाएँ",
+  "shortcutGlobeCenter": "ग्लोब: दिखाई गई जगह पर पूरा ग्लोब",
   "optionNight": "रात का हिस्सा",
   "optionNightHint": "तीन चरणों में, हर एक गहरा: नागरिक संधिप्रकाश (सूर्य 0° से −6°), नौवहन (−6° से −12°), फिर खगोलीय संधिप्रकाश और रात।",
   "moonWaxing": "चंद्रमा · {percent} % · बढ़ता",
@@ -369,5 +369,6 @@ var entries = {
   "optionGlobeRotateSpeed": "एक चक्कर में",
   "secondsShort": "{seconds} से.",
   "minutesShort": "{minutes} मि.",
-  "ctrlLeftRight": "Ctrl ← →"
+  "shortcutGlobeZoom": "ग्लोब: पॉइंटर पर ज़ूम इन / आउट",
+  "globeZoomHint": "Ctrl + व्हील, डबल क्लिक, + − या बटन लगभग 400 किमी चौड़ाई तक ज़ूम करते हैं; पास से तट, झीलें, सीमाएँ और कस्बे रडार मानचित्र के डेटा से आते हैं। क्रॉसहेयर दिखाई गई जगह को बीच में लाता है।"
 }

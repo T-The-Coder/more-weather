@@ -22,16 +22,44 @@ ShellRoot {
   }
 
   function check(name, ok) { console.log(ok ? "CHECK ok" : "CHECK FAILED", name) }
-  function measureGlobe() {
-    panel.globeItem.paintStats = { count: 0, total: 0, max: 0 }
-    panel.globeItem.rotating = true
+  // The globe's view for the measurements and shots.
+  function globeView(zoom, lat, lon) {
+    var g = panel.globeItem
+    g.finishTurn()
+    g.rotating = false
+    g.zoom = zoom
+    g.centerLat = lat
+    g.centerLon = lon
   }
-  function reportGlobe() {
-    var st = panel.globeItem.paintStats
-    var n = Math.max(1, st.count)
-    console.log("GLOBE paint", Math.round(panel.globeItem.radius * 2), "px:", st.count, "frames, mean",
-      (st.total / n).toFixed(1), "ms, max", st.max, "ms; land", (st.land / n).toFixed(1),
-      "sky", (st.sky / n).toFixed(1), "places", (st.places / n).toFixed(1))
+  // Steps that measure z0, z2 and z4: still, then moving, three seconds each.
+  function globeMeasures(size) {
+    var list = []
+    ;[0, 2, 4].forEach(function(zoom) {
+      ;[false, true].forEach(function(moving) {
+        list.push(function() {
+          globeView(zoom, 46, 9)
+          panel.globeItem.rotating = moving
+          panel.globeItem.paintStats = { count: 0, total: 0, max: 0 }
+          globeNudge.start()
+        }, function() {}, function() {}, function() {
+          globeNudge.stop()
+          var st = panel.globeItem.paintStats
+          var n = Math.max(1, st.count)
+          console.log("GLOBE", size, "px z" + zoom, moving ? "moving" : "still", Math.round(panel.globeItem.radius * 2), "px radius*2:",
+            st.count, "frames, mean", (st.total / n).toFixed(1), "ms, max", st.max, "ms; land", (st.land / n).toFixed(1),
+            "sky", (st.sky / n).toFixed(1), "places", (st.places / n).toFixed(1))
+          panel.globeItem.rotating = false
+        })
+      })
+    })
+    return list
+  }
+  // Turns the globe a little every 40 ms while measuring.
+  Timer {
+    id: globeNudge
+    interval: 40
+    repeat: true
+    onTriggered: panel.globeItem.centerLon += 0.02
   }
   function general(key, value) { panel.displayOptionsStore.setGeneralSetting(key, value) }
   function display(key, value) { panel.displayOptionsStore.setSettingsDisplaySetting(key, value) }
@@ -98,23 +126,28 @@ ShellRoot {
     function() { panel.activeTab = "globe" },
     function() { if (panel.globeItem) panel.globeItem.finishTurn() },
     function() { shot("09b-tab-globe") },
-    // The globe turning by itself: the cost of a frame (paintStats) with
-    // the globe about 500 and 840 px across, in a window of its own.
+    // The globe's cost of a frame (paintStats) at z0, z2 and z4, about 500
+    // and 840 px across, in windows of their own: still (the full
+    // coastline, from z3 the basemap) and moving (the coarse one).
     function() {
       panel.contentRoot.parent = globeHost
-      panel.settingsTargetSurface = "app"
-      display("globeAutoRotate", true)
-      display("globeRotateSpeed", "1")
-    },
-    function() { measureGlobe() }, function() {}, function() {}, function() {}, function() { reportGlobe() },
-    function() { panel.contentRoot.parent = globeHostLarge },
-    function() { measureGlobe() }, function() {}, function() {}, function() {}, function() { reportGlobe() },
-    function() {
-      display("globeAutoRotate", false)
-      panel.globeItem.recenter()
-    },
-    function() { panel.globeItem.finishTurn() },
-    function() { shot("09d-globe-app") },
+      globeView(0, 20, 10)
+    }
+  ].concat(globeMeasures("500"), [
+    function() { panel.contentRoot.parent = globeHostLarge }
+  ], globeMeasures("840"), [
+    // The view tilted to look at Europe from 45° N, then z2 over Europe,
+    // then z4 over the Alps with borders and towns.
+    function() { globeView(0, 45, 10) },
+    function() {},
+    function() { shot("09d-globe-tilted") },
+    function() { globeView(2, 50, 10) },
+    function() {},
+    function() { shot("09e-globe-z2-europe") },
+    function() { globeView(4, 46.5, 9.5) },
+    function() {}, function() {},
+    function() { shot("09f-globe-z4-alps") },
+    function() { globeView(0, 0, 10) },
     function() { panel.contentRoot.parent = widgetHost },
     // The night side and the moon: the globe turned towards them.
     function() {
@@ -228,7 +261,7 @@ ShellRoot {
     function() { press(Qt.Key_End) },
     function() { shot("26-settings-general-import") },
     function() { console.log("STATUS", panel.reportLocation, panel.displayTabs.join(",")); Qt.quit() }
-  ]
+  ])
 
   Timer {
     interval: 1200

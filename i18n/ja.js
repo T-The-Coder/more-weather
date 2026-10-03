@@ -356,9 +356,9 @@ var entries = {
   "globe": "地球儀",
   "globeMarkers": "マイ地点",
   "globeHint": "昼と夜、太陽、月、保存した予報の天気付きの地点を表示する地球。ドラッグまたは Shift + ホイールで回転し、地点をクリックするとその地点を表示します。",
-  "globeKeysHint": "Ctrl ← → 回転 · 0 地点へ",
-  "shortcutGlobeTurn": "地球儀：15° 回転",
-  "shortcutGlobeCenter": "地球儀：表示中の地点に戻る",
+  "globeKeysHint": "Ctrl 矢印 回転 · + − ズーム · 0 地球全体",
+  "shortcutGlobeTurn": "地球儀：回転と傾き",
+  "shortcutGlobeCenter": "地球儀：表示中の地点で地球全体",
   "optionNight": "夜の側",
   "optionNightHint": "3 段階で順に暗く: 市民薄明（太陽 0°〜−6°）、航海薄明（−6°〜−12°）、そして天文薄明と夜。",
   "moonWaxing": "月 · {percent} % · 満ちていく",
@@ -369,5 +369,6 @@ var entries = {
   "optionGlobeRotateSpeed": "1 回転",
   "secondsShort": "{seconds}秒",
   "minutesShort": "{minutes}分",
-  "ctrlLeftRight": "Ctrl ← →"
+  "shortcutGlobeZoom": "地球儀：ポインター位置で拡大 / 縮小",
+  "globeZoomHint": "Ctrl + ホイール、ダブルクリック、+ − またはボタンで幅約 400 km まで拡大できます。近くでは海岸線、湖、国境、町はレーダーマップのデータから表示します。照準は表示中の地点を中央に戻します。"
 }

@@ -356,9 +356,9 @@ var entries = {
   "globe": "Globe",
   "globeMarkers": "Mes lieux",
   "globeHint": "La Terre avec le jour et la nuit, le soleil, la lune et vos lieux avec leur météo tirée des prévisions enregistrées. Glisser ou Maj + molette la fait tourner ; un clic sur un lieu l’affiche.",
-  "globeKeysHint": "Ctrl ← → tourner · 0 le lieu",
-  "shortcutGlobeTurn": "Globe : tourner de 15°",
-  "shortcutGlobeCenter": "Globe : revenir au lieu affiché",
+  "globeKeysHint": "Ctrl flèches tourner · + − zoom · 0 globe entier",
+  "shortcutGlobeTurn": "Globe : tourner et incliner",
+  "shortcutGlobeCenter": "Globe : le globe entier au lieu affiché",
   "optionNight": "Côté nuit",
   "optionNightHint": "En trois paliers, chacun plus sombre : crépuscule civil (soleil de 0° à −6°), nautique (−6° à −12°), puis astronomique et nuit.",
   "moonWaxing": "Lune · {percent} % · croissante",
@@ -369,5 +369,6 @@ var entries = {
   "optionGlobeRotateSpeed": "Un tour en",
   "secondsShort": "{seconds} s",
   "minutesShort": "{minutes} min",
-  "ctrlLeftRight": "Ctrl ← →"
+  "shortcutGlobeZoom": "Globe : zoomer / dézoomer au pointeur",
+  "globeZoomHint": "Ctrl + molette, un double-clic, + − ou les boutons zooment jusqu’à environ 400 km de large ; de près, la côte, les lacs, les frontières et les villes viennent des données de la carte radar. Le viseur ramène le lieu affiché au centre."
 }

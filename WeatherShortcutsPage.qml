@@ -47,7 +47,8 @@ Column {
         { keys: ["ctrlWheel"], translateKeys: true, action: "shortcutMapWheel" },
         { keys: ["shiftWheel"], translateKeys: true, action: "shortcutSidewaysWheel" },
         { keys: ["⇧ ↑ ↓"], action: "shortcutWindLevel" },
-        { keys: ["ctrlLeftRight", "mouseDrag"], translateKeys: true, action: "shortcutGlobeTurn" },
+        { keys: ["ctrlArrows", "mouseDrag"], translateKeys: true, action: "shortcutGlobeTurn" },
+        { keys: ["+", "−", "ctrlWheel"], translateKeys: true, action: "shortcutGlobeZoom" },
         { keys: ["0"], action: "shortcutGlobeCenter" }
       ]
     },
