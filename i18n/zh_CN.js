@@ -385,5 +385,20 @@ var entries = {
   "shortcutGlobeWash": "地球仪：下一个颜色图层",
   "sourceGroupGlobe": "地球仪",
   "sourceGroupGlobeDetails": "来自 Open-Meteo 模型的温度、云量和降水：整个地球约 510 个点（五天、每三小时一步，每六小时更新），近看时为 16 个点的图块（48 小时），通过缓存中的文件在栏和应用之间共享。自身的每日查询上限让它保持轻量。",
-  "sourceGroupGlobeCoverage": "全球；整个地球仪上点间距约 1000 公里，近看时约 60 公里。"
+  "sourceGroupGlobeCoverage": "全球；整个地球仪上点间距约 1000 公里，近看时约 60 公里。",
+  "globeWashWind": "风",
+  "globeWashSst": "海温",
+  "globeWindHeight": "风的高度",
+  "globeStorms": "风暴与雷暴",
+  "globeStreaks": "风线",
+  "globeIsobars": "等压线",
+  "globeNumbers": "数值",
+  "globeLayersHint": "风暴标出 75 公里/小时以上的阵风和雷暴；风线沿所选高度的风流动（10 米以外的高度会加载自己的数据）；等压线每 4 百帕一条，标出高压和低压；数值在近处显示颜色图层的值。海温来自 Open-Meteo Marine，每天更新。",
+  "globeHigh": "高",
+  "globeLow": "低",
+  "globeGusts": "阵风 {value}",
+  "globeThunderstorm": "雷暴",
+  "globeIsobarsEvery": "等压线间隔 {value}",
+  "globeStreaksAt": "风线高度 {height}",
+  "shortcutGlobeWindHeight": "地球仪：风的高度"
 }

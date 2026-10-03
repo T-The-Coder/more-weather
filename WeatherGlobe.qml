@@ -10,6 +10,7 @@ import "Moon.js" as Moon
 import "Basemap.js" as Basemap
 import "GlobeGrid.js" as GlobeGrid
 import "I18n.js" as I18n
+import "Model.js" as Model
 
 // The globe section: the earth seen from above (centre latitude and
 // longitude, tilted up to 80°), zoomed from the whole disc (z0) to about
@@ -182,10 +183,13 @@ Column {
     //      kept whole) for the frames while it moves; from z3, at rest, the
     //      basemap's cells in view.
     property var land: null
+    // The file as read (GlobeMarine's sea test for the loader).
+    property var landData: null
     property var coarseLand: null
     readonly property bool moving: rotating || turnAnimation.running || dragging
     onMovingChanged: {
       canvas.requestPaint()
+      overlay.requestPaint()
       if (!moving) wash.requestPaint()
     }
     function coarseRings(data) {
@@ -218,6 +222,7 @@ Column {
       onLoaded: {
         try {
           var data = JSON.parse(text())
+          globe.landData = data
           globe.land = Globe.prepareLand(data)
           globe.coarseLand = globe.coarseRings(data)
         } catch (e) {
@@ -278,36 +283,78 @@ Column {
     onLandChanged: canvas.requestPaint()
     onSkyChanged: canvas.requestPaint()
     onMarkersChanged: canvas.requestPaint()
-    onCenterLonChanged: if (!dragging || zoom < 2) { canvas.requestPaint(); wash.viewChanged() }
-    onCenterLatChanged: if (!dragging || zoom < 2) { canvas.requestPaint(); wash.viewChanged() }
-    onZoomChanged: { canvas.requestPaint(); wash.requestPaint() }
+    onCenterLonChanged: if (!dragging || zoom < 2) viewChanged()
+    onCenterLatChanged: if (!dragging || zoom < 2) viewChanged()
+    onZoomChanged: { canvas.requestPaint(); wash.requestPaint(); overlay.requestPaint(); streaks.reseed() }
+    function viewChanged() {
+      canvas.requestPaint()
+      wash.viewChanged()
+      streaks.viewChanged()
+      // The overlay every second frame while moving, between the wash's.
+      if (!moving || wash.skipped % 2 === 1) overlay.requestPaint()
+    }
     // The wash's value at a point of the view, with the place's coordinates
     // ("12 °C · 48° N 11° E"), or null.
     function washHover(x, y) {
-      if (!wash.visible) return null
+      var text = washValueText(x, y)
+      if (text === "") return null
       var m = Globe.viewMatrix(centerLat, Globe.wrapLon(centerLon))
       var place = Globe.unprojectView(x - centerX, centerY - y, m, radius)
-      if (!place) return null
-      var value = NaN
-      if (wash.regionLattice) value = GlobeGrid.latticeValue(wash.regionLattice, place.lat, place.lon)
-      if (!isFinite(value)) value = GlobeGrid.latticeValue(wash.globalLattice, place.lat, place.lon)
-      if (!isFinite(value)) return null
-      var text
-      if (washKind === "temperature") {
-        text = panel.tempScale === "fahrenheit" ? Math.round(value * 1.8 + 32) + " °F"
-          : (panel.tempScale === "kelvin" ? Math.round(value + 273.15) + " K" : Math.round(value) + " °C")
-      } else if (washKind === "cloud") {
-        text = Math.round(value) + " %"
-      } else {
-        text = panel.useImperial ? panel.localizedNumber(Math.round(value / 25.4 * 100) / 100) + " in/h"
-          : panel.localizedNumber(Math.round(value * 10) / 10) + " mm/h"
-      }
       var names = I18n.directionNames(panel.interfaceLanguage)
       var where = Math.round(Math.abs(place.lat)) + "° " + names[place.lat >= 0 ? 0 : 4] + " "
         + Math.round(Math.abs(place.lon)) + "° " + names[place.lon >= 0 ? 2 : 6]
-      return { x: x, y: y, text: panel.localizedNumber ? text + " · " + where : text }
+      return { x: x, y: y, text: text + " · " + where }
+    }
+    // The wash's value at a point of the view in its unit ("12 °C",
+    // "35 km/h"), or "" (the numbers overlay prints these too).
+    function washValueText(x, y, bare) {
+      if (!wash.visible) return ""
+      var m = Globe.viewMatrix(centerLat, Globe.wrapLon(centerLon))
+      var place = Globe.unprojectView(x - centerX, centerY - y, m, radius)
+      if (!place) return ""
+      var value = NaN
+      if (wash.regionLattice) value = GlobeGrid.latticeValue(wash.regionLattice, place.lat, place.lon)
+      if (!isFinite(value)) value = GlobeGrid.latticeValue(wash.globalLattice, place.lat, place.lon)
+      if (!isFinite(value)) return ""
+      // `bare`: the number alone (the legend carries the unit).
+      var unit = function(text) { return bare ? "" : " " + text }
+      if (washKind === "temperature" || washKind === "sst") {
+        return panel.tempScale === "fahrenheit" ? Math.round(value * 1.8 + 32) + unit("°F")
+          : (panel.tempScale === "kelvin" ? Math.round(value + 273.15) + unit("K") : Math.round(value) + unit("°C"))
+      }
+      if (washKind === "cloud") return Math.round(value) + unit("%")
+      if (washKind === "wind") {
+        var wind = Model.windValue(value, panel.windUnitFor(panel.useImperial))
+        return wind ? panel.localizedNumber(wind.value) + unit(wind.unit) : ""
+      }
+      if (bare && value < 0.1) return ""
+      return panel.useImperial ? panel.localizedNumber(Math.round(value / 25.4 * 100) / 100) + unit("in/h")
+        : panel.localizedNumber(Math.round(value * 10) / 10) + unit("mm/h")
+    }
+    // A gust symbol or a bolt under the pointer: "Gusts 86 km/h",
+    // "Thunderstorm".
+    function symbolHover(x, y) {
+      var near = Style.space(10)
+      var list = overlay.gusts
+      for (var i = 0; i < list.length; i++) {
+        if (Math.hypot(list[i].x + shiftX - x, list[i].y + shiftY - y) > near) continue
+        var wind = Model.windValue(list[i].gust, panel.windUnitFor(panel.useImperial))
+        return { x: x, y: y, text: panel.i18n("globeGusts", { value: wind ? panel.localizedNumber(wind.value) + " " + wind.unit : "" }) }
+      }
+      var bolts = overlay.bolts
+      for (var j = 0; j < bolts.length; j++)
+        if (Math.hypot(bolts[j].x + shiftX - x, bolts[j].y + shiftY - y) <= near)
+          return { x: x, y: y, text: panel.i18n("globeThunderstorm") }
+      return null
     }
     readonly property var washPalette: wash.palette
+    // The wind's height and its scale end (Model.WIND_LEVELS).
+    readonly property string windHeight: String(panel.displaySetting("globeWindLevel", "10m"))
+    readonly property real windScaleKmh: Model.windLevel(windHeight).scaleKmh
+    readonly property Item overlayItem: overlay
+    // My places' and the towns' labels drawn last (the overlay avoids them).
+    property var labelRects: []
+    readonly property Item streaksItem: streaks
     readonly property Item washItem: wash
     // The colour wash shown (Settings → Display → Globe, or v).
     readonly property string washKind: String(panel.displaySetting("globeWash", "temperature"))
@@ -401,6 +448,7 @@ Column {
       globalLattice: globe.panel.globeData.globalLattice
       regionLattice: globe.zoom >= 2 ? globe.panel.globeData.regionLattice : null
       cells: globe.panel.standaloneMode ? 128 : 96
+      scaleKmh: globe.windScaleKmh
     }
 
     Canvas {
@@ -417,6 +465,12 @@ Column {
 
       function rgba(color, alpha) {
         return Qt.rgba(color.r, color.g, color.b, alpha)
+      }
+      // The land's fill: faint, but opaque over the sea's temperature, which
+      // has values only at sea.
+      function landFill() {
+        if (globe.washKind !== "sst") return rgba(ink, 0.08)
+        return Qt.rgba(surface.r * 0.92 + ink.r * 0.08, surface.g * 0.92 + ink.g * 0.08, surface.b * 0.92 + ink.b * 0.08, 1)
       }
       // Globe.js gives y to the north round the centre; the canvas wants
       // pixels downwards.
@@ -471,7 +525,7 @@ Column {
               var polys = Globe.frontPolygonsView(rings[r], m, R)
               for (var p = 0; p < polys.length; p++) trace(ctx, polys[p], true)
             }
-            ctx.fillStyle = rgba(ink, 0.08)
+            ctx.fillStyle = landFill()
             ctx.fillRule = Qt.OddEvenFill
             ctx.fill()
             ctx.beginPath()
@@ -531,6 +585,8 @@ Column {
 
         var taken = paintMarkers(ctx, m)
         if (detail) paintTowns(ctx, m, taken)
+        // The overlay's labels keep clear of these.
+        globe.labelRects = taken
         mouse.updateHover()
         var done = Date.now()
         var st = globe.paintStats
@@ -665,7 +721,7 @@ Column {
               }
           })
         })
-        ctx.fillStyle = rgba(ink, 0.08)
+        ctx.fillStyle = landFill()
         ctx.fill()
         outline("lakes", rgba(ink, 0.35), 0.7)
         outline("land", rgba(ink, 0.5), 0.8)
@@ -771,6 +827,81 @@ Column {
     // and is drawn anew on release, as on the radar map); a double click
     // zooms in at the pointer; a click on a place shows it; the resting
     // pointer names the place or the moon under it.
+    // The model's overlays: wind streaks, then isobars, gusts and numbers,
+    // then the thunderstorms' bolts (a pool of items, each flickering by
+    // itself while the globe is in view).
+    WeatherGlobeStreaks {
+      id: streaks
+      x: globe.shiftX
+      y: globe.shiftY
+      width: globe.width
+      height: globe.height
+      panel: globe.panel
+      globe: globeSection.view
+      running: globe.panel.globeShown && globe.onScreen && globe.panel.globeData.streaksOn
+      uLattice: globe.panel.globeData.streaksOn && globe.panel.globeData.layers ? globe.panel.globeData.layers.u || null : null
+      vLattice: globe.panel.globeData.streaksOn && globe.panel.globeData.layers ? globe.panel.globeData.layers.v || null : null
+      scaleKmh: globe.windScaleKmh
+    }
+    WeatherGlobeOverlay {
+      id: overlay
+      x: globe.shiftX
+      y: globe.shiftY
+      width: globe.width
+      height: globe.height
+      panel: globe.panel
+      globe: globeSection.view
+      layers: globe.panel.globeData.layers
+      isobars: globe.panel.globeData.isobarsOn
+      storms: globe.panel.globeData.stormsOn
+      numbers: globe.panel.displaySetting("globeNumbers", false) === true
+      valueAt: function(x, y) { return globe.washValueText(x, y, true) }
+    }
+    Repeater {
+      model: 24
+      Item {
+        id: bolt
+        required property int index
+        readonly property var place: index < overlay.bolts.length ? overlay.bolts[index] : null
+        visible: !!place
+        x: (place ? place.x : 0) + globe.shiftX - width / 2
+        y: (place ? place.y : 0) + globe.shiftY - height / 2
+        width: 14
+        height: 20
+        Canvas {
+          anchors.fill: parent
+          onPaint: {
+            var ctx = getContext("2d")
+            ctx.clearRect(0, 0, width, height)
+            ctx.beginPath()
+            ctx.moveTo(8, 0)
+            ctx.lineTo(1, 11)
+            ctx.lineTo(6, 11)
+            ctx.lineTo(4, 20)
+            ctx.lineTo(13, 7)
+            ctx.lineTo(8, 7)
+            ctx.lineTo(11, 0)
+            ctx.closePath()
+            ctx.fillStyle = "#ffe14a"
+            ctx.fill()
+            ctx.strokeStyle = "rgba(60,40,0,0.8)"
+            ctx.lineWidth = 0.8
+            ctx.stroke()
+          }
+        }
+        // A flash now and then, each bolt on its own beat.
+        SequentialAnimation on opacity {
+          running: bolt.visible && globe.panel.globeShown && globe.onScreen
+          loops: Animation.Infinite
+          PauseAnimation { duration: 700 + (bolt.index * 397) % 1900 }
+          NumberAnimation { to: 0.2; duration: 60 }
+          NumberAnimation { to: 1; duration: 50 }
+          NumberAnimation { to: 0.35; duration: 50 }
+          NumberAnimation { to: 1; duration: 90 }
+        }
+      }
+    }
+
     MouseArea {
       id: mouse
       anchors.fill: parent
@@ -808,8 +939,9 @@ Column {
             .filter(function(part) { return !!part }).join(" · ") }
           return
         }
-        // The wash's value under the pointer, with the place.
-        globe.hover = globe.washHover(p.x, p.y)
+        // A storm's symbol, else the wash's value under the pointer, with
+        // the place.
+        globe.hover = globe.symbolHover(p.x, p.y) || globe.washHover(p.x, p.y)
       }
       function dragTo(x, y) {
         return GlobeView.panned(pressLat, pressLon, x - pressX, y - pressY, globe.radius)

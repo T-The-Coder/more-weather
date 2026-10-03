@@ -385,5 +385,20 @@ var entries = {
   "shortcutGlobeWash": "지구본: 다음 색상 레이어",
   "sourceGroupGlobe": "지구본",
   "sourceGroupGlobeDetails": "Open-Meteo 모델의 기온, 구름, 강수: 지구 전체 약 510개 지점(3시간 간격 5일, 6시간마다 갱신)과 확대 시 16개 지점 타일(48시간)이며, 캐시 파일로 막대와 앱이 공유합니다. 자체 하루 조회 한도로 부담을 줄입니다.",
-  "sourceGroupGlobeCoverage": "전 세계; 지구본 전체에서는 지점 간격 약 1,000 km, 확대하면 약 60 km까지."
+  "sourceGroupGlobeCoverage": "전 세계; 지구본 전체에서는 지점 간격 약 1,000 km, 확대하면 약 60 km까지.",
+  "globeWashWind": "바람",
+  "globeWashSst": "해수면 온도",
+  "globeWindHeight": "바람 고도",
+  "globeStorms": "폭풍과 뇌우",
+  "globeStreaks": "바람 선",
+  "globeIsobars": "등압선",
+  "globeNumbers": "숫자",
+  "globeLayersHint": "폭풍은 시속 75km 이상의 돌풍과 뇌우를 표시합니다. 바람 선은 선택한 고도의 바람을 따라 흐릅니다(10m 이외의 고도는 자체 데이터를 불러옵니다). 등압선은 4hPa마다 고기압과 저기압과 함께 그립니다. 숫자는 확대 시 색상 레이어의 값을 표시합니다. 해수면 온도는 Open-Meteo Marine에서 매일 갱신됩니다.",
+  "globeHigh": "고",
+  "globeLow": "저",
+  "globeGusts": "돌풍 {value}",
+  "globeThunderstorm": "뇌우",
+  "globeIsobarsEvery": "등압선 {value} 간격",
+  "globeStreaksAt": "바람 선 {height}",
+  "shortcutGlobeWindHeight": "지구본: 바람 고도"
 }

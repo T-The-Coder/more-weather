@@ -385,5 +385,20 @@ var entries = {
   "shortcutGlobeWash": "Globe : couche de couleur suivante",
   "sourceGroupGlobe": "Globe",
   "sourceGroupGlobeDetails": "Température, nuages et précipitations du modèle d’Open-Meteo : environ 510 points pour toute la Terre (cinq jours par pas de trois heures, renouvelés toutes les six heures) et de près des tuiles de 16 points (48 heures), partagés entre barre et application par des fichiers en cache. Une limite quotidienne d’appels le garde léger.",
-  "sourceGroupGlobeCoverage": "Mondial ; environ 1 000 km d’écart sur le globe entier, jusqu’à environ 60 km de près."
+  "sourceGroupGlobeCoverage": "Mondial ; environ 1 000 km d’écart sur le globe entier, jusqu’à environ 60 km de près.",
+  "globeWashWind": "Vent",
+  "globeWashSst": "Température de la mer",
+  "globeWindHeight": "Hauteur du vent",
+  "globeStorms": "Tempêtes et orages",
+  "globeStreaks": "Lignes de vent",
+  "globeIsobars": "Isobares",
+  "globeNumbers": "Nombres",
+  "globeLayersHint": "Tempêtes marque les rafales dès 75 km/h et les orages ; les lignes suivent le vent à la hauteur choisie (une autre hauteur que 10 m charge ses propres données) ; les isobares sont tracées tous les 4 hPa avec anticyclones et dépressions ; les nombres affichent de près les valeurs de la couche de couleur. La température de la mer vient d’Open-Meteo Marine, renouvelée chaque jour.",
+  "globeHigh": "A",
+  "globeLow": "D",
+  "globeGusts": "Rafales {value}",
+  "globeThunderstorm": "Orage",
+  "globeIsobarsEvery": "isobares tous les {value}",
+  "globeStreaksAt": "lignes à {height}",
+  "shortcutGlobeWindHeight": "Globe : hauteur du vent"
 }

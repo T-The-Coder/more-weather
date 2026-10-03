@@ -385,5 +385,20 @@ var entries = {
   "shortcutGlobeWash": "Quả địa cầu: lớp màu tiếp theo",
   "sourceGroupGlobe": "Quả địa cầu",
   "sourceGroupGlobeDetails": "Nhiệt độ, mây và lượng mưa từ mô hình của Open-Meteo: khoảng 510 điểm cho cả Trái Đất (năm ngày theo bước ba giờ, làm mới mỗi sáu giờ) và khi phóng to là ô 16 điểm (48 giờ), dùng chung giữa thanh và ứng dụng qua tệp trong bộ nhớ đệm. Giới hạn lượt gọi hằng ngày riêng giữ cho nó nhẹ.",
-  "sourceGroupGlobeCoverage": "Toàn cầu; khoảng 1.000 km giữa các điểm trên toàn quả cầu, khi phóng to đến khoảng 60 km."
+  "sourceGroupGlobeCoverage": "Toàn cầu; khoảng 1.000 km giữa các điểm trên toàn quả cầu, khi phóng to đến khoảng 60 km.",
+  "globeWashWind": "Gió",
+  "globeWashSst": "Nhiệt độ nước biển",
+  "globeWindHeight": "Độ cao gió",
+  "globeStorms": "Bão và dông",
+  "globeStreaks": "Đường gió",
+  "globeIsobars": "Đường đẳng áp",
+  "globeNumbers": "Số",
+  "globeLayersHint": "Bão đánh dấu gió giật từ 75 km/h và dông; các đường đi theo gió ở độ cao đã chọn (độ cao khác 10 m tải dữ liệu riêng); đường đẳng áp cách nhau 4 hPa kèm áp cao và áp thấp; số hiển thị giá trị của lớp màu khi phóng to. Nhiệt độ nước biển lấy từ Open-Meteo Marine và làm mới hằng ngày.",
+  "globeHigh": "C",
+  "globeLow": "T",
+  "globeGusts": "Gió giật {value}",
+  "globeThunderstorm": "Dông",
+  "globeIsobarsEvery": "đẳng áp mỗi {value}",
+  "globeStreaksAt": "đường gió ở {height}",
+  "shortcutGlobeWindHeight": "Quả địa cầu: độ cao gió"
 }

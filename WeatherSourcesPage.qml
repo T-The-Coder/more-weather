@@ -109,8 +109,9 @@ Column {
     {
       title: "sourceGroupGlobe", details: "sourceGroupGlobeDetails",
       inUse: panel.globeData.gridLoaded
-        ? "OPEN-METEO · " + panel.upperLabel(panel.i18n("globeCallsToday", { count: panel.globeData.callsToday })) : "",
-      links: [["Open-Meteo", "https://open-meteo.com/"]]
+        ? "OPEN-METEO" + (panel.globeData.needsMarine ? " · OPEN-METEO MARINE" : "") + " · "
+          + panel.upperLabel(panel.i18n("globeCallsToday", { count: panel.globeData.callsToday })) : "",
+      links: [["Open-Meteo", "https://open-meteo.com/"], ["Open-Meteo Marine", "https://open-meteo.com/en/docs/marine-weather-api"]]
     },
     {
       title: "sourceGroupMoon", details: "sourceGroupMoonDetails",

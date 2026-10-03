@@ -29,9 +29,33 @@ var BUDGET_MANUAL = 2000
 var BUDGET_STOP = 3000
 var VARIABLES = ["temperature_2m", "cloud_cover", "precipitation", "weather_code", "cape", "pressure_msl",
   "wind_speed_10m", "wind_direction_10m", "wind_gusts_10m"]
+// Winds aloft (Model.WIND_LEVELS other than 10 m) come in a request of
+// their own per batch or tile, only while such a height is chosen: its two
+// variables, keys with "@<level>" ("G9:3@850hPa", "T3:17:40@850hPa").
+// The sea's temperature comes from Open-Meteo Marine for the global points
+// at sea (GlobeMarine.oceanPoints), in chunks "S9:<i>", kept a day.
+var MARINE_TTL_MS = 24 * 60 * 60 * 1000
+var MARINE_CHUNK = 100
+// Marine answers 400 for a whole request when one place has no data (the
+// poles, the ice shelves): only places up to 72° are asked.
+var MARINE_MAX_LAT = 72
+// A failed request's key waits before it is asked again: 10 minutes, then
+// twice as long each time, at most 6 hours.
+function retryAfterMs(failures) {
+  return Math.min(6 * 60 * 60 * 1000, 10 * 60 * 1000 * Math.pow(2, Math.max(0, failures - 1)))
+}
+function levelVariables(level) {
+  return ["wind_speed_" + level, "wind_direction_" + level]
+}
+// Codes are never blended: the nearest point's.
+var NEAREST = { weather_code: true }
 // Kept as integers: the value times its scale.
 var SCALES = { temperature_2m: 10, cloud_cover: 1, precipitation: 100, weather_code: 1, cape: 1, pressure_msl: 10,
-  wind_speed_10m: 10, wind_direction_10m: 1, wind_gusts_10m: 10 }
+  wind_speed_10m: 10, wind_direction_10m: 1, wind_gusts_10m: 10, sea_surface_temperature: 100 }
+// Others (the heights' winds): tenths.
+function scaleOf(name) {
+  return SCALES[name] || 10
+}
 
 function ringLats() {
   var list = []
@@ -64,8 +88,8 @@ function batchPoints(k) {
   return list
 }
 
-function batchKey(k) {
-  return "G9:" + k
+function batchKey(k, level) {
+  return "G9:" + k + (level && level !== "10m" ? "@" + level : "")
 }
 
 // ---- Tiles.
@@ -90,8 +114,27 @@ function tileColumns(level, row) {
 function tileKey(level, row, col) {
   return "T" + level + ":" + row + ":" + col
 }
+// The wind height a key belongs to ("" for the base data), and the key
+// without it.
+function keyLevel(key) {
+  var at = String(key).indexOf("@")
+  return at < 0 ? "" : String(key).slice(at + 1)
+}
+function baseKey(key) {
+  var at = String(key).indexOf("@")
+  return at < 0 ? String(key) : String(key).slice(0, at)
+}
+function withLevel(key, level) {
+  return level && level !== "10m" ? baseKey(key) + "@" + level : baseKey(key)
+}
+// How long a key's data stays fresh.
+function ttlOf(key) {
+  var k = String(key)
+  if (k.indexOf("S9:") === 0) return MARINE_TTL_MS
+  return k.indexOf("G9:") === 0 ? GLOBAL_TTL_MS : TILE_TTL_MS
+}
 function parseTileKey(key) {
-  var match = /^T(\d):(\d+):(\d+)$/.exec(String(key))
+  var match = /^T(\d):(\d+):(\d+)$/.exec(baseKey(key))
   return match ? { level: Number(match[1]), row: Number(match[2]), col: Number(match[3]) } : null
 }
 function tileAt(lat, lon, level) {
@@ -149,7 +192,7 @@ function wrapLon(lon) {
 function coordinate(value) {
   return String(Math.round(value * 100) / 100)
 }
-function forecastRequest(points, kind) {
+function forecastRequest(points, kind, variables) {
   var lats = [], lons = []
   for (var i = 0; i < points.length; i++) {
     lats.push(coordinate(points[i].lat))
@@ -158,7 +201,7 @@ function forecastRequest(points, kind) {
   var global = kind === "global"
   return {
     url: "https://api.open-meteo.com/v1/forecast?latitude=" + lats.join(",") + "&longitude=" + lons.join(",")
-      + "&hourly=" + VARIABLES.join(",")
+      + "&hourly=" + (variables || VARIABLES).join(",")
       + (global ? "&temporal_resolution=hourly_3&forecast_hours=" + GLOBAL_HOURS : "&forecast_hours=" + TILE_HOURS)
       + "&timeformat=unixtime&timezone=GMT",
     timeoutMs: 20000,
@@ -198,15 +241,16 @@ function touchedLru(list, key, max) {
 // ---- The compact form (cache files, the worker's store): points as
 // [lat, lon], times in unix seconds, each variable as integers point by
 // point (value · scale, null where missing).
-function compactFromResponse(text, points, kind, key, nowMs) {
+function compactFromResponse(text, points, kind, key, nowMs, variables) {
   var data = JSON.parse(String(text))
   var list = Array.isArray(data) ? data : [data]
   if (!list.length || list.length !== points.length) return null
   var times = list[0].hourly && list[0].hourly.time ? list[0].hourly.time : []
   var vars = {}
-  for (var v = 0; v < VARIABLES.length; v++) {
-    var name = VARIABLES[v]
-    var scale = SCALES[name]
+  var names = variables || VARIABLES
+  for (var v = 0; v < names.length; v++) {
+    var name = names[v]
+    var scale = scaleOf(name)
     var out = new Array(points.length * times.length)
     for (var p = 0; p < list.length; p++) {
       var series = list[p].hourly && list[p].hourly[name] ? list[p].hourly[name] : []
@@ -228,7 +272,7 @@ function compactFromResponse(text, points, kind, key, nowMs) {
 function compactValue(compact, name, p, t) {
   var values = compact.vars[name]
   var value = values ? values[p * compact.times.length + t] : null
-  return value === null || value === undefined ? NaN : value / SCALES[name]
+  return value === null || value === undefined ? NaN : value / scaleOf(name)
 }
 
 // The time step nearest to `ms` (unix seconds in `times`).
@@ -239,9 +283,22 @@ function nearestStep(times, ms) {
   return best
 }
 
+// The wind's east (u) or north (v) part in km/h at point p, step t, from
+// the speed and the meteorological direction (where it comes from), so
+// lattices blend vectors, never angles: names "wind_u_<height>",
+// "wind_v_<height>" ("wind_u_10m", "wind_v_850hPa").
+function windPart(compact, name, p, t) {
+  var height = name.slice(7)
+  var speed = compactValue(compact, "wind_speed_" + height, p, t)
+  var from = compactValue(compact, "wind_direction_" + height, p, t) * Math.PI / 180
+  if (!isFinite(speed) || !isFinite(from)) return NaN
+  return name.charAt(5) === "u" ? -speed * Math.sin(from) : -speed * Math.cos(from)
+}
+
 // A variable's value in mm/h, °C, % …: precipitation in a 3-hourly step
 // is the sum of the three hours.
 function rateValue(compact, name, p, t) {
+  if (name.indexOf("wind_u_") === 0 || name.indexOf("wind_v_") === 0) return windPart(compact, name, p, t)
   var value = compactValue(compact, name, p, t)
   return name === "precipitation" && compact.kind === "global" ? value / 3 : value
 }
@@ -255,6 +312,7 @@ function rateValue(compact, name, p, t) {
 // rings above and below.
 function globalLattice(batches, name, ms) {
   var cols = 145, rows = 73
+  var nearest = !!NEAREST[name]
   var byRing = {}
   for (var b = 0; b < batches.length; b++) {
     var batch = batches[b]
@@ -279,6 +337,7 @@ function globalLattice(batches, name, ms) {
     var span = ((c[0] - a[0]) % 360 + 360) % 360
     if (span === 0) return a[1]
     var into = ((lon - a[0]) % 360 + 360) % 360
+    if (nearest) return into <= span / 2 ? a[1] : c[1]
     return a[1] + (c[1] - a[1]) * into / span
   }
   var values = new Array(cols * rows)
@@ -296,6 +355,7 @@ function globalLattice(batches, name, ms) {
       var v
       if (!isFinite(lower)) v = upper
       else if (!isFinite(upper) || lats[above] === lats[below]) v = lower
+      else if (nearest) v = nodeLat - lats[below] <= lats[above] - nodeLat ? lower : upper
       else v = lower + (upper - lower) * (nodeLat - lats[below]) / (lats[above] - lats[below])
       values[row * cols + col] = isFinite(v) ? v : NaN
     }
@@ -304,7 +364,7 @@ function globalLattice(batches, name, ms) {
 }
 
 // A lattice's value at a place (bilinear), NaN outside it or where unknown.
-function latticeValue(lattice, lat, lon) {
+function latticeValue(lattice, lat, lon, nearest) {
   if (!lattice) return NaN
   var x = Number(lon)
   if (lattice.wrap) x = wrapLon(x)
@@ -319,6 +379,7 @@ function latticeValue(lattice, lat, lon) {
   var tx = fx - x0, ty = fy - y0
   var v = lattice.values
   var i = y0 * lattice.cols + x0
+  if (nearest) return v[i + (tx > 0.5 ? 1 : 0) + (ty > 0.5 ? lattice.cols : 0)]
   return (v[i] * (1 - tx) + v[i + 1] * tx) * (1 - ty) + (v[i + lattice.cols] * (1 - tx) + v[i + lattice.cols + 1] * tx) * ty
 }
 
@@ -334,20 +395,22 @@ function tileValue(tile, name, ms, lat, lon) {
   var x0 = Math.max(0, Math.min(n - 1, Math.floor(fx))), y0 = Math.max(0, Math.min(n - 1, Math.floor(fy)))
   var tx = Math.max(0, Math.min(1, fx - x0)), ty = Math.max(0, Math.min(1, fy - y0))
   function at(i, j) { return rateValue(tile, name, i * TILE_POINTS + j, t) }
+  if (NEAREST[name]) return at(y0 + (ty > 0.5 ? 1 : 0), x0 + (tx > 0.5 ? 1 : 0))
   return (at(y0, x0) * (1 - tx) + at(y0, x0 + 1) * tx) * (1 - ty) + (at(y0 + 1, x0) * (1 - tx) + at(y0 + 1, x0 + 1) * tx) * ty
 }
 
 // A box seen from close up: each node from the tile of `level` it lies in,
 // where that tile is loaded, else from the global lattice underneath.
-function regionLattice(tiles, global, name, ms, box, level, cols, rows) {
+// `height` picks the tiles of a wind height ("@850hPa" keys).
+function regionLattice(tiles, global, name, ms, box, level, cols, rows, height) {
   var values = new Array(cols * rows)
   for (var row = 0; row < rows; row++) {
     var lat = box.south + (box.north - box.south) * row / (rows - 1)
     for (var col = 0; col < cols; col++) {
       var lon = box.west + (box.east - box.west) * col / (cols - 1)
-      var tile = tiles[tileAt(lat, lon, level)]
+      var tile = tiles[withLevel(tileAt(lat, lon, level), height)]
       var v = tile ? tileValue(tile, name, ms, lat, lon) : NaN
-      if (!isFinite(v)) v = latticeValue(global, lat, lon)
+      if (!isFinite(v)) v = latticeValue(global, lat, lon, !!NEAREST[name])
       values[row * cols + col] = isFinite(v) ? v : NaN
     }
   }

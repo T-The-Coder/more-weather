@@ -4,6 +4,24 @@ All notable changes to More Weather are documented here.
 
 ## Unreleased
 
+- **More on the globe**: the colour layer gains **wind** (in the wind
+  map's colours, in your wind unit) and the **sea's temperature** (from
+  Open-Meteo Marine, −2 … 32 °C, land drawn over it); four overlays,
+  each a switch in Settings → Display → Globe: **storms and
+  thunderstorms** (gust symbols from 75 km/h, stronger from 103, and
+  bolts that flicker where the model has thunderstorms; on by default),
+  **wind streaks** that drift with the wind, **isobars** every 4 hPa
+  with H and L at the pressure centres, and **numbers** with the layer's
+  values from close up. The wind and the streaks follow a height of
+  their own (10 m up to 250 hPa: the dropdown, or `Shift` `↑` `↓` on the
+  globe), loaded only while shown. A gust symbol or bolt under the
+  pointer names it ("Gusts 86 km/h", "Thunderstorm"); the legend shows
+  the wind scale with its height, the sea's scale, and the isobars'
+  spacing. Isobars, centres and symbols are worked out off the shell's
+  thread once per time step (`GlobeLayers.js` in the worker).
+- The globe's data no longer asks again every ten seconds after a failed
+  or unreadable answer: such a key waits 10 minutes, then twice as long
+  each time, up to 6 hours.
 - **Air pressure** (hPa at sea level, or inHg with US units), off by default:
   in the menu bar (with **Relevant** while it rises or falls by 1.5 hPa or
   more in three hours, and **Hover**), in the current weather with its trend

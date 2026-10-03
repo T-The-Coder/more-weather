@@ -419,5 +419,20 @@ var catalog = {
   "shortcutGlobeWash": "Globe: next colour layer",
   "sourceGroupGlobe": "Globe",
   "sourceGroupGlobeDetails": "Temperature, cloud and precipitation from Open-Meteo's model: about 510 points for the whole earth (five days in three-hour steps, renewed every six hours) and close up tiles of 16 points (48 hours), shared between bar and app through files in the cache. Its own daily limit of point-calls keeps it light.",
-  "sourceGroupGlobeCoverage": "Worldwide; about 1,000 km apart on the whole globe, down to about 60 km close up."
+  "sourceGroupGlobeCoverage": "Worldwide; about 1,000 km apart on the whole globe, down to about 60 km close up.",
+  "globeWashWind": "Wind",
+  "globeWashSst": "Sea temperature",
+  "globeWindHeight": "Wind height",
+  "globeStorms": "Storms and thunderstorms",
+  "globeStreaks": "Wind streaks",
+  "globeIsobars": "Isobars",
+  "globeNumbers": "Numbers",
+  "globeLayersHint": "Storms mark gusts from 75 km/h and thunderstorms; the streaks follow the wind at the chosen height (a height other than 10 m loads data of its own); isobars run every 4 hPa with highs and lows; numbers print the colour layer's values from close up. The sea's temperature comes from Open-Meteo Marine, renewed daily.",
+  "globeHigh": "H",
+  "globeLow": "L",
+  "globeGusts": "Gusts {value}",
+  "globeThunderstorm": "Thunderstorm",
+  "globeIsobarsEvery": "isobars every {value}",
+  "globeStreaksAt": "streaks at {height}",
+  "shortcutGlobeWindHeight": "Globe: wind height"
 }

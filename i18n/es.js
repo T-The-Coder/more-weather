@@ -385,5 +385,20 @@ var entries = {
   "shortcutGlobeWash": "Globo: siguiente capa de color",
   "sourceGroupGlobe": "Globo",
   "sourceGroupGlobeDetails": "Temperatura, nubes y precipitación del modelo de Open-Meteo: unos 510 puntos para toda la Tierra (cinco días en pasos de tres horas, renovados cada seis horas) y de cerca teselas de 16 puntos (48 horas), compartidos entre barra y aplicación mediante archivos en la caché. Un límite diario propio de consultas lo mantiene ligero.",
-  "sourceGroupGlobeCoverage": "Mundial; unos 1.000 km de separación en el globo entero, hasta unos 60 km de cerca."
+  "sourceGroupGlobeCoverage": "Mundial; unos 1.000 km de separación en el globo entero, hasta unos 60 km de cerca.",
+  "globeWashWind": "Viento",
+  "globeWashSst": "Temperatura del mar",
+  "globeWindHeight": "Altura del viento",
+  "globeStorms": "Tormentas y rachas",
+  "globeStreaks": "Líneas de viento",
+  "globeIsobars": "Isobaras",
+  "globeNumbers": "Números",
+  "globeLayersHint": "Tormentas marca rachas desde 75 km/h y tormentas eléctricas; las líneas siguen el viento a la altura elegida (una altura distinta de 10 m carga datos propios); las isobaras van cada 4 hPa con altas y bajas; los números muestran los valores de la capa de color de cerca. La temperatura del mar viene de Open-Meteo Marine y se renueva a diario.",
+  "globeHigh": "A",
+  "globeLow": "B",
+  "globeGusts": "Rachas {value}",
+  "globeThunderstorm": "Tormenta",
+  "globeIsobarsEvery": "isobaras cada {value}",
+  "globeStreaksAt": "líneas a {height}",
+  "shortcutGlobeWindHeight": "Globo: altura del viento"
 }

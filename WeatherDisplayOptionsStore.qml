@@ -214,7 +214,8 @@ Item {
     menubarAccents: ["off", "hover", "always"],
     globeRotateDelay: ["5", "10", "30"],
     globeRotateSpeed: ["1", "2", "4", "8"],
-    globeWash: ["none", "temperature", "cloud", "precipitation"]
+    globeWash: ["none", "temperature", "cloud", "precipitation", "wind", "sst"],
+    globeWindLevel: ["10m", "120m", "850hPa", "700hPa", "500hPa", "250hPa"]
   })
   function normalizedChoice(key, value, fallback) {
     var text = String(value === undefined || value === null ? "" : value)

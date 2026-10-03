@@ -385,5 +385,20 @@ var entries = {
   "shortcutGlobeWash": "גלובוס: שכבת הצבע הבאה",
   "sourceGroupGlobe": "גלובוס",
   "sourceGroupGlobeDetails": "טמפרטורה, עננות ומשקעים מהמודל של Open-Meteo: כ־510 נקודות לכדור הארץ כולו (חמישה ימים בצעדים של שלוש שעות, מתחדשות כל שש שעות) ומקרוב אריחים של 16 נקודות (48 שעות), משותפים לסרגל וליישום דרך קבצים במטמון. מגבלה יומית משלו שומרת עליו קל.",
-  "sourceGroupGlobeCoverage": "כל העולם; כ־1,000 ק״מ בין הנקודות בגלובוס כולו, מקרוב עד כ־60 ק״מ."
+  "sourceGroupGlobeCoverage": "כל העולם; כ־1,000 ק״מ בין הנקודות בגלובוס כולו, מקרוב עד כ־60 ק״מ.",
+  "globeWashWind": "רוח",
+  "globeWashSst": "טמפרטורת הים",
+  "globeWindHeight": "גובה הרוח",
+  "globeStorms": "סערות וסופות רעמים",
+  "globeStreaks": "קווי רוח",
+  "globeIsobars": "איזוברים",
+  "globeNumbers": "מספרים",
+  "globeLayersHint": "סערות מסמנות משבים מ־75 קמ״ש וסופות רעמים; הקווים עוקבים אחרי הרוח בגובה שנבחר (גובה שאינו 10 מ׳ טוען נתונים משלו); האיזוברים כל 4 הקטופסקל עם רמות ושקעים; המספרים מציגים מקרוב את ערכי שכבת הצבע. טמפרטורת הים מגיעה מ־Open-Meteo Marine ומתחדשת מדי יום.",
+  "globeHigh": "ר",
+  "globeLow": "ש",
+  "globeGusts": "משבים {value}",
+  "globeThunderstorm": "סופת רעמים",
+  "globeIsobarsEvery": "איזוברים כל {value}",
+  "globeStreaksAt": "קווים ב־{height}",
+  "shortcutGlobeWindHeight": "גלובוס: גובה הרוח"
 }

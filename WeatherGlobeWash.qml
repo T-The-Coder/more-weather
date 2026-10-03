@@ -2,7 +2,8 @@ import QtQuick
 import "Globe.js" as Globe
 import "GlobeFields.js" as GlobeFields
 
-// The globe's colour wash (temperature, cloud or precipitation): a small
+// The globe's colour wash (temperature, cloud, precipitation, wind or the
+// sea's temperature): a small
 // picture, one pixel per cell of an n-wide grid over the view, scaled up
 // smoothly; the cells on the rim are as opaque as they are inside it. Each cell looks up the place under its middle (the inverse of
 // the view's projection), reads the value bilinearly from the lattices
@@ -12,17 +13,20 @@ Canvas {
   id: wash
   required property var panel
   required property Item globe
-  // "temperature", "cloud" or "precipitation" ("none" draws nothing).
+  // "temperature", "cloud", "precipitation", "wind" or "sst" ("none" draws
+  // nothing).
   property string kind: "none"
+  // The wind's scale end in km/h (the height's, Model.WIND_LEVELS).
+  property real scaleKmh: 100
   property var globalLattice: null
   property var regionLattice: null
-  // Cells across: 96 in the popup, 128 in the app; two thirds of that while
+  // Cells across: 96 in the popup, 128 in the app; half of that while
   // the globe moves, which the smooth scaling hides.
   property int cells: 96
   // What its frames cost (the screenshot harness reads it).
   property var stats: ({ count: 0, total: 0, max: 0 })
 
-  readonly property int columns: globe.moving ? Math.round(cells * 2 / 3) : cells
+  readonly property int columns: globe.moving ? Math.round(cells / 2) : cells
   readonly property int rows: Math.max(1, Math.round(columns * globe.height / Math.max(1, globe.width)))
   width: columns
   height: rows
@@ -30,15 +34,16 @@ Canvas {
   smooth: true
   visible: kind !== "none" && !!globalLattice
 
-  // Each bucket's colour, [r, g, b, a] in 0–255: temperature in the
-  // plugin's accent colours on the fixed −40…45 °C scale, the rest fixed.
+  // Each bucket's colour, [r, g, b, a] in 0–255: temperature (−40…45 °C)
+  // and the sea (−2…32 °C) in the plugin's accent colours along their
+  // scales, the rest fixed.
   readonly property var palette: {
     var list = []
     var count = GlobeFields.bucketCount(kind)
     for (var i = 0; i < count; i++) {
-      if (kind === "temperature") {
-        var color = panel.temperatureAccent(GlobeFields.bucketValue(kind, i), GlobeFields.TEMPERATURE.min,
-          GlobeFields.TEMPERATURE.max)
+      if (kind === "temperature" || kind === "sst") {
+        var r = GlobeFields.range(kind)
+        var color = panel.temperatureAccent(GlobeFields.bucketValue(kind, i), r.min, r.max)
         var c = color ? Qt.color(color) : panel.foreground
         list.push([Math.round(c.r * 255), Math.round(c.g * 255), Math.round(c.b * 255), 150])
       } else {
@@ -52,6 +57,7 @@ Canvas {
   onGlobalLatticeChanged: requestPaint()
   onRegionLatticeChanged: requestPaint()
   onKindChanged: requestPaint()
+  onScaleKmhChanged: requestPaint()
   onWidthChanged: requestPaint()
   onHeightChanged: requestPaint()
 
@@ -103,15 +109,16 @@ Canvas {
     var rxs = region ? (rcols - 1) / (region.east - region.west) : 0
     var rys = region ? (rrows - 1) / (region.north - region.south) : 0
     var rmid = region ? (region.west + region.east) / 2 : 0
-    // The colours flat, four numbers each; temperature and cloud take their
+    // The colours flat, four numbers each; the even scales take their
     // bucket by a straight scale, precipitation by its steps.
     var colors = palette
     var flat = []
     for (var n = 0; n < colors.length; n++) flat.push(colors[n][0], colors[n][1], colors[n][2], colors[n][3])
     var count = colors.length
-    var linear = kind === "temperature" || kind === "cloud"
-    var low = kind === "temperature" ? GlobeFields.TEMPERATURE.min : 0
-    var perBucket = kind === "temperature" ? count / (GlobeFields.TEMPERATURE.max - GlobeFields.TEMPERATURE.min) : count / 100
+    var span = GlobeFields.range(kind, scaleKmh)
+    var linear = !!span
+    var low = span ? span.min : 0
+    var perBucket = span ? count / (span.max - span.min) : 0
     var kindName = kind
     for (var r = 0; r < rows; r++) {
       var w = (cy - (r + 0.5) * cellH) / R

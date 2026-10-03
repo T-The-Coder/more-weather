@@ -385,5 +385,20 @@ var entries = {
   "shortcutGlobeWash": "Globus: następna warstwa koloru",
   "sourceGroupGlobe": "Globus",
   "sourceGroupGlobeDetails": "Temperatura, zachmurzenie i opady z modelu Open-Meteo: około 510 punktów dla całej Ziemi (pięć dni w krokach trzygodzinnych, odnawiane co sześć godzin) i z bliska kafelki po 16 punktów (48 godzin), wspólne dla paska i aplikacji przez pliki w pamięci podręcznej. Własny dzienny limit zapytań utrzymuje niskie obciążenie.",
-  "sourceGroupGlobeCoverage": "Cały świat; na całym globie około 1000 km odstępu, z bliska do około 60 km."
+  "sourceGroupGlobeCoverage": "Cały świat; na całym globie około 1000 km odstępu, z bliska do około 60 km.",
+  "globeWashWind": "Wiatr",
+  "globeWashSst": "Temperatura morza",
+  "globeWindHeight": "Wysokość wiatru",
+  "globeStorms": "Burze i porywy",
+  "globeStreaks": "Linie wiatru",
+  "globeIsobars": "Izobary",
+  "globeNumbers": "Liczby",
+  "globeLayersHint": "Burze oznaczają porywy od 75 km/h i burze z piorunami; linie podążają za wiatrem na wybranej wysokości (wysokość inna niż 10 m pobiera własne dane); izobary co 4 hPa z wyżami i niżami; liczby pokazują z bliska wartości warstwy koloru. Temperatura morza pochodzi z Open-Meteo Marine i jest odnawiana codziennie.",
+  "globeHigh": "W",
+  "globeLow": "N",
+  "globeGusts": "Porywy {value}",
+  "globeThunderstorm": "Burza",
+  "globeIsobarsEvery": "izobary co {value}",
+  "globeStreaksAt": "linie na {height}",
+  "shortcutGlobeWindHeight": "Globus: wysokość wiatru"
 }

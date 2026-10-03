@@ -2,10 +2,12 @@ import QtQuick
 import qs.Commons
 import qs.Ui
 import "GlobeFields.js" as GlobeFields
+import "Model.js" as Model
 
 // Under the globe: the colour wash shown (a chip; a click or v takes the
 // next), its scale with five ticks and the unit, what the data is (the
-// model's resolution, when it was loaded, the daily limit), and its source.
+// model's resolution, when it was loaded, the daily limit, the wind's
+// height, the isobars' spacing), and its source.
 Item {
   id: legend
   required property var panel
@@ -17,7 +19,26 @@ Item {
   height: Math.max(chip.height, scale.visible ? scale.height : 0) + (note.visible ? note.height + Style.space(4) : 0)
 
   function washName(kind) {
-    return panel.i18n("globeWash" + kind.charAt(0).toUpperCase() + kind.slice(1))
+    var name = panel.i18n("globeWash" + kind.charAt(0).toUpperCase() + kind.slice(1))
+    // The wind's height with it, when it is not the ground's.
+    if (kind === "wind" && globe.windHeight !== "10m") name += " · " + panel.windLevelText(Model.windLevel(globe.windHeight))
+    return name
+  }
+  // A tick's number: the wind in the chosen wind unit, the rest as given;
+  // the unit stands after the scale.
+  function tickText(value) {
+    if (wash === "wind") {
+      var wind = Model.windValue(value, panel.windUnitFor(imperial))
+      return wind ? panel.localizedNumber(wind.value) : ""
+    }
+    return panel.localizedNumber(value)
+  }
+  readonly property string unitText: {
+    if (wash === "wind") {
+      var wind = Model.windValue(0, panel.windUnitFor(imperial))
+      return wind ? wind.unit : ""
+    }
+    return GlobeFields.unit(wash, imperial)
   }
 
   BorderSurface {
@@ -55,7 +76,7 @@ Item {
     anchors.left: chip.right
     anchors.leftMargin: Style.space(12)
     anchors.verticalCenter: chip.verticalCenter
-    width: Math.min(Style.space(220), legend.width - chip.width - source.width - Style.space(36))
+    width: Math.min(Style.space(220), legend.width - chip.width - source.width - unitLabel.implicitWidth - Style.space(48))
     height: Style.space(8) + tickRow.height + Style.space(2)
 
     Canvas {
@@ -97,15 +118,14 @@ Item {
       }
 
       Repeater {
-        model: GlobeFields.ticks(legend.wash, legend.imperial)
+        model: GlobeFields.ticks(legend.wash, legend.imperial, legend.globe.windScaleKmh)
 
         Text {
           required property var modelData
           required property int index
           textFormat: Text.PlainText
           x: Math.max(0, Math.min(tickRow.width - implicitWidth, modelData.at * tickRow.width - implicitWidth / 2))
-          text: legend.panel.localizedNumber(modelData.value)
-            + (index === 4 ? " " + GlobeFields.unit(legend.wash, legend.imperial) : "")
+          text: legend.tickText(modelData.value)
           color: legend.panel.mutedText
           font.family: legend.panel.fontFamily
           font.pixelSize: Style.font.caption
@@ -115,12 +135,25 @@ Item {
   }
 
   Text {
+    id: unitLabel
+    textFormat: Text.PlainText
+    visible: scale.visible
+    anchors.left: scale.right
+    anchors.leftMargin: Style.space(8)
+    anchors.verticalCenter: chip.verticalCenter
+    text: legend.unitText
+    color: legend.panel.mutedText
+    font.family: legend.panel.fontFamily
+    font.pixelSize: Style.font.caption
+  }
+
+  Text {
     id: source
     textFormat: Text.PlainText
     visible: legend.wash !== "none"
     anchors.right: parent.right
     anchors.verticalCenter: chip.verticalCenter
-    text: "OPEN-METEO"
+    text: legend.wash === "sst" ? "OPEN-METEO MARINE" : "OPEN-METEO"
     color: legend.panel.hintText
     font.family: legend.panel.fontFamily
     font.pixelSize: Style.font.caption
@@ -131,7 +164,7 @@ Item {
   Text {
     id: note
     textFormat: Text.PlainText
-    visible: legend.wash !== "none" && text !== ""
+    visible: text !== ""
     anchors.top: chip.bottom
     anchors.topMargin: Style.space(4)
     width: parent.width
@@ -143,6 +176,11 @@ Item {
         parts.push(legend.panel.i18n("globeDataTime", { time: Qt.formatTime(new Date(legend.loader.dataAt), "HH:mm") }))
       else parts.push(legend.panel.i18n("globeDataLoading"))
       if (legend.loader.limitHeld) parts.push(legend.panel.i18n("globeDataLimit"))
+      if (legend.loader.isobarsOn)
+        parts.push(legend.panel.i18n("globeIsobarsEvery", { value: legend.panel.useImperial ? "0.12 inHg" : "4 hPa" }))
+      if (legend.loader.streaksOn && legend.wash !== "wind")
+        parts.push(legend.panel.i18n("globeStreaksAt", { height: legend.panel.windLevelText(Model.windLevel(legend.globe.windHeight)) }))
+      if (legend.wash === "none" && !legend.loader.active) return ""
       return parts.join(" · ")
     }
     color: legend.panel.mutedText

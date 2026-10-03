@@ -186,11 +186,9 @@ only (`forecast_days=1`), so take the hour nearest the scrubber's time or
 the latest one.
 
 In QML: `import "GlobeIsolines.js" as GlobeIsolines`, in another JS
-library: `.import "GlobeIsolines.js" as GlobeIsolines`. Not verified here
-(no QML runtime in this worktree): whether the worker can load these
-files. `ModelWorker.js` uses `Qt.include("Model.js")`, and `Model.js` has
-**no** `.pragma library` line; these modules do (as asked). If
-`Qt.include` rejects the pragma line, use `.import "GlobeIsolines.js" as
-GlobeIsolines` at the top of the worker script instead (WorkerScript
-sources accept `.import`), or drop the pragma from the copy the worker
-loads. Check this first when wiring in.
+library: `.import "GlobeIsolines.js" as GlobeIsolines`. In the worker,
+`.import` does not work (ReferenceError), but `Qt.include` takes these
+files, pragma line and all (checked with Quickshell 0.3.1 / Qt 6.11):
+GlobeWorker.js includes all of them plus GlobeGrid.js and GlobeLayers.js
+into one scope; its header lists the same-named helpers and why they do
+no harm.

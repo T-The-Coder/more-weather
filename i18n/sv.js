@@ -385,5 +385,20 @@ var entries = {
   "shortcutGlobeWash": "Glob: nästa färglager",
   "sourceGroupGlobe": "Glob",
   "sourceGroupGlobeDetails": "Temperatur, moln och nederbörd från Open-Meteos modell: omkring 510 punkter för hela jorden (fem dygn i treimmarssteg, förnyade var sjätte timme) och på nära håll rutor med 16 punkter (48 timmar), delade mellan fält och app via filer i cachen. En egen daglig gräns för anrop håller den sparsam.",
-  "sourceGroupGlobeCoverage": "Hela världen; omkring 1 000 km mellan punkterna på hela globen, på nära håll ned till omkring 60 km."
+  "sourceGroupGlobeCoverage": "Hela världen; omkring 1 000 km mellan punkterna på hela globen, på nära håll ned till omkring 60 km.",
+  "globeWashWind": "Vind",
+  "globeWashSst": "Havstemperatur",
+  "globeWindHeight": "Vindhöjd",
+  "globeStorms": "Storm och åska",
+  "globeStreaks": "Vindlinjer",
+  "globeIsobars": "Isobarer",
+  "globeNumbers": "Siffror",
+  "globeLayersHint": "Storm markerar byar från 75 km/h och åskväder; linjerna följer vinden på vald höjd (en annan höjd än 10 m laddar egna data); isobarerna går var 4:e hPa med högtryck och lågtryck; siffror visar färglagrets värden på nära håll. Havstemperaturen kommer från Open-Meteo Marine och förnyas dagligen.",
+  "globeHigh": "H",
+  "globeLow": "L",
+  "globeGusts": "Byar {value}",
+  "globeThunderstorm": "Åska",
+  "globeIsobarsEvery": "isobarer var {value}",
+  "globeStreaksAt": "linjer på {height}",
+  "shortcutGlobeWindHeight": "Glob: vindhöjd"
 }

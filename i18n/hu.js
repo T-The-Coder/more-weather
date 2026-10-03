@@ -385,5 +385,20 @@ var entries = {
   "shortcutGlobeWash": "Földgömb: következő színréteg",
   "sourceGroupGlobe": "Földgömb",
   "sourceGroupGlobeDetails": "Hőmérséklet, felhőzet és csapadék az Open-Meteo modelljéből: körülbelül 510 pont az egész Földre (öt nap háromórás lépésekben, hatóránként megújítva), közelről 16 pontos csempék (48 óra), a sáv és az alkalmazás között a gyorsítótár fájljain át megosztva. Saját napi lekérési korlát tartja kis terhelésen.",
-  "sourceGroupGlobeCoverage": "Az egész világ; az egész gömbön kb. 1000 km a pontok között, közelről kb. 60 km-ig."
+  "sourceGroupGlobeCoverage": "Az egész világ; az egész gömbön kb. 1000 km a pontok között, közelről kb. 60 km-ig.",
+  "globeWashWind": "Szél",
+  "globeWashSst": "Tengervíz-hőmérséklet",
+  "globeWindHeight": "Szél magassága",
+  "globeStorms": "Viharok és zivatarok",
+  "globeStreaks": "Szélvonalak",
+  "globeIsobars": "Izobárok",
+  "globeNumbers": "Számok",
+  "globeLayersHint": "A viharok a 75 km/h feletti széllökéseket és a zivatarokat jelölik; a vonalak a választott magasság szelét követik (a 10 m-től eltérő magasság saját adatot tölt); az izobárok 4 hPa-onként futnak magas és alacsony nyomással; a számok közelről mutatják a színréteg értékeit. A tengervíz hőmérséklete az Open-Meteo Marine-ból jön, naponta megújítva.",
+  "globeHigh": "M",
+  "globeLow": "A",
+  "globeGusts": "Széllökés {value}",
+  "globeThunderstorm": "Zivatar",
+  "globeIsobarsEvery": "izobárok {value}-onként",
+  "globeStreaksAt": "vonalak {height} magasan",
+  "shortcutGlobeWindHeight": "Földgömb: szél magassága"
 }

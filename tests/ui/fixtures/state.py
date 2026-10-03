@@ -173,7 +173,8 @@ write("fixture-places.json", {
 VARIABLES = ["temperature_2m", "cloud_cover", "precipitation", "weather_code", "cape", "pressure_msl",
              "wind_speed_10m", "wind_direction_10m", "wind_gusts_10m"]
 SCALES = {"temperature_2m": 10, "cloud_cover": 1, "precipitation": 100, "weather_code": 1, "cape": 1,
-          "pressure_msl": 10, "wind_speed_10m": 10, "wind_direction_10m": 1, "wind_gusts_10m": 10}
+          "pressure_msl": 10, "wind_speed_10m": 10, "wind_direction_10m": 1, "wind_gusts_10m": 10,
+          "sea_surface_temperature": 100}
 globe_dir = os.path.join(home, ".cache/more-weather/globe")
 os.makedirs(globe_dir, exist_ok=True)
 
@@ -185,17 +186,47 @@ def field(name, lat, lon, hours):
         return max(0.0, min(100.0, 50 + 55 * math.sin(math.radians(lat) * 7) * math.cos(math.radians(lon) * 3)))
     if name == "precipitation":
         return max(0.0, 9 * math.sin(math.radians(lat) * 9 + math.radians(lon) * 5) - 5)
+    # An Azores high and an Iceland low on a gentle swell.
     if name == "pressure_msl":
-        return 1013 + 12 * math.sin(math.radians(lat) * 4) * math.cos(math.radians(lon) * 2)
+        def bump(lat0, lon0, size):
+            return math.exp(-(math.hypot(lat - lat0, (lon - lon0) * math.cos(math.radians(lat))) / size) ** 2)
+        return (1013 + 4 * math.sin(math.radians(lat) * 4) * math.cos(math.radians(lon) * 2)
+                + 18 * bump(36, -28, 14) - 26 * bump(61, -22, 12))
+    # Westerlies in the middle latitudes, trade winds from the east nearer
+    # the equator, a storm south of Iceland and one over France.
+    if name == "wind_speed_10m":
+        return 18 + 22 * abs(math.sin(math.radians(lat) * 2)) + 6 * math.sin(math.radians(lon) * 3)
+    if name == "wind_direction_10m":
+        base = 270 if abs(lat) > 30 else 80
+        return (base + 35 * math.sin(math.radians(lon) * 2)) % 360
+    if name == "wind_gusts_10m":
+        if math.hypot(lat - 57, lon + 25) < 7:
+            return 125
+        if math.hypot(lat - 47, lon - 3) < 5:
+            return 88
+        return 1.4 * field("wind_speed_10m", lat, lon, hours)
+    # Thunderstorms over the Sahara's north, Italy and Florida.
+    if name == "weather_code":
+        if math.hypot(lat - 27, lon - 8) < 7 or math.hypot(lat - 28, lon + 82) < 6:
+            return 95
+        return 96 if math.hypot(lat - 42, lon - 13) < 4 else 3
+    if name == "cape":
+        return 300
+    if name == "sea_surface_temperature":
+        return max(-1.8, 29 - 0.42 * abs(lat) + 2 * math.sin(math.radians(lon) * 2))
     return 1.0
 
 
-def compact(key, kind, points, step_hours, steps):
-    start = int(now // 3600 * 3600)
+WASH_FIELDS = ["temperature_2m", "cloud_cover", "precipitation", "pressure_msl", "wind_speed_10m",
+               "wind_direction_10m", "wind_gusts_10m", "weather_code", "cape"]
+
+
+def compact(key, kind, points, step_hours, steps, names=WASH_FIELDS, start=None):
+    start = int(now // 3600 * 3600) if start is None else start
     times = [start + i * step_hours * 3600 for i in range(steps)]
     out = {}
-    # Only what the washes read, to keep the fixture small.
-    for name in ["temperature_2m", "cloud_cover", "precipitation"]:
+    # A few steps only, to keep the fixture small.
+    for name in names:
         values = []
         for lat, lon in points:
             for t in times:
@@ -228,3 +259,13 @@ for row in range(int((40 + 90) // size), int((52 + 90) // size) + 1):
         points = [(south + size * i / 3, west + width * j / 3) for i in range(4) for j in range(4)]
         key = "T3:%d:%d" % (row, col)
         write(key + ".json", compact(key, "tile", points, 1, 6), folder=globe_dir)
+
+# The sea's temperature (Open-Meteo Marine) for every global point, in
+# chunks as the loader keys them; hourly from 00 UTC, as Marine answers.
+midnight = int(now // 86400 * 86400)
+for i in range(6):
+    key = "S9:%d" % i
+    chunk = global_points[i * 100:(i + 1) * 100]
+    if chunk:
+        write(key + ".json", compact(key, "marine", chunk, 1, 24, ["sea_surface_temperature"], midnight),
+              folder=globe_dir)

@@ -20,6 +20,19 @@ This separation keeps the widget and standalone app on the same policy.
   and app; the live file only carries `globeClaim` (30 s) and `globeCalls`
   (point-calls per UTC day: from 2,000 only user-caused loads, from 3,000
   none). Paused while Open-Meteo is rate limited (noteOpenMeteoResponse).
+  Wind aloft (Model.WIND_LEVELS other than 10 m): a second request per
+  batch and tile with `wind_speed_<level>,wind_direction_<level>` only
+  while that height is chosen and the wind layer or the streaks show it,
+  keys `G9:<k>@<level>` / `T<z>:<row>:<col>@<level>`, same cache and
+  budget. Sea temperature: Open-Meteo Marine (`marine-api.open-meteo.com/
+  v1/marine`, `hourly=sea_surface_temperature&forecast_days=1`) for the
+  global points at sea (GlobeMarine.oceanPoints, about 330 of the 510) in
+  chunks of 100 (`S9:<i>`), only while that layer shows, cached 24 h,
+  counted in the same budget. The worker (GlobeWorker.js with
+  GlobeLayers.js) turns the data per time step into isobars and pressure
+  centres (GlobeIsolines), storm and thunderstorm places (GlobeSymbols:
+  gusts from 75 km/h; codes 95/96/99, or CAPE from 1,500 J/kg with
+  rain) and the wind's u/v lattices for the streaks (GlobeStreaks).
 - Place search (WeatherPlaceSearch.qml, shared with More Time): Open-Meteo
   geocoding while typing (350 ms debounce, one request at a time); Nominatim
   search only on Enter for a query Open-Meteo found nothing for, at most one

@@ -1336,6 +1336,15 @@ Panel {
     var next = Math.max(0, Math.min(levels.length - 1, index + delta))
     if (next !== index) displayOptionsStore.setGeneralSetting("windLevel", levels[next].id)
   }
+  // The globe's own wind height (Settings → Display → Globe, Shift+↑/↓).
+  function stepGlobeWindLevel(delta) {
+    var levels = Model.WIND_LEVELS
+    var current = Model.windLevel(String(displaySetting("globeWindLevel", "10m"))).id
+    var index = 0
+    for (var i = 0; i < levels.length; ++i) if (levels[i].id === current) index = i
+    var next = Math.max(0, Math.min(levels.length - 1, index + delta))
+    if (next !== index) setViewDisplaySetting("globeWindLevel", levels[next].id)
+  }
   // "1 500 m" or "4 900 ft" for a height of the wind map.
   function windLevelText(level) {
     if (useImperial) return localizedNumber(Math.round(level.metres * 3.28084 / (level.metres < 1000 ? 10 : 100)) * (level.metres < 1000 ? 10 : 100)) + " ft"
@@ -1778,6 +1787,11 @@ Panel {
       globeMarkers: true,
       globeAutoRotate: false,
       globeWash: "temperature",
+      globeWindLevel: "10m",
+      globeStreaks: false,
+      globeIsobars: false,
+      globeStorms: true,
+      globeNumbers: false,
       globeRotateDelay: "10",
       globeRotateSpeed: "4",
       airQualityAsTab: false,
@@ -3322,6 +3336,13 @@ Panel {
     if (windShown && (event.modifiers & Qt.ShiftModifier)
         && (event.key === Qt.Key_Up || event.key === Qt.Key_Down)) {
       stepWindLevel(event.key === Qt.Key_Up ? 1 : -1)
+      event.accepted = true
+      return
+    }
+    // … and the globe's wind height while the globe has the keys.
+    if (globeKeys && globeItem && (event.modifiers & Qt.ShiftModifier)
+        && (event.key === Qt.Key_Up || event.key === Qt.Key_Down)) {
+      stepGlobeWindLevel(event.key === Qt.Key_Up ? 1 : -1)
       event.accepted = true
       return
     }

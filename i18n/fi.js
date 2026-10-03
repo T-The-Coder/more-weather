@@ -385,5 +385,20 @@ var entries = {
   "shortcutGlobeWash": "Karttapallo: seuraava värikerros",
   "sourceGroupGlobe": "Karttapallo",
   "sourceGroupGlobeDetails": "Lämpötila, pilvisyys ja sade Open-Meteon mallista: noin 510 pistettä koko maapallolle (viisi päivää kolmen tunnin askelin, uusittu kuuden tunnin välein) ja läheltä 16 pisteen ruudut (48 tuntia), jaettu palkin ja sovelluksen kesken välimuistin tiedostoilla. Oma päiväraja pitää kuorman pienenä.",
-  "sourceGroupGlobeCoverage": "Koko maailma; koko pallolla noin 1 000 km pisteiden välillä, läheltä noin 60 km:iin asti."
+  "sourceGroupGlobeCoverage": "Koko maailma; koko pallolla noin 1 000 km pisteiden välillä, läheltä noin 60 km:iin asti.",
+  "globeWashWind": "Tuuli",
+  "globeWashSst": "Meriveden lämpötila",
+  "globeWindHeight": "Tuulen korkeus",
+  "globeStorms": "Myrskyt ja ukkoset",
+  "globeStreaks": "Tuuliviivat",
+  "globeIsobars": "Isobaarit",
+  "globeNumbers": "Luvut",
+  "globeLayersHint": "Myrskyt merkitsee yli 75 km/h puuskat ja ukkoset; viivat seuraavat tuulta valitulla korkeudella (muu korkeus kuin 10 m lataa omat tietonsa); isobaarit kulkevat 4 hPa:n välein korkea- ja matalapaineineen; luvut näyttävät läheltä värikerroksen arvot. Meriveden lämpötila tulee Open-Meteo Marinesta ja uusitaan päivittäin.",
+  "globeHigh": "K",
+  "globeLow": "M",
+  "globeGusts": "Puuskat {value}",
+  "globeThunderstorm": "Ukkonen",
+  "globeIsobarsEvery": "isobaarit {value} välein",
+  "globeStreaksAt": "viivat korkeudella {height}",
+  "shortcutGlobeWindHeight": "Karttapallo: tuulen korkeus"
 }

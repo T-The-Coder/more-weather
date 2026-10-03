@@ -385,5 +385,20 @@ var entries = {
   "shortcutGlobeWash": "地球儀：下一個顏色圖層",
   "sourceGroupGlobe": "地球儀",
   "sourceGroupGlobeDetails": "來自 Open-Meteo 模型的溫度、雲量和降水：整個地球約 510 個點（五天、每三小時一步，每六小時更新），近看時為 16 個點的圖塊（48 小時），透過快取中的檔案在列與應用程式之間共用。自身的每日查詢上限讓它保持輕量。",
-  "sourceGroupGlobeCoverage": "全球；整個地球儀上點間距約 1000 公里，近看時約 60 公里。"
+  "sourceGroupGlobeCoverage": "全球；整個地球儀上點間距約 1000 公里，近看時約 60 公里。",
+  "globeWashWind": "風",
+  "globeWashSst": "海溫",
+  "globeWindHeight": "風的高度",
+  "globeStorms": "風暴與雷暴",
+  "globeStreaks": "風線",
+  "globeIsobars": "等壓線",
+  "globeNumbers": "數值",
+  "globeLayersHint": "風暴標出每小時 75 公里以上的陣風和雷暴；風線沿所選高度的風流動（10 公尺以外的高度會載入自己的資料）；等壓線每 4 百帕一條，標出高壓和低壓；數值在近處顯示顏色圖層的值。海溫來自 Open-Meteo Marine，每天更新。",
+  "globeHigh": "高",
+  "globeLow": "低",
+  "globeGusts": "陣風 {value}",
+  "globeThunderstorm": "雷暴",
+  "globeIsobarsEvery": "等壓線間隔 {value}",
+  "globeStreaksAt": "風線高度 {height}",
+  "shortcutGlobeWindHeight": "地球儀：風的高度"
 }

@@ -385,5 +385,20 @@ var entries = {
   "shortcutGlobeWash": "Glob: următorul strat de culoare",
   "sourceGroupGlobe": "Glob",
   "sourceGroupGlobeDetails": "Temperatură, nori și precipitații din modelul Open-Meteo: circa 510 puncte pentru tot Pământul (cinci zile în pași de trei ore, reînnoite la fiecare șase ore) și de aproape plăci de 16 puncte (48 de ore), partajate între bară și aplicație prin fișiere din cache. O limită zilnică proprie de interogări îl ține ușor.",
-  "sourceGroupGlobeCoverage": "Mondial; circa 1.000 km între puncte pe tot globul, de aproape până la circa 60 km."
+  "sourceGroupGlobeCoverage": "Mondial; circa 1.000 km între puncte pe tot globul, de aproape până la circa 60 km.",
+  "globeWashWind": "Vânt",
+  "globeWashSst": "Temperatura mării",
+  "globeWindHeight": "Înălțimea vântului",
+  "globeStorms": "Furtuni și oraje",
+  "globeStreaks": "Linii de vânt",
+  "globeIsobars": "Izobare",
+  "globeNumbers": "Numere",
+  "globeLayersHint": "Furtuni marchează rafalele de la 75 km/h și orajele; liniile urmează vântul la înălțimea aleasă (o altă înălțime decât 10 m încarcă date proprii); izobarele sunt la fiecare 4 hPa, cu anticicloni și cicloni; numerele arată de aproape valorile stratului de culoare. Temperatura mării vine de la Open-Meteo Marine și se reînnoiește zilnic.",
+  "globeHigh": "M",
+  "globeLow": "D",
+  "globeGusts": "Rafale {value}",
+  "globeThunderstorm": "Oraj",
+  "globeIsobarsEvery": "izobare la {value}",
+  "globeStreaksAt": "linii la {height}",
+  "shortcutGlobeWindHeight": "Glob: înălțimea vântului"
 }

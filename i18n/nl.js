@@ -385,5 +385,20 @@ var entries = {
   "shortcutGlobeWash": "Globe: volgende kleurlaag",
   "sourceGroupGlobe": "Globe",
   "sourceGroupGlobeDetails": "Temperatuur, bewolking en neerslag uit het model van Open-Meteo: ongeveer 510 punten voor de hele aarde (vijf dagen in stappen van drie uur, elke zes uur vernieuwd) en van dichtbij tegels van 16 punten (48 uur), gedeeld tussen balk en app via bestanden in de cache. Een eigen daglimiet aan aanvragen houdt hem zuinig.",
-  "sourceGroupGlobeCoverage": "Wereldwijd; op de hele globe ongeveer 1.000 km tussen de punten, van dichtbij tot ongeveer 60 km."
+  "sourceGroupGlobeCoverage": "Wereldwijd; op de hele globe ongeveer 1.000 km tussen de punten, van dichtbij tot ongeveer 60 km.",
+  "globeWashWind": "Wind",
+  "globeWashSst": "Zeewatertemperatuur",
+  "globeWindHeight": "Windhoogte",
+  "globeStorms": "Storm en onweer",
+  "globeStreaks": "Windlijnen",
+  "globeIsobars": "Isobaren",
+  "globeNumbers": "Getallen",
+  "globeLayersHint": "Storm markeert windstoten vanaf 75 km/h en onweer; de lijnen volgen de wind op de gekozen hoogte (een andere hoogte dan 10 m laadt eigen gegevens); isobaren lopen om de 4 hPa met hoge- en lagedrukgebieden; getallen tonen van dichtbij de waarden van de kleurlaag. De zeewatertemperatuur komt van Open-Meteo Marine en wordt dagelijks vernieuwd.",
+  "globeHigh": "H",
+  "globeLow": "L",
+  "globeGusts": "Windstoten {value}",
+  "globeThunderstorm": "Onweer",
+  "globeIsobarsEvery": "isobaren om de {value}",
+  "globeStreaksAt": "lijnen op {height}",
+  "shortcutGlobeWindHeight": "Globe: windhoogte"
 }

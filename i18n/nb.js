@@ -385,5 +385,20 @@ var entries = {
   "shortcutGlobeWash": "Globus: neste fargelag",
   "sourceGroupGlobe": "Globus",
   "sourceGroupGlobeDetails": "Temperatur, skyer og nedbør fra Open-Meteos modell: omkring 510 punkter for hele jorda (fem døgn i tretimerssteg, fornyet hver sjette time) og på nært hold ruter med 16 punkter (48 timer), delt mellom linje og app via filer i hurtigbufferen. En egen daglig grense for kall holder den sparsom.",
-  "sourceGroupGlobeCoverage": "Hele verden; omkring 1 000 km mellom punktene på hele kloden, på nært hold ned mot 60 km."
+  "sourceGroupGlobeCoverage": "Hele verden; omkring 1 000 km mellom punktene på hele kloden, på nært hold ned mot 60 km.",
+  "globeWashWind": "Vind",
+  "globeWashSst": "Sjøtemperatur",
+  "globeWindHeight": "Vindhøyde",
+  "globeStorms": "Storm og torden",
+  "globeStreaks": "Vindlinjer",
+  "globeIsobars": "Isobarer",
+  "globeNumbers": "Tall",
+  "globeLayersHint": "Storm markerer vindkast fra 75 km/t og tordenvær; linjene følger vinden i valgt høyde (en annen høyde enn 10 m laster egne data); isobarene går hver 4. hPa med høytrykk og lavtrykk; tall viser fargelagets verdier på nært hold. Sjøtemperaturen kommer fra Open-Meteo Marine og fornyes daglig.",
+  "globeHigh": "H",
+  "globeLow": "L",
+  "globeGusts": "Vindkast {value}",
+  "globeThunderstorm": "Torden",
+  "globeIsobarsEvery": "isobarer hver {value}",
+  "globeStreaksAt": "linjer i {height}",
+  "shortcutGlobeWindHeight": "Globus: vindhøyde"
 }

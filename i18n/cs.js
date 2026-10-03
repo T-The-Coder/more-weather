@@ -385,5 +385,20 @@ var entries = {
   "shortcutGlobeWash": "Glóbus: další barevná vrstva",
   "sourceGroupGlobe": "Glóbus",
   "sourceGroupGlobeDetails": "Teplota, oblačnost a srážky z modelu Open-Meteo: asi 510 bodů pro celou Zemi (pět dní po třech hodinách, obnovení každých šest hodin) a zblízka dlaždice po 16 bodech (48 hodin), sdílené mezi lištou a aplikací přes soubory v mezipaměti. Vlastní denní limit dotazů jej udržuje úsporným.",
-  "sourceGroupGlobeCoverage": "Celý svět; na celém glóbu asi 1 000 km mezi body, zblízka až asi 60 km."
+  "sourceGroupGlobeCoverage": "Celý svět; na celém glóbu asi 1 000 km mezi body, zblízka až asi 60 km.",
+  "globeWashWind": "Vítr",
+  "globeWashSst": "Teplota moře",
+  "globeWindHeight": "Výška větru",
+  "globeStorms": "Bouře a nárazy",
+  "globeStreaks": "Čáry větru",
+  "globeIsobars": "Izobary",
+  "globeNumbers": "Čísla",
+  "globeLayersHint": "Bouře označují nárazy od 75 km/h a bouřky; čáry sledují vítr ve zvolené výšce (jiná výška než 10 m načítá vlastní data); izobary vedou po 4 hPa s tlakovými výšemi a nížemi; čísla ukazují zblízka hodnoty barevné vrstvy. Teplota moře pochází z Open-Meteo Marine a obnovuje se denně.",
+  "globeHigh": "V",
+  "globeLow": "N",
+  "globeGusts": "Nárazy {value}",
+  "globeThunderstorm": "Bouřka",
+  "globeIsobarsEvery": "izobary po {value}",
+  "globeStreaksAt": "čáry v {height}",
+  "shortcutGlobeWindHeight": "Glóbus: výška větru"
 }

@@ -385,5 +385,20 @@ var entries = {
   "shortcutGlobeWash": "Bola dunia: lapisan warna berikutnya",
   "sourceGroupGlobe": "Bola dunia",
   "sourceGroupGlobeDetails": "Suhu, awan, dan presipitasi dari model Open-Meteo: sekitar 510 titik untuk seluruh bumi (lima hari dalam langkah tiga jam, diperbarui setiap enam jam) dan dari dekat petak 16 titik (48 jam), dibagi antara bilah dan aplikasi lewat berkas di cache. Batas harian panggilannya sendiri membuatnya ringan.",
-  "sourceGroupGlobeCoverage": "Seluruh dunia; sekitar 1.000 km antar titik di seluruh bola, dari dekat hingga sekitar 60 km."
+  "sourceGroupGlobeCoverage": "Seluruh dunia; sekitar 1.000 km antar titik di seluruh bola, dari dekat hingga sekitar 60 km.",
+  "globeWashWind": "Angin",
+  "globeWashSst": "Suhu laut",
+  "globeWindHeight": "Ketinggian angin",
+  "globeStorms": "Badai dan badai petir",
+  "globeStreaks": "Garis angin",
+  "globeIsobars": "Isobar",
+  "globeNumbers": "Angka",
+  "globeLayersHint": "Badai menandai embusan mulai 75 km/j dan badai petir; garis mengikuti angin di ketinggian yang dipilih (ketinggian selain 10 m memuat datanya sendiri); isobar tiap 4 hPa dengan tekanan tinggi dan rendah; angka menampilkan nilai lapisan warna dari dekat. Suhu laut berasal dari Open-Meteo Marine dan diperbarui setiap hari.",
+  "globeHigh": "T",
+  "globeLow": "R",
+  "globeGusts": "Embusan {value}",
+  "globeThunderstorm": "Badai petir",
+  "globeIsobarsEvery": "isobar tiap {value}",
+  "globeStreaksAt": "garis di {height}",
+  "shortcutGlobeWindHeight": "Bola dunia: ketinggian angin"
 }

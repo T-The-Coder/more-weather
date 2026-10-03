@@ -385,5 +385,20 @@ var entries = {
   "shortcutGlobeWash": "Küre: sonraki renk katmanı",
   "sourceGroupGlobe": "Küre",
   "sourceGroupGlobeDetails": "Open-Meteo modelinden sıcaklık, bulut ve yağış: tüm Dünya için yaklaşık 510 nokta (üç saatlik adımlarla beş gün, altı saatte bir yenilenir) ve yakından 16 noktalık karolar (48 saat), çubuk ile uygulama arasında önbellekteki dosyalarla paylaşılır. Kendi günlük sorgu sınırı onu hafif tutar.",
-  "sourceGroupGlobeCoverage": "Dünya geneli; tüm kürede noktalar arası yaklaşık 1.000 km, yakından yaklaşık 60 km'ye kadar."
+  "sourceGroupGlobeCoverage": "Dünya geneli; tüm kürede noktalar arası yaklaşık 1.000 km, yakından yaklaşık 60 km'ye kadar.",
+  "globeWashWind": "Rüzgâr",
+  "globeWashSst": "Deniz sıcaklığı",
+  "globeWindHeight": "Rüzgâr yüksekliği",
+  "globeStorms": "Fırtına ve gök gürültülü fırtına",
+  "globeStreaks": "Rüzgâr çizgileri",
+  "globeIsobars": "İzobarlar",
+  "globeNumbers": "Sayılar",
+  "globeLayersHint": "Fırtına, 75 km/sa üzerindeki hamleleri ve gök gürültülü fırtınaları işaretler; çizgiler seçilen yükseklikteki rüzgârı izler (10 m dışındaki bir yükseklik kendi verisini yükler); izobarlar yüksek ve alçak basınçlarla 4 hPa aralıkla çizilir; sayılar yakından renk katmanının değerlerini gösterir. Deniz sıcaklığı Open-Meteo Marine'den gelir ve her gün yenilenir.",
+  "globeHigh": "Y",
+  "globeLow": "A",
+  "globeGusts": "Hamleler {value}",
+  "globeThunderstorm": "Gök gürültülü fırtına",
+  "globeIsobarsEvery": "{value} aralıkla izobarlar",
+  "globeStreaksAt": "{height} yükseklikte çizgiler",
+  "shortcutGlobeWindHeight": "Küre: rüzgâr yüksekliği"
 }

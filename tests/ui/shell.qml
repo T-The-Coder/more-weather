@@ -45,6 +45,8 @@ ShellRoot {
           panel.globeItem.rotating = moving
           panel.globeItem.paintStats = { count: 0, total: 0, max: 0 }
           panel.globeItem.washItem.stats = { count: 0, total: 0, max: 0 }
+          panel.globeItem.overlayItem.stats = { count: 0, total: 0, max: 0 }
+          panel.globeItem.streaksItem.stats = { count: 0, total: 0, max: 0 }
           globeNudge.start()
         }, function() {}, function() {}, function() {
           globeNudge.stop()
@@ -54,9 +56,12 @@ ShellRoot {
             st.count, "frames, mean", (st.total / n).toFixed(1), "ms, max", st.max, "ms; land", (st.land / n).toFixed(1),
             "sky", (st.sky / n).toFixed(1), "places", (st.places / n).toFixed(1))
           var ws = panel.globeItem.washItem.stats
+          var os = panel.globeItem.overlayItem.stats
+          var ss = panel.globeItem.streaksItem.stats
+          var mean = function(x) { return (x.total / Math.max(1, x.count)).toFixed(1) }
           console.log("GLOBE", size, "px z" + zoom, moving ? "moving" : "still", "wash:", ws.count, "frames, mean",
-            (ws.total / Math.max(1, ws.count)).toFixed(1), "ms, max", ws.max, "ms; per globe frame",
-            ((st.total + ws.total) / n).toFixed(1), "ms")
+            mean(ws), "ms, max", ws.max, "ms; overlay", os.count, "×", mean(os), "ms; streaks", ss.count, "×", mean(ss),
+            "ms; per globe frame", ((st.total + ws.total + os.total + ss.total) / n).toFixed(1), "ms")
           panel.globeItem.rotating = false
         })
       })
@@ -141,6 +146,10 @@ ShellRoot {
     function() {
       panel.contentRoot.parent = globeHost
       globeView(0, 20, 10)
+      // Everything on for the measurements: wash, streaks, isobars, storms.
+      panel.setViewDisplaySetting("globeStreaks", true)
+      panel.setViewDisplaySetting("globeIsobars", true)
+      panel.setViewDisplaySetting("globeStorms", true)
     }
   ].concat(globeMeasures("500"), [
     function() { panel.contentRoot.parent = globeHostLarge }
@@ -169,6 +178,45 @@ ShellRoot {
     function() { panel.setViewDisplaySetting("globeWash", "precipitation") },
     function() {}, function() { shot("09k-wash-precipitation-z3") },
     function() { panel.setViewDisplaySetting("globeWash", "temperature") },
+    // The overlays: wind wash with streaks on the whole disc; isobars with
+    // H and L at z1; storms and bolts at z2 over Europe and Africa; the sea
+    // on the whole disc; numbers at z3 over the Alps.
+    function() {
+      panel.setViewDisplaySetting("globeIsobars", false)
+      panel.setViewDisplaySetting("globeStorms", false)
+      panel.setViewDisplaySetting("globeWash", "wind")
+      globeView(0, 30, -20)
+    },
+    function() {}, function() {}, function() {}, function() { shot("09l-wind-streaks-z0") },
+    function() {
+      panel.setViewDisplaySetting("globeStreaks", false)
+      panel.setViewDisplaySetting("globeIsobars", true)
+      panel.setViewDisplaySetting("globeWash", "none")
+      globeView(1, 45, -10)
+    },
+    function() {}, function() {}, function() { shot("09m-isobars-z1") },
+    function() {
+      panel.setViewDisplaySetting("globeIsobars", false)
+      panel.setViewDisplaySetting("globeStorms", true)
+      panel.setViewDisplaySetting("globeWash", "temperature")
+      globeView(2, 38, 5)
+    },
+    function() {}, function() {}, function() { shot("09n-storms-z2") },
+    function() {
+      panel.setViewDisplaySetting("globeWash", "sst")
+      globeView(0, 20, -30)
+    },
+    function() {}, function() {}, function() { shot("09o-sst-z0") },
+    function() {
+      panel.setViewDisplaySetting("globeWash", "temperature")
+      panel.setViewDisplaySetting("globeNumbers", true)
+      globeView(3, 47, 9)
+    },
+    function() {}, function() {}, function() { shot("09p-numbers-z3") },
+    function() {
+      panel.setViewDisplaySetting("globeNumbers", false)
+      panel.setViewDisplaySetting("globeStorms", true)
+    },
     function() { globeView(0, 0, 10) },
     function() { panel.contentRoot.parent = widgetHost },
     // The night side and the moon: the globe turned towards them.

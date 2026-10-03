@@ -385,5 +385,20 @@ var entries = {
   "shortcutGlobeWash": "Globo: livello di colore successivo",
   "sourceGroupGlobe": "Globo",
   "sourceGroupGlobeDetails": "Temperatura, nuvole e precipitazioni dal modello di Open-Meteo: circa 510 punti per tutta la Terra (cinque giorni a passi di tre ore, rinnovati ogni sei ore) e da vicino riquadri di 16 punti (48 ore), condivisi tra barra e app tramite file nella cache. Un proprio limite giornaliero di richieste lo mantiene leggero.",
-  "sourceGroupGlobeCoverage": "Mondo intero; circa 1.000 km di distanza sul globo intero, fino a circa 60 km da vicino."
+  "sourceGroupGlobeCoverage": "Mondo intero; circa 1.000 km di distanza sul globo intero, fino a circa 60 km da vicino.",
+  "globeWashWind": "Vento",
+  "globeWashSst": "Temperatura del mare",
+  "globeWindHeight": "Quota del vento",
+  "globeStorms": "Tempeste e temporali",
+  "globeStreaks": "Linee del vento",
+  "globeIsobars": "Isobare",
+  "globeNumbers": "Numeri",
+  "globeLayersHint": "Tempeste segna le raffiche da 75 km/h e i temporali; le linee seguono il vento alla quota scelta (una quota diversa da 10 m carica dati propri); le isobare corrono ogni 4 hPa con alte e basse pressioni; i numeri mostrano da vicino i valori del livello di colore. La temperatura del mare viene da Open-Meteo Marine, rinnovata ogni giorno.",
+  "globeHigh": "A",
+  "globeLow": "B",
+  "globeGusts": "Raffiche {value}",
+  "globeThunderstorm": "Temporale",
+  "globeIsobarsEvery": "isobare ogni {value}",
+  "globeStreaksAt": "linee a {height}",
+  "shortcutGlobeWindHeight": "Globo: quota del vento"
 }

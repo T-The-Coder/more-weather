@@ -91,10 +91,14 @@ runs as a standalone app window.
   across, where the coast, lakes, borders and towns come from the radar map's data; a
   click on a place shows that place, and on the whole disc it can turn by itself after a
   while without a touch (Settings → Display → Globe: delay and speed). A colour layer
-  shows the temperature (default), cloud or precipitation from Open-Meteo's model,
-  coarse for the whole earth and finer close up, with a legend under the globe (a click
-  or `v` takes the next layer) and the value under the pointer; it loads only while the
-  globe is shown, within a daily budget of requests, and bar and app share the data. In the app as a tab after the wind map; the popup
+  shows the temperature (default), cloud, precipitation, wind or the sea's temperature
+  from Open-Meteo's model, coarse for the whole earth and finer close up, with a legend
+  under the globe (a click or `v` takes the next layer) and the value under the pointer.
+  Over it, each switchable: storm symbols for gusts from 75 km/h and flickering bolts for
+  thunderstorms (on by default), drifting wind streaks at a chosen height (10 m up to
+  250 hPa, `Shift` `↑` `↓`), isobars every 4 hPa with highs and lows, and the layer's
+  values in numbers from close up. It loads only while the globe is shown, within a daily
+  budget of requests, and bar and app share the data. In the app as a tab after the wind map; the popup
   can switch it on.
 - **Locations:** Search for places (Open-Meteo's geocoder while typing, Nominatim on
   Enter when it finds nothing), keep a list of favorites or detect your location automatically. Settings →
@@ -182,7 +186,8 @@ too, and the settings name their keys where they apply.
 | `Ctrl ← → ↑ ↓` / drag | Globe: turn and tilt (15°, or a quarter of the view when zoomed in) |
 | `+` / `−` / Ctrl + wheel | Globe: zoom in / out (at the pointer with the wheel) |
 | `0` | Globe: the whole globe at the shown place |
-| `v` | Globe: next colour layer (temperature, cloud, precipitation, none) |
+| `v` | Globe: next colour layer (temperature, cloud, precipitation, wind, sea temperature, none) |
+| `Shift` `↑` `↓` | Globe: wind height of the wind layer and the streaks |
 | **Place search** | |
 | `↑ ↓` | Move within the results or the saved places |
 | `Tab` / `⇧ Tab` | Switch between results and saved places |
@@ -216,7 +221,7 @@ service fails. Details are in [PROVIDERS.md](PROVIDERS.md) and in Settings → S
 | Radar | DWD (Germany and neighbours), NOAA/NWS MRMS (United States), ECCC GeoMet (Canada), RainViewer elsewhere; model precipitation as last resort |
 | Warnings | DWD, NWS, ECCC, MeteoAlarm (39 European countries) |
 | Wind map, UV, air quality, pollen | Open-Meteo (air quality from Copernicus CAMS) |
-| Globe colour layers | Open-Meteo (model grid, cached under `~/.cache/more-weather/globe/`) |
+| Globe colour layers and overlays | Open-Meteo (model grid, cached under `~/.cache/more-weather/globe/`); sea temperature from Open-Meteo Marine |
 | Map background | NASA Blue Marble imagery served by the DWD GeoServer |
 | Places | Open-Meteo geocoding, Nominatim, OpenStreetMap Overpass (overpass-api.de, overpass.private.coffee, maps.mail.ru); IP geolocation (ipwho.is, ipapi.co, GeoJS) only when the location is set to automatic |
 

@@ -50,7 +50,8 @@ Column {
         { keys: ["ctrlArrows", "mouseDrag"], translateKeys: true, action: "shortcutGlobeTurn" },
         { keys: ["+", "−", "ctrlWheel"], translateKeys: true, action: "shortcutGlobeZoom" },
         { keys: ["0"], action: "shortcutGlobeCenter" },
-        { keys: ["v"], action: "shortcutGlobeWash" }
+        { keys: ["v"], action: "shortcutGlobeWash" },
+        { keys: ["⇧ ↑ ↓"], action: "shortcutGlobeWindHeight" }
       ]
     },
     {

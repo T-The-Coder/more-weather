@@ -419,5 +419,20 @@ var catalog = {
   "shortcutGlobeWash": "Globus: nächste Farbschicht",
   "sourceGroupGlobe": "Globus",
   "sourceGroupGlobeDetails": "Temperatur, Bewölkung und Niederschlag aus dem Modell von Open-Meteo: etwa 510 Punkte für die ganze Erde (fünf Tage in Dreistundenschritten, alle sechs Stunden erneuert) und von nahem Kacheln aus 16 Punkten (48 Stunden), zwischen Leiste und App über Dateien im Cache geteilt. Ein eigenes Tageslimit an Punktabrufen hält ihn sparsam.",
-  "sourceGroupGlobeCoverage": "Weltweit; auf dem ganzen Globus etwa 1.000 km Abstand, von nahem bis etwa 60 km."
+  "sourceGroupGlobeCoverage": "Weltweit; auf dem ganzen Globus etwa 1.000 km Abstand, von nahem bis etwa 60 km.",
+  "globeWashWind": "Wind",
+  "globeWashSst": "Wassertemperatur",
+  "globeWindHeight": "Windhöhe",
+  "globeStorms": "Sturm und Gewitter",
+  "globeStreaks": "Windlinien",
+  "globeIsobars": "Isobaren",
+  "globeNumbers": "Zahlen",
+  "globeLayersHint": "Sturm markiert Böen ab 75 km/h und Gewitter; die Windlinien folgen dem Wind in der gewählten Höhe (eine andere Höhe als 10 m lädt eigene Daten); Isobaren laufen alle 4 hPa mit Hochs und Tiefs; Zahlen drucken die Werte der Farbschicht von nahem. Die Wassertemperatur kommt von Open-Meteo Marine und wird täglich erneuert.",
+  "globeHigh": "H",
+  "globeLow": "T",
+  "globeGusts": "Böen {value}",
+  "globeThunderstorm": "Gewitter",
+  "globeIsobarsEvery": "Isobaren alle {value}",
+  "globeStreaksAt": "Windlinien in {height}",
+  "shortcutGlobeWindHeight": "Globus: Windhöhe"
 }

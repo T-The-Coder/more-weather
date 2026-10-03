@@ -385,5 +385,20 @@ var entries = {
   "shortcutGlobeWash": "地球儀：次のカラーレイヤー",
   "sourceGroupGlobe": "地球儀",
   "sourceGroupGlobeDetails": "Open-Meteo のモデルによる気温・雲量・降水。地球全体で約 510 地点（3 時間ごとに 5 日分、6 時間ごとに更新）、拡大時は 16 地点のタイル（48 時間）。キャッシュのファイルでバーとアプリが共有します。独自の 1 日あたりの上限で負荷を抑えます。",
-  "sourceGroupGlobeCoverage": "全世界。地球儀全体では地点間隔約 1,000 km、拡大時は約 60 km まで。"
+  "sourceGroupGlobeCoverage": "全世界。地球儀全体では地点間隔約 1,000 km、拡大時は約 60 km まで。",
+  "globeWashWind": "風",
+  "globeWashSst": "海面水温",
+  "globeWindHeight": "風の高度",
+  "globeStorms": "嵐と雷雨",
+  "globeStreaks": "風の線",
+  "globeIsobars": "等圧線",
+  "globeNumbers": "数値",
+  "globeLayersHint": "嵐は時速 75 km 以上の突風と雷雨を示します。風の線は選んだ高度の風に沿って流れます（10 m 以外の高度は専用のデータを読み込みます）。等圧線は 4 hPa ごとに高気圧と低気圧とともに描きます。数値は拡大時にカラーレイヤーの値を表示します。海面水温は Open-Meteo Marine から毎日更新されます。",
+  "globeHigh": "高",
+  "globeLow": "低",
+  "globeGusts": "突風 {value}",
+  "globeThunderstorm": "雷雨",
+  "globeIsobarsEvery": "等圧線 {value} ごと",
+  "globeStreaksAt": "風の線 {height}",
+  "shortcutGlobeWindHeight": "地球儀：風の高度"
 }
