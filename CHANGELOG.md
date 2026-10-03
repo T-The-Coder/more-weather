@@ -4,6 +4,27 @@ All notable changes to More Weather are documented here.
 
 ## Unreleased
 
+- **Several colour layers at once** on the globe: temperature, sea
+  temperature, wind, cloud and precipitation are now switches of their
+  own (the former single choice carries over), composed in one pass
+  from the bottom: the air's temperature (the sea's over the ocean when
+  both show), wind over it at half strength, the cloud's veil, then
+  precipitation. The legend shows a row per layer (a click on its name
+  switches it off, "+" the next on); `v` shows one layer alone and steps
+  on; numbers and the pointer read the topmost layer with a value
+  (precipitation where it rains, then the temperatures, wind, cloud), the
+  pointer up to two ("12 °C · 1.2 mm/h").
+- The globe's colours end exactly at its rim, antialiased, with no
+  coloured halo outside: the layers are filled into the disc as a smoothly
+  stretched pattern; the streaks and isobars are clipped to it too.
+- The globe's storm and thunderstorm symbols speak the plugin's language:
+  the Nerd Font's line glyphs (weather-windy, weather-lightning) in the
+  wind and UV accents softened towards the text, with a thin halo of the
+  page's colour, sized like the place markers' glyphs and a little larger
+  for the strongest, instead of coloured discs and yellow bolts. The
+  bolts no longer flicker: each rests and flashes briefly once in 8–20 s,
+  never in step with the others, and not while the globe is dragged or
+  plays its timeline.
 - **The globe's forecast timeline**: under the globe, play / pause and a
   track to drag or click, the whole earth up to five days ahead in
   3-hour steps, close up two days hourly (the chosen time stays when the
@@ -21,8 +42,8 @@ All notable changes to More Weather are documented here.
   map's colours, in your wind unit) and the **sea's temperature** (from
   Open-Meteo Marine, −2 … 32 °C, land drawn over it); four overlays,
   each a switch in Settings → Display → Globe: **storms and
-  thunderstorms** (gust symbols from 75 km/h, stronger from 103, and
-  bolts that flicker where the model has thunderstorms; on by default),
+  thunderstorms** (gust glyphs from 75 km/h, larger from 103, and
+  lightning glyphs where the model has thunderstorms; on by default),
   **wind streaks** that drift with the wind, **isobars** every 4 hPa
   with H and L at the pressure centres, and **numbers** with the layer's
   values from close up. The wind and the streaks follow a height of

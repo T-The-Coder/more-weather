@@ -406,5 +406,6 @@ var entries = {
   "globeTimeKeysHint": ", . tid · Mellanslag spela",
   "shortcutGlobeStep": "Glob: ett tidssteg bakåt eller framåt",
   "shortcutGlobePlay": "Glob: spela eller pausa tidslinjen",
-  "shortcutGlobeNow": "Glob: tillbaka till nu"
+  "shortcutGlobeNow": "Glob: tillbaka till nu",
+  "globeCombineHint": "Färglagren går att kombinera och ritas i listans ordning: havstemperaturen över havet bredvid lufttemperaturen över land, vinden till hälften över en temperatur, moln och nederbörd överst. Siffror och pekaren visar nederbörd där det regnar, annars temperaturen, sedan vind och moln."
 }

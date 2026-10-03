@@ -406,5 +406,6 @@ var entries = {
   "globeTimeKeysHint": ", . tijd · Spatie afspelen",
   "shortcutGlobeStep": "Globe: een tijdstap terug of vooruit",
   "shortcutGlobePlay": "Globe: tijdlijn afspelen of pauzeren",
-  "shortcutGlobeNow": "Globe: terug naar nu"
+  "shortcutGlobeNow": "Globe: terug naar nu",
+  "globeCombineHint": "De kleurlagen zijn te combineren en worden in de volgorde van de lijst getekend: de zeewatertemperatuur boven de oceaan naast de luchttemperatuur boven land, de wind half dekkend over een temperatuur, bewolking en neerslag over alles. Getallen en aanwijzer tonen neerslag waar het regent, anders de temperatuur, dan wind en bewolking."
 }

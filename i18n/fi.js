@@ -406,5 +406,6 @@ var entries = {
   "globeTimeKeysHint": ", . aika · Välilyönti toista",
   "shortcutGlobeStep": "Karttapallo: aika-askel taakse tai eteen",
   "shortcutGlobePlay": "Karttapallo: toista tai keskeytä aikajana",
-  "shortcutGlobeNow": "Karttapallo: takaisin nykyhetkeen"
+  "shortcutGlobeNow": "Karttapallo: takaisin nykyhetkeen",
+  "globeCombineHint": "Värikerrokset yhdistyvät ja piirretään luettelon järjestyksessä: meriveden lämpötila meren päällä ilman lämpötilan rinnalla maalla, tuuli puolella voimakkuudella lämpötilan päällä, pilvisyys ja sade kaiken päällä. Luvut ja osoitin näyttävät sateen siellä missä sataa, muuten lämpötilan, sitten tuulen ja pilvisyyden."
 }

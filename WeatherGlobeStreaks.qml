@@ -85,6 +85,11 @@ Canvas {
     }
     if (!uLattice || !vLattice || !particles.length) return
     var R = globe.radius
+    // Within the disc, like the colour layers.
+    ctx.save()
+    ctx.beginPath()
+    ctx.arc(globe.centerX, globe.centerY, R, 0, Math.PI * 2)
+    ctx.clip()
     // About 20 px a second at 10 m/s near the ground, whatever the zoom.
     var scale = 20 * 6371000 / (10 * Math.max(1, R)) * 100 / Math.max(10, scaleKmh)
     var segments = GlobeStreaks.step(particles, uLattice, vLattice, 0.066, scale, box)
@@ -102,6 +107,7 @@ Canvas {
       ctx.lineTo(cx + b.x, cy - b.y)
     }
     ctx.stroke()
+    ctx.restore()
     var spent = Date.now() - started
     stats = { count: stats.count + 1, total: stats.total + spent, max: Math.max(stats.max, spent) }
   }

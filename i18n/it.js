@@ -406,5 +406,6 @@ var entries = {
   "globeTimeKeysHint": ", . ora · Spazio riproduci",
   "shortcutGlobeStep": "Globo: un passo di tempo indietro o avanti",
   "shortcutGlobePlay": "Globo: riproduci o metti in pausa la linea temporale",
-  "shortcutGlobeNow": "Globo: torna ad adesso"
+  "shortcutGlobeNow": "Globo: torna ad adesso",
+  "globeCombineHint": "I livelli di colore si combinano, disegnati nell’ordine dell’elenco: la temperatura del mare sull’oceano accanto a quella dell’aria sulla terra, il vento a metà intensità sopra una temperatura, nuvole e precipitazioni sopra tutto. Numeri e puntatore mostrano le precipitazioni dove piove, altrimenti la temperatura, poi vento e nuvole."
 }

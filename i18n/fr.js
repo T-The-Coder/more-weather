@@ -406,5 +406,6 @@ var entries = {
   "globeTimeKeysHint": ", . heure · Espace lecture",
   "shortcutGlobeStep": "Globe : un pas de temps en arrière ou en avant",
   "shortcutGlobePlay": "Globe : lire ou mettre en pause la chronologie",
-  "shortcutGlobeNow": "Globe : revenir à maintenant"
+  "shortcutGlobeNow": "Globe : revenir à maintenant",
+  "globeCombineHint": "Les couches de couleur se combinent, dessinées dans l’ordre de la liste : la température de la mer sur l’océan à côté de celle de l’air sur terre, le vent à mi-intensité sur une température, les nuages et les précipitations par-dessus tout. Les nombres et le pointeur montrent les précipitations là où il pleut, sinon la température, puis le vent et les nuages."
 }

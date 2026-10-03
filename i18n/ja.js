@@ -406,5 +406,6 @@ var entries = {
   "globeTimeKeysHint": ", . 時刻 · Space 再生",
   "shortcutGlobeStep": "地球儀：時刻を 1 ステップ戻す・進める",
   "shortcutGlobePlay": "地球儀：タイムラインを再生・一時停止",
-  "shortcutGlobeNow": "地球儀：現在に戻る"
+  "shortcutGlobeNow": "地球儀：現在に戻る",
+  "globeCombineHint": "カラーレイヤーは組み合わせられ、一覧の順に描画されます。海面水温は海上に、気温は陸上に。風は気温の上に半分の強さで、雲量と降水はすべての上に重なります。数値とポインターは雨の場所では降水を、それ以外は気温、次に風、雲量を示します。"
 }

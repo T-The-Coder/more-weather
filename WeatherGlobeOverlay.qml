@@ -7,10 +7,10 @@ import "Model.js" as Model
 // What the globe draws over the colour wash from the model (Settings →
 // Display → Globe): the isobars every 4 hPa as thin lines, every second one
 // labelled where there is room, with H and L at the pressure centres; the
-// gust symbols where the gusts reach 75 km/h (stronger from 103); the
+// gust glyphs where the gusts reach 75 km/h (larger from 103); the
 // active wash's values in numbers from z2; and the places of the
-// thunderstorms, whose bolts flicker as items of their own (`bolts`, for
-// WeatherGlobe's pool). Everything comes from the worker per time step
+// thunderstorms, whose bolts flash now and then as items of their own
+// (`bolts`, for WeatherGlobe's pool). Everything comes from the worker per time step
 // (GlobeLayers.layersFor); here it is only projected and de-cluttered on
 // screen, again with each turn or zoom.
 Canvas {
@@ -65,6 +65,17 @@ Canvas {
   function rgba(color, alpha) {
     return Qt.rgba(color.r, color.g, color.b, alpha)
   }
+  // weather-windy (Material Design Icons in the Nerd Font), as on the wind tab.
+  readonly property string gustGlyph: "\u{f059d}"
+  // The wind's accent (Panel.windAccent), softened towards the text below
+  // 103 km/h; the text colour without accents.
+  function gustColor(kmh, strong) {
+    var accent = panel.windAccent(kmh)
+    if (!accent) return rgba(ink, strong ? 0.95 : 0.75)
+    var c = Qt.color(accent)
+    var f = strong ? 0 : 0.4
+    return Qt.rgba(c.r + (ink.r - c.r) * f, c.g + (ink.g - c.g) * f, c.b + (ink.b - c.b) * f, 1)
+  }
   function pressureText(hPa) {
     var p = Model.pressureValue(hPa, panel.useImperial)
     return p ? panel.localizedNumber(p.value) : ""
@@ -115,6 +126,11 @@ Canvas {
     // labels and centres only at rest.
     var still = !globe.moving
     if (isobars && data && data.isobars) {
+      // The lines within the disc, like the colour layers.
+      ctx.save()
+      ctx.beginPath()
+      ctx.arc(cx, cy, R, 0, Math.PI * 2)
+      ctx.clip()
       ctx.lineWidth = 0.9
       ctx.strokeStyle = rgba(ink, 0.45)
       ctx.beginPath()
@@ -147,6 +163,7 @@ Canvas {
         }
       }
       ctx.stroke()
+      ctx.restore()
       // H and L at the centres, then the labels where there is room.
       var centres = still ? data.centres || [] : []
       for (var c = 0; c < centres.length; c++) {
@@ -169,30 +186,27 @@ Canvas {
       for (var s = 0; s < labelSpots.length; s++) label(labelSpots[s].text, labelSpots[s].x, labelSpots[s].y, rgba(ink, 0.75), plain)
     }
 
-    // Gusts: an orange disc with two white swooshes, red with three from
-    // 103 km/h.
+    // Gusts: the wind glyph the tabs use (weather-windy), in the wind's
+    // accent, larger and stronger from 103 km/h, on a thin halo of the
+    // page's colour so it reads on any wash.
     var shownGusts = []
     var shownBolts = []
     if (storms && data && data.storms) {
       shownGusts = GlobeSymbols.declutterScreen(data.storms, project, 34)
       for (var g = 0; g < shownGusts.length; g++) {
         var gust = shownGusts[g]
-        var color = gust.level >= 2 ? "#e8523a" : "#f2a33a"
-        var r = 9
-        ctx.fillStyle = color
-        ctx.beginPath()
-        ctx.arc(gust.x, gust.y, r, 0, Math.PI * 2)
-        ctx.fill()
-        ctx.strokeStyle = "rgba(255,255,255,0.95)"
-        ctx.lineWidth = 1.5
-        ctx.beginPath()
-        var swooshes = gust.level >= 2 ? 3 : 2
-        for (var w2 = 0; w2 < swooshes; w2++) {
-          var y = gust.y - (swooshes - 1) * 2.5 + w2 * 5
-          ctx.moveTo(gust.x - r + 3, y)
-          ctx.bezierCurveTo(gust.x - 2, y - 3, gust.x + 1, y + 3, gust.x + r - 2, y - 1)
-        }
-        ctx.stroke()
+        var strong = gust.level >= 2
+        var size = Math.round(fontPx * (strong ? 1.35 : 1.1))
+        var r = size / 2
+        ctx.font = panel.canvasFont(size, false, false)
+        ctx.textAlign = "center"
+        ctx.textBaseline = "middle"
+        ctx.lineJoin = "round"
+        ctx.lineWidth = 2.5
+        ctx.strokeStyle = rgba(surface, 0.85)
+        ctx.strokeText(gustGlyph, gust.x, gust.y)
+        ctx.fillStyle = gustColor(gust.gust, strong)
+        ctx.fillText(gustGlyph, gust.x, gust.y)
         taken.push({ x: gust.x - r, y: gust.y - r, w: 2 * r, h: 2 * r })
       }
       shownBolts = GlobeSymbols.declutterScreen(data.thunderstorms || [], project, 30).slice(0, 24)

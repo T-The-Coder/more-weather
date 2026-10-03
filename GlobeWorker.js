@@ -7,9 +7,10 @@
 //   { fn: "restore", key, text }                  → { fn, key, ok, at }
 //   { fn: "forget", keys }                        → nothing
 //   { fn: "lattice", token, name, ms, box, level, cols, rows, height }
-//       → { fn, token, lattice } (the global one when box is null)
+//       → { fn, token, ms, lattice } (the global one when box is null)
 //   { fn: "layers", token, ms, box, level, height, isobars, storms, streaks }
-//       → { fn, token, layers }
+//       → { fn, token, ms, layers }
+//   { fn: "landmask", land } (data/globe-land.json) → { fn, lattice } (1 land, 0 sea)
 // With `quiet` (the timeline's look-ahead) lattice and layers are made and
 // kept, not sent.
 //
@@ -46,10 +47,18 @@ WorkerScript.onMessage = function(message) {
       var lattice = message.box
         ? boxFor(store, message.name, message.ms, message.box, message.level, message.height || "")
         : globalFor(store, message.name, message.ms)
-      if (!message.quiet) WorkerScript.sendMessage({ fn: "lattice", token: message.token, lattice: lattice })
+      if (!message.quiet) WorkerScript.sendMessage({ fn: "lattice", token: message.token, ms: message.ms, lattice: lattice })
+    } else if (message.fn === "landmask") {
+      // Land (1) and sea (0) at the global lattice's nodes (GlobeMarine).
+      var mask = []
+      for (var row = 0; row < 73; row++)
+        for (var col = 0; col < 145; col++)
+          mask.push(isOcean(message.land, -90 + row * 2.5, -180 + col * 2.5) ? 0 : 1)
+      WorkerScript.sendMessage({ fn: "landmask", lattice: { south: -90, north: 90, west: -180, east: 180, cols: 145, rows: 73,
+        values: mask, wrap: true } })
     } else if (message.fn === "layers") {
       var layers = layersFor(store, message)
-      if (!message.quiet) WorkerScript.sendMessage({ fn: "layers", token: message.token, layers: layers })
+      if (!message.quiet) WorkerScript.sendMessage({ fn: "layers", token: message.token, ms: message.ms, layers: layers })
     }
   } catch (e) {
     WorkerScript.sendMessage({ fn: message.fn, key: message.key, token: message.token, ok: false, error: String(e) })

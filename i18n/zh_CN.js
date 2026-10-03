@@ -406,5 +406,6 @@ var entries = {
   "globeTimeKeysHint": ", . 时间 · 空格 播放",
   "shortcutGlobeStep": "地球仪：时间后退或前进一步",
   "shortcutGlobePlay": "地球仪：播放或暂停时间轴",
-  "shortcutGlobeNow": "地球仪：回到现在"
+  "shortcutGlobeNow": "地球仪：回到现在",
+  "globeCombineHint": "颜色图层可以组合，按列表顺序绘制：海温覆盖海洋，气温覆盖陆地；风以一半强度叠加在温度上；云量和降水位于最上层。数值和指针在下雨处显示降水，否则显示温度，其次是风和云量。"
 }

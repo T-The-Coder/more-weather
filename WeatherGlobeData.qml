@@ -13,7 +13,7 @@ import "GlobeTimeline.js" as GlobeTimeline
 // ~/.cache/more-weather/globe/ so the bar and the app share them, parsed and
 // turned into lattices and overlays by GlobeWorker.js. A wind height other
 // than 10 m adds a request of two variables per batch and tile ("@<level>"
-// keys) while the wind wash or the streaks show it; the sea's temperature
+// keys) while the wind layer or the streaks show it; the sea's temperature
 // comes from Open-Meteo Marine for the global points at sea ("S9:<i>", a
 // day). Loads only while the globe is shown with a colour wash or an
 // overlay on, never while Open-Meteo is rate limited, and
@@ -25,21 +25,30 @@ QtObject {
   required property var panel
 
   readonly property var globe: panel.globeItem
-  readonly property string wash: String(panel.displaySetting("globeWash", "temperature"))
+  // The colour layers on, in the wash's order (WeatherGlobeWash).
+  readonly property var washLayers: GlobeFields.LAYERS.filter(function(kind) {
+    return loader.panel.displaySetting(GlobeFields.SWITCH[kind], kind === "temperature") === true
+  })
+  readonly property string washKey: washLayers.join(",")
+  readonly property bool washOn: washLayers.length > 0
   readonly property string height: String(panel.displaySetting("globeWindLevel", "10m"))
   readonly property bool streaksOn: panel.displaySetting("globeStreaks", false) === true
   readonly property bool isobarsOn: panel.displaySetting("globeIsobars", false) === true
   readonly property bool stormsOn: panel.displaySetting("globeStorms", true) === true
-  readonly property bool active: !!globe && panel.globeShown && (wash !== "none" || streaksOn || isobarsOn || stormsOn)
+  readonly property bool active: !!globe && panel.globeShown && (washOn || streaksOn || isobarsOn || stormsOn)
   // A height's own requests, and the sea's, only while something shows them.
-  readonly property bool needsHeight: height !== "10m" && (wash === "wind" || streaksOn)
-  readonly property bool needsMarine: wash === "sst"
+  readonly property bool needsHeight: height !== "10m" && (washLayers.indexOf("wind") >= 0 || streaksOn)
+  readonly property bool needsMarine: washLayers.indexOf("sst") >= 0
   readonly property bool offline: Quickshell.env("MORE_PLUGINS_OFFLINE") === "1"
   readonly property string dir: (Quickshell.env("XDG_CACHE_HOME") || (Quickshell.env("HOME") + "/.cache")) + "/more-weather/globe"
 
-  // What the wash shows: the whole earth, and close up the region in view.
-  property var globalLattice: null
-  property var regionLattice: null
+  // What the colour layers show, per layer { global, region }: the whole
+  // earth, and close up the region in view.
+  property var lattices: ({})
+  // Land (1) and sea (0) every 2.5°, made by the worker once the sea's and
+  // the air's temperature show together.
+  property var landMask: null
+  property bool landMaskAsked: false
   // The overlays (GlobeLayers.layersFor): isobars, centres, storms,
   // thunderstorms, u and v.
   property var layers: null
@@ -84,7 +93,10 @@ QtObject {
   readonly property double displayMs: scrubbed && stepIndex >= 0 ? steps[stepIndex] : nowMs
   readonly property double displayHour: Math.round(displayMs / 3600000)
   property bool playing: false
-  onDisplayHourChanged: { stepStartedMs = Date.now(); requestLattices() }
+  onDisplayHourChanged: { stepStartedMs = Date.now(); stepReady = false; requestLattices() }
+  // Whether the shown step's data has come: playback waits for it, so a
+  // busy worker slows the play rather than showing an old picture.
+  property bool stepReady: true
   // What a step costs (the screenshot harness reads it): the shell's time
   // in the worker's answers, and how long after the step the wash's
   // lattice came.
@@ -116,6 +128,7 @@ QtObject {
     repeat: true
     running: loader.playing && loader.active
     onTriggered: {
+      if (!loader.stepReady) return
       var next = GlobeTimeline.advance(loader.stepIndex, loader.steps, 1, false)
       if (next === loader.stepIndex) { loader.playing = false; return }
       loader.showStep(next)
@@ -123,7 +136,7 @@ QtObject {
   }
 
   onActiveChanged: if (active) { scheduleGlobal(); viewRested() }
-  onWashChanged: { scheduleGlobal(); viewRested() }
+  onWashKeyChanged: { scheduleGlobal(); viewRested() }
   onHeightChanged: { scheduleGlobal(); viewRested() }
   onStreaksOnChanged: { scheduleGlobal(); requestLattices() }
   onIsobarsOnChanged: requestLattices()
@@ -397,17 +410,23 @@ QtObject {
     latticeToken++
     var closeUp = globe && globe.zoom >= 2
     var box = closeUp ? paddedBox() : null
-    var name = GlobeFields.variableFor(wash, height)
-    if (name !== "") {
-      var tag = wash === "wind" && height !== "10m" ? height : ""
-      post({ fn: "lattice", token: "g" + latticeToken, name: name, ms: loader.displayMs, box: null })
+    var tag = height !== "10m" ? height : ""
+    var kept = {}
+    for (var k = 0; k < washLayers.length; k++) {
+      var kind = washLayers[k]
+      var name = GlobeFields.variableFor(kind, height)
+      post({ fn: "lattice", token: "g" + latticeToken + ":" + kind, name: name, ms: loader.displayMs, box: null })
       // The sea's temperature has no tiles: the global lattice serves.
-      if (closeUp && wash !== "sst") {
-        post({ fn: "lattice", token: "r" + latticeToken, name: name, ms: loader.displayMs, box: box,
-          level: globe.zoom, cols: 72, rows: 72, height: tag })
-      } else {
-        regionLattice = null
-      }
+      if (closeUp && kind !== "sst")
+        post({ fn: "lattice", token: "r" + latticeToken + ":" + kind, name: name, ms: loader.displayMs, box: box,
+          level: globe.zoom, cols: 72, rows: 72, height: kind === "wind" ? tag : "" })
+      // What is shown stays until the new answers come.
+      if (lattices[kind]) kept[kind] = { global: lattices[kind].global, region: closeUp ? lattices[kind].region : null }
+    }
+    lattices = kept
+    if (needsMarine && washLayers.indexOf("temperature") >= 0 && !landMaskAsked && globe && globe.landData) {
+      landMaskAsked = true
+      post({ fn: "landmask", land: globe.landData })
     }
     if (streaksOn || isobarsOn || stormsOn) {
       post({ fn: "layers", token: "l" + latticeToken, ms: loader.displayMs, box: box, level: closeUp ? globe.zoom : 0,
@@ -419,11 +438,13 @@ QtObject {
     // it keeps the result and sends nothing back.
     if (playing && stepIndex + 1 < steps.length) {
       var ahead = steps[stepIndex + 1]
-      if (name !== "") {
-        post({ fn: "lattice", token: "pg", quiet: true, name: name, ms: ahead, box: null })
-        if (closeUp && wash !== "sst")
-          post({ fn: "lattice", token: "pr", quiet: true, name: name, ms: ahead, box: box, level: globe.zoom, cols: 72, rows: 72,
-            height: wash === "wind" && height !== "10m" ? height : "" })
+      for (var a = 0; a < washLayers.length; a++) {
+        var aheadKind = washLayers[a]
+        var aheadName = GlobeFields.variableFor(aheadKind, height)
+        post({ fn: "lattice", token: "pg", quiet: true, name: aheadName, ms: ahead, box: null })
+        if (closeUp && aheadKind !== "sst")
+          post({ fn: "lattice", token: "pr", quiet: true, name: aheadName, ms: ahead, box: box, level: globe.zoom, cols: 72, rows: 72,
+            height: aheadKind === "wind" ? tag : "" })
       }
       if (streaksOn || isobarsOn || stormsOn)
         post({ fn: "layers", token: "pl", quiet: true, ms: ahead, box: box, level: closeUp ? globe.zoom : 0,
@@ -472,21 +493,32 @@ QtObject {
         }
         if (message.fn === "restore") loader.afterDisk(message.key)
       } else if (message.fn === "layers" && message.layers) {
-        if (Number(String(message.token).slice(1)) !== loader.latticeToken) return
+        // The answer for the time shown, whichever request asked for it.
+        if (Math.round(Number(message.ms) / 3600000) !== loader.displayHour) return
+        if (!loader.washOn) loader.stepReady = true
         var got = message.layers
         ;[got.u, got.v].forEach(function(l) {
           if (!l) return
           for (var n = 0; n < l.values.length; n++) if (l.values[n] === null || l.values[n] === undefined) l.values[n] = NaN
         })
         loader.layers = got
+      } else if (message.fn === "landmask" && message.lattice) {
+        loader.landMask = message.lattice
       } else if (message.fn === "lattice" && message.lattice) {
+        // "g12:temperature": global or region, request number, layer.
         var token = String(message.token)
-        if (Number(token.slice(1)) !== loader.latticeToken) return
+        var colon = token.indexOf(":")
+        if (colon < 0 || Math.round(Number(message.ms) / 3600000) !== loader.displayHour) return
+        var kind = token.slice(colon + 1)
+        if (loader.washLayers.indexOf(kind) < 0) return
         // Unknown nodes may arrive as null: NaN, so they colour nothing.
         var values = message.lattice.values
         for (var i = 0; i < values.length; i++) if (values[i] === null || values[i] === undefined) values[i] = NaN
+        var next = Object.assign({}, loader.lattices)
+        var pair = next[kind] ? { global: next[kind].global, region: next[kind].region } : { global: null, region: null }
         if (token.charAt(0) === "g") {
-          loader.globalLattice = message.lattice
+          pair.global = message.lattice
+          loader.stepReady = true
           if (loader.stepStartedMs > 0) {
             var late = Date.now() - loader.stepStartedMs
             var ms = loader.messageStats
@@ -495,8 +527,10 @@ QtObject {
             loader.stepStartedMs = 0
           }
         } else {
-          loader.regionLattice = message.lattice
+          pair.region = message.lattice
         }
+        next[kind] = pair
+        loader.lattices = next
       }
   }
   // Several answers in a row ask for one new lattice.

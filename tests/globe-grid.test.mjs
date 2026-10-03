@@ -168,6 +168,19 @@ test("wash buckets and ticks", () => {
   assert.equal(F.variableFor("sst"), "sea_surface_temperature")
 })
 
+test("colour layers: switches from the old choice, the top layer at a place", () => {
+  assert.deepEqual(plain(F.switchesFor("cloud")), { globeTemperature: false, globeSst: false, globeWind: false,
+    globeCloud: true, globePrecipitation: false })
+  assert.ok(Object.values(plain(F.switchesFor("none"))).every((v) => v === false))
+  const on = ["temperature", "cloud", "precipitation"]
+  assert.equal(F.topLayer(on, { temperature: 12, cloud: 80, precipitation: 1.2 }), "precipitation")
+  assert.equal(F.topLayer(on, { temperature: 12, cloud: 80, precipitation: 0.02 }), "temperature")
+  assert.equal(F.topLayer(on, { temperature: NaN, cloud: 80, precipitation: 0 }), "cloud")
+  assert.equal(F.topLayer(["wind", "sst"], { wind: 20, sst: 18 }), "sst")
+  assert.equal(F.topLayer([], {}), "")
+  assert.deepEqual(plain(F.LAYERS), ["temperature", "sst", "wind", "cloud", "precipitation"])
+})
+
 test("wind heights, marine keys and nearest codes", () => {
   assert.equal(G.batchKey(3, "850hPa"), "G9:3@850hPa")
   assert.equal(G.batchKey(3, "10m"), "G9:3")

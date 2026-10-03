@@ -406,5 +406,6 @@ var entries = {
   "globeTimeKeysHint": ", . zaman · Boşluk oynat",
   "shortcutGlobeStep": "Küre: bir zaman adımı geri veya ileri",
   "shortcutGlobePlay": "Küre: zaman çizelgesini oynat veya duraklat",
-  "shortcutGlobeNow": "Küre: şimdiye dön"
+  "shortcutGlobeNow": "Küre: şimdiye dön",
+  "globeCombineHint": "Renk katmanları birleşir ve listedeki sırayla çizilir: okyanus üzerinde deniz sıcaklığı, kara üzerinde hava sıcaklığı; rüzgâr bir sıcaklığın üzerine yarı yoğunlukta; bulut ve yağış her şeyin üstünde. Sayılar ve işaretçi yağmur yağan yerde yağışı, aksi halde sıcaklığı, sonra rüzgârı ve bulutu gösterir."
 }

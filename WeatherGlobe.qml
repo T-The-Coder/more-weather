@@ -10,6 +10,7 @@ import "Moon.js" as Moon
 import "Basemap.js" as Basemap
 import "GlobeGrid.js" as GlobeGrid
 import "I18n.js" as I18n
+import "GlobeFields.js" as GlobeFields
 import "Model.js" as Model
 
 // The globe section: the earth seen from above (centre latitude and
@@ -317,29 +318,58 @@ Column {
     }
     // The wash's value at a point of the view in its unit ("12 °C",
     // "35 km/h"), or "" (the numbers overlay prints these too).
-    function washValueText(x, y, bare) {
-      if (!wash.visible) return ""
+    // The colour layers' values at a point of the view: { kind: value }
+    // (NaN where unknown), or null off the globe.
+    function washValues(x, y) {
+      if (!wash.visible) return null
       var m = Globe.viewMatrix(centerLat, Globe.wrapLon(centerLon))
       var place = Globe.unprojectView(x - centerX, centerY - y, m, radius)
-      if (!place) return ""
-      var value = NaN
-      if (wash.regionLattice) value = GlobeGrid.latticeValue(wash.regionLattice, place.lat, place.lon)
-      if (!isFinite(value)) value = GlobeGrid.latticeValue(wash.globalLattice, place.lat, place.lon)
-      if (!isFinite(value)) return ""
-      // `bare`: the number alone (the legend carries the unit).
+      if (!place) return null
+      var result = {}
+      var on = wash.layers
+      for (var i = 0; i < on.length; i++) {
+        var pair = wash.lattices[on[i]]
+        var value = NaN
+        if (pair && pair.region) value = GlobeGrid.latticeValue(pair.region, place.lat, place.lon)
+        if (pair && !isFinite(value)) value = GlobeGrid.latticeValue(pair.global, place.lat, place.lon)
+        result[on[i]] = isFinite(value) ? value : NaN
+      }
+      return result
+    }
+    // A layer's value in its unit ("12 °C", "35 km/h"); `bare` the number
+    // alone (the legend carries the unit).
+    function layerValueText(kind, value, bare) {
       var unit = function(text) { return bare ? "" : " " + text }
-      if (washKind === "temperature" || washKind === "sst") {
+      if (kind === "temperature" || kind === "sst") {
         return panel.tempScale === "fahrenheit" ? Math.round(value * 1.8 + 32) + unit("°F")
           : (panel.tempScale === "kelvin" ? Math.round(value + 273.15) + unit("K") : Math.round(value) + unit("°C"))
       }
-      if (washKind === "cloud") return Math.round(value) + unit("%")
-      if (washKind === "wind") {
+      if (kind === "cloud") return Math.round(value) + unit("%")
+      if (kind === "wind") {
         var wind = Model.windValue(value, panel.windUnitFor(panel.useImperial))
         return wind ? panel.localizedNumber(wind.value) + unit(wind.unit) : ""
       }
-      if (bare && value < 0.1) return ""
       return panel.useImperial ? panel.localizedNumber(Math.round(value / 25.4 * 100) / 100) + unit("in/h")
         : panel.localizedNumber(Math.round(value * 10) / 10) + unit("mm/h")
+    }
+    // The pointer's text: the topmost layer with a value there
+    // (GlobeFields.topLayer: rain where it rains, then the temperatures, the
+    // wind, the cloud) and, when it rains, the next one before it ("12 °C ·
+    // 1.2 mm/h"); `bare` for the numbers overlay: the first number alone.
+    function washValueText(x, y, bare) {
+      var values = washValues(x, y)
+      if (!values) return ""
+      var on = wash.layers
+      var top = GlobeFields.topLayer(on, values)
+      if (top === "") return ""
+      if (bare) return layerValueText(top, values[top], true)
+      var text = layerValueText(top, values[top], false)
+      if (top === "precipitation") {
+        var rest = on.filter(function(kind) { return kind !== "precipitation" })
+        var second = GlobeFields.topLayer(rest, values)
+        if (second !== "") text = layerValueText(second, values[second], false) + " · " + text
+      }
+      return text
     }
     // A gust symbol or a bolt under the pointer: "Gusts 86 km/h",
     // "Thunderstorm".
@@ -357,17 +387,26 @@ Column {
           return { x: x, y: y, text: panel.i18n("globeThunderstorm") }
       return null
     }
-    readonly property var washPalette: wash.palette
+    readonly property var washPalettes: wash.palettes
     // The wind's height and its scale end (Model.WIND_LEVELS).
     readonly property string windHeight: String(panel.displaySetting("globeWindLevel", "10m"))
     readonly property real windScaleKmh: Model.windLevel(windHeight).scaleKmh
+    // The thunderstorms' colour: UV-high's accent, a third of the way to
+    // the text; the text without accents.
+    readonly property color thunderColor: {
+      var accent = panel.uvAccent(7)
+      if (!accent) return panel.foreground
+      var c = Qt.color(accent), ink = panel.foreground
+      return Qt.rgba(c.r + (ink.r - c.r) * 0.35, c.g + (ink.g - c.g) * 0.35, c.b + (ink.b - c.b) * 0.35, 1)
+    }
+    readonly property Item canvasItem: canvas
     readonly property Item overlayItem: overlay
     // My places' and the towns' labels drawn last (the overlay avoids them).
     property var labelRects: []
     readonly property Item streaksItem: streaks
     readonly property Item washItem: wash
     // The colour wash shown (Settings → Display → Globe, or v).
-    readonly property string washKind: String(panel.displaySetting("globeWash", "temperature"))
+    readonly property var washLayers: panel.globeData.washLayers
     onWidthChanged: canvas.requestPaint()
     onHeightChanged: canvas.requestPaint()
     onShowMoonChanged: canvas.requestPaint()
@@ -447,17 +486,19 @@ Column {
       color: Qt.rgba(globe.panel.foreground.r, globe.panel.foreground.g, globe.panel.foreground.b, 0.04)
     }
 
-    // The weather's colour (temperature, cloud, precipitation) from the
-    // model (WeatherGlobeData), under the land, the night and the places.
+    // The weather's colour layers from the model (WeatherGlobeData), under
+    // the land, the night and the places, ending at the rim.
     WeatherGlobeWash {
       id: wash
       x: globe.shiftX
       y: globe.shiftY
+      width: globe.width
+      height: globe.height
       panel: globe.panel
       globe: globeSection.view
-      kind: globe.washKind
-      globalLattice: globe.panel.globeData.globalLattice
-      regionLattice: globe.zoom >= 2 ? globe.panel.globeData.regionLattice : null
+      layers: globe.panel.globeData.washLayers
+      lattices: globe.panel.globeData.lattices
+      landMask: globe.panel.globeData.landMask
       cells: globe.panel.standaloneMode ? 128 : 96
       scaleKmh: globe.windScaleKmh
     }
@@ -477,10 +518,11 @@ Column {
       function rgba(color, alpha) {
         return Qt.rgba(color.r, color.g, color.b, alpha)
       }
-      // The land's fill: faint, but opaque over the sea's temperature, which
-      // has values only at sea.
+      // The land's fill: faint, but opaque when the sea's temperature shows
+      // without the air's (it has values only at sea).
       function landFill() {
-        if (globe.washKind !== "sst") return rgba(ink, 0.08)
+        var layers = globe.washLayers
+        if (layers.indexOf("sst") < 0 || layers.indexOf("temperature") >= 0) return rgba(ink, 0.08)
         return Qt.rgba(surface.r * 0.92 + ink.r * 0.08, surface.g * 0.92 + ink.g * 0.08, surface.b * 0.92 + ink.b * 0.08, 1)
       }
       // Globe.js gives y to the north round the centre; the canvas wants
@@ -840,8 +882,8 @@ Column {
     // zooms in at the pointer; a click on a place shows it; the resting
     // pointer names the place or the moon under it.
     // The model's overlays: wind streaks, then isobars, gusts and numbers,
-    // then the thunderstorms' bolts (a pool of items, each flickering by
-    // itself while the globe is in view).
+    // then the thunderstorms' bolts (a pool of items, each flashing now and
+    // then by itself while the globe is in view).
     WeatherGlobeStreaks {
       id: streaks
       x: globe.shiftX
@@ -871,45 +913,44 @@ Column {
     }
     Repeater {
       model: 24
-      Item {
+      // lightning-bolt, the Nerd Font's Material glyph, in the
+      // thunderstorm accent (UV-high, softened towards the text) with a
+      // halo of the page's colour; a size above the place markers' glyphs
+      // for the strongest. It rests steady and flashes briefly now and
+      // then, each on its own random 8–20 s, while the globe is in view
+      // and neither dragged nor playing.
+      Text {
         id: bolt
         required property int index
         readonly property var place: index < overlay.bolts.length ? overlay.bolts[index] : null
+        readonly property bool mayFlash: visible && globe.panel.globeShown && globe.onScreen && !globe.dragging
+          && !globe.panel.globeData.playing
+        textFormat: Text.PlainText
         visible: !!place
         x: (place ? place.x : 0) + globe.shiftX - width / 2
         y: (place ? place.y : 0) + globe.shiftY - height / 2
-        width: 14
-        height: 20
-        Canvas {
-          anchors.fill: parent
-          onPaint: {
-            var ctx = getContext("2d")
-            ctx.clearRect(0, 0, width, height)
-            ctx.beginPath()
-            ctx.moveTo(8, 0)
-            ctx.lineTo(1, 11)
-            ctx.lineTo(6, 11)
-            ctx.lineTo(4, 20)
-            ctx.lineTo(13, 7)
-            ctx.lineTo(8, 7)
-            ctx.lineTo(11, 0)
-            ctx.closePath()
-            ctx.fillStyle = "#ffe14a"
-            ctx.fill()
-            ctx.strokeStyle = "rgba(60,40,0,0.8)"
-            ctx.lineWidth = 0.8
-            ctx.stroke()
+        text: "\u{f140b}"
+        font.family: globe.panel.fontFamily
+        font.pixelSize: Math.round(Style.font.caption * (place && place.strength >= 2 ? 1.35 : 1.15))
+        color: globe.thunderColor
+        style: Text.Outline
+        styleColor: Qt.rgba(Color.popups.background.r, Color.popups.background.g, Color.popups.background.b, 0.85)
+        onMayFlashChanged: if (!mayFlash) { flash.stop(); opacity = 1 }
+        Timer {
+          interval: 4000 + ((bolt.index * 2797) % 12000) + Math.random() * 4000
+          running: bolt.mayFlash
+          repeat: true
+          onTriggered: {
+            flash.start()
+            interval = 8000 + Math.random() * 12000
           }
         }
-        // A flash now and then, each bolt on its own beat.
-        SequentialAnimation on opacity {
-          running: bolt.visible && globe.panel.globeShown && globe.onScreen
-          loops: Animation.Infinite
-          PauseAnimation { duration: 700 + (bolt.index * 397) % 1900 }
-          NumberAnimation { to: 0.2; duration: 60 }
-          NumberAnimation { to: 1; duration: 50 }
-          NumberAnimation { to: 0.35; duration: 50 }
-          NumberAnimation { to: 1; duration: 90 }
+        SequentialAnimation {
+          id: flash
+          NumberAnimation { target: bolt; property: "opacity"; to: 0.35; duration: 50 }
+          NumberAnimation { target: bolt; property: "opacity"; to: 1; duration: 60 }
+          NumberAnimation { target: bolt; property: "opacity"; to: 0.35; duration: 50 }
+          NumberAnimation { target: bolt; property: "opacity"; to: 1; duration: 90 }
         }
       }
     }

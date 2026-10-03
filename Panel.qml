@@ -1336,6 +1336,19 @@ Panel {
     var next = Math.max(0, Math.min(levels.length - 1, index + delta))
     if (next !== index) displayOptionsStore.setGeneralSetting("windLevel", levels[next].id)
   }
+  // v: one colour layer alone, the next after the one shown alone
+  // (temperature → cloud → precipitation → wind → sea → none).
+  function soloGlobeLayerShown() {
+    var on = globeData.washLayers
+    return on.length === 0 ? "none" : (on.length === 1 ? on[0] : "")
+  }
+  function soloGlobeLayer(kind) {
+    var switches = GlobeFields.switchesFor(kind)
+    for (var key in switches) setViewDisplaySetting(key, switches[key])
+  }
+  function setGlobeLayer(kind, on) {
+    setViewDisplaySetting(GlobeFields.SWITCH[kind], on)
+  }
   // The globe's own wind height (Settings → Display → Globe, Shift+↑/↓).
   function stepGlobeWindLevel(delta) {
     var levels = Model.WIND_LEVELS
@@ -1786,7 +1799,11 @@ Panel {
       globeMoon: true,
       globeMarkers: true,
       globeAutoRotate: false,
-      globeWash: "temperature",
+      globeTemperature: true,
+      globeSst: false,
+      globeWind: false,
+      globeCloud: false,
+      globePrecipitation: false,
       globeWindLevel: "10m",
       globeStreaks: false,
       globeIsobars: false,
@@ -3326,7 +3343,7 @@ Panel {
     }
     // v: the globe's next colour wash.
     if (globeKeys && globeItem && text === "v") {
-      setViewDisplaySetting("globeWash", GlobeFields.nextWash(displaySetting("globeWash", "temperature")))
+      soloGlobeLayer(GlobeFields.nextWash(soloGlobeLayerShown()))
       event.accepted = true
       return
     }

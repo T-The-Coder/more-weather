@@ -406,5 +406,6 @@ var entries = {
   "globeTimeKeysHint": ", . 時間 · 空白鍵 播放",
   "shortcutGlobeStep": "地球儀：時間後退或前進一步",
   "shortcutGlobePlay": "地球儀：播放或暫停時間軸",
-  "shortcutGlobeNow": "地球儀：回到現在"
+  "shortcutGlobeNow": "地球儀：回到現在",
+  "globeCombineHint": "顏色圖層可以組合，按清單順序繪製：海溫覆蓋海洋，氣溫覆蓋陸地；風以一半強度疊加在溫度上；雲量和降水位於最上層。數值和指標在下雨處顯示降水，否則顯示溫度，其次是風和雲量。"
 }

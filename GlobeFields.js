@@ -6,6 +6,32 @@
 // Pure, tested in Node (tests/globe-grid.test.mjs).
 
 var WASHES = ["none", "temperature", "cloud", "precipitation", "wind", "sst"]
+// The colour layers, each a switch of its own, in the order the wash draws
+// them from the bottom (WeatherGlobeWash.qml), and their display keys.
+var LAYERS = ["temperature", "sst", "wind", "cloud", "precipitation"]
+var SWITCH = { temperature: "globeTemperature", sst: "globeSst", wind: "globeWind", cloud: "globeCloud",
+  precipitation: "globePrecipitation" }
+// The switches a stored single choice (the former globeWash) stands for.
+function switchesFor(wash) {
+  var result = {}
+  for (var i = 0; i < LAYERS.length; i++) result[SWITCH[LAYERS[i]]] = LAYERS[i] === wash
+  return result
+}
+// Which layer gives a place's number and the pointer's first value:
+// precipitation where it rains, then the temperatures, the wind, the
+// cloud. `values` maps layer → value (NaN where unknown).
+var PRIORITY = ["precipitation", "temperature", "sst", "wind", "cloud"]
+function topLayer(on, values) {
+  for (var i = 0; i < PRIORITY.length; i++) {
+    var kind = PRIORITY[i]
+    if (on.indexOf(kind) < 0) continue
+    var v = values[kind]
+    if (!(v === v)) continue
+    if (kind === "precipitation" && v < PRECIPITATION_STEPS[0]) continue
+    return kind
+  }
+  return ""
+}
 // The grid variable each wash reads (wind: at 10 m; other heights through
 // variableFor).
 var VARIABLE = { temperature: "temperature_2m", cloud: "cloud_cover", precipitation: "precipitation",

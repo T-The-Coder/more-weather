@@ -440,5 +440,6 @@ var catalog = {
   "globeTimeKeysHint": ", . time · Space play",
   "shortcutGlobeStep": "Globe: a time step back or forward",
   "shortcutGlobePlay": "Globe: play or pause the timeline",
-  "shortcutGlobeNow": "Globe: back to now"
+  "shortcutGlobeNow": "Globe: back to now",
+  "globeCombineHint": "The colour layers combine, drawn in the order listed: the sea's temperature over the ocean beside the air's over land, the wind over a temperature at half strength, the cloud and precipitation over everything. Numbers and the pointer show precipitation where it rains, otherwise the temperature, then the wind and the cloud."
 }

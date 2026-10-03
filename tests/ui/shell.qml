@@ -25,6 +25,47 @@ ShellRoot {
     })
   }
 
+  // The colour layers on, the others off.
+  function layersOn(list) {
+    ;["temperature", "sst", "wind", "cloud", "precipitation"].forEach(function(kind) {
+      panel.setGlobeLayer(kind, list.indexOf(kind) >= 0)
+    })
+  }
+  // A shot of the globe with its rim for tests/ui/rim-check.py: the disc's
+  // centre and radius in the picture's pixels.
+  // Taken with the overlays and my places off for the moment, so only the
+  // colour layers meet the rim.
+  function rimShot(name) {
+    var g = panel.globeItem
+    var keys = ["globeStreaks", "globeIsobars", "globeStorms", "globeMarkers"]
+    var before = keys.map(function(key) { return panel.displaySetting(key, false) })
+    keys.forEach(function(key) { panel.setViewDisplaySetting(key, false) })
+    var at = g.mapToItem(panel.contentRoot, g.centerX, g.centerY)
+    console.log("RIM", name, Math.round(at.x * 100) / 100, Math.round(at.y * 100) / 100, Math.round(g.radius * 100) / 100)
+    rimRestore.keys = keys
+    rimRestore.values = before
+    g.canvasItem.requestPaint()
+    rimShotTimer.name = name
+    rimShotTimer.start()
+  }
+  Timer {
+    id: rimShotTimer
+    property string name: ""
+    interval: 400
+    onTriggered: {
+      harness.shot(name)
+      rimRestore.start()
+    }
+  }
+  Timer {
+    id: rimRestore
+    property var keys: []
+    property var values: []
+    interval: 300
+    onTriggered: {
+      for (var i = 0; i < keys.length; i++) panel.setViewDisplaySetting(keys[i], values[i])
+    }
+  }
   function check(name, ok) { console.log(ok ? "CHECK ok" : "CHECK FAILED", name) }
   // The globe's view for the measurements and shots.
   function globeView(zoom, lat, lon) {
@@ -146,7 +187,9 @@ ShellRoot {
     function() {
       panel.contentRoot.parent = globeHost
       globeView(0, 20, 10)
-      // Everything on for the measurements: wash, streaks, isobars, storms.
+      // Everything on for the measurements: temperature, cloud and
+      // precipitation, streaks, isobars, storms.
+      layersOn(["temperature", "cloud", "precipitation"])
       panel.setViewDisplaySetting("globeStreaks", true)
       panel.setViewDisplaySetting("globeIsobars", true)
       panel.setViewDisplaySetting("globeStorms", true)
@@ -154,6 +197,7 @@ ShellRoot {
   ].concat(globeMeasures("500"), [
     function() { panel.contentRoot.parent = globeHostLarge }
   ], globeMeasures("840"), [
+    function() { layersOn(["temperature"]) },
     // The view tilted to look at Europe from 45° N, then z2 over Europe,
     // then z4 over the Alps with borders and towns.
     function() { globeView(0, 45, 10) },
@@ -167,48 +211,48 @@ ShellRoot {
     function() { shot("09f-globe-z4-alps") },
     // The colour washes from the fixture's model data (state.py), on the
     // whole disc and over the Alps (z3, the tiles).
-    function() { globeView(0, 25, 10); panel.setViewDisplaySetting("globeWash", "temperature") },
-    function() {}, function() { shot("09g-wash-temperature-z0") },
-    function() { panel.setViewDisplaySetting("globeWash", "cloud") },
+    function() { globeView(0, 25, 10); layersOn(["temperature"]) },
+    function() {}, function() { rimShot("09g-wash-temperature-z0") },
+    function() { layersOn(["cloud"]) },
     function() {}, function() { shot("09h-wash-cloud-z0") },
-    function() { panel.setViewDisplaySetting("globeWash", "precipitation") },
+    function() { layersOn(["precipitation"]) },
     function() {}, function() { shot("09i-wash-precipitation-z0") },
-    function() { panel.setViewDisplaySetting("globeWash", "temperature"); globeView(3, 47, 9) },
+    function() { layersOn(["temperature"]); globeView(3, 47, 9) },
     function() {}, function() {}, function() { shot("09j-wash-temperature-z3") },
-    function() { panel.setViewDisplaySetting("globeWash", "precipitation") },
+    function() { layersOn(["precipitation"]) },
     function() {}, function() { shot("09k-wash-precipitation-z3") },
-    function() { panel.setViewDisplaySetting("globeWash", "temperature") },
+    function() { layersOn(["temperature"]) },
     // The overlays: wind wash with streaks on the whole disc; isobars with
     // H and L at z1; storms and bolts at z2 over Europe and Africa; the sea
     // on the whole disc; numbers at z3 over the Alps.
     function() {
       panel.setViewDisplaySetting("globeIsobars", false)
       panel.setViewDisplaySetting("globeStorms", false)
-      panel.setViewDisplaySetting("globeWash", "wind")
+      layersOn(["wind"])
       globeView(0, 30, -20)
     },
     function() {}, function() {}, function() {}, function() { shot("09l-wind-streaks-z0") },
     function() {
       panel.setViewDisplaySetting("globeStreaks", false)
       panel.setViewDisplaySetting("globeIsobars", true)
-      panel.setViewDisplaySetting("globeWash", "none")
+      layersOn([])
       globeView(1, 45, -10)
     },
     function() {}, function() {}, function() { shot("09m-isobars-z1") },
     function() {
       panel.setViewDisplaySetting("globeIsobars", false)
       panel.setViewDisplaySetting("globeStorms", true)
-      panel.setViewDisplaySetting("globeWash", "temperature")
+      layersOn(["temperature"])
       globeView(2, 38, 5)
     },
     function() {}, function() {}, function() { shot("09n-storms-z2") },
     function() {
-      panel.setViewDisplaySetting("globeWash", "sst")
+      layersOn(["sst"])
       globeView(0, 20, -30)
     },
     function() {}, function() {}, function() { shot("09o-sst-z0") },
     function() {
-      panel.setViewDisplaySetting("globeWash", "temperature")
+      layersOn(["temperature"])
       panel.setViewDisplaySetting("globeNumbers", true)
       globeView(3, 47, 9)
     },
@@ -217,6 +261,16 @@ ShellRoot {
       panel.setViewDisplaySetting("globeNumbers", false)
       panel.setViewDisplaySetting("globeStorms", true)
     },
+    // Colour layers together: temperature, cloud and precipitation on the
+    // whole disc; the air's and the sea's temperature; wind over
+    // temperature at z1.
+    function() { layersOn(["temperature", "cloud", "precipitation"]); globeView(0, 30, -10) },
+    function() {}, function() {}, function() { rimShot("09u-layers-temp-cloud-rain-z0") },
+    function() { layersOn(["temperature", "sst"]); globeView(0, 20, -30) },
+    function() {}, function() {}, function() {}, function() { rimShot("09v-layers-temp-sst-z0") },
+    function() { layersOn(["temperature", "wind"]); globeView(1, 45, -15) },
+    function() {}, function() {}, function() { shot("09w-layers-wind-temp-z1") },
+    function() { layersOn(["temperature"]) },
     // The timeline: now, +24 h and +96 h on the whole disc (temperature
     // with isobars and storms), +12 h close up over the Alps.
     function() {

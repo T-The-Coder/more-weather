@@ -440,5 +440,6 @@ var catalog = {
   "globeTimeKeysHint": ", . Zeit · Leertaste abspielen",
   "shortcutGlobeStep": "Globus: einen Zeitschritt zurück oder vor",
   "shortcutGlobePlay": "Globus: Zeitleiste abspielen oder anhalten",
-  "shortcutGlobeNow": "Globus: zurück zu jetzt"
+  "shortcutGlobeNow": "Globus: zurück zu jetzt",
+  "globeCombineHint": "Die Farbschichten lassen sich kombinieren und werden in der gezeigten Reihenfolge gezeichnet: die Wassertemperatur über dem Meer neben der Lufttemperatur über Land, der Wind halb deckend über einer Temperatur, Bewölkung und Niederschlag über allem. Zahlen und Zeiger zeigen Niederschlag, wo es regnet, sonst die Temperatur, dann Wind und Bewölkung."
 }

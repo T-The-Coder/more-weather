@@ -406,5 +406,6 @@ var entries = {
   "globeTimeKeysHint": ", . thời gian · Space phát",
   "shortcutGlobeStep": "Quả địa cầu: lùi hoặc tiến một bước thời gian",
   "shortcutGlobePlay": "Quả địa cầu: phát hoặc tạm dừng dòng thời gian",
-  "shortcutGlobeNow": "Quả địa cầu: về hiện tại"
+  "shortcutGlobeNow": "Quả địa cầu: về hiện tại",
+  "globeCombineHint": "Các lớp màu kết hợp được và vẽ theo thứ tự danh sách: nhiệt độ nước biển trên đại dương cạnh nhiệt độ không khí trên đất liền, gió với nửa cường độ trên nhiệt độ, mây và lượng mưa trên cùng. Số và con trỏ hiển thị lượng mưa nơi đang mưa, nếu không là nhiệt độ, rồi gió và mây."
 }

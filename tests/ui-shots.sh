@@ -17,7 +17,8 @@ ln -s "$shell/Commons" "$work/config/Commons"
 ln -s "$shell/Ui" "$work/config/Ui"
 ln -s "$root" "$work/config/Weather"
 cp "$root/tests/ui/shell.qml" "$work/config/shell.qml"
-theme="$HOME/.local/state/omarchy/current/theme"
+# MW_THEME=<theme directory> shoots in another theme than the current one.
+theme="${MW_THEME:-$HOME/.local/state/omarchy/current/theme}"
 [ -e "$theme" ] && ln -s "$theme" "$work/home/.local/state/omarchy/current/theme"
 python3 "$root/tests/ui/fixtures/state.py" "$work/home"
 # No session bus: a warning that comes due during the run notifies no one.
@@ -27,4 +28,5 @@ env -u DBUS_SESSION_BUS_ADDRESS -u XDG_DATA_HOME -u XDG_CONFIG_HOME -u XDG_STATE
   timeout 300 qs -n -p "$work/config" >"$work/log.txt" 2>&1
 echo "log: $work/log.txt"
 echo "shots: $out"
+python3 "$root/tests/ui/rim-check.py" "$work/log.txt" "$out" >>"$work/log.txt"
 grep -E "SHOT|STATUS|CHECK|GLOBE|STEP FAILED|ERROR|WARN|Error|error" "$work/log.txt" | grep -v "^$" | head -80

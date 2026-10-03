@@ -406,5 +406,6 @@ var entries = {
   "globeTimeKeysHint": ", . idő · Szóköz lejátszás",
   "shortcutGlobeStep": "Földgömb: egy időlépés vissza vagy előre",
   "shortcutGlobePlay": "Földgömb: idővonal lejátszása vagy megállítása",
-  "shortcutGlobeNow": "Földgömb: vissza a mostba"
+  "shortcutGlobeNow": "Földgömb: vissza a mostba",
+  "globeCombineHint": "A színrétegek kombinálhatók, a lista sorrendjében rajzolódnak: a tenger hőmérséklete az óceán fölött, a levegőé a szárazföld fölött, a szél félerősséggel egy hőmérséklet fölött, a felhőzet és a csapadék mindenek fölött. A számok és a mutató csapadékot mutatnak, ahol esik, egyébként a hőmérsékletet, aztán a szelet és a felhőzetet."
 }

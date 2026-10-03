@@ -226,14 +226,20 @@ Rectangle {
         { key: "globeMoon", title: panel.i18n("moon") },
         { key: "globeMarkers", title: panel.i18n("globeMarkers") },
         { key: "globeAutoRotate", title: panel.i18n("optionGlobeAutoRotate") },
-        { key: "globeStorms", title: panel.i18n("globeStorms") },
+        // The colour layers in the order they are drawn, then the overlays.
+        { key: "globeTemperature", title: panel.i18n("globeWashTemperature") },
+        { key: "globeSst", title: panel.i18n("globeWashSst") },
+        { key: "globeWind", title: panel.i18n("globeWashWind") },
+        { key: "globeCloud", title: panel.i18n("globeWashCloud") },
+        { key: "globePrecipitation", title: panel.i18n("globeWashPrecipitation") },
         { key: "globeStreaks", title: panel.i18n("globeStreaks") },
         { key: "globeIsobars", title: panel.i18n("globeIsobars") },
+        { key: "globeStorms", title: panel.i18n("globeStorms") },
         { key: "globeNumbers", title: panel.i18n("globeNumbers") },
         { key: "globeTimeline", title: panel.i18n("globeTimeline") }
       ],
       hint: panel.i18n("globeHint") + " " + panel.i18n("globeZoomHint") + " " + panel.i18n("optionNightHint") + " "
-        + panel.i18n("optionGlobeAutoRotateHint") + " " + panel.i18n("globeLayersHint") + " " + panel.i18n("globeTimelineHint"),
+        + panel.i18n("optionGlobeAutoRotateHint") + " " + panel.i18n("globeCombineHint") + " " + panel.i18n("globeLayersHint") + " " + panel.i18n("globeTimelineHint"),
       hasGlobeRotate: true,
       hasGlobeWash: true,
       hasDefaultTab: false
@@ -324,15 +330,6 @@ Rectangle {
   })
   property var globeRotateDropdowns: ({})
   // The globe's colour wash.
-  readonly property var globeWashOptions: [
-    { value: "none", label: panel.i18n("globeWashNone") },
-    { value: "temperature", label: panel.i18n("globeWashTemperature") },
-    { value: "cloud", label: panel.i18n("globeWashCloud") },
-    { value: "precipitation", label: panel.i18n("globeWashPrecipitation") },
-    { value: "wind", label: panel.i18n("globeWashWind") },
-    { value: "sst", label: panel.i18n("globeWashSst") }
-  ]
-  property var globeWashDropdown: null
   readonly property var globeWindLevelOptions: Model.WIND_LEVELS.map(function(level) {
     return { value: level.id, label: panel.windLevelText(level) }
   })
@@ -342,41 +339,6 @@ Rectangle {
     id: globeWashRow
 
     Column {
-      Item {
-        width: parent.width
-        height: Style.space(40)
-
-        Text {
-          textFormat: Text.PlainText
-          anchors.left: parent.left
-          anchors.leftMargin: Style.space(12)
-          anchors.right: washDropdown.left
-          anchors.rightMargin: Style.space(8)
-          anchors.verticalCenter: parent.verticalCenter
-          text: panel.i18n("globeWash")
-          color: panel.foreground
-          font.family: panel.fontFamily
-          font.pixelSize: Style.font.bodySmall
-          elide: Text.ElideRight
-        }
-
-        Dropdown {
-          id: washDropdown
-          anchors.right: parent.right
-          anchors.verticalCenter: parent.verticalCenter
-          width: Style.space(180)
-          showLabel: false
-          fontFamily: panel.fontFamily
-          hasCursor: settingsView.focusId === "globeWash"
-          onHasCursorChanged: if (hasCursor) settingsView.ensureVisible(this)
-          onPopupOpenChanged: if (!popupOpen) panel.restoreKeyFocus()
-          value: String(panel.settingsDisplaySetting("globeWash", "temperature"))
-          options: settingsView.globeWashOptions
-          onChanged: function(value) { panel.displayOptionsStore.setSettingsDisplaySetting("globeWash", value) }
-          Component.onCompleted: settingsView.globeWashDropdown = washDropdown
-        }
-      }
-
       // The wind's height, for the wind wash and the streaks.
       Item {
         width: parent.width
@@ -612,7 +574,7 @@ Rectangle {
         }
         if (card.hasHoverUnit) items.push({ id: "hoverUnit", type: "dropdown" })
         if (card.hasMapStyle) items.push({ id: "mapStyle", type: "dropdown" })
-        if (card.hasGlobeWash) items.push({ id: "globeWash", type: "dropdown" }, { id: "globeWindLevel", type: "dropdown" })
+        if (card.hasGlobeWash) items.push({ id: "globeWindLevel", type: "dropdown" })
         if (card.hasGlobeRotate && panel.settingsDisplaySetting("globeAutoRotate", false))
           items.push({ id: "globeRotateDelay", type: "dropdown" }, { id: "globeRotateSpeed", type: "dropdown" })
         if (card.hasRainAlert && panel.settingsDisplaySetting("notifyRainSoon", true))
@@ -694,7 +656,6 @@ Rectangle {
     if (id === "rainThreshold") return spec(rainThresholdOptions, rainThresholdDropdown, display("rainAlertThreshold", "any"))
     if (id === "rainRadius") return spec(rainRadiusOptions, rainRadiusDropdown, display("rainAlertRadius", "25"))
     if (id === "mapStyle") return spec(mapStyleOptions, mapStyleDropdown, display("mapStyle", "drawn"))
-    if (id === "globeWash") return spec(globeWashOptions, globeWashDropdown, display("globeWash", "temperature"))
     if (id === "globeWindLevel") return spec(globeWindLevelOptions, globeWindLevelDropdown, display("globeWindLevel", "10m"))
     if (id === "globeRotateDelay") return spec(globeRotateDelayOptions, globeRotateDropdowns.delay || null, display("globeRotateDelay", "10"))
     if (id === "globeRotateSpeed") return spec(globeRotateSpeedOptions, globeRotateDropdowns.speed || null, display("globeRotateSpeed", "4"))

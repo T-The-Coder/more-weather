@@ -406,5 +406,6 @@ var entries = {
   "globeTimeKeysHint": ", . 시간 · Space 재생",
   "shortcutGlobeStep": "지구본: 시간 한 단계 뒤로 또는 앞으로",
   "shortcutGlobePlay": "지구본: 타임라인 재생 또는 일시 정지",
-  "shortcutGlobeNow": "지구본: 지금으로 돌아가기"
+  "shortcutGlobeNow": "지구본: 지금으로 돌아가기",
+  "globeCombineHint": "색상 레이어는 함께 쓸 수 있으며 목록 순서대로 그려집니다. 바다 위에는 해수면 온도, 육지 위에는 기온, 바람은 온도 위에 절반 강도로, 구름과 강수는 맨 위에 그려집니다. 숫자와 포인터는 비가 오는 곳에서는 강수를, 그 밖에는 기온, 그다음 바람과 구름을 보여 줍니다."
 }

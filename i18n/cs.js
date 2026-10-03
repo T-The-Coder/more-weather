@@ -406,5 +406,6 @@ var entries = {
   "globeTimeKeysHint": ", . čas · Mezerník přehrát",
   "shortcutGlobeStep": "Glóbus: časový krok zpět nebo vpřed",
   "shortcutGlobePlay": "Glóbus: přehrát nebo pozastavit časovou osu",
-  "shortcutGlobeNow": "Glóbus: zpět na teď"
+  "shortcutGlobeNow": "Glóbus: zpět na teď",
+  "globeCombineHint": "Barevné vrstvy se kombinují a kreslí v pořadí seznamu: teplota moře nad oceánem vedle teploty vzduchu nad pevninou, vítr napůl krycí přes teplotu, oblačnost a srážky přes vše. Čísla a ukazatel ukazují srážky tam, kde prší, jinak teplotu, pak vítr a oblačnost."
 }

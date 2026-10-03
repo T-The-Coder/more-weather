@@ -406,5 +406,6 @@ var entries = {
   "globeTimeKeysHint": ", . hora · Espacio reproducir",
   "shortcutGlobeStep": "Globo: un paso de tiempo atrás o adelante",
   "shortcutGlobePlay": "Globo: reproducir o pausar la línea de tiempo",
-  "shortcutGlobeNow": "Globo: volver a ahora"
+  "shortcutGlobeNow": "Globo: volver a ahora",
+  "globeCombineHint": "Las capas de color se combinan y se dibujan en el orden de la lista: la temperatura del mar sobre el océano junto a la del aire sobre tierra, el viento a media intensidad sobre una temperatura, las nubes y la precipitación encima de todo. Los números y el puntero muestran la precipitación donde llueve, si no la temperatura, luego el viento y las nubes."
 }

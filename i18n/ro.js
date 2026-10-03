@@ -406,5 +406,6 @@ var entries = {
   "globeTimeKeysHint": ", . oră · Spațiu redare",
   "shortcutGlobeStep": "Glob: un pas de timp înapoi sau înainte",
   "shortcutGlobePlay": "Glob: redă sau întrerupe cronologia",
-  "shortcutGlobeNow": "Glob: înapoi la acum"
+  "shortcutGlobeNow": "Glob: înapoi la acum",
+  "globeCombineHint": "Straturile de culoare se combină și se desenează în ordinea listei: temperatura mării deasupra oceanului alături de cea a aerului deasupra uscatului, vântul la jumătate de intensitate peste o temperatură, norii și precipitațiile deasupra tuturor. Numerele și cursorul arată precipitațiile unde plouă, altfel temperatura, apoi vântul și norii."
 }

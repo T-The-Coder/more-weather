@@ -406,5 +406,6 @@ var entries = {
   "globeTimeKeysHint": ", . tid · Mellemrum afspil",
   "shortcutGlobeStep": "Globus: et tidstrin tilbage eller frem",
   "shortcutGlobePlay": "Globus: afspil eller sæt tidslinjen på pause",
-  "shortcutGlobeNow": "Globus: tilbage til nu"
+  "shortcutGlobeNow": "Globus: tilbage til nu",
+  "globeCombineHint": "Farvelagene kan kombineres og tegnes i listens rækkefølge: havtemperaturen over havet ved siden af lufttemperaturen over land, vinden halvt dækkende over en temperatur, skyer og nedbør øverst. Tal og markøren viser nedbør, hvor det regner, ellers temperaturen, så vind og skyer."
 }

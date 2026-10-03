@@ -3,6 +3,7 @@ import Quickshell
 import Quickshell.Io
 import "I18n.js" as I18n
 import "Model.js" as Model
+import "GlobeFields.js" as GlobeFields
 
 // Loads, sanitizes and writes the per-surface display options (app, widget,
 // menu bar). Reading an option stays on the panel (displaySetting and friends).
@@ -133,7 +134,7 @@ Item {
     var source = raw && typeof raw === "object" ? raw : ({})
     var result = ({})
     if (surface === "menubar") source = migratedMenubarOptions(source)
-    else source = migratedSectionOptions(source)
+    else source = migratedGlobeOptions(migratedSectionOptions(source))
     for (var key in defaults) {
       if (key === "defaultTab") {
         result[key] = normalizedSectionKey(source[key], defaults[key])
@@ -148,6 +149,18 @@ Item {
       }
     }
     return result
+  }
+
+  // Up to 3.1's development the globe showed one colour wash at a time
+  // (globeWash); now each layer is a switch: the stored choice becomes its
+  // switch, the others off.
+  function migratedGlobeOptions(raw) {
+    if (typeof raw.globeWash !== "string" || typeof raw.globeTemperature === "boolean") return raw
+    var source = Object.assign({}, raw)
+    var switches = GlobeFields.switchesFor(raw.globeWash)
+    for (var key in switches) source[key] = switches[key]
+    delete source.globeWash
+    return source
   }
 
   function normalizedSectionKey(value, fallback) {
@@ -214,7 +227,6 @@ Item {
     menubarAccents: ["off", "hover", "always"],
     globeRotateDelay: ["5", "10", "30"],
     globeRotateSpeed: ["1", "2", "4", "8"],
-    globeWash: ["none", "temperature", "cloud", "precipitation", "wind", "sst"],
     globeWindLevel: ["10m", "120m", "850hPa", "700hPa", "500hPa", "250hPa"]
   })
   function normalizedChoice(key, value, fallback) {

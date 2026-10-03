@@ -90,11 +90,13 @@ runs as a standalone app window.
   it, Ctrl + wheel, a double click, `+` `−` or its buttons zoom in to about 400 km
   across, where the coast, lakes, borders and towns come from the radar map's data; a
   click on a place shows that place, and on the whole disc it can turn by itself after a
-  while without a touch (Settings → Display → Globe: delay and speed). A colour layer
-  shows the temperature (default), cloud, precipitation, wind or the sea's temperature
-  from Open-Meteo's model, coarse for the whole earth and finer close up, with a legend
-  under the globe (a click or `v` takes the next layer) and the value under the pointer.
-  Over it, each switchable: storm symbols for gusts from 75 km/h and flickering bolts for
+  while without a touch (Settings → Display → Globe: delay and speed). Colour layers,
+  each a switch and freely combined, show the temperature (default), the sea's
+  temperature, wind, cloud and precipitation from Open-Meteo's model, coarse for the
+  whole earth and finer close up, ending crisply at the globe's rim; the legend has a row
+  per layer (a click on its name switches it off, `+` the next on; `v` shows one layer
+  alone, then the next) and the pointer reads the values under it.
+  Over it, each switchable: storm glyphs for gusts from 75 km/h and lightning glyphs for
   thunderstorms (on by default), drifting wind streaks at a chosen height (10 m up to
   250 hPa, `Shift` `↑` `↓`), isobars every 4 hPa with highs and lows, and the layer's
   values in numbers from close up. A timeline under the globe runs it ahead (the whole
@@ -190,7 +192,7 @@ too, and the settings name their keys where they apply.
 | `Ctrl ← → ↑ ↓` / drag | Globe: turn and tilt (15°, or a quarter of the view when zoomed in) |
 | `+` / `−` / Ctrl + wheel | Globe: zoom in / out (at the pointer with the wheel) |
 | `0` | Globe: the whole globe at the shown place |
-| `v` | Globe: next colour layer (temperature, cloud, precipitation, wind, sea temperature, none) |
+| `v` | Globe: one colour layer alone, then the next (temperature, cloud, precipitation, wind, sea temperature, none) |
 | `Shift` `↑` `↓` | Globe: wind height of the wind layer and the streaks |
 | `,` `.` | Globe: a time step back or forward on the timeline |
 | `Space` | Globe: play or pause the timeline |
