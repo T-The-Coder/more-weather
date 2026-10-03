@@ -418,5 +418,20 @@ var entries = {
   "mapStyleGlobe": "Küre",
   "globeMapHint": "Düz harita (Equal Earth) tüm Dünya'yı aynı katmanlar, yakınlaştırma ve zaman çizelgesiyle bir kerede gösterir; sürüklemek onu kaydırır ve kendiliğinden dönmez.",
   "hoverTooltip": "Üzerine gelince ipucu",
-  "hoverTooltipHint": "Menü çubuğunun öğelerini, üzerine gelince görünenler dahil, çubuğun ipucunda tekrarlar."
+  "hoverTooltipHint": "Menü çubuğunun öğelerini, üzerine gelince görünenler dahil, çubuğun ipucunda tekrarlar.",
+  "globeChipTemperature": "Sıcaklık",
+  "globeChipSea": "Deniz",
+  "globeChipCloud": "Bulut",
+  "globeChipRain": "Yağmur",
+  "globeChipWind": "Rüzgâr",
+  "globeChipIsobars": "İzobar",
+  "globeChipStorms": "Fırtına",
+  "globeChipNumbers": "Sayılar",
+  "globeWindMode": "Rüzgâr gösterimi",
+  "globeWindLines": "Çizgi",
+  "globeWindColour": "Renk",
+  "globeWindBoth": "İkisi",
+  "globeChipsHint": "Kürenin altındaki düğmeler aynı katmanları açar; Shift + tıklama veya sağ tıklama tek bir renk katmanını gösterir.",
+  "shortcutGlobeLayers": "Küre: sıcaklık, deniz, bulut, yağmur, rüzgâr aç/kapat",
+  "shortcutGlobeOverlays": "Küre: izobar, fırtına, sayılar aç/kapat"
 }

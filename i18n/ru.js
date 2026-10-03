@@ -418,5 +418,20 @@ var entries = {
   "mapStyleGlobe": "Глобус",
   "globeMapHint": "Плоская карта (Equal Earth) показывает всю Землю сразу с теми же слоями, масштабом и шкалой времени; перетаскивание сдвигает её, сама она не вращается.",
   "hoverTooltip": "Подсказка при наведении",
-  "hoverTooltipHint": "Повторяет записи строки меню, включая показываемые при наведении, во всплывающей подсказке панели."
+  "hoverTooltipHint": "Повторяет записи строки меню, включая показываемые при наведении, во всплывающей подсказке панели.",
+  "globeChipTemperature": "Температура",
+  "globeChipSea": "Море",
+  "globeChipCloud": "Облака",
+  "globeChipRain": "Дождь",
+  "globeChipWind": "Ветер",
+  "globeChipIsobars": "Изобары",
+  "globeChipStorms": "Штормы",
+  "globeChipNumbers": "Числа",
+  "globeWindMode": "Ветер показан",
+  "globeWindLines": "Линии",
+  "globeWindColour": "Цвет",
+  "globeWindBoth": "Оба",
+  "globeChipsHint": "Кнопки под глобусом включают те же слои; Shift + щелчок или правый щелчок показывает один цветовой слой.",
+  "shortcutGlobeLayers": "Глобус: температура, море, облака, дождь, ветер вкл/выкл",
+  "shortcutGlobeOverlays": "Глобус: изобары, штормы, числа вкл/выкл"
 }

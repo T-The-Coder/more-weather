@@ -1001,6 +1001,7 @@ Column {
       uLattice: globe.panel.globeData.streaksOn && globe.panel.globeData.layers ? globe.panel.globeData.layers.u || null : null
       vLattice: globe.panel.globeData.streaksOn && globe.panel.globeData.layers ? globe.panel.globeData.layers.v || null : null
       scaleKmh: globe.windScaleKmh
+      coloured: globe.panel.globeData.windMode === "lines"
     }
     WeatherGlobeOverlay {
       id: overlay

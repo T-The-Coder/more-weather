@@ -2,6 +2,7 @@ import QtQuick
 import "Globe.js" as Globe
 import "GlobeView.js" as GlobeView
 import "GlobeStreaks.js" as GlobeStreaks
+import "GlobeFields.js" as GlobeFields
 
 // The wind on the globe as drifting streaks (Settings → Display → Globe):
 // about 300 particles in the part of the earth in view, moved by the
@@ -20,6 +21,9 @@ Canvas {
   // share of it, so a jet stream does not race.
   property real scaleKmh: 100
   property bool running: true
+  // Lines alone carry the speed: coloured on the wind scale (softened
+  // towards white); over the wind's colour they stay white.
+  property bool coloured: false
   readonly property int count: 300
   property var particles: []
   property var box: null
@@ -96,11 +100,37 @@ Canvas {
     var pxPerRadian = P.kind === "map" ? P.scale : R
     var scale = 20 * 6371000 / (10 * Math.max(1, pxPerRadian)) * 100 / Math.max(10, scaleKmh)
     var segments = GlobeStreaks.step(particles, uLattice, vLattice, 0.066, scale, box)
-    ctx.strokeStyle = "rgba(255,255,255,0.85)"
     ctx.lineWidth = 1.1
-    ctx.beginPath()
+    // One path per colour band (eight along the scale), so a frame strokes
+    // a handful of paths, not a path per particle.
+    var bands = coloured ? 8 : 1
+    var paths = []
+    for (var k = 0; k < bands; k++) paths.push([])
     for (var i = 0; i < segments.length; i++) {
       var s = segments[i]
+      var band = coloured ? Math.max(0, Math.min(bands - 1, Math.floor(s[4] * 3.6 / Math.max(10, scaleKmh) * bands))) : 0
+      paths[band].push(s)
+    }
+    for (var b = 0; b < bands; b++) {
+      if (!paths[b].length) continue
+      if (coloured) {
+        var rgb = GlobeFields.windColor((b + 0.5) / bands)
+        ctx.strokeStyle = Qt.rgba((rgb[0] + (255 - rgb[0]) * 0.35) / 255, (rgb[1] + (255 - rgb[1]) * 0.35) / 255,
+          (rgb[2] + (255 - rgb[2]) * 0.35) / 255, 0.9)
+      } else {
+        ctx.strokeStyle = "rgba(255,255,255,0.85)"
+      }
+      ctx.beginPath()
+      strokeSegments(ctx, P, paths[b])
+      ctx.stroke()
+    }
+    ctx.restore()
+    var spent = Date.now() - started
+    stats = { count: stats.count + 1, total: stats.total + spent, max: Math.max(stats.max, spent) }
+  }
+  function strokeSegments(ctx, P, list) {
+    for (var i = 0; i < list.length; i++) {
+      var s = list[i]
       if (!P.at(s[0], s[1])) continue
       var ax = P.x, ay = P.y
       if (!P.at(s[2], s[3])) continue
@@ -109,9 +139,5 @@ Canvas {
       ctx.moveTo(ax, ay)
       ctx.lineTo(P.x, P.y)
     }
-    ctx.stroke()
-    ctx.restore()
-    var spent = Date.now() - started
-    stats = { count: stats.count + 1, total: stats.total + spent, max: Math.max(stats.max, spent) }
   }
 }

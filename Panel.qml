@@ -1866,7 +1866,7 @@ Panel {
       globeCloud: false,
       globePrecipitation: false,
       globeWindLevel: "10m",
-      globeStreaks: false,
+      globeWindMode: "lines",
       globeIsobars: false,
       globeStorms: true,
       globeNumbers: false,
@@ -3405,6 +3405,15 @@ Panel {
         event.accepted = true
         return
       }
+    }
+    // The layer chips' letters (GlobeFields.CHIPS): t temperature, e sea,
+    // c cloud, p precipitation, d wind, i isobars, s storms, u numbers.
+    var chip = globeKeys && globeItem ? GlobeFields.chipForShortcut(text) : null
+    if (chip) {
+      var chipOn = displaySetting(chip.key, chip.key === "globeTemperature" || chip.key === "globeStorms") === true
+      setViewDisplaySetting(chip.key, !chipOn)
+      event.accepted = true
+      return
     }
     // v: the globe's next colour wash.
     if (globeKeys && globeItem && text === "v") {

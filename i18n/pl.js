@@ -418,5 +418,20 @@ var entries = {
   "mapStyleGlobe": "Globus",
   "globeMapHint": "Płaska mapa (Equal Earth) pokazuje całą Ziemię naraz z tymi samymi warstwami, powiększeniem i osią czasu; przeciąganie ją przesuwa i nie obraca się sama.",
   "hoverTooltip": "Podpowiedź po najechaniu",
-  "hoverTooltipHint": "Powtarza wpisy paska menu, także te pokazywane po najechaniu, w podpowiedzi paska."
+  "hoverTooltipHint": "Powtarza wpisy paska menu, także te pokazywane po najechaniu, w podpowiedzi paska.",
+  "globeChipTemperature": "Temperatura",
+  "globeChipSea": "Morze",
+  "globeChipCloud": "Chmury",
+  "globeChipRain": "Deszcz",
+  "globeChipWind": "Wiatr",
+  "globeChipIsobars": "Izobary",
+  "globeChipStorms": "Burze",
+  "globeChipNumbers": "Liczby",
+  "globeWindMode": "Wiatr jako",
+  "globeWindLines": "Linie",
+  "globeWindColour": "Kolor",
+  "globeWindBoth": "Oba",
+  "globeChipsHint": "Przyciski pod globem przełączają te same warstwy; Shift + klik lub prawy klik pokazuje jedną warstwę koloru.",
+  "shortcutGlobeLayers": "Globus: temperatura, morze, chmury, deszcz, wiatr wł./wył.",
+  "shortcutGlobeOverlays": "Globus: izobary, burze, liczby wł./wył."
 }

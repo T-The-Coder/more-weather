@@ -418,5 +418,20 @@ var entries = {
   "mapStyleGlobe": "Globe",
   "globeMapHint": "De platte kaart (Equal Earth) toont de hele aarde in één keer met dezelfde lagen, zoom en tijdlijn; slepen verschuift haar, en ze draait niet vanzelf.",
   "hoverTooltip": "Tooltip bij aanwijzen",
-  "hoverTooltipHint": "Herhaalt de items van de menubalk, ook die bij aanwijzen, in de tooltip van de balk."
+  "hoverTooltipHint": "Herhaalt de items van de menubalk, ook die bij aanwijzen, in de tooltip van de balk.",
+  "globeChipTemperature": "Temperatuur",
+  "globeChipSea": "Zee",
+  "globeChipCloud": "Wolken",
+  "globeChipRain": "Regen",
+  "globeChipWind": "Wind",
+  "globeChipIsobars": "Isobaren",
+  "globeChipStorms": "Storm",
+  "globeChipNumbers": "Getallen",
+  "globeWindMode": "Wind toont",
+  "globeWindLines": "Lijnen",
+  "globeWindColour": "Kleur",
+  "globeWindBoth": "Beide",
+  "globeChipsHint": "De knoppen onder de globe schakelen dezelfde lagen; Shift + klik of rechtsklik toont één kleurlaag alleen.",
+  "shortcutGlobeLayers": "Globe: temperatuur, zee, wolken, regen, wind aan of uit",
+  "shortcutGlobeOverlays": "Globe: isobaren, storm, getallen aan of uit"
 }

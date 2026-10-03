@@ -418,5 +418,20 @@ var entries = {
   "mapStyleGlobe": "Globe",
   "globeMapHint": "La carte plane (Equal Earth) montre toute la Terre d’un coup avec les mêmes couches, le zoom et la chronologie ; un glissement la déplace, et elle ne tourne pas d’elle-même.",
   "hoverTooltip": "Info-bulle au survol",
-  "hoverTooltipHint": "Reprend les entrées de la barre de menus, y compris celles du survol, dans l’info-bulle de la barre."
+  "hoverTooltipHint": "Reprend les entrées de la barre de menus, y compris celles du survol, dans l’info-bulle de la barre.",
+  "globeChipTemperature": "Température",
+  "globeChipSea": "Mer",
+  "globeChipCloud": "Nuages",
+  "globeChipRain": "Pluie",
+  "globeChipWind": "Vent",
+  "globeChipIsobars": "Isobares",
+  "globeChipStorms": "Tempêtes",
+  "globeChipNumbers": "Nombres",
+  "globeWindMode": "Le vent montre",
+  "globeWindLines": "Lignes",
+  "globeWindColour": "Couleur",
+  "globeWindBoth": "Les deux",
+  "globeChipsHint": "Les puces sous le globe activent les mêmes couches ; Maj + clic ou un clic droit montre une couche de couleur seule.",
+  "shortcutGlobeLayers": "Globe : température, mer, nuages, pluie, vent oui ou non",
+  "shortcutGlobeOverlays": "Globe : isobares, tempêtes, nombres oui ou non"
 }

@@ -4,32 +4,36 @@ import qs.Ui
 import "GlobeFields.js" as GlobeFields
 import "Model.js" as Model
 
-// Under the globe: a compact row per colour layer on (its name, a click on
-// which switches it off; its scale with five ticks; the unit), a "+" that
-// switches the next one on, then once what the data is (the model's
-// resolution, when it was loaded or the time shown, the daily limit, the
-// isobars' spacing, the streaks' height) and its source.
+// Under the globe: one row of toggle chips, every layer always there, the
+// colour layers first, then the overlays (GlobeFields.CHIPS): a click
+// switches that layer, Shift + click or a right click shows a colour layer
+// alone; active chips look like the selected tab. The chips write the same
+// display options as the Globe card. Below them a scale row per colour
+// layer on (name, scale, unit; the wind's with its mode and height), then
+// once what the data is and its source.
 Item {
   id: legend
   required property var panel
   required property Item globe
   readonly property bool imperial: panel.useImperial
   readonly property var loader: panel.globeData
-  readonly property var layers: loader.washLayers
-  // The next layer "+" switches on, in the draw order; "" when all are on.
-  readonly property string nextLayer: {
-    for (var i = 0; i < GlobeFields.LAYERS.length; i++)
-      if (layers.indexOf(GlobeFields.LAYERS[i]) < 0) return GlobeFields.LAYERS[i]
-    return ""
+  // The scales shown: the colour layers on, and the wind whenever it is on
+  // (its lines alone carry the speed in the scale's colours).
+  readonly property var scales: {
+    var list = loader.washLayers.slice()
+    if (loader.windOn && list.indexOf("wind") < 0) list.push("wind")
+    return GlobeFields.LAYERS.filter(function(kind) { return list.indexOf(kind) >= 0 })
   }
+  // Glyphs only where the row would be too tight for the names.
+  readonly property bool glyphOnly: width < Style.space(380)
   width: parent ? parent.width : 0
   height: column.height
 
   function layerName(kind) {
-    var name = panel.i18n("globeWash" + kind.charAt(0).toUpperCase() + kind.slice(1))
-    // The wind's height with it, when it is not the ground's.
-    if (kind === "wind" && globe.windHeight !== "10m") name += " · " + panel.windLevelText(Model.windLevel(globe.windHeight))
-    return name
+    return panel.i18n("globeWash" + kind.charAt(0).toUpperCase() + kind.slice(1))
+  }
+  function chipOn(chip) {
+    return panel.displaySetting(chip.key, chip.key === "globeTemperature" || chip.key === "globeStorms") === true
   }
   // A tick's number: the wind in the chosen wind unit, the rest as given;
   // the unit stands after the scale.
@@ -51,56 +55,145 @@ Item {
   Column {
     id: column
     width: parent.width
-    spacing: Style.space(4)
+    spacing: Style.space(6)
 
+    // The chips.
+    Flow {
+      id: chips
+      width: parent.width
+      spacing: Style.space(4)
+
+      Repeater {
+        model: GlobeFields.CHIPS
+
+        Row {
+          id: chipSlot
+          required property var modelData
+          spacing: Style.space(4)
+
+          // The thin divider before the overlays.
+          Rectangle {
+            visible: !!chipSlot.modelData.divider
+            width: 1
+            height: Style.space(16)
+            anchors.verticalCenter: parent.verticalCenter
+            color: legend.panel.mutedText
+            opacity: 0.5
+          }
+          Item {
+            visible: !!chipSlot.modelData.divider
+            width: Style.space(2)
+            height: 1
+          }
+
+          Rectangle {
+            id: chip
+            readonly property bool on: legend.chipOn(chipSlot.modelData)
+            width: chipRow.implicitWidth + Style.space(14)
+            height: Style.space(24)
+            radius: Style.cornerRadius
+            color: on || chipMouse.containsMouse ? Style.hoverFillFor(legend.panel.foreground, Color.accent) : "transparent"
+            border.color: on ? "transparent" : Qt.rgba(legend.panel.foreground.r, legend.panel.foreground.g,
+              legend.panel.foreground.b, 0.18)
+            border.width: Style.spacing.hairline
+
+            Row {
+              id: chipRow
+              anchors.centerIn: parent
+              spacing: Style.space(4)
+
+              Text {
+                textFormat: Text.PlainText
+                anchors.verticalCenter: parent.verticalCenter
+                text: chipSlot.modelData.glyph
+                color: chip.on ? Style.hoverStateColor(legend.panel.foreground, Color.accent) : legend.panel.mutedText
+                font.family: legend.panel.fontFamily
+                font.pixelSize: Style.font.body
+              }
+              Text {
+                textFormat: Text.PlainText
+                visible: !legend.glyphOnly
+                anchors.verticalCenter: parent.verticalCenter
+                text: legend.panel.i18n(chipSlot.modelData.label)
+                color: chip.on ? Style.hoverStateColor(legend.panel.foreground, Color.accent) : legend.panel.mutedText
+                font.family: legend.panel.fontFamily
+                font.pixelSize: Style.font.caption
+                font.bold: chip.on
+              }
+            }
+
+            MouseArea {
+              id: chipMouse
+              anchors.fill: parent
+              hoverEnabled: true
+              acceptedButtons: Qt.LeftButton | Qt.RightButton
+              cursorShape: Qt.PointingHandCursor
+              onClicked: function(mouse) {
+                var layer = chipSlot.modelData.layer
+                var solo = mouse.button === Qt.RightButton || (mouse.modifiers & Qt.ShiftModifier)
+                if (solo && layer !== "") legend.panel.soloGlobeLayer(layer)
+                else legend.panel.setViewDisplaySetting(chipSlot.modelData.key, !chip.on)
+              }
+            }
+
+            // The name above a glyph-only chip under the pointer.
+            Rectangle {
+              visible: legend.glyphOnly && chipMouse.containsMouse
+              y: -height - Style.space(4)
+              x: (parent.width - width) / 2
+              z: 10
+              width: tipText.implicitWidth + Style.space(10)
+              height: tipText.implicitHeight + Style.space(4)
+              radius: Style.cornerRadius
+              color: Color.popups.background
+              border.color: Color.popups.border
+              border.width: Style.spacing.hairline
+
+              Text {
+                id: tipText
+                textFormat: Text.PlainText
+                anchors.centerIn: parent
+                text: legend.panel.i18n(chipSlot.modelData.label)
+                color: Color.popups.text
+                font.family: legend.panel.fontFamily
+                font.pixelSize: Style.font.caption
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // A scale per colour layer on.
     Repeater {
-      model: legend.layers
+      model: legend.scales
 
       Item {
         id: row
         required property string modelData
         readonly property string kind: modelData
+        readonly property bool isWind: kind === "wind"
         width: column.width
-        height: Math.max(chip.height, scale.height)
+        height: Math.max(nameText.implicitHeight, scale.height) + (isWind ? modeRow.height + Style.space(4) : 0)
 
-        // The layer's name: a click switches it off.
-        BorderSurface {
-          id: chip
-          width: Math.min(Style.space(150), chipText.implicitWidth + Style.space(16))
-          height: Style.space(22)
-          radius: Style.cornerRadius
-          color: Style.controlFill(false, chipMouse.containsMouse, Color.popups.text, Color.accent)
-          borderSpec: Border.controlSpec(chipMouse.containsMouse ? "hover-cursor" : "normal", Color.popups.text, Color.accent)
-
-          Text {
-            id: chipText
-            textFormat: Text.PlainText
-            anchors.centerIn: parent
-            width: Math.min(implicitWidth, parent.width - Style.space(12))
-            elide: Text.ElideRight
-            text: legend.layerName(row.kind) + "  ×"
-            color: chipMouse.containsMouse ? Style.hoverStateColor(Color.popups.text, Color.accent) : Color.popups.text
-            font.family: legend.panel.fontFamily
-            font.pixelSize: Style.font.caption
-            font.bold: true
-          }
-
-          MouseArea {
-            id: chipMouse
-            anchors.fill: parent
-            hoverEnabled: true
-            cursorShape: Qt.PointingHandCursor
-            onClicked: legend.panel.setGlobeLayer(row.kind, false)
-          }
+        Text {
+          id: nameText
+          textFormat: Text.PlainText
+          width: Style.space(110)
+          elide: Text.ElideRight
+          text: legend.layerName(row.kind)
+            + (row.isWind ? " · " + legend.panel.windLevelText(Model.windLevel(legend.globe.windHeight)) : "")
+          color: legend.panel.foreground
+          font.family: legend.panel.fontFamily
+          font.pixelSize: Style.font.caption
+          font.bold: true
         }
 
-        // The scale: one block per bucket, ticks under it.
         Item {
           id: scale
           anchors.left: parent.left
-          anchors.leftMargin: Style.space(150) + Style.space(12)
-          anchors.verticalCenter: chip.verticalCenter
-          width: Math.min(Style.space(220), row.width - Style.space(150) - unitLabel.implicitWidth - Style.space(36))
+          anchors.leftMargin: Style.space(118)
+          width: Math.min(Style.space(220), row.width - Style.space(118) - unitLabel.implicitWidth - Style.space(12))
           height: Style.space(8) + tickRow.height + Style.space(2)
 
           Canvas {
@@ -117,12 +210,13 @@ Item {
               var flat = palette || []
               var count = flat.length / 4
               if (!count) return
-              var w = width / count
-              for (var i = 0; i < count; i++) {
-                ctx.fillStyle = Qt.rgba(flat[i * 4] / 255, flat[i * 4 + 1] / 255, flat[i * 4 + 2] / 255,
-                  Math.max(0.25, flat[i * 4 + 3] / 255))
-                ctx.fillRect(i * w, 0, Math.ceil(w), height)
-              }
+              // Smooth, as the layer is drawn.
+              var gradient = ctx.createLinearGradient(0, 0, width, 0)
+              for (var i = 0; i < count; i++)
+                gradient.addColorStop((i + 0.5) / count, Qt.rgba(flat[i * 4] / 255, flat[i * 4 + 1] / 255,
+                  flat[i * 4 + 2] / 255, Math.max(0.35, flat[i * 4 + 3] / 255)))
+              ctx.fillStyle = gradient
+              ctx.fillRect(0, 0, width, height)
               ctx.strokeStyle = Qt.rgba(ink.r, ink.g, ink.b, 0.25)
               ctx.lineWidth = 1
               ctx.strokeRect(0.5, 0.5, width - 1, height - 1)
@@ -163,86 +257,101 @@ Item {
           textFormat: Text.PlainText
           anchors.left: scale.right
           anchors.leftMargin: Style.space(8)
-          anchors.verticalCenter: chip.verticalCenter
+          y: (bar.height - height) / 2
           text: legend.unitText(row.kind)
           color: legend.panel.mutedText
           font.family: legend.panel.fontFamily
           font.pixelSize: Style.font.caption
         }
+
+        // The wind's mode: lines, colour or both.
+        Row {
+          id: modeRow
+          visible: row.isWind
+          anchors.top: scale.bottom
+          anchors.topMargin: Style.space(4)
+          anchors.left: scale.left
+          spacing: Style.space(2)
+
+          Repeater {
+            model: GlobeFields.WIND_MODES
+
+            Rectangle {
+              id: modeChip
+              required property string modelData
+              readonly property bool on: legend.loader.windMode === modelData
+              width: modeText.implicitWidth + Style.space(12)
+              height: Style.space(20)
+              radius: Style.cornerRadius
+              color: on || modeMouse.containsMouse ? Style.hoverFillFor(legend.panel.foreground, Color.accent) : "transparent"
+              border.color: on ? "transparent" : Qt.rgba(legend.panel.foreground.r, legend.panel.foreground.g,
+                legend.panel.foreground.b, 0.18)
+              border.width: Style.spacing.hairline
+
+              Text {
+                id: modeText
+                textFormat: Text.PlainText
+                anchors.centerIn: parent
+                text: legend.panel.i18n(modeChip.modelData === "lines" ? "globeWindLines"
+                  : (modeChip.modelData === "colour" ? "globeWindColour" : "globeWindBoth"))
+                color: modeChip.on ? Style.hoverStateColor(legend.panel.foreground, Color.accent) : legend.panel.mutedText
+                font.family: legend.panel.fontFamily
+                font.pixelSize: Style.font.caption
+              }
+              MouseArea {
+                id: modeMouse
+                anchors.fill: parent
+                hoverEnabled: true
+                cursorShape: Qt.PointingHandCursor
+                onClicked: legend.panel.setViewDisplaySetting("globeWindMode", modeChip.modelData)
+              }
+            }
+          }
+        }
       }
     }
 
-    // "+": the next colour layer on; the source on the right.
+    // What the data is, once, and its source.
     Item {
       width: column.width
-      height: Style.space(22)
-
-      BorderSurface {
-        id: plus
-        visible: legend.nextLayer !== ""
-        width: plusText.implicitWidth + Style.space(16)
-        height: Style.space(22)
-        radius: Style.cornerRadius
-        color: Style.controlFill(false, plusMouse.containsMouse, Color.popups.text, Color.accent)
-        borderSpec: Border.controlSpec(plusMouse.containsMouse ? "hover-cursor" : "normal", Color.popups.text, Color.accent)
-
-        Text {
-          id: plusText
-          textFormat: Text.PlainText
-          anchors.centerIn: parent
-          text: "+ " + (legend.nextLayer !== "" ? legend.layerName(legend.nextLayer) : "")
-          color: plusMouse.containsMouse ? Style.hoverStateColor(Color.popups.text, Color.accent) : legend.panel.mutedText
-          font.family: legend.panel.fontFamily
-          font.pixelSize: Style.font.caption
-        }
-
-        MouseArea {
-          id: plusMouse
-          anchors.fill: parent
-          hoverEnabled: true
-          cursorShape: Qt.PointingHandCursor
-          onClicked: legend.panel.setGlobeLayer(legend.nextLayer, true)
-        }
-      }
+      height: note.implicitHeight
+      visible: note.text !== ""
 
       Text {
+        id: note
         textFormat: Text.PlainText
-        visible: legend.loader.active
+        anchors.left: parent.left
+        anchors.right: source.left
+        anchors.rightMargin: Style.space(8)
+        wrapMode: Text.WordWrap
+        text: {
+          if (!legend.loader.active) return ""
+          var parts = []
+          if (legend.globe.zoom <= 1) parts.push(legend.panel.i18n("globeDataModel"))
+          // At another time on the timeline: that time, not the data's age.
+          if (legend.loader.scrubbed)
+            parts.push(legend.panel.globeStepLabel(legend.loader.displayMs, false))
+          else if (legend.loader.dataAt > 0)
+            parts.push(legend.panel.i18n("globeDataTime", { time: Qt.formatTime(new Date(legend.loader.dataAt), "HH:mm") }))
+          else parts.push(legend.panel.i18n("globeDataLoading"))
+          if (legend.loader.limitHeld) parts.push(legend.panel.i18n("globeDataLimit"))
+          if (legend.loader.isobarsOn)
+            parts.push(legend.panel.i18n("globeIsobarsEvery", { value: legend.panel.useImperial ? "0.12 inHg" : "4 hPa" }))
+          return parts.join(" · ")
+        }
+        color: legend.panel.mutedText
+        font.family: legend.panel.fontFamily
+        font.pixelSize: Style.font.caption
+      }
+      Text {
+        id: source
+        textFormat: Text.PlainText
         anchors.right: parent.right
-        anchors.verticalCenter: parent.verticalCenter
         text: legend.loader.needsMarine ? "OPEN-METEO · MARINE" : "OPEN-METEO"
         color: legend.panel.hintText
         font.family: legend.panel.fontFamily
         font.pixelSize: Style.font.caption
       }
-    }
-
-    // What the data is, once.
-    Text {
-      textFormat: Text.PlainText
-      visible: text !== ""
-      width: column.width
-      wrapMode: Text.WordWrap
-      text: {
-        if (!legend.loader.active) return ""
-        var parts = []
-        if (legend.globe.zoom <= 1) parts.push(legend.panel.i18n("globeDataModel"))
-        // At another time on the timeline: that time, not the data's age.
-        if (legend.loader.scrubbed)
-          parts.push(legend.panel.globeStepLabel(legend.loader.displayMs, false))
-        else if (legend.loader.dataAt > 0)
-          parts.push(legend.panel.i18n("globeDataTime", { time: Qt.formatTime(new Date(legend.loader.dataAt), "HH:mm") }))
-        else parts.push(legend.panel.i18n("globeDataLoading"))
-        if (legend.loader.limitHeld) parts.push(legend.panel.i18n("globeDataLimit"))
-        if (legend.loader.isobarsOn)
-          parts.push(legend.panel.i18n("globeIsobarsEvery", { value: legend.panel.useImperial ? "0.12 inHg" : "4 hPa" }))
-        if (legend.loader.streaksOn && legend.layers.indexOf("wind") < 0)
-          parts.push(legend.panel.i18n("globeStreaksAt", { height: legend.panel.windLevelText(Model.windLevel(legend.globe.windHeight)) }))
-        return parts.join(" · ")
-      }
-      color: legend.panel.mutedText
-      font.family: legend.panel.fontFamily
-      font.pixelSize: Style.font.caption
     }
   }
 }

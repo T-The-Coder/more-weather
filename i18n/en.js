@@ -452,5 +452,20 @@ var catalog = {
   "mapStyleGlobe": "Globe",
   "globeMapHint": "The flat map (Equal Earth) shows the whole earth at once with the same layers, zoom and timeline; a drag pans it, and it does not turn by itself.",
   "hoverTooltip": "Tooltip on hover",
-  "hoverTooltipHint": "Repeats the menu bar's entries, the hover ones included, in the bar's tooltip."
+  "hoverTooltipHint": "Repeats the menu bar's entries, the hover ones included, in the bar's tooltip.",
+  "globeChipTemperature": "Temperature",
+  "globeChipSea": "Sea",
+  "globeChipCloud": "Cloud",
+  "globeChipRain": "Rain",
+  "globeChipWind": "Wind",
+  "globeChipIsobars": "Isobars",
+  "globeChipStorms": "Storms",
+  "globeChipNumbers": "Numbers",
+  "globeWindMode": "Wind shows",
+  "globeWindLines": "Lines",
+  "globeWindColour": "Colour",
+  "globeWindBoth": "Both",
+  "globeChipsHint": "The chips under the globe switch the same layers; Shift + click or a right click shows one colour layer alone.",
+  "shortcutGlobeLayers": "Globe: temperature, sea, cloud, rain, wind on or off",
+  "shortcutGlobeOverlays": "Globe: isobars, storms, numbers on or off"
 }

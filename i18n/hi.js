@@ -418,5 +418,20 @@ var entries = {
   "mapStyleGlobe": "ग्लोब",
   "globeMapHint": "समतल नक्शा (Equal Earth) उन्हीं परतों, ज़ूम और टाइमलाइन के साथ पूरी पृथ्वी एक साथ दिखाता है; खींचने से यह खिसकता है, और यह अपने आप नहीं घूमता।",
   "hoverTooltip": "होवर पर टूलटिप",
-  "hoverTooltipHint": "मेनू बार की प्रविष्टियाँ, होवर वाली भी, बार के टूलटिप में दोहराता है।"
+  "hoverTooltipHint": "मेनू बार की प्रविष्टियाँ, होवर वाली भी, बार के टूलटिप में दोहराता है।",
+  "globeChipTemperature": "तापमान",
+  "globeChipSea": "समुद्र",
+  "globeChipCloud": "बादल",
+  "globeChipRain": "बारिश",
+  "globeChipWind": "हवा",
+  "globeChipIsobars": "समदाब रेखाएँ",
+  "globeChipStorms": "तूफ़ान",
+  "globeChipNumbers": "संख्याएँ",
+  "globeWindMode": "हवा दिखे",
+  "globeWindLines": "रेखाएँ",
+  "globeWindColour": "रंग",
+  "globeWindBoth": "दोनों",
+  "globeChipsHint": "ग्लोब के नीचे के बटन वही परतें बदलते हैं; Shift + क्लिक या राइट क्लिक एक ही रंग परत दिखाता है।",
+  "shortcutGlobeLayers": "ग्लोब: तापमान, समुद्र, बादल, बारिश, हवा चालू/बंद",
+  "shortcutGlobeOverlays": "ग्लोब: समदाब रेखाएँ, तूफ़ान, संख्याएँ चालू/बंद"
 }

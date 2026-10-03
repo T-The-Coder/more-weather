@@ -418,5 +418,20 @@ var entries = {
   "mapStyleGlobe": "Jordglob",
   "globeMapHint": "Den platta kartan (Equal Earth) visar hela jorden på en gång med samma lager, zoom och tidslinje; ett drag panorerar den, och den roterar inte av sig själv.",
   "hoverTooltip": "Verktygstips vid hovring",
-  "hoverTooltipHint": "Upprepar menyradens poster, även de vid hovring, i fältets verktygstips."
+  "hoverTooltipHint": "Upprepar menyradens poster, även de vid hovring, i fältets verktygstips.",
+  "globeChipTemperature": "Temperatur",
+  "globeChipSea": "Hav",
+  "globeChipCloud": "Moln",
+  "globeChipRain": "Regn",
+  "globeChipWind": "Vind",
+  "globeChipIsobars": "Isobarer",
+  "globeChipStorms": "Storm",
+  "globeChipNumbers": "Siffror",
+  "globeWindMode": "Vinden visas som",
+  "globeWindLines": "Linjer",
+  "globeWindColour": "Färg",
+  "globeWindBoth": "Båda",
+  "globeChipsHint": "Knapparna under globen slår på samma lager; Skift + klick eller högerklick visar ett färglager ensamt.",
+  "shortcutGlobeLayers": "Glob: temperatur, hav, moln, regn, vind på/av",
+  "shortcutGlobeOverlays": "Glob: isobarer, storm, siffror på/av"
 }

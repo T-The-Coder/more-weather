@@ -100,13 +100,15 @@ runs as a standalone app window.
   sees its phase. Colour layers,
   each a switch and freely combined, show the temperature (default), the sea's
   temperature, wind, cloud and precipitation from Open-Meteo's model, coarse for the
-  whole earth and finer close up, ending crisply at the globe's rim; the legend has a row
-  per layer (a click on its name switches it off, `+` the next on; `v` shows one layer
-  alone, then the next) and the pointer reads the values under it.
-  Over it, each switchable: storm glyphs for gusts from 75 km/h and lightning glyphs for
-  thunderstorms (on by default), drifting wind streaks at a chosen height (10 m up to
-  250 hPa, `Shift` `↑` `↓`), isobars every 4 hPa with highs and lows, and the layer's
-  values in numbers from close up. A timeline under the globe runs it ahead (the whole
+  whole earth and finer close up, ending crisply at the globe's rim. A row of chips under
+  the globe switches every layer (Shift + click or a right click shows one colour layer
+  alone; letters `t` `e` `c` `p` `d` `i` `s` `u`; `v` steps through the layers alone), with
+  a scale per colour layer below, and the pointer reads the values under it. The wind is
+  one layer: drifting lines coloured by speed (default), the speed as colour, or both, at
+  a chosen height (10 m up to 250 hPa, `Shift` `↑` `↓`). Over it, each switchable: storm
+  glyphs for gusts from 75 km/h and lightning glyphs for thunderstorms (on by default),
+  isobars every 4 hPa with highs and lows, and the layers' values in numbers from close
+  up. A timeline under the globe runs it ahead (the whole
   earth up to five days in 3-hour steps, close up two days hourly; play, drag, `,` `.`,
   `Space`, `n` back to now): the colours, overlays, sun, moon and my places' forecasts
   follow the time shown, from the data already loaded (on in the app, a switch in the
@@ -200,6 +202,8 @@ too, and the settings name their keys where they apply.
 | `+` / `−` / Ctrl + wheel | Globe: zoom in / out (at the pointer with the wheel) |
 | `0` | Globe: the whole globe at the shown place |
 | `v` | Globe: one colour layer alone, then the next (temperature, cloud, precipitation, wind, sea temperature, none) |
+| `t` `e` `c` `p` `d` | Globe: temperature, sea, cloud, rain, wind on or off |
+| `i` `s` `u` | Globe: isobars, storms, numbers on or off |
 | `Shift` `↑` `↓` | Globe: wind height of the wind layer and the streaks |
 | `,` `.` | Globe: a time step back or forward on the timeline |
 | `Space` | Globe: play or pause the timeline |

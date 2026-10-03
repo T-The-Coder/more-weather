@@ -418,5 +418,20 @@ var entries = {
   "mapStyleGlobe": "Karttapallo",
   "globeMapHint": "Litteä kartta (Equal Earth) näyttää koko maapallon kerralla samoilla kerroksilla, zoomilla ja aikajanalla; vetäminen siirtää sitä, eikä se pyöri itsestään.",
   "hoverTooltip": "Työkaluvihje osoitettaessa",
-  "hoverTooltipHint": "Toistaa valikkorivin kohdat, myös osoitettaessa näkyvät, palkin työkaluvihjeessä."
+  "hoverTooltipHint": "Toistaa valikkorivin kohdat, myös osoitettaessa näkyvät, palkin työkaluvihjeessä.",
+  "globeChipTemperature": "Lämpötila",
+  "globeChipSea": "Meri",
+  "globeChipCloud": "Pilvet",
+  "globeChipRain": "Sade",
+  "globeChipWind": "Tuuli",
+  "globeChipIsobars": "Isobaarit",
+  "globeChipStorms": "Myrskyt",
+  "globeChipNumbers": "Luvut",
+  "globeWindMode": "Tuuli näkyy",
+  "globeWindLines": "Viivoina",
+  "globeWindColour": "Värinä",
+  "globeWindBoth": "Molemmin",
+  "globeChipsHint": "Pallon alla olevat painikkeet kytkevät samat kerrokset; Vaihto + napsautus tai oikea napsautus näyttää yhden värikerroksen.",
+  "shortcutGlobeLayers": "Karttapallo: lämpötila, meri, pilvet, sade, tuuli päälle/pois",
+  "shortcutGlobeOverlays": "Karttapallo: isobaarit, myrskyt, luvut päälle/pois"
 }

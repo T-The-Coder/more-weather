@@ -181,6 +181,22 @@ test("colour layers: switches from the old choice, the top layer at a place", ()
   assert.deepEqual(plain(F.LAYERS), ["temperature", "sst", "wind", "cloud", "precipitation"])
 })
 
+test("wind: one layer with a mode, migrated from the two switches", () => {
+  const m = (o) => plain(F.migratedWind(o))
+  assert.deepEqual(m({ globeStreaks: true, globeWind: false, x: 1 }), { globeWind: true, globeWindMode: "lines", x: 1 })
+  assert.deepEqual(m({ globeStreaks: false, globeWind: true }), { globeWind: true, globeWindMode: "colour" })
+  assert.deepEqual(m({ globeStreaks: true, globeWind: true }), { globeWind: true, globeWindMode: "both" })
+  assert.deepEqual(m({ globeStreaks: false }), { globeWind: false, globeWindMode: "lines" })
+  // Already new, or nothing stored: unchanged.
+  assert.deepEqual(m({ globeWind: true, globeWindMode: "colour", globeStreaks: true }),
+    { globeWind: true, globeWindMode: "colour", globeStreaks: true })
+  assert.deepEqual(m({ globeWind: true }), { globeWind: true })
+  // The chips: colour layers first, then the overlays; free shortcut letters.
+  assert.deepEqual(plain(F.CHIPS.map((c) => c.layer).filter((l) => l)), ["temperature", "sst", "cloud", "precipitation", "wind"])
+  assert.equal(F.chipForShortcut("i").key, "globeIsobars")
+  assert.equal(F.chipForShortcut("w"), null)
+})
+
 test("wind heights, marine keys and nearest codes", () => {
   assert.equal(G.batchKey(3, "850hPa"), "G9:3@850hPa")
   assert.equal(G.batchKey(3, "10m"), "G9:3")

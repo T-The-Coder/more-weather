@@ -418,5 +418,20 @@ var entries = {
   "mapStyleGlobe": "Глобус",
   "globeMapHint": "Плоска карта (Equal Earth) показує всю Землю одразу з тими самими шарами, масштабом і шкалою часу; перетягування зсуває її, сама вона не обертається.",
   "hoverTooltip": "Підказка під час наведення",
-  "hoverTooltipHint": "Повторює записи рядка меню, зокрема ті, що з’являються під час наведення, у підказці панелі."
+  "hoverTooltipHint": "Повторює записи рядка меню, зокрема ті, що з’являються під час наведення, у підказці панелі.",
+  "globeChipTemperature": "Температура",
+  "globeChipSea": "Море",
+  "globeChipCloud": "Хмари",
+  "globeChipRain": "Дощ",
+  "globeChipWind": "Вітер",
+  "globeChipIsobars": "Ізобари",
+  "globeChipStorms": "Шторми",
+  "globeChipNumbers": "Числа",
+  "globeWindMode": "Вітер показано",
+  "globeWindLines": "Лінії",
+  "globeWindColour": "Колір",
+  "globeWindBoth": "Обидва",
+  "globeChipsHint": "Кнопки під глобусом вмикають ті самі шари; Shift + клацання або правий клік показує один кольоровий шар.",
+  "shortcutGlobeLayers": "Глобус: температура, море, хмари, дощ, вітер увімк./вимк.",
+  "shortcutGlobeOverlays": "Глобус: ізобари, шторми, числа увімк./вимк."
 }

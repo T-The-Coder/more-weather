@@ -418,5 +418,20 @@ var entries = {
   "mapStyleGlobe": "Globus",
   "globeMapHint": "Det flade kort (Equal Earth) viser hele jorden på én gang med de samme lag, zoom og tidslinje; et træk panorerer det, og det drejer ikke af sig selv.",
   "hoverTooltip": "Værktøjstip ved peg",
-  "hoverTooltipHint": "Gentager menulinjens punkter, også dem der vises ved peg, i bjælkens værktøjstip."
+  "hoverTooltipHint": "Gentager menulinjens punkter, også dem der vises ved peg, i bjælkens værktøjstip.",
+  "globeChipTemperature": "Temperatur",
+  "globeChipSea": "Hav",
+  "globeChipCloud": "Skyer",
+  "globeChipRain": "Regn",
+  "globeChipWind": "Vind",
+  "globeChipIsobars": "Isobarer",
+  "globeChipStorms": "Storm",
+  "globeChipNumbers": "Tal",
+  "globeWindMode": "Vinden vises som",
+  "globeWindLines": "Linjer",
+  "globeWindColour": "Farve",
+  "globeWindBoth": "Begge",
+  "globeChipsHint": "Knapperne under kloden slår de samme lag til; Skift + klik eller højreklik viser ét farvelag alene.",
+  "shortcutGlobeLayers": "Globus: temperatur, hav, skyer, regn, vind til/fra",
+  "shortcutGlobeOverlays": "Globus: isobarer, storm, tal til/fra"
 }

@@ -27,12 +27,16 @@ QtObject {
   readonly property var globe: panel.globeItem
   // The colour layers on, in the wash's order (WeatherGlobeWash).
   readonly property var washLayers: GlobeFields.LAYERS.filter(function(kind) {
+    if (kind === "wind") return loader.windOn && loader.windMode !== "lines"
     return loader.panel.displaySetting(GlobeFields.SWITCH[kind], kind === "temperature") === true
   })
   readonly property string washKey: washLayers.join(",")
   readonly property bool washOn: washLayers.length > 0
   readonly property string height: String(panel.displaySetting("globeWindLevel", "10m"))
-  readonly property bool streaksOn: panel.displaySetting("globeStreaks", false) === true
+  // The wind: one layer with a mode, lines (the streaks), colour or both.
+  readonly property bool windOn: panel.displaySetting("globeWind", false) === true
+  readonly property string windMode: String(panel.displaySetting("globeWindMode", "lines"))
+  readonly property bool streaksOn: windOn && windMode !== "colour"
   readonly property bool isobarsOn: panel.displaySetting("globeIsobars", false) === true
   readonly property bool stormsOn: panel.displaySetting("globeStorms", true) === true
   readonly property bool active: !!globe && panel.globeShown && (washOn || streaksOn || isobarsOn || stormsOn)

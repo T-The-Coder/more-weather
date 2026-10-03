@@ -418,5 +418,20 @@ var entries = {
   "mapStyleGlobe": "Glob",
   "globeMapHint": "Harta plană (Equal Earth) arată tot Pământul deodată cu aceleași straturi, zoom și cronologie; tragerea o deplasează și nu se rotește singură.",
   "hoverTooltip": "Indiciu la trecere",
-  "hoverTooltipHint": "Repetă intrările barei de meniu, inclusiv cele de la trecerea cursorului, în indiciul barei."
+  "hoverTooltipHint": "Repetă intrările barei de meniu, inclusiv cele de la trecerea cursorului, în indiciul barei.",
+  "globeChipTemperature": "Temperatură",
+  "globeChipSea": "Mare",
+  "globeChipCloud": "Nori",
+  "globeChipRain": "Ploaie",
+  "globeChipWind": "Vânt",
+  "globeChipIsobars": "Izobare",
+  "globeChipStorms": "Furtuni",
+  "globeChipNumbers": "Numere",
+  "globeWindMode": "Vântul arată",
+  "globeWindLines": "Linii",
+  "globeWindColour": "Culoare",
+  "globeWindBoth": "Ambele",
+  "globeChipsHint": "Butoanele de sub glob comută aceleași straturi; Shift + clic sau clic dreapta arată un singur strat de culoare.",
+  "shortcutGlobeLayers": "Glob: temperatură, mare, nori, ploaie, vânt pornit/oprit",
+  "shortcutGlobeOverlays": "Glob: izobare, furtuni, numere pornit/oprit"
 }

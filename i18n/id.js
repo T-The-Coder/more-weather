@@ -418,5 +418,20 @@ var entries = {
   "mapStyleGlobe": "Bola dunia",
   "globeMapHint": "Peta datar (Equal Earth) menampilkan seluruh bumi sekaligus dengan lapisan, zoom, dan linimasa yang sama; seret untuk menggeser, dan tidak berputar sendiri.",
   "hoverTooltip": "Tooltip saat diarahkan",
-  "hoverTooltipHint": "Mengulang entri bilah menu, termasuk yang muncul saat diarahkan, di tooltip bilah."
+  "hoverTooltipHint": "Mengulang entri bilah menu, termasuk yang muncul saat diarahkan, di tooltip bilah.",
+  "globeChipTemperature": "Suhu",
+  "globeChipSea": "Laut",
+  "globeChipCloud": "Awan",
+  "globeChipRain": "Hujan",
+  "globeChipWind": "Angin",
+  "globeChipIsobars": "Isobar",
+  "globeChipStorms": "Badai",
+  "globeChipNumbers": "Angka",
+  "globeWindMode": "Angin sebagai",
+  "globeWindLines": "Garis",
+  "globeWindColour": "Warna",
+  "globeWindBoth": "Keduanya",
+  "globeChipsHint": "Tombol di bawah bola dunia menyalakan lapisan yang sama; Shift + klik atau klik kanan menampilkan satu lapisan warna saja.",
+  "shortcutGlobeLayers": "Bola dunia: suhu, laut, awan, hujan, angin hidup/mati",
+  "shortcutGlobeOverlays": "Bola dunia: isobar, badai, angka hidup/mati"
 }

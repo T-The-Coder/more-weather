@@ -418,5 +418,20 @@ var entries = {
   "mapStyleGlobe": "Globus",
   "globeMapHint": "Det flate kartet (Equal Earth) viser hele jorda på én gang med de samme lagene, zoomen og tidslinjen; et drag panorerer det, og det roterer ikke av seg selv.",
   "hoverTooltip": "Verktøytips ved peking",
-  "hoverTooltipHint": "Gjentar menylinjens oppføringer, også de som vises ved peking, i linjens verktøytips."
+  "hoverTooltipHint": "Gjentar menylinjens oppføringer, også de som vises ved peking, i linjens verktøytips.",
+  "globeChipTemperature": "Temperatur",
+  "globeChipSea": "Hav",
+  "globeChipCloud": "Skyer",
+  "globeChipRain": "Regn",
+  "globeChipWind": "Vind",
+  "globeChipIsobars": "Isobarer",
+  "globeChipStorms": "Storm",
+  "globeChipNumbers": "Tall",
+  "globeWindMode": "Vinden vises som",
+  "globeWindLines": "Linjer",
+  "globeWindColour": "Farge",
+  "globeWindBoth": "Begge",
+  "globeChipsHint": "Knappene under globusen slår på de samme lagene; Shift + klikk eller høyreklikk viser ett fargelag alene.",
+  "shortcutGlobeLayers": "Globus: temperatur, hav, skyer, regn, vind av/på",
+  "shortcutGlobeOverlays": "Globus: isobarer, storm, tall av/på"
 }

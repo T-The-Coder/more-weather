@@ -418,5 +418,20 @@ var entries = {
   "mapStyleGlobe": "地球儀",
   "globeMapHint": "平面地図（Equal Earth）は同じレイヤー、ズーム、タイムラインで地球全体を一度に表示します。ドラッグで移動でき、自動では回転しません。",
   "hoverTooltip": "ホバー時のツールチップ",
-  "hoverTooltipHint": "メニューバーの項目を、ホバー時の項目も含めて、バーのツールチップに表示します。"
+  "hoverTooltipHint": "メニューバーの項目を、ホバー時の項目も含めて、バーのツールチップに表示します。",
+  "globeChipTemperature": "気温",
+  "globeChipSea": "海",
+  "globeChipCloud": "雲",
+  "globeChipRain": "雨",
+  "globeChipWind": "風",
+  "globeChipIsobars": "等圧線",
+  "globeChipStorms": "嵐",
+  "globeChipNumbers": "数値",
+  "globeWindMode": "風の表示",
+  "globeWindLines": "線",
+  "globeWindColour": "色",
+  "globeWindBoth": "両方",
+  "globeChipsHint": "地球儀の下のボタンで同じレイヤーを切り替えます。Shift+クリックまたは右クリックで1つのカラーレイヤーだけを表示します。",
+  "shortcutGlobeLayers": "地球儀：気温・海・雲・雨・風のオン/オフ",
+  "shortcutGlobeOverlays": "地球儀：等圧線・嵐・数値のオン/オフ"
 }

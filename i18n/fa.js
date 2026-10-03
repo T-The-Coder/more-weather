@@ -418,5 +418,20 @@ var entries = {
   "mapStyleGlobe": "کرهٔ زمین",
   "globeMapHint": "نقشهٔ تخت (Equal Earth) کل زمین را یک‌جا با همان لایه‌ها، بزرگ‌نمایی و خط زمان نشان می‌دهد؛ کشیدن آن را جابه‌جا می‌کند و خودبه‌خود نمی‌چرخد.",
   "hoverTooltip": "راهنمای شناور",
-  "hoverTooltipHint": "ورودی‌های نوار منو را، از جمله ورودی‌های هنگام شناور شدن، در راهنمای نوار تکرار می‌کند."
+  "hoverTooltipHint": "ورودی‌های نوار منو را، از جمله ورودی‌های هنگام شناور شدن، در راهنمای نوار تکرار می‌کند.",
+  "globeChipTemperature": "دما",
+  "globeChipSea": "دریا",
+  "globeChipCloud": "ابر",
+  "globeChipRain": "باران",
+  "globeChipWind": "باد",
+  "globeChipIsobars": "هم‌فشارها",
+  "globeChipStorms": "توفان‌ها",
+  "globeChipNumbers": "اعداد",
+  "globeWindMode": "نمایش باد",
+  "globeWindLines": "خطوط",
+  "globeWindColour": "رنگ",
+  "globeWindBoth": "هر دو",
+  "globeChipsHint": "دکمه‌های زیر کره همان لایه‌ها را روشن و خاموش می‌کنند؛ Shift + کلیک یا کلیک راست فقط یک لایهٔ رنگ را نشان می‌دهد.",
+  "shortcutGlobeLayers": "کره: روشن/خاموش کردن دما، دریا، ابر، باران، باد",
+  "shortcutGlobeOverlays": "کره: روشن/خاموش کردن هم‌فشارها، توفان‌ها، اعداد"
 }

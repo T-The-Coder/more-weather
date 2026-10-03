@@ -418,5 +418,20 @@ var entries = {
   "mapStyleGlobe": "גלובוס",
   "globeMapHint": "המפה השטוחה (Equal Earth) מציגה את כל כדור הארץ בבת אחת עם אותן שכבות, זום וציר זמן; גרירה מזיזה אותה, והיא לא מסתובבת מעצמה.",
   "hoverTooltip": "תיאור צץ בריחוף",
-  "hoverTooltipHint": "חוזר על פריטי שורת התפריטים, כולל אלה שבריחוף, בתיאור הצץ של הסרגל."
+  "hoverTooltipHint": "חוזר על פריטי שורת התפריטים, כולל אלה שבריחוף, בתיאור הצץ של הסרגל.",
+  "globeChipTemperature": "טמפרטורה",
+  "globeChipSea": "ים",
+  "globeChipCloud": "עננים",
+  "globeChipRain": "גשם",
+  "globeChipWind": "רוח",
+  "globeChipIsobars": "איזוברים",
+  "globeChipStorms": "סערות",
+  "globeChipNumbers": "מספרים",
+  "globeWindMode": "הרוח מוצגת",
+  "globeWindLines": "קווים",
+  "globeWindColour": "צבע",
+  "globeWindBoth": "שניהם",
+  "globeChipsHint": "הכפתורים מתחת לגלובוס מפעילים את אותן שכבות; Shift + לחיצה או לחיצה ימנית מציגה שכבת צבע אחת לבדה.",
+  "shortcutGlobeLayers": "גלובוס: טמפרטורה, ים, עננים, גשם, רוח הפעלה/כיבוי",
+  "shortcutGlobeOverlays": "גלובוס: איזוברים, סערות, מספרים הפעלה/כיבוי"
 }

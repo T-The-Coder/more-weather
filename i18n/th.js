@@ -418,5 +418,20 @@ var entries = {
   "mapStyleGlobe": "ลูกโลก",
   "globeMapHint": "แผนที่แบน (Equal Earth) แสดงทั้งโลกในครั้งเดียวด้วยชั้น การซูม และไทม์ไลน์เดียวกัน ลากเพื่อเลื่อน และไม่หมุนเอง",
   "hoverTooltip": "ทูลทิปเมื่อชี้",
-  "hoverTooltipHint": "แสดงรายการของแถบเมนูซ้ำ รวมถึงรายการที่แสดงเมื่อชี้ ในทูลทิปของแถบ"
+  "hoverTooltipHint": "แสดงรายการของแถบเมนูซ้ำ รวมถึงรายการที่แสดงเมื่อชี้ ในทูลทิปของแถบ",
+  "globeChipTemperature": "อุณหภูมิ",
+  "globeChipSea": "ทะเล",
+  "globeChipCloud": "เมฆ",
+  "globeChipRain": "ฝน",
+  "globeChipWind": "ลม",
+  "globeChipIsobars": "เส้นความกดอากาศ",
+  "globeChipStorms": "พายุ",
+  "globeChipNumbers": "ตัวเลข",
+  "globeWindMode": "แสดงลมเป็น",
+  "globeWindLines": "เส้น",
+  "globeWindColour": "สี",
+  "globeWindBoth": "ทั้งสอง",
+  "globeChipsHint": "ปุ่มใต้ลูกโลกสลับชั้นเดียวกัน Shift + คลิกหรือคลิกขวาแสดงชั้นสีเดียว",
+  "shortcutGlobeLayers": "ลูกโลก: เปิด/ปิดอุณหภูมิ ทะเล เมฆ ฝน ลม",
+  "shortcutGlobeOverlays": "ลูกโลก: เปิด/ปิดเส้นความกดอากาศ พายุ ตัวเลข"
 }

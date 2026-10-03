@@ -418,5 +418,20 @@ var entries = {
   "mapStyleGlobe": "地球儀",
   "globeMapHint": "平面地圖（Equal Earth）一次顯示整個地球，圖層、縮放和時間軸相同；拖曳可平移，它不會自行旋轉。",
   "hoverTooltip": "懸停提示",
-  "hoverTooltipHint": "在列的提示中重複選單列的項目，包括懸停時顯示的項目。"
+  "hoverTooltipHint": "在列的提示中重複選單列的項目，包括懸停時顯示的項目。",
+  "globeChipTemperature": "溫度",
+  "globeChipSea": "海洋",
+  "globeChipCloud": "雲",
+  "globeChipRain": "雨",
+  "globeChipWind": "風",
+  "globeChipIsobars": "等壓線",
+  "globeChipStorms": "風暴",
+  "globeChipNumbers": "數值",
+  "globeWindMode": "風的顯示",
+  "globeWindLines": "線條",
+  "globeWindColour": "顏色",
+  "globeWindBoth": "兩者",
+  "globeChipsHint": "地球儀下方的按鈕切換相同的圖層；Shift+點擊或右鍵點擊只顯示一個顏色圖層。",
+  "shortcutGlobeLayers": "地球儀：開關溫度、海洋、雲、雨、風",
+  "shortcutGlobeOverlays": "地球儀：開關等壓線、風暴、數值"
 }

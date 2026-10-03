@@ -418,5 +418,20 @@ var entries = {
   "mapStyleGlobe": "Földgömb",
   "globeMapHint": "A sík térkép (Equal Earth) egyszerre mutatja az egész Földet ugyanazokkal a rétegekkel, nagyítással és idővonallal; húzással mozgatható, magától nem forog.",
   "hoverTooltip": "Elemleírás rámutatáskor",
-  "hoverTooltipHint": "Megismétli a menüsor bejegyzéseit, a rámutatáskor megjelenőket is, a sáv elemleírásában."
+  "hoverTooltipHint": "Megismétli a menüsor bejegyzéseit, a rámutatáskor megjelenőket is, a sáv elemleírásában.",
+  "globeChipTemperature": "Hőmérséklet",
+  "globeChipSea": "Tenger",
+  "globeChipCloud": "Felhő",
+  "globeChipRain": "Eső",
+  "globeChipWind": "Szél",
+  "globeChipIsobars": "Izobárok",
+  "globeChipStorms": "Viharok",
+  "globeChipNumbers": "Számok",
+  "globeWindMode": "A szél mint",
+  "globeWindLines": "Vonalak",
+  "globeWindColour": "Szín",
+  "globeWindBoth": "Mindkettő",
+  "globeChipsHint": "A gömb alatti gombok ugyanazokat a rétegeket kapcsolják; Shift + kattintás vagy jobb kattintás egyetlen színréteget mutat.",
+  "shortcutGlobeLayers": "Földgömb: hőmérséklet, tenger, felhő, eső, szél be/ki",
+  "shortcutGlobeOverlays": "Földgömb: izobárok, viharok, számok be/ki"
 }

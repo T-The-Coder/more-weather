@@ -28,10 +28,25 @@ ShellRoot {
   // The colour layers on, the others off.
   // The harness's windows are never active: animations allowed anyway.
   Component.onCompleted: panel.motionForced = true
+  // The colour layers on, the others off; the wind's colour and its lines
+  // are the one Wind layer's modes.
+  function windState() {
+    return panel.displaySetting("globeWind", false) === true ? String(panel.displaySetting("globeWindMode", "lines")) : "off"
+  }
+  function setWind(colour, lines) {
+    panel.setViewDisplaySetting("globeWind", colour || lines)
+    if (colour || lines) panel.setViewDisplaySetting("globeWindMode", colour && lines ? "both" : (colour ? "colour" : "lines"))
+  }
   function layersOn(list) {
-    ;["temperature", "sst", "wind", "cloud", "precipitation"].forEach(function(kind) {
+    ;["temperature", "sst", "cloud", "precipitation"].forEach(function(kind) {
       panel.setGlobeLayer(kind, list.indexOf(kind) >= 0)
     })
+    var w = windState()
+    setWind(list.indexOf("wind") >= 0, w === "lines" || w === "both")
+  }
+  function streaks(on) {
+    var w = windState()
+    setWind(w === "colour" || w === "both", on)
   }
   // A shot of the globe with its rim for tests/ui/rim-check.py: the disc's
   // centre and radius in the picture's pixels.
@@ -39,7 +54,7 @@ ShellRoot {
   // colour layers meet the rim.
   function rimShot(name) {
     var g = panel.globeItem
-    var keys = ["globeStreaks", "globeIsobars", "globeStorms", "globeMarkers"]
+    var keys = ["globeWind", "globeIsobars", "globeStorms", "globeMarkers"]
     var before = keys.map(function(key) { return panel.displaySetting(key, false) })
     keys.forEach(function(key) { panel.setViewDisplaySetting(key, false) })
     var at = g.mapToItem(panel.contentRoot, g.centerX, g.centerY)
@@ -208,7 +223,7 @@ ShellRoot {
       // Everything on for the measurements: temperature, cloud and
       // precipitation, streaks, isobars, storms.
       layersOn(["temperature", "cloud", "precipitation"])
-      panel.setViewDisplaySetting("globeStreaks", true)
+      streaks(true)
       panel.setViewDisplaySetting("globeIsobars", true)
       panel.setViewDisplaySetting("globeStorms", true)
     }
@@ -231,7 +246,7 @@ ShellRoot {
       cpuReport("840")
       panel.globeItem.rotating = false
       panel.setViewDisplaySetting("globeAutoRotate", false)
-      panel.setViewDisplaySetting("globeStreaks", false)
+      streaks(false)
       panel.contentRoot.parent = globeHost
     },
     // At rest with nothing animating: no paints at all.
@@ -273,7 +288,7 @@ ShellRoot {
     },
     function() {}, function() {}, function() {}, function() { shot("09l-wind-streaks-z0") },
     function() {
-      panel.setViewDisplaySetting("globeStreaks", false)
+      streaks(false)
       panel.setViewDisplaySetting("globeIsobars", true)
       layersOn([])
       globeView(1, 45, -10)
@@ -333,7 +348,7 @@ ShellRoot {
     // cost of each step and of the frames meanwhile.
     function() {
       panel.setViewDisplaySetting("globeIsobars", true)
-      panel.setViewDisplaySetting("globeStreaks", true)
+      streaks(true)
       globeView(0, 35, 0)
       panel.globeData.backToNow()
     },
@@ -358,7 +373,28 @@ ShellRoot {
         "wash", ws.max, "overlay", os.max, "ms")
       d.backToNow()
       panel.setViewDisplaySetting("globeIsobars", false)
-      panel.setViewDisplaySetting("globeStreaks", false)
+      streaks(false)
+    },
+    // The layer chips and the wind's three modes, in the app's width, then
+    // the chips in the popup's.
+    function() {
+      panel.contentRoot.parent = globeHostLarge
+      layersOn(["temperature"])
+      setWind(false, true)
+      panel.setViewDisplaySetting("globeIsobars", true)
+      globeView(0, 35, -25)
+    },
+    function() {}, function() {}, function() {}, function() { press(Qt.Key_End) }, function() { shot("09zb-chips-wind-lines") },
+    function() { setWind(true, false) },
+    function() {}, function() {}, function() { press(Qt.Key_End) }, function() { shot("09zc-wind-colour") },
+    function() { setWind(true, true) },
+    function() {}, function() {}, function() { press(Qt.Key_End) }, function() { shot("09zd-wind-both") },
+    function() { panel.contentRoot.parent = widgetHost; setWind(false, true) },
+    function() {}, function() {}, function() { press(Qt.Key_End) }, function() { shot("09ze-chips-popup") },
+    function() {
+      panel.contentRoot.parent = globeHost
+      setWind(false, false)
+      panel.setViewDisplaySetting("globeIsobars", false)
     },
     // The flat map: temperature, cloud and precipitation; with isobars and
     // streaks; zoomed in at z3; at +24 h; then its cost moving.
@@ -371,12 +407,12 @@ ShellRoot {
     function() {
       layersOn(["temperature"])
       panel.setViewDisplaySetting("globeIsobars", true)
-      panel.setViewDisplaySetting("globeStreaks", true)
+      streaks(true)
     },
     function() {}, function() {}, function() {}, function() { shot("09y-map-isobars-streaks-z0") },
     function() {
       panel.setViewDisplaySetting("globeIsobars", false)
-      panel.setViewDisplaySetting("globeStreaks", false)
+      streaks(false)
       globeView(3, 47, 9)
     },
     function() {}, function() {}, function() {}, function() { shot("09z-map-z3") },
@@ -386,13 +422,13 @@ ShellRoot {
       panel.globeData.backToNow()
       layersOn(["temperature", "cloud", "precipitation"])
       panel.setViewDisplaySetting("globeIsobars", true)
-      panel.setViewDisplaySetting("globeStreaks", true)
+      streaks(true)
     }
   ], globeMeasures("500 map"), [
     function() {
       layersOn(["temperature"])
       panel.setViewDisplaySetting("globeIsobars", false)
-      panel.setViewDisplaySetting("globeStreaks", false)
+      streaks(false)
       panel.setViewDisplaySetting("globeStyle", "globe")
     },
     function() { globeView(0, 0, 10) },

@@ -452,5 +452,20 @@ var catalog = {
   "mapStyleGlobe": "Globus",
   "globeMapHint": "Die flache Karte (Equal Earth) zeigt die ganze Erde auf einmal mit denselben Schichten, Zoom und Zeitleiste; Ziehen verschiebt sie, und sie dreht sich nicht von selbst.",
   "hoverTooltip": "Tooltip beim Überfahren",
-  "hoverTooltipHint": "Wiederholt die Einträge der Menüleiste samt den Hover-Einträgen im Tooltip der Leiste."
+  "hoverTooltipHint": "Wiederholt die Einträge der Menüleiste samt den Hover-Einträgen im Tooltip der Leiste.",
+  "globeChipTemperature": "Temperatur",
+  "globeChipSea": "Meer",
+  "globeChipCloud": "Wolken",
+  "globeChipRain": "Regen",
+  "globeChipWind": "Wind",
+  "globeChipIsobars": "Isobaren",
+  "globeChipStorms": "Stürme",
+  "globeChipNumbers": "Zahlen",
+  "globeWindMode": "Wind zeigt",
+  "globeWindLines": "Linien",
+  "globeWindColour": "Farbe",
+  "globeWindBoth": "Beides",
+  "globeChipsHint": "Die Chips unter dem Globus schalten dieselben Schichten; Umschalt + Klick oder ein Rechtsklick zeigt eine Farbschicht allein.",
+  "shortcutGlobeLayers": "Globus: Temperatur, Meer, Wolken, Regen, Wind ein oder aus",
+  "shortcutGlobeOverlays": "Globus: Isobaren, Stürme, Zahlen ein oder aus"
 }

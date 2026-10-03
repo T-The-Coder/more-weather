@@ -418,5 +418,20 @@ var entries = {
   "mapStyleGlobe": "Globo",
   "globeMapHint": "El mapa plano (Equal Earth) muestra toda la Tierra a la vez con las mismas capas, zoom y línea de tiempo; arrastrar lo desplaza y no gira solo.",
   "hoverTooltip": "Información al pasar",
-  "hoverTooltipHint": "Repite las entradas de la barra de menú, incluidas las de paso del ratón, en la información emergente de la barra."
+  "hoverTooltipHint": "Repite las entradas de la barra de menú, incluidas las de paso del ratón, en la información emergente de la barra.",
+  "globeChipTemperature": "Temperatura",
+  "globeChipSea": "Mar",
+  "globeChipCloud": "Nubes",
+  "globeChipRain": "Lluvia",
+  "globeChipWind": "Viento",
+  "globeChipIsobars": "Isobaras",
+  "globeChipStorms": "Tormentas",
+  "globeChipNumbers": "Números",
+  "globeWindMode": "El viento muestra",
+  "globeWindLines": "Líneas",
+  "globeWindColour": "Color",
+  "globeWindBoth": "Ambos",
+  "globeChipsHint": "Los botones bajo el globo activan las mismas capas; Mayús + clic o clic derecho muestra una capa de color sola.",
+  "shortcutGlobeLayers": "Globo: temperatura, mar, nubes, lluvia, viento sí o no",
+  "shortcutGlobeOverlays": "Globo: isobaras, tormentas, números sí o no"
 }

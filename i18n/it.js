@@ -418,5 +418,20 @@ var entries = {
   "mapStyleGlobe": "Globo",
   "globeMapHint": "La mappa piana (Equal Earth) mostra tutta la Terra in una volta con gli stessi livelli, lo zoom e la linea temporale; trascinando si sposta, e non ruota da sola.",
   "hoverTooltip": "Suggerimento al passaggio",
-  "hoverTooltipHint": "Ripete le voci della barra dei menu, comprese quelle al passaggio, nel suggerimento della barra."
+  "hoverTooltipHint": "Ripete le voci della barra dei menu, comprese quelle al passaggio, nel suggerimento della barra.",
+  "globeChipTemperature": "Temperatura",
+  "globeChipSea": "Mare",
+  "globeChipCloud": "Nuvole",
+  "globeChipRain": "Pioggia",
+  "globeChipWind": "Vento",
+  "globeChipIsobars": "Isobare",
+  "globeChipStorms": "Tempeste",
+  "globeChipNumbers": "Numeri",
+  "globeWindMode": "Il vento mostra",
+  "globeWindLines": "Linee",
+  "globeWindColour": "Colore",
+  "globeWindBoth": "Entrambi",
+  "globeChipsHint": "I pulsanti sotto il globo attivano gli stessi livelli; Maiusc + clic o clic destro mostra un livello di colore da solo.",
+  "shortcutGlobeLayers": "Globo: temperatura, mare, nuvole, pioggia, vento sì o no",
+  "shortcutGlobeOverlays": "Globo: isobare, tempeste, numeri sì o no"
 }

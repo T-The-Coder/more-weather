@@ -418,5 +418,20 @@ var entries = {
   "mapStyleGlobe": "Glóbus",
   "globeMapHint": "Plochá mapa (Equal Earth) ukazuje celou Zemi najednou se stejnými vrstvami, zvětšením a časovou osou; tažení ji posouvá a sama se neotáčí.",
   "hoverTooltip": "Popisek při najetí",
-  "hoverTooltipHint": "Zopakuje položky lišty nabídek včetně těch při najetí v popisku lišty."
+  "hoverTooltipHint": "Zopakuje položky lišty nabídek včetně těch při najetí v popisku lišty.",
+  "globeChipTemperature": "Teplota",
+  "globeChipSea": "Moře",
+  "globeChipCloud": "Mraky",
+  "globeChipRain": "Déšť",
+  "globeChipWind": "Vítr",
+  "globeChipIsobars": "Izobary",
+  "globeChipStorms": "Bouře",
+  "globeChipNumbers": "Čísla",
+  "globeWindMode": "Vítr jako",
+  "globeWindLines": "Čáry",
+  "globeWindColour": "Barva",
+  "globeWindBoth": "Obojí",
+  "globeChipsHint": "Tlačítka pod glóbem přepínají tytéž vrstvy; Shift + klik nebo pravý klik ukáže jedinou barevnou vrstvu.",
+  "shortcutGlobeLayers": "Glóbus: teplota, moře, mraky, déšť, vítr zap./vyp.",
+  "shortcutGlobeOverlays": "Glóbus: izobary, bouře, čísla zap./vyp."
 }

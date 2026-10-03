@@ -4,6 +4,17 @@ All notable changes to More Weather are documented here.
 
 ## Unreleased
 
+- **Layer chips** under the globe and the flat map: every layer always
+  there as a toggle chip (glyph and short name; glyphs alone where it is
+  narrow), the colour layers first, then isobars, storms and numbers;
+  Shift + click or a right click shows one colour layer alone; letters
+  `t` `e` `c` `p` `d` `i` `s` `u` on the keyboard. Below them a scale per
+  colour layer, without controls. They replace the legend's × and "+"
+  and set the same options as the Globe card.
+- **One Wind layer** with a mode: lines (default; now coloured by speed
+  on the wind scale), colour, or both; its scale row has the three-way
+  switch and the height. The former wind colour and wind streaks
+  switches carry over.
 - **Flat map** for the globe section (Settings → Display → Globe: Map
   style): the earth in the Equal Earth projection, as in More Time, with
   everything the globe has: the colour layers, isobars, streaks, storm and

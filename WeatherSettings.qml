@@ -230,17 +230,16 @@ Rectangle {
         // The colour layers in the order they are drawn, then the overlays.
         { key: "globeTemperature", title: panel.i18n("globeWashTemperature") },
         { key: "globeSst", title: panel.i18n("globeWashSst") },
-        { key: "globeWind", title: panel.i18n("globeWashWind") },
+        { key: "globeWind", title: panel.i18n("globeWashWind"), choiceBelow: "globeWindMode" },
         { key: "globeCloud", title: panel.i18n("globeWashCloud") },
         { key: "globePrecipitation", title: panel.i18n("globeWashPrecipitation") },
-        { key: "globeStreaks", title: panel.i18n("globeStreaks") },
         { key: "globeIsobars", title: panel.i18n("globeIsobars") },
         { key: "globeStorms", title: panel.i18n("globeStorms") },
         { key: "globeNumbers", title: panel.i18n("globeNumbers") },
         { key: "globeTimeline", title: panel.i18n("globeTimeline") }
       ],
       hint: panel.i18n("globeHint") + " " + panel.i18n("globeZoomHint") + " " + panel.i18n("optionNightHint") + " "
-        + panel.i18n("optionGlobeAutoRotateHint") + " " + panel.i18n("globeMapHint") + " " + panel.i18n("globeCombineHint") + " " + panel.i18n("globeLayersHint") + " " + panel.i18n("globeTimelineHint"),
+        + panel.i18n("optionGlobeAutoRotateHint") + " " + panel.i18n("globeMapHint") + " " + panel.i18n("globeChipsHint") + " " + panel.i18n("globeCombineHint") + " " + panel.i18n("globeLayersHint") + " " + panel.i18n("globeTimelineHint"),
       hasGlobeRotate: true,
       hasGlobeWash: true,
       hasDefaultTab: false
@@ -472,6 +471,9 @@ Rectangle {
   readonly property var choiceSpecs: ({
     globeMoonStyle: { title: "optionMoonStyle", fallback: "space", options: [
       { value: "space", label: panel.i18n("moonStyleSpace") }, { value: "earth", label: panel.i18n("moonStyleEarth") }] },
+    globeWindMode: { title: "globeWindMode", fallback: "lines", options: [
+      { value: "lines", label: panel.i18n("globeWindLines") }, { value: "colour", label: panel.i18n("globeWindColour") },
+      { value: "both", label: panel.i18n("globeWindBoth") }] },
     globeStyle: { title: "optionMapStyle", fallback: "globe", options: [
       { value: "globe", label: panel.i18n("mapStyleGlobe") }, { value: "map", label: panel.i18n("mapStyleFlat") }] }
   })

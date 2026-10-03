@@ -17,6 +17,39 @@ function switchesFor(wash) {
   for (var i = 0; i < LAYERS.length; i++) result[SWITCH[LAYERS[i]]] = LAYERS[i] === wash
   return result
 }
+// The wind is one layer with a mode: animated lines (default), the speed
+// as colour, or both. Earlier the colour (globeWind) and the lines
+// (globeStreaks) were two switches: `migratedWind` turns stored options of
+// that kind into globeWind + globeWindMode (a copy; untouched when already
+// new).
+var WIND_MODES = ["lines", "colour", "both"]
+function migratedWind(options) {
+  if (!options || typeof options !== "object") return options
+  if (typeof options.globeWindMode === "string" || typeof options.globeStreaks !== "boolean") return options
+  var result = {}
+  for (var key in options) if (key !== "globeStreaks") result[key] = options[key]
+  var colour = options.globeWind === true, lines = options.globeStreaks === true
+  result.globeWind = colour || lines
+  result.globeWindMode = colour && lines ? "both" : (colour ? "colour" : "lines")
+  return result
+}
+// The chips under the globe, colour layers then overlays: { key (display
+// option), layer, glyph, label (i18n), shortcut }.
+var CHIPS = [
+  { key: "globeTemperature", layer: "temperature", glyph: "\u{f050f}", label: "globeChipTemperature", shortcut: "t" },
+  { key: "globeSst", layer: "sst", glyph: "\u{f078d}", label: "globeChipSea", shortcut: "e" },
+  { key: "globeCloud", layer: "cloud", glyph: "\u{f0590}", label: "globeChipCloud", shortcut: "c" },
+  { key: "globePrecipitation", layer: "precipitation", glyph: "\u{f0596}", label: "globeChipRain", shortcut: "p" },
+  { key: "globeWind", layer: "wind", glyph: "\u{f059d}", label: "globeChipWind", shortcut: "d" },
+  { key: "globeIsobars", layer: "", glyph: "\u{f029a}", label: "globeChipIsobars", shortcut: "i", divider: true },
+  { key: "globeStorms", layer: "", glyph: "\u{f140b}", label: "globeChipStorms", shortcut: "s" },
+  { key: "globeNumbers", layer: "", glyph: "\u{f03a0}", label: "globeChipNumbers", shortcut: "u" }
+]
+function chipForShortcut(text) {
+  for (var i = 0; i < CHIPS.length; i++) if (CHIPS[i].shortcut === text) return CHIPS[i]
+  return null
+}
+
 // Which layer gives a place's number and the pointer's first value:
 // precipitation where it rains, then the temperatures, the wind, the
 // cloud. `values` maps layer → value (NaN where unknown).

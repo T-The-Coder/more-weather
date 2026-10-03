@@ -155,6 +155,9 @@ Item {
   // (globeWash); now each layer is a switch: the stored choice becomes its
   // switch, the others off.
   function migratedGlobeOptions(raw) {
+    // The wind's colour and lines were two switches; now one layer with a
+    // mode (GlobeFields.migratedWind).
+    raw = GlobeFields.migratedWind(raw)
     if (typeof raw.globeWash !== "string" || typeof raw.globeTemperature === "boolean") return raw
     var source = Object.assign({}, raw)
     var switches = GlobeFields.switchesFor(raw.globeWash)
@@ -229,6 +232,7 @@ Item {
     globeRotateSpeed: ["1", "2", "4", "8"],
     globeRotateFps: ["8", "15", "24", "30"],
     globeMoonStyle: ["space", "earth"],
+    globeWindMode: ["lines", "colour", "both"],
     globeStyle: ["globe", "map"],
     globeWindLevel: ["10m", "120m", "850hPa", "700hPa", "500hPa", "250hPa"]
   })

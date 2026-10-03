@@ -418,5 +418,20 @@ var entries = {
   "mapStyleGlobe": "كرة أرضية",
   "globeMapHint": "تعرض الخريطة المسطحة (Equal Earth) الأرض كلها دفعة واحدة بالطبقات والتكبير والخط الزمني نفسها؛ يحركها السحب، ولا تدور من تلقاء نفسها.",
   "hoverTooltip": "تلميح عند التمرير",
-  "hoverTooltipHint": "يكرر عناصر شريط القوائم، بما فيها عناصر التمرير، في تلميح الشريط."
+  "hoverTooltipHint": "يكرر عناصر شريط القوائم، بما فيها عناصر التمرير، في تلميح الشريط.",
+  "globeChipTemperature": "الحرارة",
+  "globeChipSea": "البحر",
+  "globeChipCloud": "الغيوم",
+  "globeChipRain": "المطر",
+  "globeChipWind": "الرياح",
+  "globeChipIsobars": "خطوط الضغط",
+  "globeChipStorms": "العواصف",
+  "globeChipNumbers": "الأرقام",
+  "globeWindMode": "تظهر الرياح",
+  "globeWindLines": "خطوط",
+  "globeWindColour": "لون",
+  "globeWindBoth": "كلاهما",
+  "globeChipsHint": "تبدّل الأزرار أسفل الكرة الطبقات نفسها؛ Shift + نقرة أو نقرة يمنى تعرض طبقة لون واحدة وحدها.",
+  "shortcutGlobeLayers": "الكرة الأرضية: تشغيل الحرارة والبحر والغيوم والمطر والرياح أو إيقافها",
+  "shortcutGlobeOverlays": "الكرة الأرضية: تشغيل خطوط الضغط والعواصف والأرقام أو إيقافها"
 }

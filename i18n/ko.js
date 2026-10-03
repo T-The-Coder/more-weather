@@ -418,5 +418,20 @@ var entries = {
   "mapStyleGlobe": "지구본",
   "globeMapHint": "평면 지도(Equal Earth)는 같은 레이어, 확대, 타임라인으로 지구 전체를 한 번에 보여 줍니다. 끌어서 이동하며 스스로 돌지 않습니다.",
   "hoverTooltip": "마우스를 올리면 툴팁",
-  "hoverTooltipHint": "메뉴 막대의 항목을 마우스를 올렸을 때 보이는 항목까지 막대의 툴팁에 다시 보여 줍니다."
+  "hoverTooltipHint": "메뉴 막대의 항목을 마우스를 올렸을 때 보이는 항목까지 막대의 툴팁에 다시 보여 줍니다.",
+  "globeChipTemperature": "기온",
+  "globeChipSea": "바다",
+  "globeChipCloud": "구름",
+  "globeChipRain": "비",
+  "globeChipWind": "바람",
+  "globeChipIsobars": "등압선",
+  "globeChipStorms": "폭풍",
+  "globeChipNumbers": "숫자",
+  "globeWindMode": "바람 표시",
+  "globeWindLines": "선",
+  "globeWindColour": "색",
+  "globeWindBoth": "둘 다",
+  "globeChipsHint": "지구본 아래 버튼은 같은 레이어를 켜고 끕니다. Shift+클릭 또는 오른쪽 클릭은 색상 레이어 하나만 보여 줍니다.",
+  "shortcutGlobeLayers": "지구본: 기온·바다·구름·비·바람 켜기/끄기",
+  "shortcutGlobeOverlays": "지구본: 등압선·폭풍·숫자 켜기/끄기"
 }

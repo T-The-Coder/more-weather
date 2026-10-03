@@ -418,5 +418,20 @@ var entries = {
   "mapStyleGlobe": "Quả địa cầu",
   "globeMapHint": "Bản đồ phẳng (Equal Earth) hiển thị cả Trái Đất cùng lúc với cùng các lớp, thu phóng và dòng thời gian; kéo để di chuyển, và nó không tự xoay.",
   "hoverTooltip": "Chú giải khi di chuột",
-  "hoverTooltipHint": "Lặp lại các mục của thanh menu, cả các mục khi di chuột, trong chú giải của thanh."
+  "hoverTooltipHint": "Lặp lại các mục của thanh menu, cả các mục khi di chuột, trong chú giải của thanh.",
+  "globeChipTemperature": "Nhiệt độ",
+  "globeChipSea": "Biển",
+  "globeChipCloud": "Mây",
+  "globeChipRain": "Mưa",
+  "globeChipWind": "Gió",
+  "globeChipIsobars": "Đẳng áp",
+  "globeChipStorms": "Bão",
+  "globeChipNumbers": "Số",
+  "globeWindMode": "Gió hiển thị",
+  "globeWindLines": "Đường",
+  "globeWindColour": "Màu",
+  "globeWindBoth": "Cả hai",
+  "globeChipsHint": "Các nút dưới quả địa cầu bật tắt cùng các lớp; Shift + nhấp hoặc nhấp chuột phải chỉ hiện một lớp màu.",
+  "shortcutGlobeLayers": "Quả địa cầu: bật/tắt nhiệt độ, biển, mây, mưa, gió",
+  "shortcutGlobeOverlays": "Quả địa cầu: bật/tắt đẳng áp, bão, số"
 }
