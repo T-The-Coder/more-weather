@@ -32,6 +32,7 @@ Column {
 
     // Section title, styled and spaced like HOURLY above.
     Text {
+      textFormat: Text.PlainText
       id: dailyTitle
       anchors.left: parent.left
       anchors.top: parent.top
@@ -111,6 +112,7 @@ Column {
               id: dayTextEntry
 
               Text {
+                textFormat: Text.PlainText
                 readonly property string entryKey: parent ? parent.modelData : ""
                 // Long weekday names fall back to the short form when a narrow
                 // column cannot fit them (DONNERSTAG in the popup, say).
@@ -159,6 +161,7 @@ Column {
               id: dayIconEntry
 
               Text {
+                textFormat: Text.PlainText
                 property bool entryVisible: panel.displaySetting("dailyIcon", true)
                 visible: entryVisible
                 text: panel.dayIcon(dayColumn.modelData)
@@ -180,6 +183,7 @@ Column {
                 // Low left, high right, like the week bar below: cool to warm
                 // reads left to right on both.
                 Text {
+                  textFormat: Text.PlainText
                   text: panel.bareTempForDay(dayColumn.modelData, "min")
                   color: panel.absoluteTemperatureAccent(dayColumn.modelData.mintempC) || panel.mutedText
                   font.family: panel.fontFamily
@@ -188,6 +192,7 @@ Column {
                     panel.useImperial ? "mintempF" : "mintempC")
                 }
                 Text {
+                  textFormat: Text.PlainText
                   text: panel.bareTempForDay(dayColumn.modelData, "max")
                   // Warm or cool on the one scale used everywhere (colour accents).
                   color: panel.absoluteTemperatureAccent(dayColumn.modelData.maxtempC) || panel.foreground
@@ -225,6 +230,7 @@ Column {
                 }
 
                 Text {
+                  textFormat: Text.PlainText
                   anchors.verticalCenter: parent.verticalCenter
                   text: parent.event ? panel.forecastEventTime(parent.event.time) : ""
                   color: panel.mutedText
@@ -291,6 +297,7 @@ Column {
               id: dayLengthEntry
 
               Text {
+                textFormat: Text.PlainText
                 property bool entryVisible: panel.displaySetting("dailyDayLength", true) && text !== ""
                 visible: entryVisible
                 text: panel.dayLengthText(dayColumn.modelData)
@@ -304,6 +311,7 @@ Column {
               id: dayLengthChangeEntry
 
               Text {
+                textFormat: Text.PlainText
                 property bool entryVisible: panel.displaySetting("dailyDayLengthChange", true) && text !== ""
                 visible: entryVisible
                 text: panel.dayLengthChangeText(dayColumn.modelData)
@@ -325,6 +333,7 @@ Column {
                 spacing: Style.space(2)
 
                 Text {
+                  textFormat: Text.PlainText
                   id: dayMoonGlyph
                   anchors.verticalCenter: parent.verticalCenter
                   text: panel.dayMoonGlyph(dayColumn.modelData)
@@ -338,6 +347,7 @@ Column {
                 }
 
                 Text {
+                  textFormat: Text.PlainText
                   anchors.verticalCenter: parent.verticalCenter
                   text: panel.dayMoonText(dayColumn.modelData)
                   color: panel.mutedText
@@ -371,6 +381,7 @@ Column {
                   }
 
                   Text {
+                    textFormat: Text.PlainText
                     anchors.verticalCenter: parent.verticalCenter
                     text: panel.forecastEventTime(dayColumn.modelData.sunrise)
                     color: panel.mutedText
@@ -394,6 +405,7 @@ Column {
                   }
 
                   Text {
+                    textFormat: Text.PlainText
                     anchors.verticalCenter: parent.verticalCenter
                     text: panel.forecastEventTime(dayColumn.modelData.sunset)
                     color: panel.mutedText

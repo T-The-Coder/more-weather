@@ -77,6 +77,7 @@ Rectangle {
           ? Style.hoverFillFor(panel.foreground, Color.accent) : "transparent"
 
         Text {
+          textFormat: Text.PlainText
           anchors.centerIn: parent
           text: parent.modelData < 0 ? "▲" : "▼"
           color: panel.mutedText
@@ -98,6 +99,7 @@ Rectangle {
   }
 
   Text {
+    textFormat: Text.PlainText
     anchors.left: switchRow.orderable ? orderButtons.right : parent.left
     // A row flush with the card text still keeps its label off the focus ring.
     anchors.leftMargin: switchRow.orderable ? Style.space(6)
@@ -150,6 +152,7 @@ Rectangle {
     ColumnCursor { visible: switchRow.kbFocused && switchRow.kbColumn === 1 }
 
     Text {
+      textFormat: Text.PlainText
       visible: switchRow.relevantKey === ""
       anchors.centerIn: parent
       text: "–"

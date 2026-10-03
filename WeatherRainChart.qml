@@ -368,6 +368,7 @@ Item {
   // succeeded yet. Same fixed height so the tab doesn't jump when data
   // does arrive.
   Text {
+    textFormat: Text.PlainText
     visible: panel.rainNowcast.length < 2
     width: parent.width
     height: Style.space(230)

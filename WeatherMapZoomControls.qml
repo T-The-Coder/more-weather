@@ -33,6 +33,7 @@ BorderSurface {
         spacing: 0
 
         Text {
+          textFormat: Text.PlainText
           anchors.horizontalCenter: parent.horizontalCenter
           text: panel.distanceText(mapScale.distanceKm)
           color: Color.popups.text
@@ -78,6 +79,7 @@ BorderSurface {
       borderSpec: Border.controlSpec(recentreMouse.containsMouse ? "hover-cursor" : "normal", Color.popups.text, Color.accent)
 
       Text {
+        textFormat: Text.PlainText
         anchors.centerIn: parent
         text: "󰆤"
         color: recentreMouse.containsMouse
@@ -118,6 +120,7 @@ BorderSurface {
       borderSpec: Border.controlSpec(zoomOutMouse.containsMouse ? "hover-cursor" : "normal", Color.popups.text, Color.accent)
 
       Text {
+        textFormat: Text.PlainText
         anchors.centerIn: parent
         text: "−"
         color: zoomOutMouse.containsMouse
@@ -148,6 +151,7 @@ BorderSurface {
       borderSpec: Border.controlSpec(zoomInMouse.containsMouse ? "hover-cursor" : "normal", Color.popups.text, Color.accent)
 
       Text {
+        textFormat: Text.PlainText
         anchors.centerIn: parent
         text: "+"
         color: zoomInMouse.containsMouse

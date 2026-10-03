@@ -55,6 +55,7 @@ Column {
           width: Math.min(implicitWidth, parent.width - Style.space(8))
 
           Text {
+            textFormat: Text.PlainText
             id: tabGlyph
             anchors.verticalCenter: parent.verticalCenter
             text: panel.sectionTabGlyph(parent.parent.modelData)
@@ -66,6 +67,7 @@ Column {
           }
 
           Text {
+            textFormat: Text.PlainText
             visible: !tabStrip.glyphOnly
             anchors.verticalCenter: parent.verticalCenter
             width: Math.min(implicitWidth, parent.parent.width - Style.space(8) - tabGlyph.width - parent.spacing)

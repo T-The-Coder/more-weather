@@ -52,6 +52,7 @@ Column {
     spacing: Style.space(8)
 
     Text {
+      textFormat: Text.PlainText
       anchors.left: parent.left
       text: panel.upperLabel(panel.i18n("airQualityPollen"))
       color: panel.mutedText
@@ -61,6 +62,7 @@ Column {
     }
 
     Text {
+      textFormat: Text.PlainText
       visible: airSection.statusText !== ""
       width: parent.width
       text: airSection.statusText
@@ -95,6 +97,7 @@ Column {
         // Label muted and small, value in front: the same pattern as PM2.5,
         // PM10 and O₃ beside it.
         Text {
+          textFormat: Text.PlainText
           anchors.baseline: aqiValue.baseline
           text: "AQI"
           color: panel.mutedText
@@ -103,6 +106,7 @@ Column {
         }
 
         Text {
+          textFormat: Text.PlainText
           id: aqiValue
           text: airSection.summary && airSection.summary.index !== null
             ? airSection.summary.index + " · " + panel.i18n(airSection.summary.labelKey) : ""
@@ -126,6 +130,7 @@ Column {
           spacing: Style.space(5)
 
           Text {
+            textFormat: Text.PlainText
             anchors.baseline: amount.baseline
             text: parent.modelData[0]
             color: panel.mutedText
@@ -134,6 +139,7 @@ Column {
           }
 
           Text {
+            textFormat: Text.PlainText
             id: amount
             text: airSection.amountText(parent.modelData[1])
             color: panel.foreground
@@ -151,6 +157,7 @@ Column {
       spacing: Style.space(5)
 
       Text {
+        textFormat: Text.PlainText
         id: pollenLabel
         anchors.baseline: pollenValue.baseline
         text: panel.i18n("pollen")
@@ -160,6 +167,7 @@ Column {
       }
 
       Text {
+        textFormat: Text.PlainText
         id: pollenValue
         width: parent.width - pollenLabel.width - parent.spacing
         text: airSection.pollenText()

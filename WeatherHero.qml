@@ -28,6 +28,7 @@ Column {
     anchors.verticalCenter: parent ? parent.verticalCenter : undefined
 
     Text {
+      textFormat: Text.PlainText
       id: metaGlyph
       anchors.centerIn: parent
       text: metaButton.glyph
@@ -145,6 +146,7 @@ Column {
       spacing: Style.space(16)
 
       Text {
+        textFormat: Text.PlainText
         id: heroIcon
         visible: (!panel.heroNightSymbol || !!panel.cursorHour) && panel.displaySetting("heroSymbol", true)
         // tightBoundingRect() is a plain method, so read a metrics property
@@ -200,6 +202,7 @@ Column {
         LayoutMirroring.enabled: false
 
         Text {
+          textFormat: Text.PlainText
           id: tempBig
           text: panel.heroTempNum || "—"
           color: heroBlock.temperatureColor
@@ -209,6 +212,7 @@ Column {
           font.italic: panel.currentTemperatureCached
         }
         Text {
+          textFormat: Text.PlainText
           text: panel.current ? panel.tempUnit : ""
           color: heroBlock.temperatureColor
           font.family: panel.fontFamily
@@ -284,6 +288,7 @@ Column {
           spacing: Style.space(5)
 
           Text {
+            textFormat: Text.PlainText
             text: heroBlock.statLabel(parent.modelData)
             color: panel.mutedText
             font.family: panel.fontFamily
@@ -307,6 +312,7 @@ Column {
             }
 
             Text {
+              textFormat: Text.PlainText
               id: statGlyph
               visible: text !== "" && parent.parent.modelData !== "heroMoon"
               anchors.verticalCenter: parent.verticalCenter
@@ -320,6 +326,7 @@ Column {
               }
             }
             Text {
+              textFormat: Text.PlainText
               anchors.verticalCenter: parent.verticalCenter
               text: heroBlock.statText(parent.parent.modelData)
               color: heroBlock.statColor(parent.parent.modelData)
@@ -356,6 +363,7 @@ Column {
         anchors.verticalCenter: parent.verticalCenter
 
         Text {
+          textFormat: Text.PlainText
           anchors.centerIn: parent
           text: ""  // nf-fa-map_marker
           color: locationPinMouse.containsMouse
@@ -375,6 +383,7 @@ Column {
       }
 
       Text {
+        textFormat: Text.PlainText
         id: locationNameText
         width: Math.min(implicitWidth, Math.max(Style.space(90),
           heroHeader.width - locationMetaRow.width - Style.space(60)))
@@ -405,6 +414,7 @@ Column {
         anchors.verticalCenter: parent.verticalCenter
 
         Text {
+          textFormat: Text.PlainText
           anchors.centerIn: parent
           text: "▾"
           color: panel.mutedText
@@ -457,6 +467,7 @@ Column {
         color: !panel.savingLocation && clearLocationArea.containsMouse ? Style.hoverFillFor(panel.foreground, Color.accent) : "transparent"
 
         Text {
+          textFormat: Text.PlainText
           anchors.centerIn: parent
           text: panel.savingLocation ? "󰦖" : "✕"
           font.family: panel.fontFamily
@@ -491,6 +502,7 @@ Column {
       spacing: Style.space(8)
 
       Text {
+        textFormat: Text.PlainText
         anchors.verticalCenter: parent.verticalCenter
         // The hour under the cursor, else how fresh the data is.
         text: panel.cursorHour

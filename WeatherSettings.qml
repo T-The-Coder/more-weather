@@ -306,6 +306,7 @@ Rectangle {
   // A heading inside the General card. Inline components do not see the
   // file's ids, so the panel comes in.
   component GeneralHeading: Text {
+    textFormat: Text.PlainText
     property var panel: null
     property string textKey: ""
     text: panel ? panel.upperLabel(panel.i18n(textKey)) : ""
@@ -327,6 +328,7 @@ Rectangle {
         height: Style.space(40)
 
         Text {
+          textFormat: Text.PlainText
           anchors.left: parent.left
           anchors.leftMargin: Style.space(12)
           anchors.right: barAccentsDropdownItem.left
@@ -356,6 +358,7 @@ Rectangle {
       }
 
       Text {
+        textFormat: Text.PlainText
         x: Style.space(12)
         width: parent.width - Style.space(24)
         bottomPadding: Style.space(6)
@@ -671,6 +674,7 @@ Rectangle {
           spacing: Style.space(2)
 
           Text {
+            textFormat: Text.PlainText
             text: panel.i18n("settings")
             color: panel.foreground
             font.family: panel.fontFamily
@@ -679,6 +683,7 @@ Rectangle {
           }
 
           Text {
+            textFormat: Text.PlainText
             text: panel.settingsPage === "shortcuts" ? panel.i18n("shortcutsSubtitle")
               : (panel.settingsPage === "general" ? panel.i18n("generalSubtitle")
               : (panel.settingsPage === "sources" ? panel.i18n("sourcesSubtitle")
@@ -702,6 +707,7 @@ Rectangle {
             : "transparent"
 
           Text {
+            textFormat: Text.PlainText
             anchors.centerIn: parent
             text: "✕"
             color: panel.foreground
@@ -739,6 +745,7 @@ Rectangle {
               ? Style.hoverFillFor(panel.foreground, Color.accent) : "transparent"
 
             Text {
+              textFormat: Text.PlainText
               id: pageLabel
               anchors.centerIn: parent
               text: panel.upperLabel(panel.i18n(parent.modelData === "shortcuts" ? "settingsPageShortcuts"
@@ -767,6 +774,7 @@ Rectangle {
       // Where the keys act, in muted type: pages here, the rest below the
       // view picker.
       Text {
+        textFormat: Text.PlainText
         width: parent.width
         horizontalAlignment: Text.AlignHCenter
         text: panel.i18n("settingsPagesKeysHint")
@@ -788,6 +796,7 @@ Rectangle {
 
       // Keys on this page, in muted type where they act.
       Text {
+        textFormat: Text.PlainText
         visible: panel.settingsPage === "general"
         width: parent.width
         text: panel.i18n("settingsGeneralKeysHint")
@@ -818,6 +827,7 @@ Rectangle {
           GeneralHeading { panel: settingsView.panel; textKey: "general" }
 
           Text {
+            textFormat: Text.PlainText
             text: panel.i18n("unitSystem")
             color: panel.mutedText
             font.family: panel.fontFamily
@@ -839,6 +849,7 @@ Rectangle {
           }
 
           Text {
+            textFormat: Text.PlainText
             text: panel.i18n("windUnit")
             color: panel.mutedText
             font.family: panel.fontFamily
@@ -860,6 +871,7 @@ Rectangle {
           }
 
           Text {
+            textFormat: Text.PlainText
             text: panel.i18n("language")
             color: panel.mutedText
             font.family: panel.fontFamily
@@ -880,6 +892,7 @@ Rectangle {
           }
 
           Text {
+            textFormat: Text.PlainText
             text: panel.i18n("barPosition")
             color: panel.mutedText
             font.family: panel.fontFamily
@@ -903,6 +916,7 @@ Rectangle {
           }
 
           Text {
+            textFormat: Text.PlainText
             width: parent.width
             text: panel.i18n(panel.barPlacement.section !== "" ? "barPositionHint" : "barPositionMissing")
             color: panel.mutedText
@@ -923,6 +937,7 @@ Rectangle {
           }
 
           Text {
+            textFormat: Text.PlainText
             width: parent.width
             text: panel.i18n("colorAccentsHint")
             color: panel.mutedText
@@ -935,6 +950,7 @@ Rectangle {
           GeneralHeading { panel: settingsView.panel; textKey: "refreshInterval"; topPadding: Style.space(6) }
 
           Text {
+            textFormat: Text.PlainText
             text: panel.i18n("refreshForecast")
             color: panel.mutedText
             font.family: panel.fontFamily
@@ -955,6 +971,7 @@ Rectangle {
           }
 
           Text {
+            textFormat: Text.PlainText
             text: panel.i18n("refreshRadar")
             color: panel.mutedText
             font.family: panel.fontFamily
@@ -975,6 +992,7 @@ Rectangle {
           }
 
           Text {
+            textFormat: Text.PlainText
             width: parent.width
             text: panel.i18n("refreshIntervalHint")
             color: panel.mutedText
@@ -997,6 +1015,7 @@ Rectangle {
           }
 
           Text {
+            textFormat: Text.PlainText
             width: parent.width
             text: panel.i18n("appLauncherEntryHint")
             color: panel.mutedText
@@ -1009,6 +1028,7 @@ Rectangle {
           GeneralHeading { panel: settingsView.panel; textKey: "settingsTransfer"; topPadding: Style.space(6) }
 
           Text {
+            textFormat: Text.PlainText
             text: panel.i18n("settingsTransferFile")
             color: panel.mutedText
             font.family: panel.fontFamily
@@ -1055,6 +1075,7 @@ Rectangle {
 
           // What the last export or import did, and where.
           Text {
+            textFormat: Text.PlainText
             readonly property var status: panel.settingsTransfer.status
             visible: status !== null
             width: parent.width
@@ -1067,6 +1088,7 @@ Rectangle {
           }
 
           Text {
+            textFormat: Text.PlainText
             width: parent.width
             text: panel.i18n("settingsTransferHint", { backup: panel.settingsTransfer.shown(panel.settingsTransfer.backupPath) })
             color: panel.mutedText
@@ -1090,6 +1112,7 @@ Rectangle {
 
           // How the last import went.
           Text {
+            textFormat: Text.PlainText
             readonly property var status: panel.cityImport.status
             visible: status !== null
             width: parent.width
@@ -1101,6 +1124,7 @@ Rectangle {
           }
 
           Text {
+            textFormat: Text.PlainText
             width: parent.width
             text: panel.i18n(panel.cityImport.available ? "importCitiesHint" : "importCitiesMissing")
             color: panel.mutedText
@@ -1157,6 +1181,7 @@ Rectangle {
               height: settingsSurfaceRow.height
 
               Text {
+                textFormat: Text.PlainText
                 anchors.centerIn: parent
                 text: parent.modelData.title
                 color: parent.selected || surfaceTabMouse.containsMouse
@@ -1189,6 +1214,7 @@ Rectangle {
       }
 
       Text {
+        textFormat: Text.PlainText
         visible: panel.settingsPage === "display"
         width: parent.width
         text: panel.i18n("settingsKeysHint")
@@ -1199,6 +1225,7 @@ Rectangle {
       }
 
       Text {
+        textFormat: Text.PlainText
         visible: panel.settingsPage === "display"
         width: parent.width
         text: panel.i18n("displaySettingsHint")
@@ -1257,6 +1284,7 @@ Rectangle {
             }
 
             Text {
+              textFormat: Text.PlainText
               visible: settingsCard.groupData.masterKey === "" && !settingsCard.groupData.fixedSection
               opacity: settingsCard.cardEnabled ? 1 : 0.42
               width: parent.width
@@ -1272,6 +1300,7 @@ Rectangle {
             }
 
             Text {
+              textFormat: Text.PlainText
               visible: !!settingsCard.groupData.hint
               width: parent.width
               text: settingsCard.groupData.hint || ""
@@ -1312,6 +1341,7 @@ Rectangle {
                   model: [panel.i18n("showAlways"), panel.i18n("showWhenRelevant"), panel.i18n("showOnHover")]
 
                   Text {
+                    textFormat: Text.PlainText
                     required property string modelData
                     width: settingsView.switchColumnWidth
                     horizontalAlignment: Text.AlignHCenter
@@ -1396,6 +1426,7 @@ Rectangle {
                 spacing: Style.space(5)
 
                 Text {
+                  textFormat: Text.PlainText
                   id: placementLabel
                   anchors.verticalCenter: parent.verticalCenter
                   width: Math.min(implicitWidth + Style.space(8), placementRow.width * 0.4)
@@ -1424,6 +1455,7 @@ Rectangle {
                     border.width: Style.spacing.hairline
 
                     Text {
+                      textFormat: Text.PlainText
                       anchors.centerIn: parent
                       width: Math.min(implicitWidth, parent.width - Style.space(8))
                       text: panel.i18n(parent.modelData ? "placementTab" : "placementWindow")
@@ -1459,6 +1491,7 @@ Rectangle {
               spacing: Style.space(6)
 
               Text {
+                textFormat: Text.PlainText
                 text: panel.i18n("hoverUnitSystem")
                 color: panel.foreground
                 font.family: panel.fontFamily
@@ -1479,6 +1512,7 @@ Rectangle {
               }
 
               Text {
+                textFormat: Text.PlainText
                 width: parent.width - Style.space(12)
                 text: panel.i18n("hoverUnitSystemHint")
                 color: panel.mutedText
@@ -1497,6 +1531,7 @@ Rectangle {
               spacing: Style.space(6)
 
               Text {
+                textFormat: Text.PlainText
                 text: panel.i18n("mapStyle")
                 color: panel.foreground
                 font.family: panel.fontFamily
@@ -1517,6 +1552,7 @@ Rectangle {
               }
 
               Text {
+                textFormat: Text.PlainText
                 width: parent.width - Style.space(12)
                 text: panel.i18n("mapStyleHint")
                 color: panel.mutedText
@@ -1536,6 +1572,7 @@ Rectangle {
               spacing: Style.space(6)
 
               Text {
+                textFormat: Text.PlainText
                 text: panel.i18n("rainAlertThreshold")
                 color: panel.foreground
                 font.family: panel.fontFamily
@@ -1556,6 +1593,7 @@ Rectangle {
               }
 
               Text {
+                textFormat: Text.PlainText
                 text: panel.i18n("rainAlertRadius")
                 color: panel.foreground
                 font.family: panel.fontFamily
@@ -1576,6 +1614,7 @@ Rectangle {
               }
 
               Text {
+                textFormat: Text.PlainText
                 width: parent.width - Style.space(12)
                 text: panel.i18n("rainAlertHint")
                 color: panel.mutedText
@@ -1612,6 +1651,7 @@ Rectangle {
                 spacing: Style.space(6)
 
                 Text {
+                  textFormat: Text.PlainText
                   text: panel.i18n("defaultTab")
                   color: panel.foreground
                   font.family: panel.fontFamily
@@ -1641,6 +1681,7 @@ Rectangle {
                       border.width: Style.spacing.hairline
 
                       Text {
+                        textFormat: Text.PlainText
                         anchors.centerIn: parent
                         width: Math.min(implicitWidth, parent.width - Style.space(6))
                         text: panel.sectionTabLabel(modelData)

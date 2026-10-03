@@ -195,6 +195,7 @@ Item {
         model: distanceRings.radii
 
         Text {
+          textFormat: Text.PlainText
           required property real modelData
           x: distanceRings.center.x - implicitWidth / 2
           y: distanceRings.center.y - modelData * distanceRings.pixelsPerUnit - implicitHeight / 2
@@ -275,6 +276,7 @@ Item {
       color: Color.popups.background
       opacity: 0.9
       Text {
+        textFormat: Text.PlainText
         id: loadingText
         anchors.centerIn: parent
         text: panel.radarFrames.length

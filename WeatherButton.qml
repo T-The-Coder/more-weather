@@ -40,6 +40,7 @@ Rectangle {
   }
 
   Text {
+    textFormat: Text.PlainText
     id: buttonLabel
     anchors.centerIn: parent
     // A narrow window shortens the label rather than the button's padding.

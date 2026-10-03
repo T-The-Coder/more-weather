@@ -24,6 +24,7 @@ Rectangle {
   border.width: armed || kbFocused ? Style.spacing.hairline : 0
 
   Text {
+    textFormat: Text.PlainText
     anchors.centerIn: parent
     text: iconButton.glyph
     color: iconButton.armed ? Color.urgent

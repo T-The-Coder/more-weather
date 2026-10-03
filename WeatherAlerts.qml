@@ -60,6 +60,7 @@ Column {
           spacing: Style.space(8)
 
           Text {
+            textFormat: Text.PlainText
             text: "!"
             color: panel.warningColorForSeverity(modelData.severity)
             font.family: panel.fontFamily
@@ -68,6 +69,7 @@ Column {
           }
 
           Text {
+            textFormat: Text.PlainText
             width: parent.width - parent.children[0].implicitWidth - warningPeriodText.implicitWidth - parent.spacing * 2
             text: modelData.headline
             color: panel.foreground
@@ -79,6 +81,7 @@ Column {
           }
 
           Text {
+            textFormat: Text.PlainText
             id: warningPeriodText
             text: panel.warningPeriod(modelData)
             color: panel.mutedText
@@ -90,6 +93,7 @@ Column {
         }
 
         Text {
+          textFormat: Text.PlainText
           width: parent.width
           text: panel.upperLabel(panel.warningSeverityLabel(modelData.severity)) + " · " + modelData.event
             + (panel.displayAlertProviderId !== ""
@@ -113,6 +117,7 @@ Column {
         }
 
         Text {
+          textFormat: Text.PlainText
           width: parent.width
           text: modelData.description
           visible: text !== ""
@@ -124,6 +129,7 @@ Column {
         }
 
         Text {
+          textFormat: Text.PlainText
           width: parent.width
           text: modelData.instruction
           visible: text !== ""

@@ -97,7 +97,7 @@ Item {
       if (panel.reportLocation) rainBody = panel.reportLocation + " · " + rainBody
       alertNotifyProc.command = ["notify-send", "--app-name=More Weather",
         "--icon=more-weather", "--urgency=normal",
-        panel.i18n("rainNotificationTitle", { time: panel.placeClock(rain.date) }), rainBody]
+        plain(panel.i18n("rainNotificationTitle", { time: panel.placeClock(rain.date) })), plain(rainBody)]
       alertNotifyProc.running = true
       return
     }
@@ -107,8 +107,14 @@ Item {
     alertNotifyProc.command = ["notify-send", "--app-name=More Weather",
       "--icon=more-weather",
       "--urgency=" + (pending.severity === "extreme" ? "critical" : "normal"),
-      pending.headline, body]
+      plain(pending.headline), plain(body)]
     alertNotifyProc.running = true
+  }
+
+  // Notification servers read markup in titles and bodies: place names and
+  // warning texts come from services, so "&" and "<" go in as entities.
+  function plain(text) {
+    return String(text || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
   }
 
   property Timer alertNotifyDebounce: Timer {

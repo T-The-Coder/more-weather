@@ -4486,6 +4486,7 @@ Panel {
             WeatherLocationLists { panel: root }
 
             Text {
+              textFormat: Text.PlainText
               visible: !root.current
               text: root.i18n("fetchingForecast")
               color: root.mutedText
@@ -4538,6 +4539,7 @@ Panel {
         }
 
         Text {
+          textFormat: Text.PlainText
           visible: root.usingCachedData
           width: parent.width - Style.space(32)
           anchors.horizontalCenter: parent.horizontalCenter

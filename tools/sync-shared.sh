@@ -11,7 +11,7 @@ set -euo pipefail
 
 pair=(more-time more-weather)
 renamed=(SwitchRow.qml SwitchToggle.qml BarPlacement.qml AppLauncherEntry.qml Request.qml Button.qml IconButton.qml PlaceSearch.qml BarHover.qml MoonSphere.qml)
-verbatim=(tests/qml-syntax.sh tests/load.mjs tests/shared-files.test.mjs .github/workflows/tests.yml tools/sync-shared.sh PlaceSearch.js tests/place-search.test.mjs Moon.js tests/moon.test.mjs)
+verbatim=(tests/qml-syntax.sh tests/load.mjs tests/shared-files.test.mjs .github/workflows/tests.yml tools/sync-shared.sh PlaceSearch.js tests/place-search.test.mjs Moon.js tests/moon.test.mjs tests/plain-text.test.mjs tests/plain-text-sources.json)
 
 root=$(cd "$(dirname "$0")/.." && pwd)
 

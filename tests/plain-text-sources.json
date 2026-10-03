@@ -1,0 +1,11 @@
+{
+  "comment": "Identifiers whose values can come from the network or from files (place and warning data, imports, paths). A QML Text whose text binding names one of them must set textFormat: Text.PlainText, or say why not in a '// rich text:' comment inside the element. Shared by the More plugins (tools/sync-shared.sh): the union of both plugins' identifiers.",
+  "identifiers": [
+    "reportLocation", "placeName", "configuredLocation", "locationName", "savedLocations", "favoriteRows",
+    "name", "region", "country", "countryCode", "city", "cityName", "tz", "zone", "zoneName",
+    "title", "description", "instruction", "sender", "senderName", "headline", "event", "areaDesc", "areas", "area",
+    "label", "status", "path", "message", "summary", "alerts", "activeWeatherAlerts", "current", "suggestion",
+    "currentName", "here", "nextAlarm", "mainText", "itemTitle", "body", "line", "hover", "mapHoverText",
+    "shown", "localTz", "placesImport", "ringBody", "statusSummary", "valueText", "text"
+  ]
+}

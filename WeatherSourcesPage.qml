@@ -114,6 +114,7 @@ Column {
   ]
 
   Text {
+    textFormat: Text.PlainText
     width: parent.width
     text: label("sourcesHint") + " " + panel.i18n("sourceRefreshInfo", {
       minutes: panel.refreshMinutes,
@@ -151,6 +152,7 @@ Column {
           height: Math.max(sourceTitle.implicitHeight, inUseText.implicitHeight)
 
           Text {
+            textFormat: Text.PlainText
             id: sourceTitle
             anchors.left: parent.left
             anchors.right: inUseText.left
@@ -165,6 +167,7 @@ Column {
 
           // The provider serving this data at the moment.
           Text {
+            textFormat: Text.PlainText
             id: inUseText
             anchors.right: parent.right
             anchors.verticalCenter: sourceTitle.verticalCenter
@@ -183,6 +186,7 @@ Column {
         }
 
         Text {
+          textFormat: Text.PlainText
           width: parent.width
           text: sourcesPage.label(sourceCard.modelData.details)
           color: sourcesPage.panel.mutedText
@@ -193,6 +197,7 @@ Column {
 
         // Where each source applies; keys follow the group title.
         Text {
+          // rich text: the bold heading; both parts are translations.
           width: parent.width
           text: "<b>" + sourcesPage.panel.upperLabel(sourcesPage.label("sourceCoverage")) + "</b> "
             + sourcesPage.label(sourceCard.modelData.title + "Coverage")
@@ -212,6 +217,7 @@ Column {
             model: sourceCard.modelData.links
 
             Text {
+              textFormat: Text.PlainText
               required property var modelData
               text: modelData[0] + " ↗"
               color: linkMouse.containsMouse

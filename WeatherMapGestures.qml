@@ -73,6 +73,7 @@ MouseArea {
     visible: opacity > 0
     Behavior on opacity { NumberAnimation { duration: 180 } }
     Text {
+      textFormat: Text.PlainText
       id: zoomHintText
       anchors.centerIn: parent
       text: gestures.panel.i18n("mapZoomHint")

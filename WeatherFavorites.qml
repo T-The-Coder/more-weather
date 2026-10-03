@@ -114,6 +114,7 @@ Column {
     height: favoritesTitle.implicitHeight
 
     Text {
+      textFormat: Text.PlainText
       id: favoritesTitle
       anchors.left: parent.left
       text: panel.upperLabel(panel.i18n("myPlaces"))
@@ -125,6 +126,7 @@ Column {
 
     // Where the keys act, in muted type.
     Text {
+      textFormat: Text.PlainText
       anchors.right: parent.right
       anchors.baseline: favoritesTitle.baseline
       width: Math.min(implicitWidth, parent.width - favoritesTitle.implicitWidth - Style.space(12))
@@ -156,6 +158,7 @@ Column {
           model: favoritesSection.columns
 
           Text {
+            textFormat: Text.PlainText
             required property string modelData
             width: favoritesSection.columnWidths[modelData] || 0
             horizontalAlignment: Text.AlignRight
@@ -200,6 +203,7 @@ Column {
           spacing: favoritesSection.columnGap
 
           Text {
+            textFormat: Text.PlainText
             id: favoriteSymbol
             visible: favoritesSection.showSymbol
             width: favoritesSection.symbolWidth
@@ -213,6 +217,7 @@ Column {
           }
 
           Text {
+            textFormat: Text.PlainText
             id: favoriteName
             anchors.verticalCenter: parent.verticalCenter
             width: favoritesSection.nameWidth
@@ -239,6 +244,7 @@ Column {
                 spacing: Style.space(4)
 
                 Text {
+                  textFormat: Text.PlainText
                   text: favoritesSection.valueText(favoriteRow.modelData, parent.modelData)
                   // Temperatures tinted on a fixed −10…35 °C scale (colour accents).
                   color: (parent.modelData === "favoritesTemperature"

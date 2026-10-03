@@ -29,6 +29,7 @@ Column {
       height: hourlyTitle.implicitHeight
 
       Text {
+        textFormat: Text.PlainText
         id: hourlyTitle
         anchors.left: parent.left
         text: panel.upperLabel(panel.i18n("hourly"))
@@ -40,6 +41,7 @@ Column {
 
       // The hour cursor's keys, in muted type where they act.
       Text {
+        textFormat: Text.PlainText
         anchors.right: parent.right
         anchors.baseline: hourlyTitle.baseline
         width: Math.min(implicitWidth, parent.width - hourlyTitle.implicitWidth - Style.space(12))
@@ -111,6 +113,7 @@ Column {
               id: hourTextEntry
 
               Text {
+                textFormat: Text.PlainText
                 readonly property string entryKey: parent ? parent.modelData : ""
                 readonly property bool isTemperature: entryKey === "hourlyTemperature"
                 property bool entryVisible: panel.displaySetting(entryKey, true)
@@ -160,6 +163,7 @@ Column {
               id: hourIconEntry
 
               Text {
+                textFormat: Text.PlainText
                 id: hourIcon
                 property bool entryVisible: panel.displaySetting("hourlyIcon", true)
                 visible: entryVisible

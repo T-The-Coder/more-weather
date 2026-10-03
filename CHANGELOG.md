@@ -86,6 +86,13 @@ In detail:
 - README: a Keyboard table and an IPC section, the fixed path to the app
   launcher switch (Settings → General), and one section order shared with
   More Time.
+- Texts from services and files are shown as plain text: every text label
+  sets `textFormat: Text.PlainText`, so a place or warning name holding HTML
+  can no longer load anything, and notifications escape `&` and `<` in their
+  titles and bodies (the warning and rain notifications, and the status on
+  a right click on the bar). `tests/plain-text.test.mjs` (shared with More
+  Time, with the identifiers in `tests/plain-text-sources.json`) checks every
+  label that shows such data.
 - The translations moved from one 780 KB `I18n.js` into one file per
   language under `i18n/` (the largest about 37 KB), since the plugin
   marketplace refuses text files over 512 KiB; `I18n.js` imports them and

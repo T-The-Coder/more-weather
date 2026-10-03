@@ -162,6 +162,7 @@ Item {
       }
 
       Text {
+        textFormat: Text.PlainText
         x: Style.space(4)
         y: chart.ruleTop
         text: modelData.label
@@ -183,6 +184,7 @@ Item {
     opacity: 0.3
   }
   Text {
+    textFormat: Text.PlainText
     readonly property real rainMm: chart.hoverIndex >= 0 && chart.rain.length === chart.count
       ? Number(chart.rain[chart.hoverIndex]) : 0
     readonly property string label: chart.hoverIndex < 0 ? ""
@@ -268,6 +270,7 @@ Item {
         })
 
         Text {
+          textFormat: Text.PlainText
           required property var modelData
           readonly property bool high: modelData.kind === "max"
           x: Math.max(0, Math.min(chart.width - implicitWidth, chart.xAt(modelData.index) - implicitWidth / 2))
@@ -284,6 +287,7 @@ Item {
       }
 
       Text {
+        textFormat: Text.PlainText
         readonly property real value: chart.hoverIndex >= 0 ? Number(lineItem.modelData.values[chart.hoverIndex]) : NaN
         // Above the line for the top line, below it for a second one.
         readonly property bool above: lineItem.index === 0
@@ -304,6 +308,7 @@ Item {
     model: chart.axis
 
     Text {
+      textFormat: Text.PlainText
       required property var modelData
       x: Math.max(0, Math.min(chart.width - implicitWidth, chart.xAt(modelData.index) - implicitWidth / 2))
       y: chart.plotBottom + Style.space(4)

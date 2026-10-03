@@ -64,6 +64,7 @@ Item {
       ? "selected" : (playMouse.containsMouse ? "hover-cursor" : "normal"), Color.popups.text, Color.accent)
 
     Text {
+      textFormat: Text.PlainText
       anchors.centerIn: parent
       text: panel.radarPlaying ? "❚❚" : "▶"
       color: panel.radarPlaying
@@ -94,6 +95,7 @@ Item {
     text: "00:00 · +120 min"
   }
   Text {
+    textFormat: Text.PlainText
     id: frameLabel
     anchors.right: parent.right
     anchors.verticalCenter: parent.verticalCenter
@@ -200,6 +202,7 @@ Item {
       border.color: Color.popups.border
       border.width: Style.spacing.hairline
       Text {
+        textFormat: Text.PlainText
         id: hoverText
         anchors.centerIn: parent
         text: timeline.hoverIndex >= 0

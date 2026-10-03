@@ -18,6 +18,7 @@ Row {
     model: attribution.credits.concat([["© OpenStreetMap contributors", "https://www.openstreetmap.org/copyright"]])
 
     Text {
+      textFormat: Text.PlainText
       required property var modelData
       required property int index
       text: (index > 0 ? "· " : "") + modelData[0]

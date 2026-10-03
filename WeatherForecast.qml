@@ -32,6 +32,7 @@ Column {
     width: parent.width
 
     Text {
+      textFormat: Text.PlainText
       id: forecastTitle
       text: panel.upperLabel(forecastSection.isRadar
         ? (panel.radarUsesModelFallback
@@ -49,6 +50,7 @@ Column {
     Item { width: parent.width - forecastTitle.implicitWidth - nowcastSource.implicitWidth; height: 1 }
 
     Text {
+      textFormat: Text.PlainText
       id: nowcastSource
       readonly property string sourceLink: forecastSection.isRadar
         ? Providers.radarLink(panel.radarDisplayProviderId)

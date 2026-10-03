@@ -228,6 +228,7 @@ BarWidget {
         id: symbolEntry
 
         Text {
+          textFormat: Text.PlainText
           id: barSymbol
           property bool entryVisible: !!panelLoader.item && panelLoader.item.menubarShowWeatherSymbol
           visible: entryVisible
@@ -280,6 +281,7 @@ BarWidget {
           }
 
           Text {
+            textFormat: Text.PlainText
             anchors.verticalCenter: parent.verticalCenter
             text: parent.time
             color: button.foreground
@@ -299,6 +301,7 @@ BarWidget {
         id: moonEntry
 
         Text {
+          textFormat: Text.PlainText
           id: barMoon
           property bool entryVisible: !root.vertical && !!panelLoader.item
             && panelLoader.item.menubarMoonText !== ""
@@ -329,6 +332,7 @@ BarWidget {
           spacing: Style.space(3)
 
           Text {
+            textFormat: Text.PlainText
             visible: rainDrop.level < 0
             anchors.verticalCenter: parent.verticalCenter
             text: "󰖌"
@@ -367,6 +371,7 @@ BarWidget {
             }
 
             Text {
+              textFormat: Text.PlainText
               id: dropOutline
               text: "󰸊"
               color: button.foreground
@@ -384,6 +389,7 @@ BarWidget {
               height: Math.max(0, parent.height - y)
 
               Text {
+                textFormat: Text.PlainText
                 y: -parent.y
                 text: "󰖌"
                 color: button.foreground
@@ -394,6 +400,7 @@ BarWidget {
           }
 
           Text {
+            textFormat: Text.PlainText
             anchors.verticalCenter: parent.verticalCenter
             text: panelLoader.item ? panelLoader.item.menubarRainBadgeText : ""
             color: root.accentColor("currentRain")
@@ -426,6 +433,7 @@ BarWidget {
           }
 
           Text {
+            textFormat: Text.PlainText
             anchors.verticalCenter: parent.verticalCenter
             text: "AQI"
             color: button.foreground
@@ -436,6 +444,7 @@ BarWidget {
           }
 
           Text {
+            textFormat: Text.PlainText
             anchors.verticalCenter: parent.verticalCenter
             text: panelLoader.item ? panelLoader.item.menubarAirQualityText : ""
             color: button.foreground
@@ -452,6 +461,7 @@ BarWidget {
         id: warningEntry
 
         Text {
+          textFormat: Text.PlainText
           property bool entryVisible: !root.vertical && !!panelLoader.item
             && panelLoader.item.menubarShowWarnings && panelLoader.item.hasWeatherAlert
           visible: entryVisible
@@ -468,7 +478,9 @@ BarWidget {
 
     onPressed: function(b) {
       if (!root.bar) return
-      if (b === Qt.RightButton) root.bar.run("omarchy-notification-send \"$(omarchy-weather-status)\"")
+      // The status as plain text: notification servers read markup.
+      if (b === Qt.RightButton)
+        root.bar.run("omarchy-notification-send \"$(omarchy-weather-status | sed 's/&/\\&amp;/g; s/</\\&lt;/g; s/>/\\&gt;/g')\"")
       else if (b === Qt.MiddleButton) root.refresh()
       // A click on a popup opened by hover keeps it open.
       else if (barHover.openedByHover && root.opened) barHover.openedByHover = false

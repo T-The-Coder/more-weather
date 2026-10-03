@@ -6,6 +6,7 @@ import qs.Commons
 // Canvas text is rasterised at the logical size and scaled with the screen,
 // which blurs it on fractional scaling; a Text stays sharp.
 Text {
+  textFormat: Text.PlainText
   required property var panel
   property real baselineY: 0
   property string align: "left"

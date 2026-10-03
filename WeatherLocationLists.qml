@@ -35,12 +35,14 @@ Column {
         spacing: Style.space(8)
 
         Text {
+          textFormat: Text.PlainText
           text: ""  // nf-fa-map_marker, same glyph as the pin icon above
           color: panel.mutedText
           font.family: panel.fontFamily
           font.pixelSize: Style.font.body
         }
         Text {
+          textFormat: Text.PlainText
           text: panel.i18n("useCurrentLocation")
           color: panel.foreground
           font.family: panel.fontFamily
@@ -76,6 +78,7 @@ Column {
           spacing: Style.space(8)
 
           Text {
+            textFormat: Text.PlainText
             text: modelData.name
             color: panel.foreground
             font.family: panel.fontFamily
@@ -107,6 +110,7 @@ Column {
           color: removeButtonArea.containsMouse ? Style.hoverFillFor(panel.foreground, Color.accent) : "transparent"
 
           Text {
+            textFormat: Text.PlainText
             anchors.centerIn: parent
             text: "✕"
             font.family: panel.fontFamily
@@ -153,6 +157,7 @@ Column {
           spacing: Style.space(8)
 
           Text {
+            textFormat: Text.PlainText
             text: modelData.name
             color: panel.searchFocusSection === "suggestions"
               && index === panel.suggestionIndex
@@ -161,6 +166,7 @@ Column {
             font.pixelSize: Style.font.body
           }
           Text {
+            textFormat: Text.PlainText
             visible: text !== ""
             text: modelData.description
             color: panel.mutedText
@@ -198,6 +204,7 @@ Column {
           color: addSuggestionArea.containsMouse ? Style.hoverFillFor(panel.foreground, Color.accent) : "transparent"
 
           Text {
+            textFormat: Text.PlainText
             anchors.centerIn: parent
             text: "+"
             font.family: panel.fontFamily
@@ -246,12 +253,14 @@ Column {
         spacing: Style.space(8)
 
         Text {
+          textFormat: Text.PlainText
           text: ""  // nf-fa-map_marker, same glyph as the pin icon above
           color: panel.mutedText
           font.family: panel.fontFamily
           font.pixelSize: Style.font.body
         }
         Text {
+          textFormat: Text.PlainText
           text: panel.i18n("useCurrentLocation")
           color: panel.foreground
           font.family: panel.fontFamily
@@ -291,6 +300,7 @@ Column {
           spacing: Style.space(8)
 
           Text {
+            textFormat: Text.PlainText
             text: modelData.name
             color: panel.searchFocusSection === "saved"
               && index === panel.savedLocationIndex
@@ -327,6 +337,7 @@ Column {
           color: searchRemoveButtonArea.containsMouse ? Style.hoverFillFor(panel.foreground, Color.accent) : "transparent"
 
           Text {
+            textFormat: Text.PlainText
             anchors.centerIn: parent
             text: "✕"
             font.family: panel.fontFamily
