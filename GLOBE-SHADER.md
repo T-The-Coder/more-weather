@@ -286,7 +286,8 @@ polygons. The same zoom cut-off applies.
   `WeatherGlobeSurface.qml` / `TimeGlobeSurface.qml`, and the warning's product name is renamed on the way.
 - Add `shaders/globe.frag`, `shaders/globe.frag.qsb` and `tools/build-shaders.sh` to `verbatim`. The
   shared-files test should compare the `.qsb` as bytes, not as text.
-- The surface imports `GlobeProjection.js` (More Weather only) for `mapScale`. To share it, move `mapScale`
-  into `EqualEarth.js` (already shared), or let the caller pass `mapScale`/`mapCenter` as properties.
+- Done: the surface computes the map's scale itself (EqualEarth.js, GlobeView.js), so it needs nothing that
+  is More Weather's only; `tools/sync-shared.sh` shares it as `GlobeSurface.qml` and the shader files
+  verbatim, and `tests/shared-files.test.mjs` compares the `.qsb` byte for byte.
 - `WeatherGlobeTexture.qml` and `GlobeTexture.js` are specific to the weather: they hold the lattices and
   palettes. More Time gets its own texture Canvas (zones + land).

@@ -1,13 +1,14 @@
 import QtQuick
 import "Globe.js" as Globe
-import "GlobeProjection.js" as GlobeProjection
+import "GlobeView.js" as GlobeView
 import "EqualEarth.js" as EqualEarth
 import "Sky.js" as Sky
 
-// The globe's surface on the GPU (GLOBE-SHADER.md): an equirectangular
-// picture of the earth (`textureSource`, e.g. WeatherGlobeTexture) projected
+// The globe's surface on the GPU, shared by the More plugins
+// (tools/sync-shared.sh): an equirectangular picture of the earth
+// (`textureSource`, each plugin's own texture Canvas) projected
 // per pixel by shaders/globe.frag onto the orthographic globe, exactly the
-// view of the Canvas path (GlobeProjection: centre lat/lon, radius, disc
+// view of the Canvas path (Globe.viewMatrix: centre lat/lon, radius, disc
 // centre), or onto the flat Equal Earth map; over the sphere's base colour,
 // with the night's three steps (0°, -6°, -12° of sun elevation) on top and
 // the rim antialiased over its last pixel. Turning only changes uniforms:
@@ -18,7 +19,7 @@ import "Sky.js" as Sky
 // as in the offscreen test harness): the caller keeps the Canvas path then.
 Item {
   id: surface
-  // The view, as GlobeProjection's: style "globe" or "map", the centre,
+  // The view: style "globe" or "map", the centre,
   // zoom (the flat map's scale), the globe's radius in px and the disc's
   // centre in item pixels.
   property string style: "globe"
@@ -111,7 +112,10 @@ Item {
       return Qt.vector4d(c.r * c.a, c.g * c.a, c.b * c.a, c.a)
     }
     property real flatMap: surface.flat ? 1 : 0
-    property real mapScale: GlobeProjection.mapScale(width, height, surface.zoom)
+    // The flat map's px per map unit: the whole map fits at z0, twice that
+    // per level.
+    property real mapScale: Math.max(1e-6, Math.min(width / (2 * EqualEarth.X_MAX), height / (2 * EqualEarth.Y_MAX)))
+      * Math.pow(2, GlobeView.clampZoom(surface.zoom))
     property point mapCenter: Qt.point(surface.mapCentre.x, surface.mapCentre.y)
     onStatusChanged: if (status === ShaderEffect.Error) console.warn("more-weather: globe shader:", log)
   }

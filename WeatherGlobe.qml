@@ -628,6 +628,7 @@ Column {
     //      Canvas's) and the shell process's CPU time from /proc/self/stat.
     property var perf: ({ surface: false, fps: 0, cpuMsPerFrame: 0, cpuPercent: 0, textureMs: 0 })
     property var perfLast: null
+    property var turningHistory: []
     property FileView procStat: FileView {
       path: "/proc/self/stat"
       blockLoading: true
@@ -649,11 +650,33 @@ Column {
         var last = globe.perfLast
         if (last && isFinite(cpuMs) && now > last.at) {
           var dFrames = Math.max(0, frames - last.frames), dCpu = cpuMs - last.cpu, dt = now - last.at
+          // Windows spent turning by itself from start to end: the last 60 s
+          // of them kept, so the numbers outlast the turning.
+          var history = globe.turningHistory
+          if (last.turning && globe.rotating) {
+            history = history.concat([{ dt: dt, frames: dFrames, cpu: dCpu, surface: globe.gpuSurface }])
+            var total = 0
+            for (var h = history.length - 1; h >= 0; h--) {
+              total += history[h].dt
+              if (total > 60000) { history = history.slice(h + 1); break }
+            }
+            globe.turningHistory = history
+          }
+          var tDt = 0, tFrames = 0, tCpu = 0
+          for (var k = 0; k < history.length; k++) {
+            tDt += history[k].dt
+            tFrames += history[k].frames
+            tCpu += history[k].cpu
+          }
           globe.perf = { surface: globe.gpuSurface, fps: Math.round(dFrames / dt * 10000) / 10,
             cpuMsPerFrame: dFrames ? Math.round(dCpu / dFrames * 10) / 10 : 0,
-            cpuPercent: Math.round(dCpu / dt * 1000) / 10, textureMs: surfaceTexture.stats.last || 0 }
+            cpuPercent: Math.round(dCpu / dt * 1000) / 10, textureMs: surfaceTexture.stats.last || 0,
+            turning: { seconds: Math.round(tDt / 1000), fps: tDt ? Math.round(tFrames / tDt * 10000) / 10 : 0,
+              cpuPercent: tDt ? Math.round(tCpu / tDt * 1000) / 10 : 0,
+              cpuMsPerFrame: tFrames ? Math.round(tCpu / tFrames * 10) / 10 : 0,
+              surface: history.length ? history[history.length - 1].surface : globe.gpuSurface } }
         }
-        globe.perfLast = { at: now, cpu: cpuMs, frames: frames }
+        globe.perfLast = { at: now, cpu: cpuMs, frames: frames, turning: globe.rotating }
       }
     }
 

@@ -59,6 +59,12 @@ for (const [mine, theirs] of files) {
       t.skip(`${theirs} not in ${siblingRoot} yet`)
       return
     }
+    // Compiled shaders (.qsb) are binary: compared byte for byte.
+    if (/\.qsb$/.test(mine)) {
+      assert.ok(readFileSync(join(root, mine)).equals(readFileSync(join(siblingRoot, theirs))),
+        `${mine} differs from ${join(siblingRoot, theirs)}; reconcile, then run tools/sync-shared.sh`)
+      return
+    }
     const ours = readFileSync(join(root, mine), "utf8")
     const other = readFileSync(join(siblingRoot, theirs), "utf8")
     assert.equal(neutral(ours), neutral(other),
