@@ -1,6 +1,7 @@
 import QtQuick
 import Quickshell
 import Quickshell.Io
+import qs.Commons
 import "Weather" as Weather
 
 // Screenshot run for tests/ui-shots.sh: the app view with the synthetic
@@ -273,6 +274,17 @@ ShellRoot {
     // whole disc and over the Alps (z3, the tiles).
     function() { globeView(0, 25, 10); layersOn(["temperature"]) },
     function() {}, function() { rimShot("09g-wash-temperature-z0") },
+    // The layer's 14 °C composed over the page against the text's 14 °C.
+    function() {
+      var flat = panel.globeItem.washPalettes.temperature
+      var i = Math.floor((14 + 40) / 85 * 34) * 4
+      var bg = Color.popups.background, a = flat[i + 3] / 255
+      function hex(v) { var h = Math.round(Math.max(0, Math.min(1, v)) * 255).toString(16); return h.length < 2 ? "0" + h : h }
+      var layer = "#" + [0, 1, 2].map(function(k) {
+        return hex(flat[i + k] / 255 * a + [bg.r, bg.g, bg.b][k] * (1 - a)) }).join("")
+      var t = Qt.color(panel.temperatureScaleColor(14))
+      console.log("TEMPCHECK text", "#" + hex(t.r) + hex(t.g) + hex(t.b), "layer over page", layer)
+    },
     function() { layersOn(["cloud"]) },
     function() {}, function() { shot("09h-wash-cloud-z0") },
     function() { layersOn(["precipitation"]) },

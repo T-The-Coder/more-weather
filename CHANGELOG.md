@@ -4,6 +4,13 @@ All notable changes to More Weather are documented here.
 
 ## Unreleased
 
+- One colour means one warmth everywhere: the globe's temperature and
+  sea layers use the text's colours (blue … red over −10 … 35 °C), and
+  the scale goes on to a blue-violet at −40 °C and a dark magenta at 45 °C
+  instead of stretching the same colours over −40 … 45 (one function,
+  `TemperatureScale.js`). The layer is set to land on the text's colour
+  over the page; the legend marks the bends; numbers on the globe take
+  the colour too.
 - The globe's surface (sphere, land, colour layers, night) runs on the
   GPU up to z2 on the globe and the flat map: an equirectangular texture
   painted once per change of data, time, layers or theme, projected by a

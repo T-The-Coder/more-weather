@@ -176,9 +176,12 @@ function ticks(wash, imperial, scaleKmh) {
   var list = []
   var r = range(wash, scaleKmh)
   if (wash === "temperature" || wash === "sst") {
-    for (var i = 0; i < 5; i++) {
-      var c = r.min + i * (r.max - r.min) / 4
-      list.push({ at: i / 4, value: imperial ? Math.round(c * 1.8 + 32) : Math.round(c) })
+    // Where the scale bends (TemperatureScale.js: −10 and 35 °C) for the air;
+    // every 10 °C for the sea.
+    var marks = wash === "temperature" ? [-40, -10, 10, 25, 35, 45] : [0, 10, 20, 30]
+    for (var i = 0; i < marks.length; i++) {
+      var c = marks[i]
+      list.push({ at: (c - r.min) / (r.max - r.min), value: imperial ? Math.round(c * 1.8 + 32) : c })
     }
   } else if (wash === "cloud" || wash === "wind") {
     for (var k = 0; k < 5; k++) list.push({ at: k / 4, value: Math.round(r.max * k / 4) })

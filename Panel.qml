@@ -8,6 +8,7 @@ import "Basemap.js" as Basemap
 import "I18n.js" as I18n
 import "Providers.js" as Providers
 import "GlobeFields.js" as GlobeFields
+import "TemperatureScale.js" as TemperatureScale
 
 Panel {
   id: root
@@ -430,7 +431,21 @@ Panel {
   readonly property real accentScaleLow: -10
   readonly property real accentScaleHigh: 35
   function absoluteTemperatureAccent(celsius) {
-    return temperatureAccent(celsius, accentScaleLow, accentScaleHigh)
+    return colorAccents ? temperatureScaleColor(celsius) : ""
+  }
+  // The one temperature scale (TemperatureScale.js): the text's accents
+  // over −10 … 35 °C, extended to a blue-violet at −40 and a dark magenta at
+  // 45; the globe's temperature and sea layers use it too, whatever the
+  // accents switch says. "" without a number.
+  readonly property var temperatureTheme: {
+    function rgb(c) { return [c.r, c.g, c.b] }
+    return { blue: rgb(paletteColor("blue")), cyan: rgb(paletteColor("cyan")), yellow: rgb(paletteColor("yellow")),
+      orange: rgb(paletteColor("orange")), red: rgb(paletteColor("red")), magenta: rgb(paletteColor("magenta")),
+      foreground: rgb(foreground) }
+  }
+  function temperatureScaleColor(celsius) {
+    var c = TemperatureScale.color(celsius, temperatureTheme)
+    return c ? Qt.rgba(c[0], c[1], c[2], 1) : ""
   }
   // Against yesterday: warmer warm, colder cool, from one degree.
   function yesterdayAccent(changeCelsius) {

@@ -102,7 +102,9 @@ runs as a standalone app window.
   temperature, wind, cloud and precipitation from Open-Meteo's model, coarse for the
   whole earth and finer close up, ending crisply at the globe's rim. A row of chips under
   the globe switches every layer (Shift + click or a right click shows one colour layer
-  alone; letters `t` `e` `c` `p` `d` `i` `s` `u`; `v` steps through the layers alone), with
+  alone; letters `t` `e` `c` `p` `d` `i` `s` `u`; `v` steps through the layers alone; the
+  temperatures in the same colours as the forecast's text, extended below −10 and above
+  35 °C), with
   a scale per colour layer below, and the pointer reads the values under it. The wind is
   one layer: drifting lines coloured by speed (default), the speed as colour, or both, at
   a chosen height (10 m up to 250 hPa, `Shift` `↑` `↓`). Over it, each switchable: storm

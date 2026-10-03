@@ -1,4 +1,5 @@
 import QtQuick
+import qs.Commons
 import "Globe.js" as Globe
 import "GlobeFields.js" as GlobeFields
 
@@ -57,10 +58,17 @@ Canvas {
       for (var i = 0; i < count; i++) {
         var rgba
         if (kind === "temperature" || kind === "sst") {
-          var r = GlobeFields.range(kind)
-          var color = panel.temperatureAccent(GlobeFields.bucketValue(kind, i), r.min, r.max)
-          var c = color ? Qt.color(color) : panel.foreground
-          rgba = [Math.round(c.r * 255), Math.round(c.g * 255), Math.round(c.b * 255), 150]
+          // The one temperature scale (Panel.temperatureScaleColor), so a
+          // marker's "14°" and the layer under it agree. Translucent over
+          // the page, so the colour is set to land on the scale's colour
+          // once composed over the background (alpha 0.8, clamped).
+          var t = panel.temperatureScaleColor(GlobeFields.bucketValue(kind, i))
+          var c = t ? Qt.color(t) : panel.foreground
+          var a = 0.8
+          var bg = Color.popups.background
+          function over(target, under) { return Math.max(0, Math.min(1, (target - (1 - a) * under) / a)) }
+          rgba = [Math.round(over(c.r, bg.r) * 255), Math.round(over(c.g, bg.g) * 255), Math.round(over(c.b, bg.b) * 255),
+            Math.round(a * 255)]
         } else {
           rgba = GlobeFields.fixedColor(kind, i)
         }

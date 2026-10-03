@@ -220,8 +220,8 @@ Canvas {
       var step = Math.max(96, fontPx * 9)
       for (var gy = step / 2; gy < height; gy += step) {
         for (var gx = step / 2; gx < width; gx += step) {
-          var text = valueAt(gx, gy)
-          if (text !== "") label(text, gx, gy, rgba(ink, 0.9), bold)
+          var number = valueAt(gx, gy)
+          if (number && number.text !== "") label(number.text, gx, gy, number.color || rgba(ink, 0.9), bold)
         }
       }
     }

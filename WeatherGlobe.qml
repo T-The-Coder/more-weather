@@ -420,6 +420,17 @@ Column {
     // (GlobeFields.topLayer: rain where it rains, then the temperatures, the
     // wind, the cloud) and, when it rains, the next one before it ("12 °C ·
     // 1.2 mm/h"); `bare` for the numbers overlay: the first number alone.
+    // The numbers overlay's number at a point and its colour: a temperature
+    // (air or sea) in the one temperature scale's colour, like the text.
+    function washNumber(x, y) {
+      var values = washValues(x, y)
+      if (!values) return null
+      var top = GlobeFields.topLayer(wash.layers, values)
+      if (top === "") return null
+      var tinted = top === "temperature" || top === "sst"
+      return { text: layerValueText(top, values[top], true),
+        color: tinted ? panel.temperatureScaleColor(values[top]) : "" }
+    }
     function washValueText(x, y, bare) {
       var values = washValues(x, y)
       if (!values) return ""
@@ -1165,7 +1176,7 @@ Column {
       isobars: globe.panel.globeData.isobarsOn
       storms: globe.panel.globeData.stormsOn
       numbers: globe.panel.displaySetting("globeNumbers", false) === true
-      valueAt: function(x, y) { return globe.washValueText(x, y, true) }
+      valueAt: function(x, y) { return globe.washNumber(x, y) }
     }
     Repeater {
       model: 24
