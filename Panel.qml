@@ -438,6 +438,24 @@ Panel {
     if (!colorAccents || !isFinite(value) || Math.abs(value) < 1) return ""
     return accentOf(paletteColor(value > 0 ? "orange" : "blue"))
   }
+  // The sun's marker on the globe and the flat map: a warm gold (the
+  // golden hour's, #E3A447) a quarter of the way to the text colour, moved
+  // further towards it until it stands 3:1 against the popup's background.
+  readonly property color sunColor: {
+    function lum(c) {
+      function ch(v) { return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4) }
+      return 0.2126 * ch(c.r) + 0.7152 * ch(c.g) + 0.0722 * ch(c.b)
+    }
+    var gold = Qt.color("#E3A447"), fg = foreground, bg = Color.popups.background
+    var lb = lum(bg)
+    var best = gold
+    for (var f = 0.25; f <= 1.001; f += 0.05) {
+      best = Qt.rgba(gold.r + (fg.r - gold.r) * f, gold.g + (fg.g - gold.g) * f, gold.b + (fg.b - gold.b) * f, 1)
+      var l = lum(best)
+      if ((Math.max(l, lb) + 0.05) / (Math.min(l, lb) + 0.05) >= 3) break
+    }
+    return best
+  }
   // Rain probability: green, yellow, cyan, blue as it rises.
   // Rain chance from the text colour at 0 % through cyan, dark blue and
   // magenta to violet at 100 %, all from the theme (violet, which themes

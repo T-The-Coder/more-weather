@@ -715,7 +715,7 @@ Column {
           ctx.fill()
         }
         var sun = screenPoint(sky.sun.lat, sky.sun.lon)
-        if (globe.showNight && sun.visible) Sky.paintSun(ctx, sun.x, sun.y, rgba(accent, 0.95))
+        if (globe.showNight && sun.visible) Sky.paintSun(ctx, sun.x, sun.y, rgba(globe.panel.sunColor, 0.95))
         // The moon floats above its sub-lunar point, its shadow on the
         // surface; on the whole disc only, hidden behind the globe.
         var moon = zoom <= 1 ? sky.moon : null
