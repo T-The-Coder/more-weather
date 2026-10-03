@@ -55,7 +55,7 @@ ShellRoot {
       wait(list, 2)
       // Menu bar: down to "Colour the values", the card scrolled into view.
       if (kind === "settings")
-        list.push(function() { for (var i = 0; i < 23; i++) press(Qt.Key_Down) })
+        list.push(function() { for (var i = 0; i < 24; i++) press(Qt.Key_Down) })
       wait(list, 2)
       list.push(function() { shot(file) }, function() { panel.settingsOpen = false })
       return

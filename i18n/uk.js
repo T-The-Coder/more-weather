@@ -1,7 +1,8 @@
 .pragma library
 
-// Українська (uk): the interface texts, loaded by I18n.js. `compact` holds the values of I18n.localizedKeys in their order, `entries`
-// every other key; I18n.js puts them together.
+// Українська (uk): the interface texts, loaded by I18n.js. `compact`
+// holds the values of I18n.localizedKeys in their order, `entries` every
+// other key; I18n.js puts them together.
 
 var compact = [
   "Погода",
@@ -345,5 +346,11 @@ var entries = {
   "importCitiesFromTime": "Імпортувати міста з More Time",
   "importCitiesResult": "Додано: {added} · уже були: {existing}",
   "importCitiesHint": "Додає міста світового годинника More Time, які мають координати й ще не збережені, у їхньому порядку.",
-  "importCitiesMissing": "Список міст More Time не знайдено, імпортувати нічого."
+  "importCitiesMissing": "Список міст More Time не знайдено, імпортувати нічого.",
+  "pressure": "Атмосферний тиск",
+  "pressureShort": "Тиск",
+  "pressureRising": "Зростає",
+  "pressureFalling": "Падає",
+  "pressureSteady": "Стабільний",
+  "menubarRelevantPressureHint": "«Важливо»: тиск зростає або падає на 1,5 гПа і більше за три години."
 }

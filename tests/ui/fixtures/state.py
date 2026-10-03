@@ -44,7 +44,8 @@ def forecast(lat, lon, offset_hours, base, spread, seed):
 
     hourly = {k: [] for k in ["time", "temperature_2m", "precipitation_probability", "precipitation",
                               "weather_code", "is_day", "wind_speed_10m", "uv_index", "apparent_temperature",
-                              "relative_humidity_2m", "wind_speed_700hPa", "wind_direction_700hPa"]}
+                              "relative_humidity_2m", "wind_speed_700hPa", "wind_direction_700hPa",
+                              "pressure_msl"]}
     for h in range(8 * 24):
         moment = midnight + timedelta(hours=h)
         day, hour = divmod(h, 24)
@@ -68,6 +69,9 @@ def forecast(lat, lon, offset_hours, base, spread, seed):
         hourly["relative_humidity_2m"].append(int(78 + 12 * showers))
         hourly["wind_speed_700hPa"].append(round(45 + 10 * wave(h / 7, seed), 1))
         hourly["wind_direction_700hPa"].append(int(250 + 20 * wave(h / 9, seed + 1)))
+        # A low passing through: the pressure falls into the evening and
+        # recovers over the week.
+        hourly["pressure_msl"].append(round(1009 - 9 * math.sin(h / 40) + 2 * wave(h / 6, seed), 1))
 
     daily = {k: [] for k in ["time", "weather_code", "temperature_2m_max", "temperature_2m_min",
                              "precipitation_probability_max", "precipitation_sum", "wind_speed_10m_max",
@@ -105,7 +109,8 @@ def forecast(lat, lon, offset_hours, base, spread, seed):
                "relative_humidity_2m": hourly["relative_humidity_2m"][h],
                "wind_speed_10m": hourly["wind_speed_10m"][h],
                "weather_code": hourly["weather_code"][h],
-               "is_day": hourly["is_day"][h]}
+               "is_day": hourly["is_day"][h],
+               "pressure_msl": hourly["pressure_msl"][h]}
     return {"latitude": lat, "longitude": lon, "generationtime_ms": 0.5,
             "utc_offset_seconds": int(offset_hours * 3600), "timezone": "GMT", "timezone_abbreviation": "GMT",
             "elevation": 20.0, "current": current, "hourly": hourly, "minutely_15": minutely, "daily": daily}

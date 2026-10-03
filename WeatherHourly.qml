@@ -128,6 +128,7 @@ Column {
                   if (entryKey === "hourlyUv")
                     return "UV " + (hour.uvIndex !== "" ? panel.localizedNumber(hour.uvIndex) : "–")
                   if (entryKey === "hourlyWind") return "󰖝 " + panel.forecastWind(hour)
+                  if (entryKey === "hourlyPressure") return "󰊚 " + (panel.pressureText(hour.pressureHpa, panel.useImperial) || "–")
                   return ""
                 }
                 // Colour accents (Settings → General): temperature by warmth on
@@ -152,6 +153,7 @@ Column {
                   if (entryKey === "hourlyRainProbability") return panel.cachedField(hour, "rainProbability")
                   if (entryKey === "hourlyRainAmount") return panel.cachedField(hour, "rainAmount")
                   if (entryKey === "hourlyUv") return panel.cachedField(hour, "uvIndex")
+                  if (entryKey === "hourlyPressure") return panel.cachedField(hour, "pressureHpa")
                   if (entryKey === "hourlyWind")
                     return panel.cachedField(hour, panel.useImperial ? "windSpeedMph" : "windSpeedKmph")
                   return false

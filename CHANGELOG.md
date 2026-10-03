@@ -2,6 +2,21 @@
 
 All notable changes to More Weather are documented here.
 
+## Unreleased
+
+- **Air pressure** (hPa at sea level, or inHg with US units), off by default:
+  in the menu bar (with **Relevant** while it rises or falls by 1.5 hPa or
+  more in three hours, and **Hover**), in the current weather with its trend
+  as an arrow (following the hour cursor; the trend in words on hover), in
+  the hourly forecast and as the day's mean in the daily forecast. From
+  Open-Meteo (`pressure_msl`, two more variables in the forecast request),
+  MET Norway and, in the DWD area, Bright Sky (MOSMIX).
+- The current weather shows as many value columns as fit beside the
+  temperature, in their order, instead of running into it in a narrow
+  window.
+- Settings: when "Reset general settings" disappears, the cursor moves to
+  its neighbour without a binding loop warning.
+
 ## 3.1.0 — 2026-10-03
 
 Version 3.1 in short:

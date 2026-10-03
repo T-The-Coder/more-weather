@@ -104,7 +104,7 @@ ShellRoot {
     function() { panel.settingsPage = "display"; panel.settingsTargetSurface = "menubar"; press(Qt.Key_Home) },
     function() { shot("13-settings-menubar") },
     // Down the keyboard list to "Bold while hovered".
-    function() { for (var i = 0; i < 22; i++) press(Qt.Key_Down) },
+    function() { for (var i = 0; i < 23; i++) press(Qt.Key_Down) },
     function() { shot("14-settings-menubar-bold") },
     function() { press(Qt.Key_Down); check("accents-dropdown-reached", panel.settingsFocusId === "barAccents") },
     function() { shot("14b-settings-menubar-accents") },
@@ -159,6 +159,31 @@ ShellRoot {
     function() { press(Qt.Key_Up); check("reset-general-focused", panel.settingsFocusId === "restoreGeneral") },
     function() { press(Qt.Key_Return); press(Qt.Key_Return) },
     function() { check("reset-general-focus-kept", panel.settingsFocusId !== "" && panel.settingsFocusId !== "restoreGeneral") },
+    // Air pressure (off by default) in the current weather, the hours, the
+    // days and the menu bar.
+    function() {
+      panel.settingsOpen = false
+      panel.standaloneMode = true
+      panel.contentRoot.parent = widgetHost
+      panel.settingsTargetSurface = "app"
+      var keys = ["heroPressure", "hourlyPressure", "dailyPressure"]
+      for (var i = 0; i < keys.length; i++) display(keys[i], true)
+      // Room for it beside the temperature, and the hours and days in the
+      // window rather than as tabs.
+      display("heroHumidity", false)
+      display("hourlyAsTab", false)
+      display("dailyAsTab", false)
+      display("favoritesAsTab", true)
+      panel.settingsTargetSurface = "menubar"
+      display("currentPressure", true)
+      panel.activeTab = "rain"
+      press(Qt.Key_Home)
+    },
+    function() { shot("27-pressure") },
+    function() { barHost.item.grabToImage(function(result) {
+      result.saveToFile(harness.shots + "/28-bar-pressure.png")
+      console.log("SHOT", "28-bar-pressure")
+    }) },
     // Settings → General → Places after importing More Time's cities.
     function() { panel.openSettings("general"); panel.cityImport.run() },
     function() { press(Qt.Key_End) },

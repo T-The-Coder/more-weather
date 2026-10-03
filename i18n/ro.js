@@ -1,7 +1,8 @@
 .pragma library
 
-// Română (ro): the interface texts, loaded by I18n.js. `compact` holds the values of I18n.localizedKeys in their order, `entries`
-// every other key; I18n.js puts them together.
+// Română (ro): the interface texts, loaded by I18n.js. `compact`
+// holds the values of I18n.localizedKeys in their order, `entries` every
+// other key; I18n.js puts them together.
 
 var compact = [
   "Vreme",
@@ -345,5 +346,11 @@ var entries = {
   "importCitiesFromTime": "Importă orașe din More Time",
   "importCitiesResult": "Adăugate: {added} · existau deja: {existing}",
   "importCitiesHint": "Adaugă orașele ceasului mondial din More Time care au coordonate și nu sunt încă salvate, în ordinea lor.",
-  "importCitiesMissing": "Lista de orașe More Time nu a fost găsită, nu este nimic de importat."
+  "importCitiesMissing": "Lista de orașe More Time nu a fost găsită, nu este nimic de importat.",
+  "pressure": "Presiune atmosferică",
+  "pressureShort": "Presiune",
+  "pressureRising": "În creștere",
+  "pressureFalling": "În scădere",
+  "pressureSteady": "Stabilă",
+  "menubarRelevantPressureHint": "„Relevant”: presiune care crește sau scade cu 1,5 hPa sau mai mult în trei ore."
 }

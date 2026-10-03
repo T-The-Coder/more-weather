@@ -1,7 +1,8 @@
 .pragma library
 
-// Magyar (hu): the interface texts, loaded by I18n.js. `compact` holds the values of I18n.localizedKeys in their order, `entries`
-// every other key; I18n.js puts them together.
+// Magyar (hu): the interface texts, loaded by I18n.js. `compact`
+// holds the values of I18n.localizedKeys in their order, `entries` every
+// other key; I18n.js puts them together.
 
 var compact = [
   "Időjárás",
@@ -345,5 +346,11 @@ var entries = {
   "importCitiesFromTime": "Városok importálása a More Time-ból",
   "importCitiesResult": "Hozzáadva: {added} · már megvolt: {existing}",
   "importCitiesHint": "Hozzáadja a More Time világórájának azon városait, amelyeknek vannak koordinátái és még nincsenek mentve, a sorrendjükben.",
-  "importCitiesMissing": "A More Time városlistája nem található, nincs mit importálni."
+  "importCitiesMissing": "A More Time városlistája nem található, nincs mit importálni.",
+  "pressure": "Légnyomás",
+  "pressureShort": "Nyomás",
+  "pressureRising": "Emelkedik",
+  "pressureFalling": "Csökken",
+  "pressureSteady": "Állandó",
+  "menubarRelevantPressureHint": "„Fontos”: három óra alatt legalább 1,5 hPa-t emelkedő vagy csökkenő légnyomás."
 }

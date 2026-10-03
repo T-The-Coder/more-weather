@@ -1,7 +1,8 @@
 .pragma library
 
-// 한국어 (ko): the interface texts, loaded by I18n.js. `compact` holds the values of I18n.localizedKeys in their order, `entries`
-// every other key; I18n.js puts them together.
+// 한국어 (ko): the interface texts, loaded by I18n.js. `compact`
+// holds the values of I18n.localizedKeys in their order, `entries` every
+// other key; I18n.js puts them together.
 
 var compact = [
   "날씨",
@@ -345,5 +346,11 @@ var entries = {
   "importCitiesFromTime": "More Time에서 도시 가져오기",
   "importCitiesResult": "추가됨: {added} · 이미 있음: {existing}",
   "importCitiesHint": "More Time 세계 시계의 도시 중 좌표가 있고 아직 저장되지 않은 도시를 순서대로 추가합니다.",
-  "importCitiesMissing": "More Time의 도시 목록을 찾을 수 없어 가져올 것이 없습니다."
+  "importCitiesMissing": "More Time의 도시 목록을 찾을 수 없어 가져올 것이 없습니다.",
+  "pressure": "기압",
+  "pressureShort": "기압",
+  "pressureRising": "상승",
+  "pressureFalling": "하강",
+  "pressureSteady": "안정",
+  "menubarRelevantPressureHint": "‘관련 시’: 3시간 동안 기압이 1.5 hPa 이상 오르거나 내릴 때."
 }

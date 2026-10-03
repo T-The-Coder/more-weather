@@ -380,5 +380,11 @@ var catalog = {
   "importCitiesFromTime": "Import cities from More Time",
   "importCitiesResult": "Added: {added} · already there: {existing}",
   "importCitiesHint": "Adds More Time's world clock cities that have coordinates and are not saved yet, in their order.",
-  "importCitiesMissing": "More Time's city list was not found, so there is nothing to import."
+  "importCitiesMissing": "More Time's city list was not found, so there is nothing to import.",
+  "pressure": "Air pressure",
+  "pressureShort": "Pressure",
+  "pressureRising": "Rising",
+  "pressureFalling": "Falling",
+  "pressureSteady": "Steady",
+  "menubarRelevantPressureHint": "“Relevant”: air pressure rising or falling by 1.5 hPa or more in three hours."
 }

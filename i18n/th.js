@@ -1,7 +1,8 @@
 .pragma library
 
-// ไทย (th): the interface texts, loaded by I18n.js. `compact` holds the values of I18n.localizedKeys in their order, `entries`
-// every other key; I18n.js puts them together.
+// ไทย (th): the interface texts, loaded by I18n.js. `compact`
+// holds the values of I18n.localizedKeys in their order, `entries` every
+// other key; I18n.js puts them together.
 
 var compact = [
   "สภาพอากาศ",
@@ -345,5 +346,11 @@ var entries = {
   "importCitiesFromTime": "นำเข้าเมืองจาก More Time",
   "importCitiesResult": "เพิ่มแล้ว: {added} · มีอยู่แล้ว: {existing}",
   "importCitiesHint": "เพิ่มเมืองจากนาฬิกาโลกของ More Time ที่มีพิกัดและยังไม่ได้บันทึก ตามลำดับเดิม",
-  "importCitiesMissing": "ไม่พบรายชื่อเมืองของ More Time จึงไม่มีอะไรให้นำเข้า"
+  "importCitiesMissing": "ไม่พบรายชื่อเมืองของ More Time จึงไม่มีอะไรให้นำเข้า",
+  "pressure": "ความกดอากาศ",
+  "pressureShort": "ความกด",
+  "pressureRising": "กำลังเพิ่ม",
+  "pressureFalling": "กำลังลด",
+  "pressureSteady": "คงที่",
+  "menubarRelevantPressureHint": "“สำคัญ”: ความกดอากาศที่เพิ่มหรือลด 1.5 hPa ขึ้นไปในสามชั่วโมง"
 }

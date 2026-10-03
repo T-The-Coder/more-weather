@@ -1,7 +1,8 @@
 .pragma library
 
-// العربية (ar): the interface texts, loaded by I18n.js. `compact` holds the values of I18n.localizedKeys in their order, `entries`
-// every other key; I18n.js puts them together.
+// العربية (ar): the interface texts, loaded by I18n.js. `compact`
+// holds the values of I18n.localizedKeys in their order, `entries` every
+// other key; I18n.js puts them together.
 
 var compact = [
   "الطقس",
@@ -345,5 +346,11 @@ var entries = {
   "importCitiesFromTime": "استيراد المدن من More Time",
   "importCitiesResult": "أُضيف: {added} · موجود مسبقًا: {existing}",
   "importCitiesHint": "يضيف مدن الساعة العالمية في More Time التي لها إحداثيات ولم تُحفظ بعد، بترتيبها.",
-  "importCitiesMissing": "لم يُعثر على قائمة مدن More Time، فلا شيء للاستيراد."
+  "importCitiesMissing": "لم يُعثر على قائمة مدن More Time، فلا شيء للاستيراد.",
+  "pressure": "الضغط الجوي",
+  "pressureShort": "الضغط",
+  "pressureRising": "يرتفع",
+  "pressureFalling": "ينخفض",
+  "pressureSteady": "ثابت",
+  "menubarRelevantPressureHint": "«عند الأهمية»: ضغط يرتفع أو ينخفض بمقدار 1.5 هكتوباسكال أو أكثر خلال ثلاث ساعات."
 }

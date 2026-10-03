@@ -15,6 +15,11 @@ This separation keeps the widget and standalone app on the same policy.
   location); name-only location -> Open-Meteo geocoding (exact name first);
   auto-detect -> ipwho.is -> ipapi.co -> GeoJS. The result supplies the
   country (provider selection) and the MeteoAlarm area aliases.
+- Air pressure (hPa at sea level): Open-Meteo `pressure_msl` (current and
+  hourly), MET Norway `air_pressure_at_sea_level`, Bright Sky `pressure_msl`
+  (MOSMIX, preferred in the DWD area). The day's value is the mean of its
+  hours (from twelve on); the trend compares with three hours earlier
+  (rising or falling from 1.5 hPa).
 - Forecast: Open-Meteo Best Match -> MET Norway Locationforecast -> retained
   last-good data. In NO, SE, FI and DK MET Norway (MET Nordic) comes first.
   In CH and LI the Open-Meteo request asks for MeteoSwiss ICON-CH (seamless,

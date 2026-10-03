@@ -69,6 +69,7 @@ Column {
       return panel.interfaceLanguage === "de" ? "GEFÜHLT" : panel.upperLabel(panel.i18n("feelsLikeShort"))
     if (key === "heroWind") return panel.upperLabel(panel.i18n("wind"))
     if (key === "heroHumidity") return panel.upperLabel(panel.i18n("humidity"))
+    if (key === "heroPressure") return panel.upperLabel(panel.i18n("pressureShort"))
     if (key === "heroMoon") return panel.upperLabel(panel.i18n("moon"))
     if (key === "heroYesterday") return panel.upperLabel(panel.i18n("yesterdayShort"))
     if (key === "heroMoonNext") return panel.heroMoonNextLabel
@@ -77,12 +78,14 @@ Column {
   function statGlyph(key) {
     if (key === "heroMoon") return panel.heroMoonGlyph
     if (key === "heroMoonNext") return panel.heroMoonNextGlyph
+    if (key === "heroPressure") return panel.heroPressureTrendGlyph
     return ""
   }
   function statText(key) {
     if (key === "heroFeelsLike") return panel.heroFeels
     if (key === "heroWind") return panel.heroWind
     if (key === "heroHumidity") return panel.heroHumidity
+    if (key === "heroPressure") return panel.heroPressure
     if (key === "heroMoon") return panel.heroMoonText
     // About now only: hidden while the hour cursor reads out another hour.
     if (key === "heroYesterday") return panel.cursorHour ? "" : panel.heroYesterdayText
@@ -103,6 +106,7 @@ Column {
     if (key === "heroFeelsLike") return panel.currentFeelsCached
     if (key === "heroWind") return panel.currentWindCached
     if (key === "heroHumidity") return panel.currentHumidityCached
+    if (key === "heroPressure") return panel.currentPressureCached
     return false
   }
 
@@ -254,13 +258,21 @@ Column {
       readonly property var shownKeys: panel.displayHeroOrder.filter(function(key) {
         return panel.displaySetting(key, true) && heroBlock.statText(key) !== ""
       })
+      // As many as fit beside the temperature, in their order; the rest
+      // wait for a wider window.
+      readonly property var fittingKeys: {
+        var room = parent.width - heroLeft.width - spacing
+        var count = Math.floor((room + spacing) / (statColumnWidth + spacing))
+        return shownKeys.slice(0, Math.max(1, count))
+      }
       property real statColumnWidth: {
         var widest = 0
         for (var i = 0; i < shownKeys.length; ++i) {
           var key = shownKeys[i]
           var glyph = heroBlock.statGlyph(key)
           var glyphWidth = key === "heroMoon" ? statValueMetrics.height + 2
-            : (glyph !== "" ? statValueMetrics.advanceWidth(glyph) : -Style.space(4))
+            : (glyph !== "" ? Math.max(statValueMetrics.advanceWidth(glyph), statGlyphProbe.implicitWidth)
+              : -Style.space(4))
           widest = Math.max(widest, statLabelMetrics.advanceWidth(heroBlock.statLabel(key)) + heroBlock.statLabel(key).length,
             statValueMetrics.advanceWidth(heroBlock.statText(key)) + glyphWidth + Style.space(4))
         }
@@ -272,6 +284,16 @@ Column {
         font.family: panel.fontFamily
         font.pixelSize: Style.font.bodySmall
       }
+      // A symbol as drawn: FontMetrics measures it in the text font, while
+      // the symbol font it falls back to is wider.
+      Text {
+        id: statGlyphProbe
+        visible: false
+        textFormat: Text.PlainText
+        text: "\u{f0534}"
+        font.family: panel.fontFamily
+        font.pixelSize: Style.font.title
+      }
       FontMetrics {
         id: statValueMetrics
         font.family: panel.fontFamily
@@ -280,7 +302,7 @@ Column {
 
       // The values in the order chosen under Settings → Display.
       Repeater {
-        model: weatherStats.shownKeys
+        model: weatherStats.fittingKeys
 
         Column {
           required property string modelData
@@ -323,6 +345,15 @@ Column {
               transform: Scale {
                 origin.x: statGlyph.width / 2
                 xScale: panel.mirrorsGlyph(statGlyph.text) ? -1 : 1
+              }
+
+              // The pressure's trend in words.
+              HoverHandler { id: statGlyphHover }
+              PanelToolTip {
+                visible: statGlyphHover.hovered && statGlyph.parent.parent.modelData === "heroPressure"
+                  && panel.heroPressureTrendText !== ""
+                text: panel.heroPressureTrendText
+                fontFamily: panel.fontFamily
               }
             }
             Text {

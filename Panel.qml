@@ -500,7 +500,8 @@ Panel {
         byHour[String(hourly.time[i]).slice(0, 13)] = {
           tempC: value,
           rain: hourly.precipitation ? (parseFloat(hourly.precipitation[i]) || 0) : 0,
-          isDay: hourly.is_day ? Number(hourly.is_day[i]) !== 0 : undefined
+          isDay: hourly.is_day ? Number(hourly.is_day[i]) !== 0 : undefined,
+          pressureHpa: hourly.pressure_msl ? Model.pressureText(hourly.pressure_msl[i]) : ""
         }
       }
     }
@@ -515,7 +516,8 @@ Panel {
         rain: Number(rows[r].precipitation) || 0,
         // Daylight from the forecast's hours; Bright Sky's own is its icon.
         isDay: known && known.isDay !== undefined ? known.isDay
-          : String(rows[r].icon || "").indexOf("night") < 0
+          : String(rows[r].icon || "").indexOf("night") < 0,
+        pressureHpa: Model.pressureText(rows[r].pressure_msl) || (known ? known.pressureHpa : "")
       }
     }
     var list = []
@@ -528,7 +530,8 @@ Panel {
           time: hourKey + ":00",
           tempC: entry ? entry.tempC : NaN,
           rain: entry ? entry.rain : 0,
-          isDay: entry ? entry.isDay : undefined
+          isDay: entry ? entry.isDay : undefined,
+          pressureHpa: entry ? entry.pressureHpa : ""
         })
       }
     }
@@ -731,7 +734,7 @@ Panel {
   // out ("<key>WhenRelevant") or only under the pointer ("<key>OnHover").
   readonly property var menubarHoverKeys: [
     "currentWeatherSymbol", "currentLocation", "currentTemperature", "currentFeelsLike",
-    "currentWind", "currentHumidity", "currentUv", "currentDayRange",
+    "currentWind", "currentHumidity", "currentPressure", "currentUv", "currentDayRange",
     "currentPrecipitation", "currentRainIntensity", "currentRainAmount", "currentRainStart",
     "currentSunrise", "currentSunset", "currentSunNext", "currentMoon",
     "currentAirQuality", "currentAirQualityColor", "currentPollen", "currentWarnings"
@@ -781,6 +784,7 @@ Panel {
   readonly property bool menubarShowFeelsLike: menubarShowCurrent && menubarEntryShown("currentFeelsLike")
   readonly property bool menubarShowWind: menubarShowCurrent && menubarEntryShown("currentWind")
   readonly property bool menubarShowHumidity: menubarShowCurrent && menubarEntryShown("currentHumidity")
+  readonly property bool menubarShowPressure: menubarShowCurrent && menubarEntryShown("currentPressure")
   readonly property bool menubarShowUv: menubarShowCurrent && menubarEntryShown("currentUv")
   // Today's forecast row, for the day's range and its sun events.
   readonly property var todayForecast: forecastDays.length > 0 ? forecastDays[0] : null
@@ -1000,6 +1004,14 @@ Panel {
   readonly property string heroHumidity: cursorHour
     ? (cursorHour.humidity !== "" && cursorHour.humidity !== undefined ? localizedNumber(cursorHour.humidity) + "%" : "–")
     : reportHumidity
+  readonly property string heroPressure: cursorHour
+    ? (pressureText(cursorHour.pressureHpa, useImperial) || "–") : reportPressure
+  // The pressure's trend at the hour shown: a glyph, "" without one.
+  readonly property string heroPressureTrend: cursorHour ? pressureTrendAt(cursorHour.time) : pressureTrendNow
+  readonly property string heroPressureTrendGlyph: pressureTrendGlyph(heroPressureTrend)
+  readonly property string heroPressureTrendText: heroPressureTrend === "rising" ? i18n("pressureRising")
+    : (heroPressureTrend === "falling" ? i18n("pressureFalling")
+      : (heroPressureTrend === "steady" ? i18n("pressureSteady") : ""))
   readonly property var heroTempCelsius: cursorHour ? cursorHour.tempC : (current ? current.temp_C : "")
   readonly property var heroFeelsCelsius: cursorHour ? cursorHour.feelsLikeC : (current ? current.FeelsLikeC : "")
   readonly property var heroWindKmph: cursorHour ? cursorHour.windSpeedKmph : (current ? current.windspeedKmph : "")
@@ -1574,6 +1586,26 @@ Panel {
   readonly property string reportFeels:     current ? Model.tempWithUnit(current.FeelsLikeC, current.FeelsLikeF, tempScale) : ""
   readonly property string reportWind:      current ? windText(current.windspeedKmph, useImperial) : ""
   readonly property string reportHumidity:  current ? (localizedNumber(current.humidity) + "%") : ""
+  readonly property string reportPressure:  current ? pressureText(current.pressureHpa, useImperial) : ""
+  readonly property bool currentPressureCached: cachedField(current, "pressureHpa")
+  // ---- Air pressure: "1013 hPa" or "29.92 inHg", and its trend over the
+  //      last three hours (Model.pressureTrend) from the week's hours.
+  function pressureText(hPa, imperial) {
+    var pressure = Model.pressureValue(hPa, imperial)
+    if (!pressure) return ""
+    // Whole hPa without a group separator ("1004", not "1,004").
+    return (imperial ? localizedNumber(pressure.value, 2) : String(pressure.value)) + " " + pressure.unit
+  }
+  function pressureTrendAt(time) {
+    var key = String(time || "").slice(0, 13)
+    for (var i = 0; i < weekHours.length; ++i)
+      if (weekHours[i].time.slice(0, 13) === key) return Model.pressureTrend(weekHours, i)
+    return ""
+  }
+  readonly property string pressureTrendNow: Model.pressureTrend(weekHours, weekHoursNowIndex)
+  function pressureTrendGlyph(trend) {
+    return trend === "rising" ? "\u{f0535}" : (trend === "falling" ? "\u{f0533}" : (trend === "steady" ? "\u{f0534}" : ""))
+  }
   readonly property bool currentTemperatureCached: currentFieldCached("temp_C", "temp_F")
   readonly property bool currentFeelsCached: currentFieldCached("FeelsLikeC", "FeelsLikeF")
   readonly property bool currentWindCached: currentFieldCached("windspeedKmph", "windspeedMiles")
@@ -1595,6 +1627,13 @@ Panel {
     ? Model.tempWithUnit(current.FeelsLikeC, current.FeelsLikeF, menubarTempScale) : ""
   readonly property string menubarReportWind: current ? windText(current.windspeedKmph, menubarUseImperial) : ""
   readonly property string menubarReportHumidity: current ? localizedNumber(current.humidity) + "%" : ""
+  // With the trend's glyph after the value, when there is one.
+  readonly property string menubarReportPressure: {
+    var text = current ? pressureText(current.pressureHpa, menubarUseImperial) : ""
+    var glyph = pressureTrendGlyph(pressureTrendNow)
+    return text !== "" && glyph !== "" ? text + " " + glyph : text
+  }
+  readonly property bool menubarPressureCached: cachedField(current, "pressureHpa")
   readonly property bool menubarTemperatureCached: cachedField(current,
     menubarTempScale === "fahrenheit" ? "temp_F" : "temp_C")
   readonly property bool menubarFeelsCached: cachedField(current,
@@ -1668,7 +1707,7 @@ Panel {
     ? Math.max(0, Math.min(100, Math.round(Number(nextHourRainProbability) / 50) * 50)) : -1
   readonly property bool menubarHasVisibleContent: displayLabel !== "" && menubarShowCurrent && (
     menubarShowLocation || menubarShowWeatherSymbol || menubarShowTemperature
-      || menubarShowFeelsLike || menubarShowWind || menubarShowHumidity
+      || menubarShowFeelsLike || menubarShowWind || menubarShowHumidity || menubarShowPressure
       || menubarShowUv || menubarRainBadgeText !== "" || menubarPollenAlertText !== ""
       || menubarDayRangeText !== "" || menubarRainAmountText !== "" || menubarSunriseText !== ""
       || menubarSunsetText !== "" || menubarSunNextText !== "" || menubarMoonText !== ""
@@ -1688,6 +1727,7 @@ Panel {
       heroFeelsLike: true,
       heroWind: true,
       heroHumidity: true,
+      heroPressure: false,
       heroMoon: true,
       heroYesterday: true,
       heroMoonNext: false,
@@ -1707,6 +1747,7 @@ Panel {
       hourlyRainAmount: true,
       hourlyUv: true,
       hourlyWind: true,
+      hourlyPressure: false,
       showDaily: true,
       dailyDayName: true,
       dailyIcon: true,
@@ -1715,6 +1756,7 @@ Panel {
       dailyRainAmount: true,
       dailyUv: true,
       dailyWind: true,
+      dailyPressure: false,
       dailySunEvents: true,
       dailySunNext: false,
       dailyMoon: true,
@@ -1797,6 +1839,9 @@ Panel {
       currentHumidity: false,
       currentHumidityWhenRelevant: false,
       currentHumidityOnHover: false,
+      currentPressure: false,
+      currentPressureWhenRelevant: false,
+      currentPressureOnHover: false,
       currentUv: false,
       currentUvWhenRelevant: false,
       currentUvOnHover: false,
@@ -1883,7 +1928,7 @@ Panel {
   // place at the end, so a new entry never disappears.
   function defaultMenubarEntryOrder() {
     return ["currentWeatherSymbol", "currentLocation", "currentTemperature", "currentDayRange",
-      "currentFeelsLike", "currentWind", "currentHumidity", "currentUv", "currentRain",
+      "currentFeelsLike", "currentWind", "currentHumidity", "currentPressure", "currentUv", "currentRain",
       "currentRainAmount", "currentSunrise", "currentSunset", "currentSunNext", "currentMoon",
       "currentAirQuality", "currentPollen", "currentWarnings"]
   }
@@ -1894,7 +1939,7 @@ Panel {
   }
 
   function defaultHeroOrder() {
-    return ["heroFeelsLike", "heroWind", "heroHumidity", "heroMoon", "heroYesterday", "heroMoonNext"]
+    return ["heroFeelsLike", "heroWind", "heroHumidity", "heroPressure", "heroMoon", "heroYesterday", "heroMoonNext"]
   }
 
   function defaultSectionOrder() {
@@ -1903,12 +1948,12 @@ Panel {
 
   function defaultHourlyOrder() {
     return ["hourlyTime", "hourlyIcon", "hourlyTemperature", "hourlyRainProbability",
-      "hourlyRainAmount", "hourlyUv", "hourlyWind"]
+      "hourlyRainAmount", "hourlyUv", "hourlyWind", "hourlyPressure"]
   }
 
   function defaultDailyOrder() {
     return ["dailyDayName", "dailyIcon", "dailyTemperature", "dailyTemperatureBar", "dailyRainProbability",
-      "dailyRainAmount", "dailyUv", "dailyWind", "dailySunEvents", "dailySunNext",
+      "dailyRainAmount", "dailyUv", "dailyWind", "dailyPressure", "dailySunEvents", "dailySunNext",
       "dailyDayLength", "dailyDayLengthChange", "dailyMoon"]
   }
 
@@ -2123,6 +2168,8 @@ Panel {
       return !!current && parseFloat(current.windspeedKmph) >= 20
     if (key === "currentUv")
       return currentUvIndex !== "" && parseFloat(currentUvIndex) >= 6
+    // Rising or falling by 1.5 hPa or more in three hours.
+    if (key === "currentPressure") return pressureTrendNow === "rising" || pressureTrendNow === "falling"
     if (key === "currentPrecipitation")
       return nextHourRainProbability !== "" && parseFloat(nextHourRainProbability) >= 30
     if (key === "currentRainIntensity") return isCurrentlyRaining

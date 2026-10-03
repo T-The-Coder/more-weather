@@ -1,7 +1,8 @@
 .pragma library
 
-// עברית (he): the interface texts, loaded by I18n.js. `compact` holds the values of I18n.localizedKeys in their order, `entries`
-// every other key; I18n.js puts them together.
+// עברית (he): the interface texts, loaded by I18n.js. `compact`
+// holds the values of I18n.localizedKeys in their order, `entries` every
+// other key; I18n.js puts them together.
 
 var compact = [
   "מזג אוויר",
@@ -345,5 +346,11 @@ var entries = {
   "importCitiesFromTime": "ייבוא ערים מ־More Time",
   "importCitiesResult": "נוספו: {added} · כבר קיימים: {existing}",
   "importCitiesHint": "מוסיף את ערי שעון העולם של More Time שיש להן קואורדינטות ועדיין לא נשמרו, לפי הסדר שלהן.",
-  "importCitiesMissing": "רשימת הערים של More Time לא נמצאה, ולכן אין מה לייבא."
+  "importCitiesMissing": "רשימת הערים של More Time לא נמצאה, ולכן אין מה לייבא.",
+  "pressure": "לחץ אוויר",
+  "pressureShort": "לחץ",
+  "pressureRising": "עולה",
+  "pressureFalling": "יורד",
+  "pressureSteady": "יציב",
+  "menubarRelevantPressureHint": "„רלוונטי”: לחץ אוויר שעולה או יורד ב־1.5 hPa או יותר בשלוש שעות."
 }

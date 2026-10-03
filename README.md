@@ -11,8 +11,8 @@ runs as a standalone app window.
 ## Features
 
 **In the bar**
-- Weather symbol, temperature, feels-like, wind, humidity and precipitation.
-  Choose which of these the bar shows. The rain drop shows the rain
+- Weather symbol, temperature, feels-like, wind, humidity, air pressure (with its
+  three-hour trend) and precipitation. Choose which of these the bar shows. The rain drop shows the rain
   probability: outline below 25 %, half full from 25 %, full from 75 %.
 - Optional hints: rain starting soon, poor air quality, high pollen and a colored
   warning mark while an official warning is active.
@@ -29,7 +29,8 @@ runs as a standalone app window.
   status notification.
 
 **In the popup and the app**
-- **Current conditions:** Temperature, feels-like, wind, humidity, the moon phase (a
+- **Current conditions:** Temperature, feels-like, wind, humidity, air pressure with
+  its trend over three hours (off by default), the moon phase (a
   shaded sphere) with its lit share, the change against yesterday at the same hour and the next full or
   new moon, plus the moon behind the weather symbol at night. A button (or `w`) opens
   the place at a weather service: NWS in the USA, ECCC in Canada, yr.no elsewhere. In
@@ -42,13 +43,14 @@ runs as a standalone app window.
 - **Air quality and pollen:** European or US AQI, PM2.5, PM10, ozone and the pollen
   types that currently count.
 - **Hour cursor:** Shift+←/→ or a click on an hour shows that hour in the current weather.
-- **Hourly forecast:** Weather symbol, temperature, rain probability and amount, UV index
-  and wind, and a temperature line over the next 24 hours (after linecast) with rain bars,
+- **Hourly forecast:** Weather symbol, temperature, rain probability and amount, UV index,
+  wind and air pressure (off by default), and a temperature line over the next 24 hours (after linecast) with rain bars,
   daylight bands, midnight rules, labelled highs and lows, and a click to pick the hour. Where the DWD radar reaches, the symbol shows the rain it measures, and a
   thunderstorm only when a warning or a station confirms one.
 - **7-day forecast:** Min/max temperature, as a bar and as an hour-by-hour line through
   the week with each day under its column, rain bars, daylight bands and the day's high
-  and low (each switchable), rain, UV, wind, sunrise, sunset, moon phase,
+  and low (each switchable), rain, UV, wind, the day's mean air pressure (off by
+  default), sunrise, sunset, moon phase,
   day length and its change against the day before.
 - **Rain nowcast:** Intensity in 15-minute steps and probability over the next two hours.
   In the DWD area both come from the DWD radar nowcast, renewed every five minutes: rain

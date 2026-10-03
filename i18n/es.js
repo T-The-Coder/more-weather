@@ -1,7 +1,8 @@
 .pragma library
 
-// Español (es): the interface texts, loaded by I18n.js. `compact` holds the values of I18n.localizedKeys in their order, `entries`
-// every other key; I18n.js puts them together.
+// Español (es): the interface texts, loaded by I18n.js. `compact`
+// holds the values of I18n.localizedKeys in their order, `entries` every
+// other key; I18n.js puts them together.
 
 var compact = [
   "Tiempo",
@@ -345,5 +346,11 @@ var entries = {
   "importCitiesFromTime": "Importar ciudades de More Time",
   "importCitiesResult": "Añadidos: {added} · ya estaban: {existing}",
   "importCitiesHint": "Añade las ciudades del reloj mundial de More Time que tienen coordenadas y aún no están guardadas, en su orden.",
-  "importCitiesMissing": "No se encontró la lista de ciudades de More Time; no hay nada que importar."
+  "importCitiesMissing": "No se encontró la lista de ciudades de More Time; no hay nada que importar.",
+  "pressure": "Presión atmosférica",
+  "pressureShort": "Presión",
+  "pressureRising": "Subiendo",
+  "pressureFalling": "Bajando",
+  "pressureSteady": "Estable",
+  "menubarRelevantPressureHint": "«Relevante»: presión que sube o baja 1,5 hPa o más en tres horas."
 }

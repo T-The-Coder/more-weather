@@ -1,7 +1,8 @@
 .pragma library
 
-// 日本語 (ja): the interface texts, loaded by I18n.js. `compact` holds the values of I18n.localizedKeys in their order, `entries`
-// every other key; I18n.js puts them together.
+// 日本語 (ja): the interface texts, loaded by I18n.js. `compact`
+// holds the values of I18n.localizedKeys in their order, `entries` every
+// other key; I18n.js puts them together.
 
 var compact = [
   "天気",
@@ -345,5 +346,11 @@ var entries = {
   "importCitiesFromTime": "More Time から都市を読み込む",
   "importCitiesResult": "追加：{added} · 既存：{existing}",
   "importCitiesHint": "More Time の世界時計の都市のうち、座標があってまだ保存されていないものを順に追加します。",
-  "importCitiesMissing": "More Time の都市リストが見つからないため、読み込むものはありません。"
+  "importCitiesMissing": "More Time の都市リストが見つからないため、読み込むものはありません。",
+  "pressure": "気圧",
+  "pressureShort": "気圧",
+  "pressureRising": "上昇",
+  "pressureFalling": "下降",
+  "pressureSteady": "横ばい",
+  "menubarRelevantPressureHint": "「関連時」：3 時間で気圧が 1.5 hPa 以上上がるか下がるとき。"
 }

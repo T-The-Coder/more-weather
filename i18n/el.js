@@ -1,7 +1,8 @@
 .pragma library
 
-// Ελληνικά (el): the interface texts, loaded by I18n.js. `compact` holds the values of I18n.localizedKeys in their order, `entries`
-// every other key; I18n.js puts them together.
+// Ελληνικά (el): the interface texts, loaded by I18n.js. `compact`
+// holds the values of I18n.localizedKeys in their order, `entries` every
+// other key; I18n.js puts them together.
 
 var compact = [
   "Καιρός",
@@ -345,5 +346,11 @@ var entries = {
   "importCitiesFromTime": "Εισαγωγή πόλεων από το More Time",
   "importCitiesResult": "Προστέθηκαν: {added} · υπήρχαν ήδη: {existing}",
   "importCitiesHint": "Προσθέτει τις πόλεις του παγκόσμιου ρολογιού του More Time που έχουν συντεταγμένες και δεν έχουν αποθηκευτεί ακόμη, με τη σειρά τους.",
-  "importCitiesMissing": "Η λίστα πόλεων του More Time δεν βρέθηκε· δεν υπάρχει τίποτα για εισαγωγή."
+  "importCitiesMissing": "Η λίστα πόλεων του More Time δεν βρέθηκε· δεν υπάρχει τίποτα για εισαγωγή.",
+  "pressure": "Ατμοσφαιρική πίεση",
+  "pressureShort": "Πίεση",
+  "pressureRising": "Ανοδική",
+  "pressureFalling": "Καθοδική",
+  "pressureSteady": "Σταθερή",
+  "menubarRelevantPressureHint": "«Σχετικό»: πίεση που ανεβαίνει ή πέφτει κατά 1,5 hPa ή περισσότερο σε τρεις ώρες."
 }

@@ -1,7 +1,8 @@
 .pragma library
 
-// Nederlands (nl): the interface texts, loaded by I18n.js. `compact` holds the values of I18n.localizedKeys in their order, `entries`
-// every other key; I18n.js puts them together.
+// Nederlands (nl): the interface texts, loaded by I18n.js. `compact`
+// holds the values of I18n.localizedKeys in their order, `entries` every
+// other key; I18n.js puts them together.
 
 var compact = [
   "Weer",
@@ -345,5 +346,11 @@ var entries = {
   "importCitiesFromTime": "Steden uit More Time importeren",
   "importCitiesResult": "Toegevoegd: {added} · al aanwezig: {existing}",
   "importCitiesHint": "Voegt de steden van de wereldklok van More Time toe die coördinaten hebben en nog niet zijn opgeslagen, in hun volgorde.",
-  "importCitiesMissing": "De stedenlijst van More Time is niet gevonden; er is niets te importeren."
+  "importCitiesMissing": "De stedenlijst van More Time is niet gevonden; er is niets te importeren.",
+  "pressure": "Luchtdruk",
+  "pressureShort": "Druk",
+  "pressureRising": "Stijgend",
+  "pressureFalling": "Dalend",
+  "pressureSteady": "Gelijkblijvend",
+  "menubarRelevantPressureHint": "‘Relevant’: luchtdruk die in drie uur 1,5 hPa of meer stijgt of daalt."
 }

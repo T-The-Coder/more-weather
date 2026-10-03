@@ -1,7 +1,8 @@
 .pragma library
 
-// Türkçe (tr): the interface texts, loaded by I18n.js. `compact` holds the values of I18n.localizedKeys in their order, `entries`
-// every other key; I18n.js puts them together.
+// Türkçe (tr): the interface texts, loaded by I18n.js. `compact`
+// holds the values of I18n.localizedKeys in their order, `entries` every
+// other key; I18n.js puts them together.
 
 var compact = [
   "Hava Durumu",
@@ -345,5 +346,11 @@ var entries = {
   "importCitiesFromTime": "More Time’dan şehirleri içe aktar",
   "importCitiesResult": "Eklenen: {added} · zaten var: {existing}",
   "importCitiesHint": "More Time dünya saatinin koordinatı olan ve henüz kaydedilmemiş şehirlerini sırasıyla ekler.",
-  "importCitiesMissing": "More Time şehir listesi bulunamadı; içe aktarılacak bir şey yok."
+  "importCitiesMissing": "More Time şehir listesi bulunamadı; içe aktarılacak bir şey yok.",
+  "pressure": "Hava basıncı",
+  "pressureShort": "Basınç",
+  "pressureRising": "Yükseliyor",
+  "pressureFalling": "Düşüyor",
+  "pressureSteady": "Sabit",
+  "menubarRelevantPressureHint": "“Önemli”: üç saatte 1,5 hPa veya daha fazla yükselen ya da düşen basınç."
 }

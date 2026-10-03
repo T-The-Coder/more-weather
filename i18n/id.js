@@ -1,7 +1,8 @@
 .pragma library
 
-// Bahasa Indonesia (id): the interface texts, loaded by I18n.js. `compact` holds the values of I18n.localizedKeys in their order, `entries`
-// every other key; I18n.js puts them together.
+// Bahasa Indonesia (id): the interface texts, loaded by I18n.js. `compact`
+// holds the values of I18n.localizedKeys in their order, `entries` every
+// other key; I18n.js puts them together.
 
 var compact = [
   "Cuaca",
@@ -345,5 +346,11 @@ var entries = {
   "importCitiesFromTime": "Impor kota dari More Time",
   "importCitiesResult": "Ditambahkan: {added} · sudah ada: {existing}",
   "importCitiesHint": "Menambahkan kota jam dunia More Time yang memiliki koordinat dan belum disimpan, sesuai urutannya.",
-  "importCitiesMissing": "Daftar kota More Time tidak ditemukan, jadi tidak ada yang bisa diimpor."
+  "importCitiesMissing": "Daftar kota More Time tidak ditemukan, jadi tidak ada yang bisa diimpor.",
+  "pressure": "Tekanan udara",
+  "pressureShort": "Tekanan",
+  "pressureRising": "Naik",
+  "pressureFalling": "Turun",
+  "pressureSteady": "Stabil",
+  "menubarRelevantPressureHint": "“Relevan”: tekanan udara yang naik atau turun 1,5 hPa atau lebih dalam tiga jam."
 }

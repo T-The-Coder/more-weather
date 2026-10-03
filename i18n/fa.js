@@ -1,7 +1,8 @@
 .pragma library
 
-// فارسی (fa): the interface texts, loaded by I18n.js. `compact` holds the values of I18n.localizedKeys in their order, `entries`
-// every other key; I18n.js puts them together.
+// فارسی (fa): the interface texts, loaded by I18n.js. `compact`
+// holds the values of I18n.localizedKeys in their order, `entries` every
+// other key; I18n.js puts them together.
 
 var compact = [
   "آب‌وهوا",
@@ -345,5 +346,11 @@ var entries = {
   "importCitiesFromTime": "درون‌بری شهرها از More Time",
   "importCitiesResult": "افزوده شد: {added} · از قبل بود: {existing}",
   "importCitiesHint": "شهرهای ساعت جهانی More Time را که مختصات دارند و هنوز ذخیره نشده‌اند، به ترتیب خودشان می‌افزاید.",
-  "importCitiesMissing": "فهرست شهرهای More Time پیدا نشد؛ چیزی برای درون‌بری نیست."
+  "importCitiesMissing": "فهرست شهرهای More Time پیدا نشد؛ چیزی برای درون‌بری نیست.",
+  "pressure": "فشار هوا",
+  "pressureShort": "فشار",
+  "pressureRising": "در حال افزایش",
+  "pressureFalling": "در حال کاهش",
+  "pressureSteady": "ثابت",
+  "menubarRelevantPressureHint": "«هنگام اهمیت»: فشار هوا که در سه ساعت ۱٫۵ هکتوپاسکال یا بیشتر بالا یا پایین برود."
 }

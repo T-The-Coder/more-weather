@@ -380,5 +380,11 @@ var catalog = {
   "importCitiesFromTime": "Städte aus More Time übernehmen",
   "importCitiesResult": "Hinzugefügt: {added} · schon vorhanden: {existing}",
   "importCitiesHint": "Fügt die Städte der Weltuhr von More Time hinzu, die Koordinaten haben und noch nicht gespeichert sind, in ihrer Reihenfolge.",
-  "importCitiesMissing": "Die Städteliste von More Time wurde nicht gefunden; es gibt nichts zu übernehmen."
+  "importCitiesMissing": "Die Städteliste von More Time wurde nicht gefunden; es gibt nichts zu übernehmen.",
+  "pressure": "Luftdruck",
+  "pressureShort": "Druck",
+  "pressureRising": "Steigend",
+  "pressureFalling": "Fallend",
+  "pressureSteady": "Gleichbleibend",
+  "menubarRelevantPressureHint": "„Relevant“: Luftdruck, der in drei Stunden um 1,5 hPa oder mehr steigt oder fällt."
 }

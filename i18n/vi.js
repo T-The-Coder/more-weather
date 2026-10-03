@@ -1,7 +1,8 @@
 .pragma library
 
-// Tiếng Việt (vi): the interface texts, loaded by I18n.js. `compact` holds the values of I18n.localizedKeys in their order, `entries`
-// every other key; I18n.js puts them together.
+// Tiếng Việt (vi): the interface texts, loaded by I18n.js. `compact`
+// holds the values of I18n.localizedKeys in their order, `entries` every
+// other key; I18n.js puts them together.
 
 var compact = [
   "Thời tiết",
@@ -345,5 +346,11 @@ var entries = {
   "importCitiesFromTime": "Nhập thành phố từ More Time",
   "importCitiesResult": "Đã thêm: {added} · đã có: {existing}",
   "importCitiesHint": "Thêm các thành phố trong đồng hồ thế giới của More Time có tọa độ và chưa được lưu, theo thứ tự của chúng.",
-  "importCitiesMissing": "Không tìm thấy danh sách thành phố của More Time nên không có gì để nhập."
+  "importCitiesMissing": "Không tìm thấy danh sách thành phố của More Time nên không có gì để nhập.",
+  "pressure": "Áp suất không khí",
+  "pressureShort": "Áp suất",
+  "pressureRising": "Đang tăng",
+  "pressureFalling": "Đang giảm",
+  "pressureSteady": "Ổn định",
+  "menubarRelevantPressureHint": "“Liên quan”: áp suất tăng hoặc giảm từ 1,5 hPa trở lên trong ba giờ."
 }

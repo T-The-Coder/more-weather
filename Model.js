@@ -603,6 +603,8 @@ function openMeteoForecastDays(dailyForecastReport, todayString) {
   if (!daily || !daily.time) return []
 
   var result = []
+  var hourly = dailyForecastReport.hourly
+  var pressures = hourly ? dailyPressureMeans(hourly.time, hourly.pressure_msl) : {}
   // Seven calendar days including today. The view keeps them on one
   // horizontally scrollable row, so the popup width never has to grow.
   for (var i = 0; i < daily.time.length && result.length < 7; ++i) {
@@ -624,10 +626,52 @@ function openMeteoForecastDays(dailyForecastReport, todayString) {
       sunrise: daily.sunrise ? String(daily.sunrise[i] || "") : "",
       sunset: daily.sunset ? String(daily.sunset[i] || "") : "",
       uvIndex: daily.uv_index_max && daily.uv_index_max[i] !== null && daily.uv_index_max[i] !== undefined ? String(Math.round(parseFloat(daily.uv_index_max[i]) * 10) / 10) : "",
+      pressureHpa: pressures[String(date).slice(0, 10)] || "",
       openMeteoWeatherCode: daily.weather_code ? daily.weather_code[i] : null
     })
   }
   return result
+}
+
+// ---- Air pressure (hPa at sea level). A value as text: hPa rounded, or
+//      inches of mercury with two decimals. "" when there is none.
+function pressureText(value) {
+  var hPa = parseFloat(value)
+  return isFinite(hPa) && hPa > 0 ? String(Math.round(hPa * 10) / 10) : ""
+}
+function pressureValue(hPa, imperial) {
+  var value = parseFloat(hPa)
+  if (!isFinite(value) || value <= 0) return null
+  return imperial ? { value: Math.round(value * 0.02953 * 100) / 100, unit: "inHg" }
+    : { value: Math.round(value), unit: "hPa" }
+}
+// The change over the last three hours of `hours` (rows with pressureHpa)
+// at `nowIndex`: "rising" or "falling" from 1.5 hPa, else "steady"; ""
+// while the row three hours back (or now) has no value.
+function pressureTrend(hours, nowIndex) {
+  var rows = Array.isArray(hours) ? hours : []
+  var index = parseInt(nowIndex, 10)
+  if (!(index >= 3) || index >= rows.length) return ""
+  var now = parseFloat(rows[index] && rows[index].pressureHpa)
+  var before = parseFloat(rows[index - 3] && rows[index - 3].pressureHpa)
+  if (!isFinite(now) || !isFinite(before)) return ""
+  var change = now - before
+  return change >= 1.5 ? "rising" : (change <= -1.5 ? "falling" : "steady")
+}
+// The mean per date ("YYYY-MM-DD") of hourly values, from 12 hours on.
+function dailyPressureMeans(times, values) {
+  var sums = {}
+  for (var i = 0; i < (times || []).length; ++i) {
+    var hPa = parseFloat(values ? values[i] : NaN)
+    if (!isFinite(hPa) || hPa <= 0) continue
+    var date = String(times[i] || "").slice(0, 10)
+    var entry = sums[date] || (sums[date] = { sum: 0, count: 0 })
+    entry.sum += hPa
+    entry.count++
+  }
+  var means = {}
+  for (var day in sums) if (sums[day].count >= 12) means[day] = pressureText(sums[day].sum / sums[day].count)
+  return means
 }
 
 // Current conditions from the forecast response, in the panel's
@@ -644,6 +688,7 @@ function openMeteoCurrentCondition(dailyForecastReport) {
     windspeedKmph: roundedTemp(current.wind_speed_10m),
     windspeedMiles: roundedTemp(current.wind_speed_10m * 0.621371),
     humidity: roundedTemp(current.relative_humidity_2m),
+    pressureHpa: pressureText(current.pressure_msl),
     openMeteoWeatherCode: current.weather_code,
     isDay: current.is_day
   }
@@ -721,7 +766,7 @@ function metNoToOpenMeteo(report) {
 
   var hourly = {
     time: [], temperature_2m: [], precipitation_probability: [], precipitation: [],
-    weather_code: [], is_day: [], wind_speed_10m: []
+    weather_code: [], is_day: [], wind_speed_10m: [], pressure_msl: []
   }
   var minutely = {
     time: [], precipitation: [], precipitation_probability: [], wind_speed_10m: [],
@@ -758,6 +803,8 @@ function metNoToOpenMeteo(report) {
     hourly.weather_code.push(weatherCode)
     hourly.is_day.push(isDay)
     hourly.wind_speed_10m.push(windKmh)
+    var pressure = parseFloat(details.air_pressure_at_sea_level)
+    hourly.pressure_msl.push(isNaN(pressure) ? null : pressure)
 
     if (minutely.time.length < 20) {
       var hourMs = stampMs
@@ -794,6 +841,7 @@ function metNoToOpenMeteo(report) {
         temperature_2m: temp,
         apparent_temperature: temp,
         relative_humidity_2m: parseFloat(details.relative_humidity),
+        pressure_msl: parseFloat(details.air_pressure_at_sea_level),
         wind_speed_10m: windKmh,
         weather_code: weatherCode,
         is_day: isDay
@@ -854,6 +902,7 @@ function openMeteoHourlyForecast(report, currentHour, limit) {
       feelsLikeF: feelsC === null || feelsC === undefined ? "" : roundedTemp(celsiusToFahrenheit(feelsC)),
       humidity: hourly.relative_humidity_2m && hourly.relative_humidity_2m[i] !== null
         && hourly.relative_humidity_2m[i] !== undefined ? roundedTemp(hourly.relative_humidity_2m[i]) : "",
+      pressureHpa: hourly.pressure_msl ? pressureText(hourly.pressure_msl[i]) : "",
       rainProbability: hourly.precipitation_probability ? roundedTemp(hourly.precipitation_probability[i]) : "",
       rainAmount: hourly.precipitation && hourly.precipitation[i] !== null && hourly.precipitation[i] !== undefined ? String(Math.round(parseFloat(hourly.precipitation[i]) * 10) / 10) : "",
       windSpeedKmph: hourly.wind_speed_10m ? roundedTemp(hourly.wind_speed_10m[i]) : "",
@@ -921,6 +970,7 @@ function brightSkyCurrentCondition(report, fallback, now) {
     windspeedKmph: roundedTemp(row.wind_speed),
     windspeedMiles: roundedTemp(parseFloat(row.wind_speed || 0) * 0.621371),
     humidity: base.humidity || roundedTemp(row.relative_humidity),
+    pressureHpa: pressureText(row.pressure_msl) || base.pressureHpa || "",
     openMeteoWeatherCode: brightSkyWeatherCode(row.icon),
     isDay: brightSkyIsDay(row.icon)
   }
@@ -980,6 +1030,7 @@ function hybridHourlyForecast(mosmixReport, dailyForecastReport, uvReport, radar
       feelsLikeF: rainFb.feelsLikeF !== undefined ? rainFb.feelsLikeF : "",
       humidity: row.relative_humidity !== undefined && row.relative_humidity !== null
         ? roundedTemp(row.relative_humidity) : (rainFb.humidity || ""),
+      pressureHpa: pressureText(row.pressure_msl) || rainFb.pressureHpa || "",
       rainProbability: mosmixProbability !== "" ? mosmixProbability : (rainFb.rainProbability || ""),
       rainAmount: row.precipitation === undefined || row.precipitation === null ? "" : String(Math.round(parseFloat(row.precipitation) * 10) / 10),
       windSpeedKmph: roundedTemp(row.wind_speed) || rainFb.windSpeedKmph || "",
@@ -1015,6 +1066,7 @@ function hybridHourlyForecast(mosmixReport, dailyForecastReport, uvReport, radar
         feelsLikeC: fbEntry.feelsLikeC,
         feelsLikeF: fbEntry.feelsLikeF,
         humidity: fbEntry.humidity,
+        pressureHpa: fbEntry.pressureHpa,
         rainProbability: fbEntry.rainProbability,
         rainAmount: fbEntry.rainAmount,
         windSpeedKmph: fbEntry.windSpeedKmph,
@@ -1035,7 +1087,9 @@ function brightSkyForecastDays(report, todayString) {
     var row = rows[i]
     var date = String(row.timestamp || "").slice(0, 10)
     if (!isForecastDateOnOrAfter(date, todayString)) continue
-    if (!groups[date]) groups[date] = { date: date, min: Infinity, max: -Infinity, maxWind: -Infinity, noon: null, rainProbability: -Infinity, rainAmount: 0, hasRainAmount: false }
+    if (!groups[date]) groups[date] = { date: date, min: Infinity, max: -Infinity, maxWind: -Infinity, noon: null, rainProbability: -Infinity, rainAmount: 0, hasRainAmount: false, pressureSum: 0, pressureCount: 0 }
+    var pressure = parseFloat(row.pressure_msl)
+    if (isFinite(pressure) && pressure > 0) { groups[date].pressureSum += pressure; groups[date].pressureCount++ }
     var temp = parseFloat(row.temperature)
     if (!isNaN(temp)) { groups[date].min = Math.min(groups[date].min, temp); groups[date].max = Math.max(groups[date].max, temp) }
     var probability = parseFloat(row.precipitation_probability)
@@ -1052,7 +1106,7 @@ function brightSkyForecastDays(report, todayString) {
   for (var j = 0; j < dates.length && result.length < 7; ++j) {
     var g = groups[dates[j]]
     if (g.min === Infinity || g.max === -Infinity) continue
-    result.push({ date: g.date, mintempC: roundedTemp(g.min), maxtempC: roundedTemp(g.max), mintempF: roundedTemp(celsiusToFahrenheit(g.min)), maxtempF: roundedTemp(celsiusToFahrenheit(g.max)), rainProbability: g.rainProbability === -Infinity ? "" : roundedTemp(g.rainProbability), rainAmount: g.hasRainAmount ? String(Math.round(g.rainAmount * 10) / 10) : "", windSpeedKmph: g.maxWind === -Infinity ? "" : roundedTemp(g.maxWind), windSpeedMph: g.maxWind === -Infinity ? "" : roundedTemp(g.maxWind * 0.621371), openMeteoWeatherCode: brightSkyWeatherCode(g.noon ? g.noon.icon : "cloudy") })
+    result.push({ date: g.date, mintempC: roundedTemp(g.min), maxtempC: roundedTemp(g.max), mintempF: roundedTemp(celsiusToFahrenheit(g.min)), maxtempF: roundedTemp(celsiusToFahrenheit(g.max)), rainProbability: g.rainProbability === -Infinity ? "" : roundedTemp(g.rainProbability), rainAmount: g.hasRainAmount ? String(Math.round(g.rainAmount * 10) / 10) : "", windSpeedKmph: g.maxWind === -Infinity ? "" : roundedTemp(g.maxWind), windSpeedMph: g.maxWind === -Infinity ? "" : roundedTemp(g.maxWind * 0.621371), pressureHpa: g.pressureCount >= 12 ? pressureText(g.pressureSum / g.pressureCount) : "", openMeteoWeatherCode: brightSkyWeatherCode(g.noon ? g.noon.icon : "cloudy") })
   }
   return result
 }
@@ -1087,6 +1141,7 @@ function hybridForecastDays(mosmixReport, openMeteoReport, todayString, uvReport
     days[j].uvIndex = uvByDate[days[j].date] || ""
     if (!days[j].windSpeedKmph) days[j].windSpeedKmph = dailyFallback.windSpeedKmph || ""
     if (!days[j].windSpeedMph) days[j].windSpeedMph = dailyFallback.windSpeedMph || ""
+    if (!days[j].pressureHpa) days[j].pressureHpa = dailyFallback.pressureHpa || ""
     days[j].sunrise = dailyFallback.sunrise || ""
     days[j].sunset = dailyFallback.sunset || ""
   }
@@ -3494,7 +3549,7 @@ function rainDriftAt(motion, forecastReport, nowcast, time) {
 //      responses through a watched file that both processes re-parse on
 //      every write, so only fields some view actually reads are kept.
 var SHARED_MOSMIX_FIELDS = ["timestamp", "temperature", "precipitation",
-  "precipitation_probability", "wind_speed", "relative_humidity", "icon", "source_id"]
+  "precipitation_probability", "wind_speed", "relative_humidity", "pressure_msl", "icon", "source_id"]
 
 function pickFields(source, fields) {
   var result = {}
@@ -3539,6 +3594,10 @@ if (typeof module !== "undefined") {
     defaultSavedLocations: defaultSavedLocations,
     addSavedLocation: addSavedLocation,
     importedCities: importedCities,
+    pressureText: pressureText,
+    pressureValue: pressureValue,
+    pressureTrend: pressureTrend,
+    dailyPressureMeans: dailyPressureMeans,
     removeSavedLocationAt: removeSavedLocationAt,
     WEATHER_CACHE_MAX_AGE_MS: WEATHER_CACHE_MAX_AGE_MS,
     WEATHER_CACHE_FALLBACK_DELAY_MS: WEATHER_CACHE_FALLBACK_DELAY_MS,

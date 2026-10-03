@@ -1,7 +1,8 @@
 .pragma library
 
-// Suomi (fi): the interface texts, loaded by I18n.js. `compact` holds the values of I18n.localizedKeys in their order, `entries`
-// every other key; I18n.js puts them together.
+// Suomi (fi): the interface texts, loaded by I18n.js. `compact`
+// holds the values of I18n.localizedKeys in their order, `entries` every
+// other key; I18n.js puts them together.
 
 var compact = [
   "Sää",
@@ -345,5 +346,11 @@ var entries = {
   "importCitiesFromTime": "Tuo kaupungit More Timesta",
   "importCitiesResult": "Lisätty: {added} · jo olemassa: {existing}",
   "importCitiesHint": "Lisää More Timen maailmankellon kaupungit, joilla on koordinaatit ja joita ei ole vielä tallennettu, niiden järjestyksessä.",
-  "importCitiesMissing": "More Timen kaupunkiluetteloa ei löytynyt, joten tuotavaa ei ole."
+  "importCitiesMissing": "More Timen kaupunkiluetteloa ei löytynyt, joten tuotavaa ei ole.",
+  "pressure": "Ilmanpaine",
+  "pressureShort": "Paine",
+  "pressureRising": "Nousee",
+  "pressureFalling": "Laskee",
+  "pressureSteady": "Vakaa",
+  "menubarRelevantPressureHint": "”Olennainen”: ilmanpaine, joka nousee tai laskee 1,5 hPa tai enemmän kolmessa tunnissa."
 }

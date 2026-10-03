@@ -1,7 +1,8 @@
 .pragma library
 
-// Norsk bokmål (nb): the interface texts, loaded by I18n.js. `compact` holds the values of I18n.localizedKeys in their order, `entries`
-// every other key; I18n.js puts them together.
+// Norsk bokmål (nb): the interface texts, loaded by I18n.js. `compact`
+// holds the values of I18n.localizedKeys in their order, `entries` every
+// other key; I18n.js puts them together.
 
 var compact = [
   "Vær",
@@ -345,5 +346,11 @@ var entries = {
   "importCitiesFromTime": "Importer byer fra More Time",
   "importCitiesResult": "Lagt til: {added} · fantes fra før: {existing}",
   "importCitiesHint": "Legger til byene i More Times verdensklokke som har koordinater og ikke er lagret ennå, i deres rekkefølge.",
-  "importCitiesMissing": "Bylisten til More Time ble ikke funnet, så det er ingenting å importere."
+  "importCitiesMissing": "Bylisten til More Time ble ikke funnet, så det er ingenting å importere.",
+  "pressure": "Lufttrykk",
+  "pressureShort": "Trykk",
+  "pressureRising": "Stigende",
+  "pressureFalling": "Synkende",
+  "pressureSteady": "Stabilt",
+  "menubarRelevantPressureHint": "«Relevant»: lufttrykk som stiger eller synker med 1,5 hPa eller mer på tre timer."
 }

@@ -131,6 +131,7 @@ Column {
                   if (entryKey === "dailyUv")
                     return "UV " + (day.uvIndex !== "" ? panel.localizedNumber(day.uvIndex) : "–")
                   if (entryKey === "dailyWind") return "󰖝 " + panel.forecastWind(day)
+                  if (entryKey === "dailyPressure") return "󰊚 " + (panel.pressureText(day.pressureHpa, panel.useImperial) || "–")
                   return ""
                 }
                 // Colour accents: rain chance, UV and strong wind.
@@ -150,6 +151,7 @@ Column {
                   if (entryKey === "dailyRainProbability") return panel.cachedField(day, "rainProbability")
                   if (entryKey === "dailyRainAmount") return panel.cachedField(day, "rainAmount")
                   if (entryKey === "dailyUv") return panel.cachedField(day, "uvIndex")
+                  if (entryKey === "dailyPressure") return panel.cachedField(day, "pressureHpa")
                   if (entryKey === "dailyWind")
                     return panel.cachedField(day, panel.useImperial ? "windSpeedMph" : "windSpeedKmph")
                   return false

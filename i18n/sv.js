@@ -1,7 +1,8 @@
 .pragma library
 
-// Svenska (sv): the interface texts, loaded by I18n.js. `compact` holds the values of I18n.localizedKeys in their order, `entries`
-// every other key; I18n.js puts them together.
+// Svenska (sv): the interface texts, loaded by I18n.js. `compact`
+// holds the values of I18n.localizedKeys in their order, `entries` every
+// other key; I18n.js puts them together.
 
 var compact = [
   "Väder",
@@ -345,5 +346,11 @@ var entries = {
   "importCitiesFromTime": "Importera städer från More Time",
   "importCitiesResult": "Tillagda: {added} · fanns redan: {existing}",
   "importCitiesHint": "Lägger till städerna i More Times världsklocka som har koordinater och inte är sparade än, i deras ordning.",
-  "importCitiesMissing": "More Times stadslista hittades inte, så det finns inget att importera."
+  "importCitiesMissing": "More Times stadslista hittades inte, så det finns inget att importera.",
+  "pressure": "Lufttryck",
+  "pressureShort": "Tryck",
+  "pressureRising": "Stigande",
+  "pressureFalling": "Fallande",
+  "pressureSteady": "Stabilt",
+  "menubarRelevantPressureHint": "”Relevant”: lufttryck som stiger eller faller med 1,5 hPa eller mer på tre timmar."
 }

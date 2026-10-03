@@ -1,7 +1,8 @@
 .pragma library
 
-// हिन्दी (hi): the interface texts, loaded by I18n.js. `compact` holds the values of I18n.localizedKeys in their order, `entries`
-// every other key; I18n.js puts them together.
+// हिन्दी (hi): the interface texts, loaded by I18n.js. `compact`
+// holds the values of I18n.localizedKeys in their order, `entries` every
+// other key; I18n.js puts them together.
 
 var compact = [
   "मौसम",
@@ -345,5 +346,11 @@ var entries = {
   "importCitiesFromTime": "More Time से शहर आयात करें",
   "importCitiesResult": "जोड़े गए: {added} · पहले से मौजूद: {existing}",
   "importCitiesHint": "More Time की विश्व घड़ी के वे शहर उनके क्रम में जोड़ता है जिनके निर्देशांक हैं और जो अभी सहेजे नहीं गए हैं।",
-  "importCitiesMissing": "More Time की शहर सूची नहीं मिली, इसलिए आयात करने को कुछ नहीं है।"
+  "importCitiesMissing": "More Time की शहर सूची नहीं मिली, इसलिए आयात करने को कुछ नहीं है।",
+  "pressure": "वायुदाब",
+  "pressureShort": "दाब",
+  "pressureRising": "बढ़ रहा",
+  "pressureFalling": "घट रहा",
+  "pressureSteady": "स्थिर",
+  "menubarRelevantPressureHint": "“प्रासंगिक”: तीन घंटे में 1.5 hPa या अधिक बढ़ता या घटता वायुदाब।"
 }

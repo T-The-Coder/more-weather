@@ -1,7 +1,8 @@
 .pragma library
 
-// 简体中文 (zh_CN): the interface texts, loaded by I18n.js. `compact` holds the values of I18n.localizedKeys in their order, `entries`
-// every other key; I18n.js puts them together.
+// 简体中文 (zh_CN): the interface texts, loaded by I18n.js. `compact`
+// holds the values of I18n.localizedKeys in their order, `entries` every
+// other key; I18n.js puts them together.
 
 var compact = [
   "天气",
@@ -345,5 +346,11 @@ var entries = {
   "importCitiesFromTime": "从 More Time 导入城市",
   "importCitiesResult": "已添加：{added} · 已存在：{existing}",
   "importCitiesHint": "按顺序添加 More Time 世界时钟中有坐标且尚未保存的城市。",
-  "importCitiesMissing": "未找到 More Time 的城市列表，没有可导入的内容。"
+  "importCitiesMissing": "未找到 More Time 的城市列表，没有可导入的内容。",
+  "pressure": "气压",
+  "pressureShort": "气压",
+  "pressureRising": "上升",
+  "pressureFalling": "下降",
+  "pressureSteady": "平稳",
+  "menubarRelevantPressureHint": "“相关时”：三小时内气压升降 1.5 hPa 或以上。"
 }

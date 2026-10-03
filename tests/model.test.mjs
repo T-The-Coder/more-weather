@@ -139,3 +139,71 @@ test("More Time's cities join the saved places once, in their order", () => {
   assert.equal(saved.length, 2)
   assert.equal(Model.importedCities(saved, "not json", samePlace).added, 0)
 })
+
+// ---- Air pressure.
+test("pressure in hPa or inHg", () => {
+  assert.deepEqual(Model.pressureValue("1013.25", false), { value: 1013, unit: "hPa" })
+  assert.deepEqual(Model.pressureValue(1013.25, true), { value: 29.92, unit: "inHg" })
+  assert.equal(Model.pressureValue("", false), null)
+  assert.equal(Model.pressureText(1013.26), "1013.3")
+})
+
+test("pressure trend over three hours", () => {
+  const rows = [1010, 1011, 1012, 1012.4, 1013.6, 1010.4].map((p) => ({ pressureHpa: String(p) }))
+  assert.equal(Model.pressureTrend(rows, 3), "rising")      // 1012.4 − 1010 = 2.4
+  assert.equal(Model.pressureTrend(rows, 4), "rising")      // 1013.6 − 1011 = 2.6
+  assert.equal(Model.pressureTrend(rows, 5), "falling")     // 1010.4 − 1012 = −1.6
+  const steady = [1013, 1013, 1013, 1014].map((p) => ({ pressureHpa: String(p) }))
+  assert.equal(Model.pressureTrend(steady, 3), "steady")
+  assert.equal(Model.pressureTrend(rows, 2), "")            // no row three hours back
+  assert.equal(Model.pressureTrend([{ pressureHpa: "" }, {}, {}, { pressureHpa: "1000" }], 3), "")
+})
+
+test("the day's pressure is the mean of its hours, from twelve on", () => {
+  const times = []
+  const values = []
+  for (let h = 0; h < 24; h++) { times.push(`2026-10-03T${String(h).padStart(2, "0")}:00`); values.push(1000 + h) }
+  for (let h = 0; h < 11; h++) { times.push(`2026-10-04T${String(h).padStart(2, "0")}:00`); values.push(1020) }
+  const means = Model.dailyPressureMeans(times, values)
+  assert.equal(means["2026-10-03"], "1011.5")
+  assert.equal(means["2026-10-04"], undefined)
+})
+
+test("Open-Meteo carries pressure into now, the hours and the days", () => {
+  const time = []
+  const pressure = []
+  for (let h = 0; h < 24; h++) { time.push(`2026-10-03T${String(h).padStart(2, "0")}:00`); pressure.push(1015) }
+  const report = {
+    current: { temperature_2m: 12, pressure_msl: 1013.24 },
+    hourly: { time, temperature_2m: time.map(() => 12), pressure_msl: pressure },
+    daily: { time: ["2026-10-03"], temperature_2m_max: [14], temperature_2m_min: [9] }
+  }
+  assert.equal(Model.openMeteoCurrentCondition(report).pressureHpa, "1013.2")
+  assert.equal(Model.openMeteoHourlyForecast(report, "", 3)[0].pressureHpa, "1015")
+  assert.equal(Model.openMeteoForecastDays(report, "2026-10-03")[0].pressureHpa, "1015")
+})
+
+test("MET Norway's sea-level pressure reaches now and the hours", () => {
+  const report = { properties: { timeseries: [0, 1].map((h) => ({
+    time: `2026-10-03T1${h}:00:00Z`,
+    data: { instant: { details: { air_temperature: 8, air_pressure_at_sea_level: 1001.5 + h } },
+      next_1_hours: { summary: { symbol_code: "cloudy" }, details: { precipitation_amount: 0 } } }
+  })) } }
+  const converted = Model.metNoToOpenMeteo(report)
+  assert.equal(converted.current.pressure_msl, 1001.5)
+  assert.deepEqual(Array.from(converted.hourly.pressure_msl), [1001.5, 1002.5])
+  assert.equal(Model.openMeteoCurrentCondition(converted).pressureHpa, "1001.5")
+})
+
+test("Bright Sky's pressure in now, the hours, the days and the shared report", () => {
+  const now = new Date("2026-10-03T12:20:00Z")
+  const weather = []
+  for (let h = 0; h < 24; h++)
+    weather.push({ timestamp: `2026-10-03T${String(h).padStart(2, "0")}:00:00+00:00`, temperature: 10, pressure_msl: 1020 + (h === 12 ? 1 : 0), icon: "cloudy" })
+  const report = { weather }
+  assert.equal(Model.brightSkyCurrentCondition(report, null, now).pressureHpa, "1021")
+  assert.equal(Model.hybridHourlyForecast(report, null, null, null, now, 2)[1].pressureHpa, "1020")
+  assert.equal(Model.compactMosmixReport(report).weather[0].pressure_msl, 1020)
+  const day = Model.hybridForecastDays(report, null, "2026-10-03", null)[0]
+  assert.equal(day.pressureHpa, String(Math.round((1020 * 23 + 1021) / 24 * 10) / 10))
+})

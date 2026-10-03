@@ -173,6 +173,7 @@ BarWidget {
             if (entryKey === "currentFeelsLike") return root.labelled(p.i18n("feelsLikeShort"), p.menubarReportFeels, entryKey)
             if (entryKey === "currentWind") return root.labelled(p.i18n("wind"), p.menubarReportWind, entryKey)
             if (entryKey === "currentUv") return root.labelled("UV", p.menubarUvValueText, entryKey)
+            if (entryKey === "currentPressure") return root.labelled(p.i18n("pressureShort"), p.menubarReportPressure, "")
             if (entryKey === "currentDayRange")
               return root.accentSpan(p.menubarDayMinText, "currentDayMin") + " / "
                 + root.accentSpan(p.menubarDayMaxText, "currentDayMax")
@@ -193,6 +194,9 @@ BarWidget {
             if (entryKey === "currentHumidity")
               return panelLoader.item.menubarShowHumidity && panelLoader.item.menubarReportHumidity !== ""
                 ? panelLoader.item.i18n("humidity") + " " + panelLoader.item.menubarReportHumidity : ""
+            if (entryKey === "currentPressure")
+              return panelLoader.item.menubarShowPressure && panelLoader.item.menubarReportPressure !== ""
+                ? panelLoader.item.i18n("pressureShort") + " " + panelLoader.item.menubarReportPressure : ""
             if (entryKey === "currentUv") return panelLoader.item.menubarUvText
             if (entryKey === "currentDayRange") return panelLoader.item.menubarDayRangeText
             if (entryKey === "currentRainAmount") return panelLoader.item.menubarRainAmountText
@@ -212,6 +216,7 @@ BarWidget {
             if (entryKey === "currentWind") return panelLoader.item.menubarWindCached
             if (entryKey === "currentHumidity") return panelLoader.item.menubarHumidityCached
             if (entryKey === "currentUv") return panelLoader.item.menubarUvCached
+            if (entryKey === "currentPressure") return panelLoader.item.menubarPressureCached
             if (entryKey === "currentDayRange")
               return panelLoader.item.cachedField(panelLoader.item.todayForecast,
                 panelLoader.item.menubarUseImperial ? "maxtempF" : "maxtempC")

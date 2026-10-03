@@ -1,7 +1,8 @@
 .pragma library
 
-// Čeština (cs): the interface texts, loaded by I18n.js. `compact` holds the values of I18n.localizedKeys in their order, `entries`
-// every other key; I18n.js puts them together.
+// Čeština (cs): the interface texts, loaded by I18n.js. `compact`
+// holds the values of I18n.localizedKeys in their order, `entries` every
+// other key; I18n.js puts them together.
 
 var compact = [
   "Počasí",
@@ -345,5 +346,11 @@ var entries = {
   "importCitiesFromTime": "Importovat města z More Time",
   "importCitiesResult": "Přidáno: {added} · už existují: {existing}",
   "importCitiesHint": "Přidá města ze světových hodin More Time, která mají souřadnice a ještě nejsou uložená, v jejich pořadí.",
-  "importCitiesMissing": "Seznam měst More Time nebyl nalezen, není co importovat."
+  "importCitiesMissing": "Seznam měst More Time nebyl nalezen, není co importovat.",
+  "pressure": "Tlak vzduchu",
+  "pressureShort": "Tlak",
+  "pressureRising": "Stoupá",
+  "pressureFalling": "Klesá",
+  "pressureSteady": "Stálý",
+  "menubarRelevantPressureHint": "„Důležité“: tlak, který za tři hodiny stoupne nebo klesne o 1,5 hPa a více."
 }

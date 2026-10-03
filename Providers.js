@@ -157,10 +157,11 @@ function openMeteoForecastUrl(latitude, longitude, countryName) {
     + "?latitude=" + encodeURIComponent(String(latitude))
     + "&longitude=" + encodeURIComponent(String(longitude))
     + "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_sum,wind_speed_10m_max,sunrise,sunset,uv_index_max"
-    + "&current=temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,weather_code,is_day"
+    + "&current=temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,weather_code,is_day,pressure_msl"
     + "&hourly=temperature_2m,precipitation_probability,precipitation,weather_code,is_day,wind_speed_10m,uv_index"
-    // Feels-like and humidity per hour, for the hour cursor.
-    + ",apparent_temperature,relative_humidity_2m"
+    // Feels-like, humidity and air pressure per hour, for the hour cursor
+    // (pressure also for its trend and the days' mean).
+    + ",apparent_temperature,relative_humidity_2m,pressure_msl"
     // Steering wind for the radar drift arrow where radar motion is unavailable.
     + ",wind_speed_700hPa,wind_direction_700hPa"
     + "&minutely_15=precipitation,precipitation_probability,wind_speed_10m,wind_direction_10m,wind_gusts_10m"

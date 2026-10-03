@@ -56,6 +56,7 @@ Rectangle {
         { key: "currentFeelsLike", title: panel.i18n("feelsLikeTemperature"), hover: true, relevant: true },
         { key: "currentWind", title: panel.i18n("wind"), hover: true, relevant: true },
         { key: "currentHumidity", title: panel.i18n("humidity"), hover: true },
+        { key: "currentPressure", title: panel.i18n("pressure"), hover: true, relevant: true },
         { key: "currentUv", title: panel.i18n("uvIndex"), hover: true, relevant: true },
         { key: "currentDayRange", title: panel.i18n("temperatureRange"), hover: true },
         { key: "currentPrecipitation", title: panel.i18n("rainProbability"), hover: true, relevant: true },
@@ -72,7 +73,7 @@ Rectangle {
         { key: "currentWarnings", title: panel.i18n("weatherWarnings"), hover: true }
       ],
       hint: panel.i18n("menubarRelevantCurrentHint") + " " + panel.i18n("menubarRelevantRainHint")
-        + " " + panel.i18n("menubarRelevantAirHint"),
+        + " " + panel.i18n("menubarRelevantAirHint") + " " + panel.i18n("menubarRelevantPressureHint"),
       hasDefaultTab: false
     },
     {
@@ -113,6 +114,7 @@ Rectangle {
         { key: "heroFeelsLike", title: panel.i18n("feelsLikeTemperature") },
         { key: "heroWind", title: panel.i18n("wind") },
         { key: "heroHumidity", title: panel.i18n("humidity") },
+        { key: "heroPressure", title: panel.i18n("pressure") },
         { key: "heroMoon", title: panel.i18n("moonPhase") },
         { key: "heroYesterday", title: panel.i18n("compareYesterday") },
         { key: "heroMoonNext", title: panel.i18n("nextFullNewMoon") },
@@ -158,6 +160,7 @@ Rectangle {
         { key: "hourlyRainProbability", title: panel.i18n("rainProbability") },
         { key: "hourlyRainAmount", title: panel.i18n("rainAmount") },
         { key: "hourlyUv", title: panel.i18n("uvIndex") },
+        { key: "hourlyPressure", title: panel.i18n("pressure") },
         { key: "hourlyWind", title: panel.i18n("wind") }
       ],
       hasDefaultTab: false
@@ -175,6 +178,7 @@ Rectangle {
         { key: "dailyRainProbability", title: panel.i18n("rainProbability") },
         { key: "dailyRainAmount", title: panel.i18n("rainAmount") },
         { key: "dailyUv", title: panel.i18n("uvIndex") },
+        { key: "dailyPressure", title: panel.i18n("pressure") },
         { key: "dailyWind", title: panel.i18n("wind") },
         { key: "dailySunEvents", title: panel.i18n("sunriseSunset") },
         { key: "dailySunNext", title: panel.i18n("sunNext") },
@@ -439,9 +443,13 @@ Rectangle {
   // goes (the reset buttons disappear once they are used).
   property int focusIndex: -1
   onFocusItemChanged: {
-    if (focusItem) focusIndex = focusItems.indexOf(focusItem)
-    else if (focusId !== "" && focusIndex >= 0 && focusItems.length > 0)
-      focusId = focusItems[Math.min(focusIndex, focusItems.length - 1)].id
+    if (focusItem) {
+      focusIndex = focusItems.indexOf(focusItem)
+    } else if (focusId !== "" && focusIndex >= 0 && focusItems.length > 0) {
+      // From the event loop: setting focusId here would re-enter focusItem.
+      var neighbour = focusItems[Math.min(focusIndex, focusItems.length - 1)].id
+      panel.defer(function() { if (!settingsView.focusItem) settingsView.focusId = neighbour })
+    }
   }
 
   // Columns of a menu bar row: "Always", "Relevant" (if it has a rule),
