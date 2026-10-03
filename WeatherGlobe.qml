@@ -464,6 +464,7 @@ Column {
       return Qt.rgba(c.r + (ink.r - c.r) * 0.35, c.g + (ink.g - c.g) * 0.35, c.b + (ink.b - c.b) * 0.35, 1)
     }
     readonly property Item canvasItem: canvas
+    readonly property Item surfaceItem: surface
     readonly property Item overlayItem: overlay
     // My places' and the towns' labels drawn last (the overlay avoids them).
     property var labelRects: []
@@ -540,9 +541,126 @@ Column {
     property real shiftX: 0
     property real shiftY: 0
 
-    // The sphere's faint fill, under the wash (the globe's only).
+    // ---- The surface on the GPU (GLOBE-SHADER.md): up to z2, where the
+    //      shader can run, the sphere's fill, the land, the colour layers
+    //      and the night come from an equirectangular texture projected per
+    //      pixel; turning then only changes uniforms. From z3, and wherever
+    //      shaders cannot run (the software scene graph of the offscreen
+    //      harness), the Canvas path below draws them as before.
+    readonly property bool gpuWanted: surface.available && zoom < 3
+    // Kept on after leaving until the Canvas picture is painted, so the
+    // hand-over at z2/z3 never shows a frame without the surface's parts.
+    property bool gpuHandover: false
+    readonly property bool gpuSurface: gpuWanted || gpuHandover
+    onGpuWantedChanged: {
+      if (gpuWanted) { gpuHandover = false; return }
+      gpuHandover = true
+      canvas.requestPaint()
+      wash.requestPaint()
+      handoverTimer.restart()
+    }
+    Timer {
+      id: handoverTimer
+      // Two frames after the Canvas path has drawn.
+      interval: 50
+      onTriggered: globe.gpuHandover = false
+    }
+    // The texture's lattices settle for 80 ms, so the answers for several
+    // layers repaint it once.
+    property var textureLattices: ({})
+    Timer {
+      id: textureSettle
+      interval: 80
+      onTriggered: globe.textureLattices = globe.panel.globeData.lattices
+    }
+    Connections {
+      target: globe.panel.globeData
+      function onLatticesChanged() { textureSettle.restart() }
+    }
+    WeatherGlobeTexture {
+      id: surfaceTexture
+      visible: false
+      enabled: surface.available
+      // Smaller while the timeline plays, so a step costs less.
+      textureWidth: globe.panel.globeData.playing ? 720 : 1024
+      textureHeight: globe.panel.globeData.playing ? 360 : 512
+      layers: surface.available ? globe.panel.globeData.washLayers : []
+      lattices: globe.textureLattices
+      landMask: globe.panel.globeData.landMask
+      scaleKmh: globe.windScaleKmh
+      palettes: wash.palettes
+      landColor: globe.landColor
+      landData: globe.landData
+    }
+    // The land's fill (Canvas path and texture alike): faint, but opaque
+    // when the sea's temperature shows without the air's.
+    readonly property color landColor: {
+      var layers = washLayers, ink = panel.foreground, surfaceBg = Color.popups.background
+      if (layers.indexOf("sst") < 0 || layers.indexOf("temperature") >= 0) return Qt.rgba(ink.r, ink.g, ink.b, 0.08)
+      return Qt.rgba(surfaceBg.r * 0.92 + ink.r * 0.08, surfaceBg.g * 0.92 + ink.g * 0.08, surfaceBg.b * 0.92 + ink.b * 0.08, 1)
+    }
+    readonly property var surfaceCentre: isMap ? GlobeProjection.mapCentre(centerLat, centerLon, width, height, zoom)
+      : ({ lat: centerLat, lon: centerLon })
+    WeatherGlobeSurface {
+      id: surface
+      x: globe.shiftX
+      y: globe.shiftY
+      width: globe.width
+      height: globe.height
+      visible: globe.gpuSurface
+      style: globe.isMap ? "map" : "globe"
+      centerLat: globe.surfaceCentre.lat
+      centerLon: globe.surfaceCentre.lon
+      zoom: globe.zoom
+      radius: globe.radius
+      centerX: globe.centerX
+      centerY: globe.centerY
+      displayMs: globe.minuteMs
+      night: globe.showNight
+      background: Color.popups.background
+      baseColor: globe.isMap ? "transparent" : Qt.rgba(globe.panel.foreground.r, globe.panel.foreground.g,
+        globe.panel.foreground.b, 0.04)
+      textureSource: surfaceTexture
+    }
+
+    // ---- What the globe costs, for the IPC status (Panel.providerStatus):
+    //      every 5 s while shown, the frames drawn (the surface's, else the
+    //      Canvas's) and the shell process's CPU time from /proc/self/stat.
+    property var perf: ({ surface: false, fps: 0, cpuMsPerFrame: 0, cpuPercent: 0, textureMs: 0 })
+    property var perfLast: null
+    property FileView procStat: FileView {
+      path: "/proc/self/stat"
+      blockLoading: true
+      printErrors: false
+    }
+    Timer {
+      interval: 5000
+      repeat: true
+      running: globe.panel.globeShown
+      onRunningChanged: globe.perfLast = null
+      onTriggered: {
+        globe.procStat.reload()
+        var text = String(globe.procStat.text() || "")
+        var fields = text.slice(text.lastIndexOf(")") + 2).split(" ")
+        // utime and stime (fields 14 and 15), in ticks of 10 ms.
+        var cpuMs = (Number(fields[11]) + Number(fields[12])) * 10
+        var frames = globe.gpuSurface ? surface.frames : globe.paintStats.count
+        var now = Date.now()
+        var last = globe.perfLast
+        if (last && isFinite(cpuMs) && now > last.at) {
+          var dFrames = Math.max(0, frames - last.frames), dCpu = cpuMs - last.cpu, dt = now - last.at
+          globe.perf = { surface: globe.gpuSurface, fps: Math.round(dFrames / dt * 10000) / 10,
+            cpuMsPerFrame: dFrames ? Math.round(dCpu / dFrames * 10) / 10 : 0,
+            cpuPercent: Math.round(dCpu / dt * 1000) / 10, textureMs: surfaceTexture.stats.last || 0 }
+        }
+        globe.perfLast = { at: now, cpu: cpuMs, frames: frames }
+      }
+    }
+
+    // The sphere's faint fill, under the wash (the globe's only; the
+    // surface has its own).
     Rectangle {
-      visible: !globe.isMap
+      visible: !globe.isMap && !globe.gpuSurface
       x: globe.shiftX + globe.centerX - globe.radius
       y: globe.shiftY + globe.centerY - globe.radius
       width: 2 * globe.radius
@@ -566,6 +684,8 @@ Column {
       landMask: globe.panel.globeData.landMask
       cells: globe.panel.standaloneMode ? 128 : 96
       scaleKmh: globe.windScaleKmh
+      // The surface draws the layers while it shows.
+      suspended: globe.gpuWanted && !globe.gpuHandover
     }
 
     Canvas {
@@ -586,9 +706,7 @@ Column {
       // The land's fill: faint, but opaque when the sea's temperature shows
       // without the air's (it has values only at sea).
       function landFill() {
-        var layers = globe.washLayers
-        if (layers.indexOf("sst") < 0 || layers.indexOf("temperature") >= 0) return rgba(ink, 0.08)
-        return Qt.rgba(surface.r * 0.92 + ink.r * 0.08, surface.g * 0.92 + ink.g * 0.08, surface.b * 0.92 + ink.b * 0.08, 1)
+        return globe.landColor
       }
       // Globe.js gives y to the north round the centre; the canvas wants
       // pixels downwards.
@@ -626,6 +744,8 @@ Column {
         if (R <= 0) return
         var P = globe.projection()
         canvas.proj = P
+        // The surface on the GPU draws the fills (land, night) up to z2.
+        var gpu = globe.gpuWanted && !globe.gpuHandover
         var flat = P.kind === "map"
         var m = flat ? null : P.matrix
         var zoom = globe.zoom
@@ -654,13 +774,16 @@ Column {
         if (detail) {
           paintBasemap(ctx, m)
         } else if (flat) {
-          // The flat map's land: rings in map units (EqualEarth.ringToMap).
+          // The flat map's land: rings in map units (EqualEarth.ringToMap);
+          // the fill is the surface's while it shows.
           var mapRings = globe.mapLand || []
-          ctx.beginPath()
-          for (var mr = 0; mr < mapRings.length; mr++) traceMap(ctx, mapRings[mr].fill, true)
-          ctx.fillStyle = landFill()
-          ctx.fillRule = Qt.OddEvenFill
-          ctx.fill()
+          if (!gpu) {
+            ctx.beginPath()
+            for (var mr = 0; mr < mapRings.length; mr++) traceMap(ctx, mapRings[mr].fill, true)
+            ctx.fillStyle = landFill()
+            ctx.fillRule = Qt.OddEvenFill
+            ctx.fill()
+          }
           ctx.beginPath()
           for (var ml = 0; ml < mapRings.length; ml++)
             for (var mc = 0; mc < mapRings[ml].lines.length; mc++) traceMap(ctx, mapRings[ml].lines[mc], false)
@@ -670,14 +793,17 @@ Column {
         } else {
           var rings = (globe.moving || zoom >= 3 ? globe.coarseLand : globe.land) || []
           if (rings.length) {
-            ctx.beginPath()
-            for (var r = 0; r < rings.length; r++) {
-              var polys = Globe.frontPolygonsView(rings[r], m, R)
-              for (var p = 0; p < polys.length; p++) trace(ctx, polys[p], true)
+            // The fill is the surface's while it shows.
+            if (!gpu) {
+              ctx.beginPath()
+              for (var r = 0; r < rings.length; r++) {
+                var polys = Globe.frontPolygonsView(rings[r], m, R)
+                for (var p = 0; p < polys.length; p++) trace(ctx, polys[p], true)
+              }
+              ctx.fillStyle = landFill()
+              ctx.fillRule = Qt.OddEvenFill
+              ctx.fill()
             }
-            ctx.fillStyle = landFill()
-            ctx.fillRule = Qt.OddEvenFill
-            ctx.fill()
             ctx.beginPath()
             for (var l = 0; l < rings.length; l++) {
               var coast = Globe.frontLinesView(rings[l], m, R)
@@ -696,13 +822,14 @@ Column {
         // (EqualEarth.twilightPolygon), filled even-odd within the outline.
         var sky = globe.sky
         var caps = {}
-        for (var e = 0; e < sky.elevations.length; e++) {
+        // The surface draws the night while it shows.
+        for (var e = 0; e < (gpu ? 0 : sky.elevations.length); e++) {
           var elevation = sky.elevations[e]
           caps[elevation] = flat ? [globe.mapTwilight(elevation)]
             : Globe.capPolygonView(sky.anti.lat, sky.anti.lon, 90 + elevation, m, R)
         }
         ctx.fillRule = Qt.OddEvenFill
-        for (var t = 0; t < sky.layers.length; t++) {
+        for (var t = 0; t < (gpu ? 0 : sky.layers.length); t++) {
           var layer = sky.layers[t]
           var areas = caps[layer.high].concat(layer.low !== null ? caps[layer.low] : [])
           if (!areas.length) continue

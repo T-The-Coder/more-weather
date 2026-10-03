@@ -113,7 +113,9 @@ Canvas {
 
     // Isobars: split where a line turns behind the globe or crosses ±180°;
     // labels and centres only at rest.
-    var still = !globe.moving
+    // Labels stay while the globe turns by itself on the GPU surface (the
+    // turn is cheap there); a drag or a turn on the Canvas path drops them.
+    var still = !globe.moving || (globe.gpuSurface && globe.rotating && !globe.dragging)
     if (isobars && data && data.isobars) {
       // The lines within the earth's edge, like the colour layers.
       ctx.save()

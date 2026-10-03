@@ -4602,6 +4602,9 @@ Panel {
         radarFrameCount: root.radarFrames.length,
         radarTime: root.radarFrameLead(root.radarFrameIndex),
         windTime: "now",
+        // The globe's cost (WeatherGlobe.perf): the GPU surface or the
+        // Canvas path, frames a second, CPU ms per frame and % of a core.
+        globe: root.globeItem ? root.globeItem.perf : null,
         windGridPoints: root.windGrid.length,
         mapZoomLevel: root.mapZoomLevel,
         mapScale: root.distanceText(root.mapScaleDistanceKm(56, 480)),

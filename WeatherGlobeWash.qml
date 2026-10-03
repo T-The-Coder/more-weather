@@ -36,7 +36,10 @@ Canvas {
   // What its frames cost (the screenshot harness reads it).
   property var stats: ({ count: 0, total: 0, max: 0 })
 
-  readonly property bool on: layers.length > 0 && layers.some(function(kind) {
+  // Set while the GPU surface draws the layers (WeatherGlobe).
+  property bool suspended: false
+  onSuspendedChanged: if (!suspended) requestPaint()
+  readonly property bool on: !suspended && layers.length > 0 && layers.some(function(kind) {
     return !!lattices[kind] && !!lattices[kind].global
   })
   visible: on

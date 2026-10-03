@@ -212,7 +212,12 @@ ShellRoot {
     function() { panel.activeTab = "wind" },
     function() { shot("09-tab-wind") },
     function() { panel.activeTab = "globe" },
-    function() { if (panel.globeItem) panel.globeItem.finishTurn() },
+    function() {
+      if (panel.globeItem) panel.globeItem.finishTurn()
+      // Offscreen there is no GPU: the Canvas path draws the globe.
+      check("globe-surface-off-offscreen", panel.globeItem && !panel.globeItem.surfaceItem.available
+        && panel.globeItem.paintStats.count > 0)
+    },
     function() { shot("09b-tab-globe") },
     // The globe's cost of a frame (paintStats) at z0, z2 and z4, about 500
     // and 840 px across, in windows of their own: still (the full

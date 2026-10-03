@@ -391,7 +391,16 @@ The version appears in `manifest.json` and in the user agent of
 runtime directory, synthetic weather for Tórshavn (`tests/ui/fixtures/state.py`)
 and no network (`MORE_PLUGINS_OFFLINE=1`), and saves a picture of every tab,
 the search, every settings page and the popup's view; radar pictures are not
-downloaded, so the radar tab shows its model fallback.
+downloaded, so the radar tab shows its model fallback. Offscreen, Qt draws on
+its software scene graph, so this tests the globe's Canvas path.
+
+The globe's surface runs on the GPU up to z2 (`GLOBE-SHADER.md`: an
+equirectangular texture, `shaders/globe.frag`, rebuilt with
+`tools/build-shaders.sh`); it falls back to the Canvas path from z3 and
+wherever shaders cannot run. Check it by hand on a live session with
+`MW_SHADER_LIVE=1 tests/ui-shader.sh` (one small window that closes itself).
+The IPC `providerStatus` reports what it costs in the running app under
+`globe` (`surface`, `fps`, `cpuMsPerFrame`, `cpuPercent`, `textureMs`).
 
 Some files are shared word for word with the sibling plugin
 [More Time](https://github.com/T-The-Coder/more-time) apart from their names

@@ -4,6 +4,14 @@ All notable changes to More Weather are documented here.
 
 ## Unreleased
 
+- The globe's surface (sphere, land, colour layers, night) runs on the
+  GPU up to z2 on the globe and the flat map: an equirectangular texture
+  painted once per change of data, time, layers or theme, projected by a
+  shader, so turning only changes a few numbers (about 4–5 % of a core at
+  15 frames a second, measured on Intel Iris Xe, instead of most of one).
+  Lines, places, labels and symbols stay as they were; from z3, and where
+  shaders cannot run, everything is drawn as before. Labels now stay while
+  the globe turns by itself. `providerStatus` reports the globe's cost.
 - **Layer chips** under the globe and the flat map: every layer always
   there as a toggle chip (glyph and short name; glyphs alone where it is
   narrow), the colour layers first, then isobars, storms and numbers;
