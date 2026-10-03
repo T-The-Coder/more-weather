@@ -370,5 +370,20 @@ var entries = {
   "secondsShort": "{seconds} s",
   "minutesShort": "{minutes} min",
   "shortcutGlobeZoom": "Globe : zoomer / dézoomer au pointeur",
-  "globeZoomHint": "Ctrl + molette, un double-clic, + − ou les boutons zooment jusqu’à environ 400 km de large ; de près, la côte, les lacs, les frontières et les villes viennent des données de la carte radar. Le viseur ramène le lieu affiché au centre."
+  "globeZoomHint": "Ctrl + molette, un double-clic, + − ou les boutons zooment jusqu’à environ 400 km de large ; de près, la côte, les lacs, les frontières et les villes viennent des données de la carte radar. Le viseur ramène le lieu affiché au centre.",
+  "globeWash": "Couche de couleur",
+  "globeWashNone": "Aucune",
+  "globeWashTemperature": "Température",
+  "globeWashCloud": "Nuages",
+  "globeWashPrecipitation": "Précipitations",
+  "globeWashHint": "La couche vient du modèle d’Open-Meteo : environ 510 points pour toute la Terre, renouvelés toutes les six heures, et de près la zone visible. Par jour, 2 000 appels de points sont permis pour les renouvellements et 3 000 en tout ; au-delà, le globe montre ce qu’il a gardé. Rien ne se charge tant que le globe est caché ou la couche désactivée.",
+  "globeDataModel": "modèle, environ 1 000 km",
+  "globeDataTime": "données de {time}",
+  "globeDataLoading": "chargement du modèle…",
+  "globeDataLimit": "limite du jour atteinte, données gardées",
+  "globeCallsToday": "{count} appels de points aujourd’hui",
+  "shortcutGlobeWash": "Globe : couche de couleur suivante",
+  "sourceGroupGlobe": "Globe",
+  "sourceGroupGlobeDetails": "Température, nuages et précipitations du modèle d’Open-Meteo : environ 510 points pour toute la Terre (cinq jours par pas de trois heures, renouvelés toutes les six heures) et de près des tuiles de 16 points (48 heures), partagés entre barre et application par des fichiers en cache. Une limite quotidienne d’appels le garde léger.",
+  "sourceGroupGlobeCoverage": "Mondial ; environ 1 000 km d’écart sur le globe entier, jusqu’à environ 60 km de près."
 }

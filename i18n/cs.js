@@ -370,5 +370,20 @@ var entries = {
   "secondsShort": "{seconds} s",
   "minutesShort": "{minutes} min",
   "shortcutGlobeZoom": "Glóbus: přiblížit / oddálit u ukazatele",
-  "globeZoomHint": "Ctrl + kolečko, dvojklik, + − nebo tlačítka přibližují až na šířku asi 400 km; zblízka pocházejí pobřeží, jezera, hranice a obce z dat radarové mapy. Zaměřovač vrátí zobrazené místo doprostřed."
+  "globeZoomHint": "Ctrl + kolečko, dvojklik, + − nebo tlačítka přibližují až na šířku asi 400 km; zblízka pocházejí pobřeží, jezera, hranice a obce z dat radarové mapy. Zaměřovač vrátí zobrazené místo doprostřed.",
+  "globeWash": "Barevná vrstva",
+  "globeWashNone": "Žádná",
+  "globeWashTemperature": "Teplota",
+  "globeWashCloud": "Oblačnost",
+  "globeWashPrecipitation": "Srážky",
+  "globeWashHint": "Vrstva pochází z modelu Open-Meteo: asi 510 bodů pro celou Zemi, obnovovaných každých šest hodin, a zblízka oblast v záběru. Denně je povoleno 2 000 dotazů na body pro obnovení a 3 000 celkem; nad tuto mez glóbus ukazuje, co si uložil. Nic se nenačítá, dokud je glóbus skrytý nebo vrstva vypnutá.",
+  "globeDataModel": "model, asi 1 000 km",
+  "globeDataTime": "data z {time}",
+  "globeDataLoading": "načítání modelu…",
+  "globeDataLimit": "denní limit dosažen, uložená data",
+  "globeCallsToday": "dnes {count} dotazů na body",
+  "shortcutGlobeWash": "Glóbus: další barevná vrstva",
+  "sourceGroupGlobe": "Glóbus",
+  "sourceGroupGlobeDetails": "Teplota, oblačnost a srážky z modelu Open-Meteo: asi 510 bodů pro celou Zemi (pět dní po třech hodinách, obnovení každých šest hodin) a zblízka dlaždice po 16 bodech (48 hodin), sdílené mezi lištou a aplikací přes soubory v mezipaměti. Vlastní denní limit dotazů jej udržuje úsporným.",
+  "sourceGroupGlobeCoverage": "Celý svět; na celém glóbu asi 1 000 km mezi body, zblízka až asi 60 km."
 }

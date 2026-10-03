@@ -213,7 +213,8 @@ Item {
     mapStyle: ["drawn", "satellite"],
     menubarAccents: ["off", "hover", "always"],
     globeRotateDelay: ["5", "10", "30"],
-    globeRotateSpeed: ["1", "2", "4", "8"]
+    globeRotateSpeed: ["1", "2", "4", "8"],
+    globeWash: ["none", "temperature", "cloud", "precipitation"]
   })
   function normalizedChoice(key, value, fallback) {
     var text = String(value === undefined || value === null ? "" : value)

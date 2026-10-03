@@ -370,5 +370,20 @@ var entries = {
   "secondsShort": "{seconds} s",
   "minutesShort": "{minutes} min",
   "shortcutGlobeZoom": "Karttapallo: lähennä / loitonna osoittimen kohdalla",
-  "globeZoomHint": "Ctrl + rulla, kaksoisnapsautus, + − tai painikkeet lähentävät noin 400 km:n levyiseksi; läheltä rannikko, järvet, rajat ja paikkakunnat tulevat tutkakartan tiedoista. Tähtäin tuo näytetyn paikan keskelle."
+  "globeZoomHint": "Ctrl + rulla, kaksoisnapsautus, + − tai painikkeet lähentävät noin 400 km:n levyiseksi; läheltä rannikko, järvet, rajat ja paikkakunnat tulevat tutkakartan tiedoista. Tähtäin tuo näytetyn paikan keskelle.",
+  "globeWash": "Värikerros",
+  "globeWashNone": "Ei mitään",
+  "globeWashTemperature": "Lämpötila",
+  "globeWashCloud": "Pilvisyys",
+  "globeWashPrecipitation": "Sade",
+  "globeWashHint": "Kerros tulee Open-Meteon mallista: noin 510 pistettä koko maapallolle, uusittu kuuden tunnin välein, ja läheltä näkyvä alue. Päivässä sallitaan 2 000 pistekyselyä uusimisiin ja 3 000 kaikkiaan; sen jälkeen pallo näyttää tallentamansa. Mitään ei ladata, kun pallo on piilossa tai kerros pois päältä.",
+  "globeDataModel": "malli, noin 1 000 km",
+  "globeDataTime": "tiedot klo {time}",
+  "globeDataLoading": "ladataan mallia…",
+  "globeDataLimit": "päiväraja täynnä, tallennetut tiedot",
+  "globeCallsToday": "{count} pistekyselyä tänään",
+  "shortcutGlobeWash": "Karttapallo: seuraava värikerros",
+  "sourceGroupGlobe": "Karttapallo",
+  "sourceGroupGlobeDetails": "Lämpötila, pilvisyys ja sade Open-Meteon mallista: noin 510 pistettä koko maapallolle (viisi päivää kolmen tunnin askelin, uusittu kuuden tunnin välein) ja läheltä 16 pisteen ruudut (48 tuntia), jaettu palkin ja sovelluksen kesken välimuistin tiedostoilla. Oma päiväraja pitää kuorman pienenä.",
+  "sourceGroupGlobeCoverage": "Koko maailma; koko pallolla noin 1 000 km pisteiden välillä, läheltä noin 60 km:iin asti."
 }

@@ -404,5 +404,20 @@ var catalog = {
   "secondsShort": "{seconds} s",
   "minutesShort": "{minutes} min",
   "shortcutGlobeZoom": "Globe: zoom in / out at the pointer",
-  "globeZoomHint": "Ctrl + wheel, a double click, + − or the buttons zoom in to about 400 km across; close up the coast, lakes, borders and towns come from the radar map's data. The crosshair brings the shown place to the middle."
+  "globeZoomHint": "Ctrl + wheel, a double click, + − or the buttons zoom in to about 400 km across; close up the coast, lakes, borders and towns come from the radar map's data. The crosshair brings the shown place to the middle.",
+  "globeWash": "Colour layer",
+  "globeWashNone": "None",
+  "globeWashTemperature": "Temperature",
+  "globeWashCloud": "Cloud",
+  "globeWashPrecipitation": "Precipitation",
+  "globeWashHint": "The layer comes from Open-Meteo's model: about 510 points for the whole earth, renewed every six hours, and close up the area in view. A day allows 2,000 point-calls for renewals and 3,000 in all; beyond that the globe shows what it has stored. Nothing loads while the globe is hidden or the layer is off.",
+  "globeDataModel": "model, about 1,000 km",
+  "globeDataTime": "data from {time}",
+  "globeDataLoading": "loading the model…",
+  "globeDataLimit": "daily limit reached, showing stored data",
+  "globeCallsToday": "{count} point-calls today",
+  "shortcutGlobeWash": "Globe: next colour layer",
+  "sourceGroupGlobe": "Globe",
+  "sourceGroupGlobeDetails": "Temperature, cloud and precipitation from Open-Meteo's model: about 510 points for the whole earth (five days in three-hour steps, renewed every six hours) and close up tiles of 16 points (48 hours), shared between bar and app through files in the cache. Its own daily limit of point-calls keeps it light.",
+  "sourceGroupGlobeCoverage": "Worldwide; about 1,000 km apart on the whole globe, down to about 60 km close up."
 }

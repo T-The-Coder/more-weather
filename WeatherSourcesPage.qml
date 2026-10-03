@@ -107,6 +107,12 @@ Column {
         ["Overpass API", "https://wiki.openstreetmap.org/wiki/Overpass_API"]]
     },
     {
+      title: "sourceGroupGlobe", details: "sourceGroupGlobeDetails",
+      inUse: panel.globeData.gridLoaded
+        ? "OPEN-METEO · " + panel.upperLabel(panel.i18n("globeCallsToday", { count: panel.globeData.callsToday })) : "",
+      links: [["Open-Meteo", "https://open-meteo.com/"]]
+    },
+    {
       title: "sourceGroupMoon", details: "sourceGroupMoonDetails",
       inUse: panel.upperLabel(label("sourceLocalCalculation")),
       links: []

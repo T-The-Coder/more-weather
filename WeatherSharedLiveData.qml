@@ -2,6 +2,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 import "Model.js" as Model
+import "GlobeGrid.js" as GlobeGrid
 
 // Live reports shared between the bar widget (omarchy shell) and the
 // standalone app through weather-live-shared.json. Whichever instance is due
@@ -177,6 +178,8 @@ Item {
       if (next.windGridClaim === undefined && current.windGridClaim) next.windGridClaim = current.windGridClaim
       if (next.radarLive === undefined && current.radarLive) next.radarLive = current.radarLive
       if (next.radarClaim === undefined && current.radarClaim) next.radarClaim = current.radarClaim
+      if (next.globeClaim === undefined && current.globeClaim) next.globeClaim = current.globeClaim
+      if (next.globeCalls === undefined && current.globeCalls) next.globeCalls = current.globeCalls
     }
     panel.sharedLiveData = next
     sharedLiveFile.setText(JSON.stringify(next) + "\n")
@@ -188,6 +191,28 @@ Item {
     var next = ({ version: 1 })
     if (current) for (var key in current) if (fields.indexOf(key) < 0) next[key] = current[key]
     return next
+  }
+
+  // ---- The globe's weather (WeatherGlobeData): the files carry the data;
+  //      the shared file only who is loading what (for 30 s) and the day's
+  //      point-calls, which the budget counts across bar and app.
+  readonly property int globeClaimMs: 30 * 1000
+  function globeClaimedByOther(key) {
+    var claim = panel.sharedLiveData && panel.sharedLiveData.globeClaim
+    return !!claim && claim.by !== sharedInstanceId() && Date.now() - Number(claim.at || 0) < globeClaimMs
+      && (claim.keys || []).indexOf(key) >= 0
+  }
+  function claimGlobe(keys) {
+    if (!panel.sharedLiveLoaded) return
+    var next = sharedDataWithout(["globeClaim"])
+    next.globeClaim = { keys: keys, at: Date.now(), by: sharedInstanceId() }
+    writeSharedLiveData(next)
+  }
+  function addGlobeCalls(points) {
+    if (!panel.sharedLiveLoaded) return
+    var next = sharedDataWithout(["globeCalls"])
+    next.globeCalls = GlobeGrid.countedCalls(panel.sharedLiveData && panel.sharedLiveData.globeCalls, points, Date.now())
+    writeSharedLiveData(next)
   }
 
   readonly property int windGridClaimMs: 30 * 1000

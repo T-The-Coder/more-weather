@@ -6,6 +6,20 @@ This separation keeps the widget and standalone app on the same policy.
 
 ## Current fallback order
 
+- Globe weather (WeatherGlobeData.qml, GlobeGrid.js, GlobeWorker.js):
+  Open-Meteo forecast with the nine variables temperature_2m, cloud_cover,
+  precipitation, weather_code, cape, pressure_msl, wind_speed_10m,
+  wind_direction_10m, wind_gusts_10m. Whole disc: 510 points (rings every
+  9°, round(40·cos lat) points each, plus the poles) in seven interleaved
+  batches of at most 73 points, one every 10 s, `temporal_resolution=
+  hourly_3&forecast_hours=120` (40 steps; precipitation is the 3-hour sum
+  and shown per hour), cached 6 h. Close up (z2–z5): tiles of 4 × 4 points
+  (corners shared with the neighbours) 15° / 7.5° / 3.75° / 1.875° high,
+  `forecast_hours=48`, after 600 ms of rest, two at a time, cached 3 h, 60
+  kept. Files under `~/.cache/more-weather/globe/<key>.json` shared by bar
+  and app; the live file only carries `globeClaim` (30 s) and `globeCalls`
+  (point-calls per UTC day: from 2,000 only user-caused loads, from 3,000
+  none). Paused while Open-Meteo is rate limited (noteOpenMeteoResponse).
 - Place search (WeatherPlaceSearch.qml, shared with More Time): Open-Meteo
   geocoding while typing (350 ms debounce, one request at a time); Nominatim
   search only on Enter for a query Open-Meteo found nothing for, at most one

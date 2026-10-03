@@ -370,5 +370,20 @@ var entries = {
   "secondsShort": "{seconds} s",
   "minutesShort": "{minutes} min",
   "shortcutGlobeZoom": "Glob: apropie / depărtează la cursor",
-  "globeZoomHint": "Ctrl + rotiță, un dublu clic, + − sau butoanele apropie până la circa 400 km lățime; de aproape, coasta, lacurile, granițele și localitățile vin din datele hărții radar. Ținta aduce locul afișat în centru."
+  "globeZoomHint": "Ctrl + rotiță, un dublu clic, + − sau butoanele apropie până la circa 400 km lățime; de aproape, coasta, lacurile, granițele și localitățile vin din datele hărții radar. Ținta aduce locul afișat în centru.",
+  "globeWash": "Strat de culoare",
+  "globeWashNone": "Niciunul",
+  "globeWashTemperature": "Temperatură",
+  "globeWashCloud": "Nori",
+  "globeWashPrecipitation": "Precipitații",
+  "globeWashHint": "Stratul vine din modelul Open-Meteo: circa 510 puncte pentru tot Pământul, reînnoite la fiecare șase ore, iar de aproape zona din vedere. Pe zi sunt permise 2.000 de interogări de puncte pentru reînnoiri și 3.000 în total; peste acestea globul arată ce a salvat. Nimic nu se încarcă cât timp globul e ascuns sau stratul oprit.",
+  "globeDataModel": "model, circa 1.000 km",
+  "globeDataTime": "date de la {time}",
+  "globeDataLoading": "se încarcă modelul…",
+  "globeDataLimit": "limita zilnică atinsă, date salvate",
+  "globeCallsToday": "{count} interogări de puncte azi",
+  "shortcutGlobeWash": "Glob: următorul strat de culoare",
+  "sourceGroupGlobe": "Glob",
+  "sourceGroupGlobeDetails": "Temperatură, nori și precipitații din modelul Open-Meteo: circa 510 puncte pentru tot Pământul (cinci zile în pași de trei ore, reînnoite la fiecare șase ore) și de aproape plăci de 16 puncte (48 de ore), partajate între bară și aplicație prin fișiere din cache. O limită zilnică proprie de interogări îl ține ușor.",
+  "sourceGroupGlobeCoverage": "Mondial; circa 1.000 km între puncte pe tot globul, de aproape până la circa 60 km."
 }

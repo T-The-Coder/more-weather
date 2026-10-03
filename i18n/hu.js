@@ -370,5 +370,20 @@ var entries = {
   "secondsShort": "{seconds} mp",
   "minutesShort": "{minutes} perc",
   "shortcutGlobeZoom": "Földgömb: nagyítás / kicsinyítés a mutatónál",
-  "globeZoomHint": "Ctrl + görgő, dupla kattintás, + − vagy a gombok körülbelül 400 km szélességig nagyítanak; közelről a part, a tavak, a határok és a települések a radartérkép adataiból jönnek. A célkereszt középre hozza a mutatott helyet."
+  "globeZoomHint": "Ctrl + görgő, dupla kattintás, + − vagy a gombok körülbelül 400 km szélességig nagyítanak; közelről a part, a tavak, a határok és a települések a radartérkép adataiból jönnek. A célkereszt középre hozza a mutatott helyet.",
+  "globeWash": "Színréteg",
+  "globeWashNone": "Nincs",
+  "globeWashTemperature": "Hőmérséklet",
+  "globeWashCloud": "Felhőzet",
+  "globeWashPrecipitation": "Csapadék",
+  "globeWashHint": "A réteg az Open-Meteo modelljéből jön: körülbelül 510 pont az egész Földre, hatóránként megújítva, közelről pedig a látott terület. Naponta 2000 pontlekérés engedélyezett megújításra és összesen 3000; ezen túl a földgömb a tárolt adatokat mutatja. Semmi sem töltődik, amíg a földgömb rejtve van vagy a réteg ki van kapcsolva.",
+  "globeDataModel": "modell, kb. 1000 km",
+  "globeDataTime": "adatok: {time}",
+  "globeDataLoading": "a modell töltődik…",
+  "globeDataLimit": "napi korlát elérve, tárolt adatok",
+  "globeCallsToday": "ma {count} pontlekérés",
+  "shortcutGlobeWash": "Földgömb: következő színréteg",
+  "sourceGroupGlobe": "Földgömb",
+  "sourceGroupGlobeDetails": "Hőmérséklet, felhőzet és csapadék az Open-Meteo modelljéből: körülbelül 510 pont az egész Földre (öt nap háromórás lépésekben, hatóránként megújítva), közelről 16 pontos csempék (48 óra), a sáv és az alkalmazás között a gyorsítótár fájljain át megosztva. Saját napi lekérési korlát tartja kis terhelésen.",
+  "sourceGroupGlobeCoverage": "Az egész világ; az egész gömbön kb. 1000 km a pontok között, közelről kb. 60 km-ig."
 }

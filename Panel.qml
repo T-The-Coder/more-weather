@@ -7,6 +7,7 @@ import "Model.js" as Model
 import "Basemap.js" as Basemap
 import "I18n.js" as I18n
 import "Providers.js" as Providers
+import "GlobeFields.js" as GlobeFields
 
 Panel {
   id: root
@@ -1776,6 +1777,7 @@ Panel {
       globeMoon: true,
       globeMarkers: true,
       globeAutoRotate: false,
+      globeWash: "temperature",
       globeRotateDelay: "10",
       globeRotateSpeed: "4",
       airQualityAsTab: false,
@@ -3285,6 +3287,12 @@ Panel {
       return
     }
 
+    // v: the globe's next colour wash.
+    if (globeKeys && globeItem && text === "v") {
+      setViewDisplaySetting("globeWash", GlobeFields.nextWash(displaySetting("globeWash", "temperature")))
+      event.accepted = true
+      return
+    }
     // + − zoom the globe, 0 brings back the whole globe at the shown place.
     if (globeKeys && globeItem && (plusKey || minusKey)) {
       globeItem.zoomBy(plusKey ? 1 : -1)
@@ -3571,6 +3579,15 @@ Panel {
       }
     }
     savedLocationCache.savedCacheSchedule.restart()
+  }
+
+  // A display setting of the view shown (the app or the popup), as the
+  // settings would set it.
+  function setViewDisplaySetting(key, value) {
+    var surface = settingsTargetSurface
+    settingsTargetSurface = standaloneMode ? "app" : "widget"
+    displayOptionsStore.setSettingsDisplaySetting(key, value)
+    settingsTargetSurface = surface
   }
 
   // The settings' keyboard cursor (for the screenshot run's checks).
@@ -4378,6 +4395,7 @@ Panel {
   property WeatherDisplayOptionsStore displayOptionsStore: WeatherDisplayOptionsStore { panel: root }
   property WeatherSettingsTransfer settingsTransfer: WeatherSettingsTransfer { panel: root }
   property WeatherCityImport cityImport: WeatherCityImport { panel: root }
+  property WeatherGlobeData globeData: WeatherGlobeData { panel: root }
   property WeatherAirQuality airQuality: WeatherAirQuality { panel: root }
   property WeatherRegionalNowcast regionalNowcast: WeatherRegionalNowcast { panel: root }
   property WeatherAlertLookup alertLookup: WeatherAlertLookup { panel: root }

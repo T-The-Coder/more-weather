@@ -370,5 +370,20 @@ var entries = {
   "secondsShort": "{seconds} s",
   "minutesShort": "{minutes} min",
   "shortcutGlobeZoom": "Globo: ingrandisci / riduci al puntatore",
-  "globeZoomHint": "Ctrl + rotella, un doppio clic, + − o i pulsanti ingrandiscono fino a circa 400 km di larghezza; da vicino costa, laghi, confini e città vengono dai dati della mappa radar. Il mirino riporta al centro il luogo mostrato."
+  "globeZoomHint": "Ctrl + rotella, un doppio clic, + − o i pulsanti ingrandiscono fino a circa 400 km di larghezza; da vicino costa, laghi, confini e città vengono dai dati della mappa radar. Il mirino riporta al centro il luogo mostrato.",
+  "globeWash": "Livello di colore",
+  "globeWashNone": "Nessuno",
+  "globeWashTemperature": "Temperatura",
+  "globeWashCloud": "Nuvole",
+  "globeWashPrecipitation": "Precipitazioni",
+  "globeWashHint": "Il livello viene dal modello di Open-Meteo: circa 510 punti per tutta la Terra, rinnovati ogni sei ore, e da vicino l’area in vista. Al giorno sono ammesse 2.000 richieste di punti per i rinnovi e 3.000 in tutto; oltre, il globo mostra ciò che ha salvato. Nulla si carica finché il globo è nascosto o il livello è spento.",
+  "globeDataModel": "modello, circa 1.000 km",
+  "globeDataTime": "dati delle {time}",
+  "globeDataLoading": "caricamento del modello…",
+  "globeDataLimit": "limite giornaliero raggiunto, dati salvati",
+  "globeCallsToday": "{count} richieste di punti oggi",
+  "shortcutGlobeWash": "Globo: livello di colore successivo",
+  "sourceGroupGlobe": "Globo",
+  "sourceGroupGlobeDetails": "Temperatura, nuvole e precipitazioni dal modello di Open-Meteo: circa 510 punti per tutta la Terra (cinque giorni a passi di tre ore, rinnovati ogni sei ore) e da vicino riquadri di 16 punti (48 ore), condivisi tra barra e app tramite file nella cache. Un proprio limite giornaliero di richieste lo mantiene leggero.",
+  "sourceGroupGlobeCoverage": "Mondo intero; circa 1.000 km di distanza sul globo intero, fino a circa 60 km da vicino."
 }

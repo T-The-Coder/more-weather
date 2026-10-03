@@ -370,5 +370,20 @@ var entries = {
   "secondsShort": "{seconds} s",
   "minutesShort": "{minutes} min",
   "shortcutGlobeZoom": "Globus: zoom inn / ut ved pekeren",
-  "globeZoomHint": "Ctrl + hjul, et dobbeltklikk, + − eller knappene zoomer inn til rundt 400 km bredde; på nært hold kommer kyst, innsjøer, grenser og steder fra radarkartets data. Trådkorset henter det viste stedet til midten."
+  "globeZoomHint": "Ctrl + hjul, et dobbeltklikk, + − eller knappene zoomer inn til rundt 400 km bredde; på nært hold kommer kyst, innsjøer, grenser og steder fra radarkartets data. Trådkorset henter det viste stedet til midten.",
+  "globeWash": "Fargelag",
+  "globeWashNone": "Ingen",
+  "globeWashTemperature": "Temperatur",
+  "globeWashCloud": "Skyer",
+  "globeWashPrecipitation": "Nedbør",
+  "globeWashHint": "Laget kommer fra Open-Meteos modell: omkring 510 punkter for hele jorda, fornyet hver sjette time, og på nært hold området i bildet. Per døgn tillates 2 000 punktkall for fornyelser og 3 000 i alt; utover det viser kloden det den har lagret. Ingenting lastes mens kloden er skjult eller laget er av.",
+  "globeDataModel": "modell, omkring 1 000 km",
+  "globeDataTime": "data fra {time}",
+  "globeDataLoading": "laster modellen…",
+  "globeDataLimit": "dagsgrensen nådd, lagrede data",
+  "globeCallsToday": "{count} punktkall i dag",
+  "shortcutGlobeWash": "Globus: neste fargelag",
+  "sourceGroupGlobe": "Globus",
+  "sourceGroupGlobeDetails": "Temperatur, skyer og nedbør fra Open-Meteos modell: omkring 510 punkter for hele jorda (fem døgn i tretimerssteg, fornyet hver sjette time) og på nært hold ruter med 16 punkter (48 timer), delt mellom linje og app via filer i hurtigbufferen. En egen daglig grense for kall holder den sparsom.",
+  "sourceGroupGlobeCoverage": "Hele verden; omkring 1 000 km mellom punktene på hele kloden, på nært hold ned mot 60 km."
 }

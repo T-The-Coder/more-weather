@@ -370,5 +370,20 @@ var entries = {
   "secondsShort": "{seconds}秒",
   "minutesShort": "{minutes}分",
   "shortcutGlobeZoom": "地球儀：ポインター位置で拡大 / 縮小",
-  "globeZoomHint": "Ctrl + ホイール、ダブルクリック、+ − またはボタンで幅約 400 km まで拡大できます。近くでは海岸線、湖、国境、町はレーダーマップのデータから表示します。照準は表示中の地点を中央に戻します。"
+  "globeZoomHint": "Ctrl + ホイール、ダブルクリック、+ − またはボタンで幅約 400 km まで拡大できます。近くでは海岸線、湖、国境、町はレーダーマップのデータから表示します。照準は表示中の地点を中央に戻します。",
+  "globeWash": "カラーレイヤー",
+  "globeWashNone": "なし",
+  "globeWashTemperature": "気温",
+  "globeWashCloud": "雲量",
+  "globeWashPrecipitation": "降水",
+  "globeWashHint": "レイヤーは Open-Meteo のモデルから取得します。地球全体で約 510 地点を 6 時間ごとに更新し、拡大時は表示中の範囲を取得します。1 日あたり更新に 2,000 回、合計 3,000 回の地点クエリまで。それを超えると保存済みのデータを表示します。地球儀が非表示のときやレイヤーがオフのときは何も読み込みません。",
+  "globeDataModel": "モデル、約 1,000 km",
+  "globeDataTime": "{time} のデータ",
+  "globeDataLoading": "モデルを読み込み中…",
+  "globeDataLimit": "1 日の上限に達したため保存済みデータを表示",
+  "globeCallsToday": "今日の地点クエリ {count} 回",
+  "shortcutGlobeWash": "地球儀：次のカラーレイヤー",
+  "sourceGroupGlobe": "地球儀",
+  "sourceGroupGlobeDetails": "Open-Meteo のモデルによる気温・雲量・降水。地球全体で約 510 地点（3 時間ごとに 5 日分、6 時間ごとに更新）、拡大時は 16 地点のタイル（48 時間）。キャッシュのファイルでバーとアプリが共有します。独自の 1 日あたりの上限で負荷を抑えます。",
+  "sourceGroupGlobeCoverage": "全世界。地球儀全体では地点間隔約 1,000 km、拡大時は約 60 km まで。"
 }

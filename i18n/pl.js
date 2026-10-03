@@ -370,5 +370,20 @@ var entries = {
   "secondsShort": "{seconds} s",
   "minutesShort": "{minutes} min",
   "shortcutGlobeZoom": "Globus: przybliż / oddal przy wskaźniku",
-  "globeZoomHint": "Ctrl + kółko, dwuklik, + − lub przyciski przybliżają do około 400 km szerokości; z bliska wybrzeże, jeziora, granice i miejscowości pochodzą z danych mapy radarowej. Celownik sprowadza pokazane miejsce na środek."
+  "globeZoomHint": "Ctrl + kółko, dwuklik, + − lub przyciski przybliżają do około 400 km szerokości; z bliska wybrzeże, jeziora, granice i miejscowości pochodzą z danych mapy radarowej. Celownik sprowadza pokazane miejsce na środek.",
+  "globeWash": "Warstwa koloru",
+  "globeWashNone": "Brak",
+  "globeWashTemperature": "Temperatura",
+  "globeWashCloud": "Zachmurzenie",
+  "globeWashPrecipitation": "Opady",
+  "globeWashHint": "Warstwa pochodzi z modelu Open-Meteo: około 510 punktów dla całej Ziemi, odnawianych co sześć godzin, a z bliska widoczny obszar. Dziennie dozwolone jest 2000 zapytań o punkty na odnowienia i 3000 łącznie; powyżej glob pokazuje to, co zapisał. Nic się nie ładuje, gdy glob jest ukryty lub warstwa wyłączona.",
+  "globeDataModel": "model, około 1000 km",
+  "globeDataTime": "dane z {time}",
+  "globeDataLoading": "ładowanie modelu…",
+  "globeDataLimit": "dzienny limit osiągnięty, zapisane dane",
+  "globeCallsToday": "{count} zapytań o punkty dzisiaj",
+  "shortcutGlobeWash": "Globus: następna warstwa koloru",
+  "sourceGroupGlobe": "Globus",
+  "sourceGroupGlobeDetails": "Temperatura, zachmurzenie i opady z modelu Open-Meteo: około 510 punktów dla całej Ziemi (pięć dni w krokach trzygodzinnych, odnawiane co sześć godzin) i z bliska kafelki po 16 punktów (48 godzin), wspólne dla paska i aplikacji przez pliki w pamięci podręcznej. Własny dzienny limit zapytań utrzymuje niskie obciążenie.",
+  "sourceGroupGlobeCoverage": "Cały świat; na całym globie około 1000 km odstępu, z bliska do około 60 km."
 }

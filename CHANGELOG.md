@@ -11,6 +11,20 @@ All notable changes to More Weather are documented here.
   the hourly forecast and as the day's mean in the daily forecast. From
   Open-Meteo (`pressure_msl`, two more variables in the forecast request),
   MET Norway and, in the DWD area, Bright Sky (MOSMIX).
+- **Weather on the globe**: a colour layer for the temperature (default,
+  −40 … 45 °C in the plugin's accent colours), cloud (a white veil) or
+  precipitation (radar colours, 0.1 to 20 mm/h), from Open-Meteo's model:
+  510 points for the whole earth in seven batches, one every ten seconds,
+  five days in 3-hour steps, renewed every six hours; close up tiles of
+  16 points (48 hours) after the view rests. Parsed and gridded off the
+  shell's thread (`GlobeWorker.js`), shared between bar and app as files
+  in `~/.cache/more-weather/globe/`, within a daily budget of point-calls
+  (from 2,000 only loads you cause, from 3,000 none), paused while
+  Open-Meteo rate-limits, and nothing loads while the globe is hidden or
+  the layer is off. A legend under the globe (click or `v` for the next
+  layer), the value under the pointer with the place's coordinates, a
+  dropdown and budget hint in Settings → Display → Globe, and a "Globe"
+  entry on the Sources page with today's calls.
 - The globe **tilts and zooms**: a drag turns and tilts it (up to 80°), Ctrl
   + wheel and a double click zoom towards the pointer, `+` `−` and its
   buttons zoom, the crosshair brings the shown place to the middle, `0`

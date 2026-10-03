@@ -370,5 +370,20 @@ var entries = {
   "secondsShort": "{seconds} dtk",
   "minutesShort": "{minutes} mnt",
   "shortcutGlobeZoom": "Bola dunia: perbesar / perkecil di penunjuk",
-  "globeZoomHint": "Ctrl + roda, klik ganda, + − atau tombol memperbesar hingga sekitar 400 km lebar; dari dekat pantai, danau, perbatasan, dan kota berasal dari data peta radar. Bidikan membawa tempat yang ditampilkan ke tengah."
+  "globeZoomHint": "Ctrl + roda, klik ganda, + − atau tombol memperbesar hingga sekitar 400 km lebar; dari dekat pantai, danau, perbatasan, dan kota berasal dari data peta radar. Bidikan membawa tempat yang ditampilkan ke tengah.",
+  "globeWash": "Lapisan warna",
+  "globeWashNone": "Tidak ada",
+  "globeWashTemperature": "Suhu",
+  "globeWashCloud": "Awan",
+  "globeWashPrecipitation": "Presipitasi",
+  "globeWashHint": "Lapisan berasal dari model Open-Meteo: sekitar 510 titik untuk seluruh bumi, diperbarui setiap enam jam, dan dari dekat area yang terlihat. Per hari diizinkan 2.000 panggilan titik untuk pembaruan dan 3.000 total; setelah itu bola dunia menampilkan yang tersimpan. Tidak ada yang dimuat selama bola dunia tersembunyi atau lapisan mati.",
+  "globeDataModel": "model, sekitar 1.000 km",
+  "globeDataTime": "data pukul {time}",
+  "globeDataLoading": "memuat model…",
+  "globeDataLimit": "batas harian tercapai, data tersimpan",
+  "globeCallsToday": "{count} panggilan titik hari ini",
+  "shortcutGlobeWash": "Bola dunia: lapisan warna berikutnya",
+  "sourceGroupGlobe": "Bola dunia",
+  "sourceGroupGlobeDetails": "Suhu, awan, dan presipitasi dari model Open-Meteo: sekitar 510 titik untuk seluruh bumi (lima hari dalam langkah tiga jam, diperbarui setiap enam jam) dan dari dekat petak 16 titik (48 jam), dibagi antara bilah dan aplikasi lewat berkas di cache. Batas harian panggilannya sendiri membuatnya ringan.",
+  "sourceGroupGlobeCoverage": "Seluruh dunia; sekitar 1.000 km antar titik di seluruh bola, dari dekat hingga sekitar 60 km."
 }

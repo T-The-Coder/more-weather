@@ -370,5 +370,20 @@ var entries = {
   "secondsShort": "{seconds} sn",
   "minutesShort": "{minutes} dk",
   "shortcutGlobeZoom": "Küre: işaretçide yakınlaştır / uzaklaştır",
-  "globeZoomHint": "Ctrl + tekerlek, çift tıklama, + − veya düğmeler yaklaşık 400 km genişliğe kadar yakınlaştırır; yakından kıyı, göller, sınırlar ve yerleşimler radar haritasının verilerinden gelir. Nişangâh gösterilen yeri ortaya getirir."
+  "globeZoomHint": "Ctrl + tekerlek, çift tıklama, + − veya düğmeler yaklaşık 400 km genişliğe kadar yakınlaştırır; yakından kıyı, göller, sınırlar ve yerleşimler radar haritasının verilerinden gelir. Nişangâh gösterilen yeri ortaya getirir.",
+  "globeWash": "Renk katmanı",
+  "globeWashNone": "Yok",
+  "globeWashTemperature": "Sıcaklık",
+  "globeWashCloud": "Bulut",
+  "globeWashPrecipitation": "Yağış",
+  "globeWashHint": "Katman Open-Meteo modelinden gelir: tüm Dünya için altı saatte bir yenilenen yaklaşık 510 nokta ve yakından görünen alan. Günde yenilemeler için 2.000, toplamda 3.000 nokta sorgusuna izin verilir; bunun ötesinde küre kaydettiklerini gösterir. Küre gizliyken veya katman kapalıyken hiçbir şey yüklenmez.",
+  "globeDataModel": "model, yaklaşık 1.000 km",
+  "globeDataTime": "{time} verisi",
+  "globeDataLoading": "model yükleniyor…",
+  "globeDataLimit": "günlük sınıra ulaşıldı, kayıtlı veriler",
+  "globeCallsToday": "bugün {count} nokta sorgusu",
+  "shortcutGlobeWash": "Küre: sonraki renk katmanı",
+  "sourceGroupGlobe": "Küre",
+  "sourceGroupGlobeDetails": "Open-Meteo modelinden sıcaklık, bulut ve yağış: tüm Dünya için yaklaşık 510 nokta (üç saatlik adımlarla beş gün, altı saatte bir yenilenir) ve yakından 16 noktalık karolar (48 saat), çubuk ile uygulama arasında önbellekteki dosyalarla paylaşılır. Kendi günlük sorgu sınırı onu hafif tutar.",
+  "sourceGroupGlobeCoverage": "Dünya geneli; tüm kürede noktalar arası yaklaşık 1.000 km, yakından yaklaşık 60 km'ye kadar."
 }

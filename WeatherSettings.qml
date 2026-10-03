@@ -230,6 +230,7 @@ Rectangle {
       hint: panel.i18n("globeHint") + " " + panel.i18n("globeZoomHint") + " " + panel.i18n("optionNightHint") + " "
         + panel.i18n("optionGlobeAutoRotateHint"),
       hasGlobeRotate: true,
+      hasGlobeWash: true,
       hasDefaultTab: false
     },
     // The tab strip: moved like a section (its place in the window), with
@@ -317,6 +318,67 @@ Rectangle {
     return { value: n, label: panel.i18n("minutesShort", { minutes: n }) }
   })
   property var globeRotateDropdowns: ({})
+  // The globe's colour wash.
+  readonly property var globeWashOptions: [
+    { value: "none", label: panel.i18n("globeWashNone") },
+    { value: "temperature", label: panel.i18n("globeWashTemperature") },
+    { value: "cloud", label: panel.i18n("globeWashCloud") },
+    { value: "precipitation", label: panel.i18n("globeWashPrecipitation") }
+  ]
+  property var globeWashDropdown: null
+
+  Component {
+    id: globeWashRow
+
+    Column {
+      Item {
+        width: parent.width
+        height: Style.space(40)
+
+        Text {
+          textFormat: Text.PlainText
+          anchors.left: parent.left
+          anchors.leftMargin: Style.space(12)
+          anchors.right: washDropdown.left
+          anchors.rightMargin: Style.space(8)
+          anchors.verticalCenter: parent.verticalCenter
+          text: panel.i18n("globeWash")
+          color: panel.foreground
+          font.family: panel.fontFamily
+          font.pixelSize: Style.font.bodySmall
+          elide: Text.ElideRight
+        }
+
+        Dropdown {
+          id: washDropdown
+          anchors.right: parent.right
+          anchors.verticalCenter: parent.verticalCenter
+          width: Style.space(180)
+          showLabel: false
+          fontFamily: panel.fontFamily
+          hasCursor: settingsView.focusId === "globeWash"
+          onHasCursorChanged: if (hasCursor) settingsView.ensureVisible(this)
+          onPopupOpenChanged: if (!popupOpen) panel.restoreKeyFocus()
+          value: String(panel.settingsDisplaySetting("globeWash", "temperature"))
+          options: settingsView.globeWashOptions
+          onChanged: function(value) { panel.displayOptionsStore.setSettingsDisplaySetting("globeWash", value) }
+          Component.onCompleted: settingsView.globeWashDropdown = washDropdown
+        }
+      }
+
+      Text {
+        textFormat: Text.PlainText
+        x: Style.space(12)
+        width: parent.width - Style.space(24)
+        bottomPadding: Style.space(6)
+        text: panel.i18n("globeWashHint")
+        color: panel.mutedText
+        font.family: panel.fontFamily
+        font.pixelSize: Style.font.caption
+        wrapMode: Text.WordWrap
+      }
+    }
+  }
 
   Component {
     id: globeRotateRows
@@ -503,6 +565,7 @@ Rectangle {
         }
         if (card.hasHoverUnit) items.push({ id: "hoverUnit", type: "dropdown" })
         if (card.hasMapStyle) items.push({ id: "mapStyle", type: "dropdown" })
+        if (card.hasGlobeWash) items.push({ id: "globeWash", type: "dropdown" })
         if (card.hasGlobeRotate && panel.settingsDisplaySetting("globeAutoRotate", false))
           items.push({ id: "globeRotateDelay", type: "dropdown" }, { id: "globeRotateSpeed", type: "dropdown" })
         if (card.hasRainAlert && panel.settingsDisplaySetting("notifyRainSoon", true))
@@ -584,6 +647,7 @@ Rectangle {
     if (id === "rainThreshold") return spec(rainThresholdOptions, rainThresholdDropdown, display("rainAlertThreshold", "any"))
     if (id === "rainRadius") return spec(rainRadiusOptions, rainRadiusDropdown, display("rainAlertRadius", "25"))
     if (id === "mapStyle") return spec(mapStyleOptions, mapStyleDropdown, display("mapStyle", "drawn"))
+    if (id === "globeWash") return spec(globeWashOptions, globeWashDropdown, display("globeWash", "temperature"))
     if (id === "globeRotateDelay") return spec(globeRotateDelayOptions, globeRotateDropdowns.delay || null, display("globeRotateDelay", "10"))
     if (id === "globeRotateSpeed") return spec(globeRotateSpeedOptions, globeRotateDropdowns.speed || null, display("globeRotateSpeed", "4"))
     if (id === "barAccents") return spec(barAccentsOptions, barAccentsDropdown, display("menubarAccents", "hover"))
@@ -1483,6 +1547,13 @@ Rectangle {
                   onLoaded: settingsView.barAccentsDropdown = item.dropdown
                 }
               }
+            }
+
+            // The globe's colour wash.
+            Loader {
+              width: parent.width
+              active: !!settingsCard.groupData.hasGlobeWash
+              sourceComponent: globeWashRow
             }
 
             // The globe's turning by itself: delay and speed, while it is on.

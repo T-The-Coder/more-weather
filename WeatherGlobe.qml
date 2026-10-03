@@ -8,6 +8,8 @@ import "GlobeView.js" as GlobeView
 import "Sky.js" as Sky
 import "Moon.js" as Moon
 import "Basemap.js" as Basemap
+import "GlobeGrid.js" as GlobeGrid
+import "I18n.js" as I18n
 
 // The globe section: the earth seen from above (centre latitude and
 // longitude, tilted up to 80°), zoomed from the whole disc (z0) to about
@@ -28,6 +30,8 @@ Column {
   property bool inTab: false
   // The topmost section shown draws no line above it.
   property bool leading: false
+  // The globe item, for children whose own `globe` property would hide its id.
+  readonly property Item view: globe
   visible: panel.showGlobeSection
   width: parent ? parent.width : 0
   spacing: Style.space(8)
@@ -180,7 +184,10 @@ Column {
     property var land: null
     property var coarseLand: null
     readonly property bool moving: rotating || turnAnimation.running || dragging
-    onMovingChanged: canvas.requestPaint()
+    onMovingChanged: {
+      canvas.requestPaint()
+      if (!moving) wash.requestPaint()
+    }
     function coarseRings(data) {
       var scale = data.scale || 100
       var rings = []
@@ -271,9 +278,39 @@ Column {
     onLandChanged: canvas.requestPaint()
     onSkyChanged: canvas.requestPaint()
     onMarkersChanged: canvas.requestPaint()
-    onCenterLonChanged: if (!dragging || zoom < 2) canvas.requestPaint()
-    onCenterLatChanged: if (!dragging || zoom < 2) canvas.requestPaint()
-    onZoomChanged: canvas.requestPaint()
+    onCenterLonChanged: if (!dragging || zoom < 2) { canvas.requestPaint(); wash.viewChanged() }
+    onCenterLatChanged: if (!dragging || zoom < 2) { canvas.requestPaint(); wash.viewChanged() }
+    onZoomChanged: { canvas.requestPaint(); wash.requestPaint() }
+    // The wash's value at a point of the view, with the place's coordinates
+    // ("12 °C · 48° N 11° E"), or null.
+    function washHover(x, y) {
+      if (!wash.visible) return null
+      var m = Globe.viewMatrix(centerLat, Globe.wrapLon(centerLon))
+      var place = Globe.unprojectView(x - centerX, centerY - y, m, radius)
+      if (!place) return null
+      var value = NaN
+      if (wash.regionLattice) value = GlobeGrid.latticeValue(wash.regionLattice, place.lat, place.lon)
+      if (!isFinite(value)) value = GlobeGrid.latticeValue(wash.globalLattice, place.lat, place.lon)
+      if (!isFinite(value)) return null
+      var text
+      if (washKind === "temperature") {
+        text = panel.tempScale === "fahrenheit" ? Math.round(value * 1.8 + 32) + " °F"
+          : (panel.tempScale === "kelvin" ? Math.round(value + 273.15) + " K" : Math.round(value) + " °C")
+      } else if (washKind === "cloud") {
+        text = Math.round(value) + " %"
+      } else {
+        text = panel.useImperial ? panel.localizedNumber(Math.round(value / 25.4 * 100) / 100) + " in/h"
+          : panel.localizedNumber(Math.round(value * 10) / 10) + " mm/h"
+      }
+      var names = I18n.directionNames(panel.interfaceLanguage)
+      var where = Math.round(Math.abs(place.lat)) + "° " + names[place.lat >= 0 ? 0 : 4] + " "
+        + Math.round(Math.abs(place.lon)) + "° " + names[place.lon >= 0 ? 2 : 6]
+      return { x: x, y: y, text: panel.localizedNumber ? text + " · " + where : text }
+    }
+    readonly property var washPalette: wash.palette
+    readonly property Item washItem: wash
+    // The colour wash shown (Settings → Display → Globe, or v).
+    readonly property string washKind: String(panel.displaySetting("globeWash", "temperature"))
     onWidthChanged: canvas.requestPaint()
     onHeightChanged: canvas.requestPaint()
     onShowMoonChanged: canvas.requestPaint()
@@ -337,8 +374,39 @@ Column {
       }
     }
 
+    // Close up, a drag moves the finished picture by this much until the
+    // release draws it anew.
+    property real shiftX: 0
+    property real shiftY: 0
+
+    // The sphere's faint fill, under the wash.
+    Rectangle {
+      x: globe.shiftX + globe.centerX - globe.radius
+      y: globe.shiftY + globe.centerY - globe.radius
+      width: 2 * globe.radius
+      height: width
+      radius: globe.radius
+      color: Qt.rgba(globe.panel.foreground.r, globe.panel.foreground.g, globe.panel.foreground.b, 0.04)
+    }
+
+    // The weather's colour (temperature, cloud, precipitation) from the
+    // model (WeatherGlobeData), under the land, the night and the places.
+    WeatherGlobeWash {
+      id: wash
+      x: globe.shiftX
+      y: globe.shiftY
+      panel: globe.panel
+      globe: globeSection.view
+      kind: globe.washKind
+      globalLattice: globe.panel.globeData.globalLattice
+      regionLattice: globe.zoom >= 2 ? globe.panel.globeData.regionLattice : null
+      cells: globe.panel.standaloneMode ? 128 : 96
+    }
+
     Canvas {
       id: canvas
+      x: globe.shiftX
+      y: globe.shiftY
       width: globe.width
       height: globe.height
       property color ink: globe.panel.foreground
@@ -379,8 +447,6 @@ Column {
         ctx.save()
         disc(ctx)
         ctx.clip()
-        ctx.fillStyle = rgba(ink, 0.04)
-        ctx.fillRect(0, 0, width, height)
 
         // Meridians and parallels, finer when zoomed in.
         ctx.strokeStyle = rgba(ink, 0.07)
@@ -736,9 +802,14 @@ Column {
           return
         }
         var marker = markerAt(p.x, p.y)
-        globe.hover = marker ? { x: p.x, y: p.y, text: [marker.name,
-          marker.temperature !== "" ? marker.temperature + " " + globe.panel.tempUnit : "", marker.symbol]
-          .filter(function(part) { return !!part }).join(" · ") } : null
+        if (marker) {
+          globe.hover = { x: p.x, y: p.y, text: [marker.name,
+            marker.temperature !== "" ? marker.temperature + " " + globe.panel.tempUnit : "", marker.symbol]
+            .filter(function(part) { return !!part }).join(" · ") }
+          return
+        }
+        // The wash's value under the pointer, with the place.
+        globe.hover = globe.washHover(p.x, p.y)
       }
       function dragTo(x, y) {
         return GlobeView.panned(pressLat, pressLon, x - pressX, y - pressY, globe.radius)
@@ -758,8 +829,8 @@ Column {
           if (!globe.dragging && Math.abs(event.x - pressX) + Math.abs(event.y - pressY) > Style.space(4)) globe.dragging = true
           if (globe.dragging) {
             if (globe.zoom >= 2) {
-              canvas.x = event.x - pressX
-              canvas.y = event.y - pressY
+              globe.shiftX = event.x - pressX
+              globe.shiftY = event.y - pressY
             } else {
               var centre = dragTo(event.x, event.y)
               globe.centerLat = centre.lat
@@ -775,8 +846,8 @@ Column {
       onReleased: function(event) {
         if (globe.dragging && globe.zoom >= 2) {
           var centre = dragTo(event.x, event.y)
-          canvas.x = 0
-          canvas.y = 0
+          globe.shiftX = 0
+          globe.shiftY = 0
           globe.centerLat = centre.lat
           globe.centerLon = centre.lon
         }
@@ -937,5 +1008,10 @@ Column {
       text: globe.hover ? globe.hover.text : ""
       fontFamily: globe.panel.fontFamily
     }
+  }
+
+  WeatherGlobeLegend {
+    panel: globeSection.panel
+    globe: globeSection.view
   }
 }

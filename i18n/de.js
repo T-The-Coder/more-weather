@@ -404,5 +404,20 @@ var catalog = {
   "secondsShort": "{seconds} s",
   "minutesShort": "{minutes} min",
   "shortcutGlobeZoom": "Globus: am Zeiger hinein / hinaus zoomen",
-  "globeZoomHint": "Strg + Mausrad, ein Doppelklick, + − oder die Knöpfe zoomen bis auf etwa 400 km Breite; von nahem kommen Küste, Seen, Grenzen und Orte aus den Daten der Radarkarte. Das Fadenkreuz holt den gezeigten Ort in die Mitte."
+  "globeZoomHint": "Strg + Mausrad, ein Doppelklick, + − oder die Knöpfe zoomen bis auf etwa 400 km Breite; von nahem kommen Küste, Seen, Grenzen und Orte aus den Daten der Radarkarte. Das Fadenkreuz holt den gezeigten Ort in die Mitte.",
+  "globeWash": "Farbschicht",
+  "globeWashNone": "Keine",
+  "globeWashTemperature": "Temperatur",
+  "globeWashCloud": "Bewölkung",
+  "globeWashPrecipitation": "Niederschlag",
+  "globeWashHint": "Die Schicht kommt aus dem Modell von Open-Meteo: etwa 510 Punkte für die ganze Erde, alle sechs Stunden erneuert, und von nahem das Gebiet im Blick. Pro Tag sind 2.000 Punktabrufe für Erneuerungen und 3.000 insgesamt erlaubt; darüber zeigt der Globus, was er gespeichert hat. Nichts lädt, solange der Globus verborgen oder die Schicht aus ist.",
+  "globeDataModel": "Modell, etwa 1.000 km",
+  "globeDataTime": "Daten von {time}",
+  "globeDataLoading": "Modell wird geladen…",
+  "globeDataLimit": "Tageslimit erreicht, gespeicherte Daten",
+  "globeCallsToday": "{count} Punktabrufe heute",
+  "shortcutGlobeWash": "Globus: nächste Farbschicht",
+  "sourceGroupGlobe": "Globus",
+  "sourceGroupGlobeDetails": "Temperatur, Bewölkung und Niederschlag aus dem Modell von Open-Meteo: etwa 510 Punkte für die ganze Erde (fünf Tage in Dreistundenschritten, alle sechs Stunden erneuert) und von nahem Kacheln aus 16 Punkten (48 Stunden), zwischen Leiste und App über Dateien im Cache geteilt. Ein eigenes Tageslimit an Punktabrufen hält ihn sparsam.",
+  "sourceGroupGlobeCoverage": "Weltweit; auf dem ganzen Globus etwa 1.000 km Abstand, von nahem bis etwa 60 km."
 }

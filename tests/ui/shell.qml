@@ -7,15 +7,19 @@ import "Weather" as Weather
 // weather from tests/ui/fixtures/state.py, every section as a tab, every
 // settings page, in English, German and Arabic (right to left), the
 // widget's view (as in the bar's popup), and last the menu bar with its
-// values coloured. Pictures go to $MW_SHOTS.
+// values coloured. Pictures go to $MW_SHOTS; $MW_SHOTS_ONLY (a regular
+// expression) keeps only the matching ones.
 ShellRoot {
   id: harness
   readonly property string shots: Quickshell.env("MW_SHOTS") || "/tmp"
+  readonly property var shotsOnly: Quickshell.env("MW_SHOTS_ONLY") ? new RegExp(Quickshell.env("MW_SHOTS_ONLY")) : null
   property int step: 0
   readonly property var tabs: ["favorites", "airQuality", "hourly", "daily", "rain", "radar", "wind", "globe"]
 
-  function shot(name) {
-    panel.contentRoot.grabToImage(function(result) {
+  function shot(name) { shotOf(panel.contentRoot, name) }
+  function shotOf(item, name) {
+    if (shotsOnly && !shotsOnly.test(name)) return
+    item.grabToImage(function(result) {
       result.saveToFile(harness.shots + "/" + name + ".png")
       console.log("SHOT", name)
     })
@@ -40,6 +44,7 @@ ShellRoot {
           globeView(zoom, 46, 9)
           panel.globeItem.rotating = moving
           panel.globeItem.paintStats = { count: 0, total: 0, max: 0 }
+          panel.globeItem.washItem.stats = { count: 0, total: 0, max: 0 }
           globeNudge.start()
         }, function() {}, function() {}, function() {
           globeNudge.stop()
@@ -48,6 +53,10 @@ ShellRoot {
           console.log("GLOBE", size, "px z" + zoom, moving ? "moving" : "still", Math.round(panel.globeItem.radius * 2), "px radius*2:",
             st.count, "frames, mean", (st.total / n).toFixed(1), "ms, max", st.max, "ms; land", (st.land / n).toFixed(1),
             "sky", (st.sky / n).toFixed(1), "places", (st.places / n).toFixed(1))
+          var ws = panel.globeItem.washItem.stats
+          console.log("GLOBE", size, "px z" + zoom, moving ? "moving" : "still", "wash:", ws.count, "frames, mean",
+            (ws.total / Math.max(1, ws.count)).toFixed(1), "ms, max", ws.max, "ms; per globe frame",
+            ((st.total + ws.total) / n).toFixed(1), "ms")
           panel.globeItem.rotating = false
         })
       })
@@ -147,6 +156,19 @@ ShellRoot {
     function() { globeView(4, 46.5, 9.5) },
     function() {}, function() {},
     function() { shot("09f-globe-z4-alps") },
+    // The colour washes from the fixture's model data (state.py), on the
+    // whole disc and over the Alps (z3, the tiles).
+    function() { globeView(0, 25, 10); panel.setViewDisplaySetting("globeWash", "temperature") },
+    function() {}, function() { shot("09g-wash-temperature-z0") },
+    function() { panel.setViewDisplaySetting("globeWash", "cloud") },
+    function() {}, function() { shot("09h-wash-cloud-z0") },
+    function() { panel.setViewDisplaySetting("globeWash", "precipitation") },
+    function() {}, function() { shot("09i-wash-precipitation-z0") },
+    function() { panel.setViewDisplaySetting("globeWash", "temperature"); globeView(3, 47, 9) },
+    function() {}, function() {}, function() { shot("09j-wash-temperature-z3") },
+    function() { panel.setViewDisplaySetting("globeWash", "precipitation") },
+    function() {}, function() { shot("09k-wash-precipitation-z3") },
+    function() { panel.setViewDisplaySetting("globeWash", "temperature") },
     function() { globeView(0, 0, 10) },
     function() { panel.contentRoot.parent = widgetHost },
     // The night side and the moon: the globe turned towards them.
@@ -220,10 +242,7 @@ ShellRoot {
     function() {},
     function() {},
     function() {
-      barHost.item.grabToImage(function(result) {
-        result.saveToFile(harness.shots + "/25-bar-accents.png")
-        console.log("SHOT", "25-bar-accents")
-      })
+      shotOf(barHost.item, "25-bar-accents")
     },
     // The cursor on "Reset general settings" stays on the page once the
     // button is gone.
@@ -252,10 +271,7 @@ ShellRoot {
       press(Qt.Key_Home)
     },
     function() { shot("27-pressure") },
-    function() { barHost.item.grabToImage(function(result) {
-      result.saveToFile(harness.shots + "/28-bar-pressure.png")
-      console.log("SHOT", "28-bar-pressure")
-    }) },
+    function() { shotOf(barHost.item, "28-bar-pressure") },
     // Settings → General → Places after importing More Time's cities.
     function() { panel.openSettings("general"); panel.cityImport.run() },
     function() { press(Qt.Key_End) },

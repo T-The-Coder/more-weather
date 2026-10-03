@@ -370,5 +370,20 @@ var entries = {
   "secondsShort": "{seconds} giây",
   "minutesShort": "{minutes} phút",
   "shortcutGlobeZoom": "Quả địa cầu: phóng to / thu nhỏ tại con trỏ",
-  "globeZoomHint": "Ctrl + con lăn, nhấp đúp, + − hoặc các nút phóng to tới khoảng 400 km bề ngang; khi ở gần, bờ biển, hồ, biên giới và thị trấn lấy từ dữ liệu bản đồ radar. Hồng tâm đưa địa điểm đang hiển thị về giữa."
+  "globeZoomHint": "Ctrl + con lăn, nhấp đúp, + − hoặc các nút phóng to tới khoảng 400 km bề ngang; khi ở gần, bờ biển, hồ, biên giới và thị trấn lấy từ dữ liệu bản đồ radar. Hồng tâm đưa địa điểm đang hiển thị về giữa.",
+  "globeWash": "Lớp màu",
+  "globeWashNone": "Không",
+  "globeWashTemperature": "Nhiệt độ",
+  "globeWashCloud": "Mây",
+  "globeWashPrecipitation": "Lượng mưa",
+  "globeWashHint": "Lớp lấy từ mô hình của Open-Meteo: khoảng 510 điểm cho cả Trái Đất, làm mới mỗi sáu giờ, và khi phóng to là vùng đang nhìn. Mỗi ngày cho phép 2.000 lượt gọi điểm để làm mới và 3.000 tổng cộng; vượt quá thì quả địa cầu hiển thị dữ liệu đã lưu. Không tải gì khi quả địa cầu bị ẩn hoặc lớp tắt.",
+  "globeDataModel": "mô hình, khoảng 1.000 km",
+  "globeDataTime": "dữ liệu lúc {time}",
+  "globeDataLoading": "đang tải mô hình…",
+  "globeDataLimit": "đã đạt giới hạn ngày, dữ liệu đã lưu",
+  "globeCallsToday": "{count} lượt gọi điểm hôm nay",
+  "shortcutGlobeWash": "Quả địa cầu: lớp màu tiếp theo",
+  "sourceGroupGlobe": "Quả địa cầu",
+  "sourceGroupGlobeDetails": "Nhiệt độ, mây và lượng mưa từ mô hình của Open-Meteo: khoảng 510 điểm cho cả Trái Đất (năm ngày theo bước ba giờ, làm mới mỗi sáu giờ) và khi phóng to là ô 16 điểm (48 giờ), dùng chung giữa thanh và ứng dụng qua tệp trong bộ nhớ đệm. Giới hạn lượt gọi hằng ngày riêng giữ cho nó nhẹ.",
+  "sourceGroupGlobeCoverage": "Toàn cầu; khoảng 1.000 km giữa các điểm trên toàn quả cầu, khi phóng to đến khoảng 60 km."
 }

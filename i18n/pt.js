@@ -370,5 +370,20 @@ var entries = {
   "secondsShort": "{seconds} s",
   "minutesShort": "{minutes} min",
   "shortcutGlobeZoom": "Globo: aproximar / afastar no ponteiro",
-  "globeZoomHint": "Ctrl + roda, um clique duplo, + − ou os botões aproximam até cerca de 400 km de largura; de perto, a costa, os lagos, as fronteiras e as cidades vêm dos dados do mapa de radar. A mira traz o local mostrado ao centro."
+  "globeZoomHint": "Ctrl + roda, um clique duplo, + − ou os botões aproximam até cerca de 400 km de largura; de perto, a costa, os lagos, as fronteiras e as cidades vêm dos dados do mapa de radar. A mira traz o local mostrado ao centro.",
+  "globeWash": "Camada de cor",
+  "globeWashNone": "Nenhuma",
+  "globeWashTemperature": "Temperatura",
+  "globeWashCloud": "Nuvens",
+  "globeWashPrecipitation": "Precipitação",
+  "globeWashHint": "A camada vem do modelo do Open-Meteo: cerca de 510 pontos para a Terra inteira, renovados a cada seis horas, e de perto a área à vista. Por dia são permitidas 2.000 consultas de pontos para renovar e 3.000 no total; depois disso o globo mostra o que guardou. Nada é carregado enquanto o globo está oculto ou a camada desligada.",
+  "globeDataModel": "modelo, cerca de 1.000 km",
+  "globeDataTime": "dados das {time}",
+  "globeDataLoading": "carregando o modelo…",
+  "globeDataLimit": "limite diário atingido, dados guardados",
+  "globeCallsToday": "{count} consultas de pontos hoje",
+  "shortcutGlobeWash": "Globo: próxima camada de cor",
+  "sourceGroupGlobe": "Globo",
+  "sourceGroupGlobeDetails": "Temperatura, nuvens e precipitação do modelo do Open-Meteo: cerca de 510 pontos para a Terra inteira (cinco dias em passos de três horas, renovados a cada seis horas) e de perto blocos de 16 pontos (48 horas), compartilhados entre barra e aplicativo por arquivos no cache. Um limite diário próprio de consultas o mantém leve.",
+  "sourceGroupGlobeCoverage": "Mundial; cerca de 1.000 km de distância no globo inteiro, até cerca de 60 km de perto."
 }

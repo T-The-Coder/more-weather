@@ -165,3 +165,66 @@ write("fixture-places.json", {
                                "birch_pollen": 0.0, "alder_pollen": 0.0, "grass_pollen": 4.2,
                                "olive_pollen": None, "mugwort_pollen": 0.3, "ragweed_pollen": None}},
 }, folder=home)
+
+# ---- The globe's weather (WeatherGlobeData): the seven global batches and
+# the 7.5° tiles over central Europe, in GlobeGrid.js's compact form, as the
+# files the loader keeps under ~/.cache/more-weather/globe. Smooth synthetic
+# fields: warm at the equator, a cloud band pattern, a few rain cells.
+VARIABLES = ["temperature_2m", "cloud_cover", "precipitation", "weather_code", "cape", "pressure_msl",
+             "wind_speed_10m", "wind_direction_10m", "wind_gusts_10m"]
+SCALES = {"temperature_2m": 10, "cloud_cover": 1, "precipitation": 100, "weather_code": 1, "cape": 1,
+          "pressure_msl": 10, "wind_speed_10m": 10, "wind_direction_10m": 1, "wind_gusts_10m": 10}
+globe_dir = os.path.join(home, ".cache/more-weather/globe")
+os.makedirs(globe_dir, exist_ok=True)
+
+
+def field(name, lat, lon, hours):
+    if name == "temperature_2m":
+        return 29 - 0.55 * abs(lat) + 6 * math.sin(math.radians(lon) * 2) + 2 * math.sin(hours / 24 * 2 * math.pi)
+    if name == "cloud_cover":
+        return max(0.0, min(100.0, 50 + 55 * math.sin(math.radians(lat) * 7) * math.cos(math.radians(lon) * 3)))
+    if name == "precipitation":
+        return max(0.0, 9 * math.sin(math.radians(lat) * 9 + math.radians(lon) * 5) - 5)
+    if name == "pressure_msl":
+        return 1013 + 12 * math.sin(math.radians(lat) * 4) * math.cos(math.radians(lon) * 2)
+    return 1.0
+
+
+def compact(key, kind, points, step_hours, steps):
+    start = int(now // 3600 * 3600)
+    times = [start + i * step_hours * 3600 for i in range(steps)]
+    out = {}
+    # Only what the washes read, to keep the fixture small.
+    for name in ["temperature_2m", "cloud_cover", "precipitation"]:
+        values = []
+        for lat, lon in points:
+            for t in times:
+                value = field(name, lat, lon, (t - start) / 3600)
+                if name == "precipitation" and kind == "global":
+                    value *= 3
+                values.append(round(value * SCALES[name]))
+        out[name] = values
+    return {"v": 1, "kind": kind, "key": key, "at": int(now * 1000),
+            "points": [[lat, lon] for lat, lon in points], "times": times, "vars": out}
+
+
+global_points = [(-90, 0)]
+for ring_lat in range(-81, 82, 9):
+    count = max(1, round(40 * math.cos(math.radians(ring_lat))))
+    global_points += [(ring_lat, -180 + j * 360 / count) for j in range(count)]
+global_points.append((90, 0))
+for k in range(7):
+    key = "G9:%d" % k
+    write(key + ".json", compact(key, "global", global_points[k::7], 3, 8), folder=globe_dir)
+
+# Tiles of level 3 (7.5° high) round the Alps.
+size = 7.5
+for row in range(int((40 + 90) // size), int((52 + 90) // size) + 1):
+    middle = -90 + (row + 0.5) * size
+    columns = max(1, round(360 / (size / max(0.05, math.cos(math.radians(middle))))))
+    width = 360 / columns
+    for col in range(int((0 + 180) // width), int((20 + 180) // width) + 1):
+        south, west = -90 + row * size, -180 + col * width
+        points = [(south + size * i / 3, west + width * j / 3) for i in range(4) for j in range(4)]
+        key = "T3:%d:%d" % (row, col)
+        write(key + ".json", compact(key, "tile", points, 1, 6), folder=globe_dir)

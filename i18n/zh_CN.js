@@ -370,5 +370,20 @@ var entries = {
   "secondsShort": "{seconds} 秒",
   "minutesShort": "{minutes} 分钟",
   "shortcutGlobeZoom": "地球仪：在指针处放大 / 缩小",
-  "globeZoomHint": "Ctrl + 滚轮、双击、+ − 或按钮可放大到约 400 公里宽；近看时海岸、湖泊、边界和城镇来自雷达地图的数据。准星将显示的地点移到中央。"
+  "globeZoomHint": "Ctrl + 滚轮、双击、+ − 或按钮可放大到约 400 公里宽；近看时海岸、湖泊、边界和城镇来自雷达地图的数据。准星将显示的地点移到中央。",
+  "globeWash": "颜色图层",
+  "globeWashNone": "无",
+  "globeWashTemperature": "温度",
+  "globeWashCloud": "云量",
+  "globeWashPrecipitation": "降水",
+  "globeWashHint": "图层来自 Open-Meteo 的模型：覆盖整个地球约 510 个点，每六小时更新一次，近看时是视野内的区域。每天允许 2000 次点查询用于更新，总计 3000 次；超出后地球仪显示已保存的数据。地球仪隐藏或图层关闭时不会加载任何内容。",
+  "globeDataModel": "模型，约 1000 公里",
+  "globeDataTime": "{time} 的数据",
+  "globeDataLoading": "正在加载模型…",
+  "globeDataLimit": "已达每日上限，显示已保存的数据",
+  "globeCallsToday": "今天 {count} 次点查询",
+  "shortcutGlobeWash": "地球仪：下一个颜色图层",
+  "sourceGroupGlobe": "地球仪",
+  "sourceGroupGlobeDetails": "来自 Open-Meteo 模型的温度、云量和降水：整个地球约 510 个点（五天、每三小时一步，每六小时更新），近看时为 16 个点的图块（48 小时），通过缓存中的文件在栏和应用之间共享。自身的每日查询上限让它保持轻量。",
+  "sourceGroupGlobeCoverage": "全球；整个地球仪上点间距约 1000 公里，近看时约 60 公里。"
 }

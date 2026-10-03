@@ -370,5 +370,20 @@ var entries = {
   "secondsShort": "{seconds}초",
   "minutesShort": "{minutes}분",
   "shortcutGlobeZoom": "지구본: 포인터 위치에서 확대 / 축소",
-  "globeZoomHint": "Ctrl + 휠, 더블 클릭, + − 또는 버튼으로 너비 약 400 km까지 확대합니다. 가까이에서는 해안, 호수, 국경, 도시가 레이더 지도의 데이터에서 옵니다. 조준선은 표시된 장소를 가운데로 가져옵니다."
+  "globeZoomHint": "Ctrl + 휠, 더블 클릭, + − 또는 버튼으로 너비 약 400 km까지 확대합니다. 가까이에서는 해안, 호수, 국경, 도시가 레이더 지도의 데이터에서 옵니다. 조준선은 표시된 장소를 가운데로 가져옵니다.",
+  "globeWash": "색상 레이어",
+  "globeWashNone": "없음",
+  "globeWashTemperature": "기온",
+  "globeWashCloud": "구름",
+  "globeWashPrecipitation": "강수",
+  "globeWashHint": "레이어는 Open-Meteo 모델에서 가져옵니다. 지구 전체에 약 510개 지점을 6시간마다 갱신하고, 확대하면 보이는 영역을 가져옵니다. 하루에 갱신용 2,000회, 전체 3,000회의 지점 조회가 허용되며, 그 이상이면 저장된 데이터를 보여 줍니다. 지구본이 숨겨져 있거나 레이어가 꺼져 있으면 아무것도 불러오지 않습니다.",
+  "globeDataModel": "모델, 약 1,000 km",
+  "globeDataTime": "{time} 데이터",
+  "globeDataLoading": "모델 불러오는 중…",
+  "globeDataLimit": "하루 한도 도달, 저장된 데이터 표시",
+  "globeCallsToday": "오늘 지점 조회 {count}회",
+  "shortcutGlobeWash": "지구본: 다음 색상 레이어",
+  "sourceGroupGlobe": "지구본",
+  "sourceGroupGlobeDetails": "Open-Meteo 모델의 기온, 구름, 강수: 지구 전체 약 510개 지점(3시간 간격 5일, 6시간마다 갱신)과 확대 시 16개 지점 타일(48시간)이며, 캐시 파일로 막대와 앱이 공유합니다. 자체 하루 조회 한도로 부담을 줄입니다.",
+  "sourceGroupGlobeCoverage": "전 세계; 지구본 전체에서는 지점 간격 약 1,000 km, 확대하면 약 60 km까지."
 }

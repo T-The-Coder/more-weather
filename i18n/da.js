@@ -370,5 +370,20 @@ var entries = {
   "secondsShort": "{seconds} s",
   "minutesShort": "{minutes} min",
   "shortcutGlobeZoom": "Globus: zoom ind / ud ved markøren",
-  "globeZoomHint": "Ctrl + hjul, et dobbeltklik, + − eller knapperne zoomer ind til omkring 400 km bredde; tæt på kommer kyst, søer, grænser og byer fra radarkortets data. Trådkorset bringer det viste sted til midten."
+  "globeZoomHint": "Ctrl + hjul, et dobbeltklik, + − eller knapperne zoomer ind til omkring 400 km bredde; tæt på kommer kyst, søer, grænser og byer fra radarkortets data. Trådkorset bringer det viste sted til midten.",
+  "globeWash": "Farvelag",
+  "globeWashNone": "Intet",
+  "globeWashTemperature": "Temperatur",
+  "globeWashCloud": "Skyer",
+  "globeWashPrecipitation": "Nedbør",
+  "globeWashHint": "Laget kommer fra Open-Meteos model: omkring 510 punkter for hele jorden, fornyet hver sjette time, og tæt på området i billedet. Pr. døgn tillades 2.000 punktkald til fornyelser og 3.000 i alt; derudover viser kloden det, den har gemt. Intet indlæses, mens kloden er skjult eller laget slået fra.",
+  "globeDataModel": "model, omkring 1.000 km",
+  "globeDataTime": "data fra {time}",
+  "globeDataLoading": "indlæser modellen…",
+  "globeDataLimit": "dagsgrænsen nået, gemte data",
+  "globeCallsToday": "{count} punktkald i dag",
+  "shortcutGlobeWash": "Globus: næste farvelag",
+  "sourceGroupGlobe": "Globus",
+  "sourceGroupGlobeDetails": "Temperatur, skyer og nedbør fra Open-Meteos model: omkring 510 punkter for hele jorden (fem døgn i tretimerstrin, fornyet hver sjette time) og tæt på felter med 16 punkter (48 timer), delt mellem bjælke og app via filer i cachen. En egen daglig grænse for kald holder den sparsom.",
+  "sourceGroupGlobeCoverage": "Hele verden; omkring 1.000 km mellem punkterne på hele kloden, tæt på ned til omkring 60 km."
 }

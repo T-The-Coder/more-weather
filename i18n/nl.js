@@ -370,5 +370,20 @@ var entries = {
   "secondsShort": "{seconds} s",
   "minutesShort": "{minutes} min",
   "shortcutGlobeZoom": "Globe: in- / uitzoomen bij de aanwijzer",
-  "globeZoomHint": "Ctrl + scrollwiel, dubbelklikken, + − of de knoppen zoomen in tot ongeveer 400 km breed; van dichtbij komen kust, meren, grenzen en plaatsen uit de gegevens van de radarkaart. Het vizier brengt de getoonde plaats naar het midden."
+  "globeZoomHint": "Ctrl + scrollwiel, dubbelklikken, + − of de knoppen zoomen in tot ongeveer 400 km breed; van dichtbij komen kust, meren, grenzen en plaatsen uit de gegevens van de radarkaart. Het vizier brengt de getoonde plaats naar het midden.",
+  "globeWash": "Kleurlaag",
+  "globeWashNone": "Geen",
+  "globeWashTemperature": "Temperatuur",
+  "globeWashCloud": "Bewolking",
+  "globeWashPrecipitation": "Neerslag",
+  "globeWashHint": "De laag komt uit het model van Open-Meteo: ongeveer 510 punten voor de hele aarde, elke zes uur vernieuwd, en van dichtbij het gebied in beeld. Per dag zijn 2.000 puntaanvragen voor vernieuwingen toegestaan en 3.000 in totaal; daarboven toont de globe wat hij bewaard heeft. Er laadt niets zolang de globe verborgen of de laag uit is.",
+  "globeDataModel": "model, ongeveer 1.000 km",
+  "globeDataTime": "gegevens van {time}",
+  "globeDataLoading": "model wordt geladen…",
+  "globeDataLimit": "daglimiet bereikt, bewaarde gegevens",
+  "globeCallsToday": "{count} puntaanvragen vandaag",
+  "shortcutGlobeWash": "Globe: volgende kleurlaag",
+  "sourceGroupGlobe": "Globe",
+  "sourceGroupGlobeDetails": "Temperatuur, bewolking en neerslag uit het model van Open-Meteo: ongeveer 510 punten voor de hele aarde (vijf dagen in stappen van drie uur, elke zes uur vernieuwd) en van dichtbij tegels van 16 punten (48 uur), gedeeld tussen balk en app via bestanden in de cache. Een eigen daglimiet aan aanvragen houdt hem zuinig.",
+  "sourceGroupGlobeCoverage": "Wereldwijd; op de hele globe ongeveer 1.000 km tussen de punten, van dichtbij tot ongeveer 60 km."
 }

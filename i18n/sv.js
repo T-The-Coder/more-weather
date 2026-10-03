@@ -370,5 +370,20 @@ var entries = {
   "secondsShort": "{seconds} s",
   "minutesShort": "{minutes} min",
   "shortcutGlobeZoom": "Glob: zooma in / ut vid pekaren",
-  "globeZoomHint": "Ctrl + hjul, ett dubbelklick, + − eller knapparna zoomar in till ungefär 400 km bredd; på nära håll kommer kust, sjöar, gränser och orter från radarkartans data. Hårkorset för den visade platsen till mitten."
+  "globeZoomHint": "Ctrl + hjul, ett dubbelklick, + − eller knapparna zoomar in till ungefär 400 km bredd; på nära håll kommer kust, sjöar, gränser och orter från radarkartans data. Hårkorset för den visade platsen till mitten.",
+  "globeWash": "Färglager",
+  "globeWashNone": "Inget",
+  "globeWashTemperature": "Temperatur",
+  "globeWashCloud": "Moln",
+  "globeWashPrecipitation": "Nederbörd",
+  "globeWashHint": "Lagret kommer från Open-Meteos modell: omkring 510 punkter för hela jorden, förnyade var sjätte timme, och på nära håll området i bild. Per dag tillåts 2 000 punktanrop för förnyelser och 3 000 totalt; därutöver visar globen det den sparat. Inget laddas medan globen är dold eller lagret avstängt.",
+  "globeDataModel": "modell, omkring 1 000 km",
+  "globeDataTime": "data från {time}",
+  "globeDataLoading": "laddar modellen…",
+  "globeDataLimit": "dagsgränsen nådd, sparade data",
+  "globeCallsToday": "{count} punktanrop i dag",
+  "shortcutGlobeWash": "Glob: nästa färglager",
+  "sourceGroupGlobe": "Glob",
+  "sourceGroupGlobeDetails": "Temperatur, moln och nederbörd från Open-Meteos modell: omkring 510 punkter för hela jorden (fem dygn i treimmarssteg, förnyade var sjätte timme) och på nära håll rutor med 16 punkter (48 timmar), delade mellan fält och app via filer i cachen. En egen daglig gräns för anrop håller den sparsam.",
+  "sourceGroupGlobeCoverage": "Hela världen; omkring 1 000 km mellan punkterna på hela globen, på nära håll ned till omkring 60 km."
 }
