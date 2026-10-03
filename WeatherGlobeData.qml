@@ -126,7 +126,7 @@ QtObject {
   property Timer playTimer: Timer {
     interval: GlobeTimeline.playbackDelay(loader.range)
     repeat: true
-    running: loader.playing && loader.active
+    running: loader.playing && loader.active && loader.panel.motionAllowed
     onTriggered: {
       if (!loader.stepReady) return
       var next = GlobeTimeline.advance(loader.stepIndex, loader.steps, 1, false)
@@ -157,7 +157,7 @@ QtObject {
   }
   function viewBox() {
     if (!globe) return null
-    return GlobeView.visibleBounds(globe.centerLat, GlobeGrid.wrapLon(globe.centerLon), globe.radius, globe.width, globe.height)
+    return globe.projection().box()
   }
   function viewRested() {
     if (!active || !globe || globe.dragging) return

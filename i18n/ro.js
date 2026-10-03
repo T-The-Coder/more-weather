@@ -407,5 +407,16 @@ var entries = {
   "shortcutGlobeStep": "Glob: un pas de timp înapoi sau înainte",
   "shortcutGlobePlay": "Glob: redă sau întrerupe cronologia",
   "shortcutGlobeNow": "Glob: înapoi la acum",
-  "globeCombineHint": "Straturile de culoare se combină și se desenează în ordinea listei: temperatura mării deasupra oceanului alături de cea a aerului deasupra uscatului, vântul la jumătate de intensitate peste o temperatură, norii și precipitațiile deasupra tuturor. Numerele și cursorul arată precipitațiile unde plouă, altfel temperatura, apoi vântul și norii."
+  "globeCombineHint": "Straturile de culoare se combină și se desenează în ordinea listei: temperatura mării deasupra oceanului alături de cea a aerului deasupra uscatului, vântul la jumătate de intensitate peste o temperatură, norii și precipitațiile deasupra tuturor. Numerele și cursorul arată precipitațiile unde plouă, altfel temperatura, apoi vântul și norii.",
+  "optionRotateFps": "Cadre pe secundă",
+  "optionRotateFpsHint": "Mai multe cadre arată mai fluid și folosesc mai mult timp de procesor.",
+  "optionMoonStyle": "Luna",
+  "moonStyleSpace": "Așa cum e luminată (din spațiu)",
+  "moonStyleEarth": "Așa cum se vede de aici",
+  "optionMapStyle": "Stilul hărții",
+  "mapStyleFlat": "Hartă plană",
+  "mapStyleGlobe": "Glob",
+  "globeMapHint": "Harta plană (Equal Earth) arată tot Pământul deodată cu aceleași straturi, zoom și cronologie; tragerea o deplasează și nu se rotește singură.",
+  "hoverTooltip": "Indiciu la trecere",
+  "hoverTooltipHint": "Repetă intrările barei de meniu, inclusiv cele de la trecerea cursorului, în indiciul barei."
 }

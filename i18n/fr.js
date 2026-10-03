@@ -407,5 +407,16 @@ var entries = {
   "shortcutGlobeStep": "Globe : un pas de temps en arrière ou en avant",
   "shortcutGlobePlay": "Globe : lire ou mettre en pause la chronologie",
   "shortcutGlobeNow": "Globe : revenir à maintenant",
-  "globeCombineHint": "Les couches de couleur se combinent, dessinées dans l’ordre de la liste : la température de la mer sur l’océan à côté de celle de l’air sur terre, le vent à mi-intensité sur une température, les nuages et les précipitations par-dessus tout. Les nombres et le pointeur montrent les précipitations là où il pleut, sinon la température, puis le vent et les nuages."
+  "globeCombineHint": "Les couches de couleur se combinent, dessinées dans l’ordre de la liste : la température de la mer sur l’océan à côté de celle de l’air sur terre, le vent à mi-intensité sur une température, les nuages et les précipitations par-dessus tout. Les nombres et le pointeur montrent les précipitations là où il pleut, sinon la température, puis le vent et les nuages.",
+  "optionRotateFps": "Images par seconde",
+  "optionRotateFpsHint": "Plus d’images paraissent plus fluides et demandent plus de temps processeur.",
+  "optionMoonStyle": "Lune",
+  "moonStyleSpace": "Telle qu’elle est éclairée (depuis l’espace)",
+  "moonStyleEarth": "Telle qu’on la voit d’ici",
+  "optionMapStyle": "Style de carte",
+  "mapStyleFlat": "Carte plane",
+  "mapStyleGlobe": "Globe",
+  "globeMapHint": "La carte plane (Equal Earth) montre toute la Terre d’un coup avec les mêmes couches, le zoom et la chronologie ; un glissement la déplace, et elle ne tourne pas d’elle-même.",
+  "hoverTooltip": "Info-bulle au survol",
+  "hoverTooltipHint": "Reprend les entrées de la barre de menus, y compris celles du survol, dans l’info-bulle de la barre."
 }

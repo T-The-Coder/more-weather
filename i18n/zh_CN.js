@@ -407,5 +407,16 @@ var entries = {
   "shortcutGlobeStep": "地球仪：时间后退或前进一步",
   "shortcutGlobePlay": "地球仪：播放或暂停时间轴",
   "shortcutGlobeNow": "地球仪：回到现在",
-  "globeCombineHint": "颜色图层可以组合，按列表顺序绘制：海温覆盖海洋，气温覆盖陆地；风以一半强度叠加在温度上；云量和降水位于最上层。数值和指针在下雨处显示降水，否则显示温度，其次是风和云量。"
+  "globeCombineHint": "颜色图层可以组合，按列表顺序绘制：海温覆盖海洋，气温覆盖陆地；风以一半强度叠加在温度上；云量和降水位于最上层。数值和指针在下雨处显示降水，否则显示温度，其次是风和云量。",
+  "optionRotateFps": "每秒帧数",
+  "optionRotateFpsHint": "帧数越多越流畅，但占用更多处理器时间。",
+  "optionMoonStyle": "月亮",
+  "moonStyleSpace": "实际受光（从太空看）",
+  "moonStyleEarth": "从这里看到的样子",
+  "optionMapStyle": "地图样式",
+  "mapStyleFlat": "平面地图",
+  "mapStyleGlobe": "地球仪",
+  "globeMapHint": "平面地图（Equal Earth）一次显示整个地球，图层、缩放和时间轴相同；拖动可平移，它不会自行旋转。",
+  "hoverTooltip": "悬停提示",
+  "hoverTooltipHint": "在栏的提示中重复菜单栏的条目，包括悬停时显示的条目。"
 }

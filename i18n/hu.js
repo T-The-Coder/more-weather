@@ -407,5 +407,16 @@ var entries = {
   "shortcutGlobeStep": "Földgömb: egy időlépés vissza vagy előre",
   "shortcutGlobePlay": "Földgömb: idővonal lejátszása vagy megállítása",
   "shortcutGlobeNow": "Földgömb: vissza a mostba",
-  "globeCombineHint": "A színrétegek kombinálhatók, a lista sorrendjében rajzolódnak: a tenger hőmérséklete az óceán fölött, a levegőé a szárazföld fölött, a szél félerősséggel egy hőmérséklet fölött, a felhőzet és a csapadék mindenek fölött. A számok és a mutató csapadékot mutatnak, ahol esik, egyébként a hőmérsékletet, aztán a szelet és a felhőzetet."
+  "globeCombineHint": "A színrétegek kombinálhatók, a lista sorrendjében rajzolódnak: a tenger hőmérséklete az óceán fölött, a levegőé a szárazföld fölött, a szél félerősséggel egy hőmérséklet fölött, a felhőzet és a csapadék mindenek fölött. A számok és a mutató csapadékot mutatnak, ahol esik, egyébként a hőmérsékletet, aztán a szelet és a felhőzetet.",
+  "optionRotateFps": "Képkocka másodpercenként",
+  "optionRotateFpsHint": "Több képkocka simábbnak tűnik, és több processzoridőt használ.",
+  "optionMoonStyle": "Hold",
+  "moonStyleSpace": "Ahogy meg van világítva (az űrből)",
+  "moonStyleEarth": "Ahogy innen látszik",
+  "optionMapStyle": "Térkép stílusa",
+  "mapStyleFlat": "Síktérkép",
+  "mapStyleGlobe": "Földgömb",
+  "globeMapHint": "A sík térkép (Equal Earth) egyszerre mutatja az egész Földet ugyanazokkal a rétegekkel, nagyítással és idővonallal; húzással mozgatható, magától nem forog.",
+  "hoverTooltip": "Elemleírás rámutatáskor",
+  "hoverTooltipHint": "Megismétli a menüsor bejegyzéseit, a rámutatáskor megjelenőket is, a sáv elemleírásában."
 }

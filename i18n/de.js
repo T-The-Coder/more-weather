@@ -441,5 +441,16 @@ var catalog = {
   "shortcutGlobeStep": "Globus: einen Zeitschritt zurück oder vor",
   "shortcutGlobePlay": "Globus: Zeitleiste abspielen oder anhalten",
   "shortcutGlobeNow": "Globus: zurück zu jetzt",
-  "globeCombineHint": "Die Farbschichten lassen sich kombinieren und werden in der gezeigten Reihenfolge gezeichnet: die Wassertemperatur über dem Meer neben der Lufttemperatur über Land, der Wind halb deckend über einer Temperatur, Bewölkung und Niederschlag über allem. Zahlen und Zeiger zeigen Niederschlag, wo es regnet, sonst die Temperatur, dann Wind und Bewölkung."
+  "globeCombineHint": "Die Farbschichten lassen sich kombinieren und werden in der gezeigten Reihenfolge gezeichnet: die Wassertemperatur über dem Meer neben der Lufttemperatur über Land, der Wind halb deckend über einer Temperatur, Bewölkung und Niederschlag über allem. Zahlen und Zeiger zeigen Niederschlag, wo es regnet, sonst die Temperatur, dann Wind und Bewölkung.",
+  "optionRotateFps": "Bilder pro Sekunde",
+  "optionRotateFpsHint": "Mehr Bilder wirken flüssiger und brauchen mehr Prozessorzeit.",
+  "optionMoonStyle": "Mond",
+  "moonStyleSpace": "Wie er beleuchtet ist (aus dem All)",
+  "moonStyleEarth": "Wie von hier aus gesehen",
+  "optionMapStyle": "Kartenart",
+  "mapStyleFlat": "Flache Karte",
+  "mapStyleGlobe": "Globus",
+  "globeMapHint": "Die flache Karte (Equal Earth) zeigt die ganze Erde auf einmal mit denselben Schichten, Zoom und Zeitleiste; Ziehen verschiebt sie, und sie dreht sich nicht von selbst.",
+  "hoverTooltip": "Tooltip beim Überfahren",
+  "hoverTooltipHint": "Wiederholt die Einträge der Menüleiste samt den Hover-Einträgen im Tooltip der Leiste."
 }

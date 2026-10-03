@@ -81,9 +81,10 @@ Rectangle {
       masterKey: "",
       options: [
         { key: "boldOnHover", title: panel.i18n("boldOnHover"), accentsBelow: true },
+        { key: "hoverTooltip", title: panel.i18n("hoverTooltip") },
         { key: "openWidgetOnHover", title: panel.i18n("openWidgetOnHover") }
       ],
-      hint: panel.i18n("openWidgetOnHoverHint"),
+      hint: panel.i18n("hoverTooltipHint") + " " + panel.i18n("openWidgetOnHoverHint"),
       hasHoverUnit: true,
       hasDefaultTab: false
     },
@@ -223,7 +224,7 @@ Rectangle {
       sectionKey: "globe",
       options: [
         { key: "globeNight", title: panel.i18n("optionNight") },
-        { key: "globeMoon", title: panel.i18n("moon") },
+        { key: "globeMoon", title: panel.i18n("moon"), choiceBelow: "globeMoonStyle" },
         { key: "globeMarkers", title: panel.i18n("globeMarkers") },
         { key: "globeAutoRotate", title: panel.i18n("optionGlobeAutoRotate") },
         // The colour layers in the order they are drawn, then the overlays.
@@ -239,7 +240,7 @@ Rectangle {
         { key: "globeTimeline", title: panel.i18n("globeTimeline") }
       ],
       hint: panel.i18n("globeHint") + " " + panel.i18n("globeZoomHint") + " " + panel.i18n("optionNightHint") + " "
-        + panel.i18n("optionGlobeAutoRotateHint") + " " + panel.i18n("globeCombineHint") + " " + panel.i18n("globeLayersHint") + " " + panel.i18n("globeTimelineHint"),
+        + panel.i18n("optionGlobeAutoRotateHint") + " " + panel.i18n("globeMapHint") + " " + panel.i18n("globeCombineHint") + " " + panel.i18n("globeLayersHint") + " " + panel.i18n("globeTimelineHint"),
       hasGlobeRotate: true,
       hasGlobeWash: true,
       hasDefaultTab: false
@@ -328,6 +329,9 @@ Rectangle {
   readonly property var globeRotateSpeedOptions: ["1", "2", "4", "8"].map(function(n) {
     return { value: n, label: panel.i18n("minutesShort", { minutes: n }) }
   })
+  readonly property var globeRotateFpsOptions: ["8", "15", "24", "30"].map(function(n) {
+    return { value: n, label: n }
+  })
   property var globeRotateDropdowns: ({})
   // The globe's colour wash.
   readonly property var globeWindLevelOptions: Model.WIND_LEVELS.map(function(level) {
@@ -339,6 +343,13 @@ Rectangle {
     id: globeWashRow
 
     Column {
+      // Globe or flat map.
+      Loader {
+        width: parent.width
+        sourceComponent: choiceRow
+        onLoaded: item.choiceId = "globeStyle"
+      }
+
       // The wind's height, for the wind wash and the streaks.
       Item {
         width: parent.width
@@ -396,7 +407,8 @@ Rectangle {
       Repeater {
         model: [
           { id: "globeRotateDelay", key: "delay", title: "optionGlobeRotateDelay", fallback: "10" },
-          { id: "globeRotateSpeed", key: "speed", title: "optionGlobeRotateSpeed", fallback: "4" }
+          { id: "globeRotateSpeed", key: "speed", title: "optionGlobeRotateSpeed", fallback: "4" },
+          { id: "globeRotateFps", key: "fps", title: "optionRotateFps", fallback: "15" }
         ]
 
         Item {
@@ -431,7 +443,7 @@ Rectangle {
             onPopupOpenChanged: if (!popupOpen) panel.restoreKeyFocus()
             value: String(panel.settingsDisplaySetting(rotateRow.modelData.id, rotateRow.modelData.fallback))
             options: rotateRow.modelData.key === "delay" ? settingsView.globeRotateDelayOptions
-              : settingsView.globeRotateSpeedOptions
+              : (rotateRow.modelData.key === "fps" ? settingsView.globeRotateFpsOptions : settingsView.globeRotateSpeedOptions)
             onChanged: function(value) { panel.displayOptionsStore.setSettingsDisplaySetting(rotateRow.modelData.id, value) }
             Component.onCompleted: {
               var items = Object.assign({}, settingsView.globeRotateDropdowns)
@@ -441,8 +453,75 @@ Rectangle {
           }
         }
       }
+
+      Text {
+        textFormat: Text.PlainText
+        x: Style.space(12)
+        width: parent.width - Style.space(24)
+        bottomPadding: Style.space(6)
+        text: panel.i18n("optionRotateFpsHint")
+        color: panel.mutedText
+        font.family: panel.fontFamily
+        font.pixelSize: Style.font.caption
+        wrapMode: Text.WordWrap
+      }
     }
   }
+  // Choices below a switch or on their own (globeMoonStyle, globeStyle):
+  // their options, setting key and default.
+  readonly property var choiceSpecs: ({
+    globeMoonStyle: { title: "optionMoonStyle", fallback: "space", options: [
+      { value: "space", label: panel.i18n("moonStyleSpace") }, { value: "earth", label: panel.i18n("moonStyleEarth") }] },
+    globeStyle: { title: "optionMapStyle", fallback: "globe", options: [
+      { value: "globe", label: panel.i18n("mapStyleGlobe") }, { value: "map", label: panel.i18n("mapStyleFlat") }] }
+  })
+  property var choiceDropdowns: ({})
+  Component {
+    id: choiceRow
+
+    Item {
+      id: choiceItem
+      property string choiceId: ""
+      readonly property var choiceSpec: settingsView.choiceSpecs[choiceId] || ({ title: "", fallback: "", options: [] })
+      width: parent ? parent.width : 0
+      height: Style.space(40)
+
+      Text {
+        textFormat: Text.PlainText
+        anchors.left: parent.left
+        anchors.leftMargin: Style.space(12)
+        anchors.right: choiceDropdown.left
+        anchors.rightMargin: Style.space(8)
+        anchors.verticalCenter: parent.verticalCenter
+        text: choiceItem.choiceSpec.title ? panel.i18n(choiceItem.choiceSpec.title) : ""
+        color: panel.foreground
+        font.family: panel.fontFamily
+        font.pixelSize: Style.font.bodySmall
+        elide: Text.ElideRight
+      }
+
+      Dropdown {
+        id: choiceDropdown
+        anchors.right: parent.right
+        anchors.verticalCenter: parent.verticalCenter
+        width: Style.space(220)
+        showLabel: false
+        fontFamily: panel.fontFamily
+        hasCursor: settingsView.focusId === choiceItem.choiceId
+        onHasCursorChanged: if (hasCursor) settingsView.ensureVisible(this)
+        onPopupOpenChanged: if (!popupOpen) panel.restoreKeyFocus()
+        value: String(panel.settingsDisplaySetting(choiceItem.choiceId, choiceItem.choiceSpec.fallback))
+        options: choiceItem.choiceSpec.options
+        onChanged: function(value) { panel.displayOptionsStore.setSettingsDisplaySetting(choiceItem.choiceId, value) }
+      }
+      onChoiceIdChanged: {
+        var items = Object.assign({}, settingsView.choiceDropdowns)
+        items[choiceId] = choiceDropdown
+        settingsView.choiceDropdowns = items
+      }
+    }
+  }
+
   // Set by the rain notification's dropdowns inside a card delegate.
   property var rainThresholdDropdown: null
   property var rainRadiusDropdown: null
@@ -571,12 +650,16 @@ Rectangle {
             orderEntry: panel.orderKeyForSetting(option.key)
           })
           if (option.accentsBelow) items.push({ id: "barAccents", type: "dropdown" })
+          if (option.choiceBelow && panel.settingsDisplaySetting(option.key, true) === true)
+            items.push({ id: option.choiceBelow, type: "dropdown" })
         }
         if (card.hasHoverUnit) items.push({ id: "hoverUnit", type: "dropdown" })
         if (card.hasMapStyle) items.push({ id: "mapStyle", type: "dropdown" })
-        if (card.hasGlobeWash) items.push({ id: "globeWindLevel", type: "dropdown" })
-        if (card.hasGlobeRotate && panel.settingsDisplaySetting("globeAutoRotate", false))
-          items.push({ id: "globeRotateDelay", type: "dropdown" }, { id: "globeRotateSpeed", type: "dropdown" })
+        if (card.hasGlobeWash) items.push({ id: "globeStyle", type: "dropdown" }, { id: "globeWindLevel", type: "dropdown" })
+        if (card.hasGlobeRotate && panel.settingsDisplaySetting("globeAutoRotate", false)
+            && panel.settingsDisplaySetting("globeStyle", "globe") !== "map")
+          items.push({ id: "globeRotateDelay", type: "dropdown" }, { id: "globeRotateSpeed", type: "dropdown" },
+            { id: "globeRotateFps", type: "dropdown" })
         if (card.hasRainAlert && panel.settingsDisplaySetting("notifyRainSoon", true))
           items.push({ id: "rainThreshold", type: "dropdown" }, { id: "rainRadius", type: "dropdown" })
       }
@@ -659,7 +742,9 @@ Rectangle {
     if (id === "globeWindLevel") return spec(globeWindLevelOptions, globeWindLevelDropdown, display("globeWindLevel", "10m"))
     if (id === "globeRotateDelay") return spec(globeRotateDelayOptions, globeRotateDropdowns.delay || null, display("globeRotateDelay", "10"))
     if (id === "globeRotateSpeed") return spec(globeRotateSpeedOptions, globeRotateDropdowns.speed || null, display("globeRotateSpeed", "4"))
+    if (id === "globeRotateFps") return spec(globeRotateFpsOptions, globeRotateDropdowns.fps || null, display("globeRotateFps", "15"))
     if (id === "barAccents") return spec(barAccentsOptions, barAccentsDropdown, display("menubarAccents", "hover"))
+    if (choiceSpecs[id]) return spec(choiceSpecs[id].options, choiceDropdowns[id] || null, display(id, choiceSpecs[id].fallback))
     return spec(hoverUnitOptions, hoverUnitDropdown, display("hoverUnitSystem", ""))
   }
 
@@ -1555,6 +1640,15 @@ Rectangle {
                   sourceComponent: barAccentsRow
                   onLoaded: settingsView.barAccentsDropdown = item.dropdown
                 }
+                // A choice that belongs to the switch above (the moon's
+                // style), shown while that switch is on.
+                Loader {
+                  width: parent.width
+                  readonly property string choiceId: optionBlock.modelData.choiceBelow || ""
+                  active: choiceId !== "" && panel.settingsDisplaySetting(optionBlock.modelData.key, true) === true
+                  sourceComponent: choiceRow
+                  onLoaded: item.choiceId = choiceId
+                }
               }
             }
 
@@ -1569,6 +1663,7 @@ Rectangle {
             Loader {
               width: parent.width
               active: !!settingsCard.groupData.hasGlobeRotate && panel.settingsDisplaySetting("globeAutoRotate", false) === true
+                && panel.settingsDisplaySetting("globeStyle", "globe") !== "map"
               sourceComponent: globeRotateRows
             }
 

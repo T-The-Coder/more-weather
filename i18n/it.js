@@ -407,5 +407,16 @@ var entries = {
   "shortcutGlobeStep": "Globo: un passo di tempo indietro o avanti",
   "shortcutGlobePlay": "Globo: riproduci o metti in pausa la linea temporale",
   "shortcutGlobeNow": "Globo: torna ad adesso",
-  "globeCombineHint": "I livelli di colore si combinano, disegnati nell’ordine dell’elenco: la temperatura del mare sull’oceano accanto a quella dell’aria sulla terra, il vento a metà intensità sopra una temperatura, nuvole e precipitazioni sopra tutto. Numeri e puntatore mostrano le precipitazioni dove piove, altrimenti la temperatura, poi vento e nuvole."
+  "globeCombineHint": "I livelli di colore si combinano, disegnati nell’ordine dell’elenco: la temperatura del mare sull’oceano accanto a quella dell’aria sulla terra, il vento a metà intensità sopra una temperatura, nuvole e precipitazioni sopra tutto. Numeri e puntatore mostrano le precipitazioni dove piove, altrimenti la temperatura, poi vento e nuvole.",
+  "optionRotateFps": "Fotogrammi al secondo",
+  "optionRotateFpsHint": "Più fotogrammi appaiono più fluidi e usano più tempo del processore.",
+  "optionMoonStyle": "Luna",
+  "moonStyleSpace": "Come è illuminata (dallo spazio)",
+  "moonStyleEarth": "Come si vede da qui",
+  "optionMapStyle": "Stile della mappa",
+  "mapStyleFlat": "Mappa piana",
+  "mapStyleGlobe": "Globo",
+  "globeMapHint": "La mappa piana (Equal Earth) mostra tutta la Terra in una volta con gli stessi livelli, lo zoom e la linea temporale; trascinando si sposta, e non ruota da sola.",
+  "hoverTooltip": "Suggerimento al passaggio",
+  "hoverTooltipHint": "Ripete le voci della barra dei menu, comprese quelle al passaggio, nel suggerimento della barra."
 }

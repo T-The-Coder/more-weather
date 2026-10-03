@@ -407,5 +407,16 @@ var entries = {
   "shortcutGlobeStep": "Glóbus: časový krok zpět nebo vpřed",
   "shortcutGlobePlay": "Glóbus: přehrát nebo pozastavit časovou osu",
   "shortcutGlobeNow": "Glóbus: zpět na teď",
-  "globeCombineHint": "Barevné vrstvy se kombinují a kreslí v pořadí seznamu: teplota moře nad oceánem vedle teploty vzduchu nad pevninou, vítr napůl krycí přes teplotu, oblačnost a srážky přes vše. Čísla a ukazatel ukazují srážky tam, kde prší, jinak teplotu, pak vítr a oblačnost."
+  "globeCombineHint": "Barevné vrstvy se kombinují a kreslí v pořadí seznamu: teplota moře nad oceánem vedle teploty vzduchu nad pevninou, vítr napůl krycí přes teplotu, oblačnost a srážky přes vše. Čísla a ukazatel ukazují srážky tam, kde prší, jinak teplotu, pak vítr a oblačnost.",
+  "optionRotateFps": "Snímků za sekundu",
+  "optionRotateFpsHint": "Více snímků působí plynuleji a spotřebuje více času procesoru.",
+  "optionMoonStyle": "Měsíc",
+  "moonStyleSpace": "Jak je osvětlen (z vesmíru)",
+  "moonStyleEarth": "Jak je vidět odsud",
+  "optionMapStyle": "Styl mapy",
+  "mapStyleFlat": "Plochá mapa",
+  "mapStyleGlobe": "Glóbus",
+  "globeMapHint": "Plochá mapa (Equal Earth) ukazuje celou Zemi najednou se stejnými vrstvami, zvětšením a časovou osou; tažení ji posouvá a sama se neotáčí.",
+  "hoverTooltip": "Popisek při najetí",
+  "hoverTooltipHint": "Zopakuje položky lišty nabídek včetně těch při najetí v popisku lišty."
 }

@@ -32,13 +32,14 @@ Canvas {
 
   // The part of the earth in view, with longitudes within ±180 (null: all).
   function viewBox() {
-    var b = GlobeView.visibleBounds(globe.centerLat, Globe.wrapLon(globe.centerLon), globe.radius, width, height)
+    var b = globe.projection().box()
     var west = b.west, east = b.east
-    // On the whole disc, the front half.
-    if (east - west >= 359) {
+    // On the whole disc, the front half (the flat map shows it all).
+    if (east - west >= 359 && !globe.isMap) {
       west = globe.centerLon - 90
       east = globe.centerLon + 90
     }
+    if (east - west >= 359) return { south: b.south, north: b.north, west: -180, east: 179.99 }
     return { south: b.south, north: b.north, west: Globe.wrapLon(west), east: Globe.wrapLon(east) }
   }
   function reseed() {
@@ -85,26 +86,28 @@ Canvas {
     }
     if (!uLattice || !vLattice || !particles.length) return
     var R = globe.radius
-    // Within the disc, like the colour layers.
+    // Within the earth's edge, like the colour layers.
+    var P = globe.projection()
     ctx.save()
-    ctx.beginPath()
-    ctx.arc(globe.centerX, globe.centerY, R, 0, Math.PI * 2)
+    P.traceEarth(ctx)
     ctx.clip()
-    // About 20 px a second at 10 m/s near the ground, whatever the zoom.
-    var scale = 20 * 6371000 / (10 * Math.max(1, R)) * 100 / Math.max(10, scaleKmh)
+    // About 20 px a second at 10 m/s near the ground, whatever the zoom
+    // (the map's pixels per radian near the centre about its scale).
+    var pxPerRadian = P.kind === "map" ? P.scale : R
+    var scale = 20 * 6371000 / (10 * Math.max(1, pxPerRadian)) * 100 / Math.max(10, scaleKmh)
     var segments = GlobeStreaks.step(particles, uLattice, vLattice, 0.066, scale, box)
-    var m = Globe.viewMatrix(globe.centerLat, Globe.wrapLon(globe.centerLon))
-    var cx = globe.centerX, cy = globe.centerY
     ctx.strokeStyle = "rgba(255,255,255,0.85)"
     ctx.lineWidth = 1.1
     ctx.beginPath()
     for (var i = 0; i < segments.length; i++) {
       var s = segments[i]
-      var a = Globe.projectView(s[0], s[1], m, R)
-      var b = Globe.projectView(s[2], s[3], m, R)
-      if (!a.visible || !b.visible) continue
-      ctx.moveTo(cx + a.x, cy - a.y)
-      ctx.lineTo(cx + b.x, cy - b.y)
+      if (!P.at(s[0], s[1])) continue
+      var ax = P.x, ay = P.y
+      if (!P.at(s[2], s[3])) continue
+      // Not across the map's ±180° edge.
+      if (Math.abs(P.x - ax) > 40 || Math.abs(P.y - ay) > 40) continue
+      ctx.moveTo(ax, ay)
+      ctx.lineTo(P.x, P.y)
     }
     ctx.stroke()
     ctx.restore()

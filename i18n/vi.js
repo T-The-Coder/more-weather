@@ -407,5 +407,16 @@ var entries = {
   "shortcutGlobeStep": "Quả địa cầu: lùi hoặc tiến một bước thời gian",
   "shortcutGlobePlay": "Quả địa cầu: phát hoặc tạm dừng dòng thời gian",
   "shortcutGlobeNow": "Quả địa cầu: về hiện tại",
-  "globeCombineHint": "Các lớp màu kết hợp được và vẽ theo thứ tự danh sách: nhiệt độ nước biển trên đại dương cạnh nhiệt độ không khí trên đất liền, gió với nửa cường độ trên nhiệt độ, mây và lượng mưa trên cùng. Số và con trỏ hiển thị lượng mưa nơi đang mưa, nếu không là nhiệt độ, rồi gió và mây."
+  "globeCombineHint": "Các lớp màu kết hợp được và vẽ theo thứ tự danh sách: nhiệt độ nước biển trên đại dương cạnh nhiệt độ không khí trên đất liền, gió với nửa cường độ trên nhiệt độ, mây và lượng mưa trên cùng. Số và con trỏ hiển thị lượng mưa nơi đang mưa, nếu không là nhiệt độ, rồi gió và mây.",
+  "optionRotateFps": "Khung hình mỗi giây",
+  "optionRotateFpsHint": "Nhiều khung hình hơn trông mượt hơn và tốn nhiều thời gian bộ xử lý hơn.",
+  "optionMoonStyle": "Trăng",
+  "moonStyleSpace": "Như được chiếu sáng (từ không gian)",
+  "moonStyleEarth": "Như nhìn thấy từ đây",
+  "optionMapStyle": "Kiểu bản đồ",
+  "mapStyleFlat": "Bản đồ phẳng",
+  "mapStyleGlobe": "Quả địa cầu",
+  "globeMapHint": "Bản đồ phẳng (Equal Earth) hiển thị cả Trái Đất cùng lúc với cùng các lớp, thu phóng và dòng thời gian; kéo để di chuyển, và nó không tự xoay.",
+  "hoverTooltip": "Chú giải khi di chuột",
+  "hoverTooltipHint": "Lặp lại các mục của thanh menu, cả các mục khi di chuột, trong chú giải của thanh."
 }

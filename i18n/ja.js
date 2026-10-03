@@ -407,5 +407,16 @@ var entries = {
   "shortcutGlobeStep": "地球儀：時刻を 1 ステップ戻す・進める",
   "shortcutGlobePlay": "地球儀：タイムラインを再生・一時停止",
   "shortcutGlobeNow": "地球儀：現在に戻る",
-  "globeCombineHint": "カラーレイヤーは組み合わせられ、一覧の順に描画されます。海面水温は海上に、気温は陸上に。風は気温の上に半分の強さで、雲量と降水はすべての上に重なります。数値とポインターは雨の場所では降水を、それ以外は気温、次に風、雲量を示します。"
+  "globeCombineHint": "カラーレイヤーは組み合わせられ、一覧の順に描画されます。海面水温は海上に、気温は陸上に。風は気温の上に半分の強さで、雲量と降水はすべての上に重なります。数値とポインターは雨の場所では降水を、それ以外は気温、次に風、雲量を示します。",
+  "optionRotateFps": "フレームレート",
+  "optionRotateFpsHint": "フレームが多いほど滑らかになり、プロセッサー時間を多く使います。",
+  "optionMoonStyle": "月",
+  "moonStyleSpace": "照らされている向き（宇宙から）",
+  "moonStyleEarth": "ここから見た姿",
+  "optionMapStyle": "地図の表示",
+  "mapStyleFlat": "平面地図",
+  "mapStyleGlobe": "地球儀",
+  "globeMapHint": "平面地図（Equal Earth）は同じレイヤー、ズーム、タイムラインで地球全体を一度に表示します。ドラッグで移動でき、自動では回転しません。",
+  "hoverTooltip": "ホバー時のツールチップ",
+  "hoverTooltipHint": "メニューバーの項目を、ホバー時の項目も含めて、バーのツールチップに表示します。"
 }

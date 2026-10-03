@@ -26,6 +26,8 @@ ShellRoot {
   }
 
   // The colour layers on, the others off.
+  // The harness's windows are never active: animations allowed anyway.
+  Component.onCompleted: panel.motionForced = true
   function layersOn(list) {
     ;["temperature", "sst", "wind", "cloud", "precipitation"].forEach(function(kind) {
       panel.setGlobeLayer(kind, list.indexOf(kind) >= 0)
@@ -108,6 +110,22 @@ ShellRoot {
       })
     })
     return list
+  }
+  property double cpuFrom: 0
+  function cpuStart() {
+    var g = panel.globeItem
+    g.paintStats = { count: 0, total: 0, max: 0 }
+    g.washItem.stats = { count: 0, total: 0, max: 0 }
+    g.overlayItem.stats = { count: 0, total: 0, max: 0 }
+    g.streaksItem.stats = { count: 0, total: 0, max: 0 }
+    cpuFrom = Date.now()
+  }
+  function cpuReport(size) {
+    var g = panel.globeItem
+    var spent = g.paintStats.total + g.washItem.stats.total + g.overlayItem.stats.total + g.streaksItem.stats.total
+    var elapsed = Date.now() - cpuFrom
+    console.log("GLOBE", size, "px auto-rotation:", g.paintStats.count, "frames in", elapsed, "ms,", spent, "ms painting:",
+      Math.round(spent / elapsed * 100) + " % of a core (paints only)")
   }
   // Turns the globe a little every 40 ms while measuring.
   Timer {
@@ -197,6 +215,28 @@ ShellRoot {
   ].concat(globeMeasures("500"), [
     function() { panel.contentRoot.parent = globeHostLarge }
   ], globeMeasures("840"), [
+    // Auto-rotation's share of a core with everything on: four seconds of
+    // turning by itself, every paint's time added up.
+    function() {
+      panel.setViewDisplaySetting("globeAutoRotate", true)
+      globeView(0, 20, 10)
+      panel.globeItem.rotating = true
+      cpuStart()
+    },
+    function() {}, function() {},
+    function() { cpuReport("500") },
+    function() { panel.contentRoot.parent = globeHostLarge; cpuStart() },
+    function() {}, function() {},
+    function() {
+      cpuReport("840")
+      panel.globeItem.rotating = false
+      panel.setViewDisplaySetting("globeAutoRotate", false)
+      panel.setViewDisplaySetting("globeStreaks", false)
+      panel.contentRoot.parent = globeHost
+    },
+    // At rest with nothing animating: no paints at all.
+    function() { cpuStart() }, function() {}, function() {},
+    function() { cpuReport("500 at rest") },
     function() { layersOn(["temperature"]) },
     // The view tilted to look at Europe from 45° N, then z2 over Europe,
     // then z4 over the Alps with borders and towns.
@@ -320,6 +360,41 @@ ShellRoot {
       panel.setViewDisplaySetting("globeIsobars", false)
       panel.setViewDisplaySetting("globeStreaks", false)
     },
+    // The flat map: temperature, cloud and precipitation; with isobars and
+    // streaks; zoomed in at z3; at +24 h; then its cost moving.
+    function() {
+      panel.setViewDisplaySetting("globeStyle", "map")
+      layersOn(["temperature", "cloud", "precipitation"])
+      globeView(0, 0, 0)
+    },
+    function() {}, function() {}, function() { shot("09x-map-layers-z0") },
+    function() {
+      layersOn(["temperature"])
+      panel.setViewDisplaySetting("globeIsobars", true)
+      panel.setViewDisplaySetting("globeStreaks", true)
+    },
+    function() {}, function() {}, function() {}, function() { shot("09y-map-isobars-streaks-z0") },
+    function() {
+      panel.setViewDisplaySetting("globeIsobars", false)
+      panel.setViewDisplaySetting("globeStreaks", false)
+      globeView(3, 47, 9)
+    },
+    function() {}, function() {}, function() {}, function() { shot("09z-map-z3") },
+    function() { globeView(0, 0, 0); panel.globeData.pinnedMs = panel.globeData.nowMs + 24 * 3600000 },
+    function() {}, function() {}, function() { shot("09za-map-24h-z0") },
+    function() {
+      panel.globeData.backToNow()
+      layersOn(["temperature", "cloud", "precipitation"])
+      panel.setViewDisplaySetting("globeIsobars", true)
+      panel.setViewDisplaySetting("globeStreaks", true)
+    }
+  ], globeMeasures("500 map"), [
+    function() {
+      layersOn(["temperature"])
+      panel.setViewDisplaySetting("globeIsobars", false)
+      panel.setViewDisplaySetting("globeStreaks", false)
+      panel.setViewDisplaySetting("globeStyle", "globe")
+    },
     function() { globeView(0, 0, 10) },
     function() { panel.contentRoot.parent = widgetHost },
     // The night side and the moon: the globe turned towards them.
@@ -423,6 +498,12 @@ ShellRoot {
     },
     function() { shot("27-pressure") },
     function() { shotOf(barHost.item, "28-bar-pressure") },
+    // The bar's tooltip, when switched on: the entries in words.
+    function() { panel.settingsTargetSurface = "menubar"; display("hoverTooltip", true) },
+    function() {
+      console.log("TOOLTIP", JSON.stringify(barHost.item.hoverTooltipText))
+      display("hoverTooltip", false)
+    },
     // Settings → General → Places after importing More Time's cities.
     function() { panel.openSettings("general"); panel.cityImport.run() },
     function() { press(Qt.Key_End) },

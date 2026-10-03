@@ -407,5 +407,16 @@ var entries = {
   "shortcutGlobeStep": "Globus: et tidstrin tilbage eller frem",
   "shortcutGlobePlay": "Globus: afspil eller sæt tidslinjen på pause",
   "shortcutGlobeNow": "Globus: tilbage til nu",
-  "globeCombineHint": "Farvelagene kan kombineres og tegnes i listens rækkefølge: havtemperaturen over havet ved siden af lufttemperaturen over land, vinden halvt dækkende over en temperatur, skyer og nedbør øverst. Tal og markøren viser nedbør, hvor det regner, ellers temperaturen, så vind og skyer."
+  "globeCombineHint": "Farvelagene kan kombineres og tegnes i listens rækkefølge: havtemperaturen over havet ved siden af lufttemperaturen over land, vinden halvt dækkende over en temperatur, skyer og nedbør øverst. Tal og markøren viser nedbør, hvor det regner, ellers temperaturen, så vind og skyer.",
+  "optionRotateFps": "Billeder pr. sekund",
+  "optionRotateFpsHint": "Flere billeder ser blødere ud og bruger mere processortid.",
+  "optionMoonStyle": "Måne",
+  "moonStyleSpace": "Som den er oplyst (fra rummet)",
+  "moonStyleEarth": "Som den ses herfra",
+  "optionMapStyle": "Kortstil",
+  "mapStyleFlat": "Fladt kort",
+  "mapStyleGlobe": "Globus",
+  "globeMapHint": "Det flade kort (Equal Earth) viser hele jorden på én gang med de samme lag, zoom og tidslinje; et træk panorerer det, og det drejer ikke af sig selv.",
+  "hoverTooltip": "Værktøjstip ved peg",
+  "hoverTooltipHint": "Gentager menulinjens punkter, også dem der vises ved peg, i bjælkens værktøjstip."
 }

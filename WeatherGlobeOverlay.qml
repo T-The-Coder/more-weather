@@ -2,6 +2,7 @@ import QtQuick
 import qs.Commons
 import "Globe.js" as Globe
 import "GlobeSymbols.js" as GlobeSymbols
+import "EqualEarth.js" as EqualEarth
 import "Model.js" as Model
 
 // What the globe draws over the colour wash from the model (Settings →
@@ -31,31 +32,20 @@ Canvas {
   property color ink: panel.foreground
   property color surface: Color.popups.background
 
-  // The isobars' points as unit vectors, made once per new data, so a frame
-  // only turns them: [{ level, labelled, lines: [{ xyz, lons }] }].
-  property var isoVectors: []
-  onLayersChanged: {
-    var list = []
-    var source = layers && layers.isobars ? layers.isobars : []
-    var rad = Math.PI / 180
-    for (var l = 0; l < source.length; l++) {
-      var lines = []
-      for (var n = 0; n < source[l].lines.length; n++) {
-        var line = source[l].lines[n]
-        var xyz = new Array(line.length / 2 * 3), lons = new Array(line.length / 2)
-        for (var k = 0, j = 0; k + 1 < line.length; k += 2, j++) {
-          var phi = line[k + 1] * rad, lam = line[k] * rad
-          xyz[j * 3] = Math.cos(phi) * Math.cos(lam)
-          xyz[j * 3 + 1] = Math.cos(phi) * Math.sin(lam)
-          xyz[j * 3 + 2] = Math.sin(phi)
-          lons[j] = line[k]
-        }
-        lines.push({ xyz: xyz, lons: lons })
-      }
-      list.push({ level: source[l].level, labelled: source[l].level % 8 === 0, lines: lines })
+  onLayersChanged: { mapped = ({}); requestPaint() }
+  // The isobars in Equal Earth units, per level and line (flat map).
+  property var mapped: ({})
+  function mapLine(level, index, line) {
+    var key = level + ":" + index
+    var known = mapped[key]
+    if (known) return known
+    var out = []
+    for (var j = 0; j + 1 < line.length; j += 2) {
+      var p = EqualEarth.project(line[j + 1], line[j])
+      out.push(p.x, p.y)
     }
-    isoVectors = list
-    requestPaint()
+    mapped[key] = out
+    return out
   }
   onIsobarsChanged: requestPaint()
   onStormsChanged: requestPaint()
@@ -88,11 +78,10 @@ Canvas {
     var data = layers
     var R = globe.radius
     var cx = globe.centerX, cy = globe.centerY
-    var m = Globe.viewMatrix(globe.centerLat, Globe.wrapLon(globe.centerLon))
+    var P = globe.projection()
     var project = function(lat, lon) {
-      var p = Globe.projectView(lat, lon, m, R)
-      return { x: cx + p.x, y: cy - p.y, visible: p.visible && cx + p.x >= -20 && cx + p.x <= width + 20
-        && cy - p.y >= -20 && cy - p.y <= height + 20 }
+      var p = P.project(lat, lon)
+      return { x: p.x, y: p.y, visible: p.visible && p.x >= -20 && p.x <= width + 20 && p.y >= -20 && p.y <= height + 20 }
     }
     var fontPx = Style.font.caption
     // Clear of my places' and the towns' labels (drawn by the globe).
@@ -126,28 +115,35 @@ Canvas {
     // labels and centres only at rest.
     var still = !globe.moving
     if (isobars && data && data.isobars) {
-      // The lines within the disc, like the colour layers.
+      // The lines within the earth's edge, like the colour layers.
       ctx.save()
-      ctx.beginPath()
-      ctx.arc(cx, cy, R, 0, Math.PI * 2)
+      P.traceEarth(ctx)
       ctx.clip()
       ctx.lineWidth = 0.9
       ctx.strokeStyle = rgba(ink, 0.45)
       ctx.beginPath()
       var labelSpots = []
-      var m0 = m[0], m1 = m[1], m2 = m[2], m3 = m[3], m4 = m[4], m5 = m[5], m6 = m[6], m7 = m[7], m8 = m[8]
-      var iso = isoVectors
+      var iso = data.isobars
       for (var l = 0; l < iso.length; l++) {
-        var labelled = still && iso[l].labelled
+        var labelled = still && iso[l].level % 8 === 0
         var text = labelled ? pressureText(iso[l].level) : ""
         for (var n = 0; n < iso[l].lines.length; n++) {
-          var xyz = iso[l].lines[n].xyz, lons = iso[l].lines[n].lons
-          var open = false, run = 0
-          for (var j = 0; j < lons.length; j++) {
-            var vx = xyz[j * 3], vy = xyz[j * 3 + 1], vz = xyz[j * 3 + 2]
-            var visible = m6 * vx + m7 * vy + m8 * vz >= 0
-            var px = cx + R * (m0 * vx + m1 * vy + m2 * vz), py = cy - R * (m3 * vx + m4 * vy + m5 * vz)
-            if (!visible || (open && Math.abs(lons[j] - lons[j - 1]) > 180)) {
+          var line = iso[l].lines[n]
+          // On the flat map the points in map units, made once per data.
+          var mapped = P.kind === "map" ? mapLine(l, n, line) : null
+          var open = false, run = 0, lastLon = 0
+          for (var j = 0; j + 1 < line.length; j += 2) {
+            var visible, px, py
+            if (mapped) {
+              px = P.toScreenX(mapped[j])
+              py = P.toScreenY(mapped[j + 1])
+              visible = px >= -50 && px <= width + 50 && py >= -50 && py <= height + 50
+            } else {
+              visible = P.at(line[j + 1], line[j])
+              px = P.x
+              py = P.y
+            }
+            if (!visible || (open && Math.abs(line[j] - lastLon) > 180)) {
               open = false
               run = 0
               if (!visible) continue
@@ -155,6 +151,7 @@ Canvas {
             if (open) ctx.lineTo(px, py)
             else ctx.moveTo(px, py)
             open = true
+            lastLon = line[j]
             run++
             // A label a little way into each long enough visible run.
             if (labelled && run === 6 && px > 0 && py > 0 && px < width && py < height)

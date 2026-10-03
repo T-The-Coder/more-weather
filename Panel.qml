@@ -708,6 +708,14 @@ Panel {
   readonly property bool radarShown: opened && sectionShown("radar")
   readonly property bool windShown: opened && sectionShown("wind")
   readonly property bool globeShown: opened && sectionShown("globe")
+  // Animations (the globe's turning and streaks, the bolts' flashes, the
+  // timeline's playback) run only while someone can see them: the popup
+  // open, or the app's window active and shown. The screenshot harness,
+  // whose windows are never active, forces them.
+  property bool motionForced: false
+  readonly property bool appWindowShown: !!contentRoot && !!contentRoot.Window.window && contentRoot.Window.active
+    && contentRoot.Window.window.visibility !== Window.Minimized && contentRoot.Window.window.visibility !== Window.Hidden
+  readonly property bool motionAllowed: motionForced || (opened && (!standaloneMode || appWindowShown))
   // The globe takes Ctrl + arrows, + − and 0 while no radar or wind map is
   // shown (they keep theirs).
   readonly property bool globeKeys: globeShown && !radarShown && !windShown
@@ -751,6 +759,41 @@ Panel {
   readonly property bool menubarShowCurrent: menubarDisplaySetting("showCurrent", true)
   // Text and symbols in the bar turn bold while the pointer rests on them.
   readonly property bool menubarBoldOnHover: menubarDisplaySetting("boldOnHover", true) !== false
+  // The bar's tooltip repeats the menu bar's entries, the hover ones
+  // included (it shows while the pointer rests there), one per line with
+  // its label and the place first; never while the popup is open.
+  readonly property bool menubarHoverTooltip: menubarDisplaySetting("hoverTooltip", false) === true
+  readonly property string menubarTooltipText: {
+    if (!menubarHoverTooltip || opened) return ""
+    var lines = []
+    if (reportLocation !== "") lines.push(reportLocation)
+    function add(label, value) {
+      var text = String(value || "")
+      if (text !== "") lines.push(label !== "" ? label + " " + text : text)
+    }
+    var order = menubarEntryOrder
+    for (var i = 0; i < order.length; i++) {
+      var key = order[i]
+      if (key === "currentLocation" || key === "currentWeatherSymbol") continue
+      if (key === "currentTemperature") { if (menubarShowTemperature) add(i18n("temperature"), menubarTemperatureText) }
+      else if (key === "currentFeelsLike") { if (menubarShowFeelsLike) add(i18n("feelsLike"), menubarReportFeels) }
+      else if (key === "currentWind") { if (menubarShowWind) add(i18n("wind"), menubarReportWind) }
+      else if (key === "currentHumidity") { if (menubarShowHumidity) add(i18n("humidity"), menubarReportHumidity) }
+      else if (key === "currentPressure") { if (menubarShowPressure) add(i18n("pressure"), menubarReportPressure) }
+      else if (key === "currentUv") add("", menubarUvText)
+      else if (key === "currentDayRange") add("", menubarDayRangeText)
+      else if (key === "currentRain") add(i18n("rain"), menubarRainBadgeText)
+      else if (key === "currentRainAmount") add("", menubarRainAmountText)
+      else if (key === "currentSunrise") { if (menubarSunriseText !== "") add(i18n("sunrise"), menubarSunriseText) }
+      else if (key === "currentSunset") { if (menubarSunsetText !== "") add(i18n("sunset"), menubarSunsetText) }
+      else if (key === "currentSunNext") add("", menubarSunNextText)
+      else if (key === "currentMoon") { if (menubarMoonText !== "") add(i18n("moon"), menubarMoonText) }
+      else if (key === "currentAirQuality") add(i18n("airQualityIndex"), menubarAirQualityText)
+      else if (key === "currentPollen") add(i18n("pollen"), menubarPollenAlertText)
+      else if (key === "currentWarnings") { if (menubarShowWarnings && hasWeatherAlert) lines.push(i18n("weatherWarnings")) }
+    }
+    return lines.join("\n")
+  }
   // The values in the bar in the popup's colour accents: "off", "hover"
   // (while the bar turns bold) or "always". The global colour switch
   // (colorAccents) still has the last word.
@@ -1812,6 +1855,9 @@ Panel {
       globeTimeline: true,
       globeRotateDelay: "10",
       globeRotateSpeed: "4",
+      globeRotateFps: "15",
+      globeMoonStyle: "space",
+      globeStyle: "globe",
       airQualityAsTab: false,
       hourlyAsTab: false,
       dailyAsTab: false,
@@ -1941,6 +1987,7 @@ Panel {
       entryOrder: defaultMenubarEntryOrder(),
       hoverUnitSystem: "",
       boldOnHover: true,
+      hoverTooltip: false,
       menubarAccents: "hover",
       openWidgetOnHover: false,
       notifySevereWarnings: true,

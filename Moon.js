@@ -81,6 +81,19 @@ function moonLitAngle(moon, sun, toScreen) {
   return Math.atan2(q.y - p.y, q.x - p.x)
 }
 
+// The lit side for a drawing style (radians, canvas: 0 to the right):
+//  - "space" (the default): as it is lit, seen from above its sub-lunar
+//    point: towards the Sun (spaceAngle, from moonLitAngle);
+//  - "earth": the phase as an observer at latitude observerLat sees it in
+//    the sky, without the tilt of the hour: lit on the right while waxing
+//    and on the left while waning north of the equator, mirrored south of
+//    it. moon: { waxing } (moonPosition).
+function moonLitAngleFor(style, moon, spaceAngle, observerLat) {
+  if (style !== "earth") return spaceAngle
+  var north = !(Number(observerLat) < 0)
+  return !!moon.waxing === north ? 0 : Math.PI
+}
+
 // The soft shadow the floating Moon casts at its sub-lunar point.
 function paintMoonShadow(ctx, x, y, r) {
   ctx.save()
@@ -142,5 +155,5 @@ function rgbText(c) {
 
 if (typeof module !== "undefined") module.exports = {
   moonPhaseFraction: moonPhaseFraction, moonPosition: moonPosition, towards: towards,
-  moonLitAngle: moonLitAngle, paintMoonShadow: paintMoonShadow, paintMoon: paintMoon, rgbText: rgbText
+  moonLitAngle: moonLitAngle, moonLitAngleFor: moonLitAngleFor, paintMoonShadow: paintMoonShadow, paintMoon: paintMoon, rgbText: rgbText
 }

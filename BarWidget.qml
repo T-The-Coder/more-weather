@@ -60,6 +60,8 @@ BarWidget {
   }
 
   readonly property Item barButton: button
+  // The tooltip it would show (the screenshot harness logs it).
+  readonly property string hoverTooltipText: button.tooltipText
   // Text and symbols in the bar turn bold while the pointer rests on them,
   // also with the popup open over the widget's spot (menu bar setting
   // "Bold while hovered").
@@ -126,8 +128,11 @@ BarWidget {
     fixedHeight: root.vertical ? Style.bar.iconSlot : -1
     horizontalMargin: 8.75
     verticalPadding: 8.75
-    // Tooltip suppressed because the panel is the detail view.
-    tooltipText: ""
+    // The bar's tooltip only when asked for (Settings → Display → Menu bar:
+    // Tooltip on hover): the entries in words; otherwise the popup is the
+    // detail view. Shown again as it changes while the pointer rests.
+    tooltipText: panelLoader.item ? panelLoader.item.menubarTooltipText : ""
+    onTooltipTextChanged: if (root.bar && tooltipHovered && tooltipText !== "") root.bar.showTooltip(button, tooltipText)
 
     Row {
       id: weatherBarContent

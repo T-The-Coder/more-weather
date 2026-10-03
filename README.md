@@ -25,6 +25,9 @@ runs as a standalone app window.
   UV and the rain chance then take the popup's colour accents; the symbol, sun times,
   moon and pollen stay plain, the warning mark keeps its colour, and the global
   **Colour accents** switch turns this off too.
+- **Tooltip on hover** (menu bar settings, off by default): the bar's tooltip repeats
+  what the menu bar shows under the pointer, one entry per line with its label and the
+  place first ("Feels like 7 °C", "Wind 26 km/h" …); not while the popup is open.
 - Left click opens the popup, middle click refreshes, right click sends a short
   status notification.
 
@@ -90,7 +93,11 @@ runs as a standalone app window.
   it, Ctrl + wheel, a double click, `+` `−` or its buttons zoom in to about 400 km
   across, where the coast, lakes, borders and towns come from the radar map's data; a
   click on a place shows that place, and on the whole disc it can turn by itself after a
-  while without a touch (Settings → Display → Globe: delay and speed). Colour layers,
+  while without a touch (Settings → Display → Globe: delay, speed and frames per second;
+  it moves only while the popup or the app's window is in view). **Map style** shows a
+  flat Equal Earth map instead, with the same layers, zoom, timeline and places (it pans
+  rather than turns); the **Moon** can be drawn lit as from space or as the shown place
+  sees its phase. Colour layers,
   each a switch and freely combined, show the temperature (default), the sea's
   temperature, wind, cloud and precipitation from Open-Meteo's model, coarse for the
   whole earth and finer close up, ending crisply at the globe's rim; the legend has a row
@@ -189,7 +196,7 @@ too, and the settings name their keys where they apply.
 | `Ctrl` + wheel | Map: zoom towards the pointer |
 | `⇧` + wheel | Daily forecast and radar timeline: sideways |
 | `⇧ ↑ ↓` | Wind map: higher / lower |
-| `Ctrl ← → ↑ ↓` / drag | Globe: turn and tilt (15°, or a quarter of the view when zoomed in) |
+| `Ctrl ← → ↑ ↓` / drag | Globe: turn and tilt (15°, or a quarter of the view when zoomed in); on the flat map: move |
 | `+` / `−` / Ctrl + wheel | Globe: zoom in / out (at the pointer with the wheel) |
 | `0` | Globe: the whole globe at the shown place |
 | `v` | Globe: one colour layer alone, then the next (temperature, cloud, precipitation, wind, sea temperature, none) |

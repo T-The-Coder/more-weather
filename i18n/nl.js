@@ -407,5 +407,16 @@ var entries = {
   "shortcutGlobeStep": "Globe: een tijdstap terug of vooruit",
   "shortcutGlobePlay": "Globe: tijdlijn afspelen of pauzeren",
   "shortcutGlobeNow": "Globe: terug naar nu",
-  "globeCombineHint": "De kleurlagen zijn te combineren en worden in de volgorde van de lijst getekend: de zeewatertemperatuur boven de oceaan naast de luchttemperatuur boven land, de wind half dekkend over een temperatuur, bewolking en neerslag over alles. Getallen en aanwijzer tonen neerslag waar het regent, anders de temperatuur, dan wind en bewolking."
+  "globeCombineHint": "De kleurlagen zijn te combineren en worden in de volgorde van de lijst getekend: de zeewatertemperatuur boven de oceaan naast de luchttemperatuur boven land, de wind half dekkend over een temperatuur, bewolking en neerslag over alles. Getallen en aanwijzer tonen neerslag waar het regent, anders de temperatuur, dan wind en bewolking.",
+  "optionRotateFps": "Beelden per seconde",
+  "optionRotateFpsHint": "Meer beelden ogen vloeiender en kosten meer processortijd.",
+  "optionMoonStyle": "Maan",
+  "moonStyleSpace": "Zoals hij verlicht is (vanuit de ruimte)",
+  "moonStyleEarth": "Zoals je hem hier ziet",
+  "optionMapStyle": "Kaartstijl",
+  "mapStyleFlat": "Platte kaart",
+  "mapStyleGlobe": "Globe",
+  "globeMapHint": "De platte kaart (Equal Earth) toont de hele aarde in één keer met dezelfde lagen, zoom en tijdlijn; slepen verschuift haar, en ze draait niet vanzelf.",
+  "hoverTooltip": "Tooltip bij aanwijzen",
+  "hoverTooltipHint": "Herhaalt de items van de menubalk, ook die bij aanwijzen, in de tooltip van de balk."
 }

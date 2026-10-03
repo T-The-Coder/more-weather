@@ -407,5 +407,16 @@ var entries = {
   "shortcutGlobeStep": "지구본: 시간 한 단계 뒤로 또는 앞으로",
   "shortcutGlobePlay": "지구본: 타임라인 재생 또는 일시 정지",
   "shortcutGlobeNow": "지구본: 지금으로 돌아가기",
-  "globeCombineHint": "색상 레이어는 함께 쓸 수 있으며 목록 순서대로 그려집니다. 바다 위에는 해수면 온도, 육지 위에는 기온, 바람은 온도 위에 절반 강도로, 구름과 강수는 맨 위에 그려집니다. 숫자와 포인터는 비가 오는 곳에서는 강수를, 그 밖에는 기온, 그다음 바람과 구름을 보여 줍니다."
+  "globeCombineHint": "색상 레이어는 함께 쓸 수 있으며 목록 순서대로 그려집니다. 바다 위에는 해수면 온도, 육지 위에는 기온, 바람은 온도 위에 절반 강도로, 구름과 강수는 맨 위에 그려집니다. 숫자와 포인터는 비가 오는 곳에서는 강수를, 그 밖에는 기온, 그다음 바람과 구름을 보여 줍니다.",
+  "optionRotateFps": "초당 프레임",
+  "optionRotateFpsHint": "프레임이 많을수록 부드럽지만 프로세서 시간을 더 씁니다.",
+  "optionMoonStyle": "달",
+  "moonStyleSpace": "비치는 그대로 (우주에서)",
+  "moonStyleEarth": "여기서 보이는 모습",
+  "optionMapStyle": "지도 형태",
+  "mapStyleFlat": "평면 지도",
+  "mapStyleGlobe": "지구본",
+  "globeMapHint": "평면 지도(Equal Earth)는 같은 레이어, 확대, 타임라인으로 지구 전체를 한 번에 보여 줍니다. 끌어서 이동하며 스스로 돌지 않습니다.",
+  "hoverTooltip": "마우스를 올리면 툴팁",
+  "hoverTooltipHint": "메뉴 막대의 항목을 마우스를 올렸을 때 보이는 항목까지 막대의 툴팁에 다시 보여 줍니다."
 }

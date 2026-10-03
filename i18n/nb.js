@@ -407,5 +407,16 @@ var entries = {
   "shortcutGlobeStep": "Globus: et tidssteg tilbake eller fram",
   "shortcutGlobePlay": "Globus: spill av eller sett tidslinjen på pause",
   "shortcutGlobeNow": "Globus: tilbake til nå",
-  "globeCombineHint": "Fargelagene kan kombineres og tegnes i listens rekkefølge: sjøtemperaturen over havet ved siden av lufttemperaturen over land, vinden halvt dekkende over en temperatur, skyer og nedbør øverst. Tall og pekeren viser nedbør der det regner, ellers temperaturen, så vind og skyer."
+  "globeCombineHint": "Fargelagene kan kombineres og tegnes i listens rekkefølge: sjøtemperaturen over havet ved siden av lufttemperaturen over land, vinden halvt dekkende over en temperatur, skyer og nedbør øverst. Tall og pekeren viser nedbør der det regner, ellers temperaturen, så vind og skyer.",
+  "optionRotateFps": "Bilder per sekund",
+  "optionRotateFpsHint": "Flere bilder ser jevnere ut og bruker mer prosessortid.",
+  "optionMoonStyle": "Måne",
+  "moonStyleSpace": "Slik den er opplyst (fra verdensrommet)",
+  "moonStyleEarth": "Slik den ses herfra",
+  "optionMapStyle": "Kartstil",
+  "mapStyleFlat": "Flatt kart",
+  "mapStyleGlobe": "Globus",
+  "globeMapHint": "Det flate kartet (Equal Earth) viser hele jorda på én gang med de samme lagene, zoomen og tidslinjen; et drag panorerer det, og det roterer ikke av seg selv.",
+  "hoverTooltip": "Verktøytips ved peking",
+  "hoverTooltipHint": "Gjentar menylinjens oppføringer, også de som vises ved peking, i linjens verktøytips."
 }

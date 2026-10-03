@@ -407,5 +407,16 @@ var entries = {
   "shortcutGlobeStep": "Bola dunia: satu langkah waktu mundur atau maju",
   "shortcutGlobePlay": "Bola dunia: putar atau jeda linimasa",
   "shortcutGlobeNow": "Bola dunia: kembali ke sekarang",
-  "globeCombineHint": "Lapisan warna dapat digabung dan digambar menurut urutan daftar: suhu laut di atas samudra di samping suhu udara di atas daratan, angin setengah kuat di atas suhu, awan dan presipitasi di atas semuanya. Angka dan penunjuk menampilkan presipitasi di tempat hujan, selain itu suhu, lalu angin dan awan."
+  "globeCombineHint": "Lapisan warna dapat digabung dan digambar menurut urutan daftar: suhu laut di atas samudra di samping suhu udara di atas daratan, angin setengah kuat di atas suhu, awan dan presipitasi di atas semuanya. Angka dan penunjuk menampilkan presipitasi di tempat hujan, selain itu suhu, lalu angin dan awan.",
+  "optionRotateFps": "Bingkai per detik",
+  "optionRotateFpsHint": "Lebih banyak bingkai terlihat lebih halus dan memakai lebih banyak waktu prosesor.",
+  "optionMoonStyle": "Bulan",
+  "moonStyleSpace": "Seperti disinari (dari angkasa)",
+  "moonStyleEarth": "Seperti terlihat dari sini",
+  "optionMapStyle": "Gaya peta",
+  "mapStyleFlat": "Peta datar",
+  "mapStyleGlobe": "Bola dunia",
+  "globeMapHint": "Peta datar (Equal Earth) menampilkan seluruh bumi sekaligus dengan lapisan, zoom, dan linimasa yang sama; seret untuk menggeser, dan tidak berputar sendiri.",
+  "hoverTooltip": "Tooltip saat diarahkan",
+  "hoverTooltipHint": "Mengulang entri bilah menu, termasuk yang muncul saat diarahkan, di tooltip bilah."
 }

@@ -407,5 +407,16 @@ var entries = {
   "shortcutGlobeStep": "Küre: bir zaman adımı geri veya ileri",
   "shortcutGlobePlay": "Küre: zaman çizelgesini oynat veya duraklat",
   "shortcutGlobeNow": "Küre: şimdiye dön",
-  "globeCombineHint": "Renk katmanları birleşir ve listedeki sırayla çizilir: okyanus üzerinde deniz sıcaklığı, kara üzerinde hava sıcaklığı; rüzgâr bir sıcaklığın üzerine yarı yoğunlukta; bulut ve yağış her şeyin üstünde. Sayılar ve işaretçi yağmur yağan yerde yağışı, aksi halde sıcaklığı, sonra rüzgârı ve bulutu gösterir."
+  "globeCombineHint": "Renk katmanları birleşir ve listedeki sırayla çizilir: okyanus üzerinde deniz sıcaklığı, kara üzerinde hava sıcaklığı; rüzgâr bir sıcaklığın üzerine yarı yoğunlukta; bulut ve yağış her şeyin üstünde. Sayılar ve işaretçi yağmur yağan yerde yağışı, aksi halde sıcaklığı, sonra rüzgârı ve bulutu gösterir.",
+  "optionRotateFps": "Saniyedeki kare",
+  "optionRotateFpsHint": "Daha fazla kare daha akıcı görünür ve daha çok işlemci zamanı kullanır.",
+  "optionMoonStyle": "Ay",
+  "moonStyleSpace": "Aydınlandığı gibi (uzaydan)",
+  "moonStyleEarth": "Buradan görüldüğü gibi",
+  "optionMapStyle": "Harita biçimi",
+  "mapStyleFlat": "Düz harita",
+  "mapStyleGlobe": "Küre",
+  "globeMapHint": "Düz harita (Equal Earth) tüm Dünya'yı aynı katmanlar, yakınlaştırma ve zaman çizelgesiyle bir kerede gösterir; sürüklemek onu kaydırır ve kendiliğinden dönmez.",
+  "hoverTooltip": "Üzerine gelince ipucu",
+  "hoverTooltipHint": "Menü çubuğunun öğelerini, üzerine gelince görünenler dahil, çubuğun ipucunda tekrarlar."
 }

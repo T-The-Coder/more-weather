@@ -4,6 +4,31 @@ All notable changes to More Weather are documented here.
 
 ## Unreleased
 
+- **Flat map** for the globe section (Settings → Display → Globe: Map
+  style): the earth in the Equal Earth projection, as in More Time, with
+  everything the globe has: the colour layers, isobars, streaks, storm and
+  thunderstorm symbols, numbers, night with its twilight, sun and moon, my
+  places, the timeline, the legend and the values under the pointer; zoom
+  towards the pointer, drag or Ctrl + arrows to move, `0` for the whole
+  map, the basemap's detail from z3. Both pictures sit behind one small
+  projection interface (`GlobeProjection.js`), so the layers do not care
+  which is shown. The flat map does not turn by itself.
+- **Moon** style on the globe: lit towards the sun as seen from space
+  (as before) or as the shown place sees its phase (Settings → Display →
+  Globe, below Moon), shared with More Time.
+- **Tooltip on hover** for the menu bar (off by default): the bar's own
+  tooltip repeats the entries the menu bar shows under the pointer, the
+  hover ones included, one per line with the place first.
+- The globe's colour layers are smooth: each blends between its scale's
+  colours (no bands), the cloud's veil follows the cover continuously and
+  precipitation fades in from 0.1 mm/h.
+- The globe animates only while it can be seen (the popup open, or the
+  app's window active and shown): turning by itself, the streaks, the
+  bolts' flashes and the timeline's playback stop otherwise, and at rest
+  nothing repaints. Turning by itself has its frame rate as a setting
+  (Settings → Display → Globe: 8, 15, 24 or 30 frames a second, 15 by
+  default). While moving or playing, the layers draw at a lower
+  resolution and every third frame.
 - **Several colour layers at once** on the globe: temperature, sea
   temperature, wind, cloud and precipitation are now switches of their
   own (the former single choice carries over), composed in one pass

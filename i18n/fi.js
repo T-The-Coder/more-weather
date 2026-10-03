@@ -407,5 +407,16 @@ var entries = {
   "shortcutGlobeStep": "Karttapallo: aika-askel taakse tai eteen",
   "shortcutGlobePlay": "Karttapallo: toista tai keskeytä aikajana",
   "shortcutGlobeNow": "Karttapallo: takaisin nykyhetkeen",
-  "globeCombineHint": "Värikerrokset yhdistyvät ja piirretään luettelon järjestyksessä: meriveden lämpötila meren päällä ilman lämpötilan rinnalla maalla, tuuli puolella voimakkuudella lämpötilan päällä, pilvisyys ja sade kaiken päällä. Luvut ja osoitin näyttävät sateen siellä missä sataa, muuten lämpötilan, sitten tuulen ja pilvisyyden."
+  "globeCombineHint": "Värikerrokset yhdistyvät ja piirretään luettelon järjestyksessä: meriveden lämpötila meren päällä ilman lämpötilan rinnalla maalla, tuuli puolella voimakkuudella lämpötilan päällä, pilvisyys ja sade kaiken päällä. Luvut ja osoitin näyttävät sateen siellä missä sataa, muuten lämpötilan, sitten tuulen ja pilvisyyden.",
+  "optionRotateFps": "Kuvaa sekunnissa",
+  "optionRotateFpsHint": "Useampi kuva näyttää sulavammalta ja vie enemmän suoritinaikaa.",
+  "optionMoonStyle": "Kuu",
+  "moonStyleSpace": "Kuten se on valaistu (avaruudesta)",
+  "moonStyleEarth": "Kuten se näkyy täältä",
+  "optionMapStyle": "Kartan tyyli",
+  "mapStyleFlat": "Tasokartta",
+  "mapStyleGlobe": "Karttapallo",
+  "globeMapHint": "Litteä kartta (Equal Earth) näyttää koko maapallon kerralla samoilla kerroksilla, zoomilla ja aikajanalla; vetäminen siirtää sitä, eikä se pyöri itsestään.",
+  "hoverTooltip": "Työkaluvihje osoitettaessa",
+  "hoverTooltipHint": "Toistaa valikkorivin kohdat, myös osoitettaessa näkyvät, palkin työkaluvihjeessä."
 }

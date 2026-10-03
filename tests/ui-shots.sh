@@ -25,7 +25,7 @@ python3 "$root/tests/ui/fixtures/state.py" "$work/home"
 # The XDG directories default to the throwaway HOME.
 env -u DBUS_SESSION_BUS_ADDRESS -u XDG_DATA_HOME -u XDG_CONFIG_HOME -u XDG_STATE_HOME HOME="$work/home" XDG_RUNTIME_DIR="$work/run" XDG_CACHE_HOME="$work/home/.cache" \
   MW_SHOTS="$out" MW_SHOTS_ONLY="${MW_SHOTS_ONLY:-}" MORE_PLUGINS_OFFLINE=1 QT_QPA_PLATFORM=offscreen \
-  timeout 300 qs -n -p "$work/config" >"$work/log.txt" 2>&1
+  timeout 480 qs -n -p "$work/config" >"$work/log.txt" 2>&1
 echo "log: $work/log.txt"
 echo "shots: $out"
 python3 "$root/tests/ui/rim-check.py" "$work/log.txt" "$out" >>"$work/log.txt"

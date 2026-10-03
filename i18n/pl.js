@@ -407,5 +407,16 @@ var entries = {
   "shortcutGlobeStep": "Globus: krok czasu wstecz lub naprzód",
   "shortcutGlobePlay": "Globus: odtwórz lub wstrzymaj oś czasu",
   "shortcutGlobeNow": "Globus: powrót do teraz",
-  "globeCombineHint": "Warstwy koloru łączą się i są rysowane w kolejności z listy: temperatura morza nad oceanem obok temperatury powietrza nad lądem, wiatr z połową siły nad temperaturą, zachmurzenie i opady na wierzchu. Liczby i wskaźnik pokazują opady tam, gdzie pada, w przeciwnym razie temperaturę, potem wiatr i zachmurzenie."
+  "globeCombineHint": "Warstwy koloru łączą się i są rysowane w kolejności z listy: temperatura morza nad oceanem obok temperatury powietrza nad lądem, wiatr z połową siły nad temperaturą, zachmurzenie i opady na wierzchu. Liczby i wskaźnik pokazują opady tam, gdzie pada, w przeciwnym razie temperaturę, potem wiatr i zachmurzenie.",
+  "optionRotateFps": "Klatki na sekundę",
+  "optionRotateFpsHint": "Więcej klatek wygląda płynniej i zużywa więcej czasu procesora.",
+  "optionMoonStyle": "Księżyc",
+  "moonStyleSpace": "Tak, jak jest oświetlony (z kosmosu)",
+  "moonStyleEarth": "Tak, jak widać go stąd",
+  "optionMapStyle": "Styl mapy",
+  "mapStyleFlat": "Płaska mapa",
+  "mapStyleGlobe": "Globus",
+  "globeMapHint": "Płaska mapa (Equal Earth) pokazuje całą Ziemię naraz z tymi samymi warstwami, powiększeniem i osią czasu; przeciąganie ją przesuwa i nie obraca się sama.",
+  "hoverTooltip": "Podpowiedź po najechaniu",
+  "hoverTooltipHint": "Powtarza wpisy paska menu, także te pokazywane po najechaniu, w podpowiedzi paska."
 }

@@ -42,3 +42,24 @@ test("moon: the way towards the Sun, for the lit side", () => {
   near(angle, 0, 1e-9)
   assert.equal(Moon.rgbText({ r: 1, g: 0.5, b: 0 }), "255,128,0")
 })
+
+test("moon: drawing styles, from space and as seen from Earth", () => {
+  const waxing = { waxing: true }
+  const waning = { waxing: false }
+  // As seen from Earth: waxing lit on the right in the north, on the left
+  // in the south; waning the other way round. The equator counts as north.
+  assert.equal(Moon.moonLitAngleFor("earth", waxing, 1.23, 48.3), 0)
+  assert.equal(Moon.moonLitAngleFor("earth", waning, 1.23, 48.3), Math.PI)
+  assert.equal(Moon.moonLitAngleFor("earth", waxing, 1.23, -33.9), Math.PI)
+  assert.equal(Moon.moonLitAngleFor("earth", waning, 1.23, -33.9), 0)
+  assert.equal(Moon.moonLitAngleFor("earth", waxing, 1.23, 0), 0)
+  // From space (and any other or missing style): the angle towards the Sun.
+  for (const style of ["space", "", undefined]) {
+    assert.equal(Moon.moonLitAngleFor(style, waxing, 1.23, 48.3), 1.23)
+    assert.equal(Moon.moonLitAngleFor(style, waning, -2.5, -33.9), -2.5)
+  }
+  // With a real moon: a few days after the new moon of 2026-10-10 it waxes.
+  const moon = Moon.moonPosition(Date.UTC(2026, 9, 14, 12))
+  assert.ok(moon.waxing)
+  assert.equal(Moon.moonLitAngleFor("earth", moon, 0.5, 52.5), 0)
+})

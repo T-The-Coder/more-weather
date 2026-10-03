@@ -11,6 +11,8 @@ import "Basemap.js" as Basemap
 import "GlobeGrid.js" as GlobeGrid
 import "I18n.js" as I18n
 import "GlobeFields.js" as GlobeFields
+import "GlobeProjection.js" as GlobeProjection
+import "EqualEarth.js" as EqualEarth
 import "Model.js" as Model
 
 // The globe section: the earth seen from above (centre latitude and
@@ -86,7 +88,51 @@ Column {
     // be seen at once; a zoomed globe is cut to this square.
     readonly property real viewHeight: panel.contentRoot ? panel.contentRoot.height - Style.space(200) : Style.space(420)
     readonly property real viewSize: Math.max(Style.space(160), Math.min(width, viewHeight))
-    height: viewSize
+    // Globe or flat map (Settings → Display → Globe: Map style); the map
+    // as wide as the section, as tall as its proportions or the view allow.
+    readonly property string style: String(panel.displaySetting("globeStyle", "globe"))
+    readonly property bool isMap: style === "map"
+    height: isMap ? Math.max(Style.space(120), Math.min(viewHeight, width * EqualEarth.Y_MAX / EqualEarth.X_MAX)) : viewSize
+    // The projection for a frame (GlobeProjection): every layer asks it.
+    function projection() {
+      var lat = centerLat, lon = centerLon
+      if (isMap) {
+        var c = GlobeProjection.mapCentre(lat, lon, width, height, zoom)
+        lat = c.lat
+        lon = c.lon
+      }
+      return GlobeProjection.make({ style: style, centerLat: lat, centerLon: lon, zoom: zoom, width: width,
+        height: height, radius: radius })
+    }
+    // The flat map's land (data/globe-land.json through Equal Earth) and
+    // graticules, made once.
+    readonly property var mapLand: isMap && landData
+      ? landData.land.map(function(ring) { return EqualEarth.ringToMap(ring, landData.scale || 100) }) : null
+    property var graticules: ({})
+    // The flat map's twilight polygons (map units) for the shown minute,
+    // kept until it changes.
+    property var twilightCache: ({ minute: -1, polygons: {} })
+    function mapTwilight(elevation) {
+      if (twilightCache.minute !== minuteMs) twilightCache = { minute: minuteMs, polygons: {} }
+      var key = String(elevation)
+      if (!twilightCache.polygons[key]) twilightCache.polygons[key] = EqualEarth.twilightPolygon(minuteMs, elevation)
+      return twilightCache.polygons[key]
+    }
+    function mapGraticule(step) {
+      if (!graticules[step]) {
+        var next = Object.assign({}, graticules)
+        next[step] = EqualEarth.graticule(step)
+        graticules = next
+      }
+      return graticules[step]
+    }
+    onStyleChanged: {
+      zoom = 0
+      canvas.requestPaint()
+      wash.requestPaint()
+      overlay.requestPaint()
+      streaks.reseed()
+    }
     clip: true
     // Room round the whole disc for the moon, which floats above its point.
     readonly property real lift: 1.18
@@ -100,6 +146,8 @@ Column {
     readonly property var panel: globeSection.panel
     readonly property bool showNight: panel.displaySetting("globeNight", true)
     readonly property bool showMoon: panel.displaySetting("globeMoon", true)
+    readonly property string moonStyle: String(panel.displaySetting("globeMoonStyle", "space"))
+    onMoonStyleChanged: canvas.requestPaint()
     readonly property bool showMarkers: panel.displaySetting("globeMarkers", true)
     readonly property bool autoRotate: panel.displaySetting("globeAutoRotate", false)
     readonly property real moonRadius: Style.space(6)
@@ -168,6 +216,23 @@ Column {
       var next = GlobeView.clampZoom(zoom + delta)
       if (next === zoom) return
       turnAnimation.stop()
+      if (isMap) {
+        // The place under the pointer stays under it.
+        var P0 = projection()
+        var under = P0.unproject(centerX + px, centerY + py)
+        var s1 = GlobeProjection.mapScale(width, height, next)
+        if (under) {
+          var at = EqualEarth.project(under.lat, under.lon)
+          var back = EqualEarth.unproject(at.x - px / s1, at.y + py / s1)
+          if (back) {
+            var c1 = GlobeProjection.mapCentre(back.lat, back.lon, width, height, next)
+            centerLat = c1.lat
+            centerLon = c1.lon
+          }
+        }
+        zoom = next
+        return
+      }
       var r1 = GlobeView.radiusFor(next, viewSize, lift)
       var centre = GlobeView.zoomedCentre(centerLat, centerLon, radius, r1, px, py)
       centerLat = centre.lat
@@ -301,16 +366,16 @@ Column {
       canvas.requestPaint()
       wash.viewChanged()
       streaks.viewChanged()
-      // The overlay every second frame while moving, between the wash's.
-      if (!moving || wash.skipped % 2 === 1) overlay.requestPaint()
+      // The overlay every third frame while moving, between the wash's.
+      if (!moving || wash.skipped % 3 === 1) overlay.requestPaint()
     }
     // The wash's value at a point of the view, with the place's coordinates
     // ("12 °C · 48° N 11° E"), or null.
     function washHover(x, y) {
       var text = washValueText(x, y)
       if (text === "") return null
-      var m = Globe.viewMatrix(centerLat, Globe.wrapLon(centerLon))
-      var place = Globe.unprojectView(x - centerX, centerY - y, m, radius)
+      var place = projection().unproject(x, y)
+      if (!place) return null
       var names = I18n.directionNames(panel.interfaceLanguage)
       var where = Math.round(Math.abs(place.lat)) + "° " + names[place.lat >= 0 ? 0 : 4] + " "
         + Math.round(Math.abs(place.lon)) + "° " + names[place.lon >= 0 ? 2 : 6]
@@ -322,8 +387,7 @@ Column {
     // (NaN where unknown), or null off the globe.
     function washValues(x, y) {
       if (!wash.visible) return null
-      var m = Globe.viewMatrix(centerLat, Globe.wrapLon(centerLon))
-      var place = Globe.unprojectView(x - centerX, centerY - y, m, radius)
+      var place = projection().unproject(x, y)
       if (!place) return null
       var result = {}
       var on = wash.layers
@@ -438,8 +502,8 @@ Column {
         globe.onScreen = top + globe.height > 0 && top < root.height
       }
     }
-    readonly property bool canRotate: autoRotate && zoom <= 1 && panel.globeShown && onScreen && !mouse.pressed
-      && !panel.globeData.playing
+    readonly property bool canRotate: autoRotate && !isMap && zoom <= 1 && panel.globeShown && panel.motionAllowed && onScreen
+      && !mouse.pressed && !panel.globeData.playing
     onCanRotateChanged: if (!canRotate) rotating = false
     readonly property int rotateDelaySeconds: Number(panel.displaySetting("globeRotateDelay", "10")) || 10
     readonly property int rotateTurnMinutes: Number(panel.displaySetting("globeRotateSpeed", "4")) || 4
@@ -453,12 +517,12 @@ Column {
       running: globe.canRotate && !globe.rotating
       onTriggered: globe.rotating = true
     }
-    // A frame for every pixel the surface moves at the centre, not more
-    // often than 30 a second.
+    // As many frames a second as chosen (Settings → Display → Globe, 15 by
+    // default); the turn advances by the time elapsed.
+    readonly property int rotateFps: Number(panel.displaySetting("globeRotateFps", "15")) || 15
     Timer {
       id: rotateTimer
-      interval: Math.max(33, Math.min(250, (180 / Math.PI / Math.max(1, globe.radius))
-        / (360 / (globe.rotateTurnMinutes * 60000))))
+      interval: Math.round(1000 / Math.max(1, globe.rotateFps))
       repeat: true
       running: globe.canRotate && globe.rotating
       property double last: 0
@@ -476,8 +540,9 @@ Column {
     property real shiftX: 0
     property real shiftY: 0
 
-    // The sphere's faint fill, under the wash.
+    // The sphere's faint fill, under the wash (the globe's only).
     Rectangle {
+      visible: !globe.isMap
       x: globe.shiftX + globe.centerX - globe.radius
       y: globe.shiftY + globe.centerY - globe.radius
       width: 2 * globe.radius
@@ -532,13 +597,25 @@ Column {
         for (var i = 2; i < xy.length; i += 2) ctx.lineTo(globe.centerX + xy[i], globe.centerY - xy[i + 1])
         if (close) ctx.closePath()
       }
+      // The projection of the frame being painted (GlobeProjection).
+      property var proj: null
       function disc(ctx) {
-        ctx.beginPath()
-        ctx.arc(globe.centerX, globe.centerY, globe.radius, 0, Math.PI * 2)
+        proj.traceEarth(ctx)
       }
-      function screenPoint(lat, lon, m) {
-        var p = Globe.projectView(lat, lon, m, globe.radius)
-        return { x: globe.centerX + p.x, y: globe.centerY - p.y, visible: p.visible }
+      function screenPoint(lat, lon) {
+        return proj.project(lat, lon)
+      }
+      // A point list in map units ({ x, y } or flat [x, y, ...]) as a path.
+      function traceMap(ctx, points, close) {
+        var flatList = typeof points[0] === "number"
+        var n = flatList ? points.length / 2 : points.length
+        for (var i = 0; i < n; i++) {
+          var mx = flatList ? points[i * 2] : points[i].x, my = flatList ? points[i * 2 + 1] : points[i].y
+          var sx = proj.toScreenX(mx), sy = proj.toScreenY(my)
+          if (i === 0) ctx.moveTo(sx, sy)
+          else ctx.lineTo(sx, sy)
+        }
+        if (close) ctx.closePath()
       }
 
       onPaint: {
@@ -547,7 +624,10 @@ Column {
         ctx.reset()
         var R = globe.radius
         if (R <= 0) return
-        var m = Globe.viewMatrix(globe.centerLat, Globe.wrapLon(globe.centerLon))
+        var P = globe.projection()
+        canvas.proj = P
+        var flat = P.kind === "map"
+        var m = flat ? null : P.matrix
         var zoom = globe.zoom
         var detail = zoom >= 3 && !globe.moving && Basemap.loaded()
 
@@ -559,7 +639,10 @@ Column {
         ctx.strokeStyle = rgba(ink, 0.07)
         ctx.lineWidth = 1
         ctx.beginPath()
-        if (zoom <= 2) {
+        if (flat) {
+          var graticule = globe.mapGraticule(GlobeView.gridStep(zoom))
+          for (var gl = 0; gl < graticule.length; gl++) traceMap(ctx, graticule[gl], false)
+        } else if (zoom <= 2) {
           var lines = Globe.gridLinesView(m, R, 15)
           for (var g = 0; g < lines.length; g++) trace(ctx, lines[g], false)
         } else {
@@ -570,6 +653,20 @@ Column {
         // Land: a light fill and a crisp coastline.
         if (detail) {
           paintBasemap(ctx, m)
+        } else if (flat) {
+          // The flat map's land: rings in map units (EqualEarth.ringToMap).
+          var mapRings = globe.mapLand || []
+          ctx.beginPath()
+          for (var mr = 0; mr < mapRings.length; mr++) traceMap(ctx, mapRings[mr].fill, true)
+          ctx.fillStyle = landFill()
+          ctx.fillRule = Qt.OddEvenFill
+          ctx.fill()
+          ctx.beginPath()
+          for (var ml = 0; ml < mapRings.length; ml++)
+            for (var mc = 0; mc < mapRings[ml].lines.length; mc++) traceMap(ctx, mapRings[ml].lines[mc], false)
+          ctx.strokeStyle = rgba(ink, 0.5)
+          ctx.lineWidth = 0.8
+          ctx.stroke()
         } else {
           var rings = (globe.moving || zoom >= 3 ? globe.coarseLand : globe.land) || []
           if (rings.length) {
@@ -595,11 +692,14 @@ Column {
 
         // Night in three steps (civil, nautical, then night): caps round
         // the point opposite the sun, 90° + the elevation wide.
+        // On the flat map each cap is one polygon in map units
+        // (EqualEarth.twilightPolygon), filled even-odd within the outline.
         var sky = globe.sky
         var caps = {}
         for (var e = 0; e < sky.elevations.length; e++) {
           var elevation = sky.elevations[e]
-          caps[elevation] = Globe.capPolygonView(sky.anti.lat, sky.anti.lon, 90 + elevation, m, R)
+          caps[elevation] = flat ? [globe.mapTwilight(elevation)]
+            : Globe.capPolygonView(sky.anti.lat, sky.anti.lon, 90 + elevation, m, R)
         }
         ctx.fillRule = Qt.OddEvenFill
         for (var t = 0; t < sky.layers.length; t++) {
@@ -607,24 +707,32 @@ Column {
           var areas = caps[layer.high].concat(layer.low !== null ? caps[layer.low] : [])
           if (!areas.length) continue
           ctx.beginPath()
-          for (var q = 0; q < areas.length; q++) trace(ctx, areas[q], true)
+          for (var q = 0; q < areas.length; q++) {
+            if (flat) traceMap(ctx, areas[q], true)
+            else trace(ctx, areas[q], true)
+          }
           ctx.fillStyle = Qt.rgba(layer.fill.r, layer.fill.g, layer.fill.b, layer.fill.a)
           ctx.fill()
         }
-        var sun = screenPoint(sky.sun.lat, sky.sun.lon, m)
+        var sun = screenPoint(sky.sun.lat, sky.sun.lon)
         if (globe.showNight && sun.visible) Sky.paintSun(ctx, sun.x, sun.y, rgba(accent, 0.95))
         // The moon floats above its sub-lunar point, its shadow on the
         // surface; on the whole disc only, hidden behind the globe.
         var moon = zoom <= 1 ? sky.moon : null
-        var moonAt = moon ? screenPoint(moon.lat, moon.lon, m) : null
-        if (moon && moonAt.visible) Moon.paintMoonShadow(ctx, moonAt.x, moonAt.y, globe.moonRadius)
+        var moonAt = moon ? screenPoint(moon.lat, moon.lon) : null
+        if (moon && moonAt.visible && !flat) Moon.paintMoonShadow(ctx, moonAt.x, moonAt.y, globe.moonRadius)
         ctx.restore()
 
         globe.moonHit = null
         if (moon && moonAt.visible) {
-          var mx = globe.centerX + (moonAt.x - globe.centerX) * 1.15
-          var my = globe.centerY + (moonAt.y - globe.centerY) * 1.15
-          var angle = Moon.moonLitAngle(moon, sky.sun, function(lat, lon) { return screenPoint(lat, lon, m) })
+          // Above the globe, a little out from its point; on the map at it.
+          var mx = flat ? moonAt.x : globe.centerX + (moonAt.x - globe.centerX) * 1.15
+          var my = flat ? moonAt.y : globe.centerY + (moonAt.y - globe.centerY) * 1.15
+          // Lit towards the sun as seen from space, or as the shown place
+          // sees its phase (Settings → Display → Globe: Moon).
+          var angle = Moon.moonLitAngleFor(globe.moonStyle, moon,
+            Moon.moonLitAngle(moon, sky.sun, function(lat, lon) { return screenPoint(lat, lon) }),
+            panel.mapCenterLatitude)
           Moon.paintMoon(ctx, mx, my, globe.moonRadius, angle, moon.illuminated, "238,236,226",
             Moon.rgbText(Sky.nightFill(globe.rgbOf(Color.popups.background))), Moon.rgbText(ink))
           globe.moonHit = { x: mx, y: my, moon: moon }
@@ -685,7 +793,8 @@ Column {
       // cut) are never stroked.
       function paintBasemap(ctx, m) {
         var R = globe.radius
-        var box = GlobeView.visibleBounds(globe.centerLat, Globe.wrapLon(globe.centerLon), R, width, height)
+        var box = proj.box()
+        var flatMap = proj.kind === "map"
         var cellDeg = 5
         var keys = []
         var firstRow = Math.max(0, Math.floor((box.south + 90) / cellDeg))
@@ -694,9 +803,7 @@ Column {
         var lastCol = Math.floor((box.east + 180) / cellDeg)
         for (var row = firstRow; row <= lastRow; row++)
           for (var col = firstCol; col <= lastCol; col++) keys.push(row + "_" + (((col % 72) + 72) % 72))
-        var m0 = m[0], m1 = m[1], m2 = m[2], m3 = m[3], m4 = m[4], m5 = m[5], m6 = m[6], m7 = m[7], m8 = m[8]
         var cx = globe.centerX, cy = globe.centerY
-        var toRad = Math.PI / 180
 
         function trace(flat, south, west, close, skipEdges) {
           var x = 0, y = 0
@@ -711,12 +818,10 @@ Column {
             var nx, ny
             if (closing) { nx = flat[0]; ny = flat[1] } else if (i === 0) { nx = flat[0]; ny = flat[1] } else { nx = x + flat[i]; ny = y + flat[i + 1] }
             var cut = i > 0 && skipEdges && ((x === nx && (x === 0 || x === edge)) || (y === ny && (y === 0 || y === edge)))
-            var phi = (south + ny / 1000) * toRad, lam = (west + nx / 1000) * toRad
-            var cp = Math.cos(phi)
-            var vx = cp * Math.cos(lam), vy = cp * Math.sin(lam), vz = Math.sin(phi)
-            var front = m6 * vx + m7 * vy + m8 * vz >= 0
-            var sx = cx + R * (m0 * vx + m1 * vy + m2 * vz)
-            var sy = cy - R * (m3 * vx + m4 * vy + m5 * vz)
+            // Through the projection; on the flat map every point counts
+            // (the view clips), on the globe only the front.
+            var front = proj.at(south + ny / 1000, west + nx / 1000) || flatMap
+            var sx = proj.x, sy = proj.y
             x = nx
             y = ny
             if (!front) { pen = false; continue }
@@ -794,7 +899,7 @@ Column {
         var list = globe.markers.slice(0).sort(function(a, b) { return (b.active ? 1 : 0) - (a.active ? 1 : 0) })
         for (var k = 0; k < list.length; k++) {
           var place = list[k]
-          var p = screenPoint(place.lat, place.lon, m)
+          var p = screenPoint(place.lat, place.lon)
           // Behind the globe or out of view: not drawn, not clickable.
           if (!p.visible || p.x < -20 || p.y < -20 || p.x > width + 20 || p.y > height + 20) continue
           ctx.fillStyle = place.active ? accent : ink
@@ -855,7 +960,7 @@ Column {
       // From z3: Natural Earth's towns in view, the larger first, round
       // my places' labels.
       function paintTowns(ctx, m, taken) {
-        var box = GlobeView.visibleBounds(globe.centerLat, Globe.wrapLon(globe.centerLon), globe.radius, width, height)
+        var box = proj.box()
         var towns = Basemap.placesIn(box.west, box.east, box.south, box.north)
         towns.sort(function(a, b) { return (b.population || 0) - (a.population || 0) })
         var fontPx = Style.font.caption
@@ -863,7 +968,7 @@ Column {
         var drawn = 0
         for (var i = 0; i < towns.length && drawn < 40; i++) {
           var town = towns[i]
-          var p = screenPoint(town.latitude, town.longitude, m)
+          var p = screenPoint(town.latitude, town.longitude)
           if (!p.visible || p.x < 0 || p.y < 0 || p.x > width || p.y > height) continue
           var before = taken.length
           if (!placeLabel(ctx, town.name, p, 5, fontPx, taken, rgba(ink, 0.7))) continue
@@ -892,7 +997,7 @@ Column {
       height: globe.height
       panel: globe.panel
       globe: globeSection.view
-      running: globe.panel.globeShown && globe.onScreen && globe.panel.globeData.streaksOn
+      running: globe.panel.globeShown && globe.panel.motionAllowed && globe.onScreen && globe.panel.globeData.streaksOn
       uLattice: globe.panel.globeData.streaksOn && globe.panel.globeData.layers ? globe.panel.globeData.layers.u || null : null
       vLattice: globe.panel.globeData.streaksOn && globe.panel.globeData.layers ? globe.panel.globeData.layers.v || null : null
       scaleKmh: globe.windScaleKmh
@@ -923,7 +1028,8 @@ Column {
         id: bolt
         required property int index
         readonly property var place: index < overlay.bolts.length ? overlay.bolts[index] : null
-        readonly property bool mayFlash: visible && globe.panel.globeShown && globe.onScreen && !globe.dragging
+        readonly property bool mayFlash: visible && globe.panel.globeShown && globe.panel.motionAllowed && globe.onScreen
+          && !globe.dragging
           && !globe.panel.globeData.playing
         textFormat: Text.PlainText
         visible: !!place
@@ -997,6 +1103,15 @@ Column {
         globe.hover = globe.symbolHover(p.x, p.y) || globe.washHover(p.x, p.y)
       }
       function dragTo(x, y) {
+        if (globe.isMap) {
+          // The map follows the pointer, within its extent.
+          var start = GlobeProjection.mapCentre(pressLat, pressLon, globe.width, globe.height, globe.zoom)
+          var at = EqualEarth.project(start.lat, start.lon)
+          var s = GlobeProjection.mapScale(globe.width, globe.height, globe.zoom)
+          var back = EqualEarth.unproject(at.x - (x - pressX) / s, at.y + (y - pressY) / s)
+          if (!back) return { lat: globe.centerLat, lon: globe.centerLon }
+          return GlobeProjection.mapCentre(back.lat, back.lon, globe.width, globe.height, globe.zoom)
+        }
         return GlobeView.panned(pressLat, pressLon, x - pressX, y - pressY, globe.radius)
       }
 

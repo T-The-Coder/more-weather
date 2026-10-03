@@ -441,5 +441,16 @@ var catalog = {
   "shortcutGlobeStep": "Globe: a time step back or forward",
   "shortcutGlobePlay": "Globe: play or pause the timeline",
   "shortcutGlobeNow": "Globe: back to now",
-  "globeCombineHint": "The colour layers combine, drawn in the order listed: the sea's temperature over the ocean beside the air's over land, the wind over a temperature at half strength, the cloud and precipitation over everything. Numbers and the pointer show precipitation where it rains, otherwise the temperature, then the wind and the cloud."
+  "globeCombineHint": "The colour layers combine, drawn in the order listed: the sea's temperature over the ocean beside the air's over land, the wind over a temperature at half strength, the cloud and precipitation over everything. Numbers and the pointer show precipitation where it rains, otherwise the temperature, then the wind and the cloud.",
+  "optionRotateFps": "Frames per second",
+  "optionRotateFpsHint": "More frames look smoother and use more processor time.",
+  "optionMoonStyle": "Moon",
+  "moonStyleSpace": "As it is lit (from space)",
+  "moonStyleEarth": "As seen from here",
+  "optionMapStyle": "Map style",
+  "mapStyleFlat": "Flat map",
+  "mapStyleGlobe": "Globe",
+  "globeMapHint": "The flat map (Equal Earth) shows the whole earth at once with the same layers, zoom and timeline; a drag pans it, and it does not turn by itself.",
+  "hoverTooltip": "Tooltip on hover",
+  "hoverTooltipHint": "Repeats the menu bar's entries, the hover ones included, in the bar's tooltip."
 }

@@ -407,5 +407,16 @@ var entries = {
   "shortcutGlobeStep": "Glob: ett tidssteg bakåt eller framåt",
   "shortcutGlobePlay": "Glob: spela eller pausa tidslinjen",
   "shortcutGlobeNow": "Glob: tillbaka till nu",
-  "globeCombineHint": "Färglagren går att kombinera och ritas i listans ordning: havstemperaturen över havet bredvid lufttemperaturen över land, vinden till hälften över en temperatur, moln och nederbörd överst. Siffror och pekaren visar nederbörd där det regnar, annars temperaturen, sedan vind och moln."
+  "globeCombineHint": "Färglagren går att kombinera och ritas i listans ordning: havstemperaturen över havet bredvid lufttemperaturen över land, vinden till hälften över en temperatur, moln och nederbörd överst. Siffror och pekaren visar nederbörd där det regnar, annars temperaturen, sedan vind och moln.",
+  "optionRotateFps": "Bilder per sekund",
+  "optionRotateFpsHint": "Fler bilder ser mjukare ut och använder mer processortid.",
+  "optionMoonStyle": "Måne",
+  "moonStyleSpace": "Som den är belyst (från rymden)",
+  "moonStyleEarth": "Som den syns härifrån",
+  "optionMapStyle": "Kartstil",
+  "mapStyleFlat": "Platt karta",
+  "mapStyleGlobe": "Jordglob",
+  "globeMapHint": "Den platta kartan (Equal Earth) visar hela jorden på en gång med samma lager, zoom och tidslinje; ett drag panorerar den, och den roterar inte av sig själv.",
+  "hoverTooltip": "Verktygstips vid hovring",
+  "hoverTooltipHint": "Upprepar menyradens poster, även de vid hovring, i fältets verktygstips."
 }
