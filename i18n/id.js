@@ -352,5 +352,22 @@ var entries = {
   "pressureRising": "Naik",
   "pressureFalling": "Turun",
   "pressureSteady": "Stabil",
-  "menubarRelevantPressureHint": "“Relevan”: tekanan udara yang naik atau turun 1,5 hPa atau lebih dalam tiga jam."
+  "menubarRelevantPressureHint": "“Relevan”: tekanan udara yang naik atau turun 1,5 hPa atau lebih dalam tiga jam.",
+  "globe": "Bola dunia",
+  "globeMarkers": "Tempat saya",
+  "globeHint": "Bumi dengan siang dan malam, matahari, bulan, dan tempat Anda dengan cuaca dari prakiraan tersimpan. Seret atau Shift + roda untuk memutar; klik tempat untuk menampilkannya.",
+  "globeKeysHint": "Ctrl ← → putar · 0 tempat",
+  "shortcutGlobeTurn": "Bola dunia: putar 15°",
+  "shortcutGlobeCenter": "Bola dunia: kembali ke tempat yang ditampilkan",
+  "optionNight": "Sisi malam",
+  "optionNightHint": "Dalam tiga tahap, masing-masing lebih gelap: senja sipil (matahari 0° sampai −6°), nautika (−6° sampai −12°), lalu senja astronomi dan malam.",
+  "moonWaxing": "Bulan · {percent} % · membesar",
+  "moonWaning": "Bulan · {percent} % · mengecil",
+  "optionGlobeAutoRotate": "Bola dunia berputar sendiri",
+  "optionGlobeAutoRotateHint": "Setelah jeda yang diatur di bawah tanpa klik, ia berputar, satu putaran dalam menit yang diatur di bawah; klik, seretan, atau roda menghentikannya.",
+  "optionGlobeRotateDelay": "Mulai setelah",
+  "optionGlobeRotateSpeed": "Satu putaran dalam",
+  "secondsShort": "{seconds} dtk",
+  "minutesShort": "{minutes} mnt",
+  "ctrlLeftRight": "Ctrl ← →"
 }

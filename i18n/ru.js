@@ -352,5 +352,22 @@ var entries = {
   "pressureRising": "Растёт",
   "pressureFalling": "Падает",
   "pressureSteady": "Стабильно",
-  "menubarRelevantPressureHint": "«Важно»: давление растёт или падает на 1,5 гПа и больше за три часа."
+  "menubarRelevantPressureHint": "«Важно»: давление растёт или падает на 1,5 гПа и больше за три часа.",
+  "globe": "Глобус",
+  "globeMarkers": "Мои места",
+  "globeHint": "Земля с днём и ночью, солнцем, луной и вашими местами с погодой из сохранённых прогнозов. Перетаскивание или Shift + колесо вращает её; щелчок по месту показывает его.",
+  "globeKeysHint": "Ctrl ← → вращать · 0 место",
+  "shortcutGlobeTurn": "Глобус: повернуть на 15°",
+  "shortcutGlobeCenter": "Глобус: вернуться к показанному месту",
+  "optionNight": "Ночная сторона",
+  "optionNightHint": "В три ступени, каждая темнее: гражданские сумерки (солнце от 0° до −6°), навигационные (−6°…−12°), затем астрономические сумерки и ночь.",
+  "moonWaxing": "Луна · {percent} % · растущая",
+  "moonWaning": "Луна · {percent} % · убывающая",
+  "optionGlobeAutoRotate": "Глобус вращается сам",
+  "optionGlobeAutoRotateHint": "После выбранной ниже паузы без щелчка он вращается, один оборот за выбранные ниже минуты; щелчок, перетаскивание или колесо останавливают его.",
+  "optionGlobeRotateDelay": "Начинать через",
+  "optionGlobeRotateSpeed": "Один оборот за",
+  "secondsShort": "{seconds} с",
+  "minutesShort": "{minutes} мин",
+  "ctrlLeftRight": "Ctrl ← →"
 }

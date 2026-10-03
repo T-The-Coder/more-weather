@@ -644,6 +644,7 @@ Panel {
   readonly property bool showRainSection: displaySetting("showRain", true)
   readonly property bool showRadarSection: displaySetting("showRadar", true)
   readonly property bool showWindSection: displaySetting("showWind", true)
+  readonly property bool showGlobeSection: displaySetting("showGlobe", true)
   readonly property bool showAirQualitySection: displaySetting("showAirQuality", false)
   // The bar instance also loads air quality for the menu bar hint.
   readonly property bool airQualityWanted: showAirQualitySection
@@ -664,7 +665,7 @@ Panel {
   // the place, refresh and settings controls.
   readonly property var sectionMasterKeys: ({
     favorites: "showFavorites", airQuality: "showAirQuality", hourly: "showHourly", daily: "showDaily",
-    rain: "showRain", radar: "showRadar", wind: "showWind"
+    rain: "showRain", radar: "showRadar", wind: "showWind", globe: "showGlobe"
   })
   function sectionTabsFrom(order, lookup) {
     var tabs = []
@@ -705,6 +706,12 @@ Panel {
   }
   readonly property bool radarShown: opened && sectionShown("radar")
   readonly property bool windShown: opened && sectionShown("wind")
+  readonly property bool globeShown: opened && sectionShown("globe")
+  // The globe takes Ctrl+← → and 0 while it is the tab in view, or the
+  // only map shown.
+  readonly property bool globeKeys: globeShown && (currentTab === "globe" || (!radarShown && !windShown))
+  // The globe section, for its keys (WeatherGlobe).
+  property Item globeItem: null
   readonly property var settingsTabs: sectionTabsFrom(settingsSectionOrder, settingsDisplaySetting)
   readonly property string settingsDefaultTab: {
     var wanted = String(settingsDisplaySetting("defaultTab", "rain"))
@@ -719,6 +726,7 @@ Panel {
     if (key === "rain") return "\u{f0596}"         // weather-pouring
     if (key === "radar") return "\u{f0437}"        // radar
     if (key === "wind") return "\u{f059d}"         // weather-windy
+    if (key === "globe") return "\u{f01e7}"        // earth
     return ""
   }
   function sectionTabLabel(key) {
@@ -1763,12 +1771,20 @@ Panel {
       showRain: true,
       showRadar: true,
       showWind: true,
+      showGlobe: true,
+      globeNight: true,
+      globeMoon: true,
+      globeMarkers: true,
+      globeAutoRotate: false,
+      globeRotateDelay: "10",
+      globeRotateSpeed: "4",
       airQualityAsTab: false,
       hourlyAsTab: false,
       dailyAsTab: false,
       rainAsTab: true,
       radarAsTab: true,
       windAsTab: true,
+      globeAsTab: true,
       forecastIntensity: true,
       forecastProbability: true,
       forecastTotal: true,
@@ -1794,6 +1810,8 @@ Panel {
 
   function defaultWidgetDisplayOptions() {
     var options = defaultDisplayOptions()
+    // The globe is the app's; the popup can switch it on.
+    options.showGlobe = false
     options.hourlyRainAmount = false
     options.hourlyUv = false
     options.hourlyWind = false
@@ -1943,7 +1961,7 @@ Panel {
   }
 
   function defaultSectionOrder() {
-    return ["current", "favorites", "airQuality", "hourly", "daily", "tabs", "rain", "radar", "wind"]
+    return ["current", "favorites", "airQuality", "hourly", "daily", "tabs", "rain", "radar", "wind", "globe"]
   }
 
   function defaultHourlyOrder() {
@@ -1976,7 +1994,8 @@ Panel {
     if (String(key).indexOf("daily") === 0 && key !== "showDaily") return "dailyOrder"
     if (String(key).indexOf("favorites") === 0) return "favoritesOrder"
     if (key === "showAirQuality" || key === "showHourly" || key === "showDaily"
-        || key === "showRain" || key === "showRadar" || key === "showWind" || key === "showFavorites")
+        || key === "showRain" || key === "showRadar" || key === "showWind" || key === "showFavorites"
+        || key === "showGlobe")
       return "sectionOrder"
     return ""
   }
@@ -2142,6 +2161,7 @@ Panel {
     if (key === "showFavorites") return "favorites"
     if (key === "showRadar") return "radar"
     if (key === "showWind") return "wind"
+    if (key === "showGlobe") return "globe"
     return key
   }
 
@@ -3211,6 +3231,13 @@ Panel {
       }
     }
 
+    // Ctrl+← → turn the globe by 15° while it has the keys.
+    if (control && !alternate && !command && globeKeys && globeItem
+        && (event.key === Qt.Key_Left || event.key === Qt.Key_Right)) {
+      globeItem.turnBy(event.key === Qt.Key_Right ? 15 : -15)
+      event.accepted = true
+      return
+    }
     // Ctrl+arrows move the radar or wind map by a quarter of the view.
     if (control && !alternate && !command && (radarShown || windShown)) {
       var across = event.key === Qt.Key_Left ? -1 : (event.key === Qt.Key_Right ? 1 : 0)
@@ -3255,6 +3282,12 @@ Panel {
       return
     }
 
+    // 0: the globe back to the shown place.
+    if (globeKeys && globeItem && text === "0" && (currentTab === "globe" || !(radarShown || windShown))) {
+      globeItem.recenter()
+      event.accepted = true
+      return
+    }
     var mapView = radarShown || windShown
     if (mapView && (plusKey || minusKey)) {
       changeMapZoom(plusKey ? 1 : -1)
@@ -3453,6 +3486,8 @@ Panel {
         feelsLike: values ? Model.tempWithUnit(values.FeelsLikeC, values.FeelsLikeF, tempScale) : "",
         wind: values ? windText(values.windspeedKmph, useImperial) : "",
         humidity: values && values.humidity !== undefined && values.humidity !== "" ? localizedNumber(values.humidity) + "%" : "",
+        latitude: Number(place.latitude),
+        longitude: Number(place.longitude),
         moonMirrored: Model.moonMirroredAt(place.latitude),
         stale: !active && (!updatedAt || updatedAt < staleBefore)
       })
@@ -4473,6 +4508,7 @@ Panel {
     if (key === "rain") return rainSectionComponent
     if (key === "radar") return radarSectionComponent
     if (key === "wind") return windSectionComponent
+    if (key === "globe") return globeSectionComponent
     return tabsSectionComponent
   }
 
@@ -4552,6 +4588,7 @@ Panel {
         Component { id: rainSectionComponent; WeatherForecast { panel: root; kind: "rain" } }
         Component { id: radarSectionComponent; WeatherForecast { panel: root; kind: "radar" } }
         Component { id: windSectionComponent; WeatherForecast { panel: root; kind: "wind" } }
+        Component { id: globeSectionComponent; WeatherGlobe { panel: root } }
         Component { id: tabsSectionComponent; WeatherTabs { panel: root } }
 
         // Sections in the order chosen under Settings → Display; the tabbed

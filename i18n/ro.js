@@ -352,5 +352,22 @@ var entries = {
   "pressureRising": "În creștere",
   "pressureFalling": "În scădere",
   "pressureSteady": "Stabilă",
-  "menubarRelevantPressureHint": "„Relevant”: presiune care crește sau scade cu 1,5 hPa sau mai mult în trei ore."
+  "menubarRelevantPressureHint": "„Relevant”: presiune care crește sau scade cu 1,5 hPa sau mai mult în trei ore.",
+  "globe": "Glob",
+  "globeMarkers": "Locurile mele",
+  "globeHint": "Pământul cu zi și noapte, soarele, luna și locurile tale cu vremea din prognozele salvate. Tragerea sau Shift + rotița îl rotește; un clic pe un loc îl arată.",
+  "globeKeysHint": "Ctrl ← → rotește · 0 locul",
+  "shortcutGlobeTurn": "Glob: rotește cu 15°",
+  "shortcutGlobeCenter": "Glob: înapoi la locul afișat",
+  "optionNight": "Partea de noapte",
+  "optionNightHint": "În trei trepte, fiecare mai întunecată: crepuscul civil (soare de la 0° la −6°), nautic (−6° la −12°), apoi astronomic și noapte.",
+  "moonWaxing": "Luna · {percent} % · în creștere",
+  "moonWaning": "Luna · {percent} % · în descreștere",
+  "optionGlobeAutoRotate": "Globul se rotește singur",
+  "optionGlobeAutoRotateHint": "După întârzierea aleasă mai jos fără clic se rotește, o rotație în minutele alese mai jos; un clic, o tragere sau rotița îl opresc.",
+  "optionGlobeRotateDelay": "Pornește după",
+  "optionGlobeRotateSpeed": "O rotație în",
+  "secondsShort": "{seconds} s",
+  "minutesShort": "{minutes} min",
+  "ctrlLeftRight": "Ctrl ← →"
 }

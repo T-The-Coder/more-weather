@@ -11,6 +11,18 @@ All notable changes to More Weather are documented here.
   the hourly forecast and as the day's mean in the daily forecast. From
   Open-Meteo (`pressure_msl`, two more variables in the forecast request),
   MET Norway and, in the DWD area, Bright Sky (MOSMIX).
+- **Globe**, a new section (in the app a tab after the wind map, off in the
+  popup): the earth with day and night in three twilight steps, the sun and
+  the moon overhead, and my places as markers with their symbol and
+  temperature from the stored forecasts, no new requests. A drag, Shift +
+  wheel or Ctrl+← → turns it, 0 brings back the shown place, a click on a
+  place turns to it and shows it; it can turn by itself as in More Time
+  (Settings → Display → Globe: night side, moon, places, turning by itself
+  with its delay and speed). The pointer names a place (temperature and
+  symbol) or the moon (lit share, waxing or waning). Built on the shared
+  `Globe.js` view, `Sky.js` and `data/globe-land.json` from More Time; while
+  it turns it draws a coarser coastline, about 17 ms a frame at 500 and
+  840 px.
 - The current weather shows as many value columns as fit beside the
   temperature, in their order, instead of running into it in a narrow
   window.

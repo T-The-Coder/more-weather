@@ -386,5 +386,22 @@ var catalog = {
   "pressureRising": "Steigend",
   "pressureFalling": "Fallend",
   "pressureSteady": "Gleichbleibend",
-  "menubarRelevantPressureHint": "„Relevant“: Luftdruck, der in drei Stunden um 1,5 hPa oder mehr steigt oder fällt."
+  "menubarRelevantPressureHint": "„Relevant“: Luftdruck, der in drei Stunden um 1,5 hPa oder mehr steigt oder fällt.",
+  "globe": "Globus",
+  "globeMarkers": "Meine Orte",
+  "globeHint": "Die Erde mit Tag und Nacht, Sonne, Mond und deinen Orten mit ihrem Wetter aus den gespeicherten Vorhersagen. Ziehen oder Umschalt + Mausrad dreht sie; ein Klick auf einen Ort zeigt ihn.",
+  "globeKeysHint": "Strg ← → drehen · 0 der Ort",
+  "shortcutGlobeTurn": "Globus: um 15° drehen",
+  "shortcutGlobeCenter": "Globus: zurück zum gezeigten Ort",
+  "optionNight": "Nachtseite",
+  "optionNightHint": "In drei Stufen, jede dunkler: bürgerliche Dämmerung (Sonne 0° bis −6°), nautische Dämmerung (−6° bis −12°), dann astronomische Dämmerung und Nacht.",
+  "moonWaxing": "Mond · {percent} % · zunehmend",
+  "moonWaning": "Mond · {percent} % · abnehmend",
+  "optionGlobeAutoRotate": "Globus dreht sich von selbst",
+  "optionGlobeAutoRotateHint": "Nach der unten eingestellten Wartezeit ohne Klick dreht er sich, eine Umdrehung in den unten eingestellten Minuten; ein Klick, Zug oder das Mausrad hält ihn an.",
+  "optionGlobeRotateDelay": "Beginnt nach",
+  "optionGlobeRotateSpeed": "Eine Umdrehung in",
+  "secondsShort": "{seconds} s",
+  "minutesShort": "{minutes} min",
+  "ctrlLeftRight": "Strg ← →"
 }

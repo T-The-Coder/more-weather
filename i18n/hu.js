@@ -352,5 +352,22 @@ var entries = {
   "pressureRising": "Emelkedik",
   "pressureFalling": "Csökken",
   "pressureSteady": "Állandó",
-  "menubarRelevantPressureHint": "„Fontos”: három óra alatt legalább 1,5 hPa-t emelkedő vagy csökkenő légnyomás."
+  "menubarRelevantPressureHint": "„Fontos”: három óra alatt legalább 1,5 hPa-t emelkedő vagy csökkenő légnyomás.",
+  "globe": "Földgömb",
+  "globeMarkers": "Helyeim",
+  "globeHint": "A Föld nappallal és éjszakával, a nap, a hold és a helyeid a mentett előrejelzések időjárásával. Húzással vagy Shift + görgővel forgatható; egy helyre kattintva megjelenik.",
+  "globeKeysHint": "Ctrl ← → forgatás · 0 a hely",
+  "shortcutGlobeTurn": "Földgömb: forgatás 15°-kal",
+  "shortcutGlobeCenter": "Földgömb: vissza a mutatott helyre",
+  "optionNight": "Éjszakai oldal",
+  "optionNightHint": "Három, egyre sötétebb fokozatban: polgári szürkület (nap 0° és −6° között), navigációs (−6° és −12°), aztán csillagászati szürkület és éjszaka.",
+  "moonWaxing": "Hold · {percent} % · növő",
+  "moonWaning": "Hold · {percent} % · fogyó",
+  "optionGlobeAutoRotate": "A földgömb magától forog",
+  "optionGlobeAutoRotateHint": "Az alább választott várakozás után, ha nincs kattintás, forog, egy fordulat az alább választott percek alatt; egy kattintás, húzás vagy a görgő megállítja.",
+  "optionGlobeRotateDelay": "Indulás",
+  "optionGlobeRotateSpeed": "Egy fordulat",
+  "secondsShort": "{seconds} mp",
+  "minutesShort": "{minutes} perc",
+  "ctrlLeftRight": "Ctrl ← →"
 }

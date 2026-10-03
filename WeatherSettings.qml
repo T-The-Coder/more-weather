@@ -217,6 +217,21 @@ Rectangle {
       hint: panel.i18n("windCpuHint"),
       hasDefaultTab: false
     },
+    {
+      title: panel.upperLabel(panel.i18n("globe")),
+      masterKey: "showGlobe",
+      sectionKey: "globe",
+      options: [
+        { key: "globeNight", title: panel.i18n("optionNight") },
+        { key: "globeMoon", title: panel.i18n("moon") },
+        { key: "globeMarkers", title: panel.i18n("globeMarkers") },
+        { key: "globeAutoRotate", title: panel.i18n("optionGlobeAutoRotate") }
+      ],
+      hint: panel.i18n("globeHint") + " " + panel.i18n("optionNightHint") + " "
+        + panel.i18n("optionGlobeAutoRotateHint"),
+      hasGlobeRotate: true,
+      hasDefaultTab: false
+    },
     // The tab strip: moved like a section (its place in the window), with
     // the tabbed sections' cards indented under it and which tab opens first.
     {
@@ -293,6 +308,70 @@ Rectangle {
     { value: "satellite", label: panel.i18n("mapStyleSatellite") }
   ]
   property var mapStyleDropdown: null
+  // The globe's turning by itself: after how many seconds, one turn in how
+  // many minutes (as in More Time).
+  readonly property var globeRotateDelayOptions: ["5", "10", "30"].map(function(n) {
+    return { value: n, label: panel.i18n("secondsShort", { seconds: n }) }
+  })
+  readonly property var globeRotateSpeedOptions: ["1", "2", "4", "8"].map(function(n) {
+    return { value: n, label: panel.i18n("minutesShort", { minutes: n }) }
+  })
+  property var globeRotateDropdowns: ({})
+
+  Component {
+    id: globeRotateRows
+
+    Column {
+      Repeater {
+        model: [
+          { id: "globeRotateDelay", key: "delay", title: "optionGlobeRotateDelay", fallback: "10" },
+          { id: "globeRotateSpeed", key: "speed", title: "optionGlobeRotateSpeed", fallback: "4" }
+        ]
+
+        Item {
+          id: rotateRow
+          required property var modelData
+          width: parent.width
+          height: Style.space(40)
+
+          Text {
+            textFormat: Text.PlainText
+            anchors.left: parent.left
+            anchors.leftMargin: Style.space(12)
+            anchors.right: rotateDropdown.left
+            anchors.rightMargin: Style.space(8)
+            anchors.verticalCenter: parent.verticalCenter
+            text: panel.i18n(rotateRow.modelData.title)
+            color: panel.foreground
+            font.family: panel.fontFamily
+            font.pixelSize: Style.font.bodySmall
+            elide: Text.ElideRight
+          }
+
+          Dropdown {
+            id: rotateDropdown
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+            width: Style.space(120)
+            showLabel: false
+            fontFamily: panel.fontFamily
+            hasCursor: settingsView.focusId === rotateRow.modelData.id
+            onHasCursorChanged: if (hasCursor) settingsView.ensureVisible(this)
+            onPopupOpenChanged: if (!popupOpen) panel.restoreKeyFocus()
+            value: String(panel.settingsDisplaySetting(rotateRow.modelData.id, rotateRow.modelData.fallback))
+            options: rotateRow.modelData.key === "delay" ? settingsView.globeRotateDelayOptions
+              : settingsView.globeRotateSpeedOptions
+            onChanged: function(value) { panel.displayOptionsStore.setSettingsDisplaySetting(rotateRow.modelData.id, value) }
+            Component.onCompleted: {
+              var items = Object.assign({}, settingsView.globeRotateDropdowns)
+              items[rotateRow.modelData.key] = rotateDropdown
+              settingsView.globeRotateDropdowns = items
+            }
+          }
+        }
+      }
+    }
+  }
   // Set by the rain notification's dropdowns inside a card delegate.
   property var rainThresholdDropdown: null
   property var rainRadiusDropdown: null
@@ -424,6 +503,8 @@ Rectangle {
         }
         if (card.hasHoverUnit) items.push({ id: "hoverUnit", type: "dropdown" })
         if (card.hasMapStyle) items.push({ id: "mapStyle", type: "dropdown" })
+        if (card.hasGlobeRotate && panel.settingsDisplaySetting("globeAutoRotate", false))
+          items.push({ id: "globeRotateDelay", type: "dropdown" }, { id: "globeRotateSpeed", type: "dropdown" })
         if (card.hasRainAlert && panel.settingsDisplaySetting("notifyRainSoon", true))
           items.push({ id: "rainThreshold", type: "dropdown" }, { id: "rainRadius", type: "dropdown" })
       }
@@ -503,6 +584,8 @@ Rectangle {
     if (id === "rainThreshold") return spec(rainThresholdOptions, rainThresholdDropdown, display("rainAlertThreshold", "any"))
     if (id === "rainRadius") return spec(rainRadiusOptions, rainRadiusDropdown, display("rainAlertRadius", "25"))
     if (id === "mapStyle") return spec(mapStyleOptions, mapStyleDropdown, display("mapStyle", "drawn"))
+    if (id === "globeRotateDelay") return spec(globeRotateDelayOptions, globeRotateDropdowns.delay || null, display("globeRotateDelay", "10"))
+    if (id === "globeRotateSpeed") return spec(globeRotateSpeedOptions, globeRotateDropdowns.speed || null, display("globeRotateSpeed", "4"))
     if (id === "barAccents") return spec(barAccentsOptions, barAccentsDropdown, display("menubarAccents", "hover"))
     return spec(hoverUnitOptions, hoverUnitDropdown, display("hoverUnitSystem", ""))
   }
@@ -1400,6 +1483,13 @@ Rectangle {
                   onLoaded: settingsView.barAccentsDropdown = item.dropdown
                 }
               }
+            }
+
+            // The globe's turning by itself: delay and speed, while it is on.
+            Loader {
+              width: parent.width
+              active: !!settingsCard.groupData.hasGlobeRotate && panel.settingsDisplaySetting("globeAutoRotate", false) === true
+              sourceComponent: globeRotateRows
             }
 
             // In the scrolling window or as a tab of the shared strip.

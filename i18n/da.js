@@ -352,5 +352,22 @@ var entries = {
   "pressureRising": "Stigende",
   "pressureFalling": "Faldende",
   "pressureSteady": "Stabilt",
-  "menubarRelevantPressureHint": "»Relevant«: lufttryk, der stiger eller falder 1,5 hPa eller mere på tre timer."
+  "menubarRelevantPressureHint": "»Relevant«: lufttryk, der stiger eller falder 1,5 hPa eller mere på tre timer.",
+  "globe": "Globus",
+  "globeMarkers": "Mine steder",
+  "globeHint": "Jorden med dag og nat, solen, månen og dine steder med vejret fra de gemte prognoser. Træk eller Shift + hjul drejer den; et klik på et sted viser det.",
+  "globeKeysHint": "Ctrl ← → drej · 0 stedet",
+  "shortcutGlobeTurn": "Globus: drej 15°",
+  "shortcutGlobeCenter": "Globus: tilbage til det viste sted",
+  "optionNight": "Natsiden",
+  "optionNightHint": "I tre trin, hvert mørkere: borgerligt tusmørke (solen 0° til −6°), nautisk (−6° til −12°), derefter astronomisk tusmørke og nat.",
+  "moonWaxing": "Måne · {percent} % · tiltagende",
+  "moonWaning": "Måne · {percent} % · aftagende",
+  "optionGlobeAutoRotate": "Globussen drejer af sig selv",
+  "optionGlobeAutoRotateHint": "Efter ventetiden valgt nedenfor uden klik drejer den, én omgang på minutterne valgt nedenfor; et klik, træk eller hjulet stopper den.",
+  "optionGlobeRotateDelay": "Starter efter",
+  "optionGlobeRotateSpeed": "Én omgang på",
+  "secondsShort": "{seconds} s",
+  "minutesShort": "{minutes} min",
+  "ctrlLeftRight": "Ctrl ← →"
 }

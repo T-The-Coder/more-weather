@@ -352,5 +352,22 @@ var entries = {
   "pressureRising": "Nousee",
   "pressureFalling": "Laskee",
   "pressureSteady": "Vakaa",
-  "menubarRelevantPressureHint": "”Olennainen”: ilmanpaine, joka nousee tai laskee 1,5 hPa tai enemmän kolmessa tunnissa."
+  "menubarRelevantPressureHint": "”Olennainen”: ilmanpaine, joka nousee tai laskee 1,5 hPa tai enemmän kolmessa tunnissa.",
+  "globe": "Karttapallo",
+  "globeMarkers": "Omat paikat",
+  "globeHint": "Maa päivineen ja öineen, aurinko, kuu ja paikkasi säineen tallennetuista ennusteista. Vetäminen tai Vaihto + rulla kääntää sitä; paikan napsautus näyttää sen.",
+  "globeKeysHint": "Ctrl ← → käännä · 0 paikka",
+  "shortcutGlobeTurn": "Karttapallo: käännä 15°",
+  "shortcutGlobeCenter": "Karttapallo: takaisin näytettyyn paikkaan",
+  "optionNight": "Yöpuoli",
+  "optionNightHint": "Kolmessa portaassa, kukin tummempi: porvarillinen hämärä (aurinko 0°…−6°), nauttinen (−6°…−12°), sitten tähtitieteellinen hämärä ja yö.",
+  "moonWaxing": "Kuu · {percent} % · kasvava",
+  "moonWaning": "Kuu · {percent} % · vähenevä",
+  "optionGlobeAutoRotate": "Karttapallo pyörii itsestään",
+  "optionGlobeAutoRotateHint": "Alla valitun viiveen jälkeen ilman napsautusta se pyörii, kierroksen alla valituissa minuuteissa; napsautus, vetäminen tai rulla pysäyttää sen.",
+  "optionGlobeRotateDelay": "Alkaa",
+  "optionGlobeRotateSpeed": "Kierros",
+  "secondsShort": "{seconds} s",
+  "minutesShort": "{minutes} min",
+  "ctrlLeftRight": "Ctrl ← →"
 }

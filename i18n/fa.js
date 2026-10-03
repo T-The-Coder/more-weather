@@ -352,5 +352,22 @@ var entries = {
   "pressureRising": "در حال افزایش",
   "pressureFalling": "در حال کاهش",
   "pressureSteady": "ثابت",
-  "menubarRelevantPressureHint": "«هنگام اهمیت»: فشار هوا که در سه ساعت ۱٫۵ هکتوپاسکال یا بیشتر بالا یا پایین برود."
+  "menubarRelevantPressureHint": "«هنگام اهمیت»: فشار هوا که در سه ساعت ۱٫۵ هکتوپاسکال یا بیشتر بالا یا پایین برود.",
+  "globe": "کرهٔ زمین",
+  "globeMarkers": "مکان‌های من",
+  "globeHint": "زمین با روز و شب، خورشید، ماه و مکان‌های شما با هوای پیش‌بینی‌های ذخیره‌شده. کشیدن یا Shift + چرخ آن را می‌چرخاند؛ کلیک روی یک مکان آن را نشان می‌دهد.",
+  "globeKeysHint": "Ctrl ← → چرخش · 0 مکان",
+  "shortcutGlobeTurn": "کره: ۱۵ درجه چرخش",
+  "shortcutGlobeCenter": "کره: بازگشت به مکان نمایش‌داده‌شده",
+  "optionNight": "سوی شب",
+  "optionNightHint": "در سه پله، هر کدام تیره‌تر: گرگ‌ومیش شهری (خورشید ۰° تا −۶°)، دریایی (−۶° تا −۱۲°)، سپس نجومی و شب.",
+  "moonWaxing": "ماه · {percent} % · رو به افزایش",
+  "moonWaning": "ماه · {percent} % · رو به کاهش",
+  "optionGlobeAutoRotate": "کره خودش می‌چرخد",
+  "optionGlobeAutoRotateHint": "پس از مکثی که پایین تعیین شده بدون کلیک می‌چرخد، یک دور در دقیقه‌هایی که پایین تعیین شده؛ کلیک، کشیدن یا چرخ ماوس آن را متوقف می‌کند.",
+  "optionGlobeRotateDelay": "شروع پس از",
+  "optionGlobeRotateSpeed": "یک دور در",
+  "secondsShort": "{seconds} ث",
+  "minutesShort": "{minutes} دقیقه",
+  "ctrlLeftRight": "Ctrl ← →"
 }

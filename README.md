@@ -83,6 +83,13 @@ runs as a standalone app window.
   grid over the visible area, at 10 m, 120 m or the 850, 700, 500 and 250 hPa levels
   (about 1.5 to 10 km). The wind under the pointer shows its speed and direction. The
   animation takes about a fifth of a processor core while it is on screen.
+- **Globe:** The earth with day and night (civil, nautical twilight and night in three
+  steps), the sun and the moon where they stand overhead, and your places with their
+  symbol and temperature from the stored forecasts (no requests of its own), the shown
+  place in the accent colour. A drag or Shift + wheel turns it, a click on a place shows
+  that place, and it can turn by itself after a while without a touch (Settings →
+  Display → Globe: delay and speed). In the app as a tab after the wind map; the popup
+  can switch it on.
 - **Locations:** Search for places (Open-Meteo's geocoder while typing, Nominatim on
   Enter when it finds nothing), keep a list of favorites or detect your location automatically. Settings →
   General → Places imports the cities of [More Time](https://github.com/T-The-Coder/more-time)'s
@@ -166,6 +173,8 @@ too, and the settings name their keys where they apply.
 | `Ctrl` + wheel | Map: zoom towards the pointer |
 | `⇧` + wheel | Daily forecast and radar timeline: sideways |
 | `⇧ ↑ ↓` | Wind map: higher / lower |
+| `Ctrl ← →` / drag | Globe: turn by 15° |
+| `0` | Globe: back to the shown place |
 | **Place search** | |
 | `↑ ↓` | Move within the results or the saved places |
 | `Tab` / `⇧ Tab` | Switch between results and saved places |

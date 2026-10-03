@@ -352,5 +352,22 @@ var entries = {
   "pressureRising": "Rośnie",
   "pressureFalling": "Spada",
   "pressureSteady": "Stałe",
-  "menubarRelevantPressureHint": "„Istotne”: ciśnienie rośnie lub spada o 1,5 hPa lub więcej w ciągu trzech godzin."
+  "menubarRelevantPressureHint": "„Istotne”: ciśnienie rośnie lub spada o 1,5 hPa lub więcej w ciągu trzech godzin.",
+  "globe": "Globus",
+  "globeMarkers": "Moje miejsca",
+  "globeHint": "Ziemia z dniem i nocą, słońcem, księżycem i twoimi miejscami z pogodą z zapisanych prognoz. Przeciąganie lub Shift + kółko obraca ją; kliknięcie miejsca pokazuje je.",
+  "globeKeysHint": "Ctrl ← → obróć · 0 miejsce",
+  "shortcutGlobeTurn": "Globus: obróć o 15°",
+  "shortcutGlobeCenter": "Globus: z powrotem do pokazanego miejsca",
+  "optionNight": "Strona nocna",
+  "optionNightHint": "W trzech stopniach, każdy ciemniejszy: zmierzch cywilny (słońce od 0° do −6°), żeglarski (−6° do −12°), potem astronomiczny i noc.",
+  "moonWaxing": "Księżyc · {percent} % · przybywa",
+  "moonWaning": "Księżyc · {percent} % · ubywa",
+  "optionGlobeAutoRotate": "Globus obraca się sam",
+  "optionGlobeAutoRotateHint": "Po wybranym niżej czasie bez kliknięcia obraca się, jeden obrót w wybranych niżej minutach; kliknięcie, przeciągnięcie lub kółko go zatrzymuje.",
+  "optionGlobeRotateDelay": "Zaczyna po",
+  "optionGlobeRotateSpeed": "Jeden obrót w",
+  "secondsShort": "{seconds} s",
+  "minutesShort": "{minutes} min",
+  "ctrlLeftRight": "Ctrl ← →"
 }

@@ -352,5 +352,22 @@ var entries = {
   "pressureRising": "Stigande",
   "pressureFalling": "Fallande",
   "pressureSteady": "Stabilt",
-  "menubarRelevantPressureHint": "”Relevant”: lufttryck som stiger eller faller med 1,5 hPa eller mer på tre timmar."
+  "menubarRelevantPressureHint": "”Relevant”: lufttryck som stiger eller faller med 1,5 hPa eller mer på tre timmar.",
+  "globe": "Jordglob",
+  "globeMarkers": "Mina platser",
+  "globeHint": "Jorden med dag och natt, solen, månen och dina platser med vädret från de sparade prognoserna. Dra eller Skift + hjul vrider den; ett klick på en plats visar den.",
+  "globeKeysHint": "Ctrl ← → vrid · 0 platsen",
+  "shortcutGlobeTurn": "Glob: vrid 15°",
+  "shortcutGlobeCenter": "Glob: tillbaka till den visade platsen",
+  "optionNight": "Nattsida",
+  "optionNightHint": "I tre steg, vart och ett mörkare: borgerlig skymning (solen 0° till −6°), nautisk (−6° till −12°), sedan astronomisk skymning och natt.",
+  "moonWaxing": "Måne · {percent} % · tilltagande",
+  "moonWaning": "Måne · {percent} % · avtagande",
+  "optionGlobeAutoRotate": "Jordgloben snurrar av sig själv",
+  "optionGlobeAutoRotateHint": "Efter fördröjningen som väljs nedan utan klick snurrar den, ett varv på minuterna som väljs nedan; ett klick, drag eller hjulet stoppar den.",
+  "optionGlobeRotateDelay": "Börjar efter",
+  "optionGlobeRotateSpeed": "Ett varv på",
+  "secondsShort": "{seconds} s",
+  "minutesShort": "{minutes} min",
+  "ctrlLeftRight": "Ctrl ← →"
 }

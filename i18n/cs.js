@@ -352,5 +352,22 @@ var entries = {
   "pressureRising": "Stoupá",
   "pressureFalling": "Klesá",
   "pressureSteady": "Stálý",
-  "menubarRelevantPressureHint": "„Důležité“: tlak, který za tři hodiny stoupne nebo klesne o 1,5 hPa a více."
+  "menubarRelevantPressureHint": "„Důležité“: tlak, který za tři hodiny stoupne nebo klesne o 1,5 hPa a více.",
+  "globe": "Glóbus",
+  "globeMarkers": "Moje místa",
+  "globeHint": "Země se dnem a nocí, sluncem, měsícem a vašimi místy s počasím z uložených předpovědí. Tažení nebo Shift + kolečko jí otáčí; kliknutí na místo ho zobrazí.",
+  "globeKeysHint": "Ctrl ← → otočit · 0 místo",
+  "shortcutGlobeTurn": "Glóbus: otočit o 15°",
+  "shortcutGlobeCenter": "Glóbus: zpět na zobrazené místo",
+  "optionNight": "Noční strana",
+  "optionNightHint": "Ve třech stupních, každý tmavší: občanský soumrak (slunce 0° až −6°), nautický (−6° až −12°), pak astronomický soumrak a noc.",
+  "moonWaxing": "Měsíc · {percent} % · dorůstá",
+  "moonWaning": "Měsíc · {percent} % · couvá",
+  "optionGlobeAutoRotate": "Glóbus se otáčí sám",
+  "optionGlobeAutoRotateHint": "Po níže zvolené prodlevě bez kliknutí se otáčí, jedna otáčka za níže zvolené minuty; kliknutí, tažení nebo kolečko ho zastaví.",
+  "optionGlobeRotateDelay": "Začne po",
+  "optionGlobeRotateSpeed": "Jedna otáčka za",
+  "secondsShort": "{seconds} s",
+  "minutesShort": "{minutes} min",
+  "ctrlLeftRight": "Ctrl ← →"
 }

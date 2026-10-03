@@ -12,7 +12,7 @@ ShellRoot {
   id: harness
   readonly property string shots: Quickshell.env("MW_SHOTS") || "/tmp"
   property int step: 0
-  readonly property var tabs: ["favorites", "airQuality", "hourly", "daily", "rain", "radar", "wind"]
+  readonly property var tabs: ["favorites", "airQuality", "hourly", "daily", "rain", "radar", "wind", "globe"]
 
   function shot(name) {
     panel.contentRoot.grabToImage(function(result) {
@@ -22,6 +22,17 @@ ShellRoot {
   }
 
   function check(name, ok) { console.log(ok ? "CHECK ok" : "CHECK FAILED", name) }
+  function measureGlobe() {
+    panel.globeItem.paintStats = { count: 0, total: 0, max: 0 }
+    panel.globeItem.rotating = true
+  }
+  function reportGlobe() {
+    var st = panel.globeItem.paintStats
+    var n = Math.max(1, st.count)
+    console.log("GLOBE paint", Math.round(panel.globeItem.radius * 2), "px:", st.count, "frames, mean",
+      (st.total / n).toFixed(1), "ms, max", st.max, "ms; land", (st.land / n).toFixed(1),
+      "sky", (st.sky / n).toFixed(1), "places", (st.places / n).toFixed(1))
+  }
   function general(key, value) { panel.displayOptionsStore.setGeneralSetting(key, value) }
   function display(key, value) { panel.displayOptionsStore.setSettingsDisplaySetting(key, value) }
   function press(key, text, modifiers) {
@@ -84,6 +95,34 @@ ShellRoot {
     function() { shot("08-tab-radar") },
     function() { panel.activeTab = "wind" },
     function() { shot("09-tab-wind") },
+    function() { panel.activeTab = "globe" },
+    function() { if (panel.globeItem) panel.globeItem.finishTurn() },
+    function() { shot("09b-tab-globe") },
+    // The globe turning by itself: the cost of a frame (paintStats) with
+    // the globe about 500 and 840 px across, in a window of its own.
+    function() {
+      panel.contentRoot.parent = globeHost
+      panel.settingsTargetSurface = "app"
+      display("globeAutoRotate", true)
+      display("globeRotateSpeed", "1")
+    },
+    function() { measureGlobe() }, function() {}, function() {}, function() {}, function() { reportGlobe() },
+    function() { panel.contentRoot.parent = globeHostLarge },
+    function() { measureGlobe() }, function() {}, function() {}, function() {}, function() { reportGlobe() },
+    function() {
+      display("globeAutoRotate", false)
+      panel.globeItem.recenter()
+    },
+    function() { panel.globeItem.finishTurn() },
+    function() { shot("09d-globe-app") },
+    function() { panel.contentRoot.parent = widgetHost },
+    // The night side and the moon: the globe turned towards them.
+    function() {
+      var anti = panel.globeItem.sky.anti
+      panel.globeItem.turnTo(anti.lon + 60)
+    },
+    function() { panel.globeItem.finishTurn() },
+    function() { shot("09c-tab-globe-night") },
     function() { panel.startEditingLocation() },
     function() { shot("10-search") },
     // "−" acts on the saved places only after Tab; in the results it is a
@@ -223,6 +262,20 @@ ShellRoot {
       height: 32
       sourceComponent: Component { Weather.BarWidget { height: 32 } }
     }
+  }
+
+  // Windows for measuring the globe at about 500 and 840 px.
+  FloatingWindow {
+    visible: true
+    implicitWidth: 640
+    implicitHeight: 860
+    Item { id: globeHost; anchors.fill: parent; anchors.margins: 16 }
+  }
+  FloatingWindow {
+    visible: true
+    implicitWidth: 1030
+    implicitHeight: 1260
+    Item { id: globeHostLarge; anchors.fill: parent; anchors.margins: 16 }
   }
 
   Weather.Panel {

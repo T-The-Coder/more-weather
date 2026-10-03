@@ -352,5 +352,22 @@ var entries = {
   "pressureRising": "يرتفع",
   "pressureFalling": "ينخفض",
   "pressureSteady": "ثابت",
-  "menubarRelevantPressureHint": "«عند الأهمية»: ضغط يرتفع أو ينخفض بمقدار 1.5 هكتوباسكال أو أكثر خلال ثلاث ساعات."
+  "menubarRelevantPressureHint": "«عند الأهمية»: ضغط يرتفع أو ينخفض بمقدار 1.5 هكتوباسكال أو أكثر خلال ثلاث ساعات.",
+  "globe": "كرة أرضية",
+  "globeMarkers": "أماكني",
+  "globeHint": "الأرض بليلها ونهارها والشمس والقمر وأماكنك مع طقسها من التوقعات المحفوظة. السحب أو Shift + العجلة يديرها؛ والنقر على مكان يعرضه.",
+  "globeKeysHint": "Ctrl ← → تدوير · 0 المكان",
+  "shortcutGlobeTurn": "الكرة الأرضية: تدوير 15°",
+  "shortcutGlobeCenter": "الكرة الأرضية: العودة إلى المكان المعروض",
+  "optionNight": "جانب الليل",
+  "optionNightHint": "على ثلاث درجات، كل منها أغمق: الشفق المدني (الشمس من 0° إلى −6°)، والبحري (−6° إلى −12°)، ثم الفلكي والليل.",
+  "moonWaxing": "القمر · {percent} % · متزايد",
+  "moonWaning": "القمر · {percent} % · متناقص",
+  "optionGlobeAutoRotate": "الكرة الأرضية تدور وحدها",
+  "optionGlobeAutoRotateHint": "بعد مهلة الانتظار المحددة أدناه بلا نقرة تدور، دورة واحدة في الدقائق المحددة أدناه؛ النقر أو السحب أو العجلة يوقفها.",
+  "optionGlobeRotateDelay": "يبدأ بعد",
+  "optionGlobeRotateSpeed": "دورة واحدة في",
+  "secondsShort": "{seconds} ث",
+  "minutesShort": "{minutes} د",
+  "ctrlLeftRight": "Ctrl ← →"
 }

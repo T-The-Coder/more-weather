@@ -352,5 +352,22 @@ var entries = {
   "pressureRising": "上升",
   "pressureFalling": "下降",
   "pressureSteady": "平穩",
-  "menubarRelevantPressureHint": "「相關時」：三小時內氣壓升降 1.5 hPa 或以上。"
+  "menubarRelevantPressureHint": "「相關時」：三小時內氣壓升降 1.5 hPa 或以上。",
+  "globe": "地球儀",
+  "globeMarkers": "我的地點",
+  "globeHint": "地球上的晝夜、太陽、月亮，以及你的地點和已儲存預報中的天氣。拖曳或 Shift + 滾輪旋轉；點按地點即可顯示。",
+  "globeKeysHint": "Ctrl ← → 旋轉 · 0 回到地點",
+  "shortcutGlobeTurn": "地球儀：旋轉 15°",
+  "shortcutGlobeCenter": "地球儀：回到顯示的地點",
+  "optionNight": "夜晚區域",
+  "optionNightHint": "分三級，一級比一級暗：民用曙暮光（太陽 0° 到 −6°）、航海曙暮光（−6° 到 −12°），然後是天文曙暮光和黑夜。",
+  "moonWaxing": "月亮 · {percent} % · 盈",
+  "moonWaning": "月亮 · {percent} % · 虧",
+  "optionGlobeAutoRotate": "地球儀自動旋轉",
+  "optionGlobeAutoRotateHint": "在下方設定的等待時間內沒有點擊時開始旋轉，依下方設定的分鐘數轉一圈；點擊、拖曳或滾輪會讓它停下。",
+  "optionGlobeRotateDelay": "開始於",
+  "optionGlobeRotateSpeed": "轉一圈用時",
+  "secondsShort": "{seconds} 秒",
+  "minutesShort": "{minutes} 分鐘",
+  "ctrlLeftRight": "Ctrl ← →"
 }

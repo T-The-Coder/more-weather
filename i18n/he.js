@@ -352,5 +352,22 @@ var entries = {
   "pressureRising": "עולה",
   "pressureFalling": "יורד",
   "pressureSteady": "יציב",
-  "menubarRelevantPressureHint": "„רלוונטי”: לחץ אוויר שעולה או יורד ב־1.5 hPa או יותר בשלוש שעות."
+  "menubarRelevantPressureHint": "„רלוונטי”: לחץ אוויר שעולה או יורד ב־1.5 hPa או יותר בשלוש שעות.",
+  "globe": "גלובוס",
+  "globeMarkers": "המקומות שלי",
+  "globeHint": "כדור הארץ עם יום ולילה, השמש, הירח והמקומות שלך עם מזג האוויר מהתחזיות השמורות. גרירה או Shift + גלגלת מסובבות אותו; לחיצה על מקום מציגה אותו.",
+  "globeKeysHint": "Ctrl ← → סיבוב · 0 המקום",
+  "shortcutGlobeTurn": "גלובוס: סיבוב ב־15°",
+  "shortcutGlobeCenter": "גלובוס: חזרה למקום המוצג",
+  "optionNight": "צד הלילה",
+  "optionNightHint": "בשלוש מדרגות, כל אחת כהה יותר: דמדומים אזרחיים (השמש 0° עד −6°), ימיים (−6° עד −12°), ואז דמדומים אסטרונומיים ולילה.",
+  "moonWaxing": "ירח · {percent} % · מתמלא",
+  "moonWaning": "ירח · {percent} % · מתמעט",
+  "optionGlobeAutoRotate": "הגלובוס מסתובב מעצמו",
+  "optionGlobeAutoRotateHint": "אחרי ההמתנה שנקבעה למטה בלי לחיצה הוא מסתובב, סיבוב אחד בדקות שנקבעו למטה; לחיצה, גרירה או הגלגלת עוצרות אותו.",
+  "optionGlobeRotateDelay": "מתחיל אחרי",
+  "optionGlobeRotateSpeed": "סיבוב אחד ב־",
+  "secondsShort": "{seconds} ש׳",
+  "minutesShort": "{minutes} דק׳",
+  "ctrlLeftRight": "Ctrl ← →"
 }

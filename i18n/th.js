@@ -352,5 +352,22 @@ var entries = {
   "pressureRising": "กำลังเพิ่ม",
   "pressureFalling": "กำลังลด",
   "pressureSteady": "คงที่",
-  "menubarRelevantPressureHint": "“สำคัญ”: ความกดอากาศที่เพิ่มหรือลด 1.5 hPa ขึ้นไปในสามชั่วโมง"
+  "menubarRelevantPressureHint": "“สำคัญ”: ความกดอากาศที่เพิ่มหรือลด 1.5 hPa ขึ้นไปในสามชั่วโมง",
+  "globe": "ลูกโลก",
+  "globeMarkers": "สถานที่ของฉัน",
+  "globeHint": "โลกพร้อมกลางวันและกลางคืน ดวงอาทิตย์ ดวงจันทร์ และสถานที่ของคุณพร้อมสภาพอากาศจากพยากรณ์ที่บันทึกไว้ ลากหรือ Shift + ล้อเพื่อหมุน คลิกสถานที่เพื่อแสดง",
+  "globeKeysHint": "Ctrl ← → หมุน · 0 สถานที่",
+  "shortcutGlobeTurn": "ลูกโลก: หมุน 15°",
+  "shortcutGlobeCenter": "ลูกโลก: กลับไปยังสถานที่ที่แสดง",
+  "optionNight": "ฝั่งกลางคืน",
+  "optionNightHint": "สามขั้น แต่ละขั้นมืดขึ้น: แสงสนธยาทางพลเรือน (ดวงอาทิตย์ 0° ถึง −6°) ทางทะเล (−6° ถึง −12°) แล้วจึงทางดาราศาสตร์และกลางคืน",
+  "moonWaxing": "ดวงจันทร์ · {percent} % · ข้างขึ้น",
+  "moonWaning": "ดวงจันทร์ · {percent} % · ข้างแรม",
+  "optionGlobeAutoRotate": "ลูกโลกหมุนเอง",
+  "optionGlobeAutoRotateHint": "เมื่อไม่มีการคลิกตามเวลาที่ตั้งด้านล่าง ลูกโลกจะหมุน หนึ่งรอบตามจำนวนนาทีที่ตั้งด้านล่าง คลิก ลาก หรือล้อเลื่อนจะหยุดหมุน",
+  "optionGlobeRotateDelay": "เริ่มหลังจาก",
+  "optionGlobeRotateSpeed": "หมุนหนึ่งรอบใน",
+  "secondsShort": "{seconds} วิ",
+  "minutesShort": "{minutes} นาที",
+  "ctrlLeftRight": "Ctrl ← →"
 }

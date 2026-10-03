@@ -352,5 +352,22 @@ var entries = {
   "pressureRising": "En hausse",
   "pressureFalling": "En baisse",
   "pressureSteady": "Stable",
-  "menubarRelevantPressureHint": "« Pertinent » : pression en hausse ou en baisse de 1,5 hPa ou plus en trois heures."
+  "menubarRelevantPressureHint": "« Pertinent » : pression en hausse ou en baisse de 1,5 hPa ou plus en trois heures.",
+  "globe": "Globe",
+  "globeMarkers": "Mes lieux",
+  "globeHint": "La Terre avec le jour et la nuit, le soleil, la lune et vos lieux avec leur météo tirée des prévisions enregistrées. Glisser ou Maj + molette la fait tourner ; un clic sur un lieu l’affiche.",
+  "globeKeysHint": "Ctrl ← → tourner · 0 le lieu",
+  "shortcutGlobeTurn": "Globe : tourner de 15°",
+  "shortcutGlobeCenter": "Globe : revenir au lieu affiché",
+  "optionNight": "Côté nuit",
+  "optionNightHint": "En trois paliers, chacun plus sombre : crépuscule civil (soleil de 0° à −6°), nautique (−6° à −12°), puis astronomique et nuit.",
+  "moonWaxing": "Lune · {percent} % · croissante",
+  "moonWaning": "Lune · {percent} % · décroissante",
+  "optionGlobeAutoRotate": "Le globe tourne tout seul",
+  "optionGlobeAutoRotateHint": "Après le délai choisi ci-dessous sans clic, il tourne, un tour en autant de minutes que choisi ci-dessous ; un clic, un glissement ou la molette l’arrête.",
+  "optionGlobeRotateDelay": "Démarre après",
+  "optionGlobeRotateSpeed": "Un tour en",
+  "secondsShort": "{seconds} s",
+  "minutesShort": "{minutes} min",
+  "ctrlLeftRight": "Ctrl ← →"
 }

@@ -386,5 +386,22 @@ var catalog = {
   "pressureRising": "Rising",
   "pressureFalling": "Falling",
   "pressureSteady": "Steady",
-  "menubarRelevantPressureHint": "“Relevant”: air pressure rising or falling by 1.5 hPa or more in three hours."
+  "menubarRelevantPressureHint": "“Relevant”: air pressure rising or falling by 1.5 hPa or more in three hours.",
+  "globe": "Globe",
+  "globeMarkers": "My places",
+  "globeHint": "The earth with day and night, the sun, the moon and your places with their weather from the stored forecasts. A drag or Shift + wheel turns it; a click on a place shows it.",
+  "globeKeysHint": "Ctrl ← → turn · 0 the place",
+  "shortcutGlobeTurn": "Globe: turn by 15°",
+  "shortcutGlobeCenter": "Globe: back to the shown place",
+  "optionNight": "Night side",
+  "optionNightHint": "In three steps, each darker: civil twilight (sun 0° to −6°), nautical twilight (−6° to −12°), then astronomical twilight and night.",
+  "moonWaxing": "Moon · {percent} % · waxing",
+  "moonWaning": "Moon · {percent} % · waning",
+  "optionGlobeAutoRotate": "Globe turns by itself",
+  "optionGlobeAutoRotateHint": "After the delay set below without a click it turns, one turn in the minutes set below; a click, drag or wheel stops it.",
+  "optionGlobeRotateDelay": "Starts after",
+  "optionGlobeRotateSpeed": "One turn in",
+  "secondsShort": "{seconds} s",
+  "minutesShort": "{minutes} min",
+  "ctrlLeftRight": "Ctrl ← →"
 }

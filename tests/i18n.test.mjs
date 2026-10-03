@@ -84,7 +84,7 @@ test("every key used in the QML exists", () => {
   for (const labels of Object.values(Model.AQI_LABELS))
     for (const key of labels) used.add(key)
   // Section tabs (Panel.sectionTabLabel) and the settings pages.
-  for (const section of ["airTab", "myPlaces", "hourly", "daily", "rain", "radar", "wind"]) used.add(section)
+  for (const section of ["airTab", "myPlaces", "hourly", "daily", "rain", "radar", "wind", "globe"]) used.add(section)
   for (const page of ["General", "Display", "Shortcuts", "Sources"]) used.add("settingsPage" + page)
   for (const surface of ["menubar", "widget", "app"]) used.add(surface + "Settings")
   const missing = [...used].filter((key) => !(key in english)).sort()

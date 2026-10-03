@@ -352,5 +352,22 @@ var entries = {
   "pressureRising": "Ανοδική",
   "pressureFalling": "Καθοδική",
   "pressureSteady": "Σταθερή",
-  "menubarRelevantPressureHint": "«Σχετικό»: πίεση που ανεβαίνει ή πέφτει κατά 1,5 hPa ή περισσότερο σε τρεις ώρες."
+  "menubarRelevantPressureHint": "«Σχετικό»: πίεση που ανεβαίνει ή πέφτει κατά 1,5 hPa ή περισσότερο σε τρεις ώρες.",
+  "globe": "Υδρόγειος",
+  "globeMarkers": "Οι τοποθεσίες μου",
+  "globeHint": "Η Γη με μέρα και νύχτα, ο ήλιος, η σελήνη και οι τοποθεσίες σας με τον καιρό από τις αποθηκευμένες προγνώσεις. Σύρσιμο ή Shift + ροδέλα την περιστρέφει· ένα κλικ σε τοποθεσία την εμφανίζει.",
+  "globeKeysHint": "Ctrl ← → περιστροφή · 0 η τοποθεσία",
+  "shortcutGlobeTurn": "Υδρόγειος: περιστροφή κατά 15°",
+  "shortcutGlobeCenter": "Υδρόγειος: πίσω στην εμφανιζόμενη τοποθεσία",
+  "optionNight": "Νυχτερινή πλευρά",
+  "optionNightHint": "Σε τρία στάδια, το καθένα πιο σκούρο: πολιτικό λυκόφως (ήλιος 0° έως −6°), ναυτικό (−6° έως −12°), μετά αστρονομικό λυκόφως και νύχτα.",
+  "moonWaxing": "Σελήνη · {percent} % · αύξουσα",
+  "moonWaning": "Σελήνη · {percent} % · φθίνουσα",
+  "optionGlobeAutoRotate": "Η υδρόγειος γυρίζει μόνη της",
+  "optionGlobeAutoRotateHint": "Μετά την αναμονή που ορίζεται παρακάτω χωρίς κλικ γυρίζει, μία στροφή στα λεπτά που ορίζονται παρακάτω· ένα κλικ, σύρσιμο ή η ροδέλα τη σταματά.",
+  "optionGlobeRotateDelay": "Ξεκινά μετά από",
+  "optionGlobeRotateSpeed": "Μία στροφή σε",
+  "secondsShort": "{seconds} δ",
+  "minutesShort": "{minutes} λεπ.",
+  "ctrlLeftRight": "Ctrl ← →"
 }

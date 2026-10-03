@@ -352,5 +352,22 @@ var entries = {
   "pressureRising": "बढ़ रहा",
   "pressureFalling": "घट रहा",
   "pressureSteady": "स्थिर",
-  "menubarRelevantPressureHint": "“प्रासंगिक”: तीन घंटे में 1.5 hPa या अधिक बढ़ता या घटता वायुदाब।"
+  "menubarRelevantPressureHint": "“प्रासंगिक”: तीन घंटे में 1.5 hPa या अधिक बढ़ता या घटता वायुदाब।",
+  "globe": "ग्लोब",
+  "globeMarkers": "मेरी जगहें",
+  "globeHint": "दिन और रात, सूरज, चाँद और सहेजे गए पूर्वानुमानों के मौसम के साथ आपकी जगहों वाली पृथ्वी। खींचने या Shift + व्हील से घूमती है; किसी जगह पर क्लिक उसे दिखाता है।",
+  "globeKeysHint": "Ctrl ← → घुमाएँ · 0 जगह",
+  "shortcutGlobeTurn": "ग्लोब: 15° घुमाएँ",
+  "shortcutGlobeCenter": "ग्लोब: दिखाई गई जगह पर वापस",
+  "optionNight": "रात का हिस्सा",
+  "optionNightHint": "तीन चरणों में, हर एक गहरा: नागरिक संधिप्रकाश (सूर्य 0° से −6°), नौवहन (−6° से −12°), फिर खगोलीय संधिप्रकाश और रात।",
+  "moonWaxing": "चंद्रमा · {percent} % · बढ़ता",
+  "moonWaning": "चंद्रमा · {percent} % · घटता",
+  "optionGlobeAutoRotate": "ग्लोब अपने आप घूमे",
+  "optionGlobeAutoRotateHint": "नीचे तय इंतज़ार तक कोई क्लिक न हो तो यह घूमता है, नीचे तय मिनटों में एक चक्कर; क्लिक, खिंचाव या व्हील इसे रोक देता है।",
+  "optionGlobeRotateDelay": "शुरू होने में",
+  "optionGlobeRotateSpeed": "एक चक्कर में",
+  "secondsShort": "{seconds} से.",
+  "minutesShort": "{minutes} मि.",
+  "ctrlLeftRight": "Ctrl ← →"
 }

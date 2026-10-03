@@ -352,5 +352,22 @@ var entries = {
   "pressureRising": "Subindo",
   "pressureFalling": "Caindo",
   "pressureSteady": "Estável",
-  "menubarRelevantPressureHint": "“Relevante”: pressão subindo ou caindo 1,5 hPa ou mais em três horas."
+  "menubarRelevantPressureHint": "“Relevante”: pressão subindo ou caindo 1,5 hPa ou mais em três horas.",
+  "globe": "Globo",
+  "globeMarkers": "Meus locais",
+  "globeHint": "A Terra com dia e noite, o sol, a lua e seus locais com o tempo das previsões salvas. Arrastar ou Shift + roda gira; um clique num local o mostra.",
+  "globeKeysHint": "Ctrl ← → girar · 0 o local",
+  "shortcutGlobeTurn": "Globo: girar 15°",
+  "shortcutGlobeCenter": "Globo: voltar ao local mostrado",
+  "optionNight": "Lado noturno",
+  "optionNightHint": "Em três passos, cada um mais escuro: crepúsculo civil (sol de 0° a −6°), náutico (−6° a −12°) e depois astronômico e noite.",
+  "moonWaxing": "Lua · {percent} % · crescente",
+  "moonWaning": "Lua · {percent} % · minguante",
+  "optionGlobeAutoRotate": "O globo gira sozinho",
+  "optionGlobeAutoRotateHint": "Após a espera escolhida abaixo sem clique, gira, uma volta nos minutos escolhidos abaixo; um clique, arrasto ou a roda o param.",
+  "optionGlobeRotateDelay": "Começa após",
+  "optionGlobeRotateSpeed": "Uma volta em",
+  "secondsShort": "{seconds} s",
+  "minutesShort": "{minutes} min",
+  "ctrlLeftRight": "Ctrl ← →"
 }

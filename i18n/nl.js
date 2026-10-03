@@ -352,5 +352,22 @@ var entries = {
   "pressureRising": "Stijgend",
   "pressureFalling": "Dalend",
   "pressureSteady": "Gelijkblijvend",
-  "menubarRelevantPressureHint": "‘Relevant’: luchtdruk die in drie uur 1,5 hPa of meer stijgt of daalt."
+  "menubarRelevantPressureHint": "‘Relevant’: luchtdruk die in drie uur 1,5 hPa of meer stijgt of daalt.",
+  "globe": "Globe",
+  "globeMarkers": "Mijn plaatsen",
+  "globeHint": "De aarde met dag en nacht, de zon, de maan en je plaatsen met hun weer uit de bewaarde verwachtingen. Slepen of Shift + scrollwiel draait haar; een klik op een plaats toont die.",
+  "globeKeysHint": "Ctrl ← → draaien · 0 de plaats",
+  "shortcutGlobeTurn": "Globe: 15° draaien",
+  "shortcutGlobeCenter": "Globe: terug naar de getoonde plaats",
+  "optionNight": "Nachtzijde",
+  "optionNightHint": "In drie stappen, elk donkerder: burgerlijke schemering (zon 0° tot −6°), nautische (−6° tot −12°), dan astronomische schemering en nacht.",
+  "moonWaxing": "Maan · {percent} % · wassend",
+  "moonWaning": "Maan · {percent} % · afnemend",
+  "optionGlobeAutoRotate": "Globe draait vanzelf",
+  "optionGlobeAutoRotateHint": "Na de hieronder gekozen wachttijd zonder klik draait hij, één omwenteling in de hieronder gekozen minuten; een klik, sleepbeweging of het scrollwiel stopt hem.",
+  "optionGlobeRotateDelay": "Begint na",
+  "optionGlobeRotateSpeed": "Eén omwenteling in",
+  "secondsShort": "{seconds} s",
+  "minutesShort": "{minutes} min",
+  "ctrlLeftRight": "Ctrl ← →"
 }

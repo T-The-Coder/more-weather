@@ -352,5 +352,22 @@ var entries = {
   "pressureRising": "상승",
   "pressureFalling": "하강",
   "pressureSteady": "안정",
-  "menubarRelevantPressureHint": "‘관련 시’: 3시간 동안 기압이 1.5 hPa 이상 오르거나 내릴 때."
+  "menubarRelevantPressureHint": "‘관련 시’: 3시간 동안 기압이 1.5 hPa 이상 오르거나 내릴 때.",
+  "globe": "지구본",
+  "globeMarkers": "내 장소",
+  "globeHint": "낮과 밤, 해, 달, 그리고 저장된 예보의 날씨와 함께 내 장소를 보여 주는 지구. 끌거나 Shift + 휠로 돌리고, 장소를 클릭하면 그 장소를 표시합니다.",
+  "globeKeysHint": "Ctrl ← → 회전 · 0 장소로",
+  "shortcutGlobeTurn": "지구본: 15° 회전",
+  "shortcutGlobeCenter": "지구본: 표시된 장소로 돌아가기",
+  "optionNight": "밤 지역",
+  "optionNightHint": "세 단계로 점점 어둡게: 시민 박명(태양 0°~−6°), 항해 박명(−6°~−12°), 그다음 천문 박명과 밤.",
+  "moonWaxing": "달 · {percent} % · 차는 중",
+  "moonWaning": "달 · {percent} % · 기우는 중",
+  "optionGlobeAutoRotate": "지구본 자동 회전",
+  "optionGlobeAutoRotateHint": "아래에서 정한 시간 동안 클릭이 없으면 돌기 시작해 아래에서 정한 분 동안 한 바퀴 돕니다. 클릭, 끌기 또는 휠로 멈춥니다.",
+  "optionGlobeRotateDelay": "시작까지",
+  "optionGlobeRotateSpeed": "한 바퀴에",
+  "secondsShort": "{seconds}초",
+  "minutesShort": "{minutes}분",
+  "ctrlLeftRight": "Ctrl ← →"
 }

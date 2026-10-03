@@ -352,5 +352,22 @@ var entries = {
   "pressureRising": "Yükseliyor",
   "pressureFalling": "Düşüyor",
   "pressureSteady": "Sabit",
-  "menubarRelevantPressureHint": "“Önemli”: üç saatte 1,5 hPa veya daha fazla yükselen ya da düşen basınç."
+  "menubarRelevantPressureHint": "“Önemli”: üç saatte 1,5 hPa veya daha fazla yükselen ya da düşen basınç.",
+  "globe": "Küre",
+  "globeMarkers": "Yerlerim",
+  "globeHint": "Gece ve gündüzüyle Dünya, güneş, ay ve kayıtlı tahminlerden hava durumlarıyla yerleriniz. Sürüklemek veya Shift + tekerlek döndürür; bir yere tıklamak onu gösterir.",
+  "globeKeysHint": "Ctrl ← → döndür · 0 yer",
+  "shortcutGlobeTurn": "Küre: 15° döndür",
+  "shortcutGlobeCenter": "Küre: gösterilen yere dön",
+  "optionNight": "Gece tarafı",
+  "optionNightHint": "Her biri daha koyu üç adımda: sivil alacakaranlık (güneş 0° ile −6°), denizcilik (−6° ile −12°), ardından astronomik alacakaranlık ve gece.",
+  "moonWaxing": "Ay · {percent} % · büyüyen",
+  "moonWaning": "Ay · {percent} % · küçülen",
+  "optionGlobeAutoRotate": "Küre kendiliğinden döner",
+  "optionGlobeAutoRotateHint": "Aşağıda seçilen süre boyunca tıklanmazsa döner, bir turu aşağıda seçilen dakikalarda atar; bir tıklama, sürükleme ya da tekerlek onu durdurur.",
+  "optionGlobeRotateDelay": "Başlama süresi",
+  "optionGlobeRotateSpeed": "Bir tur",
+  "secondsShort": "{seconds} sn",
+  "minutesShort": "{minutes} dk",
+  "ctrlLeftRight": "Ctrl ← →"
 }
