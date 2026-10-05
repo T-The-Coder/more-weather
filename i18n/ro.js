@@ -364,7 +364,7 @@ var entries = {
   "moonWaxing": "Luna · {percent} % · în creștere",
   "moonWaning": "Luna · {percent} % · în descreștere",
   "optionGlobeAutoRotate": "Globul se rotește singur",
-  "optionGlobeAutoRotateHint": "După întârzierea aleasă mai jos fără clic se rotește, o rotație în minutele alese mai jos; un clic, o tragere sau rotița îl opresc.",
+  "optionGlobeAutoRotateHint": "După întârzierea setată la General › Mișcare fără clic se rotește, o rotație în minutele setate acolo; un clic, o tragere sau rotița o opresc.",
   "secondsShort": "{seconds} s",
   "minutesShort": "{minutes} min",
   "shortcutGlobeZoom": "Glob: apropie / depărtează la cursor",
@@ -407,7 +407,7 @@ var entries = {
   "shortcutGlobeNow": "Glob: înapoi la acum",
   "globeCombineHint": "Straturile de culoare se combină și se desenează în ordinea listei: temperatura mării deasupra oceanului alături de cea a aerului deasupra uscatului, vântul la jumătate de intensitate peste o temperatură, norii și precipitațiile deasupra tuturor. Numerele și cursorul arată precipitațiile unde plouă, altfel temperatura, apoi vântul și norii.",
   "optionRotateFpsHint": "Mai multe cadre arată mai fluid și folosesc mai mult timp de procesor.",
-  "optionMoonStyle": "Vederea lunii",
+  "optionMoonStyle": "Vederea Lunii",
   "moonStyleSpace": "Așa cum e luminată (din spațiu)",
   "moonStyleEarth": "Așa cum se vede de aici",
   "optionMapStyle": "Formă",
@@ -470,5 +470,7 @@ var entries = {
   "compass_NW": "NV",
   "sourceGroupMoonView": "Luna de aici",
   "sourceGroupMoonViewDetails": "Unde stă Luna pe cerul locului curent, înclinarea părții luminate, răsăritul și apusul: calculate pe acest calculator cu formulele din Astronomical Algorithms de Jean Meeus, verificate cu JPL Horizons.",
-  "sourceGroupMoonViewCoverage": "În toată lumea, pentru fiecare loc."
+  "sourceGroupMoonViewCoverage": "În toată lumea, pentru fiecare loc.",
+  "showHints": "Indicii de control",
+  "showHintsHint": "Rândurile care explică tastele și gesturile, precum ↑↓ sau Alt 1–9."
 }

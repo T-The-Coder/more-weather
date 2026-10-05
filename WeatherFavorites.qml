@@ -131,6 +131,7 @@ Column {
       anchors.right: parent.right
       anchors.baseline: favoritesTitle.baseline
       width: Math.min(implicitWidth, parent.width - favoritesTitle.implicitWidth - Style.space(12))
+      visible: panel.showHints
       text: panel.i18n("favoritesKeysHint")
       color: panel.hintText
       font.family: panel.fontFamily

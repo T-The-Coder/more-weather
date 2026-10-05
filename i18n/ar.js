@@ -364,7 +364,7 @@ var entries = {
   "moonWaxing": "القمر · {percent} % · متزايد",
   "moonWaning": "القمر · {percent} % · متناقص",
   "optionGlobeAutoRotate": "الكرة الأرضية تدور وحدها",
-  "optionGlobeAutoRotateHint": "بعد مهلة الانتظار المحددة أدناه بلا نقرة تدور، دورة واحدة في الدقائق المحددة أدناه؛ النقر أو السحب أو العجلة يوقفها.",
+  "optionGlobeAutoRotateHint": "بعد المهلة المضبوطة في عام › الحركة دون نقر يدور، دورة في الدقائق المضبوطة هناك؛ ويوقفه النقر أو السحب أو العجلة.",
   "secondsShort": "{seconds} ث",
   "minutesShort": "{minutes} د",
   "shortcutGlobeZoom": "الكرة الأرضية: تكبير / تصغير عند المؤشر",
@@ -407,7 +407,7 @@ var entries = {
   "shortcutGlobeNow": "الكرة الأرضية: العودة إلى الآن",
   "globeCombineHint": "تتجمع طبقات اللون وتُرسم بترتيب القائمة: حرارة البحر فوق المحيط بجانب حرارة الهواء فوق اليابسة، والرياح بنصف شدتها فوق الحرارة، والغيوم والهطول فوق الجميع. تعرض الأرقام والمؤشر الهطول حيث تمطر، وإلا الحرارة ثم الرياح والغيوم.",
   "optionRotateFpsHint": "المزيد من الإطارات يبدو أكثر سلاسة ويستهلك وقتًا أكثر من المعالج.",
-  "optionMoonStyle": "عرض القمر",
+  "optionMoonStyle": "مظهر القمر",
   "moonStyleSpace": "كما هو مضاء (من الفضاء)",
   "moonStyleEarth": "كما يُرى من هنا",
   "optionMapStyle": "الشكل",
@@ -470,5 +470,7 @@ var entries = {
   "compass_NW": "شمال غرب",
   "sourceGroupMoonView": "القمر من هنا",
   "sourceGroupMoonViewDetails": "أين يقف القمر في سماء المكان الحالي، وميل جانبه المضيء، وشروقه وغروبه: محسوبة على هذا الحاسوب بمعادلات كتاب Astronomical Algorithms لجان ميوس، ومتحقق منها مع JPL Horizons.",
-  "sourceGroupMoonViewCoverage": "في جميع أنحاء العالم، لكل مكان."
+  "sourceGroupMoonViewCoverage": "في جميع أنحاء العالم، لكل مكان.",
+  "showHints": "تلميحات التحكم",
+  "showHintsHint": "الأسطر التي تشرح المفاتيح والإيماءات، مثل ↑↓ أو Alt 1–9."
 }

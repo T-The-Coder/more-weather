@@ -26,6 +26,8 @@ Column {
     width: Style.space(18)
     height: Style.space(18)
     anchors.verticalCenter: parent ? parent.verticalCenter : undefined
+    Accessible.role: Accessible.Button
+    Accessible.name: tip
 
     Text {
       textFormat: Text.PlainText

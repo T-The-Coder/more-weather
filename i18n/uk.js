@@ -364,7 +364,7 @@ var entries = {
   "moonWaxing": "Місяць · {percent} % · молодий",
   "moonWaning": "Місяць · {percent} % · старий",
   "optionGlobeAutoRotate": "Глобус обертається сам",
-  "optionGlobeAutoRotateHint": "Після вибраної нижче паузи без клацання він обертається, один оберт за вибрані нижче хвилини; клацання, перетягування або коліщатко зупиняють його.",
+  "optionGlobeAutoRotateHint": "Після затримки, заданої в «Загальні › Рух», без клацання починає обертатися, оберт за задані там хвилини; клацання, перетягування чи колесо зупиняють.",
   "secondsShort": "{seconds} с",
   "minutesShort": "{minutes} хв",
   "shortcutGlobeZoom": "Глобус: наблизити / віддалити біля вказівника",
@@ -470,5 +470,7 @@ var entries = {
   "compass_NW": "ПнЗх",
   "sourceGroupMoonView": "Місяць звідси",
   "sourceGroupMoonViewDetails": "Де Місяць стоїть на небі поточного місця, нахил його освітленого боку, схід і захід: обчислено на цьому комп’ютері за формулами з Astronomical Algorithms Жана Меєса, перевірено за JPL Horizons.",
-  "sourceGroupMoonViewCoverage": "По всьому світу, для кожного місця."
+  "sourceGroupMoonViewCoverage": "По всьому світу, для кожного місця.",
+  "showHints": "Підказки керування",
+  "showHintsHint": "Рядки, що пояснюють клавіші й жести, як-от ↑↓ або Alt 1–9."
 }

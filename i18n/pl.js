@@ -364,7 +364,7 @@ var entries = {
   "moonWaxing": "Księżyc · {percent} % · przybywa",
   "moonWaning": "Księżyc · {percent} % · ubywa",
   "optionGlobeAutoRotate": "Globus obraca się sam",
-  "optionGlobeAutoRotateHint": "Po wybranym niżej czasie bez kliknięcia obraca się, jeden obrót w wybranych niżej minutach; kliknięcie, przeciągnięcie lub kółko go zatrzymuje.",
+  "optionGlobeAutoRotateHint": "Po czasie ustawionym w Ogólne › Ruch bez kliknięcia zaczyna się obracać, jeden obrót w ustawionych tam minutach; kliknięcie, przeciągnięcie lub kółko go zatrzymują.",
   "secondsShort": "{seconds} s",
   "minutesShort": "{minutes} min",
   "shortcutGlobeZoom": "Globus: przybliż / oddal przy wskaźniku",
@@ -470,5 +470,7 @@ var entries = {
   "compass_NW": "płn.-zach.",
   "sourceGroupMoonView": "Księżyc stąd",
   "sourceGroupMoonViewDetails": "Gdzie Księżyc stoi na niebie bieżącego miejsca, nachylenie jego oświetlonej strony, wschód i zachód: liczone na tym komputerze wzorami z Astronomical Algorithms Jeana Meeusa, sprawdzone z JPL Horizons.",
-  "sourceGroupMoonViewCoverage": "Cały świat, dla każdego miejsca."
+  "sourceGroupMoonViewCoverage": "Cały świat, dla każdego miejsca.",
+  "showHints": "Podpowiedzi sterowania",
+  "showHintsHint": "Wiersze objaśniające klawisze i gesty, takie jak ↑↓ czy Alt 1–9."
 }

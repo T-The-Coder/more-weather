@@ -364,7 +364,7 @@ var entries = {
   "moonWaxing": "Kuu · {percent} % · kasvava",
   "moonWaning": "Kuu · {percent} % · vähenevä",
   "optionGlobeAutoRotate": "Karttapallo pyörii itsestään",
-  "optionGlobeAutoRotateHint": "Alla valitun viiveen jälkeen ilman napsautusta se pyörii, kierroksen alla valituissa minuuteissa; napsautus, vetäminen tai rulla pysäyttää sen.",
+  "optionGlobeAutoRotateHint": "Kääntyy kohdassa Yleiset › Liike asetetun viiveen jälkeen ilman napsautusta, yksi kierros siellä asetetuissa minuuteissa; napsautus, vetäminen tai rulla pysäyttää sen.",
   "secondsShort": "{seconds} s",
   "minutesShort": "{minutes} min",
   "shortcutGlobeZoom": "Karttapallo: lähennä / loitonna osoittimen kohdalla",
@@ -470,5 +470,7 @@ var entries = {
   "compass_NW": "LU",
   "sourceGroupMoonView": "Kuu täältä",
   "sourceGroupMoonViewDetails": "Missä Kuu on nykyisen paikan taivaalla, sen valaistun puolen kallistus, nousu ja lasku: laskettu tällä tietokoneella Jean Meeusin Astronomical Algorithms -kirjan kaavoilla, tarkistettu JPL Horizonsilla.",
-  "sourceGroupMoonViewCoverage": "Koko maailma, jokaiselle paikalle."
+  "sourceGroupMoonViewCoverage": "Koko maailma, jokaiselle paikalle.",
+  "showHints": "Ohjausvihjeet",
+  "showHintsHint": "Rivit, jotka selittävät näppäimet ja eleet, kuten ↑↓ tai Alt 1–9."
 }

@@ -1,5 +1,6 @@
 import QtQuick
 import qs.Commons
+import qs.Ui
 
 // A button of the panel and the settings, reachable by keyboard
 // (kbFocused). With a confirmLabel, the first press arms it and a second one
@@ -9,6 +10,9 @@ Rectangle {
   required property var panel
   property string label: ""
   property string confirmLabel: ""
+  // The full name where the label is a glyph ("+"): shown after a short
+  // delay under the pointer, and the accessible name.
+  property string tooltip: ""
   property bool kbFocused: false
   property bool armed: false
   signal activated()
@@ -32,6 +36,9 @@ Rectangle {
   border.color: armed || kbFocused ? Color.accent : panel.subtleText
   border.width: Style.spacing.hairline
   onVisibleChanged: armed = false
+  Accessible.role: Accessible.Button
+  Accessible.name: tooltip !== "" ? tooltip : label
+  Accessible.onPressAction: press()
 
   Timer {
     running: button.armed
@@ -60,5 +67,11 @@ Rectangle {
     hoverEnabled: true
     cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
     onClicked: button.press()
+
+    PanelToolTip {
+      visible: buttonMouse.containsMouse && button.tooltip !== ""
+      text: button.tooltip
+      fontFamily: button.panel.fontFamily
+    }
   }
 }

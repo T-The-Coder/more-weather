@@ -364,7 +364,7 @@ var entries = {
   "moonWaxing": "月亮 · {percent} % · 盈",
   "moonWaning": "月亮 · {percent} % · 亏",
   "optionGlobeAutoRotate": "地球仪自动旋转",
-  "optionGlobeAutoRotateHint": "在下方设定的等待时间内没有点击时开始旋转，按下方设定的分钟数转一圈；点击、拖动或滚轮会让它停下。",
+  "optionGlobeAutoRotateHint": "在“常规 › 运动”中设定的时间内无点击后开始旋转，转一圈用那里设定的分钟数；点击、拖动或滚轮可停止。",
   "secondsShort": "{seconds} 秒",
   "minutesShort": "{minutes} 分钟",
   "shortcutGlobeZoom": "地球仪：在指针处放大 / 缩小",
@@ -470,5 +470,7 @@ var entries = {
   "compass_NW": "西北",
   "sourceGroupMoonView": "从这里看月亮",
   "sourceGroupMoonViewDetails": "月亮在当前地点天空中的位置、亮面的倾斜、升起和落下：在本机按 Jean Meeus《Astronomical Algorithms》的公式计算，并与 JPL Horizons 核对。",
-  "sourceGroupMoonViewCoverage": "全球，每个地点各自计算。"
+  "sourceGroupMoonViewCoverage": "全球，每个地点各自计算。",
+  "showHints": "操作提示",
+  "showHintsHint": "说明按键和手势的行，例如 ↑↓ 或 Alt 1–9。"
 }

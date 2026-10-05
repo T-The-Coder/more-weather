@@ -364,7 +364,7 @@ var entries = {
   "moonWaxing": "ירח · {percent} % · מתמלא",
   "moonWaning": "ירח · {percent} % · מתמעט",
   "optionGlobeAutoRotate": "הגלובוס מסתובב מעצמו",
-  "optionGlobeAutoRotateHint": "אחרי ההמתנה שנקבעה למטה בלי לחיצה הוא מסתובב, סיבוב אחד בדקות שנקבעו למטה; לחיצה, גרירה או הגלגלת עוצרות אותו.",
+  "optionGlobeAutoRotateHint": "אחרי ההמתנה שנקבעה בכללי › תנועה בלי לחיצה הוא מסתובב, סיבוב אחד בדקות שנקבעו שם; לחיצה, גרירה או הגלגל עוצרים אותו.",
   "secondsShort": "{seconds} ש׳",
   "minutesShort": "{minutes} דק׳",
   "shortcutGlobeZoom": "גלובוס: התקרבות / התרחקות במצביע",
@@ -470,5 +470,7 @@ var entries = {
   "compass_NW": "צפון-מערב",
   "sourceGroupMoonView": "הירח מכאן",
   "sourceGroupMoonViewDetails": "היכן הירח עומד בשמי המקום הנוכחי, הטיית הצד המואר שלו, זריחתו ושקיעתו: מחושבים במחשב הזה בנוסחאות מתוך Astronomical Algorithms של ז'אן מֵאוּס, ונבדקו מול JPL Horizons.",
-  "sourceGroupMoonViewCoverage": "בכל העולם, לכל מקום."
+  "sourceGroupMoonViewCoverage": "בכל העולם, לכל מקום.",
+  "showHints": "רמזי שליטה",
+  "showHintsHint": "השורות שמסבירות מקשים ומחוות, כמו ↑↓ או Alt 1–9."
 }

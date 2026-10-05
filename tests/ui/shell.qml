@@ -229,6 +229,14 @@ ShellRoot {
       panel.replaceSavedLocations(moonSavedBefore)
       panel.relativeTimeNowMs = moonNowBefore
     },
+    // Control hints off (Settings → General → App): the key lines go.
+    function() { general("showHints", false) },
+    function() { shot("02c-tab-places-hints-off"); check("hints-off", panel.showHints === false) },
+    function() { panel.activeTab = "globe" },
+    function() {}, function() { shot("02d-tab-globe-hints-off") },
+    function() { panel.openSettings("display") },
+    function() { shot("02e-settings-hints-off") },
+    function() { panel.settingsOpen = false; general("showHints", true); panel.activeTab = "favorites" },
     function() { panel.activeTab = "airQuality" },
     function() { shot("03-tab-air") },
     function() { panel.activeTab = "hourly" },

@@ -364,7 +364,7 @@ var entries = {
   "moonWaxing": "चंद्रमा · {percent} % · बढ़ता",
   "moonWaning": "चंद्रमा · {percent} % · घटता",
   "optionGlobeAutoRotate": "ग्लोब अपने आप घूमे",
-  "optionGlobeAutoRotateHint": "नीचे तय इंतज़ार तक कोई क्लिक न हो तो यह घूमता है, नीचे तय मिनटों में एक चक्कर; क्लिक, खिंचाव या व्हील इसे रोक देता है।",
+  "optionGlobeAutoRotateHint": "सामान्य › गति में तय देरी तक क्लिक न होने पर घूमता है, वहाँ तय मिनटों में एक चक्कर; क्लिक, खींचना या व्हील इसे रोकते हैं।",
   "secondsShort": "{seconds} से.",
   "minutesShort": "{minutes} मि.",
   "shortcutGlobeZoom": "ग्लोब: पॉइंटर पर ज़ूम इन / आउट",
@@ -470,5 +470,7 @@ var entries = {
   "compass_NW": "उत्तर-पश्चिम",
   "sourceGroupMoonView": "यहाँ से चंद्रमा",
   "sourceGroupMoonViewDetails": "वर्तमान स्थान के आकाश में चंद्रमा कहाँ है, उसके प्रकाशित भाग का झुकाव, उदय और अस्त: इसी कंप्यूटर पर जीन मीउस की Astronomical Algorithms के सूत्रों से गणना, JPL Horizons से जाँची गई।",
-  "sourceGroupMoonViewCoverage": "दुनिया भर में, हर स्थान के लिए।"
+  "sourceGroupMoonViewCoverage": "दुनिया भर में, हर स्थान के लिए।",
+  "showHints": "नियंत्रण संकेत",
+  "showHintsHint": "कुंजियाँ और इशारे समझाने वाली पंक्तियाँ, जैसे ↑↓ या Alt 1–9।"
 }

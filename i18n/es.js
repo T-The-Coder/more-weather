@@ -364,7 +364,7 @@ var entries = {
   "moonWaxing": "Luna · {percent} % · creciente",
   "moonWaning": "Luna · {percent} % · menguante",
   "optionGlobeAutoRotate": "El globo gira solo",
-  "optionGlobeAutoRotateHint": "Tras la espera elegida abajo sin un clic gira, una vuelta en los minutos elegidos abajo; un clic, un arrastre o la rueda lo detienen.",
+  "optionGlobeAutoRotateHint": "Tras la espera fijada en General › Movimiento sin un clic gira, una vuelta en los minutos fijados allí; un clic, arrastrar o la rueda la detienen.",
   "secondsShort": "{seconds} s",
   "minutesShort": "{minutes} min",
   "shortcutGlobeZoom": "Globo: acercar / alejar en el puntero",
@@ -407,7 +407,7 @@ var entries = {
   "shortcutGlobeNow": "Globo: volver a ahora",
   "globeCombineHint": "Las capas de color se combinan y se dibujan en el orden de la lista: la temperatura del mar sobre el océano junto a la del aire sobre tierra, el viento a media intensidad sobre una temperatura, las nubes y la precipitación encima de todo. Los números y el puntero muestran la precipitación donde llueve, si no la temperatura, luego el viento y las nubes.",
   "optionRotateFpsHint": "Más fotogramas se ven más fluidos y usan más tiempo de procesador.",
-  "optionMoonStyle": "Vista de la luna",
+  "optionMoonStyle": "Vista de la Luna",
   "moonStyleSpace": "Como está iluminada (desde el espacio)",
   "moonStyleEarth": "Como se ve desde aquí",
   "optionMapStyle": "Forma",
@@ -470,5 +470,7 @@ var entries = {
   "compass_NW": "NO",
   "sourceGroupMoonView": "La Luna desde aquí",
   "sourceGroupMoonViewDetails": "Dónde está la Luna en el cielo del lugar actual, la inclinación de su lado iluminado, su salida y su puesta: calculados en este ordenador con las fórmulas de Astronomical Algorithms de Jean Meeus, comprobados con JPL Horizons.",
-  "sourceGroupMoonViewCoverage": "Todo el mundo, para cada lugar."
+  "sourceGroupMoonViewCoverage": "Todo el mundo, para cada lugar.",
+  "showHints": "Ayudas de control",
+  "showHintsHint": "Las líneas que explican teclas y gestos, como ↑↓ o Alt 1–9."
 }

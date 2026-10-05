@@ -34,12 +34,15 @@ Item {
   }
   // The view's own chips first (shape, night, moon, places, timeline), then
   // the layers' (GlobeFields.CHIPS), a divider between the groups.
+  // `alone`: the glyph says it (globe, flat map, moon, places), so the chip
+  // shows it without its name, which the hover label and the accessible
+  // name keep (`tip`, the full text).
   readonly property var allChips: [
-    { key: "globeStyle", value: "globe", layer: "", glyph: "\u{f01e7}", label: "mapStyleGlobe" },
-    { key: "globeStyle", value: "map", layer: "", glyph: "\u{f034d}", label: "mapStyleFlat" },
+    { key: "globeStyle", value: "globe", layer: "", glyph: "\u{f01e7}", label: "mapStyleGlobe", alone: true },
+    { key: "globeStyle", value: "map", layer: "", glyph: "\u{f034d}", label: "mapStyleFlat", alone: true },
     { key: "globeNight", layer: "", glyph: "\u{f0594}", label: "chipNight", divider: true },
-    { key: "globeMoon", layer: "", glyph: "\u{f0f65}", label: "moon" },
-    { key: "globeMarkers", layer: "", glyph: "\u{f034e}", label: "chipPlaces" },
+    { key: "globeMoon", layer: "", glyph: "\u{f0f65}", label: "moon", alone: true },
+    { key: "globeMarkers", layer: "", glyph: "\u{f034e}", label: "chipPlaces", tip: "globeMarkers", alone: true },
     { key: "globeTimeline", layer: "", glyph: "\u{f0954}", label: "globeTimeline" }
   ].concat(GlobeFields.CHIPS.map(function(chip, index) {
     var copy = Object.assign({}, chip)
@@ -104,6 +107,11 @@ Item {
           Rectangle {
             id: chip
             readonly property bool on: legend.chipOn(chipSlot.modelData)
+            readonly property bool glyphAlone: legend.glyphOnly || !!chipSlot.modelData.alone
+            readonly property string fullText: legend.panel.i18n(chipSlot.modelData.tip || chipSlot.modelData.label)
+            Accessible.role: Accessible.CheckBox
+            Accessible.name: fullText
+            Accessible.checked: on
             width: chipRow.implicitWidth + Style.space(14)
             height: Style.space(24)
             radius: Style.cornerRadius
@@ -127,7 +135,7 @@ Item {
               }
               Text {
                 textFormat: Text.PlainText
-                visible: !legend.glyphOnly
+                visible: !chip.glyphAlone
                 anchors.verticalCenter: parent.verticalCenter
                 text: legend.panel.i18n(chipSlot.modelData.label)
                 color: chip.on ? Style.hoverStateColor(legend.panel.foreground, Color.accent) : legend.panel.mutedText
@@ -152,9 +160,18 @@ Item {
               }
             }
 
-            // The name above a glyph-only chip under the pointer.
+            // The full name above a glyph-only chip, a moment after the
+            // pointer rests on it.
+            Timer {
+              id: tipDelay
+              property bool done: false
+              interval: 400
+              running: chip.glyphAlone && chipMouse.containsMouse
+              onRunningChanged: if (running) done = false
+              onTriggered: done = true
+            }
             Rectangle {
-              visible: legend.glyphOnly && chipMouse.containsMouse
+              visible: chip.glyphAlone && chipMouse.containsMouse && tipDelay.done
               y: -height - Style.space(4)
               x: (parent.width - width) / 2
               z: 10
@@ -169,7 +186,7 @@ Item {
                 id: tipText
                 textFormat: Text.PlainText
                 anchors.centerIn: parent
-                text: legend.panel.i18n(chipSlot.modelData.label)
+                text: chip.fullText
                 color: Color.popups.text
                 font.family: legend.panel.fontFamily
                 font.pixelSize: Style.font.caption

@@ -163,7 +163,9 @@ runs as a standalone app window.
 - **Offline cache:** When a service or the network is down, the last data (up to
   three days old) stays visible, marked in italics.
 - **Full keyboard control,** settings included; every shortcut is listed under
-  Settings → Shortcuts, and the settings name their keys where they apply.
+  Settings → Shortcuts, and the views and settings name their keys where they apply
+  (Settings → General → App → **Control hints** turns those lines off; the Shortcuts
+  page stays).
 - **Settings → Sources** shows which service is serving each kind of data right now.
 
 ## Screenshots

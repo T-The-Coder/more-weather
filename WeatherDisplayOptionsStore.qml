@@ -84,6 +84,7 @@ Item {
       refreshMinutes: normalizedRefreshMinutes(source.refreshMinutes),
       radarMinutes: normalizedRadarMinutes(source.radarMinutes),
       colorAccents: source.colorAccents !== false,
+      showHints: source.showHints !== false,
       windLevel: normalizedWindLevel(source.windLevel),
       motionDelay: generalChoice("motionDelay", source.motionDelay),
       motionSpeed: generalChoice("motionSpeed", source.motionSpeed),

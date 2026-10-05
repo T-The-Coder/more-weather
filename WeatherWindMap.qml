@@ -299,6 +299,7 @@ Item {
         textFormat: Text.PlainText
         anchors.verticalCenter: parent.verticalCenter
         rightPadding: Style.space(4)
+        visible: panel.showHints
         text: "⇧ ↑ ↓"
         color: panel.hintText
         font.family: panel.fontFamily

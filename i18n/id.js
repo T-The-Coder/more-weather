@@ -364,7 +364,7 @@ var entries = {
   "moonWaxing": "Bulan · {percent} % · membesar",
   "moonWaning": "Bulan · {percent} % · mengecil",
   "optionGlobeAutoRotate": "Bola dunia berputar sendiri",
-  "optionGlobeAutoRotateHint": "Setelah jeda yang diatur di bawah tanpa klik, ia berputar, satu putaran dalam menit yang diatur di bawah; klik, seretan, atau roda menghentikannya.",
+  "optionGlobeAutoRotateHint": "Setelah jeda yang diatur di Umum › Gerak tanpa klik, berputar, satu putaran dalam menit yang diatur di sana; klik, seret, atau roda menghentikannya.",
   "secondsShort": "{seconds} dtk",
   "minutesShort": "{minutes} mnt",
   "shortcutGlobeZoom": "Bola dunia: perbesar / perkecil di penunjuk",
@@ -407,7 +407,7 @@ var entries = {
   "shortcutGlobeNow": "Bola dunia: kembali ke sekarang",
   "globeCombineHint": "Lapisan warna dapat digabung dan digambar menurut urutan daftar: suhu laut di atas samudra di samping suhu udara di atas daratan, angin setengah kuat di atas suhu, awan dan presipitasi di atas semuanya. Angka dan penunjuk menampilkan presipitasi di tempat hujan, selain itu suhu, lalu angin dan awan.",
   "optionRotateFpsHint": "Lebih banyak bingkai terlihat lebih mulus dan memakai lebih banyak waktu prosesor.",
-  "optionMoonStyle": "Tampilan bulan",
+  "optionMoonStyle": "Tampilan Bulan",
   "moonStyleSpace": "Seperti disinari (dari angkasa)",
   "moonStyleEarth": "Seperti terlihat dari sini",
   "optionMapStyle": "Bentuk",
@@ -470,5 +470,7 @@ var entries = {
   "compass_NW": "BL",
   "sourceGroupMoonView": "Bulan dari sini",
   "sourceGroupMoonViewDetails": "Letak Bulan di langit tempat saat ini, kemiringan sisi terangnya, terbit dan terbenamnya: dihitung di komputer ini dengan rumus dari Astronomical Algorithms karya Jean Meeus, diperiksa dengan JPL Horizons.",
-  "sourceGroupMoonViewCoverage": "Seluruh dunia, untuk setiap tempat."
+  "sourceGroupMoonViewCoverage": "Seluruh dunia, untuk setiap tempat.",
+  "showHints": "Petunjuk kontrol",
+  "showHintsHint": "Baris yang menjelaskan tombol dan gerakan, seperti ↑↓ atau Alt 1–9."
 }

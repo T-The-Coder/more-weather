@@ -364,7 +364,7 @@ var entries = {
   "moonWaxing": "Hold · {percent} % · növő",
   "moonWaning": "Hold · {percent} % · fogyó",
   "optionGlobeAutoRotate": "A földgömb magától forog",
-  "optionGlobeAutoRotateHint": "Az alább választott várakozás után, ha nincs kattintás, forog, egy fordulat az alább választott percek alatt; egy kattintás, húzás vagy a görgő megállítja.",
+  "optionGlobeAutoRotateHint": "Az Általános › Mozgás alatt beállított várakozás után kattintás nélkül forog, egy fordulat az ott beállított percek alatt; kattintás, húzás vagy görgő megállítja.",
   "secondsShort": "{seconds} mp",
   "minutesShort": "{minutes} perc",
   "shortcutGlobeZoom": "Földgömb: nagyítás / kicsinyítés a mutatónál",
@@ -470,5 +470,7 @@ var entries = {
   "compass_NW": "ÉNy",
   "sourceGroupMoonView": "A Hold innen",
   "sourceGroupMoonViewDetails": "Hol áll a Hold a jelenlegi hely egén, megvilágított oldalának dőlése, kelte és nyugta: ezen a gépen számolva Jean Meeus Astronomical Algorithms képleteivel, a JPL Horizonsszal ellenőrizve.",
-  "sourceGroupMoonViewCoverage": "Világszerte, minden helyre."
+  "sourceGroupMoonViewCoverage": "Világszerte, minden helyre.",
+  "showHints": "Kezelési tippek",
+  "showHintsHint": "A billentyűket és mozdulatokat magyarázó sorok, például ↑↓ vagy Alt 1–9."
 }

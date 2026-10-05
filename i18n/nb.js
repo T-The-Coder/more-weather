@@ -364,7 +364,7 @@ var entries = {
   "moonWaxing": "Måne · {percent} % · voksende",
   "moonWaning": "Måne · {percent} % · avtagende",
   "optionGlobeAutoRotate": "Globusen snurrer av seg selv",
-  "optionGlobeAutoRotateHint": "Etter ventetiden valgt nedenfor uten klikk snurrer den, én runde på minuttene valgt nedenfor; et klikk, dra eller hjulet stopper den.",
+  "optionGlobeAutoRotateHint": "Etter ventetiden under Generelt › Bevegelse uten klikk dreier den seg, én omdreining på minuttene som er satt der; et klikk, en dra eller hjulet stopper den.",
   "secondsShort": "{seconds} s",
   "minutesShort": "{minutes} min",
   "shortcutGlobeZoom": "Globus: zoom inn / ut ved pekeren",
@@ -470,5 +470,7 @@ var entries = {
   "compass_NW": "NV",
   "sourceGroupMoonView": "Månen herfra",
   "sourceGroupMoonViewDetails": "Hvor Månen står på himmelen over gjeldende sted, helningen av den opplyste siden, opp- og nedgang: beregnet på denne datamaskinen med formlene fra Jean Meeus' Astronomical Algorithms, kontrollert mot JPL Horizons.",
-  "sourceGroupMoonViewCoverage": "Hele verden, for hvert sted."
+  "sourceGroupMoonViewCoverage": "Hele verden, for hvert sted.",
+  "showHints": "Betjeningstips",
+  "showHintsHint": "Linjene som forklarer taster og bevegelser, som ↑↓ eller Alt 1–9."
 }

@@ -364,7 +364,7 @@ var entries = {
   "moonWaxing": "ดวงจันทร์ · {percent} % · ข้างขึ้น",
   "moonWaning": "ดวงจันทร์ · {percent} % · ข้างแรม",
   "optionGlobeAutoRotate": "ลูกโลกหมุนเอง",
-  "optionGlobeAutoRotateHint": "เมื่อไม่มีการคลิกตามเวลาที่ตั้งด้านล่าง ลูกโลกจะหมุน หนึ่งรอบตามจำนวนนาทีที่ตั้งด้านล่าง คลิก ลาก หรือล้อเลื่อนจะหยุดหมุน",
+  "optionGlobeAutoRotateHint": "หลังจากเวลารอที่ตั้งไว้ใน ทั่วไป › การเคลื่อนไหว โดยไม่มีการคลิก จะหมุน หนึ่งรอบตามนาทีที่ตั้งไว้ที่นั่น คลิก ลาก หรือล้อเลื่อนจะหยุด",
   "secondsShort": "{seconds} วิ",
   "minutesShort": "{minutes} นาที",
   "shortcutGlobeZoom": "ลูกโลก: ซูมเข้า / ออกที่ตัวชี้",
@@ -470,5 +470,7 @@ var entries = {
   "compass_NW": "ตะวันตกเฉียงเหนือ",
   "sourceGroupMoonView": "ดวงจันทร์จากที่นี่",
   "sourceGroupMoonViewDetails": "ตำแหน่งของดวงจันทร์บนท้องฟ้าของสถานที่ปัจจุบัน ความเอียงของด้านสว่าง เวลาขึ้นและตก คำนวณบนคอมพิวเตอร์นี้ด้วยสูตรจาก Astronomical Algorithms ของ Jean Meeus ตรวจสอบกับ JPL Horizons",
-  "sourceGroupMoonViewCoverage": "ทั่วโลก สำหรับทุกสถานที่"
+  "sourceGroupMoonViewCoverage": "ทั่วโลก สำหรับทุกสถานที่",
+  "showHints": "คำแนะนำการควบคุม",
+  "showHintsHint": "บรรทัดที่อธิบายปุ่มและท่าทาง เช่น ↑↓ หรือ Alt 1–9"
 }

@@ -402,6 +402,8 @@ Panel {
     }
   }
   readonly property bool colorAccents: generalSetting("colorAccents", true) !== false
+  // The lines that explain keys and gestures (Settings → General → App).
+  readonly property bool showHints: generalSetting("showHints", true) !== false
 
   function paletteColor(name) {
     var hex = String(themePalette[name] || "#808080")
@@ -2073,7 +2075,7 @@ Panel {
   // fallback only matters for keys that have no default at all.
   // Unit system and language apply to the menu bar, widget and app alike.
   property var generalOptions: ({ unitSystem: "auto", language: "auto", windUnit: "auto", refreshMinutes: 0,
-    radarMinutes: 0, colorAccents: true, windLevel: "10m", motionDelay: "10", motionSpeed: "4", motionFps: "15",
+    radarMinutes: 0, colorAccents: true, showHints: true, windLevel: "10m", motionDelay: "10", motionSpeed: "4", motionFps: "15",
     notifySevereWarnings: true, notifyRainSoon: true, rainAlertThreshold: "any", rainAlertRadius: "25" })
   function generalSetting(key, fallback) {
     var value = generalOptions ? generalOptions[key] : undefined

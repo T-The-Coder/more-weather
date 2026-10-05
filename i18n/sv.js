@@ -364,7 +364,7 @@ var entries = {
   "moonWaxing": "Måne · {percent} % · tilltagande",
   "moonWaning": "Måne · {percent} % · avtagande",
   "optionGlobeAutoRotate": "Jordgloben snurrar av sig själv",
-  "optionGlobeAutoRotateHint": "Efter fördröjningen som väljs nedan utan klick snurrar den, ett varv på minuterna som väljs nedan; ett klick, drag eller hjulet stoppar den.",
+  "optionGlobeAutoRotateHint": "Efter fördröjningen under Allmänt › Rörelse utan klick vrider den sig, ett varv på minuterna som ställts in där; ett klick, dragning eller hjulet stoppar den.",
   "secondsShort": "{seconds} s",
   "minutesShort": "{minutes} min",
   "shortcutGlobeZoom": "Glob: zooma in / ut vid pekaren",
@@ -470,5 +470,7 @@ var entries = {
   "compass_NW": "NV",
   "sourceGroupMoonView": "Månen härifrån",
   "sourceGroupMoonViewDetails": "Var Månen står på himlen över den aktuella platsen, lutningen på dess belysta sida, upp- och nedgång: beräknat på den här datorn med formlerna i Jean Meeus Astronomical Algorithms, kontrollerat mot JPL Horizons.",
-  "sourceGroupMoonViewCoverage": "Hela världen, för varje plats."
+  "sourceGroupMoonViewCoverage": "Hela världen, för varje plats.",
+  "showHints": "Kontrolltips",
+  "showHintsHint": "Raderna som förklarar tangenter och gester, som ↑↓ eller Alt 1–9."
 }

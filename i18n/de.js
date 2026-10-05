@@ -398,7 +398,7 @@ var catalog = {
   "moonWaxing": "Mond · {percent} % · zunehmend",
   "moonWaning": "Mond · {percent} % · abnehmend",
   "optionGlobeAutoRotate": "Globus dreht sich von selbst",
-  "optionGlobeAutoRotateHint": "Nach der unten eingestellten Wartezeit ohne Klick dreht er sich, eine Umdrehung in den unten eingestellten Minuten; ein Klick, Zug oder das Mausrad hält ihn an.",
+  "optionGlobeAutoRotateHint": "Dreht sich nach der unter Allgemein › Bewegung eingestellten Wartezeit ohne Klick, eine Drehung in den dort eingestellten Minuten; ein Klick, Ziehen oder das Rad hält sie an.",
   "secondsShort": "{seconds} s",
   "minutesShort": "{minutes} min",
   "shortcutGlobeZoom": "Globus: am Zeiger hinein / hinaus zoomen",
@@ -504,5 +504,7 @@ var catalog = {
   "compass_NW": "NW",
   "sourceGroupMoonView": "Der Mond von hier",
   "sourceGroupMoonViewDetails": "Wo der Mond am Himmel des aktuellen Orts steht, die Neigung seiner hellen Seite, Auf- und Untergang: auf diesem Rechner mit den Formeln aus Jean Meeus' Astronomical Algorithms berechnet, geprüft mit JPL Horizons.",
-  "sourceGroupMoonViewCoverage": "Weltweit, für jeden Ort."
+  "sourceGroupMoonViewCoverage": "Weltweit, für jeden Ort.",
+  "showHints": "Bedienhinweise",
+  "showHintsHint": "Die Zeilen, die Tasten und Gesten erklären, etwa ↑↓ oder Alt 1–9."
 }

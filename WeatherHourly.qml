@@ -45,6 +45,7 @@ Column {
         anchors.right: parent.right
         anchors.baseline: hourlyTitle.baseline
         width: Math.min(implicitWidth, parent.width - hourlyTitle.implicitWidth - Style.space(12))
+        visible: panel.showHints
         text: panel.i18n("hourCursorHint")
         color: panel.hintText
         font.family: panel.fontFamily

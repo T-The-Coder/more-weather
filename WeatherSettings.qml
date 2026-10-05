@@ -578,6 +578,7 @@ Rectangle {
     g("motionSection", "motionFps", "generalChoice", { choiceId: "motionFps" })
     g("generalSectionApp", "barPosition", "jump", { focusId: "barPosition", target: "general" })
     g("generalSectionApp", "appLauncherEntry", "jump", { focusId: "launcher", target: "general" })
+    g("generalSectionApp", "showHints", "generalSwitch", { key: "showHints" })
     g("generalSectionBackup", "settingsExport", "jump", { focusId: "exportSettings", target: "general" })
     g("generalSectionBackup", "settingsImport", "jump", { focusId: "importSettings", target: "general" })
     g("generalSectionBackup", "importCitiesFromTime", "jump", { focusId: "importCities", target: "general" })
@@ -729,7 +730,7 @@ Rectangle {
         { id: "motionFps", type: "dropdown" }
       ]
       if (barPositionUsable) general.push({ id: "barPosition", type: "dropdown" })
-      general.push({ id: "launcher", type: "launcher" },
+      general.push({ id: "launcher", type: "launcher" }, { id: "showHints", type: "generalSwitch", key: "showHints" },
         { id: "transferPath", type: "path" }, { id: "exportSettings", type: "button" },
         { id: "importSettings", type: "button" })
       if (panel.cityImport.available) general.push({ id: "importCities", type: "button" })
@@ -1173,6 +1174,7 @@ Rectangle {
         textFormat: Text.PlainText
         width: parent.width
         horizontalAlignment: Text.AlignHCenter
+        visible: panel.showHints
         text: panel.i18n("settingsPagesKeysHint")
         color: panel.hintText
         font.family: panel.fontFamily
@@ -1252,7 +1254,7 @@ Rectangle {
       // Keys on this page, in muted type where they act.
       Text {
         textFormat: Text.PlainText
-        visible: panel.settingsPage === "general" && !settingsView.searching
+        visible: panel.settingsPage === "general" && !settingsView.searching && panel.showHints
         width: parent.width
         text: panel.i18n("settingsGeneralKeysHint")
         color: panel.hintText
@@ -1501,6 +1503,27 @@ Rectangle {
             textFormat: Text.PlainText
             width: parent.width
             text: panel.i18n("appLauncherEntryHint")
+            color: panel.mutedText
+            font.family: panel.fontFamily
+            font.pixelSize: Style.font.caption
+            wrapMode: Text.WordWrap
+          }
+
+          // The lines that explain keys and gestures in the views.
+          WeatherSwitchRow {
+            panel: settingsView.panel
+            kbFocused: settingsView.focusId === "showHints"
+            onKbFocusedChanged: if (kbFocused) settingsView.ensureVisible(this)
+            title: panel.i18n("showHints")
+            switchState: panel.showHints
+            indented: false
+            onToggled: function(value) { panel.displayOptionsStore.setGeneralSetting("showHints", value) }
+          }
+
+          Text {
+            textFormat: Text.PlainText
+            width: parent.width
+            text: panel.i18n("showHintsHint")
             color: panel.mutedText
             font.family: panel.fontFamily
             font.pixelSize: Style.font.caption
@@ -1770,7 +1793,7 @@ Rectangle {
 
       Text {
         textFormat: Text.PlainText
-        visible: panel.settingsPage === "display" && !settingsView.searching
+        visible: panel.settingsPage === "display" && !settingsView.searching && panel.showHints
         width: parent.width
         text: panel.i18n("settingsKeysHint")
         color: panel.hintText

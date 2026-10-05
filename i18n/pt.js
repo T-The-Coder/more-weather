@@ -364,7 +364,7 @@ var entries = {
   "moonWaxing": "Lua · {percent} % · crescente",
   "moonWaning": "Lua · {percent} % · minguante",
   "optionGlobeAutoRotate": "O globo gira sozinho",
-  "optionGlobeAutoRotateHint": "Após a espera escolhida abaixo sem clique, gira, uma volta nos minutos escolhidos abaixo; um clique, arrasto ou a roda o param.",
+  "optionGlobeAutoRotateHint": "Após a espera definida em Geral › Movimento sem um clique, gira, uma volta nos minutos aí definidos; um clique, arrastar ou a roda param-na.",
   "secondsShort": "{seconds} s",
   "minutesShort": "{minutes} min",
   "shortcutGlobeZoom": "Globo: aproximar / afastar no ponteiro",
@@ -407,7 +407,7 @@ var entries = {
   "shortcutGlobeNow": "Globo: voltar para agora",
   "globeCombineHint": "As camadas de cor combinam-se, desenhadas na ordem da lista: a temperatura do mar sobre o oceano ao lado da do ar sobre a terra, o vento a meia intensidade sobre uma temperatura, as nuvens e a precipitação por cima de tudo. Os números e o ponteiro mostram a precipitação onde chove, senão a temperatura, depois o vento e as nuvens.",
   "optionRotateFpsHint": "Mais imagens parecem mais fluidas e usam mais tempo de processador.",
-  "optionMoonStyle": "Vista da lua",
+  "optionMoonStyle": "Vista da Lua",
   "moonStyleSpace": "Como está iluminada (do espaço)",
   "moonStyleEarth": "Como se vê daqui",
   "optionMapStyle": "Forma",
@@ -470,5 +470,7 @@ var entries = {
   "compass_NW": "NO",
   "sourceGroupMoonView": "A Lua daqui",
   "sourceGroupMoonViewDetails": "Onde a Lua está no céu do local atual, a inclinação do lado iluminado, o nascer e o ocaso: calculados neste computador com as fórmulas de Astronomical Algorithms de Jean Meeus, verificados com o JPL Horizons.",
-  "sourceGroupMoonViewCoverage": "Todo o mundo, para cada local."
+  "sourceGroupMoonViewCoverage": "Todo o mundo, para cada local.",
+  "showHints": "Dicas de controlo",
+  "showHintsHint": "As linhas que explicam teclas e gestos, como ↑↓ ou Alt 1–9."
 }

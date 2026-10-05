@@ -364,7 +364,7 @@ var entries = {
   "moonWaxing": "Trăng · {percent} % · đang tròn",
   "moonWaning": "Trăng · {percent} % · đang khuyết",
   "optionGlobeAutoRotate": "Quả địa cầu tự xoay",
-  "optionGlobeAutoRotateHint": "Sau khoảng chờ đặt bên dưới mà không có cú nhấp, nó xoay, một vòng trong số phút đặt bên dưới; một cú nhấp, kéo hoặc con lăn sẽ dừng nó.",
+  "optionGlobeAutoRotateHint": "Sau khoảng chờ đặt ở Chung › Chuyển động mà không có cú bấm, nó tự xoay, một vòng trong số phút đặt ở đó; bấm, kéo hoặc lăn chuột sẽ dừng.",
   "secondsShort": "{seconds} giây",
   "minutesShort": "{minutes} phút",
   "shortcutGlobeZoom": "Quả địa cầu: phóng to / thu nhỏ tại con trỏ",
@@ -407,7 +407,7 @@ var entries = {
   "shortcutGlobeNow": "Quả địa cầu: về hiện tại",
   "globeCombineHint": "Các lớp màu kết hợp được và vẽ theo thứ tự danh sách: nhiệt độ nước biển trên đại dương cạnh nhiệt độ không khí trên đất liền, gió với nửa cường độ trên nhiệt độ, mây và lượng mưa trên cùng. Số và con trỏ hiển thị lượng mưa nơi đang mưa, nếu không là nhiệt độ, rồi gió và mây.",
   "optionRotateFpsHint": "Nhiều khung hình trông mượt hơn và tốn nhiều thời gian xử lý hơn.",
-  "optionMoonStyle": "Kiểu hiển thị Trăng",
+  "optionMoonStyle": "Cách xem Mặt Trăng",
   "moonStyleSpace": "Như được chiếu sáng (từ không gian)",
   "moonStyleEarth": "Như nhìn thấy từ đây",
   "optionMapStyle": "Hình dạng",
@@ -470,5 +470,7 @@ var entries = {
   "compass_NW": "TB",
   "sourceGroupMoonView": "Mặt Trăng từ đây",
   "sourceGroupMoonViewDetails": "Vị trí Mặt Trăng trên bầu trời nơi hiện tại, độ nghiêng phần sáng, giờ mọc và lặn: tính trên máy này bằng công thức trong Astronomical Algorithms của Jean Meeus, đối chiếu với JPL Horizons.",
-  "sourceGroupMoonViewCoverage": "Toàn thế giới, cho từng địa điểm."
+  "sourceGroupMoonViewCoverage": "Toàn thế giới, cho từng địa điểm.",
+  "showHints": "Gợi ý điều khiển",
+  "showHintsHint": "Các dòng giải thích phím và cử chỉ, như ↑↓ hoặc Alt 1–9."
 }

@@ -364,7 +364,7 @@ var entries = {
   "moonWaxing": "ماه · {percent} % · رو به افزایش",
   "moonWaning": "ماه · {percent} % · رو به کاهش",
   "optionGlobeAutoRotate": "کره خودش می‌چرخد",
-  "optionGlobeAutoRotateHint": "پس از مکثی که پایین تعیین شده بدون کلیک می‌چرخد، یک دور در دقیقه‌هایی که پایین تعیین شده؛ کلیک، کشیدن یا چرخ ماوس آن را متوقف می‌کند.",
+  "optionGlobeAutoRotateHint": "پس از درنگی که در عمومی › حرکت تنظیم شده، بدون کلیک می‌چرخد، هر دور در دقیقه‌های تنظیم‌شده در آنجا؛ کلیک، کشیدن یا چرخ آن را متوقف می‌کند.",
   "secondsShort": "{seconds} ث",
   "minutesShort": "{minutes} دقیقه",
   "shortcutGlobeZoom": "کره: بزرگ‌نمایی / کوچک‌نمایی در نشانگر",
@@ -470,5 +470,7 @@ var entries = {
   "compass_NW": "شمال غربی",
   "sourceGroupMoonView": "ماه از اینجا",
   "sourceGroupMoonViewDetails": "ماه در آسمان مکان کنونی کجاست، کجی بخش روشن آن، طلوع و غروبش: روی همین رایانه با فرمول‌های کتاب Astronomical Algorithms ژان میوس حساب شده و با JPL Horizons سنجیده شده است.",
-  "sourceGroupMoonViewCoverage": "در سراسر جهان، برای هر مکان."
+  "sourceGroupMoonViewCoverage": "در سراسر جهان، برای هر مکان.",
+  "showHints": "راهنمای کنترل‌ها",
+  "showHintsHint": "سطرهایی که کلیدها و حرکت‌ها را توضیح می‌دهند، مانند ↑↓ یا Alt 1–9."
 }

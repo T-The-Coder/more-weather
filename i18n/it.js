@@ -364,7 +364,7 @@ var entries = {
   "moonWaxing": "Luna · {percent} % · crescente",
   "moonWaning": "Luna · {percent} % · calante",
   "optionGlobeAutoRotate": "Il globo gira da solo",
-  "optionGlobeAutoRotateHint": "Dopo l’attesa scelta qui sotto senza clic gira, un giro nei minuti scelti qui sotto; un clic, un trascinamento o la rotella lo fermano.",
+  "optionGlobeAutoRotateHint": "Dopo l’attesa impostata in Generale › Movimento senza un clic ruota, un giro nei minuti impostati lì; un clic, un trascinamento o la rotella lo fermano.",
   "secondsShort": "{seconds} s",
   "minutesShort": "{minutes} min",
   "shortcutGlobeZoom": "Globo: ingrandisci / riduci al puntatore",
@@ -407,7 +407,7 @@ var entries = {
   "shortcutGlobeNow": "Globo: torna ad adesso",
   "globeCombineHint": "I livelli di colore si combinano, disegnati nell’ordine dell’elenco: la temperatura del mare sull’oceano accanto a quella dell’aria sulla terra, il vento a metà intensità sopra una temperatura, nuvole e precipitazioni sopra tutto. Numeri e puntatore mostrano le precipitazioni dove piove, altrimenti la temperatura, poi vento e nuvole.",
   "optionRotateFpsHint": "Più fotogrammi sono più fluidi e usano più tempo del processore.",
-  "optionMoonStyle": "Vista della luna",
+  "optionMoonStyle": "Vista della Luna",
   "moonStyleSpace": "Come è illuminata (dallo spazio)",
   "moonStyleEarth": "Come si vede da qui",
   "optionMapStyle": "Forma",
@@ -470,5 +470,7 @@ var entries = {
   "compass_NW": "NO",
   "sourceGroupMoonView": "La Luna da qui",
   "sourceGroupMoonViewDetails": "Dove sta la Luna nel cielo del luogo attuale, l’inclinazione della parte illuminata, il sorgere e il tramonto: calcolati su questo computer con le formule di Astronomical Algorithms di Jean Meeus, verificati con JPL Horizons.",
-  "sourceGroupMoonViewCoverage": "In tutto il mondo, per ogni luogo."
+  "sourceGroupMoonViewCoverage": "In tutto il mondo, per ogni luogo.",
+  "showHints": "Suggerimenti dei comandi",
+  "showHintsHint": "Le righe che spiegano tasti e gesti, come ↑↓ o Alt 1–9."
 }

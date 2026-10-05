@@ -364,7 +364,7 @@ var entries = {
   "moonWaxing": "Lune · {percent} % · croissante",
   "moonWaning": "Lune · {percent} % · décroissante",
   "optionGlobeAutoRotate": "Le globe tourne tout seul",
-  "optionGlobeAutoRotateHint": "Après le délai choisi ci-dessous sans clic, il tourne, un tour en autant de minutes que choisi ci-dessous ; un clic, un glissement ou la molette l’arrête.",
+  "optionGlobeAutoRotateHint": "Après le délai réglé dans Général › Mouvement sans clic, elle tourne, un tour dans les minutes réglées là ; un clic, un glisser ou la molette l’arrêtent.",
   "secondsShort": "{seconds} s",
   "minutesShort": "{minutes} min",
   "shortcutGlobeZoom": "Globe : zoomer / dézoomer au pointeur",
@@ -407,7 +407,7 @@ var entries = {
   "shortcutGlobeNow": "Globe : revenir à maintenant",
   "globeCombineHint": "Les couches de couleur se combinent, dessinées dans l’ordre de la liste : la température de la mer sur l’océan à côté de celle de l’air sur terre, le vent à mi-intensité sur une température, les nuages et les précipitations par-dessus tout. Les nombres et le pointeur montrent les précipitations là où il pleut, sinon la température, puis le vent et les nuages.",
   "optionRotateFpsHint": "Plus d’images, c’est plus fluide, mais cela demande plus de temps processeur.",
-  "optionMoonStyle": "Vue de la lune",
+  "optionMoonStyle": "Vue de la Lune",
   "moonStyleSpace": "Telle qu’elle est éclairée (depuis l’espace)",
   "moonStyleEarth": "Telle qu’on la voit d’ici",
   "optionMapStyle": "Forme",
@@ -470,5 +470,7 @@ var entries = {
   "compass_NW": "NO",
   "sourceGroupMoonView": "La Lune d’ici",
   "sourceGroupMoonViewDetails": "Où la Lune se trouve dans le ciel du lieu actuel, l’inclinaison de sa partie éclairée, son lever et son coucher : calculés sur cet ordinateur avec les formules des Astronomical Algorithms de Jean Meeus, vérifiés avec JPL Horizons.",
-  "sourceGroupMoonViewCoverage": "Monde entier, pour chaque lieu."
+  "sourceGroupMoonViewCoverage": "Monde entier, pour chaque lieu.",
+  "showHints": "Aide aux commandes",
+  "showHintsHint": "Les lignes qui expliquent les touches et les gestes, comme ↑↓ ou Alt 1–9."
 }

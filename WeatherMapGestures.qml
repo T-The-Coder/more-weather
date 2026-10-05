@@ -55,6 +55,7 @@ MouseArea {
   readonly property bool wheelEnabled: true
   signal zoomHintWanted()
   onZoomHintWanted: {
+    if (!gestures.panel.showHints) return
     zoomHint.opacity = 1
     zoomHintTimer.restart()
   }

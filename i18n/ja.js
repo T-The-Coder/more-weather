@@ -364,7 +364,7 @@ var entries = {
   "moonWaxing": "月 · {percent} % · 満ちていく",
   "moonWaning": "月 · {percent} % · 欠けていく",
   "optionGlobeAutoRotate": "地球儀を自動で回す",
-  "optionGlobeAutoRotateHint": "下で設定した時間クリックがないと回り始め、下で設定した分数で 1 回転します。クリック、ドラッグ、ホイールで止まります。",
+  "optionGlobeAutoRotateHint": "「一般 › 動き」で設定した時間クリックがないと回転し、そこで設定した分数で 1 回転します。クリック、ドラッグ、ホイールで止まります。",
   "secondsShort": "{seconds}秒",
   "minutesShort": "{minutes}分",
   "shortcutGlobeZoom": "地球儀：ポインター位置で拡大 / 縮小",
@@ -407,7 +407,7 @@ var entries = {
   "shortcutGlobeNow": "地球儀：現在に戻る",
   "globeCombineHint": "カラーレイヤーは組み合わせられ、一覧の順に描画されます。海面水温は海上に、気温は陸上に。風は気温の上に半分の強さで、雲量と降水はすべての上に重なります。数値とポインターは雨の場所では降水を、それ以外は気温、次に風、雲量を示します。",
   "optionRotateFpsHint": "フレームが多いほど滑らかになり、プロセッサーの時間も多く使います。",
-  "optionMoonStyle": "月の表示",
+  "optionMoonStyle": "月の見え方",
   "moonStyleSpace": "照らされている向き（宇宙から）",
   "moonStyleEarth": "ここから見た姿",
   "optionMapStyle": "形",
@@ -470,5 +470,7 @@ var entries = {
   "compass_NW": "北西",
   "sourceGroupMoonView": "ここから見た月",
   "sourceGroupMoonViewDetails": "現在地の空での月の位置、輝面の傾き、出と入り。ジャン・メーウスの Astronomical Algorithms の式でこのコンピューター上で計算し、JPL Horizons と照合済み。",
-  "sourceGroupMoonViewCoverage": "全世界、場所ごとに。"
+  "sourceGroupMoonViewCoverage": "全世界、場所ごとに。",
+  "showHints": "操作のヒント",
+  "showHintsHint": "↑↓ や Alt 1–9 など、キーと操作を説明する行。"
 }

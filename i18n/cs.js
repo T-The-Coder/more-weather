@@ -364,7 +364,7 @@ var entries = {
   "moonWaxing": "Měsíc · {percent} % · dorůstá",
   "moonWaning": "Měsíc · {percent} % · couvá",
   "optionGlobeAutoRotate": "Glóbus se otáčí sám",
-  "optionGlobeAutoRotateHint": "Po níže zvolené prodlevě bez kliknutí se otáčí, jedna otáčka za níže zvolené minuty; kliknutí, tažení nebo kolečko ho zastaví.",
+  "optionGlobeAutoRotateHint": "Po prodlevě nastavené v Obecné › Pohyb bez kliknutí se otáčí, jedna otočka za tam nastavené minuty; kliknutí, tažení nebo kolečko ho zastaví.",
   "secondsShort": "{seconds} s",
   "minutesShort": "{minutes} min",
   "shortcutGlobeZoom": "Glóbus: přiblížit / oddálit u ukazatele",
@@ -470,5 +470,7 @@ var entries = {
   "compass_NW": "SZ",
   "sourceGroupMoonView": "Měsíc odsud",
   "sourceGroupMoonViewDetails": "Kde Měsíc stojí na obloze aktuálního místa, sklon jeho osvětlené strany, východ a západ: spočteno na tomto počítači podle vzorců z Astronomical Algorithms Jeana Meeuse, ověřeno s JPL Horizons.",
-  "sourceGroupMoonViewCoverage": "Celý svět, pro každé místo."
+  "sourceGroupMoonViewCoverage": "Celý svět, pro každé místo.",
+  "showHints": "Nápověda k ovládání",
+  "showHintsHint": "Řádky, které vysvětlují klávesy a gesta, třeba ↑↓ nebo Alt 1–9."
 }

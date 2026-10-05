@@ -1,5 +1,6 @@
 import QtQuick
 import qs.Commons
+import qs.Ui
 
 // A glyph that acts: start, pause, lap, delete. `active` marks a switch that
 // is on; `armed` a delete waiting for its second press.
@@ -11,6 +12,12 @@ Rectangle {
   property bool armed: false
   property bool kbFocused: false
   property real glyphSize: Style.font.title
+  // What it does, shown after a short delay under the pointer and the
+  // accessible name.
+  property string tooltip: ""
+  Accessible.role: Accessible.Button
+  Accessible.name: tooltip
+  Accessible.onPressAction: if (enabled) activated()
   signal activated()
 
   implicitWidth: Style.space(28)
@@ -40,5 +47,11 @@ Rectangle {
     hoverEnabled: true
     cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
     onClicked: iconButton.activated()
+
+    PanelToolTip {
+      visible: iconMouse.containsMouse && iconButton.tooltip !== ""
+      text: iconButton.tooltip
+      fontFamily: iconButton.panel.fontFamily
+    }
   }
 }

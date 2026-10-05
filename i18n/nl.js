@@ -364,7 +364,7 @@ var entries = {
   "moonWaxing": "Maan · {percent} % · wassend",
   "moonWaning": "Maan · {percent} % · afnemend",
   "optionGlobeAutoRotate": "Globe draait vanzelf",
-  "optionGlobeAutoRotateHint": "Na de hieronder gekozen wachttijd zonder klik draait hij, één omwenteling in de hieronder gekozen minuten; een klik, sleepbeweging of het scrollwiel stopt hem.",
+  "optionGlobeAutoRotateHint": "Na de wachttijd bij Algemeen › Beweging zonder klik draait het, één draai in de daar ingestelde minuten; een klik, slepen of het wiel stopt het.",
   "secondsShort": "{seconds} s",
   "minutesShort": "{minutes} min",
   "shortcutGlobeZoom": "Globe: in- / uitzoomen bij de aanwijzer",
@@ -470,5 +470,7 @@ var entries = {
   "compass_NW": "NW",
   "sourceGroupMoonView": "De maan van hier",
   "sourceGroupMoonViewDetails": "Waar de maan aan de hemel van de huidige plaats staat, de helling van haar verlichte kant, op- en ondergang: op deze computer berekend met de formules uit Astronomical Algorithms van Jean Meeus, gecontroleerd met JPL Horizons.",
-  "sourceGroupMoonViewCoverage": "Wereldwijd, voor elke plaats."
+  "sourceGroupMoonViewCoverage": "Wereldwijd, voor elke plaats.",
+  "showHints": "Bedieningstips",
+  "showHintsHint": "De regels die toetsen en gebaren uitleggen, zoals ↑↓ of Alt 1–9."
 }

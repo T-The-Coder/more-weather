@@ -69,6 +69,7 @@ Column {
       anchors.right: parent.right
       anchors.baseline: globeTitle.baseline
       width: Math.min(implicitWidth, parent.width - globeTitle.implicitWidth - Style.space(12))
+      visible: panel.showHints
       text: panel.i18n("globeKeysHint")
         + (panel.displaySetting("globeTimeline", true) === true && panel.globeData.active
           ? " · " + panel.i18n("globeTimeKeysHint") : "")
@@ -1418,6 +1419,7 @@ Column {
       return (wheel.modifiers & Qt.ControlModifier) !== 0 || panel.wheelIsSideways(wheel)
     }
     function declineWheel(wheel) {
+      if (!panel.showHints) return
       zoomHint.opacity = 1
       zoomHintTimer.restart()
     }

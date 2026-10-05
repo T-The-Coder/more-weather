@@ -364,7 +364,7 @@ var entries = {
   "moonWaxing": "달 · {percent} % · 차는 중",
   "moonWaning": "달 · {percent} % · 기우는 중",
   "optionGlobeAutoRotate": "지구본 자동 회전",
-  "optionGlobeAutoRotateHint": "아래에서 정한 시간 동안 클릭이 없으면 돌기 시작해 아래에서 정한 분 동안 한 바퀴 돕니다. 클릭, 끌기 또는 휠로 멈춥니다.",
+  "optionGlobeAutoRotateHint": "일반 › 움직임에서 정한 시간 동안 클릭이 없으면 회전하며, 거기서 정한 분 동안 한 바퀴 돕니다. 클릭, 끌기, 휠로 멈춥니다.",
   "secondsShort": "{seconds}초",
   "minutesShort": "{minutes}분",
   "shortcutGlobeZoom": "지구본: 포인터 위치에서 확대 / 축소",
@@ -470,5 +470,7 @@ var entries = {
   "compass_NW": "북서",
   "sourceGroupMoonView": "여기서 본 달",
   "sourceGroupMoonViewDetails": "현재 장소의 하늘에서 달의 위치, 밝은 쪽의 기울기, 뜨고 지는 시각: 장 뮤스의 Astronomical Algorithms 공식으로 이 컴퓨터에서 계산하고 JPL Horizons와 대조했습니다.",
-  "sourceGroupMoonViewCoverage": "전 세계, 장소마다."
+  "sourceGroupMoonViewCoverage": "전 세계, 장소마다.",
+  "showHints": "조작 안내",
+  "showHintsHint": "↑↓나 Alt 1–9처럼 키와 동작을 설명하는 줄."
 }

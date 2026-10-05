@@ -398,7 +398,7 @@ var catalog = {
   "moonWaxing": "Moon · {percent} % · waxing",
   "moonWaning": "Moon · {percent} % · waning",
   "optionGlobeAutoRotate": "Globe turns by itself",
-  "optionGlobeAutoRotateHint": "After the delay set below without a click it turns, one turn in the minutes set below; a click, drag or wheel stops it.",
+  "optionGlobeAutoRotateHint": "After the delay set under General › Motion without a click it turns, one turn in the minutes set there; a click, drag or wheel stops it.",
   "secondsShort": "{seconds} s",
   "minutesShort": "{minutes} min",
   "shortcutGlobeZoom": "Globe: zoom in / out at the pointer",
@@ -504,5 +504,7 @@ var catalog = {
   "compass_NW": "NW",
   "sourceGroupMoonView": "The Moon from here",
   "sourceGroupMoonViewDetails": "Where the Moon stands in the sky of the current place, the tilt of its lit side, its rise and set: computed on this computer with the formulas of Jean Meeus' Astronomical Algorithms, checked against JPL Horizons.",
-  "sourceGroupMoonViewCoverage": "Worldwide, for each place."
+  "sourceGroupMoonViewCoverage": "Worldwide, for each place.",
+  "showHints": "Control hints",
+  "showHintsHint": "The lines that explain keys and gestures, such as ↑↓ or Alt 1–9."
 }

@@ -364,7 +364,7 @@ var entries = {
   "moonWaxing": "Луна · {percent} % · растущая",
   "moonWaning": "Луна · {percent} % · убывающая",
   "optionGlobeAutoRotate": "Глобус вращается сам",
-  "optionGlobeAutoRotateHint": "После выбранной ниже паузы без щелчка он вращается, один оборот за выбранные ниже минуты; щелчок, перетаскивание или колесо останавливают его.",
+  "optionGlobeAutoRotateHint": "Через заданное в «Общие › Движение» время без щелчка начинает вращаться, оборот за заданные там минуты; щелчок, перетаскивание или колесо останавливают.",
   "secondsShort": "{seconds} с",
   "minutesShort": "{minutes} мин",
   "shortcutGlobeZoom": "Глобус: приблизить / отдалить у указателя",
@@ -470,5 +470,7 @@ var entries = {
   "compass_NW": "СЗ",
   "sourceGroupMoonView": "Луна отсюда",
   "sourceGroupMoonViewDetails": "Где Луна стоит на небе текущего места, наклон её освещённой стороны, восход и заход: вычислено на этом компьютере по формулам из Astronomical Algorithms Жана Меёса, проверено по JPL Horizons.",
-  "sourceGroupMoonViewCoverage": "По всему миру, для каждого места."
+  "sourceGroupMoonViewCoverage": "По всему миру, для каждого места.",
+  "showHints": "Подсказки управления",
+  "showHintsHint": "Строки, объясняющие клавиши и жесты, например ↑↓ или Alt 1–9."
 }

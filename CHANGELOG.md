@@ -4,6 +4,15 @@ All notable changes to More Weather are documented here.
 
 ## Unreleased
 
+- **Control hints** (Settings → General → App, on by default): off, the
+  lines that explain keys and gestures go and give their room back — My
+  places' "Alt 1–9", the hours' cursor keys, the globe's and the wind
+  map's keys, "Ctrl + wheel to zoom" over the maps and the settings' key
+  lines. The Shortcuts page, errors, empty states and legends stay.
+- The globe's chips for globe, flat map, moon and places show their glyph
+  alone; the full name appears a moment after the pointer rests on one,
+  and stays their accessible name (as on the hero's buttons).
+
 - **The Moon as seen from the place** (`MoonView.js`, shared with More
   Time, Meeus' formulas checked against JPL Horizons): the hero's moon,
   each row in My places and the globe's "Moon view: as seen from here"

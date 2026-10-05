@@ -364,7 +364,7 @@ var entries = {
   "moonWaxing": "Ay · {percent} % · büyüyen",
   "moonWaning": "Ay · {percent} % · küçülen",
   "optionGlobeAutoRotate": "Küre kendiliğinden döner",
-  "optionGlobeAutoRotateHint": "Aşağıda seçilen süre boyunca tıklanmazsa döner, bir turu aşağıda seçilen dakikalarda atar; bir tıklama, sürükleme ya da tekerlek onu durdurur.",
+  "optionGlobeAutoRotateHint": "Genel › Hareket altında ayarlanan süre tıklama olmadan geçince döner, bir tur orada ayarlanan dakikada; tıklama, sürükleme ya da tekerlek durdurur.",
   "secondsShort": "{seconds} sn",
   "minutesShort": "{minutes} dk",
   "shortcutGlobeZoom": "Küre: işaretçide yakınlaştır / uzaklaştır",
@@ -470,5 +470,7 @@ var entries = {
   "compass_NW": "KB",
   "sourceGroupMoonView": "Buradan Ay",
   "sourceGroupMoonViewDetails": "Ay'ın geçerli yerin gökyüzünde nerede durduğu, aydınlık yüzünün eğimi, doğuşu ve batışı: bu bilgisayarda Jean Meeus'ün Astronomical Algorithms formülleriyle hesaplanır, JPL Horizons ile doğrulanmıştır.",
-  "sourceGroupMoonViewCoverage": "Dünya genelinde, her yer için."
+  "sourceGroupMoonViewCoverage": "Dünya genelinde, her yer için.",
+  "showHints": "Kontrol ipuçları",
+  "showHintsHint": "Tuşları ve hareketleri açıklayan satırlar, örneğin ↑↓ ya da Alt 1–9."
 }
