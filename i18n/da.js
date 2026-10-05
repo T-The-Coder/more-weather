@@ -454,5 +454,21 @@ var entries = {
   "chipNight": "Nat",
   "chipPlaces": "Steder",
   "globeSoloHint": "Skift + klik eller et højreklik på et farvelags knap viser kun det lag.",
-  "shortcutSettingsSearch": "Søg i indstillingerne (Esc rydder, ↓ til resultaterne)"
+  "shortcutSettingsSearch": "Søg i indstillingerne (Esc rydder, ↓ til resultaterne)",
+  "moonAboveHorizon": "{altitude}° højt · {direction}",
+  "moonBelowHorizon": "under horisonten",
+  "moonRises": "står op {time}",
+  "moonSets": "går ned {time}",
+  "moonFromPlace": "{place}: {details}",
+  "compass_N": "N",
+  "compass_NE": "NØ",
+  "compass_E": "Ø",
+  "compass_SE": "SØ",
+  "compass_S": "S",
+  "compass_SW": "SV",
+  "compass_W": "V",
+  "compass_NW": "NV",
+  "sourceGroupMoonView": "Månen herfra",
+  "sourceGroupMoonViewDetails": "Hvor Månen står på himlen over det aktuelle sted, hældningen af dens oplyste side, op- og nedgang: beregnet på denne computer med formlerne fra Jean Meeus' Astronomical Algorithms, kontrolleret med JPL Horizons.",
+  "sourceGroupMoonViewCoverage": "Hele verden, for hvert sted."
 }

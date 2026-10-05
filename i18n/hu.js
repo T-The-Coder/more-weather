@@ -454,5 +454,21 @@ var entries = {
   "chipNight": "Éjszaka",
   "chipPlaces": "Helyek",
   "globeSoloHint": "Shift + kattintás vagy jobb kattintás egy színréteg gombján csak azt a réteget mutatja.",
-  "shortcutSettingsSearch": "Keresés a beállításokban (Esc töröl, ↓ a találatokhoz)"
+  "shortcutSettingsSearch": "Keresés a beállításokban (Esc töröl, ↓ a találatokhoz)",
+  "moonAboveHorizon": "{altitude}° magasan · {direction}",
+  "moonBelowHorizon": "a horizont alatt",
+  "moonRises": "kel {time}",
+  "moonSets": "nyugszik {time}",
+  "moonFromPlace": "{place}: {details}",
+  "compass_N": "É",
+  "compass_NE": "ÉK",
+  "compass_E": "K",
+  "compass_SE": "DK",
+  "compass_S": "D",
+  "compass_SW": "DNy",
+  "compass_W": "Ny",
+  "compass_NW": "ÉNy",
+  "sourceGroupMoonView": "A Hold innen",
+  "sourceGroupMoonViewDetails": "Hol áll a Hold a jelenlegi hely egén, megvilágított oldalának dőlése, kelte és nyugta: ezen a gépen számolva Jean Meeus Astronomical Algorithms képleteivel, a JPL Horizonsszal ellenőrizve.",
+  "sourceGroupMoonViewCoverage": "Világszerte, minden helyre."
 }

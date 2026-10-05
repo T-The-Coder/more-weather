@@ -331,6 +331,11 @@ Column {
       }
     }
 
+    // "As seen from here" (Moon view): the Moon in the shown place's sky at
+    // the shown minute (MoonView.js), else null (lit towards the sun).
+    readonly property var moonLook: showMoon && moonStyle === "earth"
+      ? panel.moonLookOf(panel.moonViewAt(panel.mapCenterLatitude, panel.mapCenterLongitude, minuteMs)) : null
+
     // ---- My places: each saved place with coordinates, its symbol and
     //      values from the stored forecast (Panel.favoriteRows), and the
     //      shown place when it is not one of them.
@@ -943,14 +948,18 @@ Column {
           // Above the globe, a little out from its point; on the map at it.
           var mx = flat ? moonAt.x : globe.centerX + (moonAt.x - globe.centerX) * 1.15
           var my = flat ? moonAt.y : globe.centerY + (moonAt.y - globe.centerY) * 1.15
-          // Lit towards the sun as seen from space, or as the shown place
-          // sees its phase (Settings → Display → Globe: Moon).
-          var angle = Moon.moonLitAngleFor(globe.moonStyle, moon,
-            Moon.moonLitAngle(moon, sky.sun, function(lat, lon) { return screenPoint(lat, lon) }),
-            panel.mapCenterLatitude)
-          Moon.paintMoon(ctx, mx, my, globe.moonRadius, angle, moon.illuminated, "238,236,226",
-            Moon.rgbText(Sky.nightFill(globe.rgbOf(Color.popups.background))), Moon.rgbText(ink))
-          globe.moonHit = { x: mx, y: my, moon: moon }
+          // Lit towards the sun as seen from space, or as it stands in the
+          // shown place's sky: true tilt, earthshine on a thin crescent,
+          // dimmed below the horizon (Settings → Display → Globe: Moon view).
+          var look = globe.moonLook
+          var angle = look ? look.angle
+            : Moon.moonLitAngle(moon, sky.sun, function(lat, lon) { return screenPoint(lat, lon) })
+          ctx.save()
+          ctx.globalAlpha = look ? look.opacity : 1
+          Moon.paintMoon(ctx, mx, my, globe.moonRadius, angle, look ? look.illuminated : moon.illuminated, "238,236,226",
+            Moon.rgbText(Sky.nightFill(globe.rgbOf(Color.popups.background))), Moon.rgbText(ink), look ? look.earthshine : false)
+          ctx.restore()
+          globe.moonHit = { x: mx, y: my, moon: moon, ms: globe.minuteMs }
         }
 
         ctx.strokeStyle = rgba(ink, 0.35)
@@ -1303,8 +1312,11 @@ Column {
         var moonHit = globe.moonHit
         if (moonHit && Math.hypot(moonHit.x - p.x, moonHit.y - p.y) <= Style.space(8)) {
           var percent = Math.round(moonHit.moon.illuminated * 100)
-          globe.hover = { x: p.x, y: p.y, text: globe.panel.i18n(moonHit.moon.waxing ? "moonWaxing" : "moonWaning",
-            { percent: globe.panel.localizedNumber(percent) }) }
+          // With how it stands at the shown place at that minute.
+          var place = globe.panel.moonPlaceLine(moonHit.ms)
+          var line = globe.panel.i18n(moonHit.moon.waxing ? "moonWaxing" : "moonWaning",
+            { percent: globe.panel.localizedNumber(percent) })
+          globe.hover = { x: p.x, y: p.y, text: place ? line + "\n" + place : line }
           return
         }
         var marker = markerAt(p.x, p.y)

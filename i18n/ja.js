@@ -454,5 +454,21 @@ var entries = {
   "chipNight": "夜",
   "chipPlaces": "場所",
   "globeSoloHint": "色レイヤーのチップを Shift + クリックまたは右クリックすると、そのレイヤーだけを表示します。",
-  "shortcutSettingsSearch": "設定を検索（Esc で消去、↓ で結果へ）"
+  "shortcutSettingsSearch": "設定を検索（Esc で消去、↓ で結果へ）",
+  "moonAboveHorizon": "高度 {altitude}° · {direction}",
+  "moonBelowHorizon": "地平線の下",
+  "moonRises": "{time} に出",
+  "moonSets": "{time} に入り",
+  "moonFromPlace": "{place}：{details}",
+  "compass_N": "北",
+  "compass_NE": "北東",
+  "compass_E": "東",
+  "compass_SE": "南東",
+  "compass_S": "南",
+  "compass_SW": "南西",
+  "compass_W": "西",
+  "compass_NW": "北西",
+  "sourceGroupMoonView": "ここから見た月",
+  "sourceGroupMoonViewDetails": "現在地の空での月の位置、輝面の傾き、出と入り。ジャン・メーウスの Astronomical Algorithms の式でこのコンピューター上で計算し、JPL Horizons と照合済み。",
+  "sourceGroupMoonViewCoverage": "全世界、場所ごとに。"
 }

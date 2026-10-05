@@ -4,6 +4,17 @@ All notable changes to More Weather are documented here.
 
 ## Unreleased
 
+- **The Moon as seen from the place** (`MoonView.js`, shared with More
+  Time, Meeus' formulas checked against JPL Horizons): the hero's moon,
+  each row in My places and the globe's "Moon view: as seen from here"
+  show the true tilt of the lit side for that place and minute, earthshine
+  on a thin crescent, and a dimmed sphere while the Moon is below that
+  place's horizon (south of the equator it comes out mirrored by itself).
+  Hovering the moon (hero, globe) tells its height and direction, rise and
+  set, in the place's time. The bar and the daily rows keep the phase
+  glyph. Settings → Sources lists the calculation. The sun's colour comes
+  from the shared `Sky.sunColor` (unchanged).
+
 - **Settings, rearranged.** A search field on top (`/`; `Esc` clears it,
   then leaves) finds a setting on any page, in the interface language or
   in English, accents aside; the rows found work in place, grouped as

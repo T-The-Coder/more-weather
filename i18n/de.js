@@ -488,5 +488,21 @@ var catalog = {
   "chipNight": "Nacht",
   "chipPlaces": "Orte",
   "globeSoloHint": "Umschalt + Klick oder ein Rechtsklick auf den Chip einer Farbschicht zeigt diese Schicht allein.",
-  "shortcutSettingsSearch": "Einstellungen durchsuchen (Esc leert, ↓ zu den Treffern)"
+  "shortcutSettingsSearch": "Einstellungen durchsuchen (Esc leert, ↓ zu den Treffern)",
+  "moonAboveHorizon": "{altitude}° hoch · {direction}",
+  "moonBelowHorizon": "unter dem Horizont",
+  "moonRises": "geht auf {time}",
+  "moonSets": "geht unter {time}",
+  "moonFromPlace": "{place}: {details}",
+  "compass_N": "N",
+  "compass_NE": "NO",
+  "compass_E": "O",
+  "compass_SE": "SO",
+  "compass_S": "S",
+  "compass_SW": "SW",
+  "compass_W": "W",
+  "compass_NW": "NW",
+  "sourceGroupMoonView": "Der Mond von hier",
+  "sourceGroupMoonViewDetails": "Wo der Mond am Himmel des aktuellen Orts steht, die Neigung seiner hellen Seite, Auf- und Untergang: auf diesem Rechner mit den Formeln aus Jean Meeus' Astronomical Algorithms berechnet, geprüft mit JPL Horizons.",
+  "sourceGroupMoonViewCoverage": "Weltweit, für jeden Ort."
 }

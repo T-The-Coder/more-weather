@@ -454,5 +454,21 @@ var entries = {
   "chipNight": "밤",
   "chipPlaces": "장소",
   "globeSoloHint": "색상 레이어 칩을 Shift + 클릭하거나 오른쪽 클릭하면 그 레이어만 표시됩니다.",
-  "shortcutSettingsSearch": "설정 검색 (Esc 지우기, ↓ 결과로)"
+  "shortcutSettingsSearch": "설정 검색 (Esc 지우기, ↓ 결과로)",
+  "moonAboveHorizon": "고도 {altitude}° · {direction}",
+  "moonBelowHorizon": "지평선 아래",
+  "moonRises": "{time}에 뜸",
+  "moonSets": "{time}에 짐",
+  "moonFromPlace": "{place}: {details}",
+  "compass_N": "북",
+  "compass_NE": "북동",
+  "compass_E": "동",
+  "compass_SE": "남동",
+  "compass_S": "남",
+  "compass_SW": "남서",
+  "compass_W": "서",
+  "compass_NW": "북서",
+  "sourceGroupMoonView": "여기서 본 달",
+  "sourceGroupMoonViewDetails": "현재 장소의 하늘에서 달의 위치, 밝은 쪽의 기울기, 뜨고 지는 시각: 장 뮤스의 Astronomical Algorithms 공식으로 이 컴퓨터에서 계산하고 JPL Horizons와 대조했습니다.",
+  "sourceGroupMoonViewCoverage": "전 세계, 장소마다."
 }

@@ -318,8 +318,9 @@ Column {
             font.letterSpacing: 1
           }
 
-          // A glyph (today's moon as a shaded sphere, lit from the side it
-          // is seen lit from at the place) and the value.
+          // A glyph (the moon as a shaded sphere as it stands in the
+          // place's sky: tilt, earthshine, dimmed below the horizon) and
+          // the value.
           Row {
             spacing: Style.space(4)
 
@@ -327,10 +328,20 @@ Column {
               visible: parent.parent.modelData === "heroMoon"
               anchors.verticalCenter: parent.verticalCenter
               size: statValueMetrics.height
-              illuminated: panel.heroMoonIlluminated
+              illuminated: panel.heroMoonLook.illuminated
               phase: panel.heroMoonPhase
-              litAngle: panel.moonLitAngle(panel.moonMirrored)
+              litAngle: panel.heroMoonLook.angle
+              earthshine: panel.heroMoonLook.earthshine
+              opacity: panel.heroMoonLook.opacity
               ink: panel.foreground
+
+              // Where it stands: altitude, direction, rise and set.
+              HoverHandler { id: heroMoonHover }
+              PanelToolTip {
+                visible: heroMoonHover.hovered
+                text: visible ? panel.moonPlaceLine(panel.relativeTimeNowMs) : ""
+                fontFamily: panel.fontFamily
+              }
             }
 
             Text {

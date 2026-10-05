@@ -454,5 +454,21 @@ var entries = {
   "chipNight": "Gece",
   "chipPlaces": "Yerler",
   "globeSoloHint": "Bir renk katmanının çipine Shift + tıklama veya sağ tıklama yalnızca o katmanı gösterir.",
-  "shortcutSettingsSearch": "Ayarlarda ara (Esc temizler, ↓ sonuçlara)"
+  "shortcutSettingsSearch": "Ayarlarda ara (Esc temizler, ↓ sonuçlara)",
+  "moonAboveHorizon": "{altitude}° yükseklikte · {direction}",
+  "moonBelowHorizon": "ufkun altında",
+  "moonRises": "{time} doğar",
+  "moonSets": "{time} batar",
+  "moonFromPlace": "{place}: {details}",
+  "compass_N": "K",
+  "compass_NE": "KD",
+  "compass_E": "D",
+  "compass_SE": "GD",
+  "compass_S": "G",
+  "compass_SW": "GB",
+  "compass_W": "B",
+  "compass_NW": "KB",
+  "sourceGroupMoonView": "Buradan Ay",
+  "sourceGroupMoonViewDetails": "Ay'ın geçerli yerin gökyüzünde nerede durduğu, aydınlık yüzünün eğimi, doğuşu ve batışı: bu bilgisayarda Jean Meeus'ün Astronomical Algorithms formülleriyle hesaplanır, JPL Horizons ile doğrulanmıştır.",
+  "sourceGroupMoonViewCoverage": "Dünya genelinde, her yer için."
 }

@@ -454,5 +454,21 @@ var entries = {
   "chipNight": "Ніч",
   "chipPlaces": "Місця",
   "globeSoloHint": "Shift + клацання або правий клік на кнопці кольорового шару показує лише цей шар.",
-  "shortcutSettingsSearch": "Пошук у налаштуваннях (Esc очищає, ↓ до результатів)"
+  "shortcutSettingsSearch": "Пошук у налаштуваннях (Esc очищає, ↓ до результатів)",
+  "moonAboveHorizon": "на висоті {altitude}° · {direction}",
+  "moonBelowHorizon": "під горизонтом",
+  "moonRises": "схід о {time}",
+  "moonSets": "захід о {time}",
+  "moonFromPlace": "{place}: {details}",
+  "compass_N": "Пн",
+  "compass_NE": "ПнСх",
+  "compass_E": "Сх",
+  "compass_SE": "ПдСх",
+  "compass_S": "Пд",
+  "compass_SW": "ПдЗх",
+  "compass_W": "Зх",
+  "compass_NW": "ПнЗх",
+  "sourceGroupMoonView": "Місяць звідси",
+  "sourceGroupMoonViewDetails": "Де Місяць стоїть на небі поточного місця, нахил його освітленого боку, схід і захід: обчислено на цьому комп’ютері за формулами з Astronomical Algorithms Жана Меєса, перевірено за JPL Horizons.",
+  "sourceGroupMoonViewCoverage": "По всьому світу, для кожного місця."
 }

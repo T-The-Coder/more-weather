@@ -152,6 +152,8 @@ ShellRoot {
   }
   function general(key, value) { panel.displayOptionsStore.setGeneralSetting(key, value) }
   function display(key, value) { panel.displayOptionsStore.setSettingsDisplaySetting(key, value) }
+  property var moonSavedBefore: []
+  property double moonNowBefore: 0
   function settingsSearchType(query) { panel.setSettingsSearch(query) }
   function press(key, text, modifiers) {
     panel.handlePanelKey({ key: key, text: text || "", modifiers: modifiers || Qt.NoModifier, accepted: false })
@@ -199,6 +201,34 @@ ShellRoot {
     },
     function() { panel.activeTab = "favorites" },
     function() { shot("02-tab-places") },
+    // The Moon as seen from each place: a southern place (Hobart) among
+    // my places, at a moment within half a day when the Moon stands high
+    // over the shown place and below Hobart's horizon (or the other way).
+    function() {
+      moonSavedBefore = panel.savedLocations.slice()
+      moonNowBefore = panel.relativeTimeNowMs
+      panel.replaceSavedLocations(moonSavedBefore.concat([{ name: "Hobart", latitude: -42.8821, longitude: 147.3272 }]))
+      var best = moonNowBefore, bestScore = -1e9
+      for (var h = -12; h <= 12; h++) {
+        var t = moonNowBefore + h * 3600000
+        panel.relativeTimeNowMs = t
+        var here = panel.heroMoonLook, there = panel.favoriteMoonLooks[panel.favoriteMoonLooks.length - 1]
+        var score = (here.opacity === 1 ? 1 : 0) + (there.opacity < 1 ? 1 : 0)
+        if (score > bestScore) { bestScore = score; best = t }
+      }
+      panel.relativeTimeNowMs = best
+      var looks = panel.favoriteMoonLooks
+      check("moon-per-place", looks.length === moonSavedBefore.length + 1
+        && Math.abs(looks[0].angle - looks[looks.length - 1].angle) > 0.2)
+      check("moon-below-dimmed", bestScore < 2 || looks[looks.length - 1].opacity === 0.4)
+      check("moon-place-line", panel.moonPlaceLine(best).indexOf("Tórshavn") === 0)
+      console.log("MOONLINE", panel.moonPlaceLine(best))
+    },
+    function() { shot("02b-moon-places") },
+    function() {
+      panel.replaceSavedLocations(moonSavedBefore)
+      panel.relativeTimeNowMs = moonNowBefore
+    },
     function() { panel.activeTab = "airQuality" },
     function() { shot("03-tab-air") },
     function() { panel.activeTab = "hourly" },
@@ -485,6 +515,10 @@ ShellRoot {
     },
     function() { panel.globeItem.finishTurn() },
     function() { shot("09c-tab-globe-night") },
+    // Moon view "as seen from here": the shown place's tilt.
+    function() { display("globeMoonStyle", "earth") },
+    function() {},
+    function() { shot("09c2-globe-moon-from-here"); display("globeMoonStyle", "space") },
     function() { panel.startEditingLocation() },
     function() { shot("10-search") },
     // "−" acts on the saved places only after Tab; in the results it is a

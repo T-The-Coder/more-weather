@@ -454,5 +454,21 @@ var entries = {
   "chipNight": "Yö",
   "chipPlaces": "Paikat",
   "globeSoloHint": "Vaihto + napsautus tai hiiren oikea painike värikerroksen sirussa näyttää vain sen kerroksen.",
-  "shortcutSettingsSearch": "Hae asetuksista (Esc tyhjentää, ↓ tuloksiin)"
+  "shortcutSettingsSearch": "Hae asetuksista (Esc tyhjentää, ↓ tuloksiin)",
+  "moonAboveHorizon": "{altitude}° korkealla · {direction}",
+  "moonBelowHorizon": "horisontin alapuolella",
+  "moonRises": "nousee {time}",
+  "moonSets": "laskee {time}",
+  "moonFromPlace": "{place}: {details}",
+  "compass_N": "P",
+  "compass_NE": "KO",
+  "compass_E": "I",
+  "compass_SE": "KA",
+  "compass_S": "E",
+  "compass_SW": "LO",
+  "compass_W": "L",
+  "compass_NW": "LU",
+  "sourceGroupMoonView": "Kuu täältä",
+  "sourceGroupMoonViewDetails": "Missä Kuu on nykyisen paikan taivaalla, sen valaistun puolen kallistus, nousu ja lasku: laskettu tällä tietokoneella Jean Meeusin Astronomical Algorithms -kirjan kaavoilla, tarkistettu JPL Horizonsilla.",
+  "sourceGroupMoonViewCoverage": "Koko maailma, jokaiselle paikalle."
 }

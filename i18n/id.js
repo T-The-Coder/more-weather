@@ -454,5 +454,21 @@ var entries = {
   "chipNight": "Malam",
   "chipPlaces": "Tempat",
   "globeSoloHint": "Shift + klik atau klik kanan pada chip lapisan warna hanya menampilkan lapisan itu.",
-  "shortcutSettingsSearch": "Cari pengaturan (Esc menghapus, ↓ ke hasil)"
+  "shortcutSettingsSearch": "Cari pengaturan (Esc menghapus, ↓ ke hasil)",
+  "moonAboveHorizon": "setinggi {altitude}° · {direction}",
+  "moonBelowHorizon": "di bawah cakrawala",
+  "moonRises": "terbit {time}",
+  "moonSets": "terbenam {time}",
+  "moonFromPlace": "{place}: {details}",
+  "compass_N": "U",
+  "compass_NE": "TL",
+  "compass_E": "T",
+  "compass_SE": "Tg",
+  "compass_S": "S",
+  "compass_SW": "BD",
+  "compass_W": "B",
+  "compass_NW": "BL",
+  "sourceGroupMoonView": "Bulan dari sini",
+  "sourceGroupMoonViewDetails": "Letak Bulan di langit tempat saat ini, kemiringan sisi terangnya, terbit dan terbenamnya: dihitung di komputer ini dengan rumus dari Astronomical Algorithms karya Jean Meeus, diperiksa dengan JPL Horizons.",
+  "sourceGroupMoonViewCoverage": "Seluruh dunia, untuk setiap tempat."
 }

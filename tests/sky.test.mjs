@@ -73,6 +73,20 @@ test("sky colour: base colours, softened and readable", () => {
   }
 })
 
+test("sun colour: gold, softened a quarter, then readable at 3:1", () => {
+  assert.equal(S.sunColor(), "#e3a447")
+  const gold = S.hexRgb("#e3a447")
+  const pairs = [[[0.92, 0.92, 0.92], [0.1, 0.1, 0.12]], [[0.1, 0.1, 0.1], [0.98, 0.98, 0.98]],
+    [[0.2, 0.2, 0.25], [0.95, 0.9, 0.8]], [[0.8, 0.85, 0.9], [0.15, 0.18, 0.2]]]
+  for (const [fg, bg] of pairs) {
+    const c = S.hexRgb(S.sunColor(fg, bg))
+    assert.ok(S.contrast(c, bg) >= 3 || c.every((v, i) => Math.abs(v - fg[i]) < 0.003), `${fg} on ${bg}`)
+    // Never further from gold than a quarter towards the text, unless needed.
+    const quarter = S.mixRgb(gold, fg, 0.25)
+    if (S.contrast(quarter, bg) >= 3) assert.equal(S.sunColor(fg, bg), S.rgbHex(quarter))
+  }
+})
+
 test("sun times: Berlin, 2 October 2026 (CEST)", () => {
   const berlin = [52.52, 13.405]
   const cest = 2 * 3600

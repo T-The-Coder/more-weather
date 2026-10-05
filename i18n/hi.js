@@ -454,5 +454,21 @@ var entries = {
   "chipNight": "रात",
   "chipPlaces": "स्थान",
   "globeSoloHint": "किसी रंग परत के चिप पर Shift + क्लिक या राइट क्लिक केवल वही परत दिखाता है।",
-  "shortcutSettingsSearch": "सेटिंग्स खोजें (Esc साफ़ करता है, ↓ परिणामों तक)"
+  "shortcutSettingsSearch": "सेटिंग्स खोजें (Esc साफ़ करता है, ↓ परिणामों तक)",
+  "moonAboveHorizon": "{altitude}° ऊँचा · {direction}",
+  "moonBelowHorizon": "क्षितिज के नीचे",
+  "moonRises": "उदय {time}",
+  "moonSets": "अस्त {time}",
+  "moonFromPlace": "{place}: {details}",
+  "compass_N": "उत्तर",
+  "compass_NE": "उत्तर-पूर्व",
+  "compass_E": "पूर्व",
+  "compass_SE": "दक्षिण-पूर्व",
+  "compass_S": "दक्षिण",
+  "compass_SW": "दक्षिण-पश्चिम",
+  "compass_W": "पश्चिम",
+  "compass_NW": "उत्तर-पश्चिम",
+  "sourceGroupMoonView": "यहाँ से चंद्रमा",
+  "sourceGroupMoonViewDetails": "वर्तमान स्थान के आकाश में चंद्रमा कहाँ है, उसके प्रकाशित भाग का झुकाव, उदय और अस्त: इसी कंप्यूटर पर जीन मीउस की Astronomical Algorithms के सूत्रों से गणना, JPL Horizons से जाँची गई।",
+  "sourceGroupMoonViewCoverage": "दुनिया भर में, हर स्थान के लिए।"
 }

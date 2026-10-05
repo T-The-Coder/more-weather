@@ -9,6 +9,9 @@ import "I18n.js" as I18n
 import "Providers.js" as Providers
 import "GlobeFields.js" as GlobeFields
 import "TemperatureScale.js" as TemperatureScale
+import "Sky.js" as Sky
+import "Moon.js" as Moon
+import "MoonView.js" as MoonView
 
 Panel {
   id: root
@@ -453,24 +456,11 @@ Panel {
     if (!colorAccents || !isFinite(value) || Math.abs(value) < 1) return ""
     return accentOf(paletteColor(value > 0 ? "orange" : "blue"))
   }
-  // The sun's marker on the globe and the flat map: a warm gold (the
-  // golden hour's, #E3A447) a quarter of the way to the text colour, moved
-  // further towards it until it stands 3:1 against the popup's background.
-  readonly property color sunColor: {
-    function lum(c) {
-      function ch(v) { return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4) }
-      return 0.2126 * ch(c.r) + 0.7152 * ch(c.g) + 0.0722 * ch(c.b)
-    }
-    var gold = Qt.color("#E3A447"), fg = foreground, bg = Color.popups.background
-    var lb = lum(bg)
-    var best = gold
-    for (var f = 0.25; f <= 1.001; f += 0.05) {
-      best = Qt.rgba(gold.r + (fg.r - gold.r) * f, gold.g + (fg.g - gold.g) * f, gold.b + (fg.b - gold.b) * f, 1)
-      var l = lum(best)
-      if ((Math.max(l, lb) + 0.05) / (Math.min(l, lb) + 0.05) >= 3) break
-    }
-    return best
-  }
+  // The sun's colour on the globe, the flat map and the sun glyphs: gold
+  // softened towards the text until it reads 3:1 on the popup's background
+  // (Sky.sunColor, shared with More Time).
+  function rgbOf(c) { return [c.r, c.g, c.b] }
+  readonly property color sunColor: Sky.sunColor(rgbOf(foreground), rgbOf(Color.popups.background))
   // Rain probability: green, yellow, cyan, blue as it rises.
   // Rain chance from the text colour at 0 % through cyan, dark blue and
   // magenta to violet at 100 %, all from the theme (violet, which themes
@@ -1008,11 +998,59 @@ Panel {
   readonly property string heroMoonGlyph: Model.moonPhaseGlyph(nowDate)
   readonly property real heroMoonPhase: Model.moonPhaseFraction(nowDate)
   readonly property real heroMoonIlluminated: (1 - Math.cos(2 * Math.PI * heroMoonPhase)) / 2
-  // Where the sphere is lit (WeatherMoonSphere.litAngle): the waxing moon
-  // from the right, the waning from the left, the other way round south
-  // of the equator.
-  function moonLitAngle(mirrored) {
-    return (heroMoonPhase < 0.5) !== !!mirrored ? 0 : Math.PI
+  // ---- The Moon as seen from a place (MoonView.js, shared with More
+  //      Time): the true tilt of its lit limb, earthshine on a thin
+  //      crescent, dimmed while below the horizon. Once a minute: about
+  //      0.1 ms a place without rise and set.
+  readonly property double moonMinuteMs: Math.floor(relativeTimeNowMs / 60000) * 60000
+  function moonViewAt(lat, lon, ms) {
+    if (!isFinite(lat) || !isFinite(lon)) return null
+    return MoonView.view(Number(lat), Number(lon), ms, { riseSet: false })
+  }
+  // { angle, illuminated, earthshine, opacity } for a WeatherMoonSphere or
+  // Moon.paintMoon.
+  function moonLookOf(view) {
+    if (!view) return { angle: heroMoonPhase < 0.5 ? 0 : Math.PI, illuminated: heroMoonIlluminated, earthshine: false, opacity: 1 }
+    return { angle: view.litAngle, illuminated: view.illuminated, earthshine: !!view.earthshine,
+      opacity: view.aboveHorizon ? 1 : 0.4 }
+  }
+  readonly property var heroMoonLook: moonLookOf(moonViewAt(mapCenterLatitude, mapCenterLongitude, moonMinuteMs))
+  // My places: one per saved place, its own tilt and horizon.
+  readonly property var favoriteMoonLooks: {
+    var looks = []
+    for (var i = 0; i < savedLocations.length; i++)
+      looks.push(moonLookOf(moonViewAt(Number(savedLocations[i].latitude), Number(savedLocations[i].longitude), moonMinuteMs)))
+    return looks
+  }
+  // The Moon at the shown place at ms, worded: "Bobingen: 23° high · SE ·
+  // rises 02:05 · sets 17:03" or "…: below the horizon · rises …", in the
+  // place's clock. Kept per minute and place (the rise and set search
+  // costs a few milliseconds).
+  readonly property var moonPlaceCache: ({ key: "", text: "" })
+  function moonPlaceLine(ms) {
+    var lat = mapCenterLatitude, lon = mapCenterLongitude
+    if (!isFinite(lat) || !isFinite(lon) || (lat === 0 && lon === 0)) return ""
+    var minute = Math.floor(ms / 60000) * 60000
+    var key = minute + "|" + lat + "|" + lon + "|" + interfaceLanguage + "|" + reportLocation + "|" + placeUtcOffsetSeconds
+    if (moonPlaceCache.key === key) return moonPlaceCache.text
+    var v = MoonView.view(lat, lon, minute, { riseSet: true })
+    // compass_N … compass_NW
+    var compassKey = "compass_" + Moon.compassPoint(v.azimuth)
+    var parts = [v.aboveHorizon
+      ? i18n("moonAboveHorizon", { altitude: localizedNumber(Math.max(0, Math.round(v.apparentAltitude))),
+        direction: i18n(compassKey) })
+      : i18n("moonBelowHorizon")]
+    var events = []
+    if (v.rise) events.push({ at: v.rise, key: "moonRises" })
+    if (v.set) events.push({ at: v.set, key: "moonSets" })
+    events.sort(function(a, b) { return a.at - b.at })
+    for (var i = 0; i < events.length; i++) parts.push(i18n(events[i].key, { time: placeClock(events[i].at) }))
+    var text = reportLocation !== "" ? i18n("moonFromPlace", { place: reportLocation, details: parts.join(" · ") })
+      : parts.join(" · ")
+    // Changed in place: no binding hears of it.
+    moonPlaceCache.key = key
+    moonPlaceCache.text = text
+    return text
   }
   readonly property string heroMoonText: localizedNumber(Model.moonIlluminationPercent(nowDate)) + "%"
   // A forecast day's phase, taken on that day's evening.
@@ -3672,7 +3710,6 @@ Panel {
         humidity: values && values.humidity !== undefined && values.humidity !== "" ? localizedNumber(values.humidity) + "%" : "",
         latitude: Number(place.latitude),
         longitude: Number(place.longitude),
-        moonMirrored: Model.moonMirroredAt(place.latitude),
         stale: !active && (!updatedAt || updatedAt < staleBefore)
       })
     }

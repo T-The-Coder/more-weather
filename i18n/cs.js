@@ -454,5 +454,21 @@ var entries = {
   "chipNight": "Noc",
   "chipPlaces": "Místa",
   "globeSoloHint": "Shift + klik nebo pravé tlačítko na čipu barevné vrstvy zobrazí jen tuto vrstvu.",
-  "shortcutSettingsSearch": "Hledat v nastavení (Esc vymaže, ↓ k výsledkům)"
+  "shortcutSettingsSearch": "Hledat v nastavení (Esc vymaže, ↓ k výsledkům)",
+  "moonAboveHorizon": "{altitude}° vysoko · {direction}",
+  "moonBelowHorizon": "pod obzorem",
+  "moonRises": "vychází v {time}",
+  "moonSets": "zapadá v {time}",
+  "moonFromPlace": "{place}: {details}",
+  "compass_N": "S",
+  "compass_NE": "SV",
+  "compass_E": "V",
+  "compass_SE": "JV",
+  "compass_S": "J",
+  "compass_SW": "JZ",
+  "compass_W": "Z",
+  "compass_NW": "SZ",
+  "sourceGroupMoonView": "Měsíc odsud",
+  "sourceGroupMoonViewDetails": "Kde Měsíc stojí na obloze aktuálního místa, sklon jeho osvětlené strany, východ a západ: spočteno na tomto počítači podle vzorců z Astronomical Algorithms Jeana Meeuse, ověřeno s JPL Horizons.",
+  "sourceGroupMoonViewCoverage": "Celý svět, pro každé místo."
 }

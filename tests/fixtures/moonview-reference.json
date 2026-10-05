@@ -1,0 +1,497 @@
+{
+ "source": "JPL Horizons API (observer tables, airless) and USNO rstt/oneday API (UTC), retrieved 2026-10-05 by tools/fetch-moonview-fixture.py",
+ "places": {
+  "berlin": {
+   "lat": 52.52,
+   "lon": 13.405,
+   "dates": {
+    "2026-03-03": {
+     "horizons": [
+      {
+       "utc": "2026-Mar-03 00:00",
+       "azimuth": 202.49216107,
+       "altitude": 44.272962856,
+       "illuminated": 0.9973515999999999,
+       "angularDiameterArcsec": 1904.717,
+       "distanceKm": 376292.94931,
+       "psAng": 107.33
+      },
+      {
+       "utc": "2026-Mar-03 03:00",
+       "azimuth": 250.203477137,
+       "altitude": 24.20581498,
+       "illuminated": 0.9983186000000001,
+       "angularDiameterArcsec": 1893.213,
+       "distanceKm": 378579.34654,
+       "psAng": 102.441
+      },
+      {
+       "utc": "2026-Mar-03 06:00",
+       "azimuth": 285.185119891,
+       "altitude": -2.609551634,
+       "illuminated": 0.9991800999999999,
+       "angularDiameterArcsec": 1876.496,
+       "distanceKm": 381952.04662,
+       "psAng": 94.368
+      },
+      {
+       "utc": "2026-Mar-03 09:00",
+       "azimuth": 323.452879666,
+       "altitude": -24.914506928,
+       "illuminated": 0.9997729,
+       "angularDiameterArcsec": 1862.414,
+       "distanceKm": 384840.08616,
+       "psAng": 73.225
+      },
+      {
+       "utc": "2026-Mar-03 12:00",
+       "azimuth": 12.029497405,
+       "altitude": -31.340410224,
+       "illuminated": 0.9998843,
+       "angularDiameterArcsec": 1857.005,
+       "distanceKm": 385960.87395,
+       "psAng": 354.259
+      },
+      {
+       "utc": "2026-Mar-03 15:00",
+       "azimuth": 57.052502025,
+       "altitude": -17.13344618,
+       "illuminated": 0.9994577,
+       "angularDiameterArcsec": 1861.639,
+       "distanceKm": 385000.20203,
+       "psAng": 316.355
+      },
+      {
+       "utc": "2026-Mar-03 18:00",
+       "azimuth": 93.229167814,
+       "altitude": 7.49137887,
+       "illuminated": 0.9986461,
+       "angularDiameterArcsec": 1872.451,
+       "distanceKm": 382777.1285,
+       "psAng": 308.611
+      },
+      {
+       "utc": "2026-Mar-03 21:00",
+       "azimuth": 132.774145761,
+       "altitude": 31.110446837,
+       "illuminated": 0.9976586000000001,
+       "angularDiameterArcsec": 1882.054,
+       "distanceKm": 380824.10273,
+       "psAng": 307.11
+      }
+     ],
+     "usno": {
+      "Set": "05:48",
+      "Rise": "17:02"
+     }
+    },
+    "2026-06-15": {
+     "horizons": [
+      {
+       "utc": "2026-Jun-15 00:00",
+       "azimuth": 13.813936304,
+       "altitude": -9.413798922,
+       "illuminated": 0.0012711,
+       "angularDiameterArcsec": 2000.914,
+       "distanceKm": 358202.16843,
+       "psAng": 332.821
+      },
+      {
+       "utc": "2026-Jun-15 03:00",
+       "azimuth": 49.10146293,
+       "altitude": 4.221004782,
+       "illuminated": 0.0011212,
+       "angularDiameterArcsec": 2009.292,
+       "distanceKm": 356708.62935,
+       "psAng": 5.695
+      },
+      {
+       "utc": "2026-Jun-15 06:00",
+       "azimuth": 80.378977201,
+       "altitude": 27.711898737,
+       "illuminated": 0.0016433,
+       "angularDiameterArcsec": 2023.107,
+       "distanceKm": 354272.89428,
+       "psAng": 30.248
+      },
+      {
+       "utc": "2026-Jun-15 09:00",
+       "azimuth": 118.954865403,
+       "altitude": 53.400222965,
+       "illuminated": 0.0024852,
+       "angularDiameterArcsec": 2034.882,
+       "distanceKm": 352222.72518,
+       "psAng": 43.79
+      },
+      {
+       "utc": "2026-Jun-15 12:00",
+       "azimuth": 195.417371436,
+       "altitude": 64.343941734,
+       "illuminated": 0.0034381,
+       "angularDiameterArcsec": 2037.809,
+       "distanceKm": 351716.91429,
+       "psAng": 52.817
+      },
+      {
+       "utc": "2026-Jun-15 15:00",
+       "azimuth": 256.45290673,
+       "altitude": 44.822813541,
+       "illuminated": 0.0046093,
+       "angularDiameterArcsec": 2029.828,
+       "distanceKm": 353099.84024,
+       "psAng": 60.853
+      },
+      {
+       "utc": "2026-Jun-15 18:00",
+       "azimuth": 290.093168741,
+       "altitude": 18.766459685,
+       "illuminated": 0.006362400000000001,
+       "angularDiameterArcsec": 2014.979,
+       "distanceKm": 355701.94141,
+       "psAng": 68.469
+      },
+      {
+       "utc": "2026-Jun-15 21:00",
+       "azimuth": 322.205451078,
+       "altitude": -2.351727764,
+       "illuminated": 0.0090826,
+       "angularDiameterArcsec": 2000.815,
+       "distanceKm": 358219.86481,
+       "psAng": 74.865
+      }
+     ],
+     "usno": {
+      "Rise": "02:10",
+      "Set": "20:44"
+     }
+    },
+    "2026-10-05": {
+     "horizons": [
+      {
+       "utc": "2026-Oct-05 00:00",
+       "azimuth": 71.187949803,
+       "altitude": 12.968934181,
+       "illuminated": 0.3333583,
+       "angularDiameterArcsec": 1934.907,
+       "distanceKm": 370421.64447,
+       "psAng": 283.413
+      },
+      {
+       "utc": "2026-Oct-05 03:00",
+       "azimuth": 106.25656722,
+       "altitude": 38.699559213,
+       "illuminated": 0.3211964,
+       "angularDiameterArcsec": 1947.235,
+       "distanceKm": 368076.51406,
+       "psAng": 284.03
+      },
+      {
+       "utc": "2026-Oct-05 06:00",
+       "azimuth": 162.845255162,
+       "altitude": 57.418016258,
+       "illuminated": 0.3111227,
+       "angularDiameterArcsec": 1953.431,
+       "distanceKm": 366909.15897,
+       "psAng": 284.47
+      },
+      {
+       "utc": "2026-Oct-05 09:00",
+       "azimuth": 232.240706766,
+       "altitude": 48.373618031,
+       "illuminated": 0.30134299999999997,
+       "angularDiameterArcsec": 1949.123,
+       "distanceKm": 367720.01587,
+       "psAng": 284.811
+      },
+      {
+       "utc": "2026-Oct-05 12:00",
+       "azimuth": 272.696973807,
+       "altitude": 22.803531204,
+       "illuminated": 0.2900241,
+       "angularDiameterArcsec": 1935.983,
+       "distanceKm": 370215.86933,
+       "psAng": 285.174
+      },
+      {
+       "utc": "2026-Oct-05 15:00",
+       "azimuth": 305.64892549,
+       "altitude": -2.358098505,
+       "illuminated": 0.2763734,
+       "angularDiameterArcsec": 1920.644,
+       "distanceKm": 373172.532,
+       "psAng": 285.649
+      },
+      {
+       "utc": "2026-Oct-05 18:00",
+       "azimuth": 343.990108079,
+       "altitude": -18.055578948,
+       "illuminated": 0.2610204,
+       "angularDiameterArcsec": 1910.635,
+       "distanceKm": 375127.29606,
+       "psAng": 286.251
+      },
+      {
+       "utc": "2026-Oct-05 21:00",
+       "azimuth": 26.752392111,
+       "altitude": -16.22930251,
+       "illuminated": 0.24556,
+       "angularDiameterArcsec": 1910.417,
+       "distanceKm": 375170.21563,
+       "psAng": 286.92
+      }
+     ],
+     "usno": {
+      "Set": "14:48",
+      "Rise": "23:39"
+     }
+    }
+   }
+  },
+  "sydney": {
+   "lat": -33.8688,
+   "lon": 151.2093,
+   "dates": {
+    "2026-03-03": {
+     "horizons": [
+      {
+       "utc": "2026-Mar-03 00:00",
+       "azimuth": 230.667239802,
+       "altitude": -56.158665223,
+       "illuminated": 0.9968174000000001,
+       "angularDiameterArcsec": 1856.529,
+       "distanceKm": 386059.86238,
+       "psAng": 115.815
+      },
+      {
+       "utc": "2026-Mar-03 03:00",
+       "azimuth": 143.749742935,
+       "altitude": -60.589870906,
+       "illuminated": 0.9985266,
+       "angularDiameterArcsec": 1853.049,
+       "distanceKm": 386784.88255,
+       "psAng": 118.991
+      },
+      {
+       "utc": "2026-Mar-03 06:00",
+       "azimuth": 100.140629815,
+       "altitude": -29.219949267,
+       "illuminated": 0.9995221,
+       "angularDiameterArcsec": 1862.693,
+       "distanceKm": 384782.24863,
+       "psAng": 126.512
+      },
+      {
+       "utc": "2026-Mar-03 09:00",
+       "azimuth": 75.900307935,
+       "altitude": 7.032597089,
+       "illuminated": 0.9999199,
+       "angularDiameterArcsec": 1879.459,
+       "distanceKm": 381349.78077,
+       "psAng": 146.435
+      },
+      {
+       "utc": "2026-Mar-03 12:00",
+       "azimuth": 42.989862734,
+       "altitude": 39.087974304,
+       "illuminated": 0.9999822,
+       "angularDiameterArcsec": 1893.053,
+       "distanceKm": 378611.45194,
+       "psAng": 246.862
+      },
+      {
+       "utc": "2026-Mar-03 15:00",
+       "azimuth": 341.820157926,
+       "altitude": 48.426030017,
+       "illuminated": 0.9998661,
+       "angularDiameterArcsec": 1894.305,
+       "distanceKm": 378361.2748,
+       "psAng": 294.092
+      },
+      {
+       "utc": "2026-Mar-03 18:00",
+       "azimuth": 294.998105992,
+       "altitude": 24.138133323,
+       "illuminated": 0.9995436999999999,
+       "angularDiameterArcsec": 1881.166,
+       "distanceKm": 381003.92004,
+       "psAng": 302.511
+      },
+      {
+       "utc": "2026-Mar-03 21:00",
+       "azimuth": 268.174878722,
+       "altitude": -10.735535583,
+       "illuminated": 0.9988433000000001,
+       "angularDiameterArcsec": 1860.187,
+       "distanceKm": 385300.69652,
+       "psAng": 302.638
+      }
+     ],
+     "usno": {
+      "Rise": "08:21",
+      "Set": "20:10"
+     }
+    },
+    "2026-06-15": {
+     "horizons": [
+      {
+       "utc": "2026-Jun-15 00:00",
+       "azimuth": 25.581215821,
+       "altitude": 22.278033449,
+       "illuminated": 0.0025023000000000003,
+       "angularDiameterArcsec": 2020.578,
+       "distanceKm": 354716.19001,
+       "psAng": 343.359
+      },
+      {
+       "utc": "2026-Jun-15 03:00",
+       "azimuth": 343.979336329,
+       "altitude": 25.335392411,
+       "illuminated": 0.002379,
+       "angularDiameterArcsec": 2022.212,
+       "distanceKm": 354429.67086,
+       "psAng": 355.623
+      },
+      {
+       "utc": "2026-Jun-15 06:00",
+       "azimuth": 310.20433474,
+       "altitude": 5.498812671,
+       "illuminated": 0.00228,
+       "angularDiameterArcsec": 2009.939,
+       "distanceKm": 356593.74541,
+       "psAng": 9.794
+      },
+      {
+       "utc": "2026-Jun-15 09:00",
+       "azimuth": 288.286097782,
+       "altitude": -25.524568062,
+       "illuminated": 0.0024982,
+       "angularDiameterArcsec": 1990.637,
+       "distanceKm": 360051.37208,
+       "psAng": 28.217
+      },
+      {
+       "utc": "2026-Jun-15 12:00",
+       "azimuth": 268.218676656,
+       "altitude": -60.175912907,
+       "illuminated": 0.0035237000000000003,
+       "angularDiameterArcsec": 1974.538,
+       "distanceKm": 362986.99447,
+       "psAng": 46.557
+      },
+      {
+       "utc": "2026-Jun-15 15:00",
+       "azimuth": 128.774991151,
+       "altitude": -80.919480669,
+       "illuminated": 0.005658600000000001,
+       "angularDiameterArcsec": 1969.524,
+       "distanceKm": 363911.03705,
+       "psAng": 59.368
+      },
+      {
+       "utc": "2026-Jun-15 18:00",
+       "azimuth": 83.709793611,
+       "altitude": -46.794574633,
+       "illuminated": 0.0087041,
+       "angularDiameterArcsec": 1977.679,
+       "distanceKm": 362410.59552,
+       "psAng": 66.685
+      },
+      {
+       "utc": "2026-Jun-15 21:00",
+       "azimuth": 64.64893182,
+       "altitude": -12.820612522,
+       "illuminated": 0.0120101,
+       "angularDiameterArcsec": 1994.516,
+       "distanceKm": 359351.23419,
+       "psAng": 70.67
+      }
+     ],
+     "usno": {
+      "Set": "06:40",
+      "Rise": "22:09"
+     }
+    },
+    "2026-10-05": {
+     "horizons": [
+      {
+       "utc": "2026-Oct-05 00:00",
+       "azimuth": 318.931980001,
+       "altitude": 20.336893726,
+       "illuminated": 0.34540689999999996,
+       "angularDiameterArcsec": 1939.11,
+       "distanceKm": 369618.88013,
+       "psAng": 283.338
+      },
+      {
+       "utc": "2026-Oct-05 03:00",
+       "azimuth": 291.093360863,
+       "altitude": -8.894810906,
+       "illuminated": 0.3337226,
+       "angularDiameterArcsec": 1921.441,
+       "distanceKm": 373017.69237,
+       "psAng": 283.792
+      },
+      {
+       "utc": "2026-Oct-05 06:00",
+       "azimuth": 268.56619499,
+       "altitude": -43.58046087,
+       "illuminated": 0.31861239999999996,
+       "angularDiameterArcsec": 1902.853,
+       "distanceKm": 376661.44541,
+       "psAng": 284.429
+      },
+      {
+       "utc": "2026-Oct-05 09:00",
+       "azimuth": 212.106112539,
+       "altitude": -75.142671505,
+       "illuminated": 0.3012934,
+       "angularDiameterArcsec": 1892.769,
+       "distanceKm": 378668.16049,
+       "psAng": 285.24
+      },
+      {
+       "utc": "2026-Oct-05 12:00",
+       "azimuth": 104.898914672,
+       "altitude": -56.834056851,
+       "illuminated": 0.28414280000000003,
+       "angularDiameterArcsec": 1895.877,
+       "distanceKm": 378047.50699,
+       "psAng": 286.125
+      },
+      {
+       "utc": "2026-Oct-05 15:00",
+       "azimuth": 79.479512413,
+       "altitude": -21.188968601,
+       "illuminated": 0.2694279,
+       "angularDiameterArcsec": 1910.239,
+       "distanceKm": 375205.19379,
+       "psAng": 286.927
+      },
+      {
+       "utc": "2026-Oct-05 18:00",
+       "azimuth": 55.847114634,
+       "altitude": 12.364842751,
+       "illuminated": 0.2582007,
+       "angularDiameterArcsec": 1927.952,
+       "distanceKm": 371758.07721,
+       "psAng": 287.507
+      },
+      {
+       "utc": "2026-Oct-05 21:00",
+       "azimuth": 17.613514904,
+       "altitude": 35.068737407,
+       "illuminated": 0.24974229999999997,
+       "angularDiameterArcsec": 1938.624,
+       "distanceKm": 369711.43579,
+       "psAng": 287.819
+      }
+     ],
+     "usno": {
+      "Set": "02:15",
+      "Rise": "16:46"
+     }
+    }
+   }
+  }
+ }
+}

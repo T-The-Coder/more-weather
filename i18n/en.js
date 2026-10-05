@@ -488,5 +488,21 @@ var catalog = {
   "chipNight": "Night",
   "chipPlaces": "Places",
   "globeSoloHint": "Shift + click or a right click on a colour layer's chip shows that layer alone.",
-  "shortcutSettingsSearch": "Search the settings (Esc clears, ↓ to the results)"
+  "shortcutSettingsSearch": "Search the settings (Esc clears, ↓ to the results)",
+  "moonAboveHorizon": "{altitude}° high · {direction}",
+  "moonBelowHorizon": "below the horizon",
+  "moonRises": "rises {time}",
+  "moonSets": "sets {time}",
+  "moonFromPlace": "{place}: {details}",
+  "compass_N": "N",
+  "compass_NE": "NE",
+  "compass_E": "E",
+  "compass_SE": "SE",
+  "compass_S": "S",
+  "compass_SW": "SW",
+  "compass_W": "W",
+  "compass_NW": "NW",
+  "sourceGroupMoonView": "The Moon from here",
+  "sourceGroupMoonViewDetails": "Where the Moon stands in the sky of the current place, the tilt of its lit side, its rise and set: computed on this computer with the formulas of Jean Meeus' Astronomical Algorithms, checked against JPL Horizons.",
+  "sourceGroupMoonViewCoverage": "Worldwide, for each place."
 }

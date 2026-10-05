@@ -454,5 +454,21 @@ var entries = {
   "chipNight": "Đêm",
   "chipPlaces": "Địa điểm",
   "globeSoloHint": "Shift + nhấp hoặc nhấp chuột phải vào nút của một lớp màu chỉ hiện lớp đó.",
-  "shortcutSettingsSearch": "Tìm trong cài đặt (Esc xóa, ↓ tới kết quả)"
+  "shortcutSettingsSearch": "Tìm trong cài đặt (Esc xóa, ↓ tới kết quả)",
+  "moonAboveHorizon": "cao {altitude}° · {direction}",
+  "moonBelowHorizon": "dưới đường chân trời",
+  "moonRises": "mọc lúc {time}",
+  "moonSets": "lặn lúc {time}",
+  "moonFromPlace": "{place}: {details}",
+  "compass_N": "B",
+  "compass_NE": "ĐB",
+  "compass_E": "Đ",
+  "compass_SE": "ĐN",
+  "compass_S": "N",
+  "compass_SW": "TN",
+  "compass_W": "T",
+  "compass_NW": "TB",
+  "sourceGroupMoonView": "Mặt Trăng từ đây",
+  "sourceGroupMoonViewDetails": "Vị trí Mặt Trăng trên bầu trời nơi hiện tại, độ nghiêng phần sáng, giờ mọc và lặn: tính trên máy này bằng công thức trong Astronomical Algorithms của Jean Meeus, đối chiếu với JPL Horizons.",
+  "sourceGroupMoonViewCoverage": "Toàn thế giới, cho từng địa điểm."
 }

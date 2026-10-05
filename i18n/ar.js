@@ -454,5 +454,21 @@ var entries = {
   "chipNight": "الليل",
   "chipPlaces": "الأماكن",
   "globeSoloHint": "Shift + نقرة أو نقرة يمنى على زر طبقة لونية يعرض تلك الطبقة وحدها.",
-  "shortcutSettingsSearch": "البحث في الإعدادات (Esc يمسح، ↓ إلى النتائج)"
+  "shortcutSettingsSearch": "البحث في الإعدادات (Esc يمسح، ↓ إلى النتائج)",
+  "moonAboveHorizon": "على ارتفاع {altitude}° · {direction}",
+  "moonBelowHorizon": "تحت الأفق",
+  "moonRises": "يشرق {time}",
+  "moonSets": "يغرب {time}",
+  "moonFromPlace": "{place}: {details}",
+  "compass_N": "شمال",
+  "compass_NE": "شمال شرق",
+  "compass_E": "شرق",
+  "compass_SE": "جنوب شرق",
+  "compass_S": "جنوب",
+  "compass_SW": "جنوب غرب",
+  "compass_W": "غرب",
+  "compass_NW": "شمال غرب",
+  "sourceGroupMoonView": "القمر من هنا",
+  "sourceGroupMoonViewDetails": "أين يقف القمر في سماء المكان الحالي، وميل جانبه المضيء، وشروقه وغروبه: محسوبة على هذا الحاسوب بمعادلات كتاب Astronomical Algorithms لجان ميوس، ومتحقق منها مع JPL Horizons.",
+  "sourceGroupMoonViewCoverage": "في جميع أنحاء العالم، لكل مكان."
 }

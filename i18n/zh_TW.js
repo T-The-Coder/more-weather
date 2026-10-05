@@ -454,5 +454,21 @@ var entries = {
   "chipNight": "夜晚",
   "chipPlaces": "地點",
   "globeSoloHint": "Shift + 點擊或右鍵點擊色彩圖層的標籤，只顯示該圖層。",
-  "shortcutSettingsSearch": "搜尋設定（Esc 清除，↓ 到結果）"
+  "shortcutSettingsSearch": "搜尋設定（Esc 清除，↓ 到結果）",
+  "moonAboveHorizon": "高度 {altitude}° · {direction}",
+  "moonBelowHorizon": "在地平線下",
+  "moonRises": "{time} 升起",
+  "moonSets": "{time} 落下",
+  "moonFromPlace": "{place}：{details}",
+  "compass_N": "北",
+  "compass_NE": "東北",
+  "compass_E": "東",
+  "compass_SE": "東南",
+  "compass_S": "南",
+  "compass_SW": "西南",
+  "compass_W": "西",
+  "compass_NW": "西北",
+  "sourceGroupMoonView": "從這裡看月亮",
+  "sourceGroupMoonViewDetails": "月亮在目前地點天空中的位置、亮面的傾斜、升起和落下：在本機依 Jean Meeus《Astronomical Algorithms》的公式計算，並與 JPL Horizons 核對。",
+  "sourceGroupMoonViewCoverage": "全球，每個地點各自計算。"
 }

@@ -454,5 +454,21 @@ var entries = {
   "chipNight": "شب",
   "chipPlaces": "مکان‌ها",
   "globeSoloHint": "Shift + کلیک یا کلیک راست روی دکمهٔ یک لایهٔ رنگی فقط همان لایه را نشان می‌دهد.",
-  "shortcutSettingsSearch": "جست‌وجو در تنظیمات (Esc پاک می‌کند، ↓ به نتایج)"
+  "shortcutSettingsSearch": "جست‌وجو در تنظیمات (Esc پاک می‌کند، ↓ به نتایج)",
+  "moonAboveHorizon": "در ارتفاع {altitude}° · {direction}",
+  "moonBelowHorizon": "زیر افق",
+  "moonRises": "طلوع {time}",
+  "moonSets": "غروب {time}",
+  "moonFromPlace": "{place}: {details}",
+  "compass_N": "شمال",
+  "compass_NE": "شمال شرقی",
+  "compass_E": "شرق",
+  "compass_SE": "جنوب شرقی",
+  "compass_S": "جنوب",
+  "compass_SW": "جنوب غربی",
+  "compass_W": "غرب",
+  "compass_NW": "شمال غربی",
+  "sourceGroupMoonView": "ماه از اینجا",
+  "sourceGroupMoonViewDetails": "ماه در آسمان مکان کنونی کجاست، کجی بخش روشن آن، طلوع و غروبش: روی همین رایانه با فرمول‌های کتاب Astronomical Algorithms ژان میوس حساب شده و با JPL Horizons سنجیده شده است.",
+  "sourceGroupMoonViewCoverage": "در سراسر جهان، برای هر مکان."
 }

@@ -454,5 +454,21 @@ var entries = {
   "chipNight": "Natt",
   "chipPlaces": "Platser",
   "globeSoloHint": "Skift + klick eller ett högerklick på ett färglagers knapp visar bara det lagret.",
-  "shortcutSettingsSearch": "Sök i inställningarna (Esc rensar, ↓ till träffarna)"
+  "shortcutSettingsSearch": "Sök i inställningarna (Esc rensar, ↓ till träffarna)",
+  "moonAboveHorizon": "{altitude}° högt · {direction}",
+  "moonBelowHorizon": "under horisonten",
+  "moonRises": "går upp {time}",
+  "moonSets": "går ned {time}",
+  "moonFromPlace": "{place}: {details}",
+  "compass_N": "N",
+  "compass_NE": "NO",
+  "compass_E": "O",
+  "compass_SE": "SO",
+  "compass_S": "S",
+  "compass_SW": "SV",
+  "compass_W": "V",
+  "compass_NW": "NV",
+  "sourceGroupMoonView": "Månen härifrån",
+  "sourceGroupMoonViewDetails": "Var Månen står på himlen över den aktuella platsen, lutningen på dess belysta sida, upp- och nedgång: beräknat på den här datorn med formlerna i Jean Meeus Astronomical Algorithms, kontrollerat mot JPL Horizons.",
+  "sourceGroupMoonViewCoverage": "Hela världen, för varje plats."
 }

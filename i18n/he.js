@@ -454,5 +454,21 @@ var entries = {
   "chipNight": "לילה",
   "chipPlaces": "מקומות",
   "globeSoloHint": "Shift + לחיצה או לחיצה ימנית על הכפתור של שכבת צבע מציגה רק אותה.",
-  "shortcutSettingsSearch": "חיפוש בהגדרות (Esc מנקה, ↓ לתוצאות)"
+  "shortcutSettingsSearch": "חיפוש בהגדרות (Esc מנקה, ↓ לתוצאות)",
+  "moonAboveHorizon": "בגובה {altitude}° · {direction}",
+  "moonBelowHorizon": "מתחת לאופק",
+  "moonRises": "זורח ב-{time}",
+  "moonSets": "שוקע ב-{time}",
+  "moonFromPlace": "{place}: {details}",
+  "compass_N": "צפון",
+  "compass_NE": "צפון-מזרח",
+  "compass_E": "מזרח",
+  "compass_SE": "דרום-מזרח",
+  "compass_S": "דרום",
+  "compass_SW": "דרום-מערב",
+  "compass_W": "מערב",
+  "compass_NW": "צפון-מערב",
+  "sourceGroupMoonView": "הירח מכאן",
+  "sourceGroupMoonViewDetails": "היכן הירח עומד בשמי המקום הנוכחי, הטיית הצד המואר שלו, זריחתו ושקיעתו: מחושבים במחשב הזה בנוסחאות מתוך Astronomical Algorithms של ז'אן מֵאוּס, ונבדקו מול JPL Horizons.",
+  "sourceGroupMoonViewCoverage": "בכל העולם, לכל מקום."
 }

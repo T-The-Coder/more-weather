@@ -117,6 +117,11 @@ Column {
       title: "sourceGroupMoon", details: "sourceGroupMoonDetails",
       inUse: panel.upperLabel(label("sourceLocalCalculation")),
       links: []
+    },
+    {
+      title: "sourceGroupMoonView", details: "sourceGroupMoonViewDetails",
+      inUse: panel.upperLabel(label("sourceLocalCalculation")),
+      links: [["JPL Horizons", "https://ssd.jpl.nasa.gov/horizons/"]]
     }
   ]
 

@@ -63,3 +63,34 @@ test("moon: drawing styles, from space and as seen from Earth", () => {
   assert.ok(moon.waxing)
   assert.equal(Moon.moonLitAngleFor("earth", moon, 0.5, 52.5), 0)
 })
+
+test("moon: earthshine lights the night side of a thin crescent", () => {
+  const fake = () => {
+    const fills = []
+    let style = ""
+    const ctx = new Proxy({}, {
+      get: (_, name) => name === "fillStyle" ? style : (name === "fill" ? () => fills.push(style)
+        : (name === "createRadialGradient" ? () => ({ addColorStop() {} }) : () => {})),
+      set: (_, name, value) => { if (name === "fillStyle") style = value; return true }
+    })
+    return { ctx, fills }
+  }
+  const plain = fake()
+  Moon.paintMoon(plain.ctx, 10, 10, 8, 0, 0.1, "238,236,226", "20,20,40", "200,200,200")
+  const lit = fake()
+  Moon.paintMoon(lit.ctx, 10, 10, 8, 0, 0.1, "238,236,226", "20,20,40", "200,200,200", true)
+  assert.equal(lit.fills.length, plain.fills.length + 1)
+  assert.ok(lit.fills.some((s) => String(s).startsWith("rgba(" + Moon.EARTHSHINE)))
+  assert.ok(!plain.fills.some((s) => String(s).startsWith("rgba(" + Moon.EARTHSHINE)))
+})
+
+test("moon: compass points", () => {
+  assert.equal(Moon.compassPoint(0), "N")
+  assert.equal(Moon.compassPoint(22.4), "N")
+  assert.equal(Moon.compassPoint(22.6), "NE")
+  assert.equal(Moon.compassPoint(135), "SE")
+  assert.equal(Moon.compassPoint(200), "S")
+  assert.equal(Moon.compassPoint(359), "N")
+  assert.equal(Moon.compassPoint(-90), "W")
+  assert.equal(Moon.compassPoint(316), "NW")
+})

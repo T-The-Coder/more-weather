@@ -34,7 +34,9 @@ runs as a standalone app window.
 **In the popup and the app**
 - **Current conditions:** Temperature, feels-like, wind, humidity, air pressure with
   its trend over three hours (off by default), the moon phase (a
-  shaded sphere) with its lit share, the change against yesterday at the same hour and the next full or
+  shaded sphere as it stands in the place's sky: the true tilt of its lit side,
+  earthshine on a thin crescent, dimmed below the horizon; on hover its height,
+  direction, rise and set) with its lit share, the change against yesterday at the same hour and the next full or
   new moon, plus the moon behind the weather symbol at night. A button (or `w`) opens
   the place at a weather service: NWS in the USA, ECCC in Canada, yr.no elsewhere. In
   the popup, the button beside the gear (or `o`, or a click on the symbol or the
@@ -97,8 +99,9 @@ runs as a standalone app window.
   for every view that turns by itself; it moves only while the popup or the app's window
   is in view). **Shape** (globe or flat map) shows a
   flat Equal Earth map instead, with the same layers, zoom, timeline and places (it pans
-  rather than turns); the **Moon** can be drawn lit as from space or as the shown place
-  sees its phase. Colour layers,
+  rather than turns); the **Moon view** draws the Moon lit as from space or as it stands in the
+  shown place's sky (true tilt, dimmed below the horizon; on hover its height, direction,
+  rise and set). Colour layers,
   each a switch and freely combined, show the temperature (default), the sea's
   temperature, wind, cloud and precipitation from Open-Meteo's model, coarse for the
   whole earth and finer close up, ending crisply at the globe's rim. A row of chips under
@@ -124,7 +127,8 @@ runs as a standalone app window.
   General → Back up and restore imports the cities of [More Time](https://github.com/T-The-Coder/more-time)'s
   world clock as favorites.
 - **My places:** All favorites at a glance, one line each with symbol, temperature,
-  feels-like, wind, humidity and moon. A click, Alt+1–9 or Alt+←/→ switches to a
+  feels-like, wind, humidity and moon (each tilted as seen from that place, dimmed
+  while below its horizon). A click, Alt+1–9 or Alt+←/→ switches to a
   place; for global keys see [IPC](#ipc).
 - **Notifications:** Desktop notifications for severe and extreme warnings and for
   rain on its way (Settings → Notifications, the same for bar and app). For rain you choose the strength (any, moderate or more, heavy only)

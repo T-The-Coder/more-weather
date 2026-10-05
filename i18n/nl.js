@@ -454,5 +454,21 @@ var entries = {
   "chipNight": "Nacht",
   "chipPlaces": "Plaatsen",
   "globeSoloHint": "Shift + klik of een rechtsklik op de chip van een kleurlaag toont alleen die laag.",
-  "shortcutSettingsSearch": "Instellingen doorzoeken (Esc wist, ↓ naar de resultaten)"
+  "shortcutSettingsSearch": "Instellingen doorzoeken (Esc wist, ↓ naar de resultaten)",
+  "moonAboveHorizon": "{altitude}° hoog · {direction}",
+  "moonBelowHorizon": "onder de horizon",
+  "moonRises": "komt op om {time}",
+  "moonSets": "gaat onder om {time}",
+  "moonFromPlace": "{place}: {details}",
+  "compass_N": "N",
+  "compass_NE": "NO",
+  "compass_E": "O",
+  "compass_SE": "ZO",
+  "compass_S": "Z",
+  "compass_SW": "ZW",
+  "compass_W": "W",
+  "compass_NW": "NW",
+  "sourceGroupMoonView": "De maan van hier",
+  "sourceGroupMoonViewDetails": "Waar de maan aan de hemel van de huidige plaats staat, de helling van haar verlichte kant, op- en ondergang: op deze computer berekend met de formules uit Astronomical Algorithms van Jean Meeus, gecontroleerd met JPL Horizons.",
+  "sourceGroupMoonViewCoverage": "Wereldwijd, voor elke plaats."
 }

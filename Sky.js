@@ -201,6 +201,22 @@ function skyColor(elevationDeg, foreground, background) {
   return rgbHex(out)
 }
 
+// The Sun's colour wherever it is drawn (maps, globes, Astro, the sun
+// glyphs): gold #E3A447 softened a quarter towards the text colour, and
+// further (up to the text colour itself) until it reads at 3:1 on the
+// background. foreground, background: [r, g, b] in 0–1; "#rrggbb".
+var SUN_GOLD = "#e3a447"
+function sunColor(foreground, background) {
+  if (!foreground) return SUN_GOLD
+  var gold = hexRgb(SUN_GOLD)
+  var out = gold
+  for (var step = 5; step <= 20; step++) {
+    out = mixRgb(gold, foreground, step / 20)
+    if (!background || contrast(out, background) >= 3) break
+  }
+  return rgbHex(out)
+}
+
 // ---- Drawing shared by the flat maps and the globes. Colours are
 //      { r, g, b, a } in 0–1 or Qt colours.
 
@@ -340,6 +356,6 @@ if (typeof module !== "undefined") module.exports = {
   GOLDEN_HIGH: GOLDEN_HIGH, GOLDEN_LOW: GOLDEN_LOW, BLUE_LOW: BLUE_LOW, HORIZON: HORIZON,
   GOLDEN_STEPS: GOLDEN_STEPS, BLUE_STEPS: BLUE_STEPS, NIGHT_STEPS: NIGHT_STEPS, SKY_COLORS: SKY_COLORS,
   twilightLayers: twilightLayers, twilightElevations: twilightElevations, nightFill: nightFill, bandFill: bandFill,
-  skyMix: skyMix, skyColor: skyColor, contrast: contrast, hexRgb: hexRgb, rgbHex: rgbHex, mixRgb: mixRgb,
+  skyMix: skyMix, skyColor: skyColor, sunColor: sunColor, SUN_GOLD: SUN_GOLD, contrast: contrast, hexRgb: hexRgb, rgbHex: rgbHex, mixRgb: mixRgb,
   paintSun: paintSun
 }

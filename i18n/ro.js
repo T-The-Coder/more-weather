@@ -454,5 +454,21 @@ var entries = {
   "chipNight": "Noapte",
   "chipPlaces": "Locuri",
   "globeSoloHint": "Shift + clic sau un clic dreapta pe butonul unui strat de culoare arată doar acel strat.",
-  "shortcutSettingsSearch": "Caută în setări (Esc golește, ↓ la rezultate)"
+  "shortcutSettingsSearch": "Caută în setări (Esc golește, ↓ la rezultate)",
+  "moonAboveHorizon": "la {altitude}° înălțime · {direction}",
+  "moonBelowHorizon": "sub orizont",
+  "moonRises": "răsare la {time}",
+  "moonSets": "apune la {time}",
+  "moonFromPlace": "{place}: {details}",
+  "compass_N": "N",
+  "compass_NE": "NE",
+  "compass_E": "E",
+  "compass_SE": "SE",
+  "compass_S": "S",
+  "compass_SW": "SV",
+  "compass_W": "V",
+  "compass_NW": "NV",
+  "sourceGroupMoonView": "Luna de aici",
+  "sourceGroupMoonViewDetails": "Unde stă Luna pe cerul locului curent, înclinarea părții luminate, răsăritul și apusul: calculate pe acest calculator cu formulele din Astronomical Algorithms de Jean Meeus, verificate cu JPL Horizons.",
+  "sourceGroupMoonViewCoverage": "În toată lumea, pentru fiecare loc."
 }

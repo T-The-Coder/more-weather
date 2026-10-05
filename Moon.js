@@ -94,6 +94,18 @@ function moonLitAngleFor(style, moon, spaceAngle, observerLat) {
   return !!moon.waxing === north ? 0 : Math.PI
 }
 
+// The nearest of the eight compass points to an azimuth (degrees from
+// north through east): "N", "NE", "E", "SE", "S", "SW", "W" or "NW", for
+// the apps to word.
+var COMPASS_POINTS = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
+function compassPoint(azimuthDeg) {
+  var a = ((Number(azimuthDeg) % 360) + 360) % 360
+  return COMPASS_POINTS[Math.round(a / 45) % 8]
+}
+
+// The ashen light on the Moon's night side ("r,g,b").
+var EARTHSHINE = "176,188,206"
+
 // The soft shadow the floating Moon casts at its sub-lunar point.
 function paintMoonShadow(ctx, x, y, r) {
   ctx.save()
@@ -111,8 +123,10 @@ function paintMoonShadow(ctx, x, y, r) {
 // part shaded brighter towards the Sun (a radial gradient), the terminator
 // an ellipse of half-width r·|1 − 2k| bulging towards the light (crescent)
 // or away from it (gibbous), and a thin soft outline. lit, dark, outline:
-// "r,g,b" strings in 0–255 for the gradient's stops.
-function paintMoon(ctx, x, y, r, angle, illuminated, lit, dark, outline) {
+// "r,g,b" strings in 0–255 for the gradient's stops. earthshine (optional,
+// MoonView's flag for a thin crescent): the dark part faintly lit by the
+// Earth, a pale grey-blue glow.
+function paintMoon(ctx, x, y, r, angle, illuminated, lit, dark, outline, earthshine) {
   ctx.save()
   ctx.translate(x, y)
   ctx.rotate(angle)
@@ -120,6 +134,10 @@ function paintMoon(ctx, x, y, r, angle, illuminated, lit, dark, outline) {
   ctx.beginPath()
   ctx.arc(0, 0, r, 0, Math.PI * 2)
   ctx.fill()
+  if (earthshine) {
+    ctx.fillStyle = "rgba(" + EARTHSHINE + ", 0.30)"
+    ctx.fill()
+  }
   var k = Math.max(0, Math.min(1, illuminated))
   var e = r * Math.abs(1 - 2 * k)
   var side = k < 0.5 ? 1 : -1
@@ -155,5 +173,6 @@ function rgbText(c) {
 
 if (typeof module !== "undefined") module.exports = {
   moonPhaseFraction: moonPhaseFraction, moonPosition: moonPosition, towards: towards,
-  moonLitAngle: moonLitAngle, moonLitAngleFor: moonLitAngleFor, paintMoonShadow: paintMoonShadow, paintMoon: paintMoon, rgbText: rgbText
+  moonLitAngle: moonLitAngle, moonLitAngleFor: moonLitAngleFor, paintMoonShadow: paintMoonShadow, paintMoon: paintMoon, rgbText: rgbText,
+  EARTHSHINE: EARTHSHINE, COMPASS_POINTS: COMPASS_POINTS, compassPoint: compassPoint
 }

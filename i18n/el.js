@@ -454,5 +454,21 @@ var entries = {
   "chipNight": "Νύχτα",
   "chipPlaces": "Τοποθεσίες",
   "globeSoloHint": "Shift + κλικ ή δεξί κλικ στο κουμπί ενός χρωματικού επιπέδου δείχνει μόνο αυτό.",
-  "shortcutSettingsSearch": "Αναζήτηση στις ρυθμίσεις (Esc καθαρίζει, ↓ στα αποτελέσματα)"
+  "shortcutSettingsSearch": "Αναζήτηση στις ρυθμίσεις (Esc καθαρίζει, ↓ στα αποτελέσματα)",
+  "moonAboveHorizon": "σε ύψος {altitude}° · {direction}",
+  "moonBelowHorizon": "κάτω από τον ορίζοντα",
+  "moonRises": "ανατέλλει {time}",
+  "moonSets": "δύει {time}",
+  "moonFromPlace": "{place}: {details}",
+  "compass_N": "Β",
+  "compass_NE": "ΒΑ",
+  "compass_E": "Α",
+  "compass_SE": "ΝΑ",
+  "compass_S": "Ν",
+  "compass_SW": "ΝΔ",
+  "compass_W": "Δ",
+  "compass_NW": "ΒΔ",
+  "sourceGroupMoonView": "Η Σελήνη από εδώ",
+  "sourceGroupMoonViewDetails": "Πού βρίσκεται η Σελήνη στον ουρανό του τρέχοντος τόπου, η κλίση της φωτισμένης πλευράς της, η ανατολή και η δύση της: υπολογισμένα σε αυτόν τον υπολογιστή με τους τύπους του Astronomical Algorithms του Jean Meeus, ελεγμένα με το JPL Horizons.",
+  "sourceGroupMoonViewCoverage": "Παγκοσμίως, για κάθε τοποθεσία."
 }

@@ -454,5 +454,21 @@ var entries = {
   "chipNight": "Noite",
   "chipPlaces": "Locais",
   "globeSoloHint": "Shift + clique ou um clique direito no chip de uma camada de cor mostra só essa camada.",
-  "shortcutSettingsSearch": "Procurar nas definições (Esc limpa, ↓ para os resultados)"
+  "shortcutSettingsSearch": "Procurar nas definições (Esc limpa, ↓ para os resultados)",
+  "moonAboveHorizon": "a {altitude}° de altura · {direction}",
+  "moonBelowHorizon": "abaixo do horizonte",
+  "moonRises": "nasce às {time}",
+  "moonSets": "põe-se às {time}",
+  "moonFromPlace": "{place}: {details}",
+  "compass_N": "N",
+  "compass_NE": "NE",
+  "compass_E": "L",
+  "compass_SE": "SE",
+  "compass_S": "S",
+  "compass_SW": "SO",
+  "compass_W": "O",
+  "compass_NW": "NO",
+  "sourceGroupMoonView": "A Lua daqui",
+  "sourceGroupMoonViewDetails": "Onde a Lua está no céu do local atual, a inclinação do lado iluminado, o nascer e o ocaso: calculados neste computador com as fórmulas de Astronomical Algorithms de Jean Meeus, verificados com o JPL Horizons.",
+  "sourceGroupMoonViewCoverage": "Todo o mundo, para cada local."
 }

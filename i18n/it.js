@@ -454,5 +454,21 @@ var entries = {
   "chipNight": "Notte",
   "chipPlaces": "Luoghi",
   "globeSoloHint": "Maiusc + clic o un clic destro sul chip di un livello di colore mostra solo quel livello.",
-  "shortcutSettingsSearch": "Cerca nelle impostazioni (Esc cancella, ↓ ai risultati)"
+  "shortcutSettingsSearch": "Cerca nelle impostazioni (Esc cancella, ↓ ai risultati)",
+  "moonAboveHorizon": "alta {altitude}° · {direction}",
+  "moonBelowHorizon": "sotto l’orizzonte",
+  "moonRises": "sorge alle {time}",
+  "moonSets": "tramonta alle {time}",
+  "moonFromPlace": "{place}: {details}",
+  "compass_N": "N",
+  "compass_NE": "NE",
+  "compass_E": "E",
+  "compass_SE": "SE",
+  "compass_S": "S",
+  "compass_SW": "SO",
+  "compass_W": "O",
+  "compass_NW": "NO",
+  "sourceGroupMoonView": "La Luna da qui",
+  "sourceGroupMoonViewDetails": "Dove sta la Luna nel cielo del luogo attuale, l’inclinazione della parte illuminata, il sorgere e il tramonto: calcolati su questo computer con le formule di Astronomical Algorithms di Jean Meeus, verificati con JPL Horizons.",
+  "sourceGroupMoonViewCoverage": "In tutto il mondo, per ogni luogo."
 }

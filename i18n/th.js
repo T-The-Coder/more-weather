@@ -454,5 +454,21 @@ var entries = {
   "chipNight": "กลางคืน",
   "chipPlaces": "สถานที่",
   "globeSoloHint": "Shift + คลิก หรือคลิกขวาที่ปุ่มของเลเยอร์สี จะแสดงเฉพาะเลเยอร์นั้น",
-  "shortcutSettingsSearch": "ค้นหาการตั้งค่า (Esc ล้าง ↓ ไปยังผลลัพธ์)"
+  "shortcutSettingsSearch": "ค้นหาการตั้งค่า (Esc ล้าง ↓ ไปยังผลลัพธ์)",
+  "moonAboveHorizon": "สูง {altitude}° · {direction}",
+  "moonBelowHorizon": "ใต้ขอบฟ้า",
+  "moonRises": "ขึ้น {time}",
+  "moonSets": "ตก {time}",
+  "moonFromPlace": "{place}: {details}",
+  "compass_N": "เหนือ",
+  "compass_NE": "ตะวันออกเฉียงเหนือ",
+  "compass_E": "ตะวันออก",
+  "compass_SE": "ตะวันออกเฉียงใต้",
+  "compass_S": "ใต้",
+  "compass_SW": "ตะวันตกเฉียงใต้",
+  "compass_W": "ตะวันตก",
+  "compass_NW": "ตะวันตกเฉียงเหนือ",
+  "sourceGroupMoonView": "ดวงจันทร์จากที่นี่",
+  "sourceGroupMoonViewDetails": "ตำแหน่งของดวงจันทร์บนท้องฟ้าของสถานที่ปัจจุบัน ความเอียงของด้านสว่าง เวลาขึ้นและตก คำนวณบนคอมพิวเตอร์นี้ด้วยสูตรจาก Astronomical Algorithms ของ Jean Meeus ตรวจสอบกับ JPL Horizons",
+  "sourceGroupMoonViewCoverage": "ทั่วโลก สำหรับทุกสถานที่"
 }

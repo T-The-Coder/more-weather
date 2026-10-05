@@ -1,5 +1,6 @@
 import QtQuick
 import qs.Commons
+import qs.Ui
 import "Model.js" as Model
 
 // My places: every favourite on one line in the body size, with the values
@@ -254,15 +255,26 @@ Column {
                   font.italic: favoriteRow.modelData.stale
                 }
 
-                // Today's moon, lit from the side it is seen lit from at
-                // the place (mirrored south of the equator).
+                // The moon as it stands in that place's sky (its own tilt,
+                // dimmed below its horizon).
                 WeatherMoonSphere {
                   visible: parent.modelData === "favoritesMoon"
                   anchors.verticalCenter: parent.verticalCenter
                   size: valueMetrics.height
-                  illuminated: panel.heroMoonIlluminated
+                  readonly property var look: panel.favoriteMoonLooks[favoriteRow.modelData.index] || panel.heroMoonLook
+                  illuminated: look.illuminated
                   phase: panel.heroMoonPhase
-                  litAngle: panel.moonLitAngle(favoriteRow.modelData.moonMirrored)
+                  litAngle: look.angle
+                  earthshine: look.earthshine
+                  opacity: look.opacity
+
+                  // Dimmed: below that place's horizon, said on hover.
+                  HoverHandler { id: favoriteMoonHover }
+                  PanelToolTip {
+                    visible: favoriteMoonHover.hovered && parent.look.opacity < 1
+                    text: panel.i18n("moonBelowHorizon")
+                    fontFamily: panel.fontFamily
+                  }
                   ink: panel.foreground
                 }
               }

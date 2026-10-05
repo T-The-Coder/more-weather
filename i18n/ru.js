@@ -454,5 +454,21 @@ var entries = {
   "chipNight": "Ночь",
   "chipPlaces": "Места",
   "globeSoloHint": "Shift + щелчок или правый щелчок по кнопке цветового слоя показывает только этот слой.",
-  "shortcutSettingsSearch": "Поиск в настройках (Esc очищает, ↓ к результатам)"
+  "shortcutSettingsSearch": "Поиск в настройках (Esc очищает, ↓ к результатам)",
+  "moonAboveHorizon": "на высоте {altitude}° · {direction}",
+  "moonBelowHorizon": "под горизонтом",
+  "moonRises": "восход в {time}",
+  "moonSets": "заход в {time}",
+  "moonFromPlace": "{place}: {details}",
+  "compass_N": "С",
+  "compass_NE": "СВ",
+  "compass_E": "В",
+  "compass_SE": "ЮВ",
+  "compass_S": "Ю",
+  "compass_SW": "ЮЗ",
+  "compass_W": "З",
+  "compass_NW": "СЗ",
+  "sourceGroupMoonView": "Луна отсюда",
+  "sourceGroupMoonViewDetails": "Где Луна стоит на небе текущего места, наклон её освещённой стороны, восход и заход: вычислено на этом компьютере по формулам из Astronomical Algorithms Жана Меёса, проверено по JPL Horizons.",
+  "sourceGroupMoonViewCoverage": "По всему миру, для каждого места."
 }

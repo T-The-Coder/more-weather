@@ -454,5 +454,21 @@ var entries = {
   "chipNight": "Noc",
   "chipPlaces": "Miejsca",
   "globeSoloHint": "Shift + kliknięcie lub prawy przycisk na przycisku warstwy kolorów pokazuje tylko tę warstwę.",
-  "shortcutSettingsSearch": "Szukaj w ustawieniach (Esc czyści, ↓ do wyników)"
+  "shortcutSettingsSearch": "Szukaj w ustawieniach (Esc czyści, ↓ do wyników)",
+  "moonAboveHorizon": "{altitude}° nad horyzontem · {direction}",
+  "moonBelowHorizon": "pod horyzontem",
+  "moonRises": "wschodzi o {time}",
+  "moonSets": "zachodzi o {time}",
+  "moonFromPlace": "{place}: {details}",
+  "compass_N": "płn.",
+  "compass_NE": "płn.-wsch.",
+  "compass_E": "wsch.",
+  "compass_SE": "płd.-wsch.",
+  "compass_S": "płd.",
+  "compass_SW": "płd.-zach.",
+  "compass_W": "zach.",
+  "compass_NW": "płn.-zach.",
+  "sourceGroupMoonView": "Księżyc stąd",
+  "sourceGroupMoonViewDetails": "Gdzie Księżyc stoi na niebie bieżącego miejsca, nachylenie jego oświetlonej strony, wschód i zachód: liczone na tym komputerze wzorami z Astronomical Algorithms Jeana Meeusa, sprawdzone z JPL Horizons.",
+  "sourceGroupMoonViewCoverage": "Cały świat, dla każdego miejsca."
 }
