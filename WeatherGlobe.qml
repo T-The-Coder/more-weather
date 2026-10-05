@@ -517,8 +517,8 @@ Column {
     readonly property bool canRotate: autoRotate && !isMap && zoom <= 1 && panel.globeShown && panel.motionAllowed && onScreen
       && !mouse.pressed && !panel.globeData.playing
     onCanRotateChanged: if (!canRotate) rotating = false
-    readonly property int rotateDelaySeconds: Number(panel.displaySetting("globeRotateDelay", "10")) || 10
-    readonly property int rotateTurnMinutes: Number(panel.displaySetting("globeRotateSpeed", "4")) || 4
+    readonly property int rotateDelaySeconds: Number(panel.generalSetting("motionDelay", "10")) || 10
+    readonly property int rotateTurnMinutes: Number(panel.generalSetting("motionSpeed", "4")) || 4
     function touched() {
       rotating = false
       if (idleTimer.running) idleTimer.restart()
@@ -531,7 +531,7 @@ Column {
     }
     // As many frames a second as chosen (Settings → Display → Globe, 15 by
     // default); the turn advances by the time elapsed.
-    readonly property int rotateFps: Number(panel.displaySetting("globeRotateFps", "15")) || 15
+    readonly property int rotateFps: Number(panel.generalSetting("motionFps", "15")) || 15
     Timer {
       id: rotateTimer
       interval: Math.round(1000 / Math.max(1, globe.rotateFps))

@@ -32,7 +32,22 @@ Item {
   function layerName(kind) {
     return panel.i18n("globeWash" + kind.charAt(0).toUpperCase() + kind.slice(1))
   }
+  // The view's own chips first (shape, night, moon, places, timeline), then
+  // the layers' (GlobeFields.CHIPS), a divider between the groups.
+  readonly property var allChips: [
+    { key: "globeStyle", value: "globe", layer: "", glyph: "\u{f01e7}", label: "mapStyleGlobe" },
+    { key: "globeStyle", value: "map", layer: "", glyph: "\u{f034d}", label: "mapStyleFlat" },
+    { key: "globeNight", layer: "", glyph: "\u{f0594}", label: "chipNight", divider: true },
+    { key: "globeMoon", layer: "", glyph: "\u{f0f65}", label: "moon" },
+    { key: "globeMarkers", layer: "", glyph: "\u{f034e}", label: "chipPlaces" },
+    { key: "globeTimeline", layer: "", glyph: "\u{f0954}", label: "globeTimeline" }
+  ].concat(GlobeFields.CHIPS.map(function(chip, index) {
+    var copy = Object.assign({}, chip)
+    if (index === 0) copy.divider = true
+    return copy
+  }))
   function chipOn(chip) {
+    if (chip.value !== undefined) return String(panel.displaySetting(chip.key, "globe")) === chip.value
     return panel.displaySetting(chip.key, chip.key === "globeTemperature" || chip.key === "globeStorms") === true
   }
   // A tick's number: the wind in the chosen wind unit, the rest as given;
@@ -64,7 +79,7 @@ Item {
       spacing: Style.space(4)
 
       Repeater {
-        model: GlobeFields.CHIPS
+        model: legend.allChips
 
         Row {
           id: chipSlot
@@ -131,7 +146,8 @@ Item {
               onClicked: function(mouse) {
                 var layer = chipSlot.modelData.layer
                 var solo = mouse.button === Qt.RightButton || (mouse.modifiers & Qt.ShiftModifier)
-                if (solo && layer !== "") legend.panel.soloGlobeLayer(layer)
+                if (chipSlot.modelData.value !== undefined) legend.panel.setViewDisplaySetting(chipSlot.modelData.key, chipSlot.modelData.value)
+                else if (solo && layer !== "") legend.panel.soloGlobeLayer(layer)
                 else legend.panel.setViewDisplaySetting(chipSlot.modelData.key, !chip.on)
               }
             }

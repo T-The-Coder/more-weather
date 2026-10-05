@@ -172,7 +172,7 @@ Panel {
   }
 
   // Settings pages, in tab order; ← / → step through them.
-  readonly property var settingsPages: ["general", "display", "shortcuts", "sources"]
+  readonly property var settingsPages: ["general", "display", "notifications", "shortcuts", "sources"]
   property string settingsPage: "general"
 
   function stepSettingsPage(delta) {
@@ -906,15 +906,16 @@ Panel {
   readonly property string menubarUvText: menubarShowUv ? "UV " + menubarUvValueText : ""
   readonly property bool menubarShowPrecipitation: menubarShowCurrent && menubarEntryShown("currentPrecipitation")
   readonly property bool menubarShowWarnings: menubarShowCurrent && menubarEntryShown("currentWarnings")
-  readonly property bool notifySevereWarnings: menubarDisplaySetting("notifySevereWarnings", true)
-  readonly property bool notifyRainSoon: menubarDisplaySetting("notifyRainSoon", true)
+  // Notifications are general options (Settings → Notifications).
+  readonly property bool notifySevereWarnings: generalSetting("notifySevereWarnings", true) !== false
+  readonly property bool notifyRainSoon: generalSetting("notifyRainSoon", true) !== false
   // Rain notification: from which strength (the rain legend's levels) and how
   // far around the place. Rain moves at about 50 km/h, so the radius becomes
   // the lead time looked ahead in the nowcast: 25 km about 30 minutes.
-  readonly property string rainAlertThreshold: String(menubarDisplaySetting("rainAlertThreshold", "any"))
+  readonly property string rainAlertThreshold: String(generalSetting("rainAlertThreshold", "any"))
   readonly property real rainAlertThresholdRate: rainAlertThreshold === "heavy" ? 4.01
     : (rainAlertThreshold === "moderate" ? 0.51 : 0.1)
-  readonly property int rainAlertRadiusKm: Number(menubarDisplaySetting("rainAlertRadius", "25")) || 25
+  readonly property int rainAlertRadiusKm: Number(generalSetting("rainAlertRadius", "25")) || 25
   readonly property int rainAlertLeadMinutes: Math.round(rainAlertRadiusKm / 50 * 60)
   // Rain the radar measures at that strength now is nothing to announce,
   // whatever the nowcast's first slot says.
@@ -2034,7 +2035,8 @@ Panel {
   // fallback only matters for keys that have no default at all.
   // Unit system and language apply to the menu bar, widget and app alike.
   property var generalOptions: ({ unitSystem: "auto", language: "auto", windUnit: "auto", refreshMinutes: 0,
-    radarMinutes: 0, colorAccents: true, windLevel: "10m" })
+    radarMinutes: 0, colorAccents: true, windLevel: "10m", motionDelay: "10", motionSpeed: "4", motionFps: "15",
+    notifySevereWarnings: true, notifyRainSoon: true, rainAlertThreshold: "any", rainAlertRadius: "25" })
   function generalSetting(key, fallback) {
     var value = generalOptions ? generalOptions[key] : undefined
     return value === undefined ? fallback : value
@@ -3274,6 +3276,8 @@ Panel {
     }
     if (event.key === Qt.Key_Escape) {
       if (editingLocation) cancelEditingLocation()
+      // A search in the settings is cleared first.
+      else if (settingsOpen && settingsLoader.item && settingsLoader.item.searching) settingsLoader.item.searchQuery = ""
       else if (settingsOpen) {
         settingsOpen = false
         root.defer(function() { keyCatcher.forceActiveFocus() })
@@ -3756,6 +3760,12 @@ Panel {
 
   // The settings' keyboard cursor (for the screenshot run's checks).
   readonly property string settingsFocusId: settingsLoader.item ? settingsLoader.item.focusId : ""
+  // The settings' search: how many rows it found, and a query set from
+  // outside (the UI harness).
+  readonly property int settingsSearchCount: settingsLoader.item ? settingsLoader.item.searchResults.length : 0
+  function setSettingsSearch(query) {
+    if (settingsLoader.item) settingsLoader.item.searchQuery = query
+  }
 
   // The whole saved list at once (the import of More Time's cities).
   function replaceSavedLocations(list) {

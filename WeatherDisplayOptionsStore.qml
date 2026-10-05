@@ -27,7 +27,52 @@ Item {
     var parsed = ({})
     try { parsed = JSON.parse(String(raw || "{}")) || ({}) }
     catch (e) { parsed = ({}) }
+    // Moved here from the display profiles (3.2): the motion from the app's
+    // Globe card, the notifications from the menu bar's; taken over once.
+    pendingMotion = parsed.motionDelay === undefined
+    pendingNotifications = parsed.notifyRainSoon === undefined
     panel.generalOptions = sanitizedGeneral(parsed)
+    migrateGeneral()
+  }
+  property bool pendingMotion: false
+  property bool pendingNotifications: false
+  function migrateGeneral() {
+    var next = Object.assign({}, panel.generalOptions)
+    var changed = false
+    if (pendingMotion && panel.appDisplayOptionsLoaded) {
+      var app = panel.appDisplayOptions || {}
+      if (app.globeRotateDelay !== undefined) next.motionDelay = app.globeRotateDelay
+      if (app.globeRotateSpeed !== undefined) next.motionSpeed = app.globeRotateSpeed
+      if (app.globeRotateFps !== undefined) next.motionFps = app.globeRotateFps
+      pendingMotion = false
+      changed = true
+    }
+    if (pendingNotifications && panel.menubarDisplayOptionsLoaded) {
+      var bar = panel.menubarDisplayOptions || {}
+      ;["notifySevereWarnings", "notifyRainSoon", "rainAlertThreshold", "rainAlertRadius"].forEach(function(key) {
+        if (bar[key] !== undefined) next[key] = bar[key]
+      })
+      pendingNotifications = false
+      changed = true
+    }
+    if (!changed) return
+    panel.generalOptions = sanitizedGeneral(next)
+    generalOptionsFile.setText(JSON.stringify(panel.generalOptions) + "\n")
+  }
+
+  // The general options' choices (the rest are switches, or normalised
+  // below).
+  readonly property var generalChoices: ({
+    motionDelay: { values: ["5", "10", "30"], fallback: "10" },
+    motionSpeed: { values: ["1", "2", "4", "8"], fallback: "4" },
+    motionFps: { values: ["8", "15", "24", "30"], fallback: "15" },
+    rainAlertThreshold: { values: ["any", "moderate", "heavy"], fallback: "any" },
+    rainAlertRadius: { values: ["10", "25", "50", "100"], fallback: "25" }
+  })
+  function generalChoice(key, value) {
+    var spec = generalChoices[key]
+    var text = String(value === undefined || value === null ? "" : value)
+    return spec.values.indexOf(text) >= 0 ? text : spec.fallback
   }
 
   function sanitizedGeneral(raw) {
@@ -39,7 +84,14 @@ Item {
       refreshMinutes: normalizedRefreshMinutes(source.refreshMinutes),
       radarMinutes: normalizedRadarMinutes(source.radarMinutes),
       colorAccents: source.colorAccents !== false,
-      windLevel: normalizedWindLevel(source.windLevel)
+      windLevel: normalizedWindLevel(source.windLevel),
+      motionDelay: generalChoice("motionDelay", source.motionDelay),
+      motionSpeed: generalChoice("motionSpeed", source.motionSpeed),
+      motionFps: generalChoice("motionFps", source.motionFps),
+      notifySevereWarnings: source.notifySevereWarnings !== false,
+      notifyRainSoon: source.notifyRainSoon !== false,
+      rainAlertThreshold: generalChoice("rainAlertThreshold", source.rainAlertThreshold),
+      rainAlertRadius: generalChoice("rainAlertRadius", source.rainAlertRadius)
     }
   }
 
@@ -86,15 +138,9 @@ Item {
   }
 
   function setGeneralSetting(key, value) {
-    var next = {
-      unitSystem: normalizedUnitSystem(key === "unitSystem" ? value : panel.generalOptions.unitSystem),
-      language: normalizedLanguage(key === "language" ? value : panel.generalOptions.language),
-      windUnit: normalizedWindUnit(key === "windUnit" ? value : panel.generalOptions.windUnit),
-      refreshMinutes: normalizedRefreshMinutes(key === "refreshMinutes" ? value : panel.generalOptions.refreshMinutes),
-      radarMinutes: normalizedRadarMinutes(key === "radarMinutes" ? value : panel.generalOptions.radarMinutes),
-      colorAccents: (key === "colorAccents" ? value : panel.generalOptions.colorAccents) !== false,
-      windLevel: normalizedWindLevel(key === "windLevel" ? value : panel.generalOptions.windLevel)
-    }
+    var source = Object.assign({}, panel.generalOptions)
+    source[key] = value
+    var next = sanitizedGeneral(source)
     panel.generalOptions = next
     generalOptionsFile.setText(JSON.stringify(next) + "\n")
   }
@@ -276,9 +322,28 @@ Item {
     var activeSurface = panel.standaloneMode ? "app" : "widget"
     if (firstLoad && panel.opened && surface === activeSurface)
       panel.activeTab = next.defaultTab
+    migrateGeneral()
   }
 
   // Resets the surface picked in settings to its factory defaults.
+  // The widget's display copied to the app or the other way round (the
+  // view picked in settings is the source).
+  function copySettingsDisplayToOther() {
+    var surface = panel.settingsTargetSurface
+    if (surface !== "app" && surface !== "widget") return
+    var source = surface === "app" ? panel.appDisplayOptions : panel.widgetDisplayOptions
+    var target = surface === "app" ? "widget" : "app"
+    var next = sanitizedDisplayOptions(JSON.parse(JSON.stringify(source || {})), target)
+    var text = JSON.stringify(next) + "\n"
+    if (target === "app") {
+      panel.appDisplayOptions = next
+      appDisplayOptionsFile.setText(text)
+    } else {
+      panel.widgetDisplayOptions = next
+      widgetDisplayOptionsFile.setText(text)
+    }
+  }
+
   function restoreSettingsDisplayDefaults() {
     var surface = panel.settingsTargetSurface
     var next = panel.defaultOptionsFor(surface)

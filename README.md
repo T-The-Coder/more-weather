@@ -93,15 +93,17 @@ runs as a standalone app window.
   it, Ctrl + wheel, a double click, `+` `−` or its buttons zoom in to about 400 km
   across, where the coast, lakes, borders and towns come from the radar map's data; a
   click on a place shows that place, and on the whole disc it can turn by itself after a
-  while without a touch (Settings → Display → Globe: delay, speed and frames per second;
-  it moves only while the popup or the app's window is in view). **Map style** shows a
+  while without a touch (Settings → General → Motion: delay, speed and frames per second,
+  for every view that turns by itself; it moves only while the popup or the app's window
+  is in view). **Shape** (globe or flat map) shows a
   flat Equal Earth map instead, with the same layers, zoom, timeline and places (it pans
   rather than turns); the **Moon** can be drawn lit as from space or as the shown place
   sees its phase. Colour layers,
   each a switch and freely combined, show the temperature (default), the sea's
   temperature, wind, cloud and precipitation from Open-Meteo's model, coarse for the
   whole earth and finer close up, ending crisply at the globe's rim. A row of chips under
-  the globe switches every layer (Shift + click or a right click shows one colour layer
+  the globe switches the view (globe or flat map, night, moon, places, timeline) and every
+  layer (Shift + click or a right click shows one colour layer
   alone; letters `t` `e` `c` `p` `d` `i` `s` `u`; `v` steps through the layers alone; the
   temperatures in the same colours as the forecast's text, extended below −10 and above
   35 °C), with
@@ -119,13 +121,13 @@ runs as a standalone app window.
   can switch it on.
 - **Locations:** Search for places (Open-Meteo's geocoder while typing, Nominatim on
   Enter when it finds nothing), keep a list of favorites or detect your location automatically. Settings →
-  General → Places imports the cities of [More Time](https://github.com/T-The-Coder/more-time)'s
+  General → Back up and restore imports the cities of [More Time](https://github.com/T-The-Coder/more-time)'s
   world clock as favorites.
 - **My places:** All favorites at a glance, one line each with symbol, temperature,
   feels-like, wind, humidity and moon. A click, Alt+1–9 or Alt+←/→ switches to a
   place; for global keys see [IPC](#ipc).
 - **Notifications:** Desktop notifications for severe and extreme warnings and for
-  rain on its way. For rain you choose the strength (any, moderate or more, heavy only)
+  rain on its way (Settings → Notifications, the same for bar and app). For rain you choose the strength (any, moderate or more, heavy only)
   and a radius of 10 to 100 km: rain moves at about 50 km/h, so the radius sets how far
   ahead the nowcast is read (25 km ≈ 30 minutes, 100 km ≈ 2 hours). Rain that gets
   stronger is announced again.
@@ -139,8 +141,12 @@ runs as a standalone app window.
   text colour through cyan, dark blue and magenta to violet, UV and strong wind by level,
   a weekly temperature bar and the air quality dot, and in the bar on request; one
   switch turns them off.
-- **Separate display settings** for the bar, the popup and the app, and the widget's
-  position in the bar (left, center or right).
+- **Separate display settings** for the bar, the popup and the app (the popup's can be
+  copied to the app and back), and the widget's position in the bar (left, center or
+  right).
+- **Settings in five pages** (General, Display, Notifications, Shortcuts, Sources) with
+  a search over all of them (`/`): the rows found work right there, grouped by page,
+  card and section.
 - **Export and import** of all settings and your places as one JSON file (Settings →
   General); an import first saves the current settings, so it can be undone.
 - **Sections your way:** Current weather, my places, air quality, hourly, daily, rain,
@@ -219,6 +225,7 @@ too, and the settings name their keys where they apply.
 | `Esc` | Close the search |
 | **Settings** | |
 | `Tab` / `⇧ Tab` | Next / previous settings page |
+| `/` | Search the settings (`Esc` clears the search) |
 | `1` `2` `3` | Menu bar / widget / app settings (Display) |
 | `↑ ↓` / `j k` | Previous / next setting |
 | `← →` / `h l` | Change the value or pick the switch column |

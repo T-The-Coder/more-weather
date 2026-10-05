@@ -152,6 +152,7 @@ ShellRoot {
   }
   function general(key, value) { panel.displayOptionsStore.setGeneralSetting(key, value) }
   function display(key, value) { panel.displayOptionsStore.setSettingsDisplaySetting(key, value) }
+  function settingsSearchType(query) { panel.setSettingsSearch(query) }
   function press(key, text, modifiers) {
     panel.handlePanelKey({ key: key, text: text || "", modifiers: modifiers || Qt.NoModifier, accepted: false })
   }
@@ -504,7 +505,10 @@ ShellRoot {
     function() { panel.settingsPage = "display"; panel.settingsTargetSurface = "menubar"; press(Qt.Key_Home) },
     function() { shot("13-settings-menubar") },
     // Down the keyboard list to "Bold while hovered".
-    function() { for (var i = 0; i < 23; i++) press(Qt.Key_Down) },
+    function() {
+      for (var i = 0; i < 60 && panel.settingsFocusId !== "switch:boldOnHover"; i++) press(Qt.Key_Down)
+      check("bold-row-reached", panel.settingsFocusId === "switch:boldOnHover")
+    },
     function() { shot("14-settings-menubar-bold") },
     function() { press(Qt.Key_Down); check("accents-dropdown-reached", panel.settingsFocusId === "barAccents") },
     function() { shot("14b-settings-menubar-accents") },
@@ -512,6 +516,50 @@ ShellRoot {
     function() { shot("15-settings-widget") },
     function() { panel.settingsTargetSurface = "app" },
     function() { shot("16-settings-app") },
+    // The globe's card: its sky, layers and time sections.
+    function() {
+      for (var i = 0; i < 200 && panel.settingsFocusId !== "globeStyle"; i++) press(Qt.Key_Down)
+      check("globe-shape-reached", panel.settingsFocusId === "globeStyle")
+    },
+    function() { shot("16b-settings-app-globe") },
+    // Copy to the widget: two presses, then the widget has the app's.
+    function() {
+      display("globeIsobars", true)
+      panel.displayOptionsStore.copySettingsDisplayToOther()
+      check("copy-to-widget", panel.widgetDisplayOptions.globeIsobars === true)
+      display("globeIsobars", false)
+      press(Qt.Key_Home)
+    },
+    // The new page: notifications, as general options.
+    function() { panel.settingsPage = "notifications" },
+    function() { shot("16c-settings-notifications") },
+    function() {
+      for (var i = 0; i < 6 && panel.settingsFocusId !== "notifySevereWarnings"; i++) press(Qt.Key_Up)
+      press(Qt.Key_Space)
+      check("notify-severe-toggled", panel.notifySevereWarnings === false && panel.generalSetting("notifySevereWarnings", true) === false)
+      press(Qt.Key_Space)
+      check("tab-order", (function() {
+        var pages = panel.settingsPages
+        return pages.indexOf("notifications") === 2 && pages.length === 5
+      })())
+    },
+    // Search across the pages, with / and Esc.
+    function() {
+      press(Qt.Key_Slash, "/")
+      settingsSearchType("temp")
+    },
+    function() { shot("16d-settings-search") },
+    function() {
+      check("search-found", panel.settingsSearchCount > 0)
+      press(Qt.Key_Down)
+      check("search-keyboard-row", panel.settingsFocusId !== "")
+      settingsSearchType("zzzz")
+    },
+    function() { shot("16e-settings-search-none") },
+    function() {
+      press(Qt.Key_Escape)
+      check("search-esc-clears", panel.settingsOpen && panel.settingsSearchCount === 0)
+    },
     function() { panel.settingsPage = "shortcuts" },
     function() { shot("17-settings-shortcuts") },
     function() { press(Qt.Key_End) },

@@ -74,6 +74,7 @@ Column {
       title: "shortcutsGroupSettings",
       rows: [
         { keys: ["Tab", "⇧ Tab"], action: "shortcutSettingsPages" },
+        { keys: ["/"], action: "shortcutSettingsSearch" },
         { keys: ["1", "2", "3"], action: "shortcutSettingsSurface" },
         { keys: ["↑ ↓", "j k"], action: "shortcutSettingsMove" },
         { keys: ["← →", "h l"], action: "shortcutSettingsChange" },

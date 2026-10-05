@@ -4,6 +4,23 @@ All notable changes to More Weather are documented here.
 
 ## Unreleased
 
+- **Settings, rearranged.** A search field on top (`/`; `Esc` clears it,
+  then leaves) finds a setting on any page, in the interface language or
+  in English, accents aside; the rows found work in place, grouped as
+  "Page › Card › Section", Display rows for the view picked.
+  **Notifications** is a page of its own (severe weather, rain with its
+  strength and radius), now one setting for bar and app (taken over once
+  from the menu bar's). **Motion** in General (starts after, one turn in,
+  frames per second) applies wherever a view turns by itself (taken over
+  once from the app's globe). General reads Language and format, Updates,
+  Look, Motion, App, Back up and restore. The Globe card has Sky, Layers
+  and Time sections; the globe-or-map choice is called **Shape**. Display
+  can **copy** the widget's settings to the app and back (two presses).
+- The chips under the globe also switch the view: globe or flat map,
+  night, moon, places and the timeline.
+- "Mouse" heads the mouse shortcuts; a few settings texts read plainer
+  ("Replace settings?", "Saved to …").
+
 - Turning the globe on the GPU got cheaper still: the coasts and the grid
   are a 2048 × 1024 picture of their own on a second surface, and up to z1
   the isobars with their highs and lows are painted into the colour

@@ -3,6 +3,7 @@ import qs.Commons
 import qs.Ui
 import "I18n.js" as I18n
 import "Model.js" as Model
+import "SettingsSearch.js" as SettingsSearch
 
 // Per-surface display settings (menu bar, app, widget). Created on demand
 // while settings are open.
@@ -87,18 +88,8 @@ Rectangle {
       hint: panel.i18n("hoverTooltipHint") + " " + panel.i18n("openWidgetOnHoverHint"),
       hasHoverUnit: true,
       hasDefaultTab: false
-    },
-    {
-      title: panel.upperLabel(panel.i18n("notifications")),
-      masterKey: "",
-      options: [
-        { key: "notifySevereWarnings", title: panel.i18n("notifySevereWarnings") },
-        { key: "notifyRainSoon", title: panel.i18n("notifyRainSoon") }
-      ],
-      hint: panel.i18n("notifySevereWarningsHint") + " " + panel.i18n("notifyRainSoonHint"),
-      hasRainAlert: true,
-      hasDefaultTab: false
     }
+
   ] : [
     // Same order as the sections in the view. The current weather can
     // move but not be hidden or become a tab (it holds place, refresh
@@ -222,26 +213,28 @@ Rectangle {
       title: panel.upperLabel(panel.i18n("globe")),
       masterKey: "showGlobe",
       sectionKey: "globe",
+      // In three sections (muted sub-headings): the sky, the layers, time.
       options: [
+        { key: "globeStyle", choiceOnly: true, section: "sectionSky" },
         { key: "globeNight", title: panel.i18n("optionNight") },
-        { key: "globeMoon", title: panel.i18n("moon"), choiceBelow: "globeMoonStyle" },
+        { key: "globeMoon", title: panel.i18n("moon"), choicesBelow: ["globeMoonStyle"] },
         { key: "globeMarkers", title: panel.i18n("globeMarkers") },
         { key: "globeAutoRotate", title: panel.i18n("optionGlobeAutoRotate") },
         // The colour layers in the order they are drawn, then the overlays.
-        { key: "globeTemperature", title: panel.i18n("globeWashTemperature") },
+        { key: "globeTemperature", title: panel.i18n("globeWashTemperature"), section: "sectionLayers" },
         { key: "globeSst", title: panel.i18n("globeWashSst") },
-        { key: "globeWind", title: panel.i18n("globeWashWind"), choiceBelow: "globeWindMode" },
         { key: "globeCloud", title: panel.i18n("globeWashCloud") },
         { key: "globePrecipitation", title: panel.i18n("globeWashPrecipitation") },
+        { key: "globeWind", title: panel.i18n("globeWashWind"), choicesBelow: ["globeWindMode", "globeWindLevel"] },
         { key: "globeIsobars", title: panel.i18n("globeIsobars") },
         { key: "globeStorms", title: panel.i18n("globeStorms") },
         { key: "globeNumbers", title: panel.i18n("globeNumbers") },
-        { key: "globeTimeline", title: panel.i18n("globeTimeline") }
+        { key: "globeTimeline", title: panel.i18n("globeTimeline"), section: "sectionTime" }
       ],
-      hint: panel.i18n("globeHint") + " " + panel.i18n("globeZoomHint") + " " + panel.i18n("optionNightHint") + " "
-        + panel.i18n("optionGlobeAutoRotateHint") + " " + panel.i18n("globeMapHint") + " " + panel.i18n("globeChipsHint") + " " + panel.i18n("globeCombineHint") + " " + panel.i18n("globeLayersHint") + " " + panel.i18n("globeTimelineHint"),
-      hasGlobeRotate: true,
-      hasGlobeWash: true,
+      hint: panel.i18n("chipsHint") + " " + panel.i18n("globeSoloHint") + " " + panel.i18n("globeHint") + " " + panel.i18n("globeZoomHint") + " "
+        + panel.i18n("optionNightHint") + " " + panel.i18n("optionGlobeAutoRotateHint") + " " + panel.i18n("motionHint") + " "
+        + panel.i18n("globeMapHint") + " " + panel.i18n("globeCombineHint") + " " + panel.i18n("globeLayersHint") + " "
+        + panel.i18n("globeTimelineHint") + " " + panel.i18n("globeWashHint"),
       hasDefaultTab: false
     },
     // The tab strip: moved like a section (its place in the window), with
@@ -331,139 +324,68 @@ Rectangle {
   readonly property var globeRotateFpsOptions: ["8", "15", "24", "30"].map(function(n) {
     return { value: n, label: n }
   })
-  property var globeRotateDropdowns: ({})
-  // The globe's colour wash.
+  // The wind's heights (the Globe card's wind row).
   readonly property var globeWindLevelOptions: Model.WIND_LEVELS.map(function(level) {
     return { value: level.id, label: panel.windLevelText(level) }
   })
-  property var globeWindLevelDropdown: null
 
+  // ---- General choices as rows: a label and a dropdown storing a general
+  //      option (Motion on the General page; the rain notification's
+  //      threshold and radius on the Notifications page). Each row's
+  //      dropdown is kept by its id for the keyboard (dropdownSpec).
+  property var motionDropdowns: ({})
+  readonly property var generalChoiceSpecs: ({
+    motionDelay: { title: "motionDelay", fallback: "10", options: globeRotateDelayOptions },
+    motionSpeed: { title: "motionSpeed", fallback: "4", options: globeRotateSpeedOptions },
+    motionFps: { title: "motionFps", fallback: "15", options: globeRotateFpsOptions },
+    rainThreshold: { key: "rainAlertThreshold", title: "rainAlertThreshold", fallback: "any", options: rainThresholdOptions },
+    rainRadius: { key: "rainAlertRadius", title: "rainAlertRadius", fallback: "25", options: rainRadiusOptions }
+  })
   Component {
-    id: globeWashRow
+    id: generalChoiceRow
 
-    Column {
-      // Globe or flat map.
-      Loader {
-        width: parent.width
-        sourceComponent: choiceRow
-        onLoaded: item.choiceId = "globeStyle"
-      }
-
-      // The wind's height, for the wind wash and the streaks.
-      Item {
-        width: parent.width
-        height: Style.space(40)
-
-        Text {
-          textFormat: Text.PlainText
-          anchors.left: parent.left
-          anchors.leftMargin: Style.space(12)
-          anchors.right: heightDropdown.left
-          anchors.rightMargin: Style.space(8)
-          anchors.verticalCenter: parent.verticalCenter
-          text: panel.i18n("globeWindHeight")
-          color: panel.foreground
-          font.family: panel.fontFamily
-          font.pixelSize: Style.font.bodySmall
-          elide: Text.ElideRight
-        }
-
-        Dropdown {
-          id: heightDropdown
-          anchors.right: parent.right
-          anchors.verticalCenter: parent.verticalCenter
-          width: Style.space(180)
-          showLabel: false
-          fontFamily: panel.fontFamily
-          hasCursor: settingsView.focusId === "globeWindLevel"
-          onHasCursorChanged: if (hasCursor) settingsView.ensureVisible(this)
-          onPopupOpenChanged: if (!popupOpen) panel.restoreKeyFocus()
-          value: String(panel.settingsDisplaySetting("globeWindLevel", "10m"))
-          options: settingsView.globeWindLevelOptions
-          onChanged: function(value) { panel.displayOptionsStore.setSettingsDisplaySetting("globeWindLevel", value) }
-          Component.onCompleted: settingsView.globeWindLevelDropdown = heightDropdown
-        }
-      }
+    Item {
+      id: generalRow
+      property string choiceId: ""
+      readonly property var choiceSpec: settingsView.generalChoiceSpecs[choiceId] || ({ title: "", fallback: "", options: [] })
+      readonly property string settingKey: choiceSpec.key || choiceId
+      width: parent ? parent.width : 0
+      height: Style.space(40)
 
       Text {
         textFormat: Text.PlainText
-        x: Style.space(12)
-        width: parent.width - Style.space(24)
-        bottomPadding: Style.space(6)
-        text: panel.i18n("globeWashHint")
-        color: panel.mutedText
+        anchors.left: parent.left
+        anchors.right: generalDropdown.left
+        anchors.rightMargin: Style.space(8)
+        anchors.verticalCenter: parent.verticalCenter
+        text: generalRow.choiceSpec.title ? panel.i18n(generalRow.choiceSpec.title) : ""
+        color: panel.foreground
         font.family: panel.fontFamily
-        font.pixelSize: Style.font.caption
-        wrapMode: Text.WordWrap
-      }
-    }
-  }
-
-  Component {
-    id: globeRotateRows
-
-    Column {
-      Repeater {
-        model: [
-          { id: "globeRotateDelay", key: "delay", title: "optionGlobeRotateDelay", fallback: "10" },
-          { id: "globeRotateSpeed", key: "speed", title: "optionGlobeRotateSpeed", fallback: "4" },
-          { id: "globeRotateFps", key: "fps", title: "optionRotateFps", fallback: "15" }
-        ]
-
-        Item {
-          id: rotateRow
-          required property var modelData
-          width: parent.width
-          height: Style.space(40)
-
-          Text {
-            textFormat: Text.PlainText
-            anchors.left: parent.left
-            anchors.leftMargin: Style.space(12)
-            anchors.right: rotateDropdown.left
-            anchors.rightMargin: Style.space(8)
-            anchors.verticalCenter: parent.verticalCenter
-            text: panel.i18n(rotateRow.modelData.title)
-            color: panel.foreground
-            font.family: panel.fontFamily
-            font.pixelSize: Style.font.bodySmall
-            elide: Text.ElideRight
-          }
-
-          Dropdown {
-            id: rotateDropdown
-            anchors.right: parent.right
-            anchors.verticalCenter: parent.verticalCenter
-            width: Style.space(120)
-            showLabel: false
-            fontFamily: panel.fontFamily
-            hasCursor: settingsView.focusId === rotateRow.modelData.id
-            onHasCursorChanged: if (hasCursor) settingsView.ensureVisible(this)
-            onPopupOpenChanged: if (!popupOpen) panel.restoreKeyFocus()
-            value: String(panel.settingsDisplaySetting(rotateRow.modelData.id, rotateRow.modelData.fallback))
-            options: rotateRow.modelData.key === "delay" ? settingsView.globeRotateDelayOptions
-              : (rotateRow.modelData.key === "fps" ? settingsView.globeRotateFpsOptions : settingsView.globeRotateSpeedOptions)
-            onChanged: function(value) { panel.displayOptionsStore.setSettingsDisplaySetting(rotateRow.modelData.id, value) }
-            Component.onCompleted: {
-              var items = Object.assign({}, settingsView.globeRotateDropdowns)
-              items[rotateRow.modelData.key] = rotateDropdown
-              settingsView.globeRotateDropdowns = items
-            }
-          }
-        }
+        font.pixelSize: Style.font.bodySmall
+        elide: Text.ElideRight
       }
 
-      Text {
-        textFormat: Text.PlainText
-        x: Style.space(12)
-        width: parent.width - Style.space(24)
-        bottomPadding: Style.space(6)
-        text: panel.i18n("optionRotateFpsHint")
-        color: panel.mutedText
-        font.family: panel.fontFamily
-        font.pixelSize: Style.font.caption
-        wrapMode: Text.WordWrap
+      Dropdown {
+        id: generalDropdown
+        anchors.right: parent.right
+        anchors.verticalCenter: parent.verticalCenter
+        width: Style.space(200)
+        showLabel: false
+        fontFamily: panel.fontFamily
+        hasCursor: settingsView.focusId === generalRow.choiceId
+        onHasCursorChanged: if (hasCursor) settingsView.ensureVisible(this)
+        onPopupOpenChanged: if (!popupOpen) panel.restoreKeyFocus()
+        value: String(panel.generalSetting(generalRow.settingKey, generalRow.choiceSpec.fallback))
+        options: generalRow.choiceSpec.options
+        onChanged: function(value) { panel.displayOptionsStore.setGeneralSetting(generalRow.settingKey, value) }
       }
+      function register() {
+        var items = Object.assign({}, settingsView.motionDropdowns)
+        items[choiceId] = generalDropdown
+        settingsView.motionDropdowns = items
+      }
+      onChoiceIdChanged: register()
+      onVisibleChanged: if (visible && choiceId !== "") register()
     }
   }
   // Choices below a switch or on their own (globeMoonStyle, globeStyle):
@@ -474,6 +396,7 @@ Rectangle {
     globeWindMode: { title: "globeWindMode", fallback: "lines", options: [
       { value: "lines", label: panel.i18n("globeWindLines") }, { value: "colour", label: panel.i18n("globeWindColour") },
       { value: "both", label: panel.i18n("globeWindBoth") }] },
+    globeWindLevel: { title: "globeWindHeight", fallback: "10m", options: globeWindLevelOptions },
     globeStyle: { title: "optionMapStyle", fallback: "globe", options: [
       { value: "globe", label: panel.i18n("mapStyleGlobe") }, { value: "map", label: panel.i18n("mapStyleFlat") }] }
   })
@@ -516,11 +439,15 @@ Rectangle {
         options: choiceItem.choiceSpec.options
         onChanged: function(value) { panel.displayOptionsStore.setSettingsDisplaySetting(choiceItem.choiceId, value) }
       }
-      onChoiceIdChanged: {
+      // Kept for the keyboard; a row shown again (its page after a
+      // search, which drew its own) takes its place back.
+      function register() {
         var items = Object.assign({}, settingsView.choiceDropdowns)
         items[choiceId] = choiceDropdown
         settingsView.choiceDropdowns = items
       }
+      onChoiceIdChanged: register()
+      onVisibleChanged: if (visible && choiceId !== "") register()
     }
   }
 
@@ -611,21 +538,209 @@ Rectangle {
     return enabled && (!card.dependsOn || panel.settingsDisplaySetting(card.dependsOn, true))
   }
 
+  // ---- Search across every page (SettingsSearch.matches): an index built
+  //      from the same tables that draw the cards and pages; each entry
+  //      found by its text in the interface language and in English.
+  property string searchQuery: ""
+  readonly property bool searching: searchQuery.trim() !== ""
+  readonly property var reverseCatalog: {
+    var catalog = I18n.catalog[panel.interfaceLanguage] || {}
+    var map = {}
+    // By lower case, so the cards' upper-case titles are found too.
+    for (var key in catalog) if (typeof catalog[key] === "string") map[catalog[key].toLowerCase()] = key
+    return map
+  }
+  function englishOf(text) {
+    var key = reverseCatalog[String(text).toLowerCase()]
+    return key ? I18n.text("en", key) : ""
+  }
+  function entry(page, card, section, title, kind, extra) {
+    var result = { page: page, card: card, section: section, title: title, kind: kind,
+      texts: [title, englishOf(title), card, englishOf(card), section, englishOf(section)] }
+    for (var k in extra) result[k] = extra[k]
+    return result
+  }
+  readonly property var searchEntries: {
+    var list = []
+    var t = function(key) { return panel.i18n(key) }
+    var general = t("settingsPageGeneral")
+    var g = function(sectionKey, titleKey, kind, extra) {
+      list.push(entry(general, t(sectionKey), "", t(titleKey), kind, extra))
+    }
+    g("generalSectionLanguage", "language", "jump", { focusId: "language", target: "general" })
+    g("generalSectionLanguage", "unitSystem", "jump", { focusId: "unit", target: "general" })
+    g("generalSectionLanguage", "windUnit", "jump", { focusId: "windUnit", target: "general" })
+    g("generalSectionUpdates", "refreshForecast", "jump", { focusId: "refresh", target: "general" })
+    g("generalSectionUpdates", "refreshRadar", "jump", { focusId: "radarRefresh", target: "general" })
+    g("generalSectionLook", "colorAccents", "generalSwitch", { key: "colorAccents" })
+    g("motionSection", "motionDelay", "generalChoice", { choiceId: "motionDelay" })
+    g("motionSection", "motionSpeed", "generalChoice", { choiceId: "motionSpeed" })
+    g("motionSection", "motionFps", "generalChoice", { choiceId: "motionFps" })
+    g("generalSectionApp", "barPosition", "jump", { focusId: "barPosition", target: "general" })
+    g("generalSectionApp", "appLauncherEntry", "jump", { focusId: "launcher", target: "general" })
+    g("generalSectionBackup", "settingsExport", "jump", { focusId: "exportSettings", target: "general" })
+    g("generalSectionBackup", "settingsImport", "jump", { focusId: "importSettings", target: "general" })
+    g("generalSectionBackup", "importCitiesFromTime", "jump", { focusId: "importCities", target: "general" })
+    var notificationsPage = t("settingsPageNotifications")
+    list.push(entry(notificationsPage, t("notifications"), "", t("notifySevereWarnings"), "generalSwitch", { key: "notifySevereWarnings" }))
+    list.push(entry(notificationsPage, t("notifications"), "", t("notifyRainSoon"), "generalSwitch", { key: "notifyRainSoon" }))
+    list.push(entry(notificationsPage, t("notifications"), "", t("rainAlertThreshold"), "generalChoice", { choiceId: "rainThreshold" }))
+    list.push(entry(notificationsPage, t("notifications"), "", t("rainAlertRadius"), "generalChoice", { choiceId: "rainRadius" }))
+    // Display: the cards of the view picked (menu bar, widget or app).
+    var surfaceName = t(panel.settingsTargetSurface === "menubar" ? "menubar"
+      : (panel.settingsTargetSurface === "widget" ? "widget" : "app"))
+    var display = t("settingsPageDisplay")
+    for (var c = 0; c < displayCards.length; c++) {
+      var card = displayCards[c]
+      var cardTitle = String(card.title || "")
+      var section = ""
+      if (card.masterKey !== "") list.push(entry(display, cardTitle, "", cardTitle, "displaySwitch", { key: card.masterKey, surface: surfaceName }))
+      var options = card.options || []
+      for (var o = 0; o < options.length; o++) {
+        var option = options[o]
+        if (option.section) section = t(option.section)
+        if (option.choiceOnly) {
+          var spec = choiceSpecs[option.key]
+          list.push(entry(display, cardTitle, section, spec ? t(spec.title) : option.key, "displayChoice",
+            { choiceId: option.key, surface: surfaceName }))
+          continue
+        }
+        list.push(entry(display, cardTitle, section, String(option.title || ""), "displaySwitch",
+          { key: option.key, relevant: !!option.relevant, hover: !!option.hover, surface: surfaceName }))
+        var below = option.choicesBelow || []
+        for (var b = 0; b < below.length; b++) {
+          var belowSpec = choiceSpecs[below[b]]
+          list.push(entry(display, cardTitle, section, belowSpec ? t(belowSpec.title) : below[b], "displayChoice",
+            { choiceId: below[b], surface: surfaceName }))
+        }
+      }
+    }
+    return list
+  }
+  readonly property var searchResults: searching ? SettingsSearch.matches(searchQuery, searchEntries) : []
+  // Grouped under "Page › Card › Section".
+  readonly property var searchGroups: SettingsSearch.grouped(searchResults.map(function(r) {
+    var path = [r.page, r.card, r.section].filter(function(part) { return part !== "" }).join(" › ")
+    return Object.assign({ heading: path + (r.surface ? " · " + r.surface : "") }, r)
+  }))
+  function jumpTo(row) {
+    searchQuery = ""
+    panel.settingsPage = row.target
+    focusId = row.focusId
+    panel.restoreKeyFocus()
+  }
+
+  Component {
+    id: resultDisplaySwitch
+
+    WeatherSwitchRow {
+      property var row: ({})
+      panel: settingsView.panel
+      width: parent ? parent.width : 0
+      settingKey: row.key || ""
+      title: row.title || ""
+      relevantKey: row.relevant ? row.key + "WhenRelevant" : ""
+      hoverKey: row.hover ? row.key + "OnHover" : ""
+      columnWidth: settingsView.switchColumnWidth
+      kbFocused: !!row.key && settingsView.focusId === "switch:" + row.key
+      kbColumn: settingsView.focusColumn
+      onKbFocusedChanged: if (kbFocused) settingsView.ensureVisible(this)
+    }
+  }
+  Component {
+    id: resultGeneralSwitch
+
+    WeatherSwitchRow {
+      property var row: ({})
+      panel: settingsView.panel
+      width: parent ? parent.width : 0
+      title: row.title || ""
+      indented: false
+      switchState: !!row.key && panel.generalSetting(row.key, true) !== false
+      kbFocused: !!row.key && settingsView.focusId === row.key
+      onKbFocusedChanged: if (kbFocused) settingsView.ensureVisible(this)
+      onToggled: function(value) { panel.displayOptionsStore.setGeneralSetting(row.key, value) }
+    }
+  }
+  Component {
+    id: resultJump
+
+    Rectangle {
+      id: jumpRow
+      property var row: ({})
+      width: parent ? parent.width : 0
+      height: Style.space(36)
+      radius: Style.cornerRadius
+      readonly property bool kbFocused: settingsView.focusId === "jump:" + (row.focusId || "")
+      onKbFocusedChanged: if (kbFocused) settingsView.ensureVisible(this)
+      color: jumpMouse.containsMouse || kbFocused ? Style.hoverFillFor(panel.foreground, Color.accent) : "transparent"
+
+      Text {
+        textFormat: Text.PlainText
+        anchors.left: parent.left
+        anchors.leftMargin: Style.space(12)
+        anchors.verticalCenter: parent.verticalCenter
+        text: (jumpRow.row.title || "") + "  →"
+        color: panel.foreground
+        font.family: panel.fontFamily
+        font.pixelSize: Style.font.bodySmall
+      }
+      MouseArea {
+        id: jumpMouse
+        anchors.fill: parent
+        hoverEnabled: true
+        cursorShape: Qt.PointingHandCursor
+        onClicked: settingsView.jumpTo(jumpRow.row)
+      }
+    }
+  }
+
+  // The keyboard's list while searching: the rows found, each as on its
+  // page (a switch, a choice) or a jump to it.
+  function resultFocusItem(r) {
+    if (r.kind === "displaySwitch")
+      return { id: "switch:" + r.key, type: "switch", key: r.key, relevantKey: r.relevant ? r.key + "WhenRelevant" : "",
+        hoverKey: r.hover ? r.key + "OnHover" : "", orderListKey: "", orderEntry: "" }
+    if (r.kind === "generalSwitch") return { id: r.key, type: "generalSwitch", key: r.key }
+    if (r.kind === "displayChoice" || r.kind === "generalChoice") return { id: r.choiceId, type: "dropdown" }
+    return { id: "jump:" + r.focusId, type: "jump", row: r }
+  }
+  // ↓ or Enter in the search field: to the first row found.
+  function enterResults() {
+    if (!searchResults.length) return
+    panel.restoreKeyFocus()
+    focusColumn = 0
+    focusId = resultFocusItem(searchResults[0]).id
+  }
+
   readonly property var focusItems: {
+    if (searching) return searchResults.map(resultFocusItem)
     if (panel.settingsPage === "general") {
+      // Language and format, updates, look, motion, app, back up and restore.
       var general = [
+        { id: "language", type: "dropdown" },
         { id: "unit", type: "dropdown" },
         { id: "windUnit", type: "dropdown" },
-        { id: "language", type: "dropdown" }
+        { id: "refresh", type: "dropdown" },
+        { id: "radarRefresh", type: "dropdown" },
+        { id: "colorAccents", type: "accents" },
+        { id: "motionDelay", type: "dropdown" },
+        { id: "motionSpeed", type: "dropdown" },
+        { id: "motionFps", type: "dropdown" }
       ]
       if (barPositionUsable) general.push({ id: "barPosition", type: "dropdown" })
-      general.push({ id: "colorAccents", type: "accents" }, { id: "refresh", type: "dropdown" },
-        { id: "radarRefresh", type: "dropdown" }, { id: "launcher", type: "launcher" },
+      general.push({ id: "launcher", type: "launcher" },
         { id: "transferPath", type: "path" }, { id: "exportSettings", type: "button" },
         { id: "importSettings", type: "button" })
       if (panel.cityImport.available) general.push({ id: "importCities", type: "button" })
       if (!panel.displayOptionsStore.generalIsDefault()) general.push({ id: "restoreGeneral", type: "button" })
       return general
+    }
+    if (panel.settingsPage === "notifications") {
+      var notifications = [{ id: "notifySevereWarnings", type: "generalSwitch", key: "notifySevereWarnings" },
+        { id: "notifyRainSoon", type: "generalSwitch", key: "notifyRainSoon" }]
+      if (panel.notifyRainSoon) notifications.push({ id: "rainThreshold", type: "dropdown" }, { id: "rainRadius", type: "dropdown" })
+      return notifications
     }
     if (panel.settingsPage !== "display") return []
     var items = []
@@ -644,6 +759,11 @@ Rectangle {
         var options = panel.settingsOrderedOptions(card.options)
         for (var o = 0; o < options.length; o++) {
           var option = options[o]
+          // A choice of its own in the list (the globe's shape).
+          if (option.choiceOnly) {
+            items.push({ id: option.key, type: "dropdown" })
+            continue
+          }
           items.push({
             id: "switch:" + option.key, type: "switch", key: option.key,
             relevantKey: option.relevant ? option.key + "WhenRelevant" : "",
@@ -652,18 +772,11 @@ Rectangle {
             orderEntry: panel.orderKeyForSetting(option.key)
           })
           if (option.accentsBelow) items.push({ id: "barAccents", type: "dropdown" })
-          if (option.choiceBelow && panel.settingsDisplaySetting(option.key, true) === true)
-            items.push({ id: option.choiceBelow, type: "dropdown" })
+          if (option.choicesBelow && panel.settingsDisplaySetting(option.key, true) === true)
+            for (var cb = 0; cb < option.choicesBelow.length; cb++) items.push({ id: option.choicesBelow[cb], type: "dropdown" })
         }
         if (card.hasHoverUnit) items.push({ id: "hoverUnit", type: "dropdown" })
         if (card.hasMapStyle) items.push({ id: "mapStyle", type: "dropdown" })
-        if (card.hasGlobeWash) items.push({ id: "globeStyle", type: "dropdown" }, { id: "globeWindLevel", type: "dropdown" })
-        if (card.hasGlobeRotate && panel.settingsDisplaySetting("globeAutoRotate", false)
-            && panel.settingsDisplaySetting("globeStyle", "globe") !== "map")
-          items.push({ id: "globeRotateDelay", type: "dropdown" }, { id: "globeRotateSpeed", type: "dropdown" },
-            { id: "globeRotateFps", type: "dropdown" })
-        if (card.hasRainAlert && panel.settingsDisplaySetting("notifyRainSoon", true))
-          items.push({ id: "rainThreshold", type: "dropdown" }, { id: "rainRadius", type: "dropdown" })
       }
       if (card.sectionKey && !card.fixedSection && panel.settingsDisplaySetting(card.masterKey, true))
         items.push({ id: "placement:" + card.sectionKey, type: "placement", key: card.sectionKey + "AsTab" })
@@ -671,6 +784,7 @@ Rectangle {
     }
     if (!panel.settingsOrderIsDefault) items.push({ id: "restoreOrder", type: "button" })
     if (!panel.displayOptionsStore.settingsDisplayIsDefault()) items.push({ id: "restoreDefaults", type: "button" })
+    if (!menubar) items.push({ id: "copyTo", type: "button" })
     return items
   }
   readonly property var focusItem: {
@@ -738,13 +852,12 @@ Rectangle {
     if (id === "windUnit") return spec(windUnitOptions, windUnitDropdown, general("windUnit", "auto"))
     if (id === "refresh") return spec(refreshOptions, refreshDropdown, general("refreshMinutes", 0, true))
     if (id === "radarRefresh") return spec(radarRefreshOptions, radarRefreshDropdown, general("radarMinutes", 0, true))
-    if (id === "rainThreshold") return spec(rainThresholdOptions, rainThresholdDropdown, display("rainAlertThreshold", "any"))
-    if (id === "rainRadius") return spec(rainRadiusOptions, rainRadiusDropdown, display("rainAlertRadius", "25"))
+    if (id === "rainThreshold") return spec(rainThresholdOptions, motionDropdowns.rainThreshold || null, general("rainAlertThreshold", "any"))
+    if (id === "rainRadius") return spec(rainRadiusOptions, motionDropdowns.rainRadius || null, general("rainAlertRadius", "25"))
+    if (id === "motionDelay") return spec(globeRotateDelayOptions, motionDropdowns.motionDelay || null, general("motionDelay", "10"))
+    if (id === "motionSpeed") return spec(globeRotateSpeedOptions, motionDropdowns.motionSpeed || null, general("motionSpeed", "4"))
+    if (id === "motionFps") return spec(globeRotateFpsOptions, motionDropdowns.motionFps || null, general("motionFps", "15"))
     if (id === "mapStyle") return spec(mapStyleOptions, mapStyleDropdown, display("mapStyle", "drawn"))
-    if (id === "globeWindLevel") return spec(globeWindLevelOptions, globeWindLevelDropdown, display("globeWindLevel", "10m"))
-    if (id === "globeRotateDelay") return spec(globeRotateDelayOptions, globeRotateDropdowns.delay || null, display("globeRotateDelay", "10"))
-    if (id === "globeRotateSpeed") return spec(globeRotateSpeedOptions, globeRotateDropdowns.speed || null, display("globeRotateSpeed", "4"))
-    if (id === "globeRotateFps") return spec(globeRotateFpsOptions, globeRotateDropdowns.fps || null, display("globeRotateFps", "15"))
     if (id === "barAccents") return spec(barAccentsOptions, barAccentsDropdown, display("menubarAccents", "hover"))
     if (choiceSpecs[id]) return spec(choiceSpecs[id].options, choiceDropdowns[id] || null, display(id, choiceSpecs[id].fallback))
     return spec(hoverUnitOptions, hoverUnitDropdown, display("hoverUnitSystem", ""))
@@ -785,6 +898,10 @@ Rectangle {
     if (item.type === "dropdown") openDropdown(item.id)
     else if (item.type === "accents") {
       panel.displayOptionsStore.setGeneralSetting("colorAccents", !panel.colorAccents)
+    } else if (item.type === "jump") {
+      jumpTo(item.row)
+    } else if (item.type === "generalSwitch") {
+      panel.displayOptionsStore.setGeneralSetting(item.key, !(panel.generalSetting(item.key, true) !== false))
     } else if (item.type === "launcher") {
       if (!panel.appLauncherEntry.busy) panel.appLauncherEntry.setInstalled(!panel.appLauncherEntry.installed)
     } else if (item.type === "switch") {
@@ -812,6 +929,8 @@ Rectangle {
       restoreOrderButton.press()
     } else if (item.id === "restoreDefaults") {
       restoreDefaultsButton.press()
+    } else if (item.id === "copyTo") {
+      copyToButton.press()
     }
   }
 
@@ -848,6 +967,11 @@ Rectangle {
     var text = String(event.text || "")
     var key = event.key
 
+    // / searches in all the settings.
+    if (text === "/") {
+      searchField.forceActiveFocus()
+      return true
+    }
     if (key === Qt.Key_Tab || key === Qt.Key_Backtab) {
       panel.stepSettingsPage(shift || key === Qt.Key_Backtab ? -1 : 1)
       focusId = ""
@@ -866,7 +990,7 @@ Rectangle {
     var down = key === Qt.Key_Down || text === "j" || text === "J"
     var up = key === Qt.Key_Up || text === "k" || text === "K"
     // Pages without settings just scroll.
-    if (panel.settingsPage !== "display" && panel.settingsPage !== "general") {
+    if (panel.settingsPage !== "display" && panel.settingsPage !== "general" && panel.settingsPage !== "notifications") {
       if (down || up) {
         scrollBy((down ? 1 : -1) * Style.space(48))
         return true
@@ -936,6 +1060,7 @@ Rectangle {
           Text {
             textFormat: Text.PlainText
             text: panel.settingsPage === "shortcuts" ? panel.i18n("shortcutsSubtitle")
+              : panel.settingsPage === "notifications" ? panel.i18n("notificationsSubtitle")
               : (panel.settingsPage === "general" ? panel.i18n("generalSubtitle")
               : (panel.settingsPage === "sources" ? panel.i18n("sourcesSubtitle")
                 : (panel.settingsTargetSurface === "app" ? panel.i18n("appSettings")
@@ -976,6 +1101,24 @@ Rectangle {
         }
       }
 
+      // Search in all the settings (/ goes here; Esc clears, then leaves).
+      TextField {
+        id: searchField
+        width: parent.width
+        placeholderText: panel.i18n("settingsSearch")
+        foreground: panel.foreground
+        font.family: panel.fontFamily
+        text: settingsView.searchQuery
+        onTextChanged: if (text !== settingsView.searchQuery) settingsView.searchQuery = text
+        onAccepted: settingsView.enterResults()
+        Keys.onDownPressed: settingsView.enterResults()
+        Keys.onEscapePressed: function(event) {
+          if (text !== "") settingsView.searchQuery = ""
+          else panel.restoreKeyFocus()
+          event.accepted = true
+        }
+      }
+
       // Settings pages, styled like the rain / radar / wind tabs so they read
       // as navigation rather than as another option to choose.
       Row {
@@ -989,7 +1132,8 @@ Rectangle {
           Rectangle {
             required property string modelData
             readonly property bool selected: panel.settingsPage === modelData
-            width: Math.max(Style.space(96), pageLabel.implicitWidth + Style.space(20))
+            // Five pages: narrow enough to fit the popup's width.
+            width: Math.max(Style.space(78), pageLabel.implicitWidth + Style.space(16))
             height: Style.space(28)
             radius: Style.cornerRadius
             color: selected || pageMouse.containsMouse
@@ -1001,7 +1145,8 @@ Rectangle {
               anchors.centerIn: parent
               text: panel.upperLabel(panel.i18n(parent.modelData === "shortcuts" ? "settingsPageShortcuts"
                 : (parent.modelData === "sources" ? "settingsPageSources"
-                  : (parent.modelData === "general" ? "settingsPageGeneral" : "settingsPageDisplay"))))
+                  : (parent.modelData === "notifications" ? "settingsPageNotifications"
+                    : (parent.modelData === "general" ? "settingsPageGeneral" : "settingsPageDisplay")))))
               color: parent.selected
                 ? Style.hoverStateColor(panel.foreground, Color.accent)
                 : panel.mutedText
@@ -1035,20 +1180,79 @@ Rectangle {
         wrapMode: Text.WordWrap
       }
 
+      // What the search found, grouped by page, card and section; each row
+      // works as on its page (switches and choices), the rest open their
+      // page at the row.
+      Column {
+        visible: settingsView.searching
+        width: parent.width
+        spacing: Style.space(4)
+
+        Text {
+          textFormat: Text.PlainText
+          visible: settingsView.searchGroups.length === 0
+          text: panel.i18n("settingsSearchNone")
+          color: panel.mutedText
+          font.family: panel.fontFamily
+          font.pixelSize: Style.font.bodySmall
+        }
+
+        Repeater {
+          model: settingsView.searchGroups
+
+          Column {
+            id: resultGroup
+            required property var modelData
+            width: parent.width
+            spacing: Style.space(2)
+
+            Text {
+              textFormat: Text.PlainText
+              width: parent.width
+              topPadding: Style.space(6)
+              text: resultGroup.modelData.heading
+              color: panel.mutedText
+              font.family: panel.fontFamily
+              font.pixelSize: Style.font.caption
+              font.letterSpacing: 1
+              elide: Text.ElideRight
+            }
+
+            Repeater {
+              model: resultGroup.modelData.items
+
+              Loader {
+                id: resultRow
+                required property var modelData
+                width: resultGroup.width
+                sourceComponent: modelData.kind === "displaySwitch" ? resultDisplaySwitch
+                  : (modelData.kind === "generalSwitch" ? resultGeneralSwitch
+                  : (modelData.kind === "displayChoice" ? choiceRow
+                  : (modelData.kind === "generalChoice" ? generalChoiceRow : resultJump)))
+                onLoaded: {
+                  if (modelData.kind === "displayChoice" || modelData.kind === "generalChoice") item.choiceId = modelData.choiceId
+                  else item.row = modelData
+                }
+              }
+            }
+          }
+        }
+      }
+
       WeatherShortcutsPage {
-        visible: panel.settingsPage === "shortcuts"
+        visible: panel.settingsPage === "shortcuts" && !settingsView.searching
         panel: settingsView.panel
       }
 
       WeatherSourcesPage {
-        visible: panel.settingsPage === "sources"
+        visible: panel.settingsPage === "sources" && !settingsView.searching
         panel: settingsView.panel
       }
 
       // Keys on this page, in muted type where they act.
       Text {
         textFormat: Text.PlainText
-        visible: panel.settingsPage === "general"
+        visible: panel.settingsPage === "general" && !settingsView.searching
         width: parent.width
         text: panel.i18n("settingsGeneralKeysHint")
         color: panel.hintText
@@ -1059,7 +1263,7 @@ Rectangle {
 
       // Applies to the menu bar, the widget and the app alike.
       Rectangle {
-        visible: panel.settingsPage === "general"
+        visible: panel.settingsPage === "general" && !settingsView.searching
         width: settingsColumn.width
         height: generalSettingsContent.implicitHeight + Style.space(20)
         radius: Style.cornerRadius
@@ -1075,7 +1279,28 @@ Rectangle {
           anchors.margins: Style.space(10)
           spacing: Style.space(8)
 
-          GeneralHeading { panel: settingsView.panel; textKey: "general" }
+          GeneralHeading { panel: settingsView.panel; textKey: "generalSectionLanguage" }
+
+          Text {
+            textFormat: Text.PlainText
+            text: panel.i18n("language")
+            color: panel.mutedText
+            font.family: panel.fontFamily
+            font.pixelSize: Style.font.bodySmall
+          }
+
+          Dropdown {
+            id: languageDropdown
+            width: Math.min(parent.width, Style.space(280))
+            showLabel: false
+            fontFamily: panel.fontFamily
+            hasCursor: settingsView.focusId === "language"
+            onHasCursorChanged: if (hasCursor) settingsView.ensureVisible(this)
+            onPopupOpenChanged: if (!popupOpen) panel.restoreKeyFocus()
+            value: String(panel.generalSetting("language", "auto"))
+            options: settingsView.languageOptions
+            onChanged: function(value) { panel.displayOptionsStore.setGeneralSetting("language", value) }
+          }
 
           Text {
             textFormat: Text.PlainText
@@ -1121,84 +1346,8 @@ Rectangle {
             onChanged: function(value) { panel.displayOptionsStore.setGeneralSetting("windUnit", value) }
           }
 
-          Text {
-            textFormat: Text.PlainText
-            text: panel.i18n("language")
-            color: panel.mutedText
-            font.family: panel.fontFamily
-            font.pixelSize: Style.font.bodySmall
-          }
-
-          Dropdown {
-            id: languageDropdown
-            width: Math.min(parent.width, Style.space(280))
-            showLabel: false
-            fontFamily: panel.fontFamily
-            hasCursor: settingsView.focusId === "language"
-            onHasCursorChanged: if (hasCursor) settingsView.ensureVisible(this)
-            onPopupOpenChanged: if (!popupOpen) panel.restoreKeyFocus()
-            value: String(panel.generalSetting("language", "auto"))
-            options: settingsView.languageOptions
-            onChanged: function(value) { panel.displayOptionsStore.setGeneralSetting("language", value) }
-          }
-
-          Text {
-            textFormat: Text.PlainText
-            text: panel.i18n("barPosition")
-            color: panel.mutedText
-            font.family: panel.fontFamily
-            font.pixelSize: Style.font.bodySmall
-          }
-
-          // The widget's section in Omarchy's bar, moved by Omarchy itself.
-          Dropdown {
-            id: barPositionDropdown
-            width: Math.min(parent.width, Style.space(280))
-            showLabel: false
-            fontFamily: panel.fontFamily
-            enabled: settingsView.barPositionUsable
-            opacity: enabled ? 1 : 0.5
-            hasCursor: settingsView.focusId === "barPosition"
-            onHasCursorChanged: if (hasCursor) settingsView.ensureVisible(this)
-            onPopupOpenChanged: if (!popupOpen) panel.restoreKeyFocus()
-            value: panel.barPlacement.section
-            options: settingsView.barPositionOptions
-            onChanged: function(value) { panel.barPlacement.moveTo(value) }
-          }
-
-          Text {
-            textFormat: Text.PlainText
-            width: parent.width
-            text: panel.i18n(panel.barPlacement.section !== "" ? "barPositionHint" : "barPositionMissing")
-            color: panel.mutedText
-            font.family: panel.fontFamily
-            font.pixelSize: Style.font.caption
-            wrapMode: Text.WordWrap
-          }
-
-          // Colour accents across the views, from the theme's palette.
-          WeatherSwitchRow {
-            panel: settingsView.panel
-            kbFocused: settingsView.focusId === "colorAccents"
-            onKbFocusedChanged: if (kbFocused) settingsView.ensureVisible(this)
-            title: panel.i18n("colorAccents")
-            switchState: panel.colorAccents
-            indented: false
-            onToggled: function(value) { panel.displayOptionsStore.setGeneralSetting("colorAccents", value) }
-          }
-
-          Text {
-            textFormat: Text.PlainText
-            width: parent.width
-            text: panel.i18n("colorAccentsHint")
-            color: panel.mutedText
-            font.family: panel.fontFamily
-            font.pixelSize: Style.font.caption
-            wrapMode: Text.WordWrap
-          }
-
           // Updates: the forecast, and radar with the rain nowcast, apart.
-          GeneralHeading { panel: settingsView.panel; textKey: "refreshInterval"; topPadding: Style.space(6) }
+          GeneralHeading { panel: settingsView.panel; textKey: "generalSectionUpdates"; topPadding: Style.space(6) }
 
           Text {
             textFormat: Text.PlainText
@@ -1252,6 +1401,89 @@ Rectangle {
             wrapMode: Text.WordWrap
           }
 
+          GeneralHeading { panel: settingsView.panel; textKey: "generalSectionLook"; topPadding: Style.space(6) }
+
+          // Colour accents across the views, from the theme's palette.
+          WeatherSwitchRow {
+            panel: settingsView.panel
+            kbFocused: settingsView.focusId === "colorAccents"
+            onKbFocusedChanged: if (kbFocused) settingsView.ensureVisible(this)
+            title: panel.i18n("colorAccents")
+            switchState: panel.colorAccents
+            indented: false
+            onToggled: function(value) { panel.displayOptionsStore.setGeneralSetting("colorAccents", value) }
+          }
+
+          Text {
+            textFormat: Text.PlainText
+            width: parent.width
+            text: panel.i18n("colorAccentsHint")
+            color: panel.mutedText
+            font.family: panel.fontFamily
+            font.pixelSize: Style.font.caption
+            wrapMode: Text.WordWrap
+          }
+
+          // Motion: wherever a view turns by itself (the globe).
+          GeneralHeading { panel: settingsView.panel; textKey: "motionSection"; topPadding: Style.space(6) }
+
+          Repeater {
+            model: ["motionDelay", "motionSpeed", "motionFps"]
+
+            Loader {
+              required property string modelData
+              width: generalSettingsContent.width
+              sourceComponent: generalChoiceRow
+              onLoaded: item.choiceId = modelData
+            }
+          }
+
+          Text {
+            textFormat: Text.PlainText
+            width: parent.width
+            text: panel.i18n("motionHint") + " " + panel.i18n("optionRotateFpsHint")
+            color: panel.mutedText
+            font.family: panel.fontFamily
+            font.pixelSize: Style.font.caption
+            wrapMode: Text.Wrap
+          }
+
+          GeneralHeading { panel: settingsView.panel; textKey: "generalSectionApp"; topPadding: Style.space(6) }
+
+          Text {
+            textFormat: Text.PlainText
+            text: panel.i18n("barPosition")
+            color: panel.mutedText
+            font.family: panel.fontFamily
+            font.pixelSize: Style.font.bodySmall
+          }
+
+          // The widget's section in Omarchy's bar, moved by Omarchy itself.
+          Dropdown {
+            id: barPositionDropdown
+            width: Math.min(parent.width, Style.space(280))
+            showLabel: false
+            fontFamily: panel.fontFamily
+            enabled: settingsView.barPositionUsable
+            opacity: enabled ? 1 : 0.5
+            hasCursor: settingsView.focusId === "barPosition"
+            onHasCursorChanged: if (hasCursor) settingsView.ensureVisible(this)
+            onPopupOpenChanged: if (!popupOpen) panel.restoreKeyFocus()
+            value: panel.barPlacement.section
+            options: settingsView.barPositionOptions
+            onChanged: function(value) { panel.barPlacement.moveTo(value) }
+          }
+
+          Text {
+            textFormat: Text.PlainText
+            width: parent.width
+            text: panel.i18n(panel.barPlacement.section !== "" ? "barPositionHint" : "barPositionMissing")
+            color: panel.mutedText
+            font.family: panel.fontFamily
+            font.pixelSize: Style.font.caption
+            wrapMode: Text.WordWrap
+          }
+
           // Adds the standalone app to the app launcher. Off by default: the
           // plugin writes nothing outside its own settings without consent.
           WeatherSwitchRow {
@@ -1276,7 +1508,7 @@ Rectangle {
           }
 
           // Export and import of the settings and places (WeatherSettingsTransfer).
-          GeneralHeading { panel: settingsView.panel; textKey: "settingsTransfer"; topPadding: Style.space(6) }
+          GeneralHeading { panel: settingsView.panel; textKey: "generalSectionBackup"; topPadding: Style.space(6) }
 
           Text {
             textFormat: Text.PlainText
@@ -1349,7 +1581,6 @@ Rectangle {
           }
 
           // Places: More Time's world clock cities as saved places.
-          GeneralHeading { panel: settingsView.panel; textKey: "placesSettings"; topPadding: Style.space(6) }
 
           WeatherButton {
             id: importCitiesButton
@@ -1398,12 +1629,85 @@ Rectangle {
         }
       }
 
+      // ---- Notifications: what More Weather tells you about (general
+      //      options, for the bar and the app alike).
+      Rectangle {
+        visible: panel.settingsPage === "notifications" && !settingsView.searching
+        width: settingsColumn.width
+        height: notificationsContent.implicitHeight + Style.space(20)
+        radius: Style.cornerRadius
+        color: "transparent"
+        border.color: panel.subtleText
+        border.width: Style.spacing.hairline
+
+        Column {
+          id: notificationsContent
+          anchors.left: parent.left
+          anchors.right: parent.right
+          anchors.top: parent.top
+          anchors.margins: Style.space(10)
+          spacing: Style.space(8)
+
+          GeneralHeading { panel: settingsView.panel; textKey: "notifications" }
+
+          WeatherSwitchRow {
+            panel: settingsView.panel
+            kbFocused: settingsView.focusId === "notifySevereWarnings"
+            onKbFocusedChanged: if (kbFocused) settingsView.ensureVisible(this)
+            title: panel.i18n("notifySevereWarnings")
+            switchState: panel.notifySevereWarnings
+            indented: false
+            onToggled: function(value) { panel.displayOptionsStore.setGeneralSetting("notifySevereWarnings", value) }
+          }
+          Text {
+            textFormat: Text.PlainText
+            width: parent.width
+            text: panel.i18n("notifySevereWarningsHint")
+            color: panel.mutedText
+            font.family: panel.fontFamily
+            font.pixelSize: Style.font.caption
+            wrapMode: Text.Wrap
+          }
+
+          WeatherSwitchRow {
+            panel: settingsView.panel
+            kbFocused: settingsView.focusId === "notifyRainSoon"
+            onKbFocusedChanged: if (kbFocused) settingsView.ensureVisible(this)
+            title: panel.i18n("notifyRainSoon")
+            switchState: panel.notifyRainSoon
+            indented: false
+            onToggled: function(value) { panel.displayOptionsStore.setGeneralSetting("notifyRainSoon", value) }
+          }
+          // From which strength, and how far around the place, which sets
+          // how far ahead the nowcast is read.
+          Repeater {
+            model: panel.notifyRainSoon ? ["rainThreshold", "rainRadius"] : []
+
+            Loader {
+              required property string modelData
+              width: notificationsContent.width
+              sourceComponent: generalChoiceRow
+              onLoaded: item.choiceId = modelData
+            }
+          }
+          Text {
+            textFormat: Text.PlainText
+            width: parent.width
+            text: panel.i18n("notifyRainSoonHint") + (panel.notifyRainSoon ? " " + panel.i18n("rainAlertHint") : "")
+            color: panel.mutedText
+            font.family: panel.fontFamily
+            font.pixelSize: Style.font.caption
+            wrapMode: Text.Wrap
+          }
+        }
+      }
+
       // Which part the cards below configure: the bar entry, its popup, or
       // the full app. Underlined tabs, so they read as a sub-level of the
       // page tabs above.
       Item {
         id: settingsSurfaceRow
-        visible: panel.settingsPage === "display"
+        visible: panel.settingsPage === "display" && !settingsView.searching
         width: parent.width
         height: Style.space(34)
 
@@ -1466,7 +1770,7 @@ Rectangle {
 
       Text {
         textFormat: Text.PlainText
-        visible: panel.settingsPage === "display"
+        visible: panel.settingsPage === "display" && !settingsView.searching
         width: parent.width
         text: panel.i18n("settingsKeysHint")
         color: panel.hintText
@@ -1477,7 +1781,7 @@ Rectangle {
 
       Text {
         textFormat: Text.PlainText
-        visible: panel.settingsPage === "display"
+        visible: panel.settingsPage === "display" && !settingsView.searching
         width: parent.width
         text: panel.i18n("displaySettingsHint")
           + (panel.settingsTargetSurface === "menubar" ? " " + panel.i18n("menubarHoverHint")
@@ -1494,7 +1798,7 @@ Rectangle {
         Rectangle {
           id: settingsCard
           required property var modelData
-          visible: panel.settingsPage === "display"
+          visible: panel.settingsPage === "display" && !settingsView.searching
           property var groupData: modelData
           // Cards that only apply while another switch is on (dependsOn).
           readonly property bool cardEnabled: !groupData.dependsOn
@@ -1616,7 +1920,30 @@ Rectangle {
                 required property var modelData
                 width: settingsCardContent.width
 
+                // A section's sub-heading inside a long card (the globe's
+                // sky, layers and time).
+                Text {
+                  textFormat: Text.PlainText
+                  visible: !!optionBlock.modelData.section
+                  x: Style.space(12)
+                  topPadding: Style.space(8)
+                  bottomPadding: Style.space(2)
+                  text: optionBlock.modelData.section ? panel.upperLabel(panel.i18n(optionBlock.modelData.section)) : ""
+                  color: panel.mutedText
+                  font.family: panel.fontFamily
+                  font.pixelSize: Style.font.caption
+                  font.letterSpacing: 1
+                }
+                // A choice standing in the list on its own (the shape).
+                Loader {
+                  width: parent.width
+                  active: !!optionBlock.modelData.choiceOnly
+                  sourceComponent: choiceRow
+                  onLoaded: item.choiceId = optionBlock.modelData.key
+                }
+
                 WeatherSwitchRow {
+                  visible: !optionBlock.modelData.choiceOnly
                   panel: settingsView.panel
                   readonly property var modelData: optionBlock.modelData
                   width: settingsCardContent.width
@@ -1642,31 +1969,20 @@ Rectangle {
                   sourceComponent: barAccentsRow
                   onLoaded: settingsView.barAccentsDropdown = item.dropdown
                 }
-                // A choice that belongs to the switch above (the moon's
-                // style), shown while that switch is on.
-                Loader {
-                  width: parent.width
-                  readonly property string choiceId: optionBlock.modelData.choiceBelow || ""
-                  active: choiceId !== "" && panel.settingsDisplaySetting(optionBlock.modelData.key, true) === true
-                  sourceComponent: choiceRow
-                  onLoaded: item.choiceId = choiceId
+                // Choices that belong to the switch above (the moon's style,
+                // the wind's mode and height), shown while that switch is on.
+                Repeater {
+                  model: optionBlock.modelData.choicesBelow || []
+
+                  Loader {
+                    required property string modelData
+                    width: optionBlock.width
+                    active: panel.settingsDisplaySetting(optionBlock.modelData.key, true) === true
+                    sourceComponent: choiceRow
+                    onLoaded: item.choiceId = modelData
+                  }
                 }
               }
-            }
-
-            // The globe's colour wash.
-            Loader {
-              width: parent.width
-              active: !!settingsCard.groupData.hasGlobeWash
-              sourceComponent: globeWashRow
-            }
-
-            // The globe's turning by itself: delay and speed, while it is on.
-            Loader {
-              width: parent.width
-              active: !!settingsCard.groupData.hasGlobeRotate && panel.settingsDisplaySetting("globeAutoRotate", false) === true
-                && panel.settingsDisplaySetting("globeStyle", "globe") !== "map"
-              sourceComponent: globeRotateRows
             }
 
             // In the scrolling window or as a tab of the shared strip.
@@ -1837,67 +2153,6 @@ Rectangle {
               }
             }
 
-            // Rain notification: from which strength, and how far around
-            // the place, which sets how far ahead the nowcast is read.
-            Column {
-              visible: !!settingsCard.groupData.hasRainAlert && panel.settingsDisplaySetting("notifyRainSoon", true)
-              width: parent.width
-              topPadding: Style.space(8)
-              leftPadding: Style.space(12)
-              spacing: Style.space(6)
-
-              Text {
-                textFormat: Text.PlainText
-                text: panel.i18n("rainAlertThreshold")
-                color: panel.foreground
-                font.family: panel.fontFamily
-                font.pixelSize: Style.font.bodySmall
-              }
-
-              Dropdown {
-                width: Math.min(settingsCardContent.width - Style.space(12), Style.space(260))
-                showLabel: false
-                fontFamily: panel.fontFamily
-                hasCursor: settingsView.focusId === "rainThreshold"
-                onHasCursorChanged: if (hasCursor) settingsView.ensureVisible(this)
-                onPopupOpenChanged: if (!popupOpen) panel.restoreKeyFocus()
-                Component.onCompleted: if (settingsCard.groupData.hasRainAlert) settingsView.rainThresholdDropdown = this
-                value: String(panel.settingsDisplaySetting("rainAlertThreshold", "any"))
-                options: settingsView.rainThresholdOptions
-                onChanged: function(value) { panel.displayOptionsStore.setSettingsDisplaySetting("rainAlertThreshold", value) }
-              }
-
-              Text {
-                textFormat: Text.PlainText
-                text: panel.i18n("rainAlertRadius")
-                color: panel.foreground
-                font.family: panel.fontFamily
-                font.pixelSize: Style.font.bodySmall
-              }
-
-              Dropdown {
-                width: Math.min(settingsCardContent.width - Style.space(12), Style.space(260))
-                showLabel: false
-                fontFamily: panel.fontFamily
-                hasCursor: settingsView.focusId === "rainRadius"
-                onHasCursorChanged: if (hasCursor) settingsView.ensureVisible(this)
-                onPopupOpenChanged: if (!popupOpen) panel.restoreKeyFocus()
-                Component.onCompleted: if (settingsCard.groupData.hasRainAlert) settingsView.rainRadiusDropdown = this
-                value: String(panel.settingsDisplaySetting("rainAlertRadius", "25"))
-                options: settingsView.rainRadiusOptions
-                onChanged: function(value) { panel.displayOptionsStore.setSettingsDisplaySetting("rainAlertRadius", value) }
-              }
-
-              Text {
-                textFormat: Text.PlainText
-                width: parent.width - Style.space(12)
-                text: panel.i18n("rainAlertHint")
-                color: panel.mutedText
-                font.family: panel.fontFamily
-                font.pixelSize: Style.font.caption
-                wrapMode: Text.WordWrap
-              }
-            }
 
             Item {
               id: defaultTabItem
@@ -1986,9 +2241,10 @@ Rectangle {
         }
       }
 
-      // Both resets side by side: order only, and every switch.
+      // The resets side by side (order only, every switch), and the copy
+      // to the other view.
       Row {
-        visible: panel.settingsPage === "display"
+        visible: panel.settingsPage === "display" && !settingsView.searching
         anchors.horizontalCenter: parent.horizontalCenter
         spacing: Style.space(10)
 
@@ -1996,7 +2252,7 @@ Rectangle {
       WeatherButton {
         id: restoreOrderButton
         panel: settingsView.panel
-        width: Math.min((settingsColumn.width - Style.space(10)) / 2, implicitWidth)
+        width: Math.min((settingsColumn.width - Style.space(20)) / 3, implicitWidth)
         label: panel.i18n("restoreOrder")
         enabled: !panel.settingsOrderIsDefault
         kbFocused: settingsView.focusId === "restoreOrder"
@@ -2010,7 +2266,7 @@ Rectangle {
         id: restoreDefaultsButton
         readonly property bool isDefault: panel.displayOptionsStore.settingsDisplayIsDefault()
         panel: settingsView.panel
-        width: Math.min((settingsColumn.width - Style.space(10)) / 2, implicitWidth)
+        width: Math.min((settingsColumn.width - Style.space(20)) / 3, implicitWidth)
         label: panel.i18n(isDefault ? "defaultsActive" : "restoreDefaults")
         confirmLabel: panel.i18n("restoreDefaultsConfirm")
         enabled: !isDefault
@@ -2022,6 +2278,25 @@ Rectangle {
         Connections {
           target: panel
           function onSettingsTargetSurfaceChanged() { restoreDefaultsButton.armed = false }
+        }
+      }
+
+      // Two-step copy of this view's settings to the other one (widget ↔
+      // app).
+      WeatherButton {
+        id: copyToButton
+        visible: panel.settingsTargetSurface !== "menubar"
+        panel: settingsView.panel
+        width: Math.min((settingsColumn.width - Style.space(20)) / 3, implicitWidth)
+        label: panel.i18n(panel.settingsTargetSurface === "app" ? "copyToWidget" : "copyToApp")
+        confirmLabel: panel.i18n("copyConfirm")
+        kbFocused: settingsView.focusId === "copyTo"
+        onKbFocusedChanged: if (kbFocused) settingsView.ensureVisible(this)
+        onActivated: panel.displayOptionsStore.copySettingsDisplayToOther()
+
+        Connections {
+          target: panel
+          function onSettingsTargetSurfaceChanged() { copyToButton.armed = false }
         }
       }
       }
