@@ -48,7 +48,7 @@ Rectangle {
     // One list, in the order the bar draws it: the entries come from
     // different corners of the forecast, but they share one row.
     {
-      title: panel.upperLabel(panel.i18n("menubar")),
+      title: panel.i18n("menubar"),
       masterKey: "showCurrent",
       options: [
         { key: "currentWeatherSymbol", title: panel.i18n("weatherSymbol"), hover: true },
@@ -78,7 +78,7 @@ Rectangle {
       hasDefaultTab: false
     },
     {
-      title: panel.upperLabel(panel.i18n("barBehavior")),
+      title: panel.i18n("barBehavior"),
       masterKey: "",
       options: [
         { key: "boldOnHover", title: panel.i18n("boldOnHover"), accentsBelow: true },
@@ -95,7 +95,7 @@ Rectangle {
     // move but not be hidden or become a tab (it holds place, refresh
     // and settings), so its card has no master switch.
     {
-      title: panel.upperLabel(panel.i18n("currentWeather")),
+      title: panel.i18n("currentWeather"),
       masterKey: "",
       sectionKey: "current",
       fixedSection: true,
@@ -115,7 +115,7 @@ Rectangle {
       hasDefaultTab: false
     },
     {
-      title: panel.upperLabel(panel.i18n("myPlaces")),
+      title: panel.i18n("myPlaces"),
       masterKey: "showFavorites",
       sectionKey: "favorites",
       hint: panel.i18n("favoritesHint"),
@@ -130,7 +130,7 @@ Rectangle {
       hasDefaultTab: false
     },
     {
-      title: panel.upperLabel(panel.i18n("airQualityPollen")),
+      title: panel.i18n("airQualityPollen"),
       masterKey: "showAirQuality",
       sectionKey: "airQuality",
       options: [
@@ -141,7 +141,7 @@ Rectangle {
       hasDefaultTab: false
     },
     {
-      title: panel.upperLabel(panel.i18n("hourly")),
+      title: panel.i18n("hourly"),
       masterKey: "showHourly",
       sectionKey: "hourly",
       options: [
@@ -158,7 +158,7 @@ Rectangle {
       hasDefaultTab: false
     },
     {
-      title: panel.upperLabel(panel.i18n("daily")),
+      title: panel.i18n("daily"),
       masterKey: "showDaily",
       sectionKey: "daily",
       options: [
@@ -181,7 +181,7 @@ Rectangle {
       hasDefaultTab: false
     },
     {
-      title: panel.upperLabel(panel.i18n("rain")),
+      title: panel.i18n("rain"),
       masterKey: "showRain",
       sectionKey: "rain",
       options: [
@@ -192,7 +192,7 @@ Rectangle {
       hasDefaultTab: false
     },
     {
-      title: panel.upperLabel(panel.i18n("radar")),
+      title: panel.i18n("radar"),
       masterKey: "showRadar",
       sectionKey: "radar",
       options: [
@@ -202,7 +202,7 @@ Rectangle {
       hasDefaultTab: false
     },
     {
-      title: panel.upperLabel(panel.i18n("wind")),
+      title: panel.i18n("wind"),
       masterKey: "showWind",
       sectionKey: "wind",
       options: [],
@@ -210,7 +210,7 @@ Rectangle {
       hasDefaultTab: false
     },
     {
-      title: panel.upperLabel(panel.i18n("globe")),
+      title: panel.i18n("globe"),
       masterKey: "showGlobe",
       sectionKey: "globe",
       // In three sections (muted sub-headings): the sky, the layers, time.
@@ -240,7 +240,7 @@ Rectangle {
     // The tab strip: moved like a section (its place in the window), with
     // the tabbed sections' cards indented under it and which tab opens first.
     {
-      title: panel.upperLabel(panel.i18n("tabs")),
+      title: panel.i18n("tabs"),
       masterKey: "",
       sectionKey: "tabs",
       fixedSection: true,
@@ -1825,7 +1825,7 @@ Rectangle {
               panel: settingsView.panel
               width: parent.width
               settingKey: settingsCard.groupData.masterKey
-              title: settingsCard.groupData.title
+              title: panel.upperLabel(settingsCard.groupData.title)
               emphasized: true
               showSwitch: !settingsCard.groupData.fixedSection
               kbFocused: settingsView.focusId === "master:"
@@ -1845,7 +1845,7 @@ Rectangle {
               width: parent.width
               height: Style.space(34)
               verticalAlignment: Text.AlignVCenter
-              text: settingsCard.groupData.title
+              text: panel.upperLabel(settingsCard.groupData.title)
               color: panel.foreground
               font.family: panel.fontFamily
               font.pixelSize: Style.font.bodySmall
