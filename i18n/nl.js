@@ -95,7 +95,7 @@ var entries = {
   "shortcutsGroupMouse": "Menubalk",
   "shortcutClose": "Het zoeken, de instellingen of de lijst sluiten, daarna het paneel",
   "shortcutSwitchPanel": "Volgend / vorig paneel in de balk (widget)",
-  "shortcutSettings": "De instellingen openen",
+  "shortcutSettings": "Instellingen openen",
   "shortcutRefresh": "Nu verversen",
   "shortcutSearch": "Plaats zoeken",
   "shortcutScroll": "Scrollen",
