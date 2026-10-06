@@ -54,39 +54,12 @@ MouseArea {
   // the page and a note says how to zoom.
   readonly property bool wheelEnabled: true
   signal zoomHintWanted()
-  onZoomHintWanted: {
-    if (!gestures.panel.showHints) return
-    zoomHint.opacity = 1
-    zoomHintTimer.restart()
-  }
+  onZoomHintWanted: zoomHint.show()
 
   // "Ctrl + wheel to zoom", briefly, when a plain wheel passes over the map.
-  Rectangle {
+  WeatherZoomHint {
     id: zoomHint
-    anchors.centerIn: parent
-    width: zoomHintText.implicitWidth + Style.space(16)
-    height: zoomHintText.implicitHeight + Style.space(8)
-    radius: Style.cornerRadius
-    color: Color.popups.background
-    border.color: Color.popups.border
-    border.width: Style.spacing.hairline
-    opacity: 0
-    visible: opacity > 0
-    Behavior on opacity { NumberAnimation { duration: 180 } }
-    Text {
-      textFormat: Text.PlainText
-      id: zoomHintText
-      anchors.centerIn: parent
-      text: gestures.panel.i18n("mapZoomHint")
-      color: Color.popups.text
-      font.family: gestures.panel.fontFamily
-      font.pixelSize: Style.font.caption
-    }
-  }
-  Timer {
-    id: zoomHintTimer
-    interval: 1400
-    onTriggered: zoomHint.opacity = 0
+    panel: gestures.panel
   }
   function wantsWheel(wheel) {
     return (wheel.modifiers & Qt.ControlModifier) !== 0

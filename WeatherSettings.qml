@@ -302,7 +302,7 @@ Rectangle {
     { value: "moderate", label: panel.i18n("rainAlertModerate", { rate: panel.precipitationText(0.5, true) }) },
     { value: "heavy", label: panel.i18n("rainAlertHeavy", { rate: panel.precipitationText(4, true) }) }
   ]
-  readonly property var rainRadiusOptions: panel.displayOptionsStore.choiceKeys.rainAlertRadius.map(function(km) {
+  readonly property var rainRadiusOptions: panel.displayOptionsStore.generalChoices.rainAlertRadius.values.map(function(km) {
     var minutes = Math.round(Number(km) / 50 * 60)
     var distance = panel.useImperial ? Math.round(Number(km) * 0.621371) + " mi" : km + " km"
     var lead = minutes < 60 ? minutes + " min" : panel.localizedNumber(minutes / 60) + " h"
@@ -315,13 +315,13 @@ Rectangle {
   property var mapStyleDropdown: null
   // The globe's turning by itself: after how many seconds, one turn in how
   // many minutes (as in More Time).
-  readonly property var globeRotateDelayOptions: ["5", "10", "30"].map(function(n) {
+  readonly property var motionDelayOptions: ["5", "10", "30"].map(function(n) {
     return { value: n, label: panel.i18n("secondsShort", { seconds: n }) }
   })
-  readonly property var globeRotateSpeedOptions: ["1", "2", "4", "8"].map(function(n) {
+  readonly property var motionSpeedOptions: ["1", "2", "4", "8"].map(function(n) {
     return { value: n, label: panel.i18n("minutesShort", { minutes: n }) }
   })
-  readonly property var globeRotateFpsOptions: ["8", "15", "24", "30"].map(function(n) {
+  readonly property var motionFpsOptions: ["8", "15", "24", "30"].map(function(n) {
     return { value: n, label: n }
   })
   // The wind's heights (the Globe card's wind row).
@@ -333,11 +333,11 @@ Rectangle {
   //      option (Motion on the General page; the rain notification's
   //      threshold and radius on the Notifications page). Each row's
   //      dropdown is kept by its id for the keyboard (dropdownSpec).
-  property var motionDropdowns: ({})
+  property var generalDropdowns: ({})
   readonly property var generalChoiceSpecs: ({
-    motionDelay: { title: "motionDelay", fallback: "10", options: globeRotateDelayOptions },
-    motionSpeed: { title: "motionSpeed", fallback: "4", options: globeRotateSpeedOptions },
-    motionFps: { title: "motionFps", fallback: "15", options: globeRotateFpsOptions },
+    motionDelay: { title: "motionDelay", fallback: "10", options: motionDelayOptions },
+    motionSpeed: { title: "motionSpeed", fallback: "4", options: motionSpeedOptions },
+    motionFps: { title: "motionFps", fallback: "15", options: motionFpsOptions },
     rainThreshold: { key: "rainAlertThreshold", title: "rainAlertThreshold", fallback: "any", options: rainThresholdOptions },
     rainRadius: { key: "rainAlertRadius", title: "rainAlertRadius", fallback: "25", options: rainRadiusOptions }
   })
@@ -380,9 +380,9 @@ Rectangle {
         onChanged: function(value) { panel.displayOptionsStore.setGeneralSetting(generalRow.settingKey, value) }
       }
       function register() {
-        var items = Object.assign({}, settingsView.motionDropdowns)
+        var items = Object.assign({}, settingsView.generalDropdowns)
         items[choiceId] = generalDropdown
-        settingsView.motionDropdowns = items
+        settingsView.generalDropdowns = items
       }
       onChoiceIdChanged: register()
       onVisibleChanged: if (visible && choiceId !== "") register()
@@ -451,9 +451,6 @@ Rectangle {
     }
   }
 
-  // Set by the rain notification's dropdowns inside a card delegate.
-  property var rainThresholdDropdown: null
-  property var rainRadiusDropdown: null
   readonly property bool barPositionUsable: panel.barPlacement.section !== "" && !panel.barPlacement.busy
   // Set by the hover-unit dropdown, which sits inside a card delegate.
   property var hoverUnitDropdown: null
@@ -853,11 +850,9 @@ Rectangle {
     if (id === "windUnit") return spec(windUnitOptions, windUnitDropdown, general("windUnit", "auto"))
     if (id === "refresh") return spec(refreshOptions, refreshDropdown, general("refreshMinutes", 0, true))
     if (id === "radarRefresh") return spec(radarRefreshOptions, radarRefreshDropdown, general("radarMinutes", 0, true))
-    if (id === "rainThreshold") return spec(rainThresholdOptions, motionDropdowns.rainThreshold || null, general("rainAlertThreshold", "any"))
-    if (id === "rainRadius") return spec(rainRadiusOptions, motionDropdowns.rainRadius || null, general("rainAlertRadius", "25"))
-    if (id === "motionDelay") return spec(globeRotateDelayOptions, motionDropdowns.motionDelay || null, general("motionDelay", "10"))
-    if (id === "motionSpeed") return spec(globeRotateSpeedOptions, motionDropdowns.motionSpeed || null, general("motionSpeed", "4"))
-    if (id === "motionFps") return spec(globeRotateFpsOptions, motionDropdowns.motionFps || null, general("motionFps", "15"))
+    // The general choices drawn as rows (Motion, the rain notification).
+    var choice = generalChoiceSpecs[id]
+    if (choice) return spec(choice.options, generalDropdowns[id] || null, general(choice.key || id, choice.fallback))
     if (id === "mapStyle") return spec(mapStyleOptions, mapStyleDropdown, display("mapStyle", "drawn"))
     if (id === "barAccents") return spec(barAccentsOptions, barAccentsDropdown, display("menubarAccents", "hover"))
     if (choiceSpecs[id]) return spec(choiceSpecs[id].options, choiceDropdowns[id] || null, display(id, choiceSpecs[id].fallback))

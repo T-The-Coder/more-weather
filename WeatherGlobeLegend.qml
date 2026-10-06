@@ -51,7 +51,7 @@ Item {
   }))
   function chipOn(chip) {
     if (chip.value !== undefined) return String(panel.displaySetting(chip.key, "globe")) === chip.value
-    return panel.displaySetting(chip.key, chip.key === "globeTemperature" || chip.key === "globeStorms") === true
+    return panel.globeSwitchOn(chip.key)
   }
   // A tick's number: the wind in the chosen wind unit, the rest as given;
   // the unit stands after the scale.

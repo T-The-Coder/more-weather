@@ -476,11 +476,6 @@ function placeClock(nowMs, offsetSeconds) {
   return new Date(Number(nowMs) + Number(offsetSeconds || 0) * 1000).toISOString().slice(11, 16)
 }
 
-function isFutureForecastDate(dateString, todayString) {
-  if (!dateString) return false
-  return String(dateString).slice(0, 10) > String(todayString || "")
-}
-
 function isForecastDateOnOrAfter(dateString, todayString) {
   if (!dateString) return false
   return String(dateString).slice(0, 10) >= String(todayString || "")
@@ -506,16 +501,6 @@ function millimetersToInches(value) {
 function kilometersToMiles(value) {
   var n = parseFloat(String(value))
   return isNaN(n) ? null : n * 0.621371
-}
-
-function kilometersPerHourToMilesPerHour(value) {
-  var n = parseFloat(String(value))
-  return isNaN(n) ? null : n * 0.621371
-}
-
-function formatTemp(value, useImperial) {
-  if (value === undefined || value === null || value === "") return ""
-  return value + "°" + (useImperial ? "F" : "C")
 }
 
 // Temperatures carry their own scale: Kelvin is a choice of its own, while
@@ -3617,14 +3602,11 @@ if (typeof module !== "undefined") {
     geographicDistanceKm: geographicDistanceKm,
     radarPlaceCandidates: radarPlaceCandidates,
     locationCommit: locationCommit,
-    isFutureForecastDate: isFutureForecastDate,
     isForecastDateOnOrAfter: isForecastDateOnOrAfter,
     roundedTemp: roundedTemp,
     celsiusToFahrenheit: celsiusToFahrenheit,
     millimetersToInches: millimetersToInches,
     kilometersToMiles: kilometersToMiles,
-    kilometersPerHourToMilesPerHour: kilometersPerHourToMilesPerHour,
-    formatTemp: formatTemp,
     normalizedUnit: normalizedUnit,
     localeUsesImperial: localeUsesImperial,
     countryUsesImperial: countryUsesImperial,

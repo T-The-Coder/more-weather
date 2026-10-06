@@ -610,6 +610,26 @@ ShellRoot {
       display("globeIsobars", false)
       press(Qt.Key_Home)
     },
+    // A profile from before 3.2: the app's globe motion and the menu bar's
+    // notifications move to the general options once, and only once.
+    function() {
+      var store = panel.displayOptionsStore
+      var app = JSON.stringify(panel.appDisplayOptions), bar = JSON.stringify(panel.menubarDisplayOptions)
+      var general = JSON.stringify(panel.generalOptions)
+      store.loadDisplayOptionsFor("app", JSON.stringify({ globeRotateFps: "30" }))
+      store.loadDisplayOptionsFor("menubar", JSON.stringify({ rainAlertRadius: "100" }))
+      store.loadGeneralOptions(JSON.stringify({ language: "en" }))
+      check("migrate-motion-notify", panel.generalSetting("motionFps", "") === "30"
+        && panel.rainAlertRadiusKm === 100 && panel.appDisplayOptions.globeRotateFps === undefined)
+      store.loadDisplayOptionsFor("app", JSON.stringify({ globeRotateFps: "8" }))
+      check("migrate-once", panel.generalSetting("motionFps", "") === "30")
+      store.loadDisplayOptionsFor("app", app)
+      store.loadDisplayOptionsFor("menubar", bar)
+      store.loadGeneralOptions(general)
+      store.generalOptionsFile.setText(general + "\n")
+      store.appDisplayOptionsFile.setText(app + "\n")
+      store.menubarDisplayOptionsFile.setText(bar + "\n")
+    },
     // The new page: notifications, as general options.
     function() { panel.settingsPage = "notifications" },
     function() { shot("16c-settings-notifications") },
@@ -743,7 +763,7 @@ ShellRoot {
       console.log("TOOLTIP", JSON.stringify(barHost.item.hoverTooltipText))
       display("hoverTooltip", false)
     },
-    // Settings → General → Places after importing More Time's cities.
+    // Settings → General → Back up and restore after importing More Time's cities.
     function() { panel.openSettings("general"); panel.cityImport.run() },
     function() { press(Qt.Key_End) },
     function() { shot("26-settings-general-import") },

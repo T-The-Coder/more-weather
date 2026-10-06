@@ -348,7 +348,7 @@ Omarchy's built-in weather widget and is left in place.
 | `~/.local/state/omarchy/settings/weather.json` | Location (shared with Omarchy, written via `omarchy-weather-location`) |
 | `~/.config/omarchy/shell.json` | Omarchy's bar layout; changed only through `omarchy-bar move` when you pick a position under Settings → General |
 | `~/.local/state/omarchy/settings/more-weather-*.json` | Display settings, favorites, cache, data shared between bar and app; `more-weather-settings-backup.json` holds the settings from before the last import |
-| `~/.local/state/omarchy/settings/more-time-cities.json` | More Time's cities; only read, when you import them under Settings → General → Places |
+| `~/.local/state/omarchy/settings/more-time-cities.json` | More Time's cities; only read, when you import them under Settings → General → Back up and restore |
 | `~/Downloads/more-weather-settings.json` | Exported settings (the default path; any other can be typed in) |
 | `~/.cache/more-weather/map-images/` | Downloaded radar and map pictures, removed after three hours |
 | `$XDG_RUNTIME_DIR/more-weather-app/` | Temporary app configuration (links to the plugin and the Omarchy shell) |

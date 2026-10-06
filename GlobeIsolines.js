@@ -53,14 +53,6 @@ function levelRange(values, step, base) {
   return { first: first, count: Math.min(1000, Math.floor((hi - first) / step + 1e-9) + 1) }
 }
 
-// The levels between the least and greatest known value.
-function levelsFor(values, step, base) {
-  var range = levelRange(values, Number(step), Number(base) || 0)
-  var levels = []
-  for (var i = 0; i < range.count; i++) levels.push(range.first + i * step)
-  return levels
-}
-
 // The segments a cell's case draws, as pairs of its edges (0 bottom,
 // 1 right, 2 top, 3 left); the saddles 5 and 10 are decided by the mean.
 var CASES = [
@@ -290,5 +282,5 @@ function extrema(lattice, options) {
 }
 
 if (typeof module !== "undefined") module.exports = {
-  isolines: isolines, extrema: extrema, levelsFor: levelsFor, distanceDeg: distanceDeg
+  isolines: isolines, extrema: extrema, levelRange: levelRange, distanceDeg: distanceDeg
 }

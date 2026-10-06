@@ -31,27 +31,38 @@ Item {
     // Globe card, the notifications from the menu bar's; taken over once.
     pendingMotion = parsed.motionDelay === undefined
     pendingNotifications = parsed.notifyRainSoon === undefined
-    panel.generalOptions = sanitizedGeneral(parsed)
+    // Our own write comes back through watchChanges: the same options are
+    // not assigned again (every text and view would re-evaluate).
+    var next = sanitizedGeneral(parsed)
+    if (JSON.stringify(next) !== JSON.stringify(panel.generalOptions)) panel.generalOptions = next
     migrateGeneral()
   }
   property bool pendingMotion: false
   property bool pendingNotifications: false
+  // What the profiles stored before 3.2 (read as the files come in, not
+  // kept in the profiles any more): the app's globe motion, the menu bar's
+  // notifications.
+  property var legacyApp: ({})
+  property var legacyMenubar: ({})
+  readonly property var legacyAppKeys: ({ globeRotateDelay: "motionDelay", globeRotateSpeed: "motionSpeed",
+    globeRotateFps: "motionFps" })
+  readonly property var legacyMenubarKeys: ({ notifySevereWarnings: "notifySevereWarnings",
+    notifyRainSoon: "notifyRainSoon", rainAlertThreshold: "rainAlertThreshold", rainAlertRadius: "rainAlertRadius" })
+  function takeLegacy(raw, keys) {
+    var found = {}
+    for (var key in keys) if (raw && raw[key] !== undefined) found[keys[key]] = raw[key]
+    return found
+  }
   function migrateGeneral() {
     var next = Object.assign({}, panel.generalOptions)
     var changed = false
     if (pendingMotion && panel.appDisplayOptionsLoaded) {
-      var app = panel.appDisplayOptions || {}
-      if (app.globeRotateDelay !== undefined) next.motionDelay = app.globeRotateDelay
-      if (app.globeRotateSpeed !== undefined) next.motionSpeed = app.globeRotateSpeed
-      if (app.globeRotateFps !== undefined) next.motionFps = app.globeRotateFps
+      Object.assign(next, legacyApp)
       pendingMotion = false
       changed = true
     }
     if (pendingNotifications && panel.menubarDisplayOptionsLoaded) {
-      var bar = panel.menubarDisplayOptions || {}
-      ;["notifySevereWarnings", "notifyRainSoon", "rainAlertThreshold", "rainAlertRadius"].forEach(function(key) {
-        if (bar[key] !== undefined) next[key] = bar[key]
-      })
+      Object.assign(next, legacyMenubar)
       pendingNotifications = false
       changed = true
     }
@@ -271,13 +282,8 @@ Item {
 
   // Settings that take one of a few values, not a switch.
   readonly property var choiceKeys: ({
-    rainAlertThreshold: ["any", "moderate", "heavy"],
-    rainAlertRadius: ["10", "25", "50", "100"],
     mapStyle: ["drawn", "satellite"],
     menubarAccents: ["off", "hover", "always"],
-    globeRotateDelay: ["5", "10", "30"],
-    globeRotateSpeed: ["1", "2", "4", "8"],
-    globeRotateFps: ["8", "15", "24", "30"],
     globeMoonStyle: ["space", "earth"],
     globeWindMode: ["lines", "colour", "both"],
     globeStyle: ["globe", "map"],
@@ -307,26 +313,22 @@ Item {
     var parsed = ({})
     try { parsed = JSON.parse(String(raw || "{}")) }
     catch (e) { parsed = ({}) }
+    if (surface === "app") legacyApp = takeLegacy(parsed, legacyAppKeys)
+    else if (surface === "menubar") legacyMenubar = takeLegacy(parsed, legacyMenubarKeys)
     var next = sanitizedDisplayOptions(parsed, surface)
     var firstLoad = surface === "app" ? !panel.appDisplayOptionsLoaded
       : (surface === "widget" ? !panel.widgetDisplayOptionsLoaded : !panel.menubarDisplayOptionsLoaded)
-    if (surface === "app") {
-      panel.appDisplayOptions = next
-      panel.appDisplayOptionsLoaded = true
-    } else if (surface === "widget") {
-      panel.widgetDisplayOptions = next
-      panel.widgetDisplayOptionsLoaded = true
-    } else {
-      panel.menubarDisplayOptions = next
-      panel.menubarDisplayOptionsLoaded = true
-    }
+    // An echo of our own write (watchChanges) leaves the options as they are.
+    var property = surface === "app" ? "appDisplayOptions"
+      : (surface === "widget" ? "widgetDisplayOptions" : "menubarDisplayOptions")
+    if (firstLoad || JSON.stringify(next) !== JSON.stringify(panel[property])) panel[property] = next
+    panel[property + "Loaded"] = true
     var activeSurface = panel.standaloneMode ? "app" : "widget"
     if (firstLoad && panel.opened && surface === activeSurface)
       panel.activeTab = next.defaultTab
     migrateGeneral()
   }
 
-  // Resets the surface picked in settings to its factory defaults.
   // The widget's display copied to the app or the other way round (the
   // view picked in settings is the source).
   function copySettingsDisplayToOther() {
@@ -345,6 +347,7 @@ Item {
     }
   }
 
+  // Resets the surface picked in settings to its factory defaults.
   function restoreSettingsDisplayDefaults() {
     var surface = panel.settingsTargetSurface
     var next = panel.defaultOptionsFor(surface)

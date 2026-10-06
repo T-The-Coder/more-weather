@@ -137,10 +137,6 @@ QtObject {
       return
     }
     var store = panel.displayOptionsStore
-    if (data.general && typeof data.general === "object") {
-      store.loadGeneralOptions(JSON.stringify(data.general))
-      store.generalOptionsFile.setText(JSON.stringify(panel.generalOptions) + "\n")
-    }
     var display = data.display && typeof data.display === "object" ? data.display : {}
     var surfaces = [
       ["menubar", store.menubarDisplayOptionsFile, "menubarDisplayOptions"],
@@ -152,6 +148,12 @@ QtObject {
       if (!options || typeof options !== "object") continue
       store.loadDisplayOptionsFor(surfaces[i][0], JSON.stringify(options))
       surfaces[i][1].setText(JSON.stringify(panel[surfaces[i][2]]) + "\n")
+    }
+    // After the views: a backup from before 3.2 takes its motion and
+    // notifications from the app's and the menu bar's profile it carries.
+    if (data.general && typeof data.general === "object") {
+      store.loadGeneralOptions(JSON.stringify(data.general))
+      store.generalOptionsFile.setText(JSON.stringify(panel.generalOptions) + "\n")
     }
     if (Array.isArray(data.favorites)) {
       panel.savedLocations = Model.parseSavedLocations(JSON.stringify(data.favorites))

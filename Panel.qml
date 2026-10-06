@@ -437,10 +437,9 @@ Panel {
     }
     return accentOf(paletteColor("red"))
   }
-  // Every temperature tint uses one fixed scale, so a colour means the same
-  // warmth in the current weather, the hours, the days and my places.
-  readonly property real accentScaleLow: -10
-  readonly property real accentScaleHigh: 35
+  // Every temperature tint uses one fixed scale (TemperatureScale.js), so a
+  // colour means the same warmth in the current weather, the hours, the
+  // days and my places.
   function absoluteTemperatureAccent(celsius) {
     return colorAccents ? temperatureScaleColor(celsius) : ""
   }
@@ -1461,6 +1460,11 @@ Panel {
   }
   // v: one colour layer alone, the next after the one shown alone
   // (temperature → cloud → precipitation → wind → sea → none).
+  // A globe switch (layer, overlay or view chip): on or off, the
+  // temperature and the storms on by default.
+  function globeSwitchOn(key) {
+    return displaySetting(key, key === "globeTemperature" || key === "globeStorms") === true
+  }
   function soloGlobeLayerShown() {
     var on = globeData.washLayers
     return on.length === 0 ? "none" : (on.length === 1 ? on[0] : "")
@@ -1933,9 +1937,6 @@ Panel {
       globeStorms: true,
       globeNumbers: false,
       globeTimeline: true,
-      globeRotateDelay: "10",
-      globeRotateSpeed: "4",
-      globeRotateFps: "15",
       globeMoonStyle: "space",
       globeStyle: "globe",
       airQualityAsTab: false,
@@ -2069,11 +2070,7 @@ Panel {
       boldOnHover: true,
       hoverTooltip: false,
       menubarAccents: "hover",
-      openWidgetOnHover: false,
-      notifySevereWarnings: true,
-      notifyRainSoon: true,
-      rainAlertThreshold: "any",
-      rainAlertRadius: "25"
+      openWidgetOnHover: false
     }
   }
 
@@ -3296,6 +3293,50 @@ Panel {
   // Settings: WeatherSettings.handleKey (Tab / ⇧ Tab pages, 1 2 3 view,
   //   ↑ ↓ / j k choose, ← → / h l change, Space / Enter switch or open,
   //   ⇧ ↑ ↓ / J K move, PgUp PgDn Home End scroll, Esc close).
+  // The globe's plain keys while it has them (handlePanelKey): true when
+  // one was used.
+  function handleGlobeKey(event, text, plusKey, minusKey) {
+    // The globe's timeline: , and . a step back and forward, Space plays or
+    // pauses, n or Backspace go back to now (Backspace leaves the hour
+    // cursor its own).
+    if (globeData.active && displaySetting("globeTimeline", true) === true) {
+      if (text === "," || text === ".") {
+        globeData.stepBy(text === "." ? 1 : -1)
+        return true
+      }
+      if (event.key === Qt.Key_Space) {
+        globeData.togglePlay()
+        return true
+      }
+      if (text === "n" || (event.key === Qt.Key_Backspace && hourCursor < 0)) {
+        globeData.backToNow()
+        return true
+      }
+    }
+    // The layer chips' letters (GlobeFields.CHIPS): t temperature, e sea,
+    // c cloud, p precipitation, d wind, i isobars, s storms, u numbers.
+    var chip = GlobeFields.chipForShortcut(text)
+    if (chip) {
+      setViewDisplaySetting(chip.key, !globeSwitchOn(chip.key))
+      return true
+    }
+    // v: the globe's next colour wash.
+    if (text === "v") {
+      soloGlobeLayer(GlobeFields.nextWash(soloGlobeLayerShown()))
+      return true
+    }
+    // + − zoom the globe, 0 brings back the whole globe at the shown place.
+    if (plusKey || minusKey) {
+      globeItem.zoomBy(plusKey ? 1 : -1)
+      return true
+    }
+    if (text === "0") {
+      globeItem.reset()
+      return true
+    }
+    return false
+  }
+
   function handlePanelKey(event) {
     var control = !!(event.modifiers & Qt.ControlModifier)
     var command = !!(event.modifiers & Qt.MetaModifier)
@@ -3451,49 +3492,7 @@ Panel {
       return
     }
 
-    // The globe's timeline: , and . a step back and forward, Space plays or
-    // pauses, n or Backspace go back to now (Backspace leaves the hour
-    // cursor its own).
-    if (globeKeys && globeItem && globeData.active && displaySetting("globeTimeline", true) === true) {
-      if (text === "," || text === ".") {
-        globeData.stepBy(text === "." ? 1 : -1)
-        event.accepted = true
-        return
-      }
-      if (event.key === Qt.Key_Space) {
-        globeData.togglePlay()
-        event.accepted = true
-        return
-      }
-      if (text === "n" || (event.key === Qt.Key_Backspace && hourCursor < 0)) {
-        globeData.backToNow()
-        event.accepted = true
-        return
-      }
-    }
-    // The layer chips' letters (GlobeFields.CHIPS): t temperature, e sea,
-    // c cloud, p precipitation, d wind, i isobars, s storms, u numbers.
-    var chip = globeKeys && globeItem ? GlobeFields.chipForShortcut(text) : null
-    if (chip) {
-      var chipOn = displaySetting(chip.key, chip.key === "globeTemperature" || chip.key === "globeStorms") === true
-      setViewDisplaySetting(chip.key, !chipOn)
-      event.accepted = true
-      return
-    }
-    // v: the globe's next colour wash.
-    if (globeKeys && globeItem && text === "v") {
-      soloGlobeLayer(GlobeFields.nextWash(soloGlobeLayerShown()))
-      event.accepted = true
-      return
-    }
-    // + − zoom the globe, 0 brings back the whole globe at the shown place.
-    if (globeKeys && globeItem && (plusKey || minusKey)) {
-      globeItem.zoomBy(plusKey ? 1 : -1)
-      event.accepted = true
-      return
-    }
-    if (globeKeys && globeItem && text === "0") {
-      globeItem.reset()
+    if (globeKeys && globeItem && handleGlobeKey(event, text, plusKey, minusKey)) {
       event.accepted = true
       return
     }

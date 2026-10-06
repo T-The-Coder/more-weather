@@ -1424,9 +1424,7 @@ Column {
       return (wheel.modifiers & Qt.ControlModifier) !== 0 || panel.wheelIsSideways(wheel)
     }
     function declineWheel(wheel) {
-      if (!panel.showHints) return
-      zoomHint.opacity = 1
-      zoomHintTimer.restart()
+      zoomHint.show()
     }
     function takeWheel(wheel, point) {
       touched()
@@ -1447,32 +1445,9 @@ Column {
     }
 
     // "Ctrl + wheel to zoom", briefly, when a plain wheel passes over it.
-    Rectangle {
+    WeatherZoomHint {
       id: zoomHint
-      anchors.centerIn: parent
-      width: zoomHintText.implicitWidth + Style.space(16)
-      height: zoomHintText.implicitHeight + Style.space(8)
-      radius: Style.cornerRadius
-      color: Color.popups.background
-      border.color: Color.popups.border
-      border.width: Style.spacing.hairline
-      opacity: 0
-      visible: opacity > 0
-      Behavior on opacity { NumberAnimation { duration: 180 } }
-      Text {
-        id: zoomHintText
-        textFormat: Text.PlainText
-        anchors.centerIn: parent
-        text: globe.panel.i18n("mapZoomHint")
-        color: Color.popups.text
-        font.family: globe.panel.fontFamily
-        font.pixelSize: Style.font.caption
-      }
-    }
-    Timer {
-      id: zoomHintTimer
-      interval: 1400
-      onTriggered: zoomHint.opacity = 0
+      panel: globe.panel
     }
 
     // Back to the place (keeping the zoom), zoom out, zoom in.

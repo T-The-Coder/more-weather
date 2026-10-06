@@ -7,7 +7,7 @@ import { load } from "./load.mjs"
 // Results copied into this realm, so deepStrictEqual compares them.
 const M = load("GlobeIsolines.js")
 const plain = (value) => JSON.parse(JSON.stringify(value))
-const I = Object.fromEntries(["isolines", "extrema", "levelsFor"].map((n) => [n, (...a) => plain(M[n](...a))]))
+const I = Object.fromEntries(["isolines", "extrema", "levelRange"].map((n) => [n, (...a) => plain(M[n](...a))]))
 
 // A lattice from a function of (lat, lon).
 function lattice(box, cols, rows, wrap, f) {
@@ -140,6 +140,6 @@ test("a saddle follows the cell mean", () => {
 })
 
 test("levels are multiples of the step from the base", () => {
-  assert.deepStrictEqual(I.levelsFor([997, 1001, NaN, 1009], 4, 1000), [1000, 1004, 1008])
-  assert.deepStrictEqual(I.levelsFor([1, 2], 0, 0), [])
+  assert.deepStrictEqual(I.levelRange([997, 1001, NaN, 1009], 4, 1000), { first: 1000, count: 3 })
+  assert.deepStrictEqual(I.levelRange([1, 2], 0, 0), { first: 0, count: 0 })
 })

@@ -118,8 +118,8 @@ Column {
             id: versionTitle
             textFormat: Text.PlainText
             anchors.left: parent.left
-            anchors.right: installedTag.left
-            anchors.rightMargin: Style.space(8)
+            anchors.right: versionCard.installed ? installedTag.left : parent.right
+            anchors.rightMargin: versionCard.installed ? Style.space(8) : 0
             text: versionCard.modelData.unreleased ? changesPage.panel.i18n("changesUnreleased")
               : versionCard.modelData.version + (versionCard.modelData.date ? " · " + versionCard.modelData.date : "")
             color: changesPage.panel.foreground
@@ -134,7 +134,6 @@ Column {
             anchors.right: parent.right
             anchors.verticalCenter: versionTitle.verticalCenter
             visible: versionCard.installed
-            width: visible ? implicitWidth : 0
             text: changesPage.panel.upperLabel(changesPage.panel.i18n("changesCurrent"))
             color: Color.accent
             font.family: changesPage.panel.fontFamily
