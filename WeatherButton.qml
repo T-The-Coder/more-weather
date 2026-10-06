@@ -13,6 +13,9 @@ Rectangle {
   // The full name where the label is a glyph ("+"): shown after a short
   // delay under the pointer, and the accessible name.
   property string tooltip: ""
+  // Compact: the controls' height (Style.spacing.controlHeight, 28), to sit
+  // in a row with dropdowns; otherwise 32.
+  property bool compact: false
   property bool kbFocused: false
   property bool armed: false
   signal activated()
@@ -28,7 +31,7 @@ Rectangle {
   }
 
   implicitWidth: buttonLabel.implicitWidth + Style.space(28)
-  height: Style.space(32)
+  height: compact ? Style.spacing.controlHeight : Style.space(32)
   radius: Style.cornerRadius
   opacity: enabled ? 1 : 0.42
   color: armed ? Style.selectedFillFor(panel.foreground, Color.accent)
