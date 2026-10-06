@@ -16,6 +16,9 @@ Rectangle {
   // Compact: the controls' height (Style.spacing.controlHeight, 28), to sit
   // in a row with dropdowns; otherwise 32.
   property bool compact: false
+  // The label's size: the body's small size unless set (a glyph such as
+  // "+" reads better at the body size).
+  property real labelSize: Style.font.bodySmall
   property bool kbFocused: false
   property bool armed: false
   signal activated()
@@ -53,13 +56,16 @@ Rectangle {
     textFormat: Text.PlainText
     id: buttonLabel
     anchors.centerIn: parent
-    // A narrow window shortens the label rather than the button's padding.
-    width: Math.min(implicitWidth, button.width - Style.space(28))
+    // A narrow window shortens the label rather than the button's padding;
+    // centred in its box, so a glyph in a square button (narrower than the
+    // padding) sits in the middle instead of starting there.
+    width: Math.min(implicitWidth, Math.max(button.width - Style.space(28), Math.min(implicitWidth, button.width - Style.space(4))))
+    horizontalAlignment: Text.AlignHCenter
     elide: Text.ElideRight
     text: button.armed ? button.confirmLabel : button.label
     color: button.armed ? Style.selectedStateColor(button.panel.foreground, Color.accent) : button.panel.foreground
     font.family: button.panel.fontFamily
-    font.pixelSize: Style.font.bodySmall
+    font.pixelSize: button.labelSize
     font.bold: button.armed
   }
 

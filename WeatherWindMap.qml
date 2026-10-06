@@ -264,6 +264,8 @@ Item {
           Text {
             textFormat: Text.PlainText
             anchors.centerIn: parent
+            // ▼ is drawn about a pixel high (as in the settings' order arrows).
+            anchors.verticalCenterOffset: levelButton.modelData.delta < 0 ? 1 : 0
             text: levelButton.modelData.glyph
             color: levelMouse.containsMouse ? Style.hoverStateColor(Color.popups.text, Color.accent) : Color.popups.text
             font.family: panel.fontFamily

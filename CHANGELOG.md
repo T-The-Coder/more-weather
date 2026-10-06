@@ -4,6 +4,11 @@ All notable changes to More Weather are documented here.
 
 ## Unreleased
 
+- **Glyphs measured:** every glyph-only control (hero buttons, tabs,
+  chips, zoom, play, wind height, order arrows, remove, chevrons) is
+  checked in both themes for its ink's offset from the middle
+  (`MW_AUDIT=glyphs tests/ui-shots.sh`); the ▼ arrows, drawn a pixel high
+  by the font, sit centred now.
 - **Interface audit:** in light themes the secondary texts and card
   borders fade towards the background instead of turning darker than the
   text; sunrise and sunset stack in a narrow day column; search results

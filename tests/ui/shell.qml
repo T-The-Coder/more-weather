@@ -18,7 +18,10 @@ ShellRoot {
   // MW_AUDIT=1: the interface audit instead (auditSteps): every view and
   // settings page at the popup's width and the app's, nothing else.
   readonly property bool audit: Quickshell.env("MW_AUDIT") === "1"
-  readonly property var runSteps: audit ? auditSteps : steps
+  // MW_AUDIT=glyphs: every glyph-only control's box logged with the shot it
+  // is in (tests/ui/glyph-check.py measures the ink inside each box).
+  readonly property bool glyphAudit: Quickshell.env("MW_AUDIT") === "glyphs"
+  readonly property var runSteps: glyphAudit ? glyphSteps : (audit ? auditSteps : steps)
   readonly property var tabs: ["favorites", "airQuality", "hourly", "daily", "rain", "radar", "wind", "globe"]
 
   function shot(name) { shotOf(panel.contentRoot, name) }
@@ -221,6 +224,96 @@ ShellRoot {
       function() { panel.setSettingsSearch(""); panel.settingsOpen = false })
     return list
   }
+  // A glyph: one or two non-letter characters (symbols, arrows, the icon
+  // font's private use area). Its control: the nearest ancestor with a
+  // radius (a Rectangle or a bordered surface) that holds no other text.
+  function isGlyph(text) {
+    var t = String(text || "")
+    if (t.length === 0 || t.length > 3) return false
+    return !/[A-Za-z0-9]/.test(t) && t.trim() !== "" && t !== "·" && t !== "°"
+  }
+  function hasOtherText(item, except) {
+    if (!item || item.visible === false) return false
+    if (item !== except && item.text !== undefined && item.font !== undefined && String(item.text).trim() !== ""
+        && /[A-Za-z0-9]/.test(String(item.text))) return true
+    var kids = item.children || []
+    for (var i = 0; i < kids.length; i++) if (hasOtherText(kids[i], except)) return true
+    return false
+  }
+  function visibleUpTo(item, root) {
+    for (var p = item; p && p !== root; p = p.parent) if (p.visible === false || p.opacity === 0) return false
+    return true
+  }
+  function logGlyphs(shotName) {
+    var root = panel.contentRoot
+    var found = 0
+    function walk(item) {
+      if (!item || item.visible === false) return
+      if (item.text !== undefined && item.font !== undefined && isGlyph(item.text) && visibleUpTo(item, root)) {
+        // In the settings only their own controls (the view lies under them).
+        if (panel.settingsOpen) {
+          var inSettings = false
+          for (var q = item; q && q !== root; q = q.parent) if (q.searchQuery !== undefined) inSettings = true
+          if (!inSettings) return
+        }
+        // The control: the nearest rounded ancestor, or a small square
+        // parent (the hero's glyph buttons are plain items).
+        var box = item.parent
+        while (box && box !== root && box.radius === undefined
+            && !(box.spacing === undefined && box.width <= 40 && box.height <= 40 && box.width >= item.implicitWidth))
+          box = box.parent
+        // A glyph beside text (a dropdown's chevron): only its height counts.
+        if (box && box !== root && hasOtherText(box, item) && box.height < 60) {
+          var vat = box.mapToItem(root, 0, 0)
+          console.log("GLYPHROW", shotName, Math.round(vat.x), Math.round(vat.y), Math.round(box.width), Math.round(box.height),
+            JSON.stringify(String(item.text)))
+        } else if (box && box !== root && box.width < 80 && box.height < 60) {
+          var at = box.mapToItem(root, 0, 0)
+          if (at.x >= 0 && at.y >= 0 && at.x + box.width <= root.width && at.y + box.height <= root.height) {
+            console.log("GLYPHBOX", shotName, Math.round(at.x), Math.round(at.y), Math.round(box.width), Math.round(box.height),
+              JSON.stringify(String(item.text)))
+            found++
+          }
+        }
+      }
+      var kids = item.children || []
+      for (var i = 0; i < kids.length; i++) walk(kids[i])
+    }
+    walk(root)
+    console.log("GLYPHCOUNT", shotName, found)
+  }
+  function glyphShot(name) {
+    return [function() {}, function() {}, function() { logGlyphs(name); shot(name) }]
+  }
+  readonly property var glyphSteps: [
+    function() {}, function() {}, function() { seedPlaces() },
+    function() {
+      panel.contentRoot.parent = widgetHost
+      display("showFavorites", true)
+      display("showAirQuality", true)
+      for (var i = 0; i < tabs.length; i++) display(tabs[i] + "AsTab", true)
+      panel.activeTab = "favorites"
+    }
+  ].concat(glyphShot("G-hero-tabs"), [
+    function() { panel.showSavedLocations = true }
+  ], glyphShot("G-saved-places"), [
+    function() { panel.showSavedLocations = false; panel.startEditingLocation() }
+  ], glyphShot("G-search"), [
+    function() { panel.cancelEditingLocation(); panel.activeTab = "radar" }
+  ], glyphShot("G-radar"), [
+    function() { panel.activeTab = "wind" }
+  ], glyphShot("G-wind"), [
+    function() { panel.activeTab = "globe" }
+  ], glyphShot("G-globe"), [
+    function() { panel.scrollWeatherBy(100000) }
+  ], glyphShot("G-globe-end"), [
+    function() { panel.scrollWeatherBy(-100000); panel.openSettings("general") }
+  ], glyphShot("G-settings-general"), [
+    function() { panel.openSettings("display") }
+  ], glyphShot("G-settings-display"), [
+    function() { panel.settingsOpen = false; console.log("AUDIT DONE") }
+  ])
+
   readonly property var auditSteps: [
     function() {}, function() {}, function() { seedPlaces() },
     function() {

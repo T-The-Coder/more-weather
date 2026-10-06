@@ -79,6 +79,9 @@ Rectangle {
         Text {
           textFormat: Text.PlainText
           anchors.centerIn: parent
+          // The font draws ▼ about a pixel above its middle (measured,
+          // tests/ui/glyph-check.py); ▲ sits right.
+          anchors.verticalCenterOffset: parent.modelData > 0 ? 1 : 0
           text: parent.modelData < 0 ? "▲" : "▼"
           color: panel.mutedText
           font.family: panel.fontFamily

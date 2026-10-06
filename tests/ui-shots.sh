@@ -8,6 +8,9 @@
 # MW_SHOTS_ONLY=<regular expression> keeps only the matching pictures.
 # MW_AUDIT=1 shoots the interface audit instead (every view and settings
 # page at the popup's width and the app's).
+# MW_AUDIT=glyphs measures every glyph-only control instead: the ink's
+# offset from its box's centre (tests/ui/glyph-check.py; MW_GLYPH_BG is the
+# theme's background, default #eff1f5).
 set -u
 root=$(cd "$(dirname "$0")/.." && pwd)
 work=$(mktemp -d "${TMPDIR:-/tmp}/more-weather-ui.XXXXXX")
@@ -31,4 +34,5 @@ env -u DBUS_SESSION_BUS_ADDRESS -u XDG_DATA_HOME -u XDG_CONFIG_HOME -u XDG_STATE
 echo "log: $work/log.txt"
 echo "shots: $out"
 python3 "$root/tests/ui/rim-check.py" "$work/log.txt" "$out" >>"$work/log.txt"
+[ "${MW_AUDIT:-}" = glyphs ] && python3 "$root/tests/ui/glyph-check.py" "$work/log.txt" "$out" "${MW_GLYPH_BG:-#eff1f5}" | tee "$out/glyphs.txt" | grep " OFF "
 grep -E "SHOT|STATUS|CHECK|GLOBE|STEP FAILED|ERROR|WARN|Error|error" "$work/log.txt" | grep -v "^$" | head -80
