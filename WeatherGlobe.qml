@@ -187,6 +187,11 @@ Column {
       lonAnimation.to = centerLon + Globe.shortestTurn(centerLon, lon)
       turnAnimation.start()
     }
+    // The UI harness: the pointer resting at (x, y) in the globe.
+    function hoverAt(x, y) {
+      pointer = { x: x, y: y }
+      mouse.updateHover()
+    }
     // Ctrl + arrows: by 15° on the whole disc, by a quarter of the view
     // when zoomed in; east/west turns, north/south tilts.
     function turnStep(east, north) {

@@ -1129,44 +1129,119 @@ Rectangle {
 
       // Settings pages, styled like the rain / radar / wind tabs so they read
       // as navigation rather than as another option to choose.
-      // Six pages wrap onto a second line where their names are long.
-      Flow {
+      // Pages, styled like the view's tabs so they read as navigation. They
+      // share the popup's width as in More Time (narrower than 96 when
+      // needed, never narrower than the name); names too long for one line
+      // (German, Finnish …) break into centred lines, filled greedily.
+      Item {
+        id: pageMeasure
+        visible: false
+        width: 0
+        height: 0
+        Repeater {
+          id: pageMeasureRepeater
+          model: panel.settingsPages
+          Text {
+            textFormat: Text.PlainText
+            required property string modelData
+            text: panel.upperLabel(panel.settingsPageName(modelData))
+            font.family: panel.fontFamily
+            font.pixelSize: Style.font.caption
+            font.bold: true
+            font.letterSpacing: 1
+          }
+        }
+      }
+      readonly property var settingsPageLines: {
+        var pages = panel.settingsPages
+        var gap = Style.space(5)
+        var avail = settingsColumn.width
+        var labels = []
+        for (var i = 0; i < pages.length; i++) {
+          var measured = pageMeasureRepeater.count === pages.length ? pageMeasureRepeater.itemAt(i) : null
+          // Read again when the language changes.
+          labels.push((measured ? measured.implicitWidth : 0) + 0 * panel.interfaceLanguage.length)
+        }
+        function widthIn(label, count) {
+          return Math.max(label + Style.space(12), Math.min(Style.space(96),
+            Math.max(label + Style.space(20), (avail - gap * (count - 1)) / count)))
+        }
+        // A line's width with its pages at the widths they take there
+        // (roomy), or at the least they need (the name and 12).
+        function lineWidth(indices, roomy) {
+          var total = gap * (indices.length - 1)
+          for (var k = 0; k < indices.length; k++)
+            total += roomy ? widthIn(labels[indices[k]], indices.length) : labels[indices[k]] + Style.space(12)
+          return total
+        }
+        // Lines break only where even the least widths do not fit.
+        var lines = []
+        var line = []
+        for (var p = 0; p < pages.length; p++) {
+          if (line.length && lineWidth(line.concat([p]), false) > avail) {
+            lines.push(line)
+            line = []
+          }
+          line.push(p)
+        }
+        if (line.length) lines.push(line)
+        return lines.map(function(indices) {
+          var roomy = lineWidth(indices, true) <= avail
+          // Tight: the least widths and the room left shared equally.
+          var spare = roomy ? 0 : (avail - lineWidth(indices, false)) / indices.length
+          return indices.map(function(index) {
+            return { key: pages[index], width: roomy ? widthIn(labels[index], indices.length)
+              : labels[index] + Style.space(12) + spare }
+          })
+        })
+      }
+      Column {
         id: settingsPageRow
         width: parent.width
         spacing: Style.space(5)
 
         Repeater {
-          model: panel.settingsPages
+          model: settingsColumn.settingsPageLines
 
-          Rectangle {
-            required property string modelData
-            readonly property bool selected: panel.settingsPage === modelData
-            width: Math.max(Style.space(64), pageLabel.implicitWidth + Style.space(14))
-            height: Style.space(28)
-            radius: Style.cornerRadius
-            color: selected || pageMouse.containsMouse
-              ? Style.hoverFillFor(panel.foreground, Color.accent) : "transparent"
+          Row {
+            required property var modelData
+            anchors.horizontalCenter: parent.horizontalCenter
+            spacing: Style.space(5)
 
-            Text {
-              textFormat: Text.PlainText
-              id: pageLabel
-              anchors.centerIn: parent
-              text: panel.upperLabel(panel.settingsPageName(parent.modelData))
-              color: parent.selected
-                ? Style.hoverStateColor(panel.foreground, Color.accent)
-                : panel.mutedText
-              font.family: panel.fontFamily
-              font.pixelSize: Style.font.caption
-              font.bold: parent.selected
-              font.letterSpacing: 1
-            }
+            Repeater {
+              model: parent.modelData
 
-            MouseArea {
-              id: pageMouse
-              anchors.fill: parent
-              hoverEnabled: true
-              cursorShape: Qt.PointingHandCursor
-              onClicked: panel.settingsPage = parent.modelData
+              Rectangle {
+                required property var modelData
+                readonly property bool selected: panel.settingsPage === modelData.key
+                width: modelData.width
+                height: Style.space(28)
+                radius: Style.cornerRadius
+                color: selected || pageMouse.containsMouse
+                  ? Style.hoverFillFor(panel.foreground, Color.accent) : "transparent"
+
+                Text {
+                  textFormat: Text.PlainText
+                  id: pageLabel
+                  anchors.centerIn: parent
+                  text: panel.upperLabel(panel.settingsPageName(parent.modelData.key))
+                  color: parent.selected
+                    ? Style.hoverStateColor(panel.foreground, Color.accent)
+                    : panel.mutedText
+                  font.family: panel.fontFamily
+                  font.pixelSize: Style.font.caption
+                  font.bold: parent.selected
+                  font.letterSpacing: 1
+                }
+
+                MouseArea {
+                  id: pageMouse
+                  anchors.fill: parent
+                  hoverEnabled: true
+                  cursorShape: Qt.PointingHandCursor
+                  onClicked: panel.settingsPage = parent.modelData.key
+                }
+              }
             }
           }
         }

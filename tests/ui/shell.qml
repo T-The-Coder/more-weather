@@ -526,7 +526,44 @@ ShellRoot {
     // Moon view "as seen from here": the shown place's tilt.
     function() { display("globeMoonStyle", "earth") },
     function() {},
-    function() { shot("09c2-globe-moon-from-here") },
+    // The Moon in the middle (its sub-lunar point), the pointer on it.
+    function() {
+      var moon = panel.globeItem.sky.moon
+      panel.globeItem.turnTo(moon.lat, moon.lon)
+    },
+    function() { panel.globeItem.finishTurn() },
+    function() {}, function() {},
+    function() {
+      var hit = panel.globeItem.moonHit
+      check("globe-moon-drawn", !!hit)
+      if (hit) panel.globeItem.hoverAt(hit.x, hit.y)
+      var look = panel.globeItem.moonLook
+      console.log("GLOBEMOON", JSON.stringify(look), JSON.stringify(panel.globeItem.hover))
+      check("globe-moon-hover-line", !!panel.globeItem.hover && panel.globeItem.hover.text.indexOf("Tórshavn") >= 0)
+    },
+    function() {}, function() { shot("09c2-globe-moon-from-here") },
+    // A timeline step when the Moon is below Tórshavn's horizon: dimmed.
+    function() {
+      var data = panel.globeData
+      for (var i = 0; i < data.steps.length; i++) {
+        var v = panel.moonViewAt(panel.mapCenterLatitude, panel.mapCenterLongitude, data.steps[i])
+        if (v && !v.aboveHorizon) { data.showStep(i); break }
+      }
+    },
+    function() {}, function() {
+      var moon = panel.globeItem.sky.moon
+      panel.globeItem.turnTo(moon.lat, moon.lon)
+    },
+    function() { panel.globeItem.finishTurn() },
+    function() {}, function() {},
+    function() {
+      var hit = panel.globeItem.moonHit
+      if (hit) panel.globeItem.hoverAt(hit.x, hit.y)
+      console.log("GLOBEMOONBELOW", JSON.stringify(panel.globeItem.moonLook), JSON.stringify(panel.globeItem.hover))
+      check("globe-moon-below-dimmed", !!panel.globeItem.moonLook && panel.globeItem.moonLook.opacity < 1)
+    },
+    function() {}, function() { shot("09c3-globe-moon-below-horizon") },
+    function() { panel.globeData.backToNow() },
     function() { display("globeMoonStyle", "space") },
     function() { panel.startEditingLocation() },
     function() { shot("10-search") },
@@ -622,6 +659,24 @@ ShellRoot {
     },
     function() {}, function() { press(Qt.Key_End) },
     function() {}, function() { shot("19d-settings-changes-older-end") },
+    // The page strip in long languages (centred lines, as in More Time).
+    function() { panel.settingsOpen = false; general("language", "de") },
+    function() { panel.openSettings("general") },
+    function() {}, function() {}, function() { shot("19e-settings-pages-de") },
+    function() { panel.settingsOpen = false; general("language", "fr") },
+    function() { panel.openSettings("general") },
+    function() {}, function() {}, function() { shot("19e-settings-pages-fr") },
+    function() { panel.settingsOpen = false; general("language", "pt") },
+    function() { panel.openSettings("general") },
+    function() {}, function() {}, function() { shot("19e-settings-pages-pt") },
+    function() { panel.settingsOpen = false; general("language", "fi") },
+    function() { panel.openSettings("general") },
+    function() {}, function() {}, function() { shot("19e-settings-pages-fi") },
+    function() { panel.settingsOpen = false; general("language", "hu") },
+    function() { panel.openSettings("general") },
+    function() {}, function() {}, function() { shot("19e-settings-pages-hu") },
+    function() { panel.settingsOpen = false; general("language", "en") },
+    function() { panel.openSettings("sources") },
     function() { panel.settingsOpen = false; general("language", "de"); panel.activeTab = "rain" },
     function() { shot("20-tab-rain-de") },
     function() { panel.openSettings("shortcuts") },
