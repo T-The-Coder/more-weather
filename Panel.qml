@@ -175,7 +175,13 @@ Panel {
   }
 
   // Settings pages, in tab order; ← / → step through them.
-  readonly property var settingsPages: ["general", "display", "notifications", "shortcuts", "sources"]
+  readonly property var settingsPages: ["general", "display", "notifications", "shortcuts", "sources", "changes"]
+  // A settings page's name in the page strip (as in More Time).
+  function settingsPageName(key) {
+    // settingsPageGeneral … settingsPageSources, settingsPageChanges
+    var name = "settingsPage" + String(key).charAt(0).toUpperCase() + String(key).slice(1)
+    return i18n(name)
+  }
   property string settingsPage: "general"
 
   function stepSettingsPage(delta) {

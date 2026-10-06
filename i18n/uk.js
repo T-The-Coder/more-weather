@@ -472,5 +472,12 @@ var entries = {
   "sourceGroupMoonViewDetails": "Де Місяць стоїть на небі поточного місця, нахил його освітленого боку, схід і захід: обчислено на цьому комп’ютері за формулами з Astronomical Algorithms Жана Меєса, перевірено за JPL Horizons.",
   "sourceGroupMoonViewCoverage": "По всьому світу, для кожного місця.",
   "showHints": "Підказки керування",
-  "showHintsHint": "Рядки, що пояснюють клавіші й жести, як-от ↑↓ або Alt 1–9."
+  "showHintsHint": "Рядки, що пояснюють клавіші й жести, як-от ↑↓ або Alt 1–9.",
+  "settingsPageChanges": "Що нового",
+  "changesSubtitle": "Що змінилося в кожній версії",
+  "changesUnreleased": "Не випущено, уже встановлено",
+  "changesCurrent": "встановлено",
+  "changesShowOlder": "Показати старіші версії",
+  "changesEnglishNote": "Журнал ведеться англійською.",
+  "changesNone": "Журнал змін не знайдено."
 }

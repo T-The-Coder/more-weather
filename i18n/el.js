@@ -472,5 +472,12 @@ var entries = {
   "sourceGroupMoonViewDetails": "Πού βρίσκεται η Σελήνη στον ουρανό του τρέχοντος τόπου, η κλίση της φωτισμένης πλευράς της, η ανατολή και η δύση της: υπολογισμένα σε αυτόν τον υπολογιστή με τους τύπους του Astronomical Algorithms του Jean Meeus, ελεγμένα με το JPL Horizons.",
   "sourceGroupMoonViewCoverage": "Παγκοσμίως, για κάθε τοποθεσία.",
   "showHints": "Υποδείξεις χειρισμού",
-  "showHintsHint": "Οι γραμμές που εξηγούν πλήκτρα και κινήσεις, όπως ↑↓ ή Alt 1–9."
+  "showHintsHint": "Οι γραμμές που εξηγούν πλήκτρα και κινήσεις, όπως ↑↓ ή Alt 1–9.",
+  "settingsPageChanges": "Τι νέο υπάρχει",
+  "changesSubtitle": "Τι άλλαξε σε κάθε έκδοση",
+  "changesUnreleased": "Μη δημοσιευμένο, ήδη εγκατεστημένο",
+  "changesCurrent": "εγκατεστημένη",
+  "changesShowOlder": "Εμφάνιση παλαιότερων εκδόσεων",
+  "changesEnglishNote": "Το αρχείο τηρείται στα αγγλικά.",
+  "changesNone": "Δεν βρέθηκε αρχείο αλλαγών."
 }

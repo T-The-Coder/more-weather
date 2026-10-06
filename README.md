@@ -148,7 +148,8 @@ runs as a standalone app window.
 - **Separate display settings** for the bar, the popup and the app (the popup's can be
   copied to the app and back), and the widget's position in the bar (left, center or
   right).
-- **Settings in five pages** (General, Display, Notifications, Shortcuts, Sources) with
+- **Settings in six pages** (General, Display, Notifications, Shortcuts, Sources and
+  What's new, this change log by version) with
   a search over all of them (`/`): the rows found work right there, grouped by page,
   card and section.
 - **Export and import** of all settings and your places as one JSON file (Settings →

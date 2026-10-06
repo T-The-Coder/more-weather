@@ -472,5 +472,12 @@ var entries = {
   "sourceGroupMoonViewDetails": "Gdzie Księżyc stoi na niebie bieżącego miejsca, nachylenie jego oświetlonej strony, wschód i zachód: liczone na tym komputerze wzorami z Astronomical Algorithms Jeana Meeusa, sprawdzone z JPL Horizons.",
   "sourceGroupMoonViewCoverage": "Cały świat, dla każdego miejsca.",
   "showHints": "Podpowiedzi sterowania",
-  "showHintsHint": "Wiersze objaśniające klawisze i gesty, takie jak ↑↓ czy Alt 1–9."
+  "showHintsHint": "Wiersze objaśniające klawisze i gesty, takie jak ↑↓ czy Alt 1–9.",
+  "settingsPageChanges": "Co nowego",
+  "changesSubtitle": "Co zmieniło się w każdej wersji",
+  "changesUnreleased": "Niewydane, już zainstalowane",
+  "changesCurrent": "zainstalowana",
+  "changesShowOlder": "Pokaż starsze wersje",
+  "changesEnglishNote": "Dziennik jest prowadzony po angielsku.",
+  "changesNone": "Nie znaleziono dziennika zmian."
 }

@@ -472,5 +472,12 @@ var entries = {
   "sourceGroupMoonViewDetails": "ตำแหน่งของดวงจันทร์บนท้องฟ้าของสถานที่ปัจจุบัน ความเอียงของด้านสว่าง เวลาขึ้นและตก คำนวณบนคอมพิวเตอร์นี้ด้วยสูตรจาก Astronomical Algorithms ของ Jean Meeus ตรวจสอบกับ JPL Horizons",
   "sourceGroupMoonViewCoverage": "ทั่วโลก สำหรับทุกสถานที่",
   "showHints": "คำแนะนำการควบคุม",
-  "showHintsHint": "บรรทัดที่อธิบายปุ่มและท่าทาง เช่น ↑↓ หรือ Alt 1–9"
+  "showHintsHint": "บรรทัดที่อธิบายปุ่มและท่าทาง เช่น ↑↓ หรือ Alt 1–9",
+  "settingsPageChanges": "มีอะไรใหม่",
+  "changesSubtitle": "สิ่งที่เปลี่ยนในแต่ละเวอร์ชัน",
+  "changesUnreleased": "ยังไม่เผยแพร่ ติดตั้งแล้ว",
+  "changesCurrent": "ติดตั้งแล้ว",
+  "changesShowOlder": "แสดงเวอร์ชันเก่ากว่า",
+  "changesEnglishNote": "บันทึกนี้เขียนเป็นภาษาอังกฤษ",
+  "changesNone": "ไม่พบบันทึกการเปลี่ยนแปลง"
 }

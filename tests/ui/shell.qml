@@ -526,7 +526,8 @@ ShellRoot {
     // Moon view "as seen from here": the shown place's tilt.
     function() { display("globeMoonStyle", "earth") },
     function() {},
-    function() { shot("09c2-globe-moon-from-here"); display("globeMoonStyle", "space") },
+    function() { shot("09c2-globe-moon-from-here") },
+    function() { display("globeMoonStyle", "space") },
     function() { panel.startEditingLocation() },
     function() { shot("10-search") },
     // "−" acts on the saved places only after Tab; in the results it is a
@@ -582,7 +583,7 @@ ShellRoot {
       press(Qt.Key_Space)
       check("tab-order", (function() {
         var pages = panel.settingsPages
-        return pages.indexOf("notifications") === 2 && pages.length === 5
+        return pages.indexOf("notifications") === 2 && pages.length === 6
       })())
     },
     // Search across the pages, with / and Esc.
@@ -608,6 +609,19 @@ ShellRoot {
     function() { shot("18-settings-shortcuts-end") },
     function() { panel.settingsPage = "sources" },
     function() { shot("19-settings-sources") },
+    // What's new: the change log, three versions, then "Show older".
+    function() { panel.settingsPage = "changes" },
+    function() {}, function() { shot("19b-settings-changes") },
+    function() { panel.settingsOpen = false; general("language", "de") },
+    function() { panel.openSettings("changes") },
+    function() {}, function() {}, function() { shot("19c-settings-changes-de") },
+    function() { general("language", "en") },
+    function() {
+      press(Qt.Key_Return)
+      check("changes-older", panel.settingsPage === "changes")
+    },
+    function() {}, function() { press(Qt.Key_End) },
+    function() {}, function() { shot("19d-settings-changes-older-end") },
     function() { panel.settingsOpen = false; general("language", "de"); panel.activeTab = "rain" },
     function() { shot("20-tab-rain-de") },
     function() { panel.openSettings("shortcuts") },

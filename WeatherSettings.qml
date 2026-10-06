@@ -996,6 +996,12 @@ Rectangle {
         scrollBy((down ? 1 : -1) * Style.space(48))
         return true
       }
+      // What's new: Enter opens the older versions.
+      if (panel.settingsPage === "changes" && changesPage.hasOlder
+          && (key === Qt.Key_Return || key === Qt.Key_Enter || key === Qt.Key_Space)) {
+        changesPage.pressOlder()
+        return true
+      }
       return false
     }
 
@@ -1062,6 +1068,7 @@ Rectangle {
             textFormat: Text.PlainText
             text: panel.settingsPage === "shortcuts" ? panel.i18n("shortcutsSubtitle")
               : panel.settingsPage === "notifications" ? panel.i18n("notificationsSubtitle")
+              : panel.settingsPage === "changes" ? panel.i18n("changesSubtitle")
               : (panel.settingsPage === "general" ? panel.i18n("generalSubtitle")
               : (panel.settingsPage === "sources" ? panel.i18n("sourcesSubtitle")
                 : (panel.settingsTargetSurface === "app" ? panel.i18n("appSettings")
@@ -1122,9 +1129,10 @@ Rectangle {
 
       // Settings pages, styled like the rain / radar / wind tabs so they read
       // as navigation rather than as another option to choose.
-      Row {
+      // Six pages wrap onto a second line where their names are long.
+      Flow {
         id: settingsPageRow
-        anchors.horizontalCenter: parent.horizontalCenter
+        width: parent.width
         spacing: Style.space(5)
 
         Repeater {
@@ -1133,8 +1141,7 @@ Rectangle {
           Rectangle {
             required property string modelData
             readonly property bool selected: panel.settingsPage === modelData
-            // Five pages: narrow enough to fit the popup's width.
-            width: Math.max(Style.space(78), pageLabel.implicitWidth + Style.space(16))
+            width: Math.max(Style.space(64), pageLabel.implicitWidth + Style.space(14))
             height: Style.space(28)
             radius: Style.cornerRadius
             color: selected || pageMouse.containsMouse
@@ -1144,10 +1151,7 @@ Rectangle {
               textFormat: Text.PlainText
               id: pageLabel
               anchors.centerIn: parent
-              text: panel.upperLabel(panel.i18n(parent.modelData === "shortcuts" ? "settingsPageShortcuts"
-                : (parent.modelData === "sources" ? "settingsPageSources"
-                  : (parent.modelData === "notifications" ? "settingsPageNotifications"
-                    : (parent.modelData === "general" ? "settingsPageGeneral" : "settingsPageDisplay")))))
+              text: panel.upperLabel(panel.settingsPageName(parent.modelData))
               color: parent.selected
                 ? Style.hoverStateColor(panel.foreground, Color.accent)
                 : panel.mutedText
@@ -1249,6 +1253,15 @@ Rectangle {
       WeatherSourcesPage {
         visible: panel.settingsPage === "sources" && !settingsView.searching
         panel: settingsView.panel
+      }
+
+      // What's new: the plugin's change log.
+      WeatherChangesPage {
+        id: changesPage
+        visible: panel.settingsPage === "changes" && !settingsView.searching
+        panel: settingsView.panel
+        // The one control: "Show older versions", taken by Enter.
+        kbFocused: visible && hasOlder
       }
 
       // Keys on this page, in muted type where they act.

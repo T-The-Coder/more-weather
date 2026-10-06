@@ -472,5 +472,12 @@ var entries = {
   "sourceGroupMoonViewDetails": "Где Луна стоит на небе текущего места, наклон её освещённой стороны, восход и заход: вычислено на этом компьютере по формулам из Astronomical Algorithms Жана Меёса, проверено по JPL Horizons.",
   "sourceGroupMoonViewCoverage": "По всему миру, для каждого места.",
   "showHints": "Подсказки управления",
-  "showHintsHint": "Строки, объясняющие клавиши и жесты, например ↑↓ или Alt 1–9."
+  "showHintsHint": "Строки, объясняющие клавиши и жесты, например ↑↓ или Alt 1–9.",
+  "settingsPageChanges": "Что нового",
+  "changesSubtitle": "Что изменилось в каждой версии",
+  "changesUnreleased": "Не выпущено, уже установлено",
+  "changesCurrent": "установлена",
+  "changesShowOlder": "Показать старые версии",
+  "changesEnglishNote": "Журнал ведётся на английском.",
+  "changesNone": "Журнал изменений не найден."
 }

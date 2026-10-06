@@ -472,5 +472,12 @@ var entries = {
   "sourceGroupMoonViewDetails": "Missä Kuu on nykyisen paikan taivaalla, sen valaistun puolen kallistus, nousu ja lasku: laskettu tällä tietokoneella Jean Meeusin Astronomical Algorithms -kirjan kaavoilla, tarkistettu JPL Horizonsilla.",
   "sourceGroupMoonViewCoverage": "Koko maailma, jokaiselle paikalle.",
   "showHints": "Ohjausvihjeet",
-  "showHintsHint": "Rivit, jotka selittävät näppäimet ja eleet, kuten ↑↓ tai Alt 1–9."
+  "showHintsHint": "Rivit, jotka selittävät näppäimet ja eleet, kuten ↑↓ tai Alt 1–9.",
+  "settingsPageChanges": "Uutta",
+  "changesSubtitle": "Mikä muuttui kussakin versiossa",
+  "changesUnreleased": "Julkaisematon, jo asennettu",
+  "changesCurrent": "asennettu",
+  "changesShowOlder": "Näytä vanhemmat versiot",
+  "changesEnglishNote": "Lokia pidetään englanniksi.",
+  "changesNone": "Muutoslokia ei löytynyt."
 }

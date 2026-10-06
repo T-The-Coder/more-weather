@@ -4,17 +4,21 @@ All notable changes to More Weather are documented here.
 
 ## Unreleased
 
-- **Control hints** (Settings → General → App, on by default): off, the
+- **What's new:** a sixth settings page after Sources shows this change
+  log, one card per version, newest first (the installed one marked, the
+  older ones behind "Show older versions"); read from the plugin's own
+  `CHANGELOG.md` with the shared `Changelog.js`. The log stays English.
+- **Control hints:** a switch in Settings → General → App (on by default); off, the
   lines that explain keys and gestures go and give their room back — My
   places' "Alt 1–9", the hours' cursor keys, the globe's and the wind
   map's keys, "Ctrl + wheel to zoom" over the maps and the settings' key
   lines. The Shortcuts page, errors, empty states and legends stay.
-- The globe's chips for globe, flat map, moon and places show their glyph
+- **Glyph-only chips:** the globe's chips for globe, flat map, moon and places show their glyph
   alone; the full name appears a moment after the pointer rests on one,
   and stays their accessible name (as on the hero's buttons).
 
-- **The Moon as seen from the place** (`MoonView.js`, shared with More
-  Time, Meeus' formulas checked against JPL Horizons): the hero's moon,
+- **The Moon as seen from the place:** (`MoonView.js`, shared with More
+  Time, Meeus' formulas checked against JPL Horizons) the hero's moon,
   each row in My places and the globe's "Moon view: as seen from here"
   show the true tilt of the lit side for that place and minute, earthshine
   on a thin crescent, and a dimmed sphere while the Moon is below that
@@ -24,7 +28,7 @@ All notable changes to More Weather are documented here.
   glyph. Settings → Sources lists the calculation. The sun's colour comes
   from the shared `Sky.sunColor` (unchanged).
 
-- **Settings, rearranged.** A search field on top (`/`; `Esc` clears it,
+- **Settings, rearranged:** a search field on top (`/`; `Esc` clears it,
   then leaves) finds a setting on any page, in the interface language or
   in English, accents aside; the rows found work in place, grouped as
   "Page › Card › Section", Display rows for the view picked.
@@ -36,25 +40,25 @@ All notable changes to More Weather are documented here.
   Look, Motion, App, Back up and restore. The Globe card has Sky, Layers
   and Time sections; the globe-or-map choice is called **Shape**. Display
   can **copy** the widget's settings to the app and back (two presses).
-- The chips under the globe also switch the view: globe or flat map,
+- **View chips:** the chips under the globe also switch the view: globe or flat map,
   night, moon, places and the timeline.
-- "Mouse" heads the mouse shortcuts; a few settings texts read plainer
+- **Plainer texts:** "Mouse" heads the mouse shortcuts; a few settings texts read plainer
   ("Replace settings?", "Saved to …").
 
-- Turning the globe on the GPU got cheaper still: the coasts and the grid
+- **Cheaper turning:** turning the globe on the GPU got cheaper still: the coasts and the grid
   are a 2048 × 1024 picture of their own on a second surface, and up to z1
   the isobars with their highs and lows are painted into the colour
   layers' picture, so while the globe turns the Canvas draws only the sun,
   the moon, the places and their labels, the symbols and the rim (about
   2.6 ms per frame in the test harness, down from about 25).
-- One colour means one warmth everywhere: the globe's temperature and
+- **One temperature scale:** one colour means one warmth everywhere: the globe's temperature and
   sea layers use the text's colours (blue … red over −10 … 35 °C), and
   the scale goes on to a blue-violet at −40 °C and a dark magenta at 45 °C
   instead of stretching the same colours over −40 … 45 (one function,
   `TemperatureScale.js`). The layer is set to land on the text's colour
   over the page; the legend marks the bends; numbers on the globe take
   the colour too.
-- The globe's surface (sphere, land, colour layers, night) runs on the
+- **Globe on the GPU:** the globe's surface (sphere, land, colour layers, night) runs on the
   GPU up to z2 on the globe and the flat map: an equirectangular texture
   painted once per change of data, time, layers or theme, projected by a
   shader, so turning only changes a few numbers (about 4–5 % of a core at
@@ -62,18 +66,18 @@ All notable changes to More Weather are documented here.
   Lines, places, labels and symbols stay as they were; from z3, and where
   shaders cannot run, everything is drawn as before. Labels now stay while
   the globe turns by itself. `providerStatus` reports the globe's cost.
-- **Layer chips** under the globe and the flat map: every layer always
+- **Layer chips:** under the globe and the flat map: every layer always
   there as a toggle chip (glyph and short name; glyphs alone where it is
   narrow), the colour layers first, then isobars, storms and numbers;
   Shift + click or a right click shows one colour layer alone; letters
   `t` `e` `c` `p` `d` `i` `s` `u` on the keyboard. Below them a scale per
   colour layer, without controls. They replace the legend's × and "+"
   and set the same options as the Globe card.
-- **One Wind layer** with a mode: lines (default; now coloured by speed
+- **One Wind layer:** with a mode: lines (default; now coloured by speed
   on the wind scale), colour, or both; its scale row has the three-way
   switch and the height. The former wind colour and wind streaks
   switches carry over.
-- **Flat map** for the globe section (Settings → Display → Globe: Map
+- **Flat map:** for the globe section (Settings → Display → Globe: Map
   style): the earth in the Equal Earth projection, as in More Time, with
   everything the globe has: the colour layers, isobars, streaks, storm and
   thunderstorm symbols, numbers, night with its twilight, sun and moon, my
@@ -82,23 +86,23 @@ All notable changes to More Weather are documented here.
   map, the basemap's detail from z3. Both pictures sit behind one small
   projection interface (`GlobeProjection.js`), so the layers do not care
   which is shown. The flat map does not turn by itself.
-- **Moon** style on the globe: lit towards the sun as seen from space
+- **Moon:** style on the globe: lit towards the sun as seen from space
   (as before) or as the shown place sees its phase (Settings → Display →
   Globe, below Moon), shared with More Time.
-- **Tooltip on hover** for the menu bar (off by default): the bar's own
+- **Tooltip on hover:** for the menu bar (off by default): the bar's own
   tooltip repeats the entries the menu bar shows under the pointer, the
   hover ones included, one per line with the place first.
-- The globe's colour layers are smooth: each blends between its scale's
+- **Smooth colour layers:** the globe's colour layers are smooth: each blends between its scale's
   colours (no bands), the cloud's veil follows the cover continuously and
   precipitation fades in from 0.1 mm/h.
-- The globe animates only while it can be seen (the popup open, or the
+- **Animation only in view:** the globe animates only while it can be seen (the popup open, or the
   app's window active and shown): turning by itself, the streaks, the
   bolts' flashes and the timeline's playback stop otherwise, and at rest
   nothing repaints. Turning by itself has its frame rate as a setting
   (Settings → Display → Globe: 8, 15, 24 or 30 frames a second, 15 by
   default). While moving or playing, the layers draw at a lower
   resolution and every third frame.
-- **Several colour layers at once** on the globe: temperature, sea
+- **Several colour layers at once:** on the globe: temperature, sea
   temperature, wind, cloud and precipitation are now switches of their
   own (the former single choice carries over), composed in one pass
   from the bottom: the air's temperature (the sea's over the ocean when
@@ -108,10 +112,10 @@ All notable changes to More Weather are documented here.
   on; numbers and the pointer read the topmost layer with a value
   (precipitation where it rains, then the temperatures, wind, cloud), the
   pointer up to two ("12 °C · 1.2 mm/h").
-- The globe's colours end exactly at its rim, antialiased, with no
+- **Clean rim:** the globe's colours end exactly at its rim, antialiased, with no
   coloured halo outside: the layers are filled into the disc as a smoothly
   stretched pattern; the streaks and isobars are clipped to it too.
-- The globe's storm and thunderstorm symbols speak the plugin's language:
+- **Storm symbols:** the globe's storm and thunderstorm symbols speak the plugin's language:
   the Nerd Font's line glyphs (weather-windy, weather-lightning) in the
   wind and UV accents softened towards the text, with a thin halo of the
   page's colour, sized like the place markers' glyphs and a little larger
@@ -119,7 +123,7 @@ All notable changes to More Weather are documented here.
   bolts no longer flicker: each rests and flashes briefly once in 8–20 s,
   never in step with the others, and not while the globe is dragged or
   plays its timeline.
-- **The globe's forecast timeline**: under the globe, play / pause and a
+- **The globe's forecast timeline:** under the globe, play / pause and a
   track to drag or click, the whole earth up to five days ahead in
   3-hour steps, close up two days hourly (the chosen time stays when the
   zoom changes). One time drives everything: the colour layer, isobars,
@@ -132,7 +136,7 @@ All notable changes to More Weather are documented here.
   time ("Sun 15:00 · +27 h"). No extra requests: it reads the hours
   already loaded, and close up past a tile's 48 hours the whole earth's
   data stands in. On in the app, a switch (Timeline) in the popup.
-- **More on the globe**: the colour layer gains **wind** (in the wind
+- **More on the globe:** the colour layer gains **wind** (in the wind
   map's colours, in your wind unit) and the **sea's temperature** (from
   Open-Meteo Marine, −2 … 32 °C, land drawn over it); four overlays,
   each a switch in Settings → Display → Globe: **storms and
@@ -147,17 +151,17 @@ All notable changes to More Weather are documented here.
   the wind scale with its height, the sea's scale, and the isobars'
   spacing. Isobars, centres and symbols are worked out off the shell's
   thread once per time step (`GlobeLayers.js` in the worker).
-- The globe's data no longer asks again every ten seconds after a failed
+- **Fewer retries:** the globe's data no longer asks again every ten seconds after a failed
   or unreadable answer: such a key waits 10 minutes, then twice as long
   each time, up to 6 hours.
-- **Air pressure** (hPa at sea level, or inHg with US units), off by default:
+- **Air pressure:** (hPa at sea level, or inHg with US units), off by default:
   in the menu bar (with **Relevant** while it rises or falls by 1.5 hPa or
   more in three hours, and **Hover**), in the current weather with its trend
   as an arrow (following the hour cursor; the trend in words on hover), in
   the hourly forecast and as the day's mean in the daily forecast. From
   Open-Meteo (`pressure_msl`, two more variables in the forecast request),
   MET Norway and, in the DWD area, Bright Sky (MOSMIX).
-- **Weather on the globe**: a colour layer for the temperature (default,
+- **Weather on the globe:** a colour layer for the temperature (default,
   −40 … 45 °C in the plugin's accent colours), cloud (a white veil) or
   precipitation (radar colours, 0.1 to 20 mm/h), from Open-Meteo's model:
   510 points for the whole earth in seven batches, one every ten seconds,
@@ -171,7 +175,7 @@ All notable changes to More Weather are documented here.
   layer), the value under the pointer with the place's coordinates, a
   dropdown and budget hint in Settings → Display → Globe, and a "Globe"
   entry on the Sources page with today's calls.
-- The globe **tilts and zooms**: a drag turns and tilts it (up to 80°), Ctrl
+- **Tilt and zoom:** the globe tilts and zooms: a drag turns and tilts it (up to 80°), Ctrl
   + wheel and a double click zoom towards the pointer, `+` `−` and its
   buttons zoom, the crosshair brings the shown place to the middle, `0`
   goes back to the whole globe; Ctrl + arrows turn and tilt by 15°, or a
@@ -182,7 +186,7 @@ All notable changes to More Weather are documented here.
   From z2 a drag moves the picture and draws it anew on release. Turning
   by itself stays on the whole disc (z0, z1) and keeps the tilt. View
   arithmetic in `GlobeView.js` with Node tests.
-- **Globe**, a new section (in the app a tab after the wind map, off in the
+- **Globe:** a new section (in the app a tab after the wind map, off in the
   popup): the earth with day and night in three twilight steps, the sun and
   the moon overhead, and my places as markers with their symbol and
   temperature from the stored forecasts, no new requests. A drag, Shift +
@@ -194,10 +198,10 @@ All notable changes to More Weather are documented here.
   `Globe.js` view, `Sky.js` and `data/globe-land.json` from More Time; while
   it turns it draws a coarser coastline, about 17 ms a frame at 500 and
   840 px.
-- The current weather shows as many value columns as fit beside the
+- **More value columns:** the current weather shows as many value columns as fit beside the
   temperature, in their order, instead of running into it in a narrow
   window.
-- Settings: when "Reset general settings" disappears, the cursor moves to
+- **Settings focus:** when "Reset general settings" disappears, the cursor moves to
   its neighbour without a binding loop warning.
 
 ## 3.1.0 — 2026-10-03

@@ -472,5 +472,12 @@ var entries = {
   "sourceGroupMoonViewDetails": "वर्तमान स्थान के आकाश में चंद्रमा कहाँ है, उसके प्रकाशित भाग का झुकाव, उदय और अस्त: इसी कंप्यूटर पर जीन मीउस की Astronomical Algorithms के सूत्रों से गणना, JPL Horizons से जाँची गई।",
   "sourceGroupMoonViewCoverage": "दुनिया भर में, हर स्थान के लिए।",
   "showHints": "नियंत्रण संकेत",
-  "showHintsHint": "कुंजियाँ और इशारे समझाने वाली पंक्तियाँ, जैसे ↑↓ या Alt 1–9।"
+  "showHintsHint": "कुंजियाँ और इशारे समझाने वाली पंक्तियाँ, जैसे ↑↓ या Alt 1–9।",
+  "settingsPageChanges": "नया क्या है",
+  "changesSubtitle": "हर संस्करण में क्या बदला",
+  "changesUnreleased": "अप्रकाशित, पहले से इंस्टॉल",
+  "changesCurrent": "इंस्टॉल",
+  "changesShowOlder": "पुराने संस्करण दिखाएँ",
+  "changesEnglishNote": "लॉग अंग्रेज़ी में रखा जाता है।",
+  "changesNone": "कोई बदलाव लॉग नहीं मिला।"
 }

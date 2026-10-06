@@ -472,5 +472,12 @@ var entries = {
   "sourceGroupMoonViewDetails": "Vị trí Mặt Trăng trên bầu trời nơi hiện tại, độ nghiêng phần sáng, giờ mọc và lặn: tính trên máy này bằng công thức trong Astronomical Algorithms của Jean Meeus, đối chiếu với JPL Horizons.",
   "sourceGroupMoonViewCoverage": "Toàn thế giới, cho từng địa điểm.",
   "showHints": "Gợi ý điều khiển",
-  "showHintsHint": "Các dòng giải thích phím và cử chỉ, như ↑↓ hoặc Alt 1–9."
+  "showHintsHint": "Các dòng giải thích phím và cử chỉ, như ↑↓ hoặc Alt 1–9.",
+  "settingsPageChanges": "Có gì mới",
+  "changesSubtitle": "Những thay đổi trong mỗi phiên bản",
+  "changesUnreleased": "Chưa phát hành, đã cài đặt",
+  "changesCurrent": "đã cài",
+  "changesShowOlder": "Hiện các phiên bản cũ hơn",
+  "changesEnglishNote": "Nhật ký được viết bằng tiếng Anh.",
+  "changesNone": "Không tìm thấy nhật ký thay đổi."
 }

@@ -472,5 +472,12 @@ var entries = {
   "sourceGroupMoonViewDetails": "Où la Lune se trouve dans le ciel du lieu actuel, l’inclinaison de sa partie éclairée, son lever et son coucher : calculés sur cet ordinateur avec les formules des Astronomical Algorithms de Jean Meeus, vérifiés avec JPL Horizons.",
   "sourceGroupMoonViewCoverage": "Monde entier, pour chaque lieu.",
   "showHints": "Aide aux commandes",
-  "showHintsHint": "Les lignes qui expliquent les touches et les gestes, comme ↑↓ ou Alt 1–9."
+  "showHintsHint": "Les lignes qui expliquent les touches et les gestes, comme ↑↓ ou Alt 1–9.",
+  "settingsPageChanges": "Nouveautés",
+  "changesSubtitle": "Ce qui a changé dans chaque version",
+  "changesUnreleased": "Non publié, déjà installé",
+  "changesCurrent": "installée",
+  "changesShowOlder": "Afficher les versions plus anciennes",
+  "changesEnglishNote": "Le journal est tenu en anglais.",
+  "changesNone": "Aucun journal des modifications trouvé."
 }

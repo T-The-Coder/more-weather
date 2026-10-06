@@ -472,5 +472,12 @@ var entries = {
   "sourceGroupMoonViewDetails": "היכן הירח עומד בשמי המקום הנוכחי, הטיית הצד המואר שלו, זריחתו ושקיעתו: מחושבים במחשב הזה בנוסחאות מתוך Astronomical Algorithms של ז'אן מֵאוּס, ונבדקו מול JPL Horizons.",
   "sourceGroupMoonViewCoverage": "בכל העולם, לכל מקום.",
   "showHints": "רמזי שליטה",
-  "showHintsHint": "השורות שמסבירות מקשים ומחוות, כמו ↑↓ או Alt 1–9."
+  "showHintsHint": "השורות שמסבירות מקשים ומחוות, כמו ↑↓ או Alt 1–9.",
+  "settingsPageChanges": "מה חדש",
+  "changesSubtitle": "מה השתנה בכל גרסה",
+  "changesUnreleased": "לא פורסם, כבר מותקן",
+  "changesCurrent": "מותקנת",
+  "changesShowOlder": "הצגת גרסאות ישנות יותר",
+  "changesEnglishNote": "היומן נכתב באנגלית.",
+  "changesNone": "לא נמצא יומן שינויים."
 }

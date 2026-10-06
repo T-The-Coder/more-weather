@@ -472,5 +472,12 @@ var entries = {
   "sourceGroupMoonViewDetails": "Letak Bulan di langit tempat saat ini, kemiringan sisi terangnya, terbit dan terbenamnya: dihitung di komputer ini dengan rumus dari Astronomical Algorithms karya Jean Meeus, diperiksa dengan JPL Horizons.",
   "sourceGroupMoonViewCoverage": "Seluruh dunia, untuk setiap tempat.",
   "showHints": "Petunjuk kontrol",
-  "showHintsHint": "Baris yang menjelaskan tombol dan gerakan, seperti ↑↓ atau Alt 1–9."
+  "showHintsHint": "Baris yang menjelaskan tombol dan gerakan, seperti ↑↓ atau Alt 1–9.",
+  "settingsPageChanges": "Yang baru",
+  "changesSubtitle": "Apa yang berubah di setiap versi",
+  "changesUnreleased": "Belum dirilis, sudah terpasang",
+  "changesCurrent": "terpasang",
+  "changesShowOlder": "Tampilkan versi lama",
+  "changesEnglishNote": "Log ditulis dalam bahasa Inggris.",
+  "changesNone": "Log perubahan tidak ditemukan."
 }

@@ -472,5 +472,12 @@ var entries = {
   "sourceGroupMoonViewDetails": "Kde Měsíc stojí na obloze aktuálního místa, sklon jeho osvětlené strany, východ a západ: spočteno na tomto počítači podle vzorců z Astronomical Algorithms Jeana Meeuse, ověřeno s JPL Horizons.",
   "sourceGroupMoonViewCoverage": "Celý svět, pro každé místo.",
   "showHints": "Nápověda k ovládání",
-  "showHintsHint": "Řádky, které vysvětlují klávesy a gesta, třeba ↑↓ nebo Alt 1–9."
+  "showHintsHint": "Řádky, které vysvětlují klávesy a gesta, třeba ↑↓ nebo Alt 1–9.",
+  "settingsPageChanges": "Co je nového",
+  "changesSubtitle": "Co se změnilo v každé verzi",
+  "changesUnreleased": "Nevydáno, už nainstalováno",
+  "changesCurrent": "nainstalováno",
+  "changesShowOlder": "Zobrazit starší verze",
+  "changesEnglishNote": "Záznam je veden anglicky.",
+  "changesNone": "Záznam změn nebyl nalezen."
 }

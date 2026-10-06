@@ -472,5 +472,12 @@ var entries = {
   "sourceGroupMoonViewDetails": "أين يقف القمر في سماء المكان الحالي، وميل جانبه المضيء، وشروقه وغروبه: محسوبة على هذا الحاسوب بمعادلات كتاب Astronomical Algorithms لجان ميوس، ومتحقق منها مع JPL Horizons.",
   "sourceGroupMoonViewCoverage": "في جميع أنحاء العالم، لكل مكان.",
   "showHints": "تلميحات التحكم",
-  "showHintsHint": "الأسطر التي تشرح المفاتيح والإيماءات، مثل ↑↓ أو Alt 1–9."
+  "showHintsHint": "الأسطر التي تشرح المفاتيح والإيماءات، مثل ↑↓ أو Alt 1–9.",
+  "settingsPageChanges": "ما الجديد",
+  "changesSubtitle": "ما الذي تغيّر في كل إصدار",
+  "changesUnreleased": "غير منشور، مثبت بالفعل",
+  "changesCurrent": "مثبت",
+  "changesShowOlder": "عرض الإصدارات الأقدم",
+  "changesEnglishNote": "يُكتب السجل بالإنجليزية.",
+  "changesNone": "لم يُعثر على سجل التغييرات."
 }

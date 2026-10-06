@@ -472,5 +472,12 @@ var entries = {
   "sourceGroupMoonViewDetails": "Hvor Månen står på himmelen over gjeldende sted, helningen av den opplyste siden, opp- og nedgang: beregnet på denne datamaskinen med formlene fra Jean Meeus' Astronomical Algorithms, kontrollert mot JPL Horizons.",
   "sourceGroupMoonViewCoverage": "Hele verden, for hvert sted.",
   "showHints": "Betjeningstips",
-  "showHintsHint": "Linjene som forklarer taster og bevegelser, som ↑↓ eller Alt 1–9."
+  "showHintsHint": "Linjene som forklarer taster og bevegelser, som ↑↓ eller Alt 1–9.",
+  "settingsPageChanges": "Nyheter",
+  "changesSubtitle": "Hva som endret seg i hver versjon",
+  "changesUnreleased": "Ikke utgitt, allerede installert",
+  "changesCurrent": "installert",
+  "changesShowOlder": "Vis eldre versjoner",
+  "changesEnglishNote": "Loggen føres på engelsk.",
+  "changesNone": "Fant ingen endringslogg."
 }

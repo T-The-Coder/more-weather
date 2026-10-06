@@ -506,5 +506,12 @@ var catalog = {
   "sourceGroupMoonViewDetails": "Where the Moon stands in the sky of the current place, the tilt of its lit side, its rise and set: computed on this computer with the formulas of Jean Meeus' Astronomical Algorithms, checked against JPL Horizons.",
   "sourceGroupMoonViewCoverage": "Worldwide, for each place.",
   "showHints": "Control hints",
-  "showHintsHint": "The lines that explain keys and gestures, such as ↑↓ or Alt 1–9."
+  "showHintsHint": "The lines that explain keys and gestures, such as ↑↓ or Alt 1–9.",
+  "settingsPageChanges": "What's new",
+  "changesSubtitle": "What changed in each version",
+  "changesUnreleased": "Unreleased, already installed",
+  "changesCurrent": "installed",
+  "changesShowOlder": "Show older versions",
+  "changesEnglishNote": "The log is kept in English.",
+  "changesNone": "No change log found."
 }

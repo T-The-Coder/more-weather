@@ -85,7 +85,7 @@ test("every key used in the QML exists", () => {
     for (const key of labels) used.add(key)
   // Section tabs (Panel.sectionTabLabel) and the settings pages.
   for (const section of ["airTab", "myPlaces", "hourly", "daily", "rain", "radar", "wind", "globe"]) used.add(section)
-  for (const page of ["General", "Display", "Notifications", "Shortcuts", "Sources"]) used.add("settingsPage" + page)
+  for (const page of ["General", "Display", "Notifications", "Shortcuts", "Sources", "Changes"]) used.add("settingsPage" + page)
   for (const surface of ["menubar", "widget", "app"]) used.add(surface + "Settings")
   const missing = [...used].filter((key) => !(key in english)).sort()
   assert.deepEqual(missing, [])

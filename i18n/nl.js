@@ -472,5 +472,12 @@ var entries = {
   "sourceGroupMoonViewDetails": "Waar de maan aan de hemel van de huidige plaats staat, de helling van haar verlichte kant, op- en ondergang: op deze computer berekend met de formules uit Astronomical Algorithms van Jean Meeus, gecontroleerd met JPL Horizons.",
   "sourceGroupMoonViewCoverage": "Wereldwijd, voor elke plaats.",
   "showHints": "Bedieningstips",
-  "showHintsHint": "De regels die toetsen en gebaren uitleggen, zoals ↑↓ of Alt 1–9."
+  "showHintsHint": "De regels die toetsen en gebaren uitleggen, zoals ↑↓ of Alt 1–9.",
+  "settingsPageChanges": "Wat is er nieuw",
+  "changesSubtitle": "Wat er in elke versie veranderde",
+  "changesUnreleased": "Nog niet uitgebracht, al geïnstalleerd",
+  "changesCurrent": "geïnstalleerd",
+  "changesShowOlder": "Oudere versies tonen",
+  "changesEnglishNote": "Het logboek wordt in het Engels bijgehouden.",
+  "changesNone": "Geen wijzigingslogboek gevonden."
 }

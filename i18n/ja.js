@@ -472,5 +472,12 @@ var entries = {
   "sourceGroupMoonViewDetails": "現在地の空での月の位置、輝面の傾き、出と入り。ジャン・メーウスの Astronomical Algorithms の式でこのコンピューター上で計算し、JPL Horizons と照合済み。",
   "sourceGroupMoonViewCoverage": "全世界、場所ごとに。",
   "showHints": "操作のヒント",
-  "showHintsHint": "↑↓ や Alt 1–9 など、キーと操作を説明する行。"
+  "showHintsHint": "↑↓ や Alt 1–9 など、キーと操作を説明する行。",
+  "settingsPageChanges": "新着情報",
+  "changesSubtitle": "各バージョンの変更点",
+  "changesUnreleased": "未リリース（インストール済み）",
+  "changesCurrent": "インストール済み",
+  "changesShowOlder": "古いバージョンを表示",
+  "changesEnglishNote": "この記録は英語で書かれています。",
+  "changesNone": "変更履歴が見つかりません。"
 }

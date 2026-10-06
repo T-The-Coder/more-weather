@@ -472,5 +472,12 @@ var entries = {
   "sourceGroupMoonViewDetails": "Dónde está la Luna en el cielo del lugar actual, la inclinación de su lado iluminado, su salida y su puesta: calculados en este ordenador con las fórmulas de Astronomical Algorithms de Jean Meeus, comprobados con JPL Horizons.",
   "sourceGroupMoonViewCoverage": "Todo el mundo, para cada lugar.",
   "showHints": "Ayudas de control",
-  "showHintsHint": "Las líneas que explican teclas y gestos, como ↑↓ o Alt 1–9."
+  "showHintsHint": "Las líneas que explican teclas y gestos, como ↑↓ o Alt 1–9.",
+  "settingsPageChanges": "Novedades",
+  "changesSubtitle": "Qué cambió en cada versión",
+  "changesUnreleased": "Sin publicar, ya instalado",
+  "changesCurrent": "instalada",
+  "changesShowOlder": "Mostrar versiones anteriores",
+  "changesEnglishNote": "El registro está en inglés.",
+  "changesNone": "No se encontró el registro de cambios."
 }

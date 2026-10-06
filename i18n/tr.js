@@ -472,5 +472,12 @@ var entries = {
   "sourceGroupMoonViewDetails": "Ay'ın geçerli yerin gökyüzünde nerede durduğu, aydınlık yüzünün eğimi, doğuşu ve batışı: bu bilgisayarda Jean Meeus'ün Astronomical Algorithms formülleriyle hesaplanır, JPL Horizons ile doğrulanmıştır.",
   "sourceGroupMoonViewCoverage": "Dünya genelinde, her yer için.",
   "showHints": "Kontrol ipuçları",
-  "showHintsHint": "Tuşları ve hareketleri açıklayan satırlar, örneğin ↑↓ ya da Alt 1–9."
+  "showHintsHint": "Tuşları ve hareketleri açıklayan satırlar, örneğin ↑↓ ya da Alt 1–9.",
+  "settingsPageChanges": "Yenilikler",
+  "changesSubtitle": "Her sürümde neler değişti",
+  "changesUnreleased": "Yayımlanmadı, zaten kurulu",
+  "changesCurrent": "kurulu",
+  "changesShowOlder": "Eski sürümleri göster",
+  "changesEnglishNote": "Günlük İngilizce tutulur.",
+  "changesNone": "Değişiklik günlüğü bulunamadı."
 }

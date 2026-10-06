@@ -472,5 +472,12 @@ var entries = {
   "sourceGroupMoonViewDetails": "Var Månen står på himlen över den aktuella platsen, lutningen på dess belysta sida, upp- och nedgång: beräknat på den här datorn med formlerna i Jean Meeus Astronomical Algorithms, kontrollerat mot JPL Horizons.",
   "sourceGroupMoonViewCoverage": "Hela världen, för varje plats.",
   "showHints": "Kontrolltips",
-  "showHintsHint": "Raderna som förklarar tangenter och gester, som ↑↓ eller Alt 1–9."
+  "showHintsHint": "Raderna som förklarar tangenter och gester, som ↑↓ eller Alt 1–9.",
+  "settingsPageChanges": "Nyheter",
+  "changesSubtitle": "Vad som ändrades i varje version",
+  "changesUnreleased": "Ej utgivet, redan installerat",
+  "changesCurrent": "installerad",
+  "changesShowOlder": "Visa äldre versioner",
+  "changesEnglishNote": "Loggen förs på engelska.",
+  "changesNone": "Ingen ändringslogg hittades."
 }

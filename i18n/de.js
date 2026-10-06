@@ -506,5 +506,12 @@ var catalog = {
   "sourceGroupMoonViewDetails": "Wo der Mond am Himmel des aktuellen Orts steht, die Neigung seiner hellen Seite, Auf- und Untergang: auf diesem Rechner mit den Formeln aus Jean Meeus' Astronomical Algorithms berechnet, geprüft mit JPL Horizons.",
   "sourceGroupMoonViewCoverage": "Weltweit, für jeden Ort.",
   "showHints": "Bedienhinweise",
-  "showHintsHint": "Die Zeilen, die Tasten und Gesten erklären, etwa ↑↓ oder Alt 1–9."
+  "showHintsHint": "Die Zeilen, die Tasten und Gesten erklären, etwa ↑↓ oder Alt 1–9.",
+  "settingsPageChanges": "Neuigkeiten",
+  "changesSubtitle": "Was sich in jeder Version geändert hat",
+  "changesUnreleased": "Unveröffentlicht, schon installiert",
+  "changesCurrent": "installiert",
+  "changesShowOlder": "Ältere Versionen zeigen",
+  "changesEnglishNote": "Das Protokoll wird auf Englisch geführt.",
+  "changesNone": "Kein Änderungsprotokoll gefunden."
 }

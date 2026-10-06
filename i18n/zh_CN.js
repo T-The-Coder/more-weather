@@ -472,5 +472,12 @@ var entries = {
   "sourceGroupMoonViewDetails": "月亮在当前地点天空中的位置、亮面的倾斜、升起和落下：在本机按 Jean Meeus《Astronomical Algorithms》的公式计算，并与 JPL Horizons 核对。",
   "sourceGroupMoonViewCoverage": "全球，每个地点各自计算。",
   "showHints": "操作提示",
-  "showHintsHint": "说明按键和手势的行，例如 ↑↓ 或 Alt 1–9。"
+  "showHintsHint": "说明按键和手势的行，例如 ↑↓ 或 Alt 1–9。",
+  "settingsPageChanges": "新功能",
+  "changesSubtitle": "每个版本的变化",
+  "changesUnreleased": "未发布，已安装",
+  "changesCurrent": "已安装",
+  "changesShowOlder": "显示更早的版本",
+  "changesEnglishNote": "日志以英文记录。",
+  "changesNone": "未找到更新日志。"
 }

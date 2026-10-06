@@ -472,5 +472,12 @@ var entries = {
   "sourceGroupMoonViewDetails": "현재 장소의 하늘에서 달의 위치, 밝은 쪽의 기울기, 뜨고 지는 시각: 장 뮤스의 Astronomical Algorithms 공식으로 이 컴퓨터에서 계산하고 JPL Horizons와 대조했습니다.",
   "sourceGroupMoonViewCoverage": "전 세계, 장소마다.",
   "showHints": "조작 안내",
-  "showHintsHint": "↑↓나 Alt 1–9처럼 키와 동작을 설명하는 줄."
+  "showHintsHint": "↑↓나 Alt 1–9처럼 키와 동작을 설명하는 줄.",
+  "settingsPageChanges": "새로운 점",
+  "changesSubtitle": "버전마다 바뀐 점",
+  "changesUnreleased": "미출시, 이미 설치됨",
+  "changesCurrent": "설치됨",
+  "changesShowOlder": "이전 버전 보기",
+  "changesEnglishNote": "기록은 영어로 작성됩니다.",
+  "changesNone": "변경 기록을 찾을 수 없습니다."
 }

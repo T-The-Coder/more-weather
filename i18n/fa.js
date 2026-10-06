@@ -472,5 +472,12 @@ var entries = {
   "sourceGroupMoonViewDetails": "ماه در آسمان مکان کنونی کجاست، کجی بخش روشن آن، طلوع و غروبش: روی همین رایانه با فرمول‌های کتاب Astronomical Algorithms ژان میوس حساب شده و با JPL Horizons سنجیده شده است.",
   "sourceGroupMoonViewCoverage": "در سراسر جهان، برای هر مکان.",
   "showHints": "راهنمای کنترل‌ها",
-  "showHintsHint": "سطرهایی که کلیدها و حرکت‌ها را توضیح می‌دهند، مانند ↑↓ یا Alt 1–9."
+  "showHintsHint": "سطرهایی که کلیدها و حرکت‌ها را توضیح می‌دهند، مانند ↑↓ یا Alt 1–9.",
+  "settingsPageChanges": "تازه‌ها",
+  "changesSubtitle": "در هر نسخه چه تغییر کرد",
+  "changesUnreleased": "منتشرنشده، از قبل نصب‌شده",
+  "changesCurrent": "نصب‌شده",
+  "changesShowOlder": "نمایش نسخه‌های قدیمی‌تر",
+  "changesEnglishNote": "این گزارش به انگلیسی نوشته می‌شود.",
+  "changesNone": "گزارش تغییراتی پیدا نشد."
 }

@@ -472,5 +472,12 @@ var entries = {
   "sourceGroupMoonViewDetails": "Unde stă Luna pe cerul locului curent, înclinarea părții luminate, răsăritul și apusul: calculate pe acest calculator cu formulele din Astronomical Algorithms de Jean Meeus, verificate cu JPL Horizons.",
   "sourceGroupMoonViewCoverage": "În toată lumea, pentru fiecare loc.",
   "showHints": "Indicii de control",
-  "showHintsHint": "Rândurile care explică tastele și gesturile, precum ↑↓ sau Alt 1–9."
+  "showHintsHint": "Rândurile care explică tastele și gesturile, precum ↑↓ sau Alt 1–9.",
+  "settingsPageChanges": "Noutăți",
+  "changesSubtitle": "Ce s-a schimbat în fiecare versiune",
+  "changesUnreleased": "Nepublicat, deja instalat",
+  "changesCurrent": "instalată",
+  "changesShowOlder": "Arată versiunile mai vechi",
+  "changesEnglishNote": "Jurnalul este ținut în engleză.",
+  "changesNone": "Nu s-a găsit jurnalul de modificări."
 }

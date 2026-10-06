@@ -472,5 +472,12 @@ var entries = {
   "sourceGroupMoonViewDetails": "Hol áll a Hold a jelenlegi hely egén, megvilágított oldalának dőlése, kelte és nyugta: ezen a gépen számolva Jean Meeus Astronomical Algorithms képleteivel, a JPL Horizonsszal ellenőrizve.",
   "sourceGroupMoonViewCoverage": "Világszerte, minden helyre.",
   "showHints": "Kezelési tippek",
-  "showHintsHint": "A billentyűket és mozdulatokat magyarázó sorok, például ↑↓ vagy Alt 1–9."
+  "showHintsHint": "A billentyűket és mozdulatokat magyarázó sorok, például ↑↓ vagy Alt 1–9.",
+  "settingsPageChanges": "Újdonságok",
+  "changesSubtitle": "Mi változott az egyes verziókban",
+  "changesUnreleased": "Kiadatlan, már telepítve",
+  "changesCurrent": "telepítve",
+  "changesShowOlder": "Régebbi verziók mutatása",
+  "changesEnglishNote": "A napló angolul készül.",
+  "changesNone": "Nem található változásnapló."
 }
