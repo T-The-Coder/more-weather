@@ -59,7 +59,9 @@ ShellRoot {
   // colour layers meet the rim.
   function rimShot(name) {
     var g = panel.globeItem
-    var keys = ["globeWind", "globeIsobars", "globeStorms", "globeMarkers"]
+    // Only the wash at the rim: the sun (with the night) and the moon can
+    // stand at the limb and reach past it.
+    var keys = ["globeWind", "globeIsobars", "globeStorms", "globeMarkers", "globeNight", "globeMoon"]
     var before = keys.map(function(key) { return panel.displaySetting(key, false) })
     keys.forEach(function(key) { panel.setViewDisplaySetting(key, false) })
     var at = g.mapToItem(panel.contentRoot, g.centerX, g.centerY)
@@ -202,6 +204,9 @@ ShellRoot {
       list.push(function() { panel.activeTab = tab; panel.scrollWeatherBy(-100000) }, function() {}, function() {},
         function() { shot("A" + tag + "-tab-" + tab) })
     })
+    // The globe's chips and legend below it.
+    list.push(function() { panel.activeTab = "globe"; panel.scrollWeatherBy(100000) }, function() {}, function() {},
+      function() { shot("A" + tag + "-tab-globe-end") })
     ;["general", "display", "notifications", "shortcuts", "sources", "changes"].forEach(function(page) {
       list.push(function() { panel.openSettings(page) }, function() {}, function() { shot("A" + tag + "-settings-" + page) })
     })

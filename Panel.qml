@@ -472,6 +472,12 @@ Panel {
   // softened towards the text until it reads 3:1 on the popup's background
   // (Sky.sunColor, shared with More Time).
   function rgbOf(c) { return [c.r, c.g, c.b] }
+  // A key line ("↑↓ choose · ← → change · …") wraps only after a "·": each
+  // group stays whole and no "·" or single word starts a line alone (as
+  // More Time's keepSeparators).
+  function keepSeparators(text) {
+    return String(text).split(" · ").map(function(group) { return group.replace(/ /g, "\u00a0") }).join("\u00a0· ")
+  }
   readonly property color sunColor: Sky.sunColor(rgbOf(foreground), rgbOf(Color.popups.background))
   // Rain probability: green, yellow, cyan, blue as it rises.
   // Rain chance from the text colour at 0 % through cyan, dark blue and

@@ -95,7 +95,8 @@ Column {
   // The table as a block, centred in the section (title and key hint keep
   // the section's edges like every other section's).
   readonly property real blockWidth: Math.min(width, valuesX + (columns.length ? valuesWidth : 0) + Style.space(10))
-  readonly property real blockX: Math.max(0, Math.floor((width - blockWidth) / 2))
+  // At the left content edge, under the section's title.
+  readonly property real blockX: 0
   readonly property var columnWidths: {
     var widths = {}
     for (var c = 0; c < columns.length; ++c) widths[columns[c]] = columnWidth(columns[c])
@@ -129,6 +130,8 @@ Column {
     Text {
       textFormat: Text.PlainText
       anchors.right: parent.right
+      // Clear of the edge: the arrows reach past their advance.
+      rightPadding: Style.space(2)
       anchors.baseline: favoritesTitle.baseline
       width: Math.min(implicitWidth, parent.width - favoritesTitle.implicitWidth - Style.space(12))
       visible: panel.showHints

@@ -1245,7 +1245,7 @@ Rectangle {
         width: parent.width
         horizontalAlignment: Text.AlignHCenter
         visible: panel.showHints
-        text: panel.i18n("settingsPagesKeysHint")
+        text: panel.keepSeparators(panel.i18n("settingsPagesKeysHint"))
         color: panel.hintText
         font.family: panel.fontFamily
         font.pixelSize: Style.font.caption
@@ -1350,7 +1350,7 @@ Rectangle {
         textFormat: Text.PlainText
         visible: panel.settingsPage === "general" && !settingsView.searching && panel.showHints
         width: parent.width
-        text: panel.i18n("settingsGeneralKeysHint")
+        text: panel.keepSeparators(panel.i18n("settingsGeneralKeysHint"))
         color: panel.hintText
         font.family: panel.fontFamily
         font.pixelSize: Style.font.caption
@@ -1899,7 +1899,7 @@ Rectangle {
         textFormat: Text.PlainText
         visible: panel.settingsPage === "display" && !settingsView.searching && panel.showHints
         width: parent.width
-        text: panel.i18n("settingsKeysHint")
+        text: panel.keepSeparators(panel.i18n("settingsKeysHint"))
         color: panel.hintText
         font.family: panel.fontFamily
         font.pixelSize: Style.font.caption

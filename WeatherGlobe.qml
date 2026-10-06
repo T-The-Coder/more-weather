@@ -67,6 +67,8 @@ Column {
     Text {
       textFormat: Text.PlainText
       anchors.right: parent.right
+      // Clear of the edge: the arrows reach past their advance.
+      rightPadding: Style.space(2)
       anchors.baseline: globeTitle.baseline
       width: Math.min(implicitWidth, parent.width - globeTitle.implicitWidth - Style.space(12))
       visible: panel.showHints
@@ -941,7 +943,7 @@ Column {
           ctx.fill()
         }
         var sun = screenPoint(sky.sun.lat, sky.sun.lon)
-        if (globe.showNight && sun.visible) Sky.paintSun(ctx, sun.x, sun.y, rgba(globe.panel.sunColor, 0.95))
+        if (globe.showNight && sun.visible) Sky.paintSun(ctx, sun.x, sun.y, rgba(globe.panel.sunColor, 0.95), globe.rgbOf(Color.popups.background))
         // The moon floats above its sub-lunar point, its shadow on the
         // surface; on the whole disc only, hidden behind the globe.
         var moon = zoom <= 1 ? sky.moon : null
@@ -1151,7 +1153,8 @@ Column {
           ctx.font = place.active ? boldFont : labelFont
           var labelColor = place.muted ? rgba(ink, 0.45) : (place.active ? accent : ink)
           for (var v = 0; v < labels.length; v++)
-            if (placeLabel(ctx, labels[v], p, 8, fontPx, taken, labelColor)) break
+            // The shown place's label clears its ring (radius 7).
+            if (placeLabel(ctx, labels[v], p, place.active ? 12 : 8, fontPx, taken, labelColor)) break
         }
         globe.markerHits = hits
         return taken

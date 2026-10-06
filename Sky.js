@@ -271,24 +271,43 @@ function twilightElevations(layers) {
   return seen
 }
 
-// The Sun at its zenith point: a disc with eight short rays, a little larger
-// than a city's dot, so it is not taken for one.
-function paintSun(ctx, x, y, color) {
+// The Sun as a small disc with eight rays at (x, y) in `color`, over a
+// soft halo so it reads on any fill (a warm band, a temperature layer):
+// darker on a light background, lighter on a dark one. background: the
+// theme's [r, g, b] in 0–1 (optional; dark halo without it). The disc and
+// rays keep their size (a little larger than a city's dot, so it is not
+// taken for one); the halo is the same shape, 2 px wider, faint.
+function sunHalo(background) {
+  var light = !background || (0.2126 * background[0] + 0.7152 * background[1] + 0.0722 * background[2]) > 0.5
+  return light ? "rgba(0, 0, 0, 0.32)" : "rgba(255, 255, 255, 0.28)"
+}
+function paintSun(ctx, x, y, color, background) {
   ctx.save()
+  ctx.lineCap = "round"
+  function rays() {
+    ctx.beginPath()
+    for (var i = 0; i < 8; i++) {
+      var a = i * Math.PI / 4
+      ctx.moveTo(x + Math.cos(a) * 5.4, y + Math.sin(a) * 5.4)
+      ctx.lineTo(x + Math.cos(a) * 8, y + Math.sin(a) * 8)
+    }
+    ctx.stroke()
+  }
+  var halo = sunHalo(background)
+  ctx.strokeStyle = halo
+  ctx.lineWidth = 2
+  ctx.beginPath()
+  ctx.arc(x, y, 3.6, 0, Math.PI * 2)
+  ctx.stroke()
+  ctx.lineWidth = 3.4
+  rays()
   ctx.fillStyle = color
   ctx.strokeStyle = color
   ctx.lineWidth = 1.4
-  ctx.lineCap = "round"
   ctx.beginPath()
   ctx.arc(x, y, 3.6, 0, Math.PI * 2)
   ctx.fill()
-  ctx.beginPath()
-  for (var i = 0; i < 8; i++) {
-    var a = i * Math.PI / 4
-    ctx.moveTo(x + Math.cos(a) * 5.4, y + Math.sin(a) * 5.4)
-    ctx.lineTo(x + Math.cos(a) * 8, y + Math.sin(a) * 8)
-  }
-  ctx.stroke()
+  rays()
   ctx.restore()
 }
 
@@ -357,5 +376,5 @@ if (typeof module !== "undefined") module.exports = {
   GOLDEN_STEPS: GOLDEN_STEPS, BLUE_STEPS: BLUE_STEPS, NIGHT_STEPS: NIGHT_STEPS, SKY_COLORS: SKY_COLORS,
   twilightLayers: twilightLayers, twilightElevations: twilightElevations, nightFill: nightFill, bandFill: bandFill,
   skyMix: skyMix, skyColor: skyColor, sunColor: sunColor, SUN_GOLD: SUN_GOLD, contrast: contrast, hexRgb: hexRgb, rgbHex: rgbHex, mixRgb: mixRgb,
-  paintSun: paintSun
+  paintSun: paintSun, sunHalo: sunHalo
 }

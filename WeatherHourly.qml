@@ -43,6 +43,8 @@ Column {
       Text {
         textFormat: Text.PlainText
         anchors.right: parent.right
+        // Clear of the edge: the arrows reach past their advance.
+        rightPadding: Style.space(2)
         anchors.baseline: hourlyTitle.baseline
         width: Math.min(implicitWidth, parent.width - hourlyTitle.implicitWidth - Style.space(12))
         visible: panel.showHints

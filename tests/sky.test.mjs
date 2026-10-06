@@ -171,3 +171,36 @@ test("twilight rings: night, golden and blue", () => {
     for (const p of boundary.slice(0, 120)) near(S.sunElevation(p.lat, p.lon, ms), e, 0.2)
   }
 })
+
+test("paint sun: the same disc and rays over a faint, theme-aware halo", () => {
+  const record = () => {
+    const calls = []
+    const ctx = new Proxy({ calls }, {
+      get: (target, name) => name in target ? target[name] : (...args) => calls.push([name, ...args]),
+      set: (target, name, value) => { calls.push(["set", name, value]); return true }
+    })
+    return { ctx, calls }
+  }
+  const r = record()
+  S.paintSun(r.ctx, 50, 40, "#e3a447", [0.94, 0.95, 0.96])
+  const arcs = r.calls.filter((c) => c[0] === "arc")
+  // The disc (radius 3.6) twice: the halo and the gold one.
+  assert.equal(arcs.length, 2)
+  for (const a of arcs) assert.deepEqual(a.slice(1, 4), [50, 40, 3.6])
+  // Eight rays from 5.4 to 8 px, twice (halo, then gold).
+  const moves = r.calls.filter((c) => c[0] === "moveTo")
+  const lines = r.calls.filter((c) => c[0] === "lineTo")
+  assert.equal(moves.length, 16)
+  assert.equal(lines.length, 16)
+  for (const m of moves) assert.ok(Math.abs(Math.hypot(m[1] - 50, m[2] - 40) - 5.4) < 1e-9)
+  for (const l of lines) assert.ok(Math.abs(Math.hypot(l[1] - 50, l[2] - 40) - 8) < 1e-9)
+  // The gold drawn last, at the old width; the halo before it.
+  const sets = r.calls.filter((c) => c[0] === "set")
+  assert.deepEqual(sets.filter((c) => c[1] === "fillStyle").map((c) => c[2]), ["#e3a447"])
+  assert.equal(sets.filter((c) => c[1] === "lineWidth").pop()[2], 1.4)
+  assert.equal(sets.find((c) => c[1] === "strokeStyle")[2], S.sunHalo([0.94, 0.95, 0.96]))
+  // Dark halo on light backgrounds (and without one), light on dark.
+  assert.match(S.sunHalo([0.94, 0.95, 0.96]), /^rgba\(0, 0, 0,/)
+  assert.match(S.sunHalo(), /^rgba\(0, 0, 0,/)
+  assert.match(S.sunHalo([0.1, 0.1, 0.12]), /^rgba\(255, 255, 255,/)
+})

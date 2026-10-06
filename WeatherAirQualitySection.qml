@@ -113,7 +113,6 @@ Column {
           color: panel.foreground
           font.family: panel.fontFamily
           font.pixelSize: Style.font.bodySmall
-          font.bold: true
           font.italic: airSection.italic
         }
       }

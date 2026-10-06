@@ -373,10 +373,10 @@ Item {
     width: parent.width
     height: Style.space(230)
     text: panel.i18n("noDataWaiting")
-    horizontalAlignment: Text.AlignHCenter
-    verticalAlignment: Text.AlignVCenter
+    // As the other empty states: italic, muted, at the left content edge.
     color: panel.mutedText
     font.family: panel.fontFamily
     font.pixelSize: Style.font.bodySmall
+    font.italic: true
   }
 }

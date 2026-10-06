@@ -4,6 +4,17 @@ All notable changes to More Weather are documented here.
 
 ## Unreleased
 
+- **Interface audit:** in light themes the secondary texts and card
+  borders fade towards the background instead of turning darker than the
+  text; sunrise and sunset stack in a narrow day column; search results
+  sit in cards; Motion and the rain notification's choices have their
+  label above the list, as the rest of General; the globe's chips show
+  their on state with the selected fill and accent text (as More Time's);
+  My places starts at the left edge under its title; key lines wrap only
+  after a "·"; the shown place's label clears its ring; the Sun keeps a
+  halo against the temperature layer; the AQI value is no longer bold;
+  the rain chart's empty state reads like the others; the globe's data
+  time is the place's.
 - **What's new:** a sixth settings page after Sources shows this change
   log, one card per version, newest first (the installed one marked, the
   older ones behind "Show older versions"); read from the plugin's own

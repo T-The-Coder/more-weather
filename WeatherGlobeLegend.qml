@@ -115,7 +115,10 @@ Item {
             width: chipRow.implicitWidth + Style.space(14)
             height: Style.space(24)
             radius: Style.cornerRadius
-            color: on || chipMouse.containsMouse ? Style.hoverFillFor(legend.panel.foreground, Color.accent) : "transparent"
+            // On: the selected fill and accent text (as More Time's chips);
+            // hover: the hover fill; off: a faint border.
+            color: on ? Style.selectedFillFor(legend.panel.foreground, Color.accent)
+              : (chipMouse.containsMouse ? Style.hoverFillFor(legend.panel.foreground, Color.accent) : "transparent")
             border.color: on ? "transparent" : Qt.rgba(legend.panel.foreground.r, legend.panel.foreground.g,
               legend.panel.foreground.b, 0.18)
             border.width: Style.spacing.hairline
@@ -129,7 +132,7 @@ Item {
                 textFormat: Text.PlainText
                 anchors.verticalCenter: parent.verticalCenter
                 text: chipSlot.modelData.glyph
-                color: chip.on ? Style.hoverStateColor(legend.panel.foreground, Color.accent) : legend.panel.mutedText
+                color: chip.on ? Color.accent : legend.panel.mutedText
                 font.family: legend.panel.fontFamily
                 font.pixelSize: Style.font.body
               }
@@ -138,7 +141,7 @@ Item {
                 visible: !chip.glyphAlone
                 anchors.verticalCenter: parent.verticalCenter
                 text: legend.panel.i18n(chipSlot.modelData.label)
-                color: chip.on ? Style.hoverStateColor(legend.panel.foreground, Color.accent) : legend.panel.mutedText
+                color: chip.on ? Color.accent : legend.panel.mutedText
                 font.family: legend.panel.fontFamily
                 font.pixelSize: Style.font.caption
                 font.bold: chip.on
@@ -316,7 +319,8 @@ Item {
               width: modeText.implicitWidth + Style.space(12)
               height: Style.space(20)
               radius: Style.cornerRadius
-              color: on || modeMouse.containsMouse ? Style.hoverFillFor(legend.panel.foreground, Color.accent) : "transparent"
+              color: on ? Style.selectedFillFor(legend.panel.foreground, Color.accent)
+                : (modeMouse.containsMouse ? Style.hoverFillFor(legend.panel.foreground, Color.accent) : "transparent")
               border.color: on ? "transparent" : Qt.rgba(legend.panel.foreground.r, legend.panel.foreground.g,
                 legend.panel.foreground.b, 0.18)
               border.width: Style.spacing.hairline
@@ -327,9 +331,10 @@ Item {
                 anchors.centerIn: parent
                 text: legend.panel.i18n(modeChip.modelData === "lines" ? "globeWindLines"
                   : (modeChip.modelData === "colour" ? "globeWindColour" : "globeWindBoth"))
-                color: modeChip.on ? Style.hoverStateColor(legend.panel.foreground, Color.accent) : legend.panel.mutedText
+                color: modeChip.on ? Color.accent : legend.panel.mutedText
                 font.family: legend.panel.fontFamily
                 font.pixelSize: Style.font.caption
+                font.bold: modeChip.on
               }
               MouseArea {
                 id: modeMouse
@@ -365,7 +370,7 @@ Item {
           if (legend.loader.scrubbed)
             parts.push(legend.panel.globeStepLabel(legend.loader.displayMs, false))
           else if (legend.loader.dataAt > 0)
-            parts.push(legend.panel.i18n("globeDataTime", { time: Qt.formatTime(new Date(legend.loader.dataAt), "HH:mm") }))
+            parts.push(legend.panel.i18n("globeDataTime", { time: legend.panel.placeClock(legend.loader.dataAt) }))
           else parts.push(legend.panel.i18n("globeDataLoading"))
           if (legend.loader.limitHeld) parts.push(legend.panel.i18n("globeDataLimit"))
           if (legend.loader.isobarsOn)
