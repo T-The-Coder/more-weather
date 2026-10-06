@@ -3439,12 +3439,13 @@ function dwdRadarColor(mmPerHour) {
   return color
 }
 
-// Label for a drift time in 15-minute steps: "+45 min", "+1h", "+1h 30".
+// Label for a drift time in 15-minute steps: "+45 min", "+1 h", "+1 h 30 min"
+// (as the radar timeline words its lead).
 function driftTimeLabel(minutes) {
   if (minutes < 60) return "+" + minutes + " min"
   var hours = Math.floor(minutes / 60)
   var rest = minutes % 60
-  return "+" + hours + "h" + (rest ? " " + rest : "")
+  return "+" + hours + " h" + (rest ? " " + rest + " min" : "")
 }
 
 // The drift arrow in view pixels, ending at the view centre. Its tail is

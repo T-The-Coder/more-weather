@@ -6,6 +6,8 @@
 # Quickshell, and tests/ui/shell.qml stepping through the views.
 #   tests/ui-shots.sh [output-dir]
 # MW_SHOTS_ONLY=<regular expression> keeps only the matching pictures.
+# MW_AUDIT=1 shoots the interface audit instead (every view and settings
+# page at the popup's width and the app's).
 set -u
 root=$(cd "$(dirname "$0")/.." && pwd)
 work=$(mktemp -d "${TMPDIR:-/tmp}/more-weather-ui.XXXXXX")
@@ -24,7 +26,7 @@ python3 "$root/tests/ui/fixtures/state.py" "$work/home"
 # No session bus: a warning that comes due during the run notifies no one.
 # The XDG directories default to the throwaway HOME.
 env -u DBUS_SESSION_BUS_ADDRESS -u XDG_DATA_HOME -u XDG_CONFIG_HOME -u XDG_STATE_HOME HOME="$work/home" XDG_RUNTIME_DIR="$work/run" XDG_CACHE_HOME="$work/home/.cache" \
-  MW_SHOTS="$out" MW_SHOTS_ONLY="${MW_SHOTS_ONLY:-}" MORE_PLUGINS_OFFLINE=1 QT_QPA_PLATFORM=offscreen \
+  MW_SHOTS="$out" MW_SHOTS_ONLY="${MW_SHOTS_ONLY:-}" MW_AUDIT="${MW_AUDIT:-}" MORE_PLUGINS_OFFLINE=1 QT_QPA_PLATFORM=offscreen \
   timeout 480 qs -n -p "$work/config" >"$work/log.txt" 2>&1
 echo "log: $work/log.txt"
 echo "shots: $out"

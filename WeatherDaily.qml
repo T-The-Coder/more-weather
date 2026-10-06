@@ -365,11 +365,14 @@ Column {
               Grid {
                 property bool entryVisible: panel.displaySetting("dailySunEvents", true)
                 visible: entryVisible
-                columns: panel.standaloneMode ? 2 : 1
+                // Side by side where the day's column has room for both
+                // (the app at its usual width), else one above the other.
+                columns: sunriseRow.implicitWidth + sunsetRow.implicitWidth + columnSpacing <= dayColumn.width ? 2 : 1
                 columnSpacing: Style.space(4)
                 rowSpacing: Style.space(1)
 
                 Row {
+                  id: sunriseRow
                   spacing: Style.space(2)
 
                   Canvas {
@@ -394,6 +397,7 @@ Column {
                 }
 
                 Row {
+                  id: sunsetRow
                   spacing: Style.space(2)
 
                   Canvas {

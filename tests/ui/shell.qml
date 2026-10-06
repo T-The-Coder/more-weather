@@ -15,6 +15,10 @@ ShellRoot {
   readonly property string shots: Quickshell.env("MW_SHOTS") || "/tmp"
   readonly property var shotsOnly: Quickshell.env("MW_SHOTS_ONLY") ? new RegExp(Quickshell.env("MW_SHOTS_ONLY")) : null
   property int step: 0
+  // MW_AUDIT=1: the interface audit instead (auditSteps): every view and
+  // settings page at the popup's width and the app's, nothing else.
+  readonly property bool audit: Quickshell.env("MW_AUDIT") === "1"
+  readonly property var runSteps: audit ? auditSteps : steps
   readonly property var tabs: ["favorites", "airQuality", "hourly", "daily", "rain", "radar", "wind", "globe"]
 
   function shot(name) { shotOf(panel.contentRoot, name) }
@@ -184,6 +188,45 @@ ShellRoot {
     air.fetchedAtMs = Date.now()
     air.loadStatus = "ok"
   }
+
+  // ---- The audit: per width (popup 480, app 840) the hero with each
+  //      section, the settings pages, the search; the same names in both
+  //      themes (MW_THEME).
+  function auditFor(host, tag) {
+    var list = [function() {
+      panel.contentRoot.parent = host
+      panel.settingsOpen = false
+      panel.scrollWeatherBy(-100000)
+    }, function() {}]
+    tabs.forEach(function(tab) {
+      list.push(function() { panel.activeTab = tab; panel.scrollWeatherBy(-100000) }, function() {}, function() {},
+        function() { shot("A" + tag + "-tab-" + tab) })
+    })
+    ;["general", "display", "notifications", "shortcuts", "sources", "changes"].forEach(function(page) {
+      list.push(function() { panel.openSettings(page) }, function() {}, function() { shot("A" + tag + "-settings-" + page) })
+    })
+    list.push(function() { panel.openSettings("general"); press(Qt.Key_End) }, function() {},
+      function() { shot("A" + tag + "-settings-general-end") })
+    list.push(function() { panel.openSettings("display"); panel.settingsTargetSurface = "app" }, function() {},
+      function() { for (var i = 0; i < 200 && panel.settingsFocusId !== "globeStyle"; i++) press(Qt.Key_Down) },
+      function() {}, function() { shot("A" + tag + "-settings-display-globe") }, function() { press(Qt.Key_Home) })
+    list.push(function() { panel.openSettings("general"); panel.setSettingsSearch("temp") }, function() {},
+      function() { shot("A" + tag + "-settings-search") },
+      function() { panel.setSettingsSearch("zzzz") }, function() {}, function() { shot("A" + tag + "-settings-search-none") },
+      function() { panel.setSettingsSearch(""); panel.settingsOpen = false })
+    return list
+  }
+  readonly property var auditSteps: [
+    function() {}, function() {}, function() { seedPlaces() },
+    function() {
+      display("showFavorites", true)
+      display("showAirQuality", true)
+      display("favoritesMoon", true)
+      for (var i = 0; i < tabs.length; i++) display(tabs[i] + "AsTab", true)
+    }
+  ].concat(auditFor(widgetHost, "480"), auditFor(appHost, "840"), [
+    function() { console.log("AUDIT DONE") }
+  ])
 
   readonly property var steps: [
     // The standalone panel waits 2.5 s for a bar instance before it takes
@@ -775,8 +818,8 @@ ShellRoot {
     running: true
     repeat: true
     onTriggered: {
-      if (harness.step >= harness.steps.length) return
-      try { harness.steps[harness.step]() } catch (e) { console.log("STEP FAILED", harness.step, e, e.stack) }
+      if (harness.step >= harness.runSteps.length) return
+      try { harness.runSteps[harness.step]() } catch (e) { console.log("STEP FAILED", harness.step, e, e.stack) }
       harness.step++
     }
   }
@@ -802,6 +845,14 @@ ShellRoot {
       height: 32
       sourceComponent: Component { Weather.BarWidget { height: 32 } }
     }
+  }
+
+  // The app's width for the audit: 840 inside its padding.
+  FloatingWindow {
+    visible: true
+    implicitWidth: 872
+    implicitHeight: 1100
+    Item { id: appHost; anchors.fill: parent; anchors.margins: 16 }
   }
 
   // Windows for measuring the globe at about 500 and 840 px.

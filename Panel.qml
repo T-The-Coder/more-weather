@@ -87,13 +87,18 @@ Panel {
   readonly property string fontFamily: root.bar && root.bar.fontFamily
     ? root.bar.fontFamily : Style.font.family
   // The two secondary text tones used everywhere: muted for labels and
-  // supporting values, subtle for tertiary hints and hairline borders.
-  readonly property color mutedText: Qt.darker(foreground, 1.35)
-  readonly property color subtleText: Qt.darker(foreground, 1.7)
-  // Key hints ("⇧ ← → another hour", "Alt 1–9"): the text colour faded
-  // towards the theme's background, so they recede in light and dark themes.
-  readonly property color hintText: Qt.tint(foreground,
-    Qt.rgba(Color.popups.background.r, Color.popups.background.g, Color.popups.background.b, 0.55))
+  // supporting values, subtle for tertiary hints and hairline borders. On
+  // a dark background the text darkened; on a light one darkening made
+  // them darker than the text itself, so there it is faded towards the
+  // background instead (muted keeps 4.5:1, subtle about 3:1).
+  readonly property bool lightBackground: (0.2126 * Color.popups.background.r + 0.7152 * Color.popups.background.g
+    + 0.0722 * Color.popups.background.b) > 0.5
+  function fadedText(share) {
+    return Qt.tint(foreground, Qt.rgba(Color.popups.background.r, Color.popups.background.g, Color.popups.background.b, share))
+  }
+  readonly property color mutedText: lightBackground ? fadedText(0.18) : Qt.darker(foreground, 1.35)
+  readonly property color subtleText: lightBackground ? fadedText(0.34) : Qt.darker(foreground, 1.7)
+  readonly property color hintText: fadedText(0.55)
 
   // Canvas text in the panel's own font, so charts and map labels match the
   // rest of the popup instead of falling back to a proportional sans-serif.

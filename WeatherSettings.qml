@@ -344,20 +344,18 @@ Rectangle {
   Component {
     id: generalChoiceRow
 
-    Item {
+    // Label above, dropdown below: as the language and the units.
+    Column {
       id: generalRow
       property string choiceId: ""
       readonly property var choiceSpec: settingsView.generalChoiceSpecs[choiceId] || ({ title: "", fallback: "", options: [] })
       readonly property string settingKey: choiceSpec.key || choiceId
       width: parent ? parent.width : 0
-      height: Style.space(40)
+      spacing: Style.space(8)
 
       Text {
         textFormat: Text.PlainText
-        anchors.left: parent.left
-        anchors.right: generalDropdown.left
-        anchors.rightMargin: Style.space(8)
-        anchors.verticalCenter: parent.verticalCenter
+        width: parent.width
         text: generalRow.choiceSpec.title ? panel.i18n(generalRow.choiceSpec.title) : ""
         color: panel.foreground
         font.family: panel.fontFamily
@@ -367,9 +365,7 @@ Rectangle {
 
       Dropdown {
         id: generalDropdown
-        anchors.right: parent.right
-        anchors.verticalCenter: parent.verticalCenter
-        width: Style.space(200)
+        width: Math.min(parent.width, Style.space(280))
         showLabel: false
         fontFamily: panel.fontFamily
         hasCursor: settingsView.focusId === generalRow.choiceId
@@ -1262,7 +1258,7 @@ Rectangle {
       Column {
         visible: settingsView.searching
         width: parent.width
-        spacing: Style.space(4)
+        spacing: Style.space(12)
 
         Text {
           textFormat: Text.PlainText
@@ -1276,38 +1272,53 @@ Rectangle {
         Repeater {
           model: settingsView.searchGroups
 
-          Column {
-            id: resultGroup
+          // A card per group, as on the pages (and in More Time's search).
+          Rectangle {
+            id: resultCard
             required property var modelData
             width: parent.width
-            spacing: Style.space(2)
+            height: resultGroup.implicitHeight + Style.space(20)
+            radius: Style.cornerRadius
+            color: "transparent"
+            border.color: panel.subtleText
+            border.width: Style.spacing.hairline
 
-            Text {
-              textFormat: Text.PlainText
-              width: parent.width
-              topPadding: Style.space(6)
-              text: resultGroup.modelData.heading
-              color: panel.mutedText
-              font.family: panel.fontFamily
-              font.pixelSize: Style.font.caption
-              font.letterSpacing: 1
-              elide: Text.ElideRight
-            }
+            Column {
+              id: resultGroup
+              readonly property var modelData: resultCard.modelData
+              anchors.left: parent.left
+              anchors.right: parent.right
+              anchors.top: parent.top
+              anchors.margins: Style.space(10)
+              spacing: Style.space(2)
 
-            Repeater {
-              model: resultGroup.modelData.items
+              Text {
+                textFormat: Text.PlainText
+                width: parent.width
+                bottomPadding: Style.space(4)
+                text: resultGroup.modelData.heading
+                color: panel.foreground
+                font.family: panel.fontFamily
+                font.pixelSize: Style.font.caption
+                font.letterSpacing: 1
+                elide: Text.ElideRight
+              }
 
-              Loader {
-                id: resultRow
-                required property var modelData
-                width: resultGroup.width
-                sourceComponent: modelData.kind === "displaySwitch" ? resultDisplaySwitch
-                  : (modelData.kind === "generalSwitch" ? resultGeneralSwitch
-                  : (modelData.kind === "displayChoice" ? choiceRow
-                  : (modelData.kind === "generalChoice" ? generalChoiceRow : resultJump)))
-                onLoaded: {
-                  if (modelData.kind === "displayChoice" || modelData.kind === "generalChoice") item.choiceId = modelData.choiceId
-                  else item.row = modelData
+              Repeater {
+                model: resultGroup.modelData.items
+
+                Loader {
+                  id: resultRow
+                  required property var modelData
+                  width: resultGroup.width
+                  sourceComponent: modelData.kind === "displaySwitch" ? resultDisplaySwitch
+                    : (modelData.kind === "generalSwitch" ? resultGeneralSwitch
+                    : (modelData.kind === "displayChoice" ? choiceRow
+                    : (modelData.kind === "generalChoice" ? generalChoiceRow : resultJump)))
+                  onLoaded: {
+                    if (modelData.kind === "displayChoice" || modelData.kind === "generalChoice") item.choiceId = modelData.choiceId
+                    else item.row = modelData
+                  }
                 }
               }
             }
@@ -1369,7 +1380,7 @@ Rectangle {
           Text {
             textFormat: Text.PlainText
             text: panel.i18n("language")
-            color: panel.mutedText
+            color: panel.foreground
             font.family: panel.fontFamily
             font.pixelSize: Style.font.bodySmall
           }
@@ -1390,7 +1401,7 @@ Rectangle {
           Text {
             textFormat: Text.PlainText
             text: panel.i18n("unitSystem")
-            color: panel.mutedText
+            color: panel.foreground
             font.family: panel.fontFamily
             font.pixelSize: Style.font.bodySmall
           }
@@ -1412,7 +1423,7 @@ Rectangle {
           Text {
             textFormat: Text.PlainText
             text: panel.i18n("windUnit")
-            color: panel.mutedText
+            color: panel.foreground
             font.family: panel.fontFamily
             font.pixelSize: Style.font.bodySmall
           }
@@ -1437,7 +1448,7 @@ Rectangle {
           Text {
             textFormat: Text.PlainText
             text: panel.i18n("refreshForecast")
-            color: panel.mutedText
+            color: panel.foreground
             font.family: panel.fontFamily
             font.pixelSize: Style.font.bodySmall
           }
@@ -1458,7 +1469,7 @@ Rectangle {
           Text {
             textFormat: Text.PlainText
             text: panel.i18n("refreshRadar")
-            color: panel.mutedText
+            color: panel.foreground
             font.family: panel.fontFamily
             font.pixelSize: Style.font.bodySmall
           }
@@ -1512,6 +1523,16 @@ Rectangle {
           // Motion: wherever a view turns by itself (the globe).
           GeneralHeading { panel: settingsView.panel; textKey: "motionSection"; topPadding: Style.space(6) }
 
+          Text {
+            textFormat: Text.PlainText
+            width: parent.width
+            text: panel.i18n("motionHint")
+            color: panel.mutedText
+            font.family: panel.fontFamily
+            font.pixelSize: Style.font.caption
+            wrapMode: Text.Wrap
+          }
+
           Repeater {
             model: ["motionDelay", "motionSpeed", "motionFps"]
 
@@ -1526,7 +1547,7 @@ Rectangle {
           Text {
             textFormat: Text.PlainText
             width: parent.width
-            text: panel.i18n("motionHint") + " " + panel.i18n("optionRotateFpsHint")
+            text: panel.i18n("optionRotateFpsHint")
             color: panel.mutedText
             font.family: panel.fontFamily
             font.pixelSize: Style.font.caption
@@ -1538,7 +1559,7 @@ Rectangle {
           Text {
             textFormat: Text.PlainText
             text: panel.i18n("barPosition")
-            color: panel.mutedText
+            color: panel.foreground
             font.family: panel.fontFamily
             font.pixelSize: Style.font.bodySmall
           }
@@ -1619,7 +1640,7 @@ Rectangle {
           Text {
             textFormat: Text.PlainText
             text: panel.i18n("settingsTransferFile")
-            color: panel.mutedText
+            color: panel.foreground
             font.family: panel.fontFamily
             font.pixelSize: Style.font.bodySmall
           }
