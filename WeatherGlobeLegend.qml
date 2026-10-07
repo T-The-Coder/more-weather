@@ -108,7 +108,10 @@ Item {
             id: chip
             readonly property bool on: legend.chipOn(chipSlot.modelData)
             readonly property bool glyphAlone: legend.glyphOnly || !!chipSlot.modelData.alone
-            readonly property string fullText: legend.panel.i18n(chipSlot.modelData.tip || chipSlot.modelData.label)
+            // The rain's chip while the radar's picture replaces it says so.
+            readonly property bool replacedByRadar: chipSlot.modelData.key === "globePrecipitation" && legend.loader.radarReplaces
+            readonly property string fullText: replacedByRadar ? legend.panel.i18n("globeRadarReplaces")
+              : legend.panel.i18n(chipSlot.modelData.tip || chipSlot.modelData.label)
             Accessible.role: Accessible.CheckBox
             Accessible.name: fullText
             Accessible.checked: on
@@ -169,12 +172,12 @@ Item {
               id: tipDelay
               property bool done: false
               interval: 400
-              running: chip.glyphAlone && chipMouse.containsMouse
+              running: (chip.glyphAlone || chip.replacedByRadar) && chipMouse.containsMouse
               onRunningChanged: if (running) done = false
               onTriggered: done = true
             }
             Rectangle {
-              visible: chip.glyphAlone && chipMouse.containsMouse && tipDelay.done
+              visible: (chip.glyphAlone || chip.replacedByRadar) && chipMouse.containsMouse && tipDelay.done
               y: -height - Style.space(4)
               x: (parent.width - width) / 2
               z: 10
@@ -366,6 +369,9 @@ Item {
           if (!legend.loader.active) return ""
           var parts = []
           if (legend.globe.zoom <= 1) parts.push(legend.panel.i18n("globeDataModel"))
+          // The dense rain set loaded (GlobeGrid.rainPoints): rain is finer.
+          if (legend.globe.zoom <= 1 && legend.loader.rainDense && legend.loader.washLayers.indexOf("precipitation") >= 0)
+            parts.push(legend.panel.i18n("globeRainDense"))
           // At another time on the timeline: that time, not the data's age.
           if (legend.loader.scrubbed)
             parts.push(legend.panel.globeStepLabel(legend.loader.displayMs, false))
@@ -373,6 +379,12 @@ Item {
             parts.push(legend.panel.i18n("globeDataTime", { time: legend.panel.placeClock(legend.loader.dataAt) }))
           else parts.push(legend.panel.i18n("globeDataLoading"))
           if (legend.loader.limitHeld) parts.push(legend.panel.i18n("globeDataLimit"))
+          // The radar's frame: its time, or the latest when the globe's
+          // time lies outside the radar's span.
+          var radarItem = legend.globe ? legend.globe.radarItem : null
+          if (legend.loader.radarReplaces && radarItem && radarItem.frameMs > 0)
+            parts.push(legend.panel.i18n(radarItem.inRange ? "globeRadarAt" : "globeRadarLatest",
+              { time: legend.panel.placeClock(radarItem.frameMs) }))
           if (legend.loader.isobarsOn)
             parts.push(legend.panel.i18n("globeIsobarsEvery", { value: legend.panel.useImperial ? "0.12 inHg" : "4 hPa" }))
           return parts.join(" · ")

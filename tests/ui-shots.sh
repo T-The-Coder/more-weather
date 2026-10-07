@@ -34,7 +34,7 @@ echo on > "$work/dpms"
 # No session bus: a warning that comes due during the run notifies no one.
 # The XDG directories default to the throwaway HOME.
 env -u DBUS_SESSION_BUS_ADDRESS -u XDG_DATA_HOME -u XDG_CONFIG_HOME -u XDG_STATE_HOME PATH="$work/bin:$PATH" FAKE_DPMS="$work/dpms" HOME="$work/home" XDG_RUNTIME_DIR="$work/run" XDG_CACHE_HOME="$work/home/.cache" \
-  MW_SHOTS="$out" MW_SHOTS_ONLY="${MW_SHOTS_ONLY:-}" MW_AUDIT="${MW_AUDIT:-}" MORE_PLUGINS_OFFLINE=1 QT_QPA_PLATFORM=offscreen \
+  MW_SHOTS="$out" MW_SHOTS_ONLY="${MW_SHOTS_ONLY:-}" MW_AUDIT="${MW_AUDIT:-}" MW_RADAR_FIXTURE="$work/home/radar-tile.png" MORE_PLUGINS_OFFLINE=1 QT_QPA_PLATFORM=offscreen \
   timeout 480 qs -n -p "$work/config" >"$work/log.txt" 2>&1
 echo "log: $work/log.txt"
 echo "shots: $out"

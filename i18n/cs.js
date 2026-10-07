@@ -471,5 +471,13 @@ var entries = {
   "changesCurrent": "nainstalováno",
   "changesShowOlder": "Zobrazit starší verze",
   "changesEnglishNote": "Záznam je veden anglicky.",
-  "changesNone": "Záznam změn nebyl nalezen."
+  "changesNone": "Záznam změn nebyl nalezen.",
+  "globeRainDense": "déšť asi 500 km",
+  "globeRadar": "Radar zblízka",
+  "globeRadarHint": "Radar zblízka (od z2): radarové snímky RainViewer místo srážek z modelu, pro čas glóbu, pokud spadá do posledních dvou hodin radaru, jinak nejnovější snímek.",
+  "globeRadarReplaces": "Srážky: zblízka je nahrazuje radar",
+  "globeRadarAt": "radar {time}",
+  "globeRadarLatest": "radar: nejnovější snímek, {time}",
+  "shortcutGlobeRadar": "Glóbus: radar zblízka zapnout či vypnout",
+  "sourceGlobeRadar": "Zblízka ukazuje i glóbus radarové dlaždice RainViewer (přepínač Radar zblízka), uložené spolu se snímky radaru."
 }

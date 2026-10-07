@@ -471,5 +471,13 @@ var entries = {
   "changesCurrent": "instalada",
   "changesShowOlder": "Mostrar versiones anteriores",
   "changesEnglishNote": "El registro está en inglés.",
-  "changesNone": "No se encontró el registro de cambios."
+  "changesNone": "No se encontró el registro de cambios.",
+  "globeRainDense": "lluvia unos 500 km",
+  "globeRadar": "Radar de cerca",
+  "globeRadarHint": "Radar de cerca (desde z2): las imágenes de radar de RainViewer en lugar de la precipitación del modelo, para la hora del globo mientras esté dentro de las dos últimas horas del radar; si no, la imagen más reciente.",
+  "globeRadarReplaces": "Precipitación: de cerca la sustituye el radar",
+  "globeRadarAt": "radar {time}",
+  "globeRadarLatest": "radar: imagen más reciente, {time}",
+  "shortcutGlobeRadar": "Globo: radar de cerca sí o no",
+  "sourceGlobeRadar": "De cerca el globo también muestra los mosaicos de radar de RainViewer (interruptor Radar de cerca), guardados con las imágenes del radar."
 }

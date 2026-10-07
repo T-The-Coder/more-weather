@@ -471,5 +471,13 @@ var entries = {
   "changesCurrent": "설치됨",
   "changesShowOlder": "이전 버전 보기",
   "changesEnglishNote": "기록은 영어로 작성됩니다.",
-  "changesNone": "변경 기록을 찾을 수 없습니다."
+  "changesNone": "변경 기록을 찾을 수 없습니다.",
+  "globeRainDense": "비 약 500km",
+  "globeRadar": "가까이서 레이더",
+  "globeRadarHint": "가까이서 레이더(z2부터): 모델 강수 대신 RainViewer 레이더 영상. 지구본 시간이 레이더의 최근 2시간 안이면 그 시각, 아니면 최신 영상.",
+  "globeRadarReplaces": "강수: 가까이서는 레이더가 대신 표시됩니다",
+  "globeRadarAt": "레이더 {time}",
+  "globeRadarLatest": "레이더: 최신 영상 {time}",
+  "shortcutGlobeRadar": "지구본: 가까이서 레이더 켜기/끄기",
+  "sourceGlobeRadar": "가까이서는 지구본도 RainViewer 레이더 타일을 보여 줍니다(가까이서 레이더 스위치). 레이더 영상과 함께 캐시됩니다."
 }

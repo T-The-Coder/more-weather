@@ -37,22 +37,26 @@ function compactFromMarine(text, points, key, nowMs) {
   }
 }
 
-// A store: { batches: { key: compact }, tiles: { key: compact }, version,
-// cache: {} }.
+// A store: { batches: { key: compact }, tiles: { key: compact }, rain:
+// { key: compact } (the dense rain set's sectors), version, cache: {} }.
 function newStore() {
-  return { batches: {}, tiles: {}, version: 0, cache: {} }
+  return { batches: {}, tiles: {}, rain: {}, version: 0, cache: {} }
 }
 function keep(store, compact) {
   if (!compact || !compact.key) return false
   var key = String(compact.key)
   if (key.indexOf("G9:") === 0 || key.indexOf("S9:") === 0) store.batches[key] = compact
+  else if (key.indexOf("R9:") === 0) store.rain[key] = compact
   else store.tiles[key] = compact
   store.version++
   store.cache = {}
   return true
 }
 function forget(store, keys) {
-  for (var i = 0; i < keys.length; i++) delete store.tiles[keys[i]]
+  for (var i = 0; i < keys.length; i++) {
+    delete store.tiles[keys[i]]
+    delete store.rain[keys[i]]
+  }
   store.version++
   store.cache = {}
 }
@@ -63,21 +67,29 @@ function boxTag(box) {
 // Kept per hour and box until new data comes; a timeline played through
 // and many views fill it, so it starts over past 240 entries.
 function trimCache(store) {
-  if (Object.keys(store.cache).length > 240) store.cache = {}
+  if (Object.keys(store.cache).length > 240) store.cache = { rainPlan: store.cache.rainPlan }
 }
 
 function hourOf(ms) {
   return Math.round(Number(ms) / 3600000)
 }
 
-// The whole earth's lattice of a variable at a time, kept per hour.
+// The whole earth's lattice of a variable at a time, kept per hour:
+// precipitation and the weather code from the dense rain set where it is
+// loaded (GlobeGrid.rainLattice), the 510 points elsewhere.
 function globalFor(store, name, ms) {
   trimCache(store)
   var key = "g|" + name + "|" + hourOf(ms)
   if (!store.cache[key]) {
     var list = []
     for (var k in store.batches) list.push(store.batches[k])
-    store.cache[key] = globalLattice(list, name, ms)
+    var coarse = globalLattice(list, name, ms)
+    var rain = []
+    for (var r in store.rain) rain.push(store.rain[r])
+    // The dense set's node plan, made once per set of loaded cells (the
+    // cache starts over with new data).
+    if (rain.length && RAIN_SERVES[name] && !store.cache.rainPlan) store.cache.rainPlan = rainPlan(rain)
+    store.cache[key] = withDense(coarse, rain.length ? rainLattice(rain, name, ms, store.cache.rainPlan) : null)
   }
   return store.cache[key]
 }

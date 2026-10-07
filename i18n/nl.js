@@ -471,5 +471,13 @@ var entries = {
   "changesCurrent": "geïnstalleerd",
   "changesShowOlder": "Oudere versies tonen",
   "changesEnglishNote": "Het logboek wordt in het Engels bijgehouden.",
-  "changesNone": "Geen wijzigingslogboek gevonden."
+  "changesNone": "Geen wijzigingslogboek gevonden.",
+  "globeRainDense": "regen ongeveer 500 km",
+  "globeRadar": "Radar van dichtbij",
+  "globeRadarHint": "Radar van dichtbij (vanaf z2): de radarbeelden van RainViewer in plaats van de neerslag uit het model, voor de tijd van de globe zolang die binnen de laatste twee uur van de radar valt, anders het nieuwste beeld.",
+  "globeRadarReplaces": "Neerslag: van dichtbij toont de radar in plaats daarvan",
+  "globeRadarAt": "radar {time}",
+  "globeRadarLatest": "radar: nieuwste beeld, {time}",
+  "shortcutGlobeRadar": "Globe: radar van dichtbij aan of uit",
+  "sourceGlobeRadar": "Van dichtbij toont ook de globe de radartegels van RainViewer (schakelaar Radar van dichtbij), bewaard met de radarbeelden."
 }

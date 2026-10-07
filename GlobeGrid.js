@@ -50,7 +50,8 @@ function levelVariables(level) {
 // Codes are never blended: the nearest point's.
 var NEAREST = { weather_code: true }
 // Kept as integers: the value times its scale.
-var SCALES = { temperature_2m: 10, cloud_cover: 1, precipitation: 100, weather_code: 1, cape: 1, pressure_msl: 10,
+var SCALES = { temperature_2m: 10, cloud_cover: 1, precipitation: 100, rain: 100, showers: 100, snowfall: 10,
+  weather_code: 1, cape: 1, pressure_msl: 10,
   wind_speed_10m: 10, wind_direction_10m: 1, wind_gusts_10m: 10, sea_surface_temperature: 100 }
 // Others (the heights' winds): tenths.
 function scaleOf(name) {
@@ -92,6 +93,124 @@ function batchKey(k, level) {
   return "G9:" + k + (level && level !== "10m" ? "@" + level : "")
 }
 
+// ---- The dense rain set (z0–z1, while the precipitation layer shows):
+//      rings every 4.5° with round(80·cos lat) points (about 2,000 on the
+//      earth), only precipitation and its kinds and the weather code, 48 h
+//      hourly. Asked per cell of 15° × 15° (at most 16 points), only for
+//      the cells facing the viewer (a point closer than 80° to the view's
+//      centre: the disc's part where the rain is not foreshortened, about
+//      800 points), nearest first, one after another as fast as
+//      Open-Meteo's 600 calls a minute allow; each kept three hours, so a
+//      turn loads each cell once.
+var RAIN_RING_STEP = 4.5
+var RAIN_RING_POINTS = 80
+var RAIN_CELL = 15
+var RAIN_HOURS = 48
+var RAIN_TTL_MS = 3 * 60 * 60 * 1000
+var RAIN_REACH = 80
+var RAIN_VARIABLES = ["precipitation", "rain", "showers", "snowfall", "weather_code"]
+// The variables the dense set serves (the others stay on the 510 points).
+var RAIN_SERVES = { precipitation: true, weather_code: true }
+// Open-Meteo counts each place as a call: 600 a minute.
+var CALLS_PER_MINUTE = 600
+
+function rainRingLats() {
+  var list = []
+  for (var lat = -90 + RAIN_RING_STEP; lat < 90 - 1e-9; lat += RAIN_RING_STEP) list.push(Math.round(lat * 10) / 10)
+  return list
+}
+function rainCellOf(lat, lon) {
+  var bands = 180 / RAIN_CELL, cols = 360 / RAIN_CELL
+  return "R9:" + Math.min(bands - 1, Math.floor((lat + 90) / RAIN_CELL)) + ":"
+    + Math.min(cols - 1, Math.floor((wrapLon(lon) + 180) / RAIN_CELL))
+}
+// Every dense point: { lat, lon, cell (its key) }.
+var rainPointList = null
+function rainPoints() {
+  if (rainPointList) return rainPointList
+  var points = []
+  var lats = rainRingLats()
+  for (var r = 0; r < lats.length; r++) {
+    var count = Math.max(1, Math.round(RAIN_RING_POINTS * Math.cos(lats[r] * Math.PI / 180)))
+    for (var j = 0; j < count; j++) {
+      var lon = -180 + j * 360 / count
+      points.push({ lat: lats[r], lon: lon, cell: rainCellOf(lats[r], lon) })
+    }
+  }
+  rainPointList = points
+  return points
+}
+function rainCellPoints(key) {
+  return rainPoints().filter(function(p) { return p.cell === key })
+}
+// The great-circle distance in degrees.
+function angularDistance(lat1, lon1, lat2, lon2) {
+  var r = Math.PI / 180
+  var c = Math.sin(lat1 * r) * Math.sin(lat2 * r) + Math.cos(lat1 * r) * Math.cos(lat2 * r) * Math.cos((lon2 - lon1) * r)
+  return Math.acos(Math.max(-1, Math.min(1, c))) / r
+}
+// The cells facing a view centred on (lat, lon), nearest first.
+function rainCellsFor(lat, lon) {
+  var best = {}
+  var points = rainPoints()
+  for (var i = 0; i < points.length; i++) {
+    var d = angularDistance(lat, lon, points[i].lat, points[i].lon)
+    if (d >= RAIN_REACH) continue
+    var c = points[i].cell
+    if (best[c] === undefined || d < best[c]) best[c] = d
+  }
+  return Object.keys(best).sort(function(a, b) { return best[a] - best[b] })
+}
+// The dense points a view centred on (lat, lon) asks for (its cells').
+function rainPointsFacing(lat, lon) {
+  var cells = {}
+  rainCellsFor(lat, lon).forEach(function(c) { cells[c] = true })
+  return rainPoints().filter(function(p) { return cells[p.cell] })
+}
+// Wet weather codes: drizzle, rain, freezing rain, snow, showers, thunder.
+function wetCode(code) {
+  var c = Math.round(Number(code))
+  return (c >= 51 && c <= 67) || (c >= 71 && c <= 77) || (c >= 80 && c <= 86) || (c >= 95 && c <= 99)
+}
+// Whether a dense cell may see precipitation in the 48 hours from fromMs,
+// by the 510 points (the global batches): any of them in the cell or a
+// ring's step (9°) around it with at least 0.1 mm or a wet weather code.
+// A dry cell is not asked for. Without base data: wet (asked).
+function rainCellWet(batches, key, fromMs) {
+  var m = /^R9:(\d+):(\d+)$/.exec(String(key))
+  if (!m) return true
+  var south = -90 + Number(m[1]) * RAIN_CELL - RING_STEP, north = south + RAIN_CELL + 2 * RING_STEP
+  var west = -180 + Number(m[2]) * RAIN_CELL - RING_STEP, width = RAIN_CELL + 2 * RING_STEP
+  var from = Number(fromMs) / 1000, to = from + RAIN_HOURS * 3600
+  var seen = false
+  for (var b = 0; b < batches.length; b++) {
+    var batch = batches[b]
+    if (!batch || batch.kind !== "global" || !batch.times.length) continue
+    var rain = batch.vars.precipitation, codes = batch.vars.weather_code
+    var steps = []
+    for (var t = 0; t < batch.times.length; t++) if (batch.times[t] >= from - 3 * 3600 && batch.times[t] <= to) steps.push(t)
+    for (var p = 0; p < batch.points.length; p++) {
+      var lat = batch.points[p][0]
+      if (lat < south || lat > north) continue
+      var east = ((batch.points[p][1] - west) % 360 + 360) % 360
+      if (east > width && Math.abs(lat) < 89) continue
+      seen = true
+      for (var s = 0; s < steps.length; s++) {
+        var i = p * batch.times.length + steps[s]
+        if (rain && rain[i] !== null && rain[i] / SCALES.precipitation >= 0.1) return true
+        if (codes && codes[i] !== null && wetCode(codes[i])) return true
+      }
+    }
+  }
+  return !seen
+}
+
+// How long to wait after asking for `points` places, to stay within the
+// calls a minute.
+function pacingMs(points) {
+  return Math.ceil(Number(points) * 60000 / CALLS_PER_MINUTE)
+}
+
 // ---- Tiles.
 function tileSize(level) {
   return TILE_SIZES[Math.max(2, Math.min(5, Math.round(level)))]
@@ -131,6 +250,7 @@ function withLevel(key, level) {
 function ttlOf(key) {
   var k = String(key)
   if (k.indexOf("S9:") === 0) return MARINE_TTL_MS
+  if (k.indexOf("R9:") === 0) return RAIN_TTL_MS
   return k.indexOf("G9:") === 0 ? GLOBAL_TTL_MS : TILE_TTL_MS
 }
 function parseTileKey(key) {
@@ -199,10 +319,12 @@ function forecastRequest(points, kind, variables) {
     lons.push(coordinate(wrapLon(points[i].lon)))
   }
   var global = kind === "global"
+  var rain = kind === "rain"
   return {
     url: "https://api.open-meteo.com/v1/forecast?latitude=" + lats.join(",") + "&longitude=" + lons.join(",")
-      + "&hourly=" + (variables || VARIABLES).join(",")
-      + (global ? "&temporal_resolution=hourly_3&forecast_hours=" + GLOBAL_HOURS : "&forecast_hours=" + TILE_HOURS)
+      + "&hourly=" + (variables || (rain ? RAIN_VARIABLES : VARIABLES)).join(",")
+      + (global ? "&temporal_resolution=hourly_3&forecast_hours=" + GLOBAL_HOURS
+        : "&forecast_hours=" + (rain ? RAIN_HOURS : TILE_HOURS))
       + "&timeformat=unixtime&timezone=GMT",
     timeoutMs: 20000,
     // About 2.7 KB a point for five 3-hourly days, 3 KB for 48 hours: twice that.
@@ -218,6 +340,12 @@ function utcDay(ms) {
 function budgetState(count) {
   var n = Number(count) || 0
   return n >= BUDGET_STOP ? "stop" : (n >= BUDGET_MANUAL ? "manual" : "ok")
+}
+// The dense rain set keeps 600 calls of room below the first mark, so the
+// day's later refresh of the base data is never held back by it.
+var RAIN_RESERVE = 600
+function mayLoadRain(count, points) {
+  return Number(count || 0) + Number(points) + RAIN_RESERVE <= BUDGET_MANUAL
 }
 function mayLoad(count, userCaused) {
   var state = budgetState(count)
@@ -310,7 +438,10 @@ function rateValue(compact, name, p, t) {
 // The whole earth, every 2.5°, from the global batches loaded so far: along
 // each ring between its known points (round the ring), then between the
 // rings above and below.
-function globalLattice(batches, name, ms) {
+// `maxGap` (optional, a function of the ring's latitude giving degrees):
+// nodes between known points further apart along a ring stay unknown (the
+// dense rain set, loaded for part of the earth only).
+function globalLattice(batches, name, ms, maxGap) {
   var cols = 145, rows = 73
   var nearest = !!NEAREST[name]
   var byRing = {}
@@ -328,7 +459,7 @@ function globalLattice(batches, name, ms) {
   }
   var lats = Object.keys(byRing).map(Number).sort(function(a, c) { return a - c })
   for (var r = 0; r < lats.length; r++) byRing[lats[r]].sort(function(a, c) { return a[0] - c[0] })
-  function alongRing(ring, lon) {
+  function alongRing(ring, lon, ringLat) {
     if (ring.length === 1) return ring[0][1]
     var n = ring.length
     var hi = 0
@@ -336,6 +467,7 @@ function globalLattice(batches, name, ms) {
     var a = ring[(hi - 1 + n) % n], c = ring[hi % n]
     var span = ((c[0] - a[0]) % 360 + 360) % 360
     if (span === 0) return a[1]
+    if (maxGap && span > maxGap(ringLat)) return NaN
     var into = ((lon - a[0]) % 360 + 360) % 360
     if (nearest) return into <= span / 2 ? a[1] : c[1]
     return a[1] + (c[1] - a[1]) * into / span
@@ -348,10 +480,15 @@ function globalLattice(batches, name, ms) {
       if (lats[k] <= nodeLat) below = k
       if (lats[k] >= nodeLat && above < 0) above = k
     }
+    // Beyond the outermost dense rings (towards the poles) it is unknown.
+    if (maxGap && (below < 0 || above < 0)) {
+      for (var c0 = 0; c0 < cols; c0++) values[row * cols + c0] = NaN
+      continue
+    }
     for (var col = 0; col < cols; col++) {
       var lon = -180 + col * 2.5
-      var lower = below >= 0 ? alongRing(byRing[lats[below]], lon) : NaN
-      var upper = above >= 0 ? alongRing(byRing[lats[above]], lon) : NaN
+      var lower = below >= 0 ? alongRing(byRing[lats[below]], lon, lats[below]) : NaN
+      var upper = above >= 0 ? alongRing(byRing[lats[above]], lon, lats[above]) : NaN
       var v
       if (!isFinite(lower)) v = upper
       else if (!isFinite(upper) || lats[above] === lats[below]) v = lower
@@ -361,6 +498,124 @@ function globalLattice(batches, name, ms) {
     }
   }
   return { south: -90, north: 90, west: -180, east: 180, cols: cols, rows: rows, values: values, wrap: true }
+}
+
+// The dense rain set's lattice of a variable (RAIN_SERVES) at a time: null
+// for a time outside its 48 hours; unknown away from the loaded sectors
+// (two of its own spacings without a point).
+function rainLattice(batches, name, ms, plan) {
+  if (!RAIN_SERVES[name] || !batches.length) return null
+  var target = Number(ms) / 1000
+  var times = batches[0].times
+  if (!times || !times.length || target < times[0] - 3600 || target > times[times.length - 1] + 3600) return null
+  return rainLatticeFromPlan(plan || rainPlan(batches), batches, name, ms)
+}
+// What does not change with the time: for each node of the 2.5° lattice
+// the two points along the ring below and above it, their weights, and the
+// rings' weight (as globalLattice finds them), so a time step only reads
+// values. Made once per set of loaded cells.
+function rainPlan(batches) {
+  var refs = []
+  var byRing = {}
+  for (var b = 0; b < batches.length; b++) {
+    var batch = batches[b]
+    for (var p = 0; p < batch.points.length; p++) {
+      var lat = batch.points[p][0]
+      var ring = byRing[lat] || (byRing[lat] = [])
+      ring.push([wrapLon(batch.points[p][1]), refs.length])
+      refs.push([b, p])
+    }
+  }
+  var lats = Object.keys(byRing).map(Number).sort(function(a, c) { return a - c })
+  for (var r = 0; r < lats.length; r++) byRing[lats[r]].sort(function(a, c) { return a[0] - c[0] })
+  function gapOf(lat) { return 2.01 * 360 / Math.max(1, Math.round(RAIN_RING_POINTS * Math.cos(lat * Math.PI / 180))) }
+  // [index a, index c, fraction] along a ring, or null where unknown.
+  function along(ring, lon, ringLat) {
+    if (ring.length === 1) return [ring[0][1], ring[0][1], 0]
+    var n = ring.length
+    var hi = 0
+    while (hi < n && ring[hi][0] < lon) hi++
+    var a = ring[(hi - 1 + n) % n], c = ring[hi % n]
+    var span = ((c[0] - a[0]) % 360 + 360) % 360
+    if (span === 0) return [a[1], a[1], 0]
+    if (span > gapOf(ringLat)) return null
+    return [a[1], c[1], (((lon - a[0]) % 360 + 360) % 360) / span]
+  }
+  // Flat arrays per node (plain numbers, -1 for unknown): the lower and
+  // the upper ring's two points and fraction, and the rings' weight (-1:
+  // one ring only).
+  var cols = 145, rows = 73, N = cols * rows
+  var la = new Array(N), lc = new Array(N), lf = new Array(N), ua = new Array(N), uc = new Array(N), uf = new Array(N)
+  var w = new Array(N), used = []
+  for (var row = 0; row < rows; row++) {
+    var nodeLat = -90 + row * 2.5
+    var below = -1, above = -1
+    for (var k = 0; k < lats.length; k++) {
+      if (lats[k] <= nodeLat) below = k
+      if (lats[k] >= nodeLat && above < 0) above = k
+    }
+    for (var col = 0; col < cols; col++) {
+      var i = row * cols + col
+      la[i] = -1; ua[i] = -1; w[i] = -1
+      if (below < 0 || above < 0) continue
+      var lon = -180 + col * 2.5
+      var lower = along(byRing[lats[below]], lon, lats[below])
+      var upper = along(byRing[lats[above]], lon, lats[above])
+      if (!lower && !upper) continue
+      if (lower) { la[i] = lower[0]; lc[i] = lower[1]; lf[i] = lower[2] }
+      if (upper) { ua[i] = upper[0]; uc[i] = upper[1]; uf[i] = upper[2] }
+      w[i] = lats[above] === lats[below] ? -1 : (nodeLat - lats[below]) / (lats[above] - lats[below])
+      used.push(i)
+    }
+  }
+  return { refs: refs, cols: cols, rows: rows, la: la, lc: lc, lf: lf, ua: ua, uc: uc, uf: uf, w: w, used: used }
+}
+function rainLatticeFromPlan(plan, batches, name, ms) {
+  var nearest = !!NEAREST[name]
+  var scale = scaleOf(name)
+  // The values straight from the compact arrays (hourly: no rate to make).
+  var series = batches.map(function(batch) {
+    return { values: batch.vars[name] || null, count: batch.times.length, step: nearestStep(batch.times, ms) }
+  })
+  var point = new Array(plan.refs.length)
+  for (var r = 0; r < plan.refs.length; r++) {
+    var ref = plan.refs[r]
+    var sr = series[ref[0]]
+    var raw = sr.values ? sr.values[ref[1] * sr.count + sr.step] : null
+    point[r] = raw === null || raw === undefined ? NaN : raw / scale
+  }
+  var N = plan.cols * plan.rows
+  var values = new Array(N)
+  for (var z = 0; z < N; z++) values[z] = NaN
+  var la = plan.la, lc = plan.lc, lf = plan.lf, ua = plan.ua, uc = plan.uc, uf = plan.uf, wr = plan.w
+  for (var q = 0; q < plan.used.length; q++) {
+    var i = plan.used[q]
+    var lower = NaN, upper = NaN
+    if (la[i] >= 0) {
+      var a = point[la[i]], c = point[lc[i]]
+      lower = nearest ? (lf[i] <= 0.5 ? a : c) : a + (c - a) * lf[i]
+    }
+    if (ua[i] >= 0) {
+      var a2 = point[ua[i]], c2 = point[uc[i]]
+      upper = nearest ? (uf[i] <= 0.5 ? a2 : c2) : a2 + (c2 - a2) * uf[i]
+    }
+    var v
+    if (!(lower === lower)) v = upper
+    else if (!(upper === upper) || wr[i] < 0) v = lower
+    else if (nearest) v = wr[i] <= 0.5 ? lower : upper
+    else v = lower + (upper - lower) * wr[i]
+    values[i] = v === v ? v : NaN
+  }
+  return { south: -90, north: 90, west: -180, east: 180, cols: plan.cols, rows: plan.rows, values: values, wrap: true }
+}
+// The coarse lattice with the dense one laid over it where that is known.
+function withDense(coarse, dense) {
+  if (!dense) return coarse
+  if (!coarse) return dense
+  var values = new Array(coarse.values.length)
+  for (var i = 0; i < values.length; i++) values[i] = isFinite(dense.values[i]) ? dense.values[i] : coarse.values[i]
+  return { south: coarse.south, north: coarse.north, west: coarse.west, east: coarse.east, cols: coarse.cols,
+    rows: coarse.rows, values: values, wrap: coarse.wrap, dense: true }
 }
 
 // A lattice's value at a place (bilinear), NaN outside it or where unknown.

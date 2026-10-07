@@ -2,6 +2,7 @@ import QtQuick
 import qs.Commons
 import "Globe.js" as Globe
 import "GlobeFields.js" as GlobeFields
+import "GlobeRadar.js" as GlobeRadar
 
 // The globe's colour layers in one picture (Settings → Display → Globe),
 // composed bottom to top in a fixed order:
@@ -9,7 +10,8 @@ import "GlobeFields.js" as GlobeFields
 //      that over the ocean and the air's over land (a land mask lattice);
 //   2. the wind's speed: alone the base, with a temperature over it at 50 %;
 //   3. the cloud as a white veil;
-//   4. precipitation in radar colours (nothing below 0.1 mm/h).
+//   4. precipitation in radar colours (nothing below 0.1 mm/h);
+//   5. from z2 the radar's own picture (WeatherGlobeRadar), in place of 4.
 // A layer without data at a place leaves the others be.
 //
 // How: the place under each corner of an n-wide grid of cells (the
@@ -37,12 +39,15 @@ Canvas {
   // What its frames cost (the screenshot harness reads it).
   property var stats: ({ count: 0, total: 0, max: 0 })
 
+  // The radar's reprojected tiles (WeatherGlobeRadar.raster), or null.
+  property var radar: null
+  onRadarChanged: requestPaint()
   // Set while the GPU surface draws the layers (WeatherGlobe).
   property bool suspended: false
   onSuspendedChanged: if (!suspended) requestPaint()
-  readonly property bool on: !suspended && layers.length > 0 && layers.some(function(kind) {
+  readonly property bool on: !suspended && ((layers.length > 0 && layers.some(function(kind) {
     return !!lattices[kind] && !!lattices[kind].global
-  })
+  })) || !!radar)
   visible: on
 
   // Per layer its buckets' colours, flat [r, g, b, a, …] in 0–255:
@@ -225,6 +230,8 @@ Canvas {
     // The colour at a fractional bucket position fi (bucket middles at
     // i + 0.5) into mixed: r, g, b, a in 0–255.
     var mixed = [0, 0, 0, 0]
+    var radarPx = [0, 0, 0, 0]
+    var radarOn = !!radar
     function blend(P, count, fi) {
       var x = fi - 0.5
       var i0 = x <= 0 ? 0 : (x >= count - 1 ? count - 2 : Math.floor(x))
@@ -274,6 +281,12 @@ Canvas {
           var ra = mixed[3] / 255 * Math.min(1, (v - steps[0]) / (steps[1] - steps[0]))
           R0 = mixed[0] * ra + R0 * (1 - ra); G0 = mixed[1] * ra + G0 * (1 - ra)
           B0 = mixed[2] * ra + B0 * (1 - ra); A0 = ra + A0 * (1 - ra)
+        }
+        // 5. The radar's picture, over everything.
+        if (radarOn && GlobeRadar.sample(radar, lats[j], lons[j], radarPx) && radarPx[3] > 0) {
+          var pa = radarPx[3] / 255
+          R0 = radarPx[0] * pa + R0 * (1 - pa); G0 = radarPx[1] * pa + G0 * (1 - pa)
+          B0 = radarPx[2] * pa + B0 * (1 - pa); A0 = pa + A0 * (1 - pa)
         }
       }
       colours[o] = R0; colours[o + 1] = G0; colours[o + 2] = B0; colours[o + 3] = A0

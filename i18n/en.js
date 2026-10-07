@@ -505,5 +505,13 @@ var catalog = {
   "changesCurrent": "installed",
   "changesShowOlder": "Show older versions",
   "changesEnglishNote": "The log is kept in English.",
-  "changesNone": "No change log found."
+  "changesNone": "No change log found.",
+  "globeRainDense": "rain about 500 km",
+  "globeRadar": "Radar from close up",
+  "globeRadarHint": "Radar from close up (z2 on): RainViewer's radar pictures in place of the model's precipitation, for the globe's time while it lies within the radar's last two hours, else the latest picture.",
+  "globeRadarReplaces": "Precipitation: the radar shows in its place from close up",
+  "globeRadarAt": "radar {time}",
+  "globeRadarLatest": "radar: latest picture, {time}",
+  "shortcutGlobeRadar": "Globe: radar from close up on or off",
+  "sourceGlobeRadar": "From close up the globe shows RainViewer's radar tiles too (the switch Radar from close up), cached with the radar's pictures."
 }

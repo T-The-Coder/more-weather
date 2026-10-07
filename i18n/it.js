@@ -471,5 +471,13 @@ var entries = {
   "changesCurrent": "installata",
   "changesShowOlder": "Mostra versioni precedenti",
   "changesEnglishNote": "Il registro è tenuto in inglese.",
-  "changesNone": "Nessun registro delle modifiche trovato."
+  "changesNone": "Nessun registro delle modifiche trovato.",
+  "globeRainDense": "pioggia circa 500 km",
+  "globeRadar": "Radar da vicino",
+  "globeRadarHint": "Radar da vicino (da z2): le immagini radar di RainViewer al posto delle precipitazioni del modello, all’ora del globo finché rientra nelle ultime due ore del radar, altrimenti l’immagine più recente.",
+  "globeRadarReplaces": "Precipitazioni: da vicino le sostituisce il radar",
+  "globeRadarAt": "radar {time}",
+  "globeRadarLatest": "radar: immagine più recente, {time}",
+  "shortcutGlobeRadar": "Globo: radar da vicino sì o no",
+  "sourceGlobeRadar": "Da vicino anche il globo mostra le tessere radar di RainViewer (interruttore Radar da vicino), in cache con le immagini del radar."
 }

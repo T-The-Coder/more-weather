@@ -471,5 +471,13 @@ var entries = {
   "changesCurrent": "installert",
   "changesShowOlder": "Vis eldre versjoner",
   "changesEnglishNote": "Loggen føres på engelsk.",
-  "changesNone": "Fant ingen endringslogg."
+  "changesNone": "Fant ingen endringslogg.",
+  "globeRainDense": "regn omtrent 500 km",
+  "globeRadar": "Radar på nært hold",
+  "globeRadarHint": "Radar på nært hold (fra z2): RainViewers radarbilder i stedet for modellens nedbør, for globusens tid så lenge den ligger innenfor radarens siste to timer, ellers det nyeste bildet.",
+  "globeRadarReplaces": "Nedbør: på nært hold vises radaren i stedet",
+  "globeRadarAt": "radar {time}",
+  "globeRadarLatest": "radar: nyeste bilde, {time}",
+  "shortcutGlobeRadar": "Globus: radar på nært hold av eller på",
+  "sourceGlobeRadar": "På nært hold viser også globusen RainViewers radarfliser (bryteren Radar på nært hold), lagret sammen med radarbildene."
 }

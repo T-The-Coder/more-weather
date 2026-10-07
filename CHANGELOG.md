@@ -4,6 +4,26 @@ All notable changes to More Weather are documented here.
 
 ## Unreleased
 
+- **Finer rain on the whole globe:** with the precipitation layer on
+  (z0–z1), a second set of points about twice as dense (rings every 4.5°,
+  about 2,000 on the earth) is asked for the part facing you only (within
+  80° of the view's middle, about 1,000 points, in cells of 15° kept
+  three hours, so turning loads each cell once), after the 510 points,
+  paced to Open-Meteo's 600 calls a minute; only cells where the 510
+  points see rain within 48 hours, and never closer than 600 calls to the
+  day's first budget mark. Precipitation and the thunderstorm symbols use
+  it where it is loaded; the legend then says "rain about 500 km".
+- **Radar on the globe from z2:** a new switch and chip (`a`) lays
+  RainViewer's radar tiles (the Radar section's source, its picture
+  cache) onto the globe and the flat map in place of the model's
+  precipitation, reprojected once per tile, at the globe's time while it
+  lies within the radar's last two hours, else the latest picture (the
+  legend says which). At z2 the radar has its own picture of the view's
+  box at the tiles' resolution and its own shader over the GPU surface,
+  as sharp as from z3.
+- **Globe budget in three tiers:** loads you cause, including the base
+  data when you open or show the globe, go on up to 3,000 calls a day;
+  only the timed renewal while the globe stays shown stops at 2,000.
 - **Nothing moves while the monitor is off:** with the screen turned off
   (DPMS: a key binding, or Omarchy on idle) the turning globe, the
   timeline's playback, the wind streaks, the flashing storm symbols and

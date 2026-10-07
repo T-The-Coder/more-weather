@@ -471,5 +471,13 @@ var entries = {
   "changesCurrent": "इंस्टॉल",
   "changesShowOlder": "पुराने संस्करण दिखाएँ",
   "changesEnglishNote": "लॉग अंग्रेज़ी में रखा जाता है।",
-  "changesNone": "कोई बदलाव लॉग नहीं मिला।"
+  "changesNone": "कोई बदलाव लॉग नहीं मिला।",
+  "globeRainDense": "वर्षा लगभग 500 किमी",
+  "globeRadar": "पास से रडार",
+  "globeRadarHint": "पास से रडार (z2 से): मॉडल की वर्षा की जगह RainViewer की रडार छवियाँ, ग्लोब के समय के लिए जब तक वह रडार के पिछले दो घंटों में हो, वरना नवीनतम छवि।",
+  "globeRadarReplaces": "वर्षा: पास से इसकी जगह रडार दिखता है",
+  "globeRadarAt": "रडार {time}",
+  "globeRadarLatest": "रडार: नवीनतम छवि, {time}",
+  "shortcutGlobeRadar": "ग्लोब: पास से रडार चालू या बंद",
+  "sourceGlobeRadar": "पास से ग्लोब भी RainViewer की रडार टाइलें दिखाता है (पास से रडार स्विच), रडार छवियों के साथ कैश की गईं।"
 }

@@ -471,5 +471,13 @@ var entries = {
   "changesCurrent": "مثبت",
   "changesShowOlder": "عرض الإصدارات الأقدم",
   "changesEnglishNote": "يُكتب السجل بالإنجليزية.",
-  "changesNone": "لم يُعثر على سجل التغييرات."
+  "changesNone": "لم يُعثر على سجل التغييرات.",
+  "globeRainDense": "المطر نحو 500 كم",
+  "globeRadar": "الرادار عن قرب",
+  "globeRadarHint": "الرادار عن قرب (من z2): صور رادار RainViewer بدل هطول النموذج، لوقت الكرة ما دام ضمن آخر ساعتين للرادار، وإلا فأحدث صورة.",
+  "globeRadarReplaces": "الهطول: عن قرب يحل الرادار محله",
+  "globeRadarAt": "رادار {time}",
+  "globeRadarLatest": "رادار: أحدث صورة، {time}",
+  "shortcutGlobeRadar": "الكرة: الرادار عن قرب تشغيل أو إيقاف",
+  "sourceGlobeRadar": "عن قرب تعرض الكرة أيضًا بلاطات رادار RainViewer (مفتاح الرادار عن قرب)، مخزنة مع صور الرادار."
 }

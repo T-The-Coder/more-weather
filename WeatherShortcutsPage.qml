@@ -53,6 +53,7 @@ Column {
         { keys: ["v"], action: "shortcutGlobeWash" },
         { keys: ["t", "e", "c", "p", "d"], action: "shortcutGlobeLayers" },
         { keys: ["i", "s", "u"], action: "shortcutGlobeOverlays" },
+        { keys: ["a"], action: "shortcutGlobeRadar" },
         { keys: ["⇧ ↑ ↓"], action: "shortcutGlobeWindHeight" },
         { keys: [",", "."], action: "shortcutGlobeStep" },
         { keys: ["Space"], action: "shortcutGlobePlay" },

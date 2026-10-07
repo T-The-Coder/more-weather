@@ -471,5 +471,13 @@ var entries = {
   "changesCurrent": "asennettu",
   "changesShowOlder": "Näytä vanhemmat versiot",
   "changesEnglishNote": "Lokia pidetään englanniksi.",
-  "changesNone": "Muutoslokia ei löytynyt."
+  "changesNone": "Muutoslokia ei löytynyt.",
+  "globeRainDense": "sade noin 500 km",
+  "globeRadar": "Tutka läheltä",
+  "globeRadarHint": "Tutka läheltä (z2:sta alkaen): RainViewerin tutkakuvat mallin sateen sijaan maapallon ajalle, kun se osuu tutkan kahteen viimeiseen tuntiin, muuten uusin kuva.",
+  "globeRadarReplaces": "Sade: läheltä tutka näkyy sen sijaan",
+  "globeRadarAt": "tutka {time}",
+  "globeRadarLatest": "tutka: uusin kuva, {time}",
+  "shortcutGlobeRadar": "Maapallo: tutka läheltä päälle tai pois",
+  "sourceGlobeRadar": "Läheltä myös maapallo näyttää RainViewerin tutkaruudut (kytkin Tutka läheltä), välimuistissa tutkakuvien kanssa."
 }

@@ -55,7 +55,7 @@ Column {
         ["Buienradar", "https://www.buienradar.nl/"], ["JMA", "https://www.jma.go.jp/bosai/nowc/"]]
     },
     {
-      title: "sourceGroupRadar", details: "sourceGroupRadarDetails",
+      title: "sourceGroupRadar", details: "sourceGroupRadarDetails", more: "sourceGlobeRadar",
       inUse: panel.radarFrames.length > 0 || panel.radarUsesModelFallback
         ? label(Providers.radarLabelKey(panel.radarDisplayProviderId)) : "",
       links: [["DWD", "https://www.dwd.de/"], ["NWS", "https://radar.weather.gov/"],
@@ -201,6 +201,7 @@ Column {
           textFormat: Text.PlainText
           width: parent.width
           text: sourcesPage.label(sourceCard.modelData.details)
+            + (sourceCard.modelData.more ? " " + sourcesPage.label(sourceCard.modelData.more) : "")
           color: sourcesPage.panel.mutedText
           font.family: sourcesPage.panel.fontFamily
           font.pixelSize: Style.font.caption

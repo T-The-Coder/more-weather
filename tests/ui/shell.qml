@@ -163,6 +163,7 @@ ShellRoot {
   function display(key, value) { panel.displayOptionsStore.setSettingsDisplaySetting(key, value) }
   property var moonSavedBefore: []
   property var dpmsFile: null
+  Process { id: rainFiles }
   property double moonNowBefore: 0
   function settingsSearchType(query) { panel.setSettingsSearch(query) }
   function press(key, text, modifiers) {
@@ -577,6 +578,68 @@ ShellRoot {
     function() {}, function() {}, function() {}, function() { rimShot("09v-layers-temp-sst-z0") },
     function() { layersOn(["temperature", "wind"]); globeView(1, 45, -15) },
     function() {}, function() {}, function() { shot("09w-layers-wind-temp-z1") },
+    // Precipitation on the whole disc: the 510 points alone (the dense
+    // set's files held back), then with the dense rain set.
+    function() {
+      layersOn([])
+      rainFiles.command = ["sh", "-c", "mkdir -p '" + panel.globeData.dir + "/held' && mv '" + panel.globeData.dir + "'/R9:* '"
+        + panel.globeData.dir + "/held/'"]
+      rainFiles.running = true
+    },
+    function() {
+      // What the worker holds of the dense set goes too.
+      var d = panel.globeData
+      var rainKeys = Object.keys(d.loaded).filter(function(key) { return key.indexOf("R9:") === 0 })
+      d.post({ fn: "forget", keys: rainKeys })
+      var loaded = {}
+      for (var k in d.loaded) if (k.indexOf("R9:") !== 0) loaded[k] = d.loaded[k]
+      d.loaded = loaded
+      var tried = {}
+      for (var key in d.diskTried) if (key.indexOf("R9:") !== 0) tried[key] = true
+      d.diskTried = tried
+      panel.setViewDisplaySetting("globeStorms", false)
+      globeView(0, 30, 10)
+      layersOn(["precipitation"])
+    },
+    function() {}, function() {}, function() {
+      check("rain-coarse-only", !panel.globeData.rainDense)
+      shot("09v2-rain-coarse-z0")
+    },
+    function() {
+      rainFiles.command = ["sh", "-c", "mv '" + panel.globeData.dir + "'/held/R9:* '" + panel.globeData.dir + "/'"]
+      rainFiles.running = true
+    },
+    function() {
+      var tried = {}
+      var was = panel.globeData.diskTried
+      for (var key in was) if (key.indexOf("R9:") !== 0) tried[key] = true
+      panel.globeData.diskTried = tried
+      panel.globeData.pumpRain()
+    },
+    function() {}, function() {}, function() {}, function() {}, function() {}, function() {}, function() {}, function() {},
+    function() {
+      check("rain-dense-loaded", panel.globeData.rainDense)
+      shot("09v3-rain-dense-z0")
+      panel.setViewDisplaySetting("globeStorms", true)
+    },
+    // The radar from close up (a fixture tile offline), at z2 and z4 over
+    // Europe, in place of the model's precipitation.
+    function() {
+      layersOn(["temperature", "precipitation"])
+      panel.setViewDisplaySetting("globeRadar", true)
+      globeView(2, 48, 10)
+    },
+    function() {}, function() {}, function() {}, function() {}, function() {},
+    function() {
+      check("radar-replaces-rain", panel.globeData.washLayers.indexOf("precipitation") < 0)
+      check("radar-tiles", !!panel.globeItem.radarItem.raster)
+      shot("09v4-radar-z2")
+    },
+    function() { globeView(4, 47, 9) },
+    function() {}, function() {}, function() {}, function() {}, function() {},
+    function() { check("radar-tiles-z4", !!panel.globeItem.radarItem.raster); shot("09v5-radar-z4") },
+    function() {},
+    function() { panel.setViewDisplaySetting("globeRadar", false); globeView(0, 35, 0) },
     function() { layersOn(["temperature"]) },
     // The timeline: now, +24 h and +96 h on the whole disc (temperature
     // with isobars and storms), +12 h close up over the Alps.

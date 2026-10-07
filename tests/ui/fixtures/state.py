@@ -172,7 +172,8 @@ write("fixture-places.json", {
 # fields: warm at the equator, a cloud band pattern, a few rain cells.
 VARIABLES = ["temperature_2m", "cloud_cover", "precipitation", "weather_code", "cape", "pressure_msl",
              "wind_speed_10m", "wind_direction_10m", "wind_gusts_10m"]
-SCALES = {"temperature_2m": 10, "cloud_cover": 1, "precipitation": 100, "weather_code": 1, "cape": 1,
+SCALES = {"temperature_2m": 10, "cloud_cover": 1, "precipitation": 100, "rain": 100, "showers": 100, "snowfall": 10,
+          "weather_code": 1, "cape": 1,
           "pressure_msl": 10, "wind_speed_10m": 10, "wind_direction_10m": 1, "wind_gusts_10m": 10,
           "sea_surface_temperature": 100}
 globe_dir = os.path.join(home, ".cache/more-weather/globe")
@@ -188,8 +189,14 @@ def field(name, lat, lon, hours):
         return 29 - 0.55 * abs(lat) + 6 * math.sin(math.radians(lon) * 2) + 2 * math.sin(hours / 24 * 2 * math.pi)
     if name == "cloud_cover":
         return max(0.0, min(100.0, 50 + 55 * math.sin(math.radians(lat) * 7) * math.cos(math.radians(lon) * 3)))
-    if name == "precipitation":
-        return max(0.0, 9 * math.sin(math.radians(lat) * 9 + math.radians(lon) * 5) - 5)
+    # Fronts, and showers about 600 km across that only the dense rain set
+    # resolves.
+    if name in ("precipitation", "rain", "showers"):
+        front = max(0.0, 9 * math.sin(math.radians(lat) * 9 + math.radians(lon) * 5) - 5)
+        cells = max(0.0, 6 * math.sin(math.radians(lat) * 32) * math.sin(math.radians(lon) * 32) - 3.5)
+        return {"precipitation": front + cells, "rain": front, "showers": cells}[name]
+    if name == "snowfall":
+        return 0.0
     # An Azores high and an Iceland low on a gentle swell.
     if name == "pressure_msl":
         def bump(lat0, lon0, size):
@@ -251,6 +258,44 @@ global_points.append((90, 0))
 for k in range(7):
     key = "G9:%d" % k
     write(key + ".json", compact(key, "global", global_points[k::7], 3, 33), folder=globe_dir)
+
+# The dense rain set (GlobeGrid.rainPoints): rings every 4.5°, round(80·cos)
+# points, in cells of 15° × 15°, 48 hours hourly.
+rain_cells = {}
+lat = -85.5
+while lat < 90:
+    count = max(1, round(80 * math.cos(math.radians(lat))))
+    for j in range(count):
+        lon = -180 + j * 360 / count
+        key = "R9:%d:%d" % (min(11, int((lat + 90) // 15)), min(23, int((lon + 180) // 15)))
+        rain_cells.setdefault(key, []).append((round(lat, 1), lon))
+    lat += 4.5
+for key, points in rain_cells.items():
+    write(key + ".json", compact(key, "rain", points, 1, 48,
+                                 names=["precipitation", "rain", "showers", "snowfall", "weather_code"]), folder=globe_dir)
+
+# A radar tile (RainViewer's 512 px PNG, used for every tile offline,
+# MW_RADAR_FIXTURE): showers in radar colours on a transparent ground.
+def radar_tile_png(path):
+    import struct, zlib
+    size = 512
+    colours = [(0, 0, 0, 0), (136, 221, 238, 180), (0, 170, 0, 200), (255, 238, 0, 220), (255, 68, 0, 230)]
+    rows = bytearray()
+    for y in range(size):
+        rows.append(0)
+        for x in range(size):
+            v = (math.sin(x / 23.0) * math.cos(y / 31.0) + math.sin((x + y) / 47.0)) * 1.6
+            level = 0 if v < 0.9 else (1 if v < 1.4 else (2 if v < 1.9 else (3 if v < 2.4 else 4)))
+            rows.extend(colours[level])
+    def chunk(kind, data):
+        return struct.pack(">I", len(data)) + kind + data + struct.pack(">I", zlib.crc32(kind + data) & 0xffffffff)
+    png = b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", struct.pack(">IIBBBBB", size, size, 8, 6, 0, 0, 0)) \
+        + chunk(b"IDAT", zlib.compress(bytes(rows), 6)) + chunk(b"IEND", b"")
+    with open(path, "wb") as out:
+        out.write(png)
+
+
+radar_tile_png(os.path.join(home, "radar-tile.png"))
 
 # Tiles of level 3 (7.5° high) round the Alps.
 size = 7.5

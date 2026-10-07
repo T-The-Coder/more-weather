@@ -471,5 +471,13 @@ var entries = {
   "changesCurrent": "installerad",
   "changesShowOlder": "Visa äldre versioner",
   "changesEnglishNote": "Loggen förs på engelska.",
-  "changesNone": "Ingen ändringslogg hittades."
+  "changesNone": "Ingen ändringslogg hittades.",
+  "globeRainDense": "regn cirka 500 km",
+  "globeRadar": "Radar på nära håll",
+  "globeRadarHint": "Radar på nära håll (från z2): RainViewers radarbilder i stället för modellens nederbörd, för globens tid så länge den ligger inom radarns senaste två timmar, annars den senaste bilden.",
+  "globeRadarReplaces": "Nederbörd: på nära håll visas radarn i stället",
+  "globeRadarAt": "radar {time}",
+  "globeRadarLatest": "radar: senaste bilden, {time}",
+  "shortcutGlobeRadar": "Glob: radar på nära håll på eller av",
+  "sourceGlobeRadar": "På nära håll visar även globen RainViewers radarrutor (reglaget Radar på nära håll), sparade med radarbilderna."
 }

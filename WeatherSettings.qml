@@ -225,6 +225,7 @@ Rectangle {
         { key: "globeSst", title: panel.i18n("globeWashSst") },
         { key: "globeCloud", title: panel.i18n("globeWashCloud") },
         { key: "globePrecipitation", title: panel.i18n("globeWashPrecipitation") },
+        { key: "globeRadar", title: panel.i18n("globeRadar") },
         { key: "globeWind", title: panel.i18n("globeWashWind"), choicesBelow: ["globeWindMode", "globeWindLevel"] },
         { key: "globeIsobars", title: panel.i18n("globeIsobars") },
         { key: "globeStorms", title: panel.i18n("globeStorms") },
@@ -234,7 +235,7 @@ Rectangle {
       hint: panel.i18n("chipsHint") + " " + panel.i18n("globeSoloHint") + " " + panel.i18n("globeHint") + " " + panel.i18n("globeZoomHint") + " "
         + panel.i18n("optionNightHint") + " " + panel.i18n("optionGlobeAutoRotateHint") + " " + panel.i18n("motionHint") + " "
         + panel.i18n("globeMapHint") + " " + panel.i18n("globeCombineHint") + " " + panel.i18n("globeLayersHint") + " "
-        + panel.i18n("globeTimelineHint") + " " + panel.i18n("globeWashHint"),
+        + panel.i18n("globeTimelineHint") + " " + panel.i18n("globeRadarHint") + " " + panel.i18n("globeWashHint"),
       hasDefaultTab: false
     },
     // The tab strip: moved like a section (its place in the window), with

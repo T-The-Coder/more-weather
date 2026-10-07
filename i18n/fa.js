@@ -471,5 +471,13 @@ var entries = {
   "changesCurrent": "نصب‌شده",
   "changesShowOlder": "نمایش نسخه‌های قدیمی‌تر",
   "changesEnglishNote": "این گزارش به انگلیسی نوشته می‌شود.",
-  "changesNone": "گزارش تغییراتی پیدا نشد."
+  "changesNone": "گزارش تغییراتی پیدا نشد.",
+  "globeRainDense": "باران حدود ۵۰۰ کیلومتر",
+  "globeRadar": "رادار از نزدیک",
+  "globeRadarHint": "رادار از نزدیک (از z2): تصاویر رادار RainViewer به‌جای بارش مدل، برای زمان کره تا وقتی در دو ساعت آخر رادار باشد، وگرنه تازه‌ترین تصویر.",
+  "globeRadarReplaces": "بارش: از نزدیک رادار جای آن را می‌گیرد",
+  "globeRadarAt": "رادار {time}",
+  "globeRadarLatest": "رادار: تازه‌ترین تصویر، {time}",
+  "shortcutGlobeRadar": "کره: رادار از نزدیک روشن یا خاموش",
+  "sourceGlobeRadar": "از نزدیک، کره هم کاشی‌های رادار RainViewer را نشان می‌دهد (کلید رادار از نزدیک)، که همراه تصاویر رادار ذخیره می‌شوند."
 }

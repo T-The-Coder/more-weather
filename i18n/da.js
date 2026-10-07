@@ -471,5 +471,13 @@ var entries = {
   "changesCurrent": "installeret",
   "changesShowOlder": "Vis ældre versioner",
   "changesEnglishNote": "Loggen føres på engelsk.",
-  "changesNone": "Ingen ændringslog fundet."
+  "changesNone": "Ingen ændringslog fundet.",
+  "globeRainDense": "regn omkring 500 km",
+  "globeRadar": "Radar tæt på",
+  "globeRadarHint": "Radar tæt på (fra z2): RainViewers radarbilleder i stedet for modellens nedbør, til globussens tid, så længe den ligger i radarens sidste to timer, ellers det nyeste billede.",
+  "globeRadarReplaces": "Nedbør: tæt på viser radaren i stedet",
+  "globeRadarAt": "radar {time}",
+  "globeRadarLatest": "radar: nyeste billede, {time}",
+  "shortcutGlobeRadar": "Globus: radar tæt på til eller fra",
+  "sourceGlobeRadar": "Tæt på viser globussen også RainViewers radarfliser (kontakten Radar tæt på), gemt sammen med radarbillederne."
 }

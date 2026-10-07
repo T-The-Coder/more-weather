@@ -1996,6 +1996,7 @@ Panel {
       globeIsobars: false,
       globeStorms: true,
       globeNumbers: false,
+      globeRadar: false,
       globeTimeline: true,
       globeMoonStyle: "space",
       globeStyle: "globe",

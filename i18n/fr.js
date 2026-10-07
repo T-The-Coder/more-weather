@@ -471,5 +471,13 @@ var entries = {
   "changesCurrent": "installée",
   "changesShowOlder": "Afficher les versions plus anciennes",
   "changesEnglishNote": "Le journal est tenu en anglais.",
-  "changesNone": "Aucun journal des modifications trouvé."
+  "changesNone": "Aucun journal des modifications trouvé.",
+  "globeRainDense": "pluie environ 500 km",
+  "globeRadar": "Radar de près",
+  "globeRadarHint": "Radar de près (à partir de z2) : les images radar de RainViewer à la place des précipitations du modèle, à l’heure du globe tant qu’elle se situe dans les deux dernières heures du radar, sinon la dernière image.",
+  "globeRadarReplaces": "Précipitations : de près, le radar les remplace",
+  "globeRadarAt": "radar {time}",
+  "globeRadarLatest": "radar : dernière image, {time}",
+  "shortcutGlobeRadar": "Globe : radar de près oui ou non",
+  "sourceGlobeRadar": "De près, le globe montre aussi les tuiles radar de RainViewer (interrupteur Radar de près), mises en cache avec les images du radar."
 }

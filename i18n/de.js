@@ -505,5 +505,13 @@ var catalog = {
   "changesCurrent": "installiert",
   "changesShowOlder": "Ältere Versionen zeigen",
   "changesEnglishNote": "Das Protokoll wird auf Englisch geführt.",
-  "changesNone": "Kein Änderungsprotokoll gefunden."
+  "changesNone": "Kein Änderungsprotokoll gefunden.",
+  "globeRainDense": "Regen etwa 500 km",
+  "globeRadar": "Radar aus der Nähe",
+  "globeRadarHint": "Radar aus der Nähe (ab z2): die Radarbilder von RainViewer statt des Niederschlags aus dem Modell, zur Zeit des Globus, solange sie in den letzten zwei Stunden des Radars liegt, sonst das neueste Bild.",
+  "globeRadarReplaces": "Niederschlag: aus der Nähe zeigt das Radar an seiner Stelle",
+  "globeRadarAt": "Radar {time}",
+  "globeRadarLatest": "Radar: neuestes Bild, {time}",
+  "shortcutGlobeRadar": "Globus: Radar aus der Nähe ein oder aus",
+  "sourceGlobeRadar": "Aus der Nähe zeigt auch der Globus die Radarkacheln von RainViewer (Schalter Radar aus der Nähe), zwischengespeichert mit den Radarbildern."
 }

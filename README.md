@@ -104,10 +104,13 @@ runs as a standalone app window.
   rise and set). Colour layers,
   each a switch and freely combined, show the temperature (default), the sea's
   temperature, wind, cloud and precipitation from Open-Meteo's model, coarse for the
-  whole earth and finer close up, ending crisply at the globe's rim. A row of chips under
+  whole earth (precipitation about twice as fine for the half facing you) and finer
+  close up, ending crisply at the globe's rim. From z2 the **radar** (RainViewer's
+  pictures, as in the Radar section) can take the model's precipitation's place, at the
+  globe's time while it lies within the radar's last two hours, else the latest picture. A row of chips under
   the globe switches the view (globe or flat map, night, moon, places, timeline) and every
   layer (Shift + click or a right click shows one colour layer
-  alone; letters `t` `e` `c` `p` `d` `i` `s` `u`; `v` steps through the layers alone; the
+  alone; letters `t` `e` `c` `p` `d` `i` `s` `u`, `a` for the radar; `v` steps through the layers alone; the
   temperatures in the same colours as the forecast's text, extended below −10 and above
   35 °C), with
   a scale per colour layer below, and the pointer reads the values under it. The wind is
@@ -257,9 +260,14 @@ service fails. Details are in [PROVIDERS.md](PROVIDERS.md) and in Settings → S
 | Radar | DWD (Germany and neighbours), NOAA/NWS MRMS (United States), ECCC GeoMet (Canada), RainViewer elsewhere; model precipitation as last resort |
 | Warnings | DWD, NWS, ECCC, MeteoAlarm (39 European countries) |
 | Wind map, UV, air quality, pollen | Open-Meteo (air quality from Copernicus CAMS) |
-| Globe colour layers and overlays | Open-Meteo (model grid, cached under `~/.cache/more-weather/globe/`); sea temperature from Open-Meteo Marine |
+| Globe colour layers and overlays | Open-Meteo (model grid, cached under `~/.cache/more-weather/globe/`); sea temperature from Open-Meteo Marine; radar from z2 from RainViewer |
 | Map background | NASA Blue Marble imagery served by the DWD GeoServer |
 | Places | Open-Meteo geocoding, Nominatim, OpenStreetMap Overpass (overpass-api.de, overpass.private.coffee, maps.mail.ru); IP geolocation (ipwho.is, ipapi.co, GeoJS) only when the location is set to automatic |
+
+The globe counts its Open-Meteo calls per day in three tiers: what you cause (opening or
+showing the globe, zooming, panning) loads up to 3,000, the timed renewal while the globe
+stays shown stops at 2,000, and the finer rain grid keeps 600 below that, so the base data
+can always be renewed. Past the limit the globe shows its stored data and says so.
 
 All services are free public APIs and need no account or API key. The plugin sends
 requests only to the services listed here and stores nothing outside your own

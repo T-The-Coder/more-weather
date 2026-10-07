@@ -471,5 +471,13 @@ var entries = {
   "changesCurrent": "đã cài",
   "changesShowOlder": "Hiện các phiên bản cũ hơn",
   "changesEnglishNote": "Nhật ký được viết bằng tiếng Anh.",
-  "changesNone": "Không tìm thấy nhật ký thay đổi."
+  "changesNone": "Không tìm thấy nhật ký thay đổi.",
+  "globeRainDense": "mưa khoảng 500 km",
+  "globeRadar": "Radar khi phóng gần",
+  "globeRadarHint": "Radar khi phóng gần (từ z2): ảnh radar của RainViewer thay cho lượng mưa của mô hình, theo thời gian của quả địa cầu khi nằm trong hai giờ gần nhất của radar, nếu không là ảnh mới nhất.",
+  "globeRadarReplaces": "Lượng mưa: khi phóng gần, radar thay thế",
+  "globeRadarAt": "radar {time}",
+  "globeRadarLatest": "radar: ảnh mới nhất, {time}",
+  "shortcutGlobeRadar": "Địa cầu: bật hoặc tắt radar khi phóng gần",
+  "sourceGlobeRadar": "Khi phóng gần, quả địa cầu cũng hiển thị các ô radar của RainViewer (công tắc Radar khi phóng gần), được lưu cùng ảnh radar."
 }

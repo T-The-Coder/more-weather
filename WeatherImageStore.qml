@@ -121,6 +121,7 @@ QtObject {
 
   function settle(url, exitCode) {
     active--
+    if (Quickshell.env("MW_REQUEST_LOG") === "1") console.log("MAPIMG", exitCode, url.split("?")[0])
     var record = records[url]
     if (record && record.state === "loading") {
       record.state = exitCode === 0 ? "ready" : "failed"

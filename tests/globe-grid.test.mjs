@@ -226,3 +226,98 @@ test("wind heights, marine keys and nearest codes", () => {
   assert.equal(atNode(5), 3)
   assert.equal(G.latticeValue(codes, 2.4, 0.3, true), 95)
 })
+
+test("the dense rain set: rings every 4.5°, about 2,000 points, sectors facing the view", () => {
+  const all = G.rainPoints()
+  assert.ok(all.length > 1900 && all.length < 2100, `${all.length} points`)
+  const lats = [...new Set(all.map((p) => p.lat))]
+  assert.equal(lats.length, 39)
+  assert.equal(Math.min(...lats), -85.5)
+  assert.equal(Math.max(...lats), 85.5)
+  assert.equal(all.filter((p) => p.lat === 0).length, 80)
+  // Cells of 15° × 15°, at most 16 points each.
+  const cells = [...new Set(all.map((p) => p.cell))]
+  assert.ok(cells.length > 250 && cells.length <= 288, `${cells.length} cells`)
+  const sizes = cells.map((c) => G.rainCellPoints(c).length)
+  assert.ok(sizes.every((n) => n >= 1 && n <= 16), sizes.join(","))
+  assert.equal(sizes.reduce((a, b) => a + b, 0), all.length)
+  // Facing a view: the disc's inner part, the cell under the centre first.
+  const facing = G.rainPointsFacing(20, 10)
+  assert.ok(facing.length > 700 && facing.length < 1000, `${facing.length} facing`)
+  const near = plain(G.rainCellsFor(20, 10))
+  assert.equal(near[0], "R9:7:12")
+  assert.ok(!near.includes("R9:7:0"), "the far side is not asked")
+  // Paced: 600 places a minute.
+  assert.equal(G.pacingMs(50), 5000)
+  assert.equal(G.ttlOf("R9:7:12"), 3 * 3600 * 1000)
+  const request = G.forecastRequest(G.rainCellPoints("R9:7:12"), "rain")
+  assert.match(request.url, /hourly=precipitation,rain,showers,snowfall,weather_code&forecast_hours=48/)
+})
+
+test("the dense rain lattice lies over the coarse one where it is known, within its 48 hours", () => {
+  const now = Date.UTC(2026, 9, 7, 12)
+  const times = Array.from({ length: 48 }, (_, i) => now / 1000 + i * 3600)
+  // Four cells loaded (0° … 30° N, 180° … 150° W), 0.5 mm/h everywhere in them.
+  const batches = ["R9:6:0", "R9:6:1", "R9:7:0", "R9:7:1"].map((key) => {
+    const points = G.rainCellPoints(key)
+    const values = []
+    for (let p = 0; p < points.length; p++) for (let t = 0; t < 48; t++) values.push(50)
+    return { v: 1, kind: "rain", key: key, at: now, points: points.map((p) => [p.lat, p.lon]), times,
+      vars: { precipitation: values, weather_code: values.map(() => 61) } }
+  })
+  const dense = G.rainLattice(batches, "precipitation", now)
+  assert.ok(Math.abs(G.latticeValue(dense, 10, -165) - 0.5) < 1e-9)
+  assert.ok(Number.isNaN(G.latticeValue(dense, 10, 20)), "away from the sectors: unknown")
+  assert.equal(G.rainLattice(batches, "temperature_2m", now), null)
+  assert.equal(G.rainLattice(batches, "precipitation", now + 72 * 3600 * 1000), null)
+  const coarse = { south: -90, north: 90, west: -180, east: 180, cols: 145, rows: 73, values: new Array(145 * 73).fill(2), wrap: true }
+  const merged = G.withDense(coarse, dense)
+  assert.ok(Math.abs(G.latticeValue(merged, 10, -165) - 0.5) < 1e-9)
+  assert.equal(G.latticeValue(merged, 10, 20), 2)
+})
+
+test("the dense lattice from its node plan equals the ring-by-ring one", () => {
+  const now = Date.UTC(2026, 9, 7, 12)
+  const times = Array.from({ length: 4 }, (_, i) => now / 1000 + i * 3600)
+  const keys = ["R9:6:0", "R9:6:1", "R9:7:0", "R9:8:12", "R9:8:13"]
+  const batches = keys.map((key) => {
+    const points = G.rainCellPoints(key)
+    const values = []
+    points.forEach((p, i) => times.forEach((_, t) => values.push(Math.round(100 * Math.abs(Math.sin(i * 1.7 + t + p.lat))))))
+    return { v: 1, kind: "rain", key, at: now, points: points.map((p) => [p.lat, p.lon]), times, vars: { precipitation: values } }
+  })
+  const viaPlan = G.rainLattice(batches, "precipitation", now + 3600 * 1000)
+  const gap = (lat) => 2.01 * 360 / Math.max(1, Math.round(80 * Math.cos(lat * Math.PI / 180)))
+  const direct = G.globalLattice(batches, "precipitation", now + 3600 * 1000, gap)
+  let known = 0
+  for (let i = 0; i < direct.values.length; i++) {
+    const a = viaPlan.values[i], b = direct.values[i]
+    if (Number.isNaN(b)) { assert.ok(Number.isNaN(a), `node ${i}`); continue }
+    known++
+    assert.ok(Math.abs(a - b) < 1e-9, `node ${i}: ${a} vs ${b}`)
+  }
+  assert.ok(known > 50)
+})
+
+test("dry dense cells are not asked; the dense set keeps 600 calls of room", () => {
+  const now = Date.UTC(2026, 9, 8, 0)
+  const times = Array.from({ length: 20 }, (_, i) => now / 1000 + i * 3 * 3600)
+  const points = G.globalPoints()
+  // Rain (1 mm in 3 h) only near 45° N 9° E, a thunderstorm code near 27° N 81° W.
+  const precipitation = [], codes = []
+  for (const p of points) for (const t of times) {
+    const wet = Math.abs(p.lat - 45) < 5 && Math.abs(p.lon - 9) < 10
+    precipitation.push(wet ? 100 : 0)
+    codes.push(Math.abs(p.lat - 27) < 5 && Math.abs(p.lon + 81) < 10 ? 95 : 3)
+  }
+  const batch = { v: 1, kind: "global", key: "G9:0", at: now, points: points.map((p) => [p.lat, p.lon]), times,
+    vars: { precipitation, weather_code: codes } }
+  assert.ok(G.rainCellWet([batch], G.rainCellOf(46, 10), now), "the rain's own cell")
+  assert.ok(G.rainCellWet([batch], G.rainCellOf(46, 25), now), "a neighbour within a ring's step")
+  assert.ok(G.rainCellWet([batch], G.rainCellOf(28, -80), now), "a thunderstorm code")
+  assert.ok(!G.rainCellWet([batch], G.rainCellOf(-30, 140), now), "dry far away")
+  assert.ok(!G.rainCellWet([batch], G.rainCellOf(46, 10), now + 4 * 86400 * 1000), "outside the next 48 hours")
+  assert.ok(G.rainCellWet([], G.rainCellOf(-30, 140), now), "no base data: asked")
+  assert.ok(G.mayLoadRain(1300, 100))
+  assert.ok(!G.mayLoadRain(1350, 100))
+})

@@ -471,5 +471,13 @@ var entries = {
   "changesCurrent": "インストール済み",
   "changesShowOlder": "古いバージョンを表示",
   "changesEnglishNote": "この記録は英語で書かれています。",
-  "changesNone": "変更履歴が見つかりません。"
+  "changesNone": "変更履歴が見つかりません。",
+  "globeRainDense": "雨は約500 km",
+  "globeRadar": "近くではレーダー",
+  "globeRadarHint": "近くではレーダー（z2 から）：モデルの降水の代わりに RainViewer のレーダー画像。地球儀の時刻がレーダーの直近 2 時間内ならその時刻、外れていれば最新の画像。",
+  "globeRadarReplaces": "降水：近くではレーダーが代わりに表示されます",
+  "globeRadarAt": "レーダー {time}",
+  "globeRadarLatest": "レーダー：最新の画像 {time}",
+  "shortcutGlobeRadar": "地球儀：近くのレーダーのオン／オフ",
+  "sourceGlobeRadar": "近くでは地球儀も RainViewer のレーダータイルを表示します（スイッチ「近くではレーダー」）。レーダー画像と一緒にキャッシュされます。"
 }

@@ -471,5 +471,13 @@ var entries = {
   "changesCurrent": "telepítve",
   "changesShowOlder": "Régebbi verziók mutatása",
   "changesEnglishNote": "A napló angolul készül.",
-  "changesNone": "Nem található változásnapló."
+  "changesNone": "Nem található változásnapló.",
+  "globeRainDense": "eső kb. 500 km",
+  "globeRadar": "Radar közelről",
+  "globeRadarHint": "Radar közelről (z2-től): a RainViewer radarképei a modell csapadéka helyett, a földgömb idejére, amíg az a radar utolsó két órájába esik, különben a legújabb kép.",
+  "globeRadarReplaces": "Csapadék: közelről a radar mutatja helyette",
+  "globeRadarAt": "radar {time}",
+  "globeRadarLatest": "radar: legújabb kép, {time}",
+  "shortcutGlobeRadar": "Földgömb: radar közelről be vagy ki",
+  "sourceGlobeRadar": "Közelről a földgömb is mutatja a RainViewer radarcsempéit (Radar közelről kapcsoló), a radarképekkel együtt gyorsítótárazva."
 }

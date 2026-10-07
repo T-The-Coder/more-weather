@@ -10,6 +10,8 @@
 //       → { fn, token, ms, lattice } (the global one when box is null)
 //   { fn: "layers", token, ms, box, level, height, isobars, storms, streaks }
 //       → { fn, token, ms, layers }
+//   { fn: "wet", keys, ms } → { fn, wet: { key: bool } } (the dense rain
+//       cells that may see rain, GlobeGrid.rainCellWet)
 //   { fn: "landmask", land } (data/globe-land.json) → { fn, lattice } (1 land, 0 sea)
 // With `quiet` (the timeline's look-ahead) lattice and layers are made and
 // kept, not sent.
@@ -48,6 +50,13 @@ WorkerScript.onMessage = function(message) {
         ? boxFor(store, message.name, message.ms, message.box, message.level, message.height || "")
         : globalFor(store, message.name, message.ms)
       if (!message.quiet) WorkerScript.sendMessage({ fn: "lattice", token: message.token, ms: message.ms, lattice: lattice })
+    } else if (message.fn === "wet") {
+      // Which dense rain cells may see rain (GlobeGrid.rainCellWet).
+      var list = []
+      for (var key in store.batches) list.push(store.batches[key])
+      var wet = {}
+      for (var w = 0; w < message.keys.length; w++) wet[message.keys[w]] = rainCellWet(list, message.keys[w], message.ms)
+      WorkerScript.sendMessage({ fn: "wet", wet: wet })
     } else if (message.fn === "landmask") {
       // Land (1) and sea (0) at the global lattice's nodes (GlobeMarine).
       var mask = []

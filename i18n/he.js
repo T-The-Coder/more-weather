@@ -471,5 +471,13 @@ var entries = {
   "changesCurrent": "מותקנת",
   "changesShowOlder": "הצגת גרסאות ישנות יותר",
   "changesEnglishNote": "היומן נכתב באנגלית.",
-  "changesNone": "לא נמצא יומן שינויים."
+  "changesNone": "לא נמצא יומן שינויים.",
+  "globeRainDense": "גשם כ־500 ק״מ",
+  "globeRadar": "מכ״ם מקרוב",
+  "globeRadarHint": "מכ״ם מקרוב (מ־z2): תמונות המכ״ם של RainViewer במקום המשקעים של המודל, לשעת הגלובוס כל עוד היא בשעתיים האחרונות של המכ״ם, אחרת התמונה האחרונה.",
+  "globeRadarReplaces": "משקעים: מקרוב המכ״ם מוצג במקומם",
+  "globeRadarAt": "מכ״ם {time}",
+  "globeRadarLatest": "מכ״ם: התמונה האחרונה, {time}",
+  "shortcutGlobeRadar": "גלובוס: מכ״ם מקרוב פעיל או כבוי",
+  "sourceGlobeRadar": "מקרוב גם הגלובוס מציג את אריחי המכ״ם של RainViewer (מתג מכ״ם מקרוב), שמורים יחד עם תמונות המכ״ם."
 }

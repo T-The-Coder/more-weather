@@ -471,5 +471,13 @@ var entries = {
   "changesCurrent": "已安裝",
   "changesShowOlder": "顯示較早的版本",
   "changesEnglishNote": "紀錄以英文撰寫。",
-  "changesNone": "找不到更新紀錄。"
+  "changesNone": "找不到更新紀錄。",
+  "globeRainDense": "降水約 500 公里",
+  "globeRadar": "近距離雷達",
+  "globeRadarHint": "近距離雷達（z2 起）：用 RainViewer 雷達圖取代模型降水；地球儀時間在雷達最近兩小時內時顯示該時刻，否則顯示最新一張。",
+  "globeRadarReplaces": "降水：近距離時由雷達取代",
+  "globeRadarAt": "雷達 {time}",
+  "globeRadarLatest": "雷達：最新一張，{time}",
+  "shortcutGlobeRadar": "地球儀：開關近距離雷達",
+  "sourceGlobeRadar": "近距離時地球儀也顯示 RainViewer 的雷達圖塊（「近距離雷達」開關），與雷達圖一起快取。"
 }

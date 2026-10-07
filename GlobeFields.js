@@ -41,6 +41,8 @@ var CHIPS = [
   { key: "globeCloud", layer: "cloud", glyph: "\u{f0590}", label: "globeChipCloud", shortcut: "c" },
   { key: "globePrecipitation", layer: "precipitation", glyph: "\u{f0596}", label: "globeChipRain", shortcut: "p" },
   { key: "globeWind", layer: "wind", glyph: "\u{f059d}", label: "globeChipWind", shortcut: "d" },
+  // The radar's picture from z2 (WeatherGlobeRadar), in place of the rain.
+  { key: "globeRadar", layer: "", glyph: "\u{f0437}", label: "radar", shortcut: "a" },
   { key: "globeIsobars", layer: "", glyph: "\u{f029a}", label: "globeChipIsobars", shortcut: "i", divider: true },
   { key: "globeStorms", layer: "", glyph: "\u{f140b}", label: "globeChipStorms", shortcut: "s" },
   { key: "globeNumbers", layer: "", glyph: "\u{f03a0}", label: "globeChipNumbers", shortcut: "u" }

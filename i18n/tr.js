@@ -471,5 +471,13 @@ var entries = {
   "changesCurrent": "kurulu",
   "changesShowOlder": "Eski sürümleri göster",
   "changesEnglishNote": "Günlük İngilizce tutulur.",
-  "changesNone": "Değişiklik günlüğü bulunamadı."
+  "changesNone": "Değişiklik günlüğü bulunamadı.",
+  "globeRainDense": "yağmur yaklaşık 500 km",
+  "globeRadar": "Yakından radar",
+  "globeRadarHint": "Yakından radar (z2'den itibaren): modelin yağışı yerine RainViewer radar görüntüleri; kürenin zamanı radarın son iki saati içindeyse o an için, değilse en yeni görüntü.",
+  "globeRadarReplaces": "Yağış: yakından yerine radar gösterilir",
+  "globeRadarAt": "radar {time}",
+  "globeRadarLatest": "radar: en yeni görüntü, {time}",
+  "shortcutGlobeRadar": "Küre: yakından radar açık veya kapalı",
+  "sourceGlobeRadar": "Yakından küre de RainViewer radar karolarını gösterir (Yakından radar anahtarı), radar görüntüleriyle birlikte önbelleğe alınır."
 }

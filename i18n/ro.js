@@ -471,5 +471,13 @@ var entries = {
   "changesCurrent": "instalată",
   "changesShowOlder": "Arată versiunile mai vechi",
   "changesEnglishNote": "Jurnalul este ținut în engleză.",
-  "changesNone": "Nu s-a găsit jurnalul de modificări."
+  "changesNone": "Nu s-a găsit jurnalul de modificări.",
+  "globeRainDense": "ploaie circa 500 km",
+  "globeRadar": "Radar de aproape",
+  "globeRadarHint": "Radar de aproape (de la z2): imaginile radar RainViewer în locul precipitațiilor din model, pentru ora globului cât timp se află în ultimele două ore ale radarului, altfel cea mai recentă imagine.",
+  "globeRadarReplaces": "Precipitații: de aproape le înlocuiește radarul",
+  "globeRadarAt": "radar {time}",
+  "globeRadarLatest": "radar: cea mai recentă imagine, {time}",
+  "shortcutGlobeRadar": "Glob: radar de aproape pornit sau oprit",
+  "sourceGlobeRadar": "De aproape, globul arată și dalele radar RainViewer (comutatorul Radar de aproape), păstrate împreună cu imaginile radarului."
 }

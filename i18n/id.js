@@ -471,5 +471,13 @@ var entries = {
   "changesCurrent": "terpasang",
   "changesShowOlder": "Tampilkan versi lama",
   "changesEnglishNote": "Log ditulis dalam bahasa Inggris.",
-  "changesNone": "Log perubahan tidak ditemukan."
+  "changesNone": "Log perubahan tidak ditemukan.",
+  "globeRainDense": "hujan sekitar 500 km",
+  "globeRadar": "Radar dari dekat",
+  "globeRadarHint": "Radar dari dekat (mulai z2): gambar radar RainViewer menggantikan presipitasi model, untuk waktu globe selama berada dalam dua jam terakhir radar, jika tidak gambar terbaru.",
+  "globeRadarReplaces": "Presipitasi: dari dekat digantikan radar",
+  "globeRadarAt": "radar {time}",
+  "globeRadarLatest": "radar: gambar terbaru, {time}",
+  "shortcutGlobeRadar": "Globe: radar dari dekat nyala atau mati",
+  "sourceGlobeRadar": "Dari dekat globe juga menampilkan ubin radar RainViewer (sakelar Radar dari dekat), disimpan bersama gambar radar."
 }

@@ -471,5 +471,13 @@ var entries = {
   "changesCurrent": "zainstalowana",
   "changesShowOlder": "Pokaż starsze wersje",
   "changesEnglishNote": "Dziennik jest prowadzony po angielsku.",
-  "changesNone": "Nie znaleziono dziennika zmian."
+  "changesNone": "Nie znaleziono dziennika zmian.",
+  "globeRainDense": "deszcz około 500 km",
+  "globeRadar": "Radar z bliska",
+  "globeRadarHint": "Radar z bliska (od z2): obrazy radarowe RainViewer zamiast opadów z modelu, dla czasu globu, dopóki mieści się w ostatnich dwóch godzinach radaru, w przeciwnym razie najnowszy obraz.",
+  "globeRadarReplaces": "Opady: z bliska zastępuje je radar",
+  "globeRadarAt": "radar {time}",
+  "globeRadarLatest": "radar: najnowszy obraz, {time}",
+  "shortcutGlobeRadar": "Glob: radar z bliska włącz lub wyłącz",
+  "sourceGlobeRadar": "Z bliska glob pokazuje też kafelki radaru RainViewer (przełącznik Radar z bliska), zapisywane razem z obrazami radaru."
 }

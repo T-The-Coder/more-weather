@@ -28,10 +28,15 @@ QtObject {
   // The colour layers on, in the wash's order (WeatherGlobeWash).
   readonly property var washLayers: GlobeFields.LAYERS.filter(function(kind) {
     if (kind === "wind") return loader.windOn && loader.windMode !== "lines"
+    // From z2 the radar's picture takes the place of the model's precipitation.
+    if (kind === "precipitation" && loader.radarReplaces) return false
     return loader.panel.displaySetting(GlobeFields.SWITCH[kind], kind === "temperature") === true
   })
   readonly property string washKey: washLayers.join(",")
   readonly property bool washOn: washLayers.length > 0
+  // The radar layer (WeatherGlobeRadar): on, and close enough (z2 on).
+  readonly property bool radarOn: panel.displaySetting("globeRadar", false) === true
+  readonly property bool radarReplaces: radarOn && !!globe && globe.zoom >= 2
   readonly property string height: String(panel.displaySetting("globeWindLevel", "10m"))
   // The wind: one layer with a mode, lines (the streaks), colour or both.
   readonly property bool windOn: panel.displaySetting("globeWind", false) === true
@@ -44,6 +49,9 @@ QtObject {
   readonly property bool needsHeight: height !== "10m" && (washLayers.indexOf("wind") >= 0 || streaksOn)
   readonly property bool needsMarine: washLayers.indexOf("sst") >= 0
   readonly property bool offline: Quickshell.env("MORE_PLUGINS_OFFLINE") === "1"
+  // MW_REQUEST_LOG=1: each finished request in the log (key, kind,
+  // points, HTTP status, bytes), for a live check.
+  readonly property bool requestLog: Quickshell.env("MW_REQUEST_LOG") === "1"
   readonly property string dir: (Quickshell.env("XDG_CACHE_HOME") || (Quickshell.env("HOME") + "/.cache")) + "/more-weather/globe"
 
   // What the colour layers show, per layer { global, region }: the whole
@@ -72,6 +80,15 @@ QtObject {
   property var localCalls: ({ utcDay: "", count: 0 })
   readonly property bool limitHeld: GlobeGrid.budgetState(callsToday) !== "ok"
   readonly property bool gridLoaded: Object.keys(loaded).some(function(key) { return key.indexOf("G9:") === 0 })
+  // The dense rain set (GlobeGrid.rainPoints): wanted while precipitation
+  // shows on the whole disc, after the 510 points have all come; loaded
+  // for some sectors.
+  readonly property bool rainWanted: active && washLayers.indexOf("precipitation") >= 0 && !!globe && globe.zoom <= 1
+  readonly property bool baseLoaded: {
+    for (var k = 0; k < GlobeGrid.BATCHES; k++) if (!loaded[GlobeGrid.batchKey(k)]) return false
+    return true
+  }
+  readonly property bool rainDense: Object.keys(loaded).some(function(key) { return key.indexOf("R9:") === 0 })
 
   // key → time of its data (ms) for what the worker holds; files tried.
   property var loaded: ({})
@@ -139,8 +156,18 @@ QtObject {
     }
   }
 
-  onActiveChanged: if (active) { scheduleGlobal(); viewRested() }
+  // Three tiers against the day's budget (GlobeGrid.budgetState): loads the
+  // user causes (opening or showing the globe, a zoom, a pan) go on up to
+  // the hard stop (3,000); the timed renewal of the base data while the
+  // globe stays shown stops at the first mark (2,000); the dense rain set
+  // keeps 600 below that mark (GlobeGrid.mayLoadRain).
+  // userWave: the base loads since the globe was opened or shown count as
+  // the user's.
+  property bool userWave: false
+  onActiveChanged: if (active) { userWave = true; scheduleGlobal(); viewRested() }
   onWashKeyChanged: { scheduleGlobal(); viewRested() }
+  onRainWantedChanged: if (rainWanted) pumpRain()
+  onBaseLoadedChanged: if (baseLoaded && rainWanted) pumpRain()
   onHeightChanged: { scheduleGlobal(); viewRested() }
   onStreaksOnChanged: { scheduleGlobal(); requestLattices() }
   onIsobarsOnChanged: requestLattices()
@@ -173,6 +200,8 @@ QtObject {
       pumpTiles()
     } else {
       wantedTiles = []
+      // The dense rain set follows the view: the cells now facing it.
+      if (rainWanted) pumpRain()
     }
     requestLattices()
   }
@@ -236,17 +265,77 @@ QtObject {
       for (var step = 0; step < jobs.length; step++) {
         var k = (loader.nextBatch + step) % jobs.length
         var job = jobs[k]
-        if (loader.fresh(job.key) || !loader.diskTried[job.key] || loader.panel.sharedLive.globeClaimedByOther(job.key)) continue
+        // A key that comes into view later (a rain sector) is read from
+        // the disk first.
+        if (!loader.diskTried[job.key]) { loader.readCache(job.key); continue }
+        if (loader.fresh(job.key) || loader.panel.sharedLive.globeClaimedByOther(job.key)) continue
         // Nothing yet is the user's opening; renewing stale data is automatic.
-        if (!loader.mayRequest(job.points.length, !loader.loaded[job.key])) continue
+        if (!loader.mayRequest(job.points.length, loader.userWave || !loader.loaded[job.key])) continue
         if (loader.globalRequest.running) return
         loader.nextBatch = (k + 1) % jobs.length
         loader.startRequest(loader.globalRequest, job.key, job.points, job.kind, job.variables)
         return
       }
-      // All fresh: look again in a while.
-      if (jobs.every(function(job) { return loader.fresh(job.key) })) interval = 5 * 60 * 1000
+      // All fresh: look again in a while; what comes then is the timed
+      // renewal (automatic).
+      if (jobs.every(function(job) { return loader.fresh(job.key) })) {
+        interval = 5 * 60 * 1000
+        loader.userWave = false
+      }
     }
+  }
+
+  // ---- The dense rain set (GlobeGrid.rainCellsFor): the cells facing the
+  //      viewer, nearest first, one request after another, paced to
+  //      Open-Meteo's 600 calls a minute; automatic loads, so they stop at
+  //      the budget's first mark. Looked at again every 30 s while wanted
+  //      (a turning globe brings new cells into view).
+  property double rainNextAt: 0
+  // Per cell whether the 510 points see rain there in the next 48 hours
+  // (GlobeGrid.rainCellWet, asked of the worker); dry cells are not asked
+  // for. Forgotten when the base data changes.
+  property var wetCells: ({})
+  property bool wetAsked: false
+  // The worker could not tell: every cell counts as wet.
+  property bool wetUnknown: false
+  function pumpRain() {
+    if (!rainWanted || !baseLoaded || rainRequest.running || wetAsked) return
+    var wait = rainNextAt - Date.now()
+    if (wait > 0) { rainTimer.interval = wait; rainTimer.restart(); return }
+    var cells = GlobeGrid.rainCellsFor(globe.centerLat, globe.centerLon)
+    var unknown = wetUnknown ? [] : cells.filter(function(key) { return loader.wetCells[key] === undefined })
+    if (unknown.length) {
+      wetAsked = true
+      post({ fn: "wet", keys: unknown, ms: Date.now() })
+      return
+    }
+    for (var i = 0; i < cells.length; i++) {
+      var key = cells[i]
+      if (!wetUnknown && !wetCells[key]) continue
+      if (!diskTried[key]) { readCache(key); return }
+      if (fresh(key) || panel.sharedLive.globeClaimedByOther(key)) continue
+      var points = GlobeGrid.rainCellPoints(key)
+      if (offline || !panel.openMeteoAvailable() || !GlobeGrid.mayLoadRain(callsToday, points.length)) return
+      rainNextAt = Date.now() + GlobeGrid.pacingMs(points.length)
+      startRequest(rainRequest, key, points, "rain", GlobeGrid.RAIN_VARIABLES)
+      return
+    }
+  }
+  property Timer rainTimer: Timer {
+    onTriggered: loader.pumpRain()
+  }
+  property Timer rainLook: Timer {
+    interval: 30000
+    repeat: true
+    running: loader.rainWanted && loader.baseLoaded
+    onTriggered: loader.pumpRain()
+  }
+  property WeatherRequest rainRequest: WeatherRequest {
+    property string key: ""
+    property var points: []
+    property string kind: ""
+    property var variables: []
+    onFinished: function(text) { loader.finished(loader.rainRequest, text); loader.panel.defer(loader.pumpRain) }
   }
 
   // ---- Tiles, two at a time.
@@ -297,6 +386,9 @@ QtObject {
     request.running = true
   }
   function finished(request, text) {
+    if (requestLog)
+      console.log("GLOBEREQ", request.key, request.kind, request.points.length, "status", request.status, "bytes", text.length,
+        "calls", callsToday)
     var next = Object.assign({}, failures)
     if (text === "") {
       var count = (failures[request.key] ? failures[request.key].count : 0) + 1
@@ -364,7 +456,9 @@ QtObject {
     else afterDisk(key)
   }
   function afterDisk(key) {
-    if (key.indexOf("T") === 0) {
+    if (key.indexOf("R9:") === 0) {
+      panel.defer(pumpRain)
+    } else if (key.indexOf("T") === 0) {
       if (wantedTiles.indexOf(key) >= 0 && !fresh(key) && tileQueue.indexOf(key) < 0) tileQueue = tileQueue.concat([key])
       pumpTiles()
     } else if (active && !globalTimer.running) {
@@ -488,6 +582,8 @@ QtObject {
           console.warn("more-weather: globe data unreadable:", message.key)
         }
         if (message.ok) {
+          // New base data: which cells are wet is asked again.
+          if (String(message.key).indexOf("G9:") === 0) loader.wetCells = ({})
           var next = Object.assign({}, loader.loaded)
           next[message.key] = message.fn === "ingest" ? Date.now() : Number(message.at)
           loader.loaded = next
@@ -506,6 +602,11 @@ QtObject {
           for (var n = 0; n < l.values.length; n++) if (l.values[n] === null || l.values[n] === undefined) l.values[n] = NaN
         })
         loader.layers = got
+      } else if (message.fn === "wet") {
+        if (message.wet) loader.wetCells = Object.assign({}, loader.wetCells, message.wet)
+        else loader.wetUnknown = true
+        loader.wetAsked = false
+        loader.panel.defer(loader.pumpRain)
       } else if (message.fn === "landmask" && message.lattice) {
         loader.landMask = message.lattice
       } else if (message.fn === "lattice" && message.lattice) {

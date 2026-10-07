@@ -614,6 +614,15 @@ Column {
       target: globe.panel.globeData
       function onLatticesChanged() { textureSettle.restart() }
     }
+    // The radar layer from z2 (RainViewer's tiles, reprojected).
+    WeatherGlobeRadar {
+      id: radarLayer
+      visible: false
+      panel: globe.panel
+      globe: globe
+      wanted: globe.panel.globeData.radarReplaces && globe.panel.globeShown
+    }
+    readonly property alias radarItem: radarLayer
     WeatherGlobeTexture {
       id: surfaceTexture
       visible: false
@@ -679,6 +688,21 @@ Column {
         globe.panel.foreground.b, 0.04)
       textureSource: surfaceTexture
     }
+    // The radar from z2 over the earth's surface, at the tiles' own
+    // resolution (its own box picture and shader).
+    WeatherGlobeRadarSurface {
+      id: radarSurface
+      x: globe.shiftX
+      y: globe.shiftY
+      width: globe.width
+      height: globe.height
+      visible: globe.gpuSurface && !!raster
+      globe: globe
+      centerLat: globe.surfaceCentre.lat
+      centerLon: globe.surfaceCentre.lon
+      raster: globe.gpuSurface && globe.panel.globeData.radarReplaces ? radarLayer.raster : null
+    }
+    readonly property alias radarSurfaceItem: radarSurface
     WeatherGlobeSurface {
       id: linesSurface
       x: globe.shiftX
@@ -777,6 +801,20 @@ Column {
       target: globe.frameLog ? globe.Window.window : null
       function onFrameSwapped() { globe.frameLogMark("swap") }
     }
+    // MW_GLOBE_VIEW_AT=<seconds>:<zoom>:<lat>:<lon> (with MW_FRAME_LOG):
+    // the view moves there then (a live check of the close-up layers).
+    Timer {
+      readonly property var parts: String(Quickshell.env("MW_GLOBE_VIEW_AT") || "").split(":").map(Number)
+      interval: (parts[0] || 0) * 1000
+      running: globe.frameLog && parts.length === 4 && parts[0] > 0
+      onTriggered: {
+        globe.rotating = false
+        globe.zoom = parts[1]
+        globe.centerLat = parts[2]
+        globe.centerLon = parts[3]
+        console.log("VIEW moved to z" + parts[1], parts[2], parts[3])
+      }
+    }
     // MW_FRAME_LOG_PLAY=<seconds> as well: the timeline plays from then on
     // (a busy globe for the measurement).
     Timer {
@@ -830,6 +868,7 @@ Column {
       globe: globeSection.view
       layers: globe.panel.globeData.washLayers
       lattices: globe.panel.globeData.lattices
+      radar: globe.panel.globeData.radarReplaces ? radarLayer.raster : null
       landMask: globe.panel.globeData.landMask
       cells: globe.panel.standaloneMode ? 128 : 96
       scaleKmh: globe.windScaleKmh
