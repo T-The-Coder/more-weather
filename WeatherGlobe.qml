@@ -559,6 +559,8 @@ Column {
       id: rotateGate
       active: globe.canRotate && globe.rotating
       fps: globe.rotateFps
+      // Frames stopped arriving: the screen may have gone off, ask at once.
+      onShownChanged: if (!shown) globe.panel.screenState.probe()
       onStep: function(elapsedMs) {
         if (!turnAnimation.running) globe.centerLon += elapsedMs * 360 / (globe.rotateTurnMinutes * 60000)
         if (globe.frameLog) globe.frameLogMark("advance")

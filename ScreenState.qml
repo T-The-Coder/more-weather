@@ -14,7 +14,7 @@ import Quickshell.Hyprland
 // True whenever it cannot be known (no Hyprland, hyprctl missing or failing).
 // Read with `hyprctl monitors -j` (dpmsStatus), run through PATH so a test
 // can put a fake hyprctl first: on start, when monitors come, go or take
-// the focus, and while `wanted` every 10 s (every 2 s while off, so the
+// the focus, and while `wanted` every 3 s (every second while off, so the
 // picture comes back at the next look).
 Item {
   id: state
@@ -53,7 +53,7 @@ Item {
     stdout: StdioCollector { onStreamFinished: state.read(text) }
   }
   Timer {
-    interval: state.screenOn ? 10000 : 2000
+    interval: state.screenOn ? 3000 : 1000
     repeat: true
     running: state.wanted && state.hyprland
     onTriggered: state.probe()
