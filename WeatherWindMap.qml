@@ -27,9 +27,10 @@ Item {
     panel.forecastRequestLongitude || panel.mapCenterLongitude,
     panel.mapWest, panel.mapEast, panel.mapSouth, panel.mapNorth)
   readonly property bool drawnMap: panel.mapStyle !== "satellite"
-  // The streaks move only while the tab is shown in a window that is.
-  readonly property bool animating: panel.windShown && panel.windMapData.length > 0
-    && (!Window.window || (Window.window.visible && Window.window.visibility !== Window.Minimized))
+  // The streaks move only while the tab is shown and someone can see it
+  // (Panel.motionAllowed: the window shown, its workspace in view, the
+  // monitor on).
+  readonly property bool animating: panel.windShown && panel.windMapData.length > 0 && panel.motionAllowed
   property real dragX: 0
   property real dragY: 0
 

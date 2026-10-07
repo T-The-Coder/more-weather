@@ -527,16 +527,16 @@ Column {
         globe.onScreen = top + globe.height > 0 && top < root.height
       }
     }
-    readonly property bool canRotate: autoRotate && !isMap && zoom <= 1 && panel.globeShown && panel.motionAllowed && onScreen
-      && !mouse.pressed && !panel.globeData.playing
-    // Out of view (another workspace, scrolled away, the popup closed) the
-    // turn only pauses: it goes on as soon as it can be seen again. Only a
-    // touch (press, drag, wheel, keys, a place picked) or switching it off
-    // starts the wait anew.
-    onAutoRotateChanged: if (!autoRotate) rotating = false
-    // The user's own changes end it: the flat map, zooming in, playing the
-    // timeline, a press.
-    onCanRotateChanged: if (!canRotate && (isMap || zoom > 1 || panel.globeData.playing || mouse.pressed)) rotating = false
+    // rotateWanted: the option on and nothing the user did against it (the
+    // flat map, zoomed in, the tab left, a press, the timeline playing);
+    // losing it ends the turn and the next one waits the delay again.
+    // canRotate: wanted and seen (motionAllowed: shown, workspace in view,
+    // monitor on; the section on screen): out of view the turn only pauses
+    // and goes on at once (as in More Time).
+    readonly property bool rotateWanted: autoRotate && !isMap && zoom <= 1 && panel.globeShown && !mouse.pressed
+      && !panel.globeData.playing
+    readonly property bool canRotate: rotateWanted && panel.motionAllowed && onScreen
+    onRotateWantedChanged: if (!rotateWanted) rotating = false
     readonly property int rotateDelaySeconds: Number(panel.generalSetting("motionDelay", "10")) || 10
     readonly property int rotateTurnMinutes: Number(panel.generalSetting("motionSpeed", "4")) || 4
     function touched() {
@@ -712,7 +712,7 @@ Column {
     Timer {
       interval: 5000
       repeat: true
-      running: globe.panel.globeShown
+      running: globe.panel.globeShown && globe.panel.motionAllowed
       onRunningChanged: globe.perfLast = null
       onTriggered: {
         globe.procStat.reload()
@@ -775,6 +775,13 @@ Column {
       target: globe.frameLog ? globe.Window.window : null
       function onFrameSwapped() { globe.frameLogMark("swap") }
     }
+    // MW_FRAME_LOG_PLAY=<seconds> as well: the timeline plays from then on
+    // (a busy globe for the measurement).
+    Timer {
+      interval: (Number(Quickshell.env("MW_FRAME_LOG_PLAY")) || 0) * 1000
+      running: globe.frameLog && (Number(Quickshell.env("MW_FRAME_LOG_PLAY")) || 0) > 0
+      onTriggered: if (!globe.panel.globeData.playing) globe.panel.globeData.togglePlay()
+    }
     Timer {
       interval: 5000
       repeat: true
@@ -791,7 +798,7 @@ Column {
         var d = globe.frameLogData
         var w = globe.Window
         console.log("FRAMELOG", Math.round(Date.now() / 1000), "rotating", globe.rotating, "canRotate", globe.canRotate, "idle", idleTimer.running,
-          "motionAllowed", globe.panel.motionAllowed, "windowActive", w.active, "appOnScreen", globe.panel.appOnScreen, "gateShown", rotateGate.shown, "onScreen", globe.onScreen,
+          "motionAllowed", globe.panel.motionAllowed, "windowActive", w.active, "appOnScreen", globe.panel.appOnScreen, "gateShown", rotateGate.shown, "screenOn", globe.panel.screenOn, "playing", globe.panel.globeData.playing, "onScreen", globe.onScreen,
           "| advances", stats(d.advance), "| swaps", stats(d.swap))
         globe.frameLogData = { advance: [], swap: [], lastAdvance: d.lastAdvance, lastSwap: d.lastSwap }
       }

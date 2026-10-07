@@ -162,6 +162,7 @@ ShellRoot {
   function general(key, value) { panel.displayOptionsStore.setGeneralSetting(key, value) }
   function display(key, value) { panel.displayOptionsStore.setSettingsDisplaySetting(key, value) }
   property var moonSavedBefore: []
+  property var dpmsFile: null
   property double moonNowBefore: 0
   function settingsSearchType(query) { panel.setSettingsSearch(query) }
   function press(key, text, modifiers) {
@@ -439,6 +440,20 @@ ShellRoot {
       panel.setViewDisplaySetting("globeStyle", "globe")
       g.rotating = true
     },
+    // The monitor turned off (the fake hyprctl's DPMS state): screenOn
+    // false, then on again at the next look (as in More Time).
+    function() {
+      harness.dpmsFile = Qt.createQmlObject('import Quickshell.Io; FileView { path: "' + Quickshell.env("FAKE_DPMS") + '" }', harness)
+      harness.dpmsFile.setText("off\n")
+    },
+    function() { panel.screenState.probe() },
+    function() {
+      var known = panel.screenState.hyprland
+      console.log("CHECK screen off", panel.screenOn, known ? (panel.screenOn === false ? "ok" : "WRONG") : "skipped (no Hyprland)")
+      harness.dpmsFile.setText("on\n")
+    },
+    function() { panel.screenState.probe() },
+    function() { console.log("CHECK screen on again", panel.screenOn, panel.screenOn ? "ok" : "WRONG") },
     function() { panel.contentRoot.parent = globeHostLarge; cpuStart() },
     function() {}, function() {},
     function() {

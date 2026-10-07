@@ -1,0 +1,13 @@
+#!/bin/bash
+# A fake hyprctl for the screenshot harness (tests/ui-shots.sh puts it first
+# in PATH): "monitors -j" reports one monitor, HARNESS-1, whose dpmsStatus
+# comes from the file named by FAKE_DPMS ("off" turns it off); everything
+# else goes to the real hyprctl, if any.
+if [ "$1" = "monitors" ] && [ "$2" = "-j" ]; then
+  state=$(cat "${FAKE_DPMS:-/nonexistent}" 2>/dev/null)
+  if [ "$state" = "off" ]; then on=false; else on=true; fi
+  printf '[{"id":0,"name":"HARNESS-1","dpmsStatus":%s}]\n' "$on"
+  exit 0
+fi
+real=$(PATH=${PATH#*:} command -v hyprctl) || exit 1
+exec "$real" "$@"

@@ -97,7 +97,7 @@ runs as a standalone app window.
   click on a place shows that place, and on the whole disc it can turn by itself after a
   while without a touch (Settings → General → Motion: delay, speed and frames per second,
   for every view that turns by itself; it moves only while the popup or the app's window
-  is in view). **Shape** (globe or flat map) shows a
+  is in view, never on another workspace or with the monitor off). **Shape** (globe or flat map) shows a
   flat Equal Earth map instead, with the same layers, zoom, timeline and places (it pans
   rather than turns); the **Moon view** draws the Moon lit as from space or as it stands in the
   shown place's sky (true tilt, dimmed below the horizon; on hover its height, direction,

@@ -796,7 +796,16 @@ Panel {
     var info = top.lastIpcObject || {}
     return top.workspace.active && !(top.workspace.hasFullscreen && !info.fullscreen)
   }
-  readonly property bool motionAllowed: motionForced || (opened && (!standaloneMode || (appWindowShown && appOnScreen)))
+  // The monitor showing this window (the app's or the bar's popup) is on:
+  // Hyprland's DPMS (ScreenState.qml, shared with More Time); a monitor
+  // turned off rests every motion as another workspace does.
+  property ScreenState screenState: ScreenState {
+    monitorName: root.contentRoot && root.contentRoot.Window.window && root.contentRoot.Window.window.screen
+      ? String(root.contentRoot.Window.window.screen.name || "") : ""
+    wanted: root.opened
+  }
+  readonly property bool screenOn: screenState.screenOn
+  readonly property bool motionAllowed: motionForced || (opened && screenOn && (!standaloneMode || (appWindowShown && appOnScreen)))
   // The globe takes Ctrl + arrows, + − and 0 while no radar or wind map is
   // shown (they keep theirs).
   readonly property bool globeKeys: globeShown && !radarShown && !windShown

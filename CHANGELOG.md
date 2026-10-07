@@ -4,6 +4,12 @@ All notable changes to More Weather are documented here.
 
 ## Unreleased
 
+- **Nothing moves while the monitor is off:** with the screen turned off
+  (DPMS: a key binding, or Omarchy on idle) the turning globe, the
+  timeline's playback, the wind streaks, the flashing storm symbols and
+  the radar's playback rest as on another workspace, and go on when it is
+  back (`ScreenState.qml`, shared with More Time, asks Hyprland). A pause
+  out of view no longer starts a new wait before the globe turns again.
 - **The globe keeps turning by itself** while the app's window is shown,
   whether or not it has the keyboard: with Omarchy's focus following the
   mouse it used to stop whenever the pointer left the window and wait the

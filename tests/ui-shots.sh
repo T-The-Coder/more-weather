@@ -26,9 +26,14 @@ cp "$root/tests/ui/shell.qml" "$work/config/shell.qml"
 theme="${MW_THEME:-$HOME/.local/state/omarchy/current/theme}"
 [ -e "$theme" ] && ln -s "$theme" "$work/home/.local/state/omarchy/current/theme"
 python3 "$root/tests/ui/fixtures/state.py" "$work/home"
+# A fake hyprctl first in PATH: the monitor's DPMS state from $work/dpms
+# (ScreenState.qml; the harness turns it off and on).
+mkdir -p "$work/bin"
+cp "$root/tests/ui/fake-hyprctl" "$work/bin/hyprctl"
+echo on > "$work/dpms"
 # No session bus: a warning that comes due during the run notifies no one.
 # The XDG directories default to the throwaway HOME.
-env -u DBUS_SESSION_BUS_ADDRESS -u XDG_DATA_HOME -u XDG_CONFIG_HOME -u XDG_STATE_HOME HOME="$work/home" XDG_RUNTIME_DIR="$work/run" XDG_CACHE_HOME="$work/home/.cache" \
+env -u DBUS_SESSION_BUS_ADDRESS -u XDG_DATA_HOME -u XDG_CONFIG_HOME -u XDG_STATE_HOME PATH="$work/bin:$PATH" FAKE_DPMS="$work/dpms" HOME="$work/home" XDG_RUNTIME_DIR="$work/run" XDG_CACHE_HOME="$work/home/.cache" \
   MW_SHOTS="$out" MW_SHOTS_ONLY="${MW_SHOTS_ONLY:-}" MW_AUDIT="${MW_AUDIT:-}" MORE_PLUGINS_OFFLINE=1 QT_QPA_PLATFORM=offscreen \
   timeout 480 qs -n -p "$work/config" >"$work/log.txt" 2>&1
 echo "log: $work/log.txt"
