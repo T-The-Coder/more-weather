@@ -426,6 +426,19 @@ ShellRoot {
     },
     function() {}, function() {},
     function() { cpuReport("500") },
+    // Out of view the turn pauses and goes on at once when seen again
+    // (no new wait); the flat map ends it.
+    function() {
+      var g = panel.globeItem
+      g.onScreen = false
+      check("turn-paused-out-of-view", g.rotating && !g.canRotate)
+      g.onScreen = true
+      check("turn-resumes-at-once", g.rotating && g.canRotate)
+      panel.setViewDisplaySetting("globeStyle", "map")
+      check("turn-ended-by-map", !g.rotating)
+      panel.setViewDisplaySetting("globeStyle", "globe")
+      g.rotating = true
+    },
     function() { panel.contentRoot.parent = globeHostLarge; cpuStart() },
     function() {}, function() {},
     function() {

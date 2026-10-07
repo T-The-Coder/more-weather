@@ -529,7 +529,14 @@ Column {
     }
     readonly property bool canRotate: autoRotate && !isMap && zoom <= 1 && panel.globeShown && panel.motionAllowed && onScreen
       && !mouse.pressed && !panel.globeData.playing
-    onCanRotateChanged: if (!canRotate) rotating = false
+    // Out of view (another workspace, scrolled away, the popup closed) the
+    // turn only pauses: it goes on as soon as it can be seen again. Only a
+    // touch (press, drag, wheel, keys, a place picked) or switching it off
+    // starts the wait anew.
+    onAutoRotateChanged: if (!autoRotate) rotating = false
+    // The user's own changes end it: the flat map, zooming in, playing the
+    // timeline, a press.
+    onCanRotateChanged: if (!canRotate && (isMap || zoom > 1 || panel.globeData.playing || mouse.pressed)) rotating = false
     readonly property int rotateDelaySeconds: Number(panel.generalSetting("motionDelay", "10")) || 10
     readonly property int rotateTurnMinutes: Number(panel.generalSetting("motionSpeed", "4")) || 4
     function touched() {
@@ -542,21 +549,19 @@ Column {
       running: globe.canRotate && !globe.rotating
       onTriggered: globe.rotating = true
     }
-    // As many frames a second as chosen (Settings → Display → Globe, 15 by
-    // default); the turn advances by the time elapsed.
+    // As many frames a second as chosen (General → Motion, 15 by default),
+    // in step with the frames the window shows (MotionGate, shared with More
+    // Time): the turn advances by the time elapsed. Not a FrameAnimation:
+    // that draws every frame of the display (75 a second here, about three
+    // times the processor time) to move it on 15 of them.
     readonly property int rotateFps: Number(panel.generalSetting("motionFps", "15")) || 15
-    Timer {
-      id: rotateTimer
-      interval: Math.round(1000 / Math.max(1, globe.rotateFps))
-      repeat: true
-      running: globe.canRotate && globe.rotating
-      property double last: 0
-      onRunningChanged: last = Date.now()
-      onTriggered: {
-        var now = Date.now()
-        var elapsed = Math.min(500, now - last)
-        last = now
-        if (!turnAnimation.running) globe.centerLon += elapsed * 360 / (globe.rotateTurnMinutes * 60000)
+    MotionGate {
+      id: rotateGate
+      active: globe.canRotate && globe.rotating
+      fps: globe.rotateFps
+      onStep: function(elapsedMs) {
+        if (!turnAnimation.running) globe.centerLon += elapsedMs * 360 / (globe.rotateTurnMinutes * 60000)
+        if (globe.frameLog) globe.frameLogMark("advance")
       }
     }
 
@@ -748,6 +753,47 @@ Column {
               surface: history.length ? history[history.length - 1].surface : globe.gpuSurface } }
         }
         globe.perfLast = { at: now, cpu: cpuMs, frames: frames, turning: globe.rotating }
+      }
+    }
+
+    // ---- MW_FRAME_LOG=1: every 5 s the intervals between the turn's
+    //      advances and between frames drawn (swaps), and why it turns or
+    //      not (diagnosis in the running app; off otherwise).
+    readonly property bool frameLog: Quickshell.env("MW_FRAME_LOG") === "1"
+    property var frameLogData: ({ advance: [], swap: [], lastAdvance: 0, lastSwap: 0 })
+    function frameLogMark(kind) {
+      var now = Date.now()
+      var d = frameLogData
+      var last = kind === "advance" ? d.lastAdvance : d.lastSwap
+      if (last > 0) d[kind].push(now - last)
+      // One line per event too, in More Time's form (its analyze.py, cadence.py).
+      if (last > 0) console.log("MOTION " + (kind === "advance" ? "tick" : "frame") + " " + (now - last) + " at " + now)
+      if (kind === "advance") d.lastAdvance = now
+      else d.lastSwap = now
+    }
+    Connections {
+      target: globe.frameLog ? globe.Window.window : null
+      function onFrameSwapped() { globe.frameLogMark("swap") }
+    }
+    Timer {
+      interval: 5000
+      repeat: true
+      running: globe.frameLog
+      onTriggered: {
+        function stats(list) {
+          if (!list.length) return "0"
+          var sorted = list.slice().sort(function(a, b) { return a - b })
+          var sum = 0
+          for (var i = 0; i < list.length; i++) sum += list[i]
+          return list.length + " mean " + (sum / list.length).toFixed(1) + " p95 " + sorted[Math.floor(sorted.length * 0.95)]
+            + " max " + sorted[sorted.length - 1]
+        }
+        var d = globe.frameLogData
+        var w = globe.Window
+        console.log("FRAMELOG", Math.round(Date.now() / 1000), "rotating", globe.rotating, "canRotate", globe.canRotate, "idle", idleTimer.running,
+          "motionAllowed", globe.panel.motionAllowed, "windowActive", w.active, "appOnScreen", globe.panel.appOnScreen, "gateShown", rotateGate.shown, "onScreen", globe.onScreen,
+          "| advances", stats(d.advance), "| swaps", stats(d.swap))
+        globe.frameLogData = { advance: [], swap: [], lastAdvance: d.lastAdvance, lastSwap: d.lastSwap }
       }
     }
 

@@ -4,6 +4,15 @@ All notable changes to More Weather are documented here.
 
 ## Unreleased
 
+- **The globe keeps turning by itself** while the app's window is shown,
+  whether or not it has the keyboard: with Omarchy's focus following the
+  mouse it used to stop whenever the pointer left the window and wait the
+  full delay again. It pauses on another workspace (Hyprland is asked
+  which one is in view) and goes on at once when back; only a touch, the
+  flat map, zooming in or the timeline end it. The turn steps in time with
+  the frames shown (`MotionGate.qml`, shared with More Time): 96 % of the
+  steps exactly five frames apart at 75 Hz, before 92 %.
+  `MW_FRAME_LOG=1` logs its cadence.
 - **Glyphs measured:** every glyph-only control (hero buttons, tabs,
   chips, zoom, play, wind height, order arrows, remove, chevrons) is
   checked in both themes for its ink's offset from the middle
