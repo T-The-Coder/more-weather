@@ -129,7 +129,7 @@ runs as a standalone app window.
   Enter when it finds nothing), keep a list of favorites or detect your location automatically. Settings →
   General → Back up and restore imports the cities of [More Time](https://github.com/T-The-Coder/more-time)'s
   world clock as favorites.
-- **My places:** All favorites at a glance, one line each with symbol, temperature,
+- **Places:** All favorites at a glance, one line each with symbol, temperature,
   feels-like, wind, humidity and moon (each tilted as seen from that place, dimmed
   while below its horizon). A click, Alt+1–9 or Alt+←/→ switches to a
   place; for global keys see [IPC](#ipc).
@@ -157,7 +157,7 @@ runs as a standalone app window.
   card and section.
 - **Export and import** of all settings and your places as one JSON file (Settings →
   General); an import first saves the current settings, so it can be undone.
-- **Sections your way:** Current weather, my places, air quality, hourly, daily, rain,
+- **Sections your way:** Current weather, places, air quality, hourly, daily, rain,
   radar and wind can be put in any order. All but the current weather can also be
   shown as a tab; the tabs share one strip that has its own place in the order, and
   keys 1–9 pick them in their order. Each tab carries its section's symbol next to
@@ -178,9 +178,9 @@ runs as a standalone app window.
 |---|---|---|
 | ![Napa](screenshots/napa.png) | ![New Orleans radar](screenshots/new-orleans-radar.png) | ![Wellington wind](screenshots/wellington-wind.png) |
 
-| My places: six cities at a glance | The menu bar in colour, over the widget | Each bar entry: Always, Relevant or Hover |
+| Places: six cities at a glance | The menu bar in colour, over the widget | Each bar entry: Always, Relevant or Hover |
 |---|---|---|
-| ![My places](screenshots/my-places.png) | ![Menu bar and widget](screenshots/menubar-widget.png) | ![Settings](screenshots/settings.png) |
+| ![Places](screenshots/my-places.png) | ![Menu bar and widget](screenshots/menubar-widget.png) | ![Settings](screenshots/settings.png) |
 
 ## Keyboard
 
@@ -383,7 +383,7 @@ qs ipc -p /usr/share/omarchy/shell call more-weather refresh
 | `refresh` | Fetches the forecast now |
 | `favorite <n>` | Opens the popup on favourite *n* (from 1) |
 | `nextFavorite`, `previousFavorite` | Opens the popup on the next / previous favourite |
-| `tab <name>` | Picks a tab and scrolls it into view: `favorites`, `airQuality`, `hourly`, `daily`, `rain`, `radar`, `wind`, `world` (or `globe`) (only sections shown as a tab); the popup is not opened |
+| `tab <name>` | Picks a tab and scrolls it into view: `favorites` (or `places`), `airQuality`, `hourly`, `daily`, `rain`, `radar`, `wind`, `world` (or `globe`) (only sections shown as a tab); the popup is not opened |
 | `providerStatus` | A JSON diagnosis: sources in use, cache, keyboard state |
 
 ## Development

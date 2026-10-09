@@ -408,6 +408,11 @@ ShellRoot {
       panel.activeTab = "hourly"
       panel.showTab("world")
       check("world-alias", panel.activeTab === "globe")
+      // "Places" for the saved places' section; `places` names it too.
+      check("places-label", panel.sectionTabLabel("favorites") === panel.upperLabel("Places"))
+      panel.showTab("places")
+      check("places-alias", panel.activeTab === "favorites")
+      panel.activeTab = "globe"
     },
     // The globe's cost of a frame (paintStats) at z0, z2 and z4, about 500
     // and 840 px across, in windows of their own: still (the full

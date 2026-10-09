@@ -4,6 +4,9 @@ All notable changes to More Weather are documented here.
 
 ## Unreleased
 
+- **"My places" is now "Places"**: the section, its tab, its settings card
+  and the globe's places option. The keys stay `showFavorites` and
+  `favorites*`; the IPC call `tab` takes `places` as well as `favorites`.
 - **"Globe" is now "World"** (as More Time's tab): the section, its tab,
   its settings card, its Sources card and its shortcuts. Settings and
   scripts keep working: the keys stay `showGlobe` and `globe*`, and the
@@ -55,7 +58,7 @@ All notable changes to More Weather are documented here.
   sit in cards; Motion and the rain notification's choices have their
   label above the list, as the rest of General; the globe's chips show
   their on state with the selected fill and accent text (as More Time's);
-  My places starts at the left edge under its title; key lines wrap only
+  Places starts at the left edge under its title; key lines wrap only
   after a "·"; the shown place's label clears its ring; the Sun keeps a
   halo against the temperature layer; the AQI value is no longer bold;
   the rain chart's empty state reads like the others; the globe's data
@@ -75,7 +78,7 @@ All notable changes to More Weather are documented here.
 
 - **The Moon as seen from the place:** (`MoonView.js`, shared with More
   Time, Meeus' formulas checked against JPL Horizons) the hero's moon,
-  each row in My places and the globe's "Moon view: as seen from here"
+  each row in Places and the globe's "Moon view: as seen from here"
   show the true tilt of the lit side for that place and minute, earthshine
   on a thin crescent, and a dimmed sphere while the Moon is below that
   place's horizon (south of the equator it comes out mirrored by itself).
