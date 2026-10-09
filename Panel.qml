@@ -3794,9 +3794,11 @@ Panel {
   // The tab strip (WeatherTabs), for scrolling it into view.
   property Item tabsItem: null
 
+  // `world` names the globe's section too (its label since 3.2).
   function showTab(name) {
-    if (displayTabs.indexOf(String(name)) < 0) return
-    activeTab = String(name)
+    var key = String(name) === "world" ? "globe" : String(name)
+    if (displayTabs.indexOf(key) < 0) return
+    activeTab = key
     // The strip at the top of the view, with as much of the tab as fits.
     root.defer(function() {
       if (!tabsItem) return

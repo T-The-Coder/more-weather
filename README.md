@@ -88,7 +88,7 @@ runs as a standalone app window.
   grid over the visible area, at 10 m, 120 m or the 850, 700, 500 and 250 hPa levels
   (about 1.5 to 10 km). The wind under the pointer shows its speed and direction. The
   animation takes about a fifth of a processor core while it is on screen.
-- **Globe:** The earth with day and night (civil, nautical twilight and night in three
+- **World:** A globe of the earth with day and night (civil, nautical twilight and night in three
   steps), the sun and the moon where they stand overhead, and your places with their
   symbol and temperature from the stored forecasts (no requests of its own), the shown
   place in the accent colour. A drag turns and tilts it (up to 80°), Shift + wheel turns
@@ -216,16 +216,16 @@ too, and the settings name their keys where they apply.
 | `Ctrl` + wheel | Map: zoom towards the pointer |
 | `⇧` + wheel | Daily forecast and radar timeline: sideways |
 | `⇧ ↑ ↓` | Wind map: higher / lower |
-| `Ctrl ← → ↑ ↓` / drag | Globe: turn and tilt (15°, or a quarter of the view when zoomed in); on the flat map: move |
-| `+` / `−` / Ctrl + wheel | Globe: zoom in / out (at the pointer with the wheel) |
-| `0` | Globe: the whole globe at the shown place |
-| `v` | Globe: one colour layer alone, then the next (temperature, cloud, precipitation, wind, sea temperature, none) |
-| `t` `e` `c` `p` `d` | Globe: temperature, sea, cloud, rain, wind on or off |
-| `i` `s` `u` | Globe: isobars, storms, numbers on or off |
-| `Shift` `↑` `↓` | Globe: wind height of the wind layer and the streaks |
-| `,` `.` | Globe: a time step back or forward on the timeline |
-| `Space` | Globe: play or pause the timeline |
-| `n` `⌫` | Globe: back to now |
+| `Ctrl ← → ↑ ↓` / drag | World: turn and tilt (15°, or a quarter of the view when zoomed in); on the flat map: move |
+| `+` / `−` / Ctrl + wheel | World: zoom in / out (at the pointer with the wheel) |
+| `0` | World: the whole globe at the shown place |
+| `v` | World: one colour layer alone, then the next (temperature, cloud, precipitation, wind, sea temperature, none) |
+| `t` `e` `c` `p` `d` | World: temperature, sea, cloud, rain, wind on or off |
+| `i` `s` `u` | World: isobars, storms, numbers on or off |
+| `Shift` `↑` `↓` | World: wind height of the wind layer and the streaks |
+| `,` `.` | World: a time step back or forward on the timeline |
+| `Space` | World: play or pause the timeline |
+| `n` `⌫` | World: back to now |
 | **Place search** | |
 | `↑ ↓` | Move within the results or the saved places |
 | `Tab` / `⇧ Tab` | Switch between results and saved places |
@@ -383,7 +383,7 @@ qs ipc -p /usr/share/omarchy/shell call more-weather refresh
 | `refresh` | Fetches the forecast now |
 | `favorite <n>` | Opens the popup on favourite *n* (from 1) |
 | `nextFavorite`, `previousFavorite` | Opens the popup on the next / previous favourite |
-| `tab <name>` | Picks a tab and scrolls it into view: `favorites`, `airQuality`, `hourly`, `daily`, `rain`, `radar`, `wind` (only sections shown as a tab); the popup is not opened |
+| `tab <name>` | Picks a tab and scrolls it into view: `favorites`, `airQuality`, `hourly`, `daily`, `rain`, `radar`, `wind`, `world` (or `globe`) (only sections shown as a tab); the popup is not opened |
 | `providerStatus` | A JSON diagnosis: sources in use, cache, keyboard state |
 
 ## Development

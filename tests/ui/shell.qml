@@ -401,7 +401,14 @@ ShellRoot {
       check("globe-surface-off-offscreen", panel.globeItem && !panel.globeItem.surfaceItem.available
         && panel.globeItem.paintStats.count > 0)
     },
-    function() { shot("09b-tab-globe") },
+    function() {
+      shot("09b-tab-globe")
+      // The section reads "World"; `world` names it on the command line too.
+      check("world-label", panel.sectionTabLabel("globe") === panel.upperLabel("World"))
+      panel.activeTab = "hourly"
+      panel.showTab("world")
+      check("world-alias", panel.activeTab === "globe")
+    },
     // The globe's cost of a frame (paintStats) at z0, z2 and z4, about 500
     // and 840 px across, in windows of their own: still (the full
     // coastline, from z3 the basemap) and moving (the coarse one).

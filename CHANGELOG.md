@@ -4,6 +4,11 @@ All notable changes to More Weather are documented here.
 
 ## Unreleased
 
+- **"Globe" is now "World"** (as More Time's tab): the section, its tab,
+  its settings card, its Sources card and its shortcuts. Settings and
+  scripts keep working: the keys stay `showGlobe` and `globe*`, and the
+  IPC call `tab` takes `world` as well as `globe`. The shape choice keeps
+  "Globe | Flat map".
 - **Finer rain on the whole globe:** with the precipitation layer on
   (z0–z1), a second set of points about twice as dense (rings every 4.5°,
   about 2,000 on the earth) is asked for the part facing you only (within
@@ -128,7 +133,7 @@ All notable changes to More Weather are documented here.
   on the wind scale), colour, or both; its scale row has the three-way
   switch and the height. The former wind colour and wind streaks
   switches carry over.
-- **Flat map:** for the globe section (Settings → Display → Globe: Shape): the earth in the Equal Earth projection, as in More Time, with
+- **Flat map:** for the globe section (Settings → Display → World: Shape): the earth in the Equal Earth projection, as in More Time, with
   everything the globe has: the colour layers, isobars, streaks, storm and
   thunderstorm symbols, numbers, night with its twilight, sun and moon, my
   places, the timeline, the legend and the values under the pointer; zoom
@@ -138,7 +143,7 @@ All notable changes to More Weather are documented here.
   which is shown. The flat map does not turn by itself.
 - **Moon:** style on the globe: lit towards the sun as seen from space
   (as before) or as the shown place sees its phase (Settings → Display →
-  Globe: Moon view), shared with More Time.
+  World: Moon view), shared with More Time.
 - **Tooltip on hover:** for the menu bar (off by default): the bar's own
   tooltip repeats the entries the menu bar shows under the pointer, the
   hover ones included, one per line with the place first.
@@ -189,7 +194,7 @@ All notable changes to More Weather are documented here.
 - **More on the globe:** the colour layer gains **wind** (in the wind
   map's colours, in your wind unit) and the **sea's temperature** (from
   Open-Meteo Marine, −2 … 32 °C, land drawn over it); four overlays,
-  each a switch in Settings → Display → Globe: **storms and
+  each a switch in Settings → Display → World: **storms and
   thunderstorms** (gust glyphs from 75 km/h, larger from 103, and
   lightning glyphs where the model has thunderstorms; on by default),
   **wind streaks** that drift with the wind, **isobars** every 4 hPa
@@ -223,7 +228,7 @@ All notable changes to More Weather are documented here.
   Open-Meteo rate-limits, and nothing loads while the globe is hidden or
   the layer is off. A legend under the globe (click or `v` for the next
   layer), the value under the pointer with the place's coordinates, a
-  budget hint in Settings → Display → Globe, and a "Globe"
+  budget hint in Settings → Display → World, and a "Globe"
   entry on the Sources page with today's calls.
 - **Tilt and zoom:** the globe tilts and zooms: a drag turns and tilts it (up to 80°), Ctrl
   + wheel and a double click zoom towards the pointer, `+` `−` and its
@@ -242,7 +247,7 @@ All notable changes to More Weather are documented here.
   temperature from the stored forecasts, no new requests. A drag, Shift +
   wheel or Ctrl+← → turns it, 0 brings back the shown place, a click on a
   place turns to it and shows it; it can turn by itself as in More Time
-  (Settings → Display → Globe: night side, moon, places, turning by itself;
+  (Settings → Display → World: night side, moon, places, turning by itself;
   its delay and speed under General → Motion). The pointer names a place (temperature and
   symbol) or the moon (lit share, waxing or waning). Built on the shared
   `Globe.js` view, `Sky.js` and `data/globe-land.json` from More Time; while
