@@ -484,7 +484,7 @@ Column {
       anchors.verticalCenter: parent.verticalCenter
       spacing: Style.space(6)
 
-      TextField {
+      WeatherTextField {
         id: locationField
         width: Style.space(190)
         enabled: !panel.savingLocation

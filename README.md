@@ -277,7 +277,8 @@ can always be renewed. Past the limit the globe shows its stored data and says s
 All services are free public APIs and need no account or API key. The plugin sends
 requests only to the services listed here and stores nothing outside your own
 computer. As with any web request, these services see your IP address and the
-coordinates of the places you look up.
+coordinates of the places you look up. The plugin reads the clipboard only when you paste
+into a field.
 
 ## Requirements
 
@@ -442,7 +443,7 @@ Some files are shared word for word with the sibling plugin
 [More Time](https://github.com/T-The-Coder/more-time) apart from their names
 (the switch rows, buttons, the bar placement, the app launcher entry, the
 request component, the place search with its parsers and their tests, the bar
-hover, the moon sphere with its drawing and tests, the test helpers and the CI
+hover, the text field, the moon sphere with its drawing and tests, the test helpers and the CI
 workflow).
 `tools/sync-shared.sh from-sibling` or `to-sibling` copies them when both
 repositories sit side by side, and `tests/shared-files.test.mjs` fails when

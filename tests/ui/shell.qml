@@ -810,7 +810,15 @@ ShellRoot {
     function() { panel.globeData.backToNow() },
     function() { display("globeMoonStyle", "space") },
     function() { panel.startEditingLocation() },
-    function() { shot("10-search") },
+    function() {
+      // Text fields rest while idle: read-only exactly while they lack the
+      // keyboard focus (the harness's windows are never active, so here
+      // that is always; tests/text-fields.test.mjs checks every field is
+      // the wrapper).
+      var f = panel.locationField
+      check("place-field-read-only-idle", !!f && f.readOnly === !f.activeFocus && f.text !== undefined)
+      shot("10-search")
+    },
     // "−" acts on the saved places only after Tab; in the results it is a
     // character of the name (the search field hands keys to searchFieldKey).
     function() {
@@ -897,6 +905,7 @@ ShellRoot {
       check("search-found", panel.settingsSearchCount > 0)
       press(Qt.Key_Down)
       check("search-keyboard-row", panel.settingsFocusId !== "")
+
       settingsSearchType("zzzz")
     },
     function() { shot("16e-settings-search-none") },

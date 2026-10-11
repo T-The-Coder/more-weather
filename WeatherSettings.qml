@@ -1102,7 +1102,7 @@ Rectangle {
       }
 
       // Search in all the settings (/ goes here; Esc clears, then leaves).
-      TextField {
+      WeatherTextField {
         id: searchField
         width: parent.width
         placeholderText: panel.i18n("settingsSearch")
@@ -1646,7 +1646,7 @@ Rectangle {
             font.pixelSize: Style.font.bodySmall
           }
 
-          TextField {
+          WeatherTextField {
             id: transferPathField
             width: Math.min(parent.width, Style.space(460))
             text: panel.settingsTransfer.shown(panel.settingsTransfer.defaultPath)

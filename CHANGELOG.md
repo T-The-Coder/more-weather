@@ -171,6 +171,11 @@ In detail:
   settings" disappears, the cursor moves to its neighbour.
 - **New pictures** for the README and `preview.png`, from live data.
 - **User agent:** requests say `more-weather/3.2`.
+- **Text fields rest while idle:** every input (the place search, the
+  settings search, the export path) is read-only until it has keyboard
+  focus, so Qt never consults the clipboard for an idle field; the
+  clipboard is read only when you paste. One shared field,
+  `WeatherTextField.qml`, checked by `tests/text-fields.test.mjs`.
 
 ## 3.1.0 — 2026-10-03
 
