@@ -172,10 +172,13 @@ In detail:
 - **New pictures** for the README and `preview.png`, from live data.
 - **User agent:** requests say `more-weather/3.2`.
 - **Text fields rest while idle:** every input (the place search, the
-  settings search, the export path) is read-only until it has keyboard
-  focus, so Qt never consults the clipboard for an idle field; the
-  clipboard is read only when you paste. One shared field,
-  `WeatherTextField.qml`, checked by `tests/text-fields.test.mjs`.
+  settings search, the export path) is one line of plain text built on
+  TextEdit, whose clipboard check only looks at the offered formats (Qt 6.11
+  and 6.12.0 read the clipboard's whole payload for TextInput's), and it is
+  read-only until it has keyboard focus, so an idle field does not even
+  check. The clipboard is read only when you paste. One shared field,
+  `WeatherTextField.qml`, styled as the kit's and checked by
+  `tests/text-fields.test.mjs`.
 
 ## 3.1.0 — 2026-10-03
 

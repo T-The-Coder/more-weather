@@ -497,8 +497,15 @@ Column {
           panel.locationSearchPristine = false
           panel.searchFocusSection = "suggestions"
         }
-        // "+" / "−" in the saved places act on the list instead of the text.
-        Keys.onPressed: function(event) { if (panel.searchFieldKey(event)) event.accepted = true }
+        // Tab and ⇧ Tab switch between the results and the saved places,
+        // and "+" / "−" in the saved places act on the list instead of the
+        // text, before the field would move the focus or take the character.
+        keyFilter: function(event) {
+          if (event.key === Qt.Key_Tab || event.key === Qt.Key_Backtab) panel.handlePanelKey(event)
+          else if (panel.searchFieldKey(event)) event.accepted = true
+        }
+        // Enter goes on to the panel, which takes the result or the place.
+        passKey: function(event) { panel.handlePanelKey(event) }
       }
 
       // Clear back to IP auto-detect. While a committed location is

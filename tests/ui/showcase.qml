@@ -16,6 +16,7 @@ import "Weather" as Weather
 //   general   Settings → General (no place needed)
 //   sources   Settings → Sources (no place needed)
 //   widget    the widget's view and, as "<file>-bar", the menu bar
+//   search    the place search with "place" (or text=…) typed in
 // units: metric or imperial (empty: auto, imperial with the harness's
 // en_US). options, "key=value" separated by ",":
 //   world     layers=temperature+precipitation (the colour layers on),
@@ -152,6 +153,29 @@ ShellRoot {
         console.log("GLOBE PATH", file, "gpuSurface", !!(g && g.gpuSurface), "zoom", g ? g.zoom : -1)
         shot(file)
       })
+      return
+    }
+    // The place search opened over the app, its field given the focus and
+    // a name typed in (inserted, as the window never has the keyboard).
+    if (kind === "search") {
+      list.push(function() {
+        inApp()
+        units(unit)
+        panel.startEditingLocation()
+      }, function() {
+        var f = panel.locationField
+        f.forceActiveFocus()
+        f.remove(0, f.length)
+        var typed = String(o.text || place || "Reykj")
+        for (var i = 0; i < typed.length; i++) f.insert(f.cursorPosition, typed.charAt(i))
+        console.log("SEARCH FIELD", "focus", f.activeFocus, "readOnly", f.readOnly, "text", JSON.stringify(f.text),
+          "height", f.height, "type", String(f))
+      })
+      wait(list, 6)
+      list.push(function() {
+        console.log("SEARCH RESULTS", panel.locationSuggestions.length)
+        shot(file)
+      }, function() { panel.cancelEditingLocation() })
       return
     }
     if (kind === "widget") {
