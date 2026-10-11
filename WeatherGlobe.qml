@@ -18,7 +18,7 @@ import "Model.js" as Model
 // The globe section: the earth seen from above (centre latitude and
 // longitude, tilted up to 80°), zoomed from the whole disc (z0) to about
 // 400 km across (z5); the land, day and night with the three twilight
-// steps, the sun and the moon where they stand overhead, and my places with
+// steps, the sun and the moon where they stand overhead, and the places with
 // their symbol and temperature from the stored forecasts (no requests of its
 // own). From z3 the coast, lakes, borders and towns come from the radar
 // map's Natural Earth data (data/basemap.bin). A drag turns and tilts it,
@@ -344,7 +344,7 @@ Column {
     readonly property var moonLook: showMoon && moonStyle === "earth"
       ? panel.moonLookOf(panel.moonViewAt(panel.mapCenterLatitude, panel.mapCenterLongitude, minuteMs)) : null
 
-    // ---- My places: each saved place with coordinates, its symbol and
+    // ---- Places: each saved place with coordinates, its symbol and
     //      values from the stored forecast (Panel.favoriteRows), and the
     //      shown place when it is not one of them.
     readonly property var markers: {
@@ -490,7 +490,7 @@ Column {
     readonly property Item canvasItem: canvas
     readonly property Item surfaceItem: surface
     readonly property Item overlayItem: overlay
-    // My places' and the towns' labels drawn last (the overlay avoids them).
+    // Places' and the towns' labels drawn last (the overlay avoids them).
     property var labelRects: []
     readonly property Item streaksItem: streaks
     readonly property Item washItem: wash
@@ -1285,7 +1285,7 @@ Column {
       }
 
       // From z3: Natural Earth's towns in view, the larger first, round
-      // my places' labels.
+      // the places' labels.
       function paintTowns(ctx, m, taken) {
         var box = proj.box()
         var towns = Basemap.placesIn(box.west, box.east, box.south, box.north)

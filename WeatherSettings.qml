@@ -2076,7 +2076,7 @@ Rectangle {
                   readonly property var modelData: optionBlock.modelData
                   width: settingsCardContent.width
                   settingKey: modelData.key
-                  title: modelData.title
+                  title: modelData.title || ""
                   relevantKey: modelData.relevant ? modelData.key + "WhenRelevant" : ""
                   orderListKey: panel.orderListKeyForSetting(modelData.key)
                   orderEntry: panel.orderKeyForSetting(modelData.key)

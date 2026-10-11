@@ -392,7 +392,7 @@ var entries = {
   "globeIsobarsEvery": "isóbaras a cada {value}",
   "shortcutGlobeWindHeight": "Mundo: altura do vento",
   "globeTimeline": "Linha do tempo",
-  "globeTimelineHint": "A linha do tempo avança o globo: a Terra inteira até cinco dias em passos de 3 horas, de perto dois dias de hora em hora; cores, camadas, sol, lua e meus lugares seguem a hora mostrada. Usa os dados já carregados.",
+  "globeTimelineHint": "A linha do tempo avança o globo: a Terra inteira até cinco dias em passos de 3 horas, de perto dois dias de hora em hora; cores, camadas, sol, lua e seus lugares seguem a hora mostrada. Usa os dados já carregados.",
   "globeTimeKeysHint": ", . hora · Espaço reproduzir",
   "shortcutGlobeStep": "Mundo: um passo de tempo para trás ou para a frente",
   "shortcutGlobePlay": "Mundo: reproduzir ou pausar a linha do tempo",

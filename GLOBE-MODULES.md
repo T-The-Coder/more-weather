@@ -1,6 +1,6 @@
 # Globe modules for P4–P5
 
-Five pure JS modules for the globe section, written for QML's engine
+Five pure JS modules for the World section (the globe), written for QML's engine
 (`.pragma library`, ES5 style, no `Intl`, no imports), each with Node tests
 in `tests/globe-*.test.mjs` (`mise x node@24.21.0 -- node --test tests/globe-*.test.mjs`).
 None of them draws anything or touches QML; they turn lattices into

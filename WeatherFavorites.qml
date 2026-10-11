@@ -3,7 +3,7 @@ import qs.Commons
 import qs.Ui
 import "Model.js" as Model
 
-// My places: every favourite on one line in the body size, with the values
+// Places: every favourite on one line in the body size, with the values
 // the current weather can show, in the order chosen under Settings →
 // Display. A click (or Alt+1…9, Alt+←/→) makes the place the shown one.
 Column {

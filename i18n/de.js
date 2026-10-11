@@ -426,7 +426,7 @@ var catalog = {
   "globeIsobarsEvery": "Isobaren alle {value}",
   "shortcutGlobeWindHeight": "Welt: Windhöhe",
   "globeTimeline": "Zeitleiste",
-  "globeTimelineHint": "Die Zeitleiste spult den Globus vor: die ganze Erde bis zu fünf Tage in 3-Stunden-Schritten, von nahem zwei Tage stündlich; Farben, Overlays, Sonne, Mond und meine Orte folgen der gezeigten Zeit. Sie nutzt die schon geladenen Daten.",
+  "globeTimelineHint": "Die Zeitleiste spult den Globus vor: die ganze Erde bis zu fünf Tage in 3-Stunden-Schritten, von nahem zwei Tage stündlich; Farben, Overlays, Sonne, Mond und deine Orte folgen der gezeigten Zeit. Sie nutzt die schon geladenen Daten.",
   "globeTimeKeysHint": ", . Zeit · Leertaste abspielen",
   "shortcutGlobeStep": "Welt: einen Zeitschritt zurück oder vor",
   "shortcutGlobePlay": "Welt: Zeitleiste abspielen oder anhalten",

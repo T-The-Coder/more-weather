@@ -392,7 +392,7 @@ var entries = {
   "globeIsobarsEvery": "đẳng áp mỗi {value}",
   "shortcutGlobeWindHeight": "Thế giới: độ cao gió",
   "globeTimeline": "Dòng thời gian",
-  "globeTimelineHint": "Dòng thời gian tua quả địa cầu về phía trước: cả Trái Đất đến năm ngày theo bước 3 giờ, khi phóng to hai ngày theo từng giờ; màu, lớp phủ, mặt trời, mặt trăng và địa điểm của tôi theo thời gian đang hiển thị. Dùng dữ liệu đã tải.",
+  "globeTimelineHint": "Dòng thời gian tua quả địa cầu về phía trước: cả Trái Đất đến năm ngày theo bước 3 giờ, khi phóng to hai ngày theo từng giờ; màu, lớp phủ, mặt trời, mặt trăng và địa điểm của bạn theo thời gian đang hiển thị. Dùng dữ liệu đã tải.",
   "globeTimeKeysHint": ", . thời gian · Space phát",
   "shortcutGlobeStep": "Thế giới: lùi hoặc tiến một bước thời gian",
   "shortcutGlobePlay": "Thế giới: phát hoặc tạm dừng dòng thời gian",

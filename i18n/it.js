@@ -392,7 +392,7 @@ var entries = {
   "globeIsobarsEvery": "isobare ogni {value}",
   "shortcutGlobeWindHeight": "Mondo: quota del vento",
   "globeTimeline": "Linea temporale",
-  "globeTimelineHint": "La linea temporale porta avanti il globo: tutta la Terra fino a cinque giorni a passi di 3 ore, da vicino due giorni ora per ora; colori, livelli, sole, luna e i miei luoghi seguono l’ora mostrata. Usa i dati già caricati.",
+  "globeTimelineHint": "La linea temporale porta avanti il globo: tutta la Terra fino a cinque giorni a passi di 3 ore, da vicino due giorni ora per ora; colori, livelli, sole, luna e i tuoi luoghi seguono l’ora mostrata. Usa i dati già caricati.",
   "globeTimeKeysHint": ", . ora · Spazio riproduci",
   "shortcutGlobeStep": "Mondo: un passo di tempo indietro o avanti",
   "shortcutGlobePlay": "Mondo: riproduci o metti in pausa la linea temporale",

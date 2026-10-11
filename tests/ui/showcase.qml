@@ -5,18 +5,29 @@ import "Weather" as Weather
 
 // The README pictures (tests/ui-showcase.sh): live data, the app at
 // 941 × 1150, the widget at 480 wide, and the menu bar. MW_SCENES lists the
-// scenes, separated by ";", each "file|kind|place|latitude|longitude":
+// scenes, separated by ";", each
+// "file|kind|place|latitude|longitude|units|options":
 //   top       the app from the top (current weather, warnings, hours)
-//   places    the app from the top with my places in the window
+//   places    the app from the top with the places in the window
 //   radar     the radar tab, scrolled to the end
 //   wind      the wind tab, scrolled to the end
+//   world     the World tab, scrolled to the end (globe, chips, timeline)
 //   settings  Settings → Display → Menu bar at "Colour the values" (no place)
 //   general   Settings → General (no place needed)
 //   sources   Settings → Sources (no place needed)
 //   widget    the widget's view and, as "<file>-bar", the menu bar
-// A step is 1.2 s; each place gets half a minute for its data. My places
-// fill from the bar's own panel, a few seconds per place: put "places"
-// late.
+// units: metric or imperial (empty: auto, imperial with the harness's
+// en_US). options, "key=value" separated by ",":
+//   world     layers=temperature+precipitation (the colour layers on),
+//             wind=lines|colour|both, isobars=1, storms=0, radar=1,
+//             shape=globe|map, zoom=0, lat=…, lon=… (the view's middle),
+//             steps=4 (the timeline's steps ahead of now), wait=90 (s)
+//   settings  page=display|changes|… (without: Display → Menu bar at
+//             "Colour the values"), surface=app|widget|menubar,
+//             focus=<setting id> (the cursor moved down to it), search=<query>
+// A step is 1.2 s; each place gets half a minute for its data, the first
+// world scene longer for the globe's model data. The places fill from the
+// bar's own panel, a few seconds per place: put "places" late.
 ShellRoot {
   id: harness
   readonly property string shots: Quickshell.env("MW_SHOTS") || "/tmp"
@@ -39,29 +50,113 @@ ShellRoot {
   function wait(list, seconds) {
     for (var i = 0; i < Math.ceil(seconds / 1.2); i++) list.push(function() {})
   }
+  // Back in the app's window after a widget scene.
+  function inApp() {
+    panel.standaloneMode = true
+    panel.contentRoot.parent = appHost
+  }
   function goTo(place, lat, lon) {
     panel.settingsOpen = false
     panel.pickSuggestion({ name: place, latitude: Number(lat), longitude: Number(lon) })
   }
 
+  function options(text) {
+    var o = {}
+    String(text || "").split(",").forEach(function(pair) {
+      var i = pair.indexOf("=")
+      if (i > 0) o[pair.substr(0, i)] = pair.substr(i + 1)
+    })
+    return o
+  }
+  // The unit system for the scene (metric, imperial or auto).
+  function units(value) {
+    panel.displayOptionsStore.setGeneralSetting("unitSystem", value || "auto")
+  }
+  // The World's layers and view from a world scene's options.
+  function worldSetup(o) {
+    var layers = String(o.layers || "temperature").split("+")
+    ;["temperature", "sst", "cloud", "precipitation"].forEach(function(kind) {
+      panel.setGlobeLayer(kind, layers.indexOf(kind) >= 0)
+    })
+    var wind = o.wind || ""
+    panel.setViewDisplaySetting("globeWind", wind !== "")
+    if (wind !== "") panel.setViewDisplaySetting("globeWindMode", wind)
+    panel.setViewDisplaySetting("globeIsobars", o.isobars === "1")
+    panel.setViewDisplaySetting("globeStorms", o.storms !== "0")
+    panel.setViewDisplaySetting("globeRadar", o.radar === "1")
+    panel.setViewDisplaySetting("globeStyle", o.shape || "globe")
+    panel.setViewDisplaySetting("globeAutoRotate", false)
+    panel.setViewDisplaySetting("globeTimeline", true)
+    panel.setViewDisplaySetting("globeMarkers", true)
+  }
+  function worldView(o) {
+    var g = panel.globeItem
+    if (!g) return
+    g.finishTurn()
+    g.rotating = false
+    g.zoom = Number(o.zoom || 0)
+    if (o.lat !== undefined) g.centerLat = Number(o.lat)
+    if (o.lon !== undefined) g.centerLon = Number(o.lon)
+  }
+
   function scene(list, spec) {
     var part = spec.split("|")
     var file = part[0], kind = part[1], place = part[2], lat = part[3], lon = part[4]
+    var unit = part[5] || "", o = options(part[6])
     if (kind === "settings" || kind === "general" || kind === "sources") {
       list.push(function() {
-        panel.openSettings(kind === "settings" ? "display" : kind)
-        if (kind === "settings") panel.settingsTargetSurface = "menubar"
+        inApp()
+        units(unit)
+        panel.openSettings(kind === "settings" ? (o.page || "display") : kind)
+        if (kind === "settings") panel.settingsTargetSurface = o.surface || "menubar"
       })
       wait(list, 2)
-      // Menu bar: down to "Colour the values", the card scrolled into view.
-      if (kind === "settings")
+      // Down to the setting asked for (Menu bar: "Colour the values"), its
+      // card scrolled into view; or a search over all the settings.
+      if (kind === "settings" && o.search)
+        list.push(function() { panel.setSettingsSearch(o.search) })
+      else if (kind === "settings" && o.focus)
+        list.push(function() {
+          for (var i = 0; i < 200 && panel.settingsFocusId !== o.focus; i++) press(Qt.Key_Down)
+        })
+      else if (kind === "settings" && !o.page)
         list.push(function() { for (var i = 0; i < 24; i++) press(Qt.Key_Down) })
       wait(list, 2)
-      list.push(function() { shot(file) }, function() { panel.settingsOpen = false })
+      list.push(function() { shot(file) }, function() {
+        panel.setSettingsSearch("")
+        panel.settingsOpen = false
+      })
+      return
+    }
+    if (kind === "world") {
+      list.push(function() {
+        inApp()
+        units(unit)
+        onSurface("app", "favoritesAsTab", true)
+        worldSetup(o)
+        goTo(place, lat, lon)
+      })
+      wait(list, 8)
+      list.push(function() { panel.showTab("globe") }, function() { worldView(o) })
+      wait(list, Number(o.wait || 30))
+      list.push(function() { worldView(o) })
+      if (Number(o.steps || 0) > 0)
+        list.push(function() { panel.globeData.showStep(panel.globeData.stepIndex + Number(o.steps)) })
+      wait(list, 8)
+      list.push(function() { press(Qt.Key_End) })
+      wait(list, 3)
+      list.push(function() {
+        // Which path drew it: the GPU surface (up to z2, not offscreen) or
+        // the Canvas.
+        var g = panel.globeItem
+        console.log("GLOBE PATH", file, "gpuSurface", !!(g && g.gpuSurface), "zoom", g ? g.zoom : -1)
+        shot(file)
+      })
       return
     }
     if (kind === "widget") {
       list.push(function() {
+        units(unit)
         goTo(place, lat, lon)
         panel.standaloneMode = false
         panel.activeTab = "rain"
@@ -73,6 +168,8 @@ ShellRoot {
       return
     }
     list.push(function() {
+      inApp()
+      units(unit)
       onSurface("app", "favoritesAsTab", kind !== "places")
       goTo(place, lat, lon)
     })
@@ -91,13 +188,15 @@ ShellRoot {
   Component.onCompleted: {
     var list = [function() {
       panel.contentRoot.parent = appHost
+      // The windows here are never active: let the views move anyway.
+      panel.motionForced = true
       onSurface("app", "showFavorites", true)
       onSurface("app", "showAirQuality", true)
       onSurface("app", "favoritesMoon", true)
       onSurface("menubar", "currentFeelsLike", true)
       onSurface("menubar", "currentWind", true)
       onSurface("menubar", "menubarAccents", "always")
-      // The bar's own panel fetches the saved places' forecasts for my
+      // The bar's own panel fetches the saved places' forecasts for the
       // places (the app reads them from the shared cache).
       barHost.active = true
     }]

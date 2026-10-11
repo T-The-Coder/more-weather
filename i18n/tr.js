@@ -392,7 +392,7 @@ var entries = {
   "globeIsobarsEvery": "{value} aralıkla izobarlar",
   "shortcutGlobeWindHeight": "Dünya: rüzgâr yüksekliği",
   "globeTimeline": "Zaman çizelgesi",
-  "globeTimelineHint": "Zaman çizelgesi küreyi ileri sarar: tüm Dünya 3 saatlik adımlarla beş güne kadar, yakından iki gün saatlik; renkler, katmanlar, güneş, ay ve yerlerim gösterilen zamanı izler. Önceden yüklenmiş verileri kullanır.",
+  "globeTimelineHint": "Zaman çizelgesi küreyi ileri sarar: tüm Dünya 3 saatlik adımlarla beş güne kadar, yakından iki gün saatlik; renkler, katmanlar, güneş, ay ve yerleriniz gösterilen zamanı izler. Önceden yüklenmiş verileri kullanır.",
   "globeTimeKeysHint": ", . zaman · Boşluk oynat",
   "shortcutGlobeStep": "Dünya: bir zaman adımı geri veya ileri",
   "shortcutGlobePlay": "Dünya: zaman çizelgesini oynat veya duraklat",

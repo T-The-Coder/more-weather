@@ -101,7 +101,7 @@ QtObject {
   // ---- The timeline (WeatherGlobeTimeline.qml): the whole earth now …
   //      +120 h in 3-hour steps, close up now … +48 h hourly
   //      (GlobeTimeline.js). One time, displayMs, drives the wash, the
-  //      overlays, the sky and my places' markers; a chosen time stays
+  //      overlays, the sky and the places' markers; a chosen time stays
   //      when the zoom changes the steps (the nearest one is shown).
   readonly property string range: globe && globe.zoom >= 2 ? "regional" : "global"
   readonly property double nowMs: panel.relativeTimeNowMs

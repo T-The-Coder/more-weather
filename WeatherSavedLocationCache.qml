@@ -3,7 +3,7 @@ import "Model.js" as Model
 import "Providers.js" as Providers
 
 // Background forecasts for saved locations (bar instance only), so switching
-// to a favourite shows recent data at once and "My places" lists them.
+// to a favourite shows recent data at once and "Places" lists them.
 // Entries refresh with the forecast interval (15 minutes by default) while
 // that section is shown, else after six hours; a timer looks every five
 // minutes, whatever the main forecast does.
@@ -19,7 +19,7 @@ Item {
     if (panel.standaloneMode || !panel.weatherDataCacheLoaded || savedCacheProc.running
         || brightSkyProc.running || panel.savedCacheActive) return
     var entries = panel.weatherDataCache && panel.weatherDataCache.entries ? panel.weatherDataCache.entries : ({})
-    // With the forecast interval while "My places" is shown, else every six
+    // With the forecast interval while "Places" is shown, else every six
     // hours.
     var refreshBefore = Date.now() - (panel.favoritesWanted ? Math.max(10, panel.refreshMinutes) * 60 : 6 * 60 * 60) * 1000
     var queue = []

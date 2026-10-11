@@ -392,7 +392,7 @@ var entries = {
   "globeIsobarsEvery": "isobarer hver {value}",
   "shortcutGlobeWindHeight": "Verden: vindhøyde",
   "globeTimeline": "Tidslinje",
-  "globeTimelineHint": "Tidslinjen spoler globusen fram: hele jorda opptil fem døgn i steg på 3 timer, på nært hold to døgn time for time; farger, lag, sol, måne og mine steder følger den viste tiden. Den bruker data som allerede er lastet.",
+  "globeTimelineHint": "Tidslinjen spoler globusen fram: hele jorda opptil fem døgn i steg på 3 timer, på nært hold to døgn time for time; farger, lag, sol, måne og dine steder følger den viste tiden. Den bruker data som allerede er lastet.",
   "globeTimeKeysHint": ", . tid · Mellomrom spill",
   "shortcutGlobeStep": "Verden: et tidssteg tilbake eller fram",
   "shortcutGlobePlay": "Verden: spill av eller sett tidslinjen på pause",

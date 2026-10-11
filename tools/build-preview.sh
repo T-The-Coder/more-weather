@@ -3,10 +3,17 @@
 # (tests/ui-showcase.sh): the app scenes as they are, the menu bar above
 # the widget, and the preview with the feature list beside them. Colours
 # come from the current Omarchy theme, the font is JetBrains Mono.
-# The scenes it expects (tests/ui-showcase.sh with this MW_SCENES):
-#   napa|top|Napa|38.2975|-122.2869;new-orleans-radar|radar|New Orleans|29.9511|-90.0715;
-#   wellington-wind|wind|Wellington|-41.2865|174.7762;settings|settings|||;
-#   my-places|places|New York|40.7128|-74.006;widget|widget|Napa|38.2975|-122.2869
+# The pictures of 3.2 (2026-10-11, chosen by that day's weather): the
+# places and scenes for tests/ui-showcase.sh, then this script:
+#   MW_PLACES="Helena,46.5891,-112.0391;Reykjavík,64.1466,-21.9426;São Paulo,-23.5505,-46.6333;Khartoum,15.5007,32.5599;Naha,26.2124,127.6809;Alice Springs,-23.698,133.8807;Hobart,-42.8821,147.3272;Yakutsk,62.0355,129.6755"
+#   MW_SCENES="world|world|Reykjavík|64.1466|-21.9426|metric|layers=temperature+precipitation,lat=30,lon=-20,wait=90;
+#     world-map|world|Reykjavík|64.1466|-21.9426|metric|layers=temperature+precipitation,shape=map,wait=20;
+#     world-radar|world|Kill Devil Hills|36.0307|-75.676|imperial|layers=precipitation,radar=1,zoom=3,lat=36,lon=-77,wait=40;
+#     helena|top|Helena|46.5891|-112.0391|imperial|;naha-radar|radar|Naha|26.2124|127.6809|metric|;
+#     reykjavik-wind|wind|Reykjavík|64.1466|-21.9426|metric|;settings|settings||||metric|page=changes;
+#     widget|widget|Naha|26.2124|127.6809|metric|;places|places|Khartoum|15.5007|32.5599|metric|"
+#   (MW_SCENES without the line breaks and "#"; the World scenes with
+#   MW_DISPLAY=headless, so the globe draws on the GPU as on screen)
 #   tools/build-preview.sh <showcase-output-dir>
 set -euo pipefail
 root=$(cd "$(dirname "$0")/.." && pwd)
@@ -23,7 +30,7 @@ bold=$(fc-match -f '%{file}' "JetBrainsMono Nerd Font:style=Bold")
 work=$(mktemp -d)
 trap 'rm -rf "$work"' EXIT
 
-for scene in napa new-orleans-radar wellington-wind my-places settings; do
+for scene in helena world world-map world-radar naha-radar reykjavik-wind places settings; do
   cp "$in/$scene.png" "$root/screenshots/$scene.png"
 done
 
@@ -35,19 +42,21 @@ magick "$work/bar.png" \( -size 512x2 "xc:$accent" \) \( -size 512x8 "xc:$bg" \)
   -append +repage "$root/screenshots/menubar-widget.png"
 
 # The preview: the list on the left, the widget in the middle, three
-# scenes on the right.
+# scenes on the right (the warning, the World, the radar on the globe).
 panel() {  # source crop-geometry width output
   magick "$1" -crop "$2" +repage -resize "$3x" -bordercolor "$line" -border 3 "$4"
 }
-panel "$in/my-places.png" 941x360+0+0 900 "$work/p1.png"
-panel "$in/new-orleans-radar.png" 941x485+0+665 900 "$work/p2.png"
-panel "$in/wellington-wind.png" 941x440+0+710 900 "$work/p3.png"
+panel "$in/helena.png" 941x290+0+0 900 "$work/p1.png"
+# The globe whole, on the page's colour as wide as the others.
+magick "$in/world.png" -crop 941x860+0+112 +repage -resize x650 -background "$bg" -gravity center \
+  -extent 900x650 -bordercolor "$line" -border 3 "$work/p2.png"
+panel "$in/world-radar.png" 941x270+0+178 900 "$work/p3.png"
 magick "$root/screenshots/menubar-widget.png" -resize x1000 -bordercolor "$line" -border 3 "$work/w.png"
 
 # The pitch: three lines, large.
-bullets=("Live radar & wind maps," "  drawn in your theme"
+bullets=("The World: a globe," "  with weather & radar"
   "Official warnings," "  worldwide"
-  "Bar, popup & app," "  arranged your way")
+  "Live radar & wind maps," "  drawn in your theme")
 args=()
 y=540
 for text in "${bullets[@]}"; do
@@ -63,15 +72,15 @@ done
 
 magick -size 2400x1350 "xc:$bg" \
   -fill "$accent" -draw "roundrectangle 90,150 470,206 8,8" \
-  -font "$bold" -pointsize 30 -fill "$bg" -annotate +112+190 "NEW · VERSION 3.1" \
+  -font "$bold" -pointsize 30 -fill "$bg" -annotate +112+190 "NEW · VERSION 3.2" \
   -font "$bold" -pointsize 92 -fill "$accent" -annotate +86+330 "More Weather" \
   -font "$font" -pointsize 40 -fill "$fg" -annotate +92+398 "for the Omarchy bar" \
   "${args[@]}" \
-  -font "$font" -pointsize 30 -fill "$muted" -annotate +98+1040 "30 languages · °C / °F · my places" \
+  -font "$font" -pointsize 30 -fill "$muted" -annotate +98+1040 "30 languages · °C / °F · places" \
   -annotate +98+1080 "full keyboard control · standalone app" \
   "$work/w.png" -geometry +860+170 -composite \
   "$work/p1.png" -geometry +1440+40 -composite \
-  "$work/p2.png" -geometry +1440+400 -composite \
-  "$work/p3.png" -geometry +1440+880 -composite \
+  "$work/p2.png" -geometry +1440+345 -composite \
+  "$work/p3.png" -geometry +1440+1020 -composite \
   "$root/preview.png"
 echo "preview.png and screenshots/ updated"

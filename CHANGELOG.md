@@ -2,265 +2,175 @@
 
 All notable changes to More Weather are documented here.
 
-## Unreleased
+## 3.2.0 — 2026-10-11
 
-- **"My places" is now "Places"**: the section, its tab, its settings card
-  and the globe's places option. The keys stay `showFavorites` and
-  `favorites*`; the IPC call `tab` takes `places` as well as `favorites`.
-- **"Globe" is now "World"** (as More Time's tab): the section, its tab,
-  its settings card, its Sources card and its shortcuts. Settings and
-  scripts keep working: the keys stay `showGlobe` and `globe*`, and the
-  IPC call `tab` takes `world` as well as `globe`. The shape choice keeps
-  "Globe | Flat map".
-- **Finer rain on the whole globe:** with the precipitation layer on
-  (z0–z1), a second set of points about twice as dense (rings every 4.5°,
-  about 2,000 on the earth) is asked for the part facing you only (within
-  80° of the view's middle, about 1,000 points, in cells of 15° kept
-  three hours, so turning loads each cell once), after the 510 points,
-  paced to Open-Meteo's 600 calls a minute; only cells where the 510
-  points see rain within 48 hours, and never closer than 600 calls to the
-  day's first budget mark. Precipitation and the thunderstorm symbols use
-  it where it is loaded; the legend then says "rain about 500 km".
-- **Radar on the globe from z2:** a new switch and chip (`a`) lays
-  RainViewer's radar tiles (the Radar section's source, its picture
-  cache) onto the globe and the flat map in place of the model's
-  precipitation, reprojected once per tile, at the globe's time while it
-  lies within the radar's last two hours, else the latest picture (the
-  legend says which). At z2 the radar has its own picture of the view's
-  box at the tiles' resolution and its own shader over the GPU surface,
-  as sharp as from z3.
-- **Globe budget in three tiers:** loads you cause, including the base
-  data when you open or show the globe, go on up to 3,000 calls a day;
-  only the timed renewal while the globe stays shown stops at 2,000.
-- **Nothing moves while the monitor is off:** with the screen turned off
-  (DPMS: a key binding, or Omarchy on idle) the turning globe, the
-  timeline's playback, the wind streaks, the flashing storm symbols and
-  the radar's playback rest as on another workspace, and go on when it is
-  back (`ScreenState.qml`, shared with More Time, asks Hyprland). A pause
-  out of view no longer starts a new wait before the globe turns again.
-- **The globe keeps turning by itself** while the app's window is shown,
-  whether or not it has the keyboard: with Omarchy's focus following the
-  mouse it used to stop whenever the pointer left the window and wait the
-  full delay again. It pauses on another workspace (Hyprland is asked
-  which one is in view) and goes on at once when back; only a touch, the
-  flat map, zooming in or the timeline end it. The turn steps in time with
-  the frames shown (`MotionGate.qml`, shared with More Time): 96 % of the
-  steps exactly five frames apart at 75 Hz, before 92 %.
-  `MW_FRAME_LOG=1` logs its cadence.
-- **Glyphs measured:** every glyph-only control (hero buttons, tabs,
-  chips, zoom, play, wind height, order arrows, remove, chevrons) is
-  checked in both themes for its ink's offset from the middle
-  (`MW_AUDIT=glyphs tests/ui-shots.sh`); the ▼ arrows, drawn a pixel high
-  by the font, sit centred now.
-- **Interface audit:** in light themes the secondary texts and card
-  borders fade towards the background instead of turning darker than the
-  text; sunrise and sunset stack in a narrow day column; search results
-  sit in cards; Motion and the rain notification's choices have their
-  label above the list, as the rest of General; the globe's chips show
-  their on state with the selected fill and accent text (as More Time's);
-  Places starts at the left edge under its title; key lines wrap only
-  after a "·"; the shown place's label clears its ring; the Sun keeps a
-  halo against the temperature layer; the AQI value is no longer bold;
-  the rain chart's empty state reads like the others; the globe's data
-  time is the place's.
-- **What's new:** a sixth settings page after Sources shows this change
-  log, one card per version, newest first (the installed one marked, the
-  older ones behind "Show older versions"); read from the plugin's own
-  `CHANGELOG.md` with the shared `Changelog.js`. The log stays English.
-- **Control hints:** a switch in Settings → General → App (on by default); off, the
-  lines that explain keys and gestures go and give their room back — My
-  places' "Alt 1–9", the hours' cursor keys, the globe's and the wind
-  map's keys, "Ctrl + wheel to zoom" over the maps and the settings' key
-  lines. The Shortcuts page, errors, empty states and legends stay.
-- **Glyph-only chips:** the globe's chips for globe, flat map, moon and places show their glyph
-  alone; the full name appears a moment after the pointer rests on one,
-  and stays their accessible name (as on the hero's buttons).
+Version 3.2 in short:
 
-- **The Moon as seen from the place:** (`MoonView.js`, shared with More
-  Time, Meeus' formulas checked against JPL Horizons) the hero's moon,
-  each row in Places and the globe's "Moon view: as seen from here"
-  show the true tilt of the lit side for that place and minute, earthshine
-  on a thin crescent, and a dimmed sphere while the Moon is below that
-  place's horizon (south of the equator it comes out mirrored by itself).
-  Hovering the moon (hero, globe) tells its height and direction, rise and
-  set, in the place's time. The bar and the daily rows keep the phase
-  glyph. Settings → Sources lists the calculation. The sun's colour comes
-  from the shared `Sky.sunColor` (unchanged).
+- **World:** the earth as a globe or a flat map with day and night, the sun,
+  the moon and your places; weather layers from Open-Meteo's model, the radar
+  from close up, zoom to about 400 km across and a five-day timeline.
+- **Air pressure** with its three-hour trend in the bar, the current weather
+  and the forecasts.
+- **The Moon as the place sees it:** the true tilt of its lit side,
+  earthshine on a thin crescent, dimmed below the horizon.
+- **Settings you can search,** with Notifications as a page of its own,
+  Motion for every view that turns, and a What's new page with this log.
+- **"My places" is now "Places",** and the lines that explain keys can be
+  switched off.
+- **New pictures** for the README and the plugin page.
 
-- **Settings, rearranged:** a search field on top (`/`; `Esc` clears it,
-  then leaves) finds a setting on any page, in the interface language or
-  in English, accents aside; the rows found work in place, grouped as
-  "Page › Card › Section", Display rows for the view picked.
-  **Notifications** is a page of its own (severe weather, rain with its
-  strength and radius), now one setting for bar and app (taken over once
-  from the menu bar's). **Motion** in General (starts after, one turn in,
-  frames per second) applies wherever a view turns by itself (taken over
-  once from the app's globe). General reads Language and format, Updates,
-  Look, Motion, App, Back up and restore. The Globe card has Sky, Layers
-  and Time sections; the globe-or-map choice is called **Shape**. Display
-  can **copy** the widget's settings to the app and back (two presses).
-- **View chips:** the chips under the globe also switch the view: globe or flat map,
-  night, moon, places and the timeline.
-- **Plainer texts:** "Mouse" heads the mouse shortcuts; a few settings texts read plainer
-  ("Replace settings?", "Saved to …").
+In detail:
 
-- **Cheaper turning:** turning the globe on the GPU got cheaper still: the coasts and the grid
-  are a 2048 × 1024 picture of their own on a second surface, and up to z1
-  the isobars with their highs and lows are painted into the colour
-  layers' picture, so while the globe turns the Canvas draws only the sun,
-  the moon, the places and their labels, the symbols and the rim (about
-  2.6 ms per frame in the test harness, down from about 25).
-- **One temperature scale:** one colour means one warmth everywhere: the globe's temperature and
-  sea layers use the text's colours (blue … red over −10 … 35 °C), and
-  the scale goes on to a blue-violet at −40 °C and a dark magenta at 45 °C
-  instead of stretching the same colours over −40 … 45 (one function,
-  `TemperatureScale.js`). The layer is set to land on the text's colour
-  over the page; the legend marks the bends; numbers on the globe take
-  the colour too.
-- **Globe on the GPU:** the globe's surface (sphere, land, colour layers, night) runs on the
-  GPU up to z2 on the globe and the flat map: an equirectangular texture
-  painted once per change of data, time, layers or theme, projected by a
-  shader, so turning only changes a few numbers (about 4–5 % of a core at
-  15 frames a second, measured on Intel Iris Xe, instead of most of one).
-  Lines, places, labels and symbols stay as they were; from z3, and where
-  shaders cannot run, everything is drawn as before. Labels now stay while
-  the globe turns by itself. `providerStatus` reports the globe's cost.
-- **Layer chips:** under the globe and the flat map: every layer always
-  there as a toggle chip (glyph and short name; glyphs alone where it is
-  narrow), the colour layers first, then isobars, storms and numbers;
-  Shift + click or a right click shows one colour layer alone; letters
-  `t` `e` `c` `p` `d` `i` `s` `u` on the keyboard. Below them a scale per
-  colour layer, without controls. They replace the legend's × and "+"
-  and set the same options as the Globe card.
-- **One Wind layer:** with a mode: lines (default; now coloured by speed
-  on the wind scale), colour, or both; its scale row has the three-way
-  switch and the height. The former wind colour and wind streaks
-  switches carry over.
-- **Flat map:** for the globe section (Settings → Display → World: Shape): the earth in the Equal Earth projection, as in More Time, with
-  everything the globe has: the colour layers, isobars, streaks, storm and
-  thunderstorm symbols, numbers, night with its twilight, sun and moon, my
-  places, the timeline, the legend and the values under the pointer; zoom
-  towards the pointer, drag or Ctrl + arrows to move, `0` for the whole
-  map, the basemap's detail from z3. Both pictures sit behind one small
-  projection interface (`GlobeProjection.js`), so the layers do not care
-  which is shown. The flat map does not turn by itself.
-- **Moon:** style on the globe: lit towards the sun as seen from space
-  (as before) or as the shown place sees its phase (Settings → Display →
-  World: Moon view), shared with More Time.
-- **Tooltip on hover:** for the menu bar (off by default): the bar's own
-  tooltip repeats the entries the menu bar shows under the pointer, the
-  hover ones included, one per line with the place first.
-- **Smooth colour layers:** the globe's colour layers are smooth: each blends between its scale's
-  colours (no bands), the cloud's veil follows the cover continuously and
-  precipitation fades in from 0.1 mm/h.
-- **Animation only in view:** the globe animates only while it can be seen (the popup open, or the
-  app's window active and shown): turning by itself, the streaks, the
-  bolts' flashes and the timeline's playback stop otherwise, and at rest
-  nothing repaints. Turning by itself has its frame rate as a setting
-  (Settings → General → Motion: 8, 15, 24 or 30 frames a second, 15 by
-  default). While moving or playing, the layers draw at a lower
-  resolution and every third frame.
-- **Several colour layers at once:** on the globe: temperature, sea
-  temperature, wind, cloud and precipitation are now switches of their
-  own (the former single choice carries over), composed in one pass
-  from the bottom: the air's temperature (the sea's over the ocean when
-  both show), wind over it at half strength, the cloud's veil, then
-  precipitation. The legend shows a row per layer (a click on its name
-  switches it off, "+" the next on); `v` shows one layer alone and steps
-  on; numbers and the pointer read the topmost layer with a value
-  (precipitation where it rains, then the temperatures, wind, cloud), the
-  pointer up to two ("12 °C · 1.2 mm/h").
-- **Clean rim:** the globe's colours end exactly at its rim, antialiased, with no
-  coloured halo outside: the layers are filled into the disc as a smoothly
-  stretched pattern; the streaks and isobars are clipped to it too.
-- **Storm symbols:** the globe's storm and thunderstorm symbols speak the plugin's language:
-  the Nerd Font's line glyphs (weather-windy, weather-lightning) in the
-  wind and UV accents softened towards the text, with a thin halo of the
-  page's colour, sized like the place markers' glyphs and a little larger
-  for the strongest, instead of coloured discs and yellow bolts. The
-  bolts no longer flicker: each rests and flashes briefly once in 8–20 s,
-  never in step with the others, and not while the globe is dragged or
-  plays its timeline.
-- **The globe's forecast timeline:** under the globe, play / pause and a
-  track to drag or click, the whole earth up to five days ahead in
-  3-hour steps, close up two days hourly (the chosen time stays when the
-  zoom changes). One time drives everything: the colour layer, isobars,
-  streaks, storm and thunderstorm symbols, numbers, the sun, the
-  twilight and the moon, and my places' markers show their own forecast
-  for that hour (muted where their stored hours end). Playback pauses the
-  globe's turning, stops at the end and starts from now again; the
-  worker readies the next step while playing. Keys `,` `.` (a step),
-  `Space` (play), `n` or `⌫` (back to now); the legend names the shown
-  time ("Sun 15:00 · +27 h"). No extra requests: it reads the hours
-  already loaded, and close up past a tile's 48 hours the whole earth's
-  data stands in. On in the app, a switch (Timeline) in the popup.
-- **More on the globe:** the colour layer gains **wind** (in the wind
-  map's colours, in your wind unit) and the **sea's temperature** (from
-  Open-Meteo Marine, −2 … 32 °C, land drawn over it); four overlays,
-  each a switch in Settings → Display → World: **storms and
-  thunderstorms** (gust glyphs from 75 km/h, larger from 103, and
-  lightning glyphs where the model has thunderstorms; on by default),
-  **wind streaks** that drift with the wind, **isobars** every 4 hPa
-  with H and L at the pressure centres, and **numbers** with the layer's
-  values from close up. The wind and the streaks follow a height of
-  their own (10 m up to 250 hPa: the dropdown, or `Shift` `↑` `↓` on the
-  globe), loaded only while shown. A gust symbol or bolt under the
-  pointer names it ("Gusts 86 km/h", "Thunderstorm"); the legend shows
-  the wind scale with its height, the sea's scale, and the isobars'
-  spacing. Isobars, centres and symbols are worked out off the shell's
-  thread once per time step (`GlobeLayers.js` in the worker).
-- **Fewer retries:** the globe's data no longer asks again every ten seconds after a failed
-  or unreadable answer: such a key waits 10 minutes, then twice as long
-  each time, up to 6 hours.
-- **Air pressure:** (hPa at sea level, or inHg with US units), off by default:
+- **World, a new section:** in the app a tab after the wind map, in the
+  popup off until switched on. The earth with day and night in three
+  twilight steps, the sun and the moon where they stand overhead, and your
+  places as markers with their symbol and temperature from the stored
+  forecasts (no requests of their own), the shown place in the accent
+  colour. A click on a place shows it; the pointer names a place (with its
+  temperature and symbol) or the moon (lit share, waxing or waning). Built
+  on More Time's shared `Globe.js`, `Sky.js` and `data/globe-land.json`.
+  Settings and scripts use the keys `showGlobe` and `globe*`; the IPC call
+  `tab` takes `world` as well as `globe`.
+- **Turn, tilt and zoom:** a drag turns and tilts the globe (up to 80°),
+  Shift + wheel turns it; Ctrl + wheel, a double click, `+` `−` and the
+  buttons zoom towards the pointer in six levels from the whole disc to
+  about 400 km across; Ctrl + arrows turn and tilt by 15°, or a quarter of
+  the view when zoomed in; the crosshair brings the shown place to the
+  middle and `0` goes back to the whole globe. From z3 the coast, lakes,
+  borders and towns come from the radar map's Natural Earth data, the grid
+  gets finer and the places show their wind too; from z2 a drag moves the
+  picture and draws it anew on release. View arithmetic in `GlobeView.js`.
+- **Flat map:** Settings → Display → World → Shape picks the globe or the
+  earth in the Equal Earth projection (as in More Time), with everything the
+  globe has; zoom towards the pointer, drag or Ctrl + arrows to move, `0`
+  for the whole map. Both sit behind one projection interface
+  (`GlobeProjection.js`). The flat map does not turn by itself.
+- **Weather layers:** temperature (on by default), the sea's temperature
+  (Open-Meteo Marine, land drawn over it), wind, cloud and precipitation,
+  each a switch and freely combined, drawn in one pass from the bottom: the
+  air's temperature (the sea's over the ocean when both show), wind at half
+  strength, the cloud's veil, then precipitation from 0.1 mm/h. Each blends
+  smoothly between its scale's colours and ends exactly at the globe's rim,
+  antialiased. The temperatures take the forecast text's colours (blue to
+  red over −10 to 35 °C, on to a blue-violet at −40 °C and a dark magenta
+  at 45 °C, one function in `TemperatureScale.js`), numbers on the globe
+  too.
+- **Overlays:** storm glyphs for gusts from 75 km/h (larger from 103) and
+  lightning glyphs where the model has thunderstorms (on by default), in the
+  Nerd Font's line glyphs with a thin halo; the bolts rest and flash briefly
+  once in 8 to 20 seconds, never in step. Isobars every 4 hPa with H and L
+  at the pressure centres, and the layers' values as numbers from close up.
+  A gust symbol or bolt under the pointer names it ("Gusts 86 km/h"). Worked
+  out off the shell's thread once per time step (`GlobeLayers.js` in the
+  worker).
+- **One wind layer:** drifting lines coloured by speed (default), the speed
+  as colour, or both, at a height of its own (10 m up to 250 hPa: the
+  dropdown, or `Shift` `↑` `↓`), loaded only while shown. The former wind
+  colour and wind streaks switches carry over.
+- **Chips under the view:** one row switches the view (globe or flat map,
+  night, moon, places, timeline; the glyph alone, the name a moment after
+  the pointer rests on one) and every layer (glyph and short name, glyphs
+  alone where it is narrow), the on state in the selected fill with accent
+  text. Shift + click or a right click shows one colour layer alone; the
+  letters `t` `e` `c` `p` `d` `i` `s` `u` and `a` (radar) switch them, `v`
+  steps through the layers alone. Below them a scale per colour layer, and
+  the pointer reads up to two values with the place's coordinates
+  ("12 °C · 1.2 mm/h").
+- **Forecast timeline:** under the globe, play / pause and a track to drag
+  or click: the whole earth up to five days ahead in 3-hour steps, close up
+  two days hourly. One time drives the layers, overlays, sun, twilight and
+  moon, and the places' markers show their own forecast for that hour.
+  Playback pauses the turning and stops at the end; keys `,` `.` (a step),
+  `Space` (play), `n` or `⌫` (back to now); the legend names the time
+  ("Sun 15:00 · +27 h"). No extra requests. On in the app, a switch in the
+  popup.
+- **Radar from close up:** a switch and chip (`a`) lays RainViewer's radar
+  (the Radar section's source and picture cache) onto the globe and the flat
+  map from z2 in place of the model's precipitation, at the globe's time
+  while it lies within the radar's last two hours, else the latest picture
+  (the legend says which). At z2 it has its own picture of the view at the
+  tiles' resolution and its own shader, as sharp as from z3.
+- **Data within a budget:** 510 points for the whole earth in seven batches,
+  one every ten seconds, five days in 3-hour steps, renewed every six hours;
+  close up tiles of 16 points (48 hours) after the view rests. With
+  precipitation on, a set about twice as dense (about 500 km) is asked for
+  the half facing you, only where the coarse points see rain within 48
+  hours. Parsed and gridded off the shell's thread (`GlobeWorker.js`) and
+  shared between bar and app in `~/.cache/more-weather/globe/`. The day's
+  calls count in three tiers: what you cause loads up to 3,000, the timed
+  renewal stops at 2,000 and the finer rain keeps 600 below that. Nothing
+  loads while the globe is hidden; a failed key waits 10 minutes, then
+  twice as long each time up to 6 hours; loading pauses while Open-Meteo
+  rate-limits. Settings → Sources lists the World with today's calls.
+- **On the GPU:** the globe's surface (sphere, land, colour layers, night)
+  runs on the GPU up to z2, on the globe and the flat map: a texture painted
+  once per change of data, time, layers or theme and projected by a shader,
+  with the coasts and the grid on a second surface. Turning costs about
+  4–5 % of a core at 15 frames a second (Intel Iris Xe) and about 2.6 ms of
+  drawing per frame. From z3, and where shaders cannot run, everything is
+  drawn as before. `providerStatus` reports the cost.
+- **Motion only in view:** the globe turns by itself on the whole disc after
+  a while without a touch, and moves only while it can be seen: the popup
+  open or the app's window shown (with or without the keyboard), not on
+  another workspace and not with the monitor off, going on at once when
+  back. Settings → General → Motion (starts after, one turn in, 8, 15, 24
+  or 30 frames a second) applies to every view that turns by itself. At
+  rest nothing repaints; the turn steps in time with the frames shown
+  (`MotionGate.qml` and `ScreenState.qml`, shared with More Time;
+  `MW_FRAME_LOG=1` logs the cadence).
+- **The Moon as seen from the place:** the current weather's moon, each row
+  in Places and the World's Moon view (lit as from space, or as seen from
+  here) show the true tilt of the lit side for that place and minute,
+  earthshine on a thin crescent, and a dimmed sphere while the Moon is below
+  the place's horizon. Hovering it tells its height and direction, rise and
+  set, in the place's time. The bar and the daily rows keep the phase glyph.
+  Computed with Meeus' formulas (`MoonView.js`, shared with More Time,
+  checked against JPL Horizons); Settings → Sources lists it.
+- **Air pressure:** hPa at sea level, or inHg with US units, off by default:
   in the menu bar (with **Relevant** while it rises or falls by 1.5 hPa or
-  more in three hours, and **Hover**), in the current weather with its trend
-  as an arrow (following the hour cursor; the trend in words on hover), in
-  the hourly forecast and as the day's mean in the daily forecast. From
-  Open-Meteo (`pressure_msl`, two more variables in the forecast request),
-  MET Norway and, in the DWD area, Bright Sky (MOSMIX).
-- **Weather on the globe:** a colour layer for the temperature (default,
-  −40 … 45 °C in the plugin's accent colours), cloud (a white veil) or
-  precipitation (radar colours, 0.1 to 20 mm/h), from Open-Meteo's model:
-  510 points for the whole earth in seven batches, one every ten seconds,
-  five days in 3-hour steps, renewed every six hours; close up tiles of
-  16 points (48 hours) after the view rests. Parsed and gridded off the
-  shell's thread (`GlobeWorker.js`), shared between bar and app as files
-  in `~/.cache/more-weather/globe/`, within a daily budget of point-calls
-  (from 2,000 only loads you cause, from 3,000 none), paused while
-  Open-Meteo rate-limits, and nothing loads while the globe is hidden or
-  the layer is off. A legend under the globe (click or `v` for the next
-  layer), the value under the pointer with the place's coordinates, a
-  budget hint in Settings → Display → World, and a "Globe"
-  entry on the Sources page with today's calls.
-- **Tilt and zoom:** the globe tilts and zooms: a drag turns and tilts it (up to 80°), Ctrl
-  + wheel and a double click zoom towards the pointer, `+` `−` and its
-  buttons zoom, the crosshair brings the shown place to the middle, `0`
-  goes back to the whole globe; Ctrl + arrows turn and tilt by 15°, or a
-  quarter of the view when zoomed in (while no radar or wind map is
-  shown). Six levels from the whole disc to about 400 km across; from z3
-  the coast, lakes, borders and towns come from the radar map's Natural
-  Earth data, the grid gets finer, and my places show their wind too.
-  From z2 a drag moves the picture and draws it anew on release. Turning
-  by itself stays on the whole disc (z0, z1) and keeps the tilt. View
-  arithmetic in `GlobeView.js` with Node tests.
-- **Globe:** a new section (in the app a tab after the wind map, off in the
-  popup): the earth with day and night in three twilight steps, the sun and
-  the moon overhead, and my places as markers with their symbol and
-  temperature from the stored forecasts, no new requests. A drag, Shift +
-  wheel or Ctrl+← → turns it, 0 brings back the shown place, a click on a
-  place turns to it and shows it; it can turn by itself as in More Time
-  (Settings → Display → World: night side, moon, places, turning by itself;
-  its delay and speed under General → Motion). The pointer names a place (temperature and
-  symbol) or the moon (lit share, waxing or waning). Built on the shared
-  `Globe.js` view, `Sky.js` and `data/globe-land.json` from More Time; while
-  it turns it draws a coarser coastline, about 17 ms a frame at 500 and
-  840 px.
-- **More value columns:** the current weather shows as many value columns as fit beside the
-  temperature, in their order, instead of running into it in a narrow
-  window.
-- **Settings focus:** when "Reset general settings" disappears, the cursor moves to
-  its neighbour without a binding loop warning.
+  more in three hours, and **Hover**), in the current weather with its
+  trend as an arrow (in words on hover), in the hourly forecast and as the
+  day's mean in the daily forecast. From Open-Meteo, MET Norway and, in the
+  DWD area, Bright Sky.
+- **"My places" is now "Places":** the section, its tab, its settings card
+  and the World's places chip, in all 30 languages. The keys stay
+  `showFavorites` and `favorites*`; the IPC call `tab` takes `places` as
+  well as `favorites`.
+- **Settings, rearranged:** a search field on top (`/`; `Esc` clears it,
+  then leaves) finds a setting on any page, in the interface language or in
+  English, accents aside; the rows found work in place, grouped as
+  "Page › Card › Section". **Notifications** is a page of its own, one
+  setting for bar and app; **Motion** sits in General, which reads Language
+  and format, Updates, Look, Motion, App, Back up and restore. The World
+  card has Sky, Layers and Time sections. Display can copy the widget's
+  settings to the app and back (two presses). Settings taken over once from
+  their former places.
+- **What's new:** a sixth settings page after Sources shows this log, one
+  card per version, newest first (the installed one marked, older ones
+  behind "Show older versions"), read from the plugin's own `CHANGELOG.md`
+  with the shared `Changelog.js`. The log stays English.
+- **Control hints:** a switch in Settings → General → App (on by default);
+  off, the lines that explain keys and gestures give their room back:
+  Places' "Alt 1–9", the hours' cursor keys, the World's and the wind map's
+  keys, "Ctrl + wheel to zoom" over the maps and the settings' key lines.
+  The Shortcuts page, errors, empty states and legends stay.
+- **Tooltip on hover:** a menu bar switch (off by default): the bar's
+  tooltip repeats the entries the menu bar shows under the pointer, one per
+  line with the place first.
+- **More value columns:** the current weather shows as many value columns as
+  fit beside the temperature, in their order, instead of running into it in
+  a narrow window.
+- **Interface polish:** in light themes the secondary texts and card borders
+  fade towards the background; sunrise and sunset stack in a narrow day
+  column; search results sit in cards; Places starts at the left edge under
+  its title; key lines wrap only after a "·"; the AQI value is no longer
+  bold; the rain chart's empty state reads like the others; every
+  glyph-only control sits centred, measured in both themes
+  (`MW_AUDIT=glyphs tests/ui-shots.sh`); "Mouse" heads the mouse
+  shortcuts and a few settings texts read plainer. When "Reset general
+  settings" disappears, the cursor moves to its neighbour.
+- **New pictures** for the README and `preview.png`, from live data.
+- **User agent:** requests say `more-weather/3.2`.
 
 ## 3.1.0 — 2026-10-03
 

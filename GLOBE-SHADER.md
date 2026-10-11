@@ -1,6 +1,6 @@
 # The globe's surface on the GPU
 
-The globe section draws everything on QML Canvas in JavaScript. While the globe turns by itself, every frame
+The World section draws everything on QML Canvas in JavaScript. While the globe turns by itself, every frame
 used to recompute the colour wash through an inverse projection and redraw the land and the night, which took
 about 90 % of a CPU core in the real app (the offscreen harness measured about 25 ms of script per frame).
 The GPU path here moves the **surface** of the sphere to a fragment shader:
@@ -267,7 +267,7 @@ polygons. The same zoom cut-off applies.
 8. The `moving`/`playing` quality reductions of the wash do not apply to the surface. Leave them in the wash
    for the fallback.
 9. Tests: `tests/ui-shots.sh` stays on the Canvas path (software). Use `MW_SHADER_LIVE=1 tests/ui-shader.sh`
-   for the GPU picture. Update the README's globe section and the CHANGELOG when this is wired in.
+   for the GPU picture. Update the README's World section and the CHANGELOG when this is wired in.
 
 ## Reuse in More Time (`TimeGlobe.qml`)
 

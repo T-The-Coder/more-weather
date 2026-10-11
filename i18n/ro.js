@@ -392,7 +392,7 @@ var entries = {
   "globeIsobarsEvery": "izobare la {value}",
   "shortcutGlobeWindHeight": "Lume: înălțimea vântului",
   "globeTimeline": "Cronologie",
-  "globeTimelineHint": "Cronologia derulează globul înainte: tot Pământul până la cinci zile în pași de 3 ore, de aproape două zile oră cu oră; culorile, straturile, soarele, luna și locurile mele urmează ora afișată. Folosește datele deja încărcate.",
+  "globeTimelineHint": "Cronologia derulează globul înainte: tot Pământul până la cinci zile în pași de 3 ore, de aproape două zile oră cu oră; culorile, straturile, soarele, luna și locurile tale urmează ora afișată. Folosește datele deja încărcate.",
   "globeTimeKeysHint": ", . oră · Spațiu redare",
   "shortcutGlobeStep": "Lume: un pas de timp înapoi sau înainte",
   "shortcutGlobePlay": "Lume: redă sau întrerupe cronologia",

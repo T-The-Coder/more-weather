@@ -120,7 +120,7 @@ runs as a standalone app window.
   isobars every 4 hPa with highs and lows, and the layers' values in numbers from close
   up. A timeline under the globe runs it ahead (the whole
   earth up to five days in 3-hour steps, close up two days hourly; play, drag, `,` `.`,
-  `Space`, `n` back to now): the colours, overlays, sun, moon and my places' forecasts
+  `Space`, `n` back to now): the colours, overlays, sun, moon and the places' forecasts
   follow the time shown, from the data already loaded (on in the app, a switch in the
   popup). It loads only while the globe is shown, within a daily budget of requests, and
   bar and app share the data. In the app as a tab after the wind map; the popup
@@ -174,13 +174,17 @@ runs as a standalone app window.
 
 ## Screenshots
 
-| Napa in a heat wave, with the NWS Heat Advisory | Storms over New Orleans on the NWS radar | Wellington in a gale, gusts of 70 km/h |
+| Helena, Montana, under a Winter Storm Warning, in °F | The World: temperature and rain, the places, night and the timeline | Rain from the Carolinas to New England: the radar on the globe at z3, in °F |
 |---|---|---|
-| ![Napa](screenshots/napa.png) | ![New Orleans radar](screenshots/new-orleans-radar.png) | ![Wellington wind](screenshots/wellington-wind.png) |
+| ![Helena](screenshots/helena.png) | ![World](screenshots/world.png) | ![Radar on the globe](screenshots/world-radar.png) |
 
-| Places: six cities at a glance | The menu bar in colour, over the widget | Each bar entry: Always, Relevant or Hover |
+| Rain over Okinawa on JMA's official radar | Reykjavík, gusts of 55 km/h on the wind map | Places: from Helena's snow to Khartoum's heat, in °C |
 |---|---|---|
-| ![Places](screenshots/my-places.png) | ![Menu bar and widget](screenshots/menubar-widget.png) | ![Settings](screenshots/settings.png) |
+| ![Naha radar](screenshots/naha-radar.png) | ![Reykjavík wind](screenshots/reykjavik-wind.png) | ![Places](screenshots/places.png) |
+
+| The flat map: temperature, rain, the places and the night | Naha under a JMA thunderstorm advisory: the menu bar over the widget, in °C | Settings → What's new: this change log, by version |
+|---|---|---|
+| ![Flat map](screenshots/world-map.png) | ![Menu bar and widget](screenshots/menubar-widget.png) | ![Settings](screenshots/settings.png) |
 
 ## Keyboard
 
@@ -221,6 +225,7 @@ too, and the settings name their keys where they apply.
 | `0` | World: the whole globe at the shown place |
 | `v` | World: one colour layer alone, then the next (temperature, cloud, precipitation, wind, sea temperature, none) |
 | `t` `e` `c` `p` `d` | World: temperature, sea, cloud, rain, wind on or off |
+| `a` | World: radar from close up (z2 on) on or off |
 | `i` `s` `u` | World: isobars, storms, numbers on or off |
 | `Shift` `↑` `↓` | World: wind height of the wind layer and the streaks |
 | `,` `.` | World: a time step back or forward on the timeline |
@@ -260,7 +265,7 @@ service fails. Details are in [PROVIDERS.md](PROVIDERS.md) and in Settings → S
 | Radar | DWD (Germany and neighbours), NOAA/NWS MRMS (United States), ECCC GeoMet (Canada), RainViewer elsewhere; model precipitation as last resort |
 | Warnings | DWD, NWS, ECCC, MeteoAlarm (39 European countries) |
 | Wind map, UV, air quality, pollen | Open-Meteo (air quality from Copernicus CAMS) |
-| Globe colour layers and overlays | Open-Meteo (model grid, cached under `~/.cache/more-weather/globe/`); sea temperature from Open-Meteo Marine; radar from z2 from RainViewer |
+| World: layers and overlays | Open-Meteo (model grid, cached under `~/.cache/more-weather/globe/`); sea temperature from Open-Meteo Marine; radar from z2 from RainViewer |
 | Map background | NASA Blue Marble imagery served by the DWD GeoServer |
 | Places | Open-Meteo geocoding, Nominatim, OpenStreetMap Overpass (overpass-api.de, overpass.private.coffee, maps.mail.ru); IP geolocation (ipwho.is, ipapi.co, GeoJS) only when the location is set to automatic |
 
@@ -326,7 +331,10 @@ requests.
 omarchy plugin update more-weather
 ```
 
-See [CHANGELOG.md](CHANGELOG.md) for release notes.
+See [CHANGELOG.md](CHANGELOG.md) for release notes, or Settings → What's new in the plugin.
+Settings carry over between versions: in 3.2 the Globe section became **World** and
+"My places" became **Places**, but the settings keys (`showGlobe`, `globe*`,
+`showFavorites`, `favorites*`) and the IPC names (`globe`, `favorites`) stay and keep working.
 
 ## Removal
 
@@ -359,6 +367,7 @@ Omarchy's built-in weather widget and is left in place.
 | `~/.local/state/omarchy/settings/more-time-cities.json` | More Time's cities; only read, when you import them under Settings → General → Back up and restore |
 | `~/Downloads/more-weather-settings.json` | Exported settings (the default path; any other can be typed in) |
 | `~/.cache/more-weather/map-images/` | Downloaded radar and map pictures, removed after three hours |
+| `~/.cache/more-weather/globe/` | The World's model data, shared between bar and app, renewed every six hours |
 | `$XDG_RUNTIME_DIR/more-weather-app/` | Temporary app configuration (links to the plugin and the Omarchy shell) |
 | `~/.local/share/applications/more-weather.desktop`, `~/.local/share/more-weather/launch`, `~/.local/share/icons/hicolor/scalable/apps/more-weather.svg` | App launcher entry, only while **Show in app launcher** is on |
 
@@ -404,8 +413,11 @@ keyed entries); `I18n.js` imports them all and keeps the lookup functions.
 Every file stays well under the plugin marketplace's 512 KiB limit for a text
 file. `tests/load.mjs` follows the `.import` lines when the tests load a file.
 
-`tests/ui-showcase.sh` takes the pictures above from live data (six famous
-cities as places, the current theme, the scenes given in `MW_SCENES`), and
+`tests/ui-showcase.sh` takes the pictures above from live data (the places
+given in `MW_PLACES`, the current theme, the scenes given in `MW_SCENES`,
+each in metric or US units; `MW_CACHE` starts from an earlier run's cache, so
+the globe's data is not asked for again; `MW_DISPLAY=headless` draws on the GPU in
+a window on a headless Hyprland output of its own, removed afterwards), and
 `tools/build-preview.sh <its output directory>` puts `screenshots/` and
 `preview.png` together from them; its header lists the scenes it expects.
 The version appears in `manifest.json` and in the user agent of

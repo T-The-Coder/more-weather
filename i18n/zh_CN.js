@@ -392,7 +392,7 @@ var entries = {
   "globeIsobarsEvery": "等压线间隔 {value}",
   "shortcutGlobeWindHeight": "世界：风的高度",
   "globeTimeline": "时间轴",
-  "globeTimelineHint": "时间轴让地球仪向前推进：整个地球最多五天、每三小时一步，近看时两天、每小时一步；颜色、叠加层、太阳、月亮和我的地点都跟随显示的时间。它使用已加载的数据。",
+  "globeTimelineHint": "时间轴让地球仪向前推进：整个地球最多五天、每三小时一步，近看时两天、每小时一步；颜色、叠加层、太阳、月亮和你的地点都跟随显示的时间。它使用已加载的数据。",
   "globeTimeKeysHint": ", . 时间 · 空格 播放",
   "shortcutGlobeStep": "世界：时间后退或前进一步",
   "shortcutGlobePlay": "世界：播放或暂停时间轴",

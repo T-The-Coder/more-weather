@@ -392,7 +392,7 @@ var entries = {
   "globeIsobarsEvery": "등압선 {value} 간격",
   "shortcutGlobeWindHeight": "세계: 바람 고도",
   "globeTimeline": "타임라인",
-  "globeTimelineHint": "타임라인으로 지구본을 앞으로 돌립니다. 지구 전체는 3시간 간격으로 최대 5일, 확대하면 1시간 간격으로 2일. 색상, 오버레이, 해, 달, 내 장소가 표시된 시간을 따릅니다. 이미 불러온 데이터를 사용합니다.",
+  "globeTimelineHint": "타임라인으로 지구본을 앞으로 돌립니다. 지구 전체는 3시간 간격으로 최대 5일, 확대하면 1시간 간격으로 2일. 색상, 오버레이, 해, 달, 저장한 장소가 표시된 시간을 따릅니다. 이미 불러온 데이터를 사용합니다.",
   "globeTimeKeysHint": ", . 시간 · Space 재생",
   "shortcutGlobeStep": "세계: 시간 한 단계 뒤로 또는 앞으로",
   "shortcutGlobePlay": "세계: 타임라인 재생 또는 일시 정지",

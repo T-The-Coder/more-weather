@@ -392,7 +392,7 @@ var entries = {
   "globeIsobarsEvery": "isobaren om de {value}",
   "shortcutGlobeWindHeight": "Wereld: windhoogte",
   "globeTimeline": "Tijdlijn",
-  "globeTimelineHint": "De tijdlijn spoelt de globe vooruit: de hele aarde tot vijf dagen in stappen van 3 uur, van dichtbij twee dagen per uur; kleuren, lagen, zon, maan en mijn plaatsen volgen de getoonde tijd. Hij gebruikt de al geladen gegevens.",
+  "globeTimelineHint": "De tijdlijn spoelt de globe vooruit: de hele aarde tot vijf dagen in stappen van 3 uur, van dichtbij twee dagen per uur; kleuren, lagen, zon, maan en je plaatsen volgen de getoonde tijd. Hij gebruikt de al geladen gegevens.",
   "globeTimeKeysHint": ", . tijd · Spatie afspelen",
   "shortcutGlobeStep": "Wereld: een tijdstap terug of vooruit",
   "shortcutGlobePlay": "Wereld: tijdlijn afspelen of pauzeren",

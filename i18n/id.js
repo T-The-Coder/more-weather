@@ -392,7 +392,7 @@ var entries = {
   "globeIsobarsEvery": "isobar tiap {value}",
   "shortcutGlobeWindHeight": "Dunia: ketinggian angin",
   "globeTimeline": "Linimasa",
-  "globeTimelineHint": "Linimasa memajukan bola dunia: seluruh bumi hingga lima hari dalam langkah 3 jam, dari dekat dua hari per jam; warna, lapisan, matahari, bulan, dan tempat saya mengikuti waktu yang ditampilkan. Memakai data yang sudah dimuat.",
+  "globeTimelineHint": "Linimasa memajukan bola dunia: seluruh bumi hingga lima hari dalam langkah 3 jam, dari dekat dua hari per jam; warna, lapisan, matahari, bulan, dan tempat Anda mengikuti waktu yang ditampilkan. Memakai data yang sudah dimuat.",
   "globeTimeKeysHint": ", . waktu · Spasi putar",
   "shortcutGlobeStep": "Dunia: satu langkah waktu mundur atau maju",
   "shortcutGlobePlay": "Dunia: putar atau jeda linimasa",

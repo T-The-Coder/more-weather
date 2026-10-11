@@ -392,7 +392,7 @@ var entries = {
   "globeIsobarsEvery": "isobaarit {value} välein",
   "shortcutGlobeWindHeight": "Maailma: tuulen korkeus",
   "globeTimeline": "Aikajana",
-  "globeTimelineHint": "Aikajana kelaa karttapalloa eteenpäin: koko maapallo viiteen päivään asti kolmen tunnin askelin, läheltä kaksi päivää tunneittain; värit, kerrokset, aurinko, kuu ja paikkani seuraavat näytettyä aikaa. Se käyttää jo ladattuja tietoja.",
+  "globeTimelineHint": "Aikajana kelaa karttapalloa eteenpäin: koko maapallo viiteen päivään asti kolmen tunnin askelin, läheltä kaksi päivää tunneittain; värit, kerrokset, aurinko, kuu ja paikkasi seuraavat näytettyä aikaa. Se käyttää jo ladattuja tietoja.",
   "globeTimeKeysHint": ", . aika · Välilyönti toista",
   "shortcutGlobeStep": "Maailma: aika-askel taakse tai eteen",
   "shortcutGlobePlay": "Maailma: toista tai keskeytä aikajana",

@@ -445,7 +445,7 @@ Panel {
   }
   // Every temperature tint uses one fixed scale (TemperatureScale.js), so a
   // colour means the same warmth in the current weather, the hours, the
-  // days and my places.
+  // days and the places.
   function absoluteTemperatureAccent(celsius) {
     return colorAccents ? temperatureScaleColor(celsius) : ""
   }
@@ -1060,7 +1060,7 @@ Panel {
     if (serviceLink && serviceLink.url) Qt.openUrlExternally(serviceLink.url)
   }
 
-  // Today's phase for the current-weather row and my places: glyph (for
+  // Today's phase for the current-weather row and the places: glyph (for
   // the bar), lit share, and the shaded sphere's lit fraction (0–1).
   readonly property string heroMoonGlyph: Model.moonPhaseGlyph(nowDate)
   readonly property real heroMoonPhase: Model.moonPhaseFraction(nowDate)
@@ -1082,7 +1082,7 @@ Panel {
       opacity: view.aboveHorizon ? 1 : 0.4 }
   }
   readonly property var heroMoonLook: moonLookOf(moonViewAt(mapCenterLatitude, mapCenterLongitude, moonMinuteMs))
-  // My places: one per saved place, its own tilt and horizon.
+  // Places: one per saved place, its own tilt and horizon.
   readonly property var favoriteMoonLooks: {
     var looks = []
     for (var i = 0; i < savedLocations.length; i++)
@@ -2589,7 +2589,7 @@ Panel {
 
   // A saved place's weather, built like the shown place's: in the DWD area
   // with Bright Sky (`mosmix`) for the current values, the hours and the
-  // days, so a place reads the same in "My places" and once shown.
+  // days, so a place reads the same in "Places" and once shown.
   function weatherSnapshotFromReport(source, locationName, providerId, mosmix) {
     var now = new Date()
     // The saved place's own date, from its forecast's UTC offset.
@@ -3700,7 +3700,7 @@ Panel {
     if (root.showSavedLocations && root.editingLocation) root.cancelEditingLocation()
   }
 
-  // ---- My places: the favourites with their weather, one row each. The
+  // ---- Places: the favourites with their weather, one row each. The
   //      active place reads the live values, the others the background
   //      forecasts of WeatherSavedLocationCache (shared through the cache
   //      file, so the app shows what the bar instance fetched).

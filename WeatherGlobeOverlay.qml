@@ -84,7 +84,7 @@ Canvas {
       return { x: p.x, y: p.y, visible: p.visible && p.x >= -20 && p.x <= width + 20 && p.y >= -20 && p.y <= height + 20 }
     }
     var fontPx = Style.font.caption
-    // Clear of my places' and the towns' labels (drawn by the globe).
+    // Clear of the places' and the towns' labels (drawn by the globe).
     var taken = (globe.labelRects || []).slice()
     function free(rect) {
       if (rect.x < 0 || rect.y < 0 || rect.x + rect.w > width || rect.y + rect.h > height) return false

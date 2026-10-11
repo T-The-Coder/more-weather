@@ -392,7 +392,7 @@ var entries = {
   "globeIsobarsEvery": "izobárok {value}-onként",
   "shortcutGlobeWindHeight": "Világ: szél magassága",
   "globeTimeline": "Idővonal",
-  "globeTimelineHint": "Az idővonal előre pörgeti a földgömböt: az egész Földet öt napig háromórás lépésekben, közelről két napig óránként; a színek, rétegek, nap, hold és helyeim a mutatott időt követik. A már letöltött adatokat használja.",
+  "globeTimelineHint": "Az idővonal előre pörgeti a földgömböt: az egész Földet öt napig háromórás lépésekben, közelről két napig óránként; a színek, rétegek, nap, hold és helyeid a mutatott időt követik. A már letöltött adatokat használja.",
   "globeTimeKeysHint": ", . idő · Szóköz lejátszás",
   "shortcutGlobeStep": "Világ: egy időlépés vissza vagy előre",
   "shortcutGlobePlay": "Világ: idővonal lejátszása vagy megállítása",

@@ -392,7 +392,7 @@ var entries = {
   "globeIsobarsEvery": "izobary po {value}",
   "shortcutGlobeWindHeight": "Svět: výška větru",
   "globeTimeline": "Časová osa",
-  "globeTimelineHint": "Časová osa posouvá glóbus dopředu: celá Země až na pět dní po 3 hodinách, zblízka dva dny po hodinách; barvy, vrstvy, slunce, měsíc a má místa sledují zobrazený čas. Používá už načtená data.",
+  "globeTimelineHint": "Časová osa posouvá glóbus dopředu: celá Země až na pět dní po 3 hodinách, zblízka dva dny po hodinách; barvy, vrstvy, slunce, měsíc a vaše místa sledují zobrazený čas. Používá už načtená data.",
   "globeTimeKeysHint": ", . čas · Mezerník přehrát",
   "shortcutGlobeStep": "Svět: časový krok zpět nebo vpřed",
   "shortcutGlobePlay": "Svět: přehrát nebo pozastavit časovou osu",

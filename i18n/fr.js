@@ -392,7 +392,7 @@ var entries = {
   "globeIsobarsEvery": "isobares tous les {value}",
   "shortcutGlobeWindHeight": "Monde: hauteur du vent",
   "globeTimeline": "Chronologie",
-  "globeTimelineHint": "La chronologie fait avancer le globe : toute la Terre jusqu’à cinq jours par pas de 3 heures, de près deux jours heure par heure ; couleurs, couches, soleil, lune et mes lieux suivent l’heure affichée. Elle utilise les données déjà chargées.",
+  "globeTimelineHint": "La chronologie fait avancer le globe : toute la Terre jusqu’à cinq jours par pas de 3 heures, de près deux jours heure par heure ; couleurs, couches, soleil, lune et vos lieux suivent l’heure affichée. Elle utilise les données déjà chargées.",
   "globeTimeKeysHint": ", . heure · Espace lecture",
   "shortcutGlobeStep": "Monde: un pas de temps en arrière ou en avant",
   "shortcutGlobePlay": "Monde: lire ou mettre en pause la chronologie",

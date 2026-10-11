@@ -426,7 +426,7 @@ var catalog = {
   "globeIsobarsEvery": "isobars every {value}",
   "shortcutGlobeWindHeight": "World: wind height",
   "globeTimeline": "Timeline",
-  "globeTimelineHint": "The timeline runs the globe ahead: the whole earth up to five days in 3-hour steps, close up two days hourly; the colours, overlays, sun, moon and my places follow the time shown. It uses the data already loaded.",
+  "globeTimelineHint": "The timeline runs the globe ahead: the whole earth up to five days in 3-hour steps, close up two days hourly; the colours, overlays, sun, moon and your places follow the time shown. It uses the data already loaded.",
   "globeTimeKeysHint": ", . time · Space play",
   "shortcutGlobeStep": "World: a time step back or forward",
   "shortcutGlobePlay": "World: play or pause the timeline",

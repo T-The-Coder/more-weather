@@ -392,7 +392,7 @@ var entries = {
   "globeIsobarsEvery": "izobary co {value}",
   "shortcutGlobeWindHeight": "Świat: wysokość wiatru",
   "globeTimeline": "Oś czasu",
-  "globeTimelineHint": "Oś czasu przewija glob do przodu: cała Ziemia do pięciu dni w krokach 3-godzinnych, z bliska dwa dni co godzinę; kolory, warstwy, słońce, księżyc i moje miejsca podążają za pokazanym czasem. Korzysta z już pobranych danych.",
+  "globeTimelineHint": "Oś czasu przewija glob do przodu: cała Ziemia do pięciu dni w krokach 3-godzinnych, z bliska dwa dni co godzinę; kolory, warstwy, słońce, księżyc i twoje miejsca podążają za pokazanym czasem. Korzysta z już pobranych danych.",
   "globeTimeKeysHint": ", . czas · Spacja odtwórz",
   "shortcutGlobeStep": "Świat: krok czasu wstecz lub naprzód",
   "shortcutGlobePlay": "Świat: odtwórz lub wstrzymaj oś czasu",
