@@ -3277,6 +3277,21 @@ Panel {
 
   // A refresh asked for by the user also renews the radar and wind maps,
   // which the scheduled cycle only does hourly.
+  // `refresh` over IPC (scripts, key bindings) at most once per
+  // ipcRefreshMinMs; later calls are left out, with a line in the log.
+  readonly property int ipcRefreshMinMs: 30 * 1000
+  property real lastIpcRefreshMs: 0
+  function ipcRefresh() {
+    var now = Date.now()
+    if (now - lastIpcRefreshMs < ipcRefreshMinMs) {
+      console.log("more-weather: IPC refresh ignored, the last one was less than "
+        + Math.round(ipcRefreshMinMs / 1000) + " s ago")
+      return
+    }
+    lastIpcRefreshMs = now
+    manualRefresh()
+  }
+
   function manualRefresh() {
     openMapRefreshWindow(false)
     windGridLoader.invalidate()
@@ -4413,7 +4428,7 @@ Panel {
         return
       }
       try {
-        var response = JSON.parse(raw)
+        var response = Model.parseJson(raw)
         // In Switzerland the answer holds MeteoSwiss ICON-CH and Best Match
         // side by side (Providers.openMeteoForecastUrl).
         if (root.forecastRequestProviderId === "open-meteo" && Providers.usesMeteoSwiss(root.providerCountry))
@@ -4442,7 +4457,7 @@ Panel {
     id: mosmixProc
     onFinished: function(text) {
       try {
-        var parsed = JSON.parse(String(text || ""))
+        var parsed = Model.parseJson(String(text || ""))
         if (!parsed.weather || !parsed.weather.length) return
         root.mosmixReport = parsed
         root.scheduleWeatherCachePersist()
@@ -4457,7 +4472,7 @@ Panel {
     onExited: function(exitCode) { if (exitCode !== 0) root.noteOpenMeteoResponse(yesterdayProc) }
     onFinished: function(text) {
       try {
-        var parsed = JSON.parse(String(text || ""))
+        var parsed = Model.parseJson(String(text || ""))
         if (parsed.hourly && parsed.hourly.temperature_2m) root.yesterdayReport = parsed
       } catch (e) { }
     }
@@ -4468,7 +4483,7 @@ Panel {
     onExited: function(exitCode) { if (exitCode !== 0) root.noteOpenMeteoResponse(uvProc) }
     onFinished: function(text) {
       try {
-        var parsed = Model.withPlaceOffsets(JSON.parse(String(text || "")))
+        var parsed = Model.withPlaceOffsets(Model.parseJson(String(text || "")))
         if (parsed.daily && parsed.daily.uv_index_max) {
           root.uvReport = parsed
           root.scheduleWeatherCachePersist()
@@ -4520,7 +4535,7 @@ Panel {
         return
       }
       try {
-        var parsed = JSON.parse(raw)
+        var parsed = Model.parseJson(raw)
         if (parsed.radar && parsed.radar.length) {
           root.radarReport = parsed
           root.radarFetchedAtMs = Date.now()
@@ -4548,7 +4563,7 @@ Panel {
     }
     onFinished: function(text) {
       try {
-        var parsed = JSON.parse(String(text || ""))
+        var parsed = Model.parseJson(String(text || ""))
         if (parsed.host && parsed.radar && parsed.radar.past) {
           root.rainViewerReport = parsed
           root.rainViewerResponseAccepted = true
@@ -4610,7 +4625,7 @@ Panel {
         else if (root.alertProviderId === "inmet")
           parsed = Model.inmetAlertReport(raw, root.forecastRequestLatitude, root.forecastRequestLongitude)
         else {
-          var response = JSON.parse(raw)
+          var response = Model.parseJson(raw)
           if (response && Array.isArray(response.alerts)) parsed = response
         }
         root.acceptAlertReport(parsed, root.alertProviderId)
@@ -4702,7 +4717,7 @@ Panel {
     function toggle(): void { root.toggle() }
     function edit(): void { root.openFromHotkey(); root.startEditingLocation() }
     function settings(): void { root.openFromHotkey(); root.openSettings() }
-    function refresh(): void { root.manualRefresh() }
+    function refresh(): void { root.ipcRefresh() }
     // Favourites for global key bindings: the panel opens on the place.
     function favorite(index: int): void { root.openFromHotkey(); root.showFavorite(index - 1) }
     function nextFavorite(): void { root.openFromHotkey(); root.stepFavorite(1) }

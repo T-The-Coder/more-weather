@@ -488,9 +488,11 @@ BarWidget {
 
     onPressed: function(b) {
       if (!root.bar) return
-      // The status as plain text: notification servers read markup.
+      // The status as plain text: notification servers read markup. The
+      // script takes no "--", so a leading "-" becomes a non-breaking hyphen
+      // (U+2011) and the line can never pass for one of its options.
       if (b === Qt.RightButton)
-        root.bar.run("omarchy-notification-send \"$(omarchy-weather-status | sed 's/&/\\&amp;/g; s/</\\&lt;/g; s/>/\\&gt;/g')\"")
+        root.bar.run("omarchy-notification-send \"$(omarchy-weather-status | sed 's/&/\\&amp;/g; s/</\\&lt;/g; s/>/\\&gt;/g; 1s/^-/\u2011/')\"")
       else if (b === Qt.MiddleButton) root.refresh()
       // A click on a popup opened by hover keeps it open.
       else if (barHover.openedByHover && root.opened) barHover.openedByHover = false

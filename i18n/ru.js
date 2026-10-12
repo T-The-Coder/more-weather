@@ -323,6 +323,8 @@ var entries = {
   "settingsImportConfirm": "Заменить настройки?",
   "settingsExported": "Сохранено в {path}.",
   "settingsExportFailed": "Не удалось записать {path}.",
+  "settingsExportNotJson": "Выберите имя файла, оканчивающееся на .json.",
+  "settingsExportExists": "Этот файл уже существует и не является экспортом этого плагина. Нажмите ещё раз, чтобы перезаписать его.",
   "settingsBackupFailed": "Не удалось сохранить резервную копию; ничего не импортировано.",
   "settingsImportMissing": "Не удалось прочитать {path}.",
   "settingsImportInvalid": "{path} — не файл настроек More Weather.",

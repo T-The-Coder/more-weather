@@ -126,7 +126,7 @@ runs as a standalone app window.
   bar and app share the data. In the app as a tab after the wind map; the popup
   can switch it on.
 - **Locations:** Search for places (Open-Meteo's geocoder while typing, Nominatim on
-  Enter when it finds nothing), keep a list of favorites or detect your location automatically. Settings →
+  Enter when it finds nothing), keep a list of up to 50 favorites or detect your location automatically. Settings →
   General → Back up and restore imports the cities of [More Time](https://github.com/T-The-Coder/more-time)'s
   world clock as favorites.
 - **Places:** All favorites at a glance, one line each with symbol, temperature,
@@ -156,7 +156,9 @@ runs as a standalone app window.
   a search over all of them (`/`): the rows found work right there, grouped by page,
   card and section.
 - **Export and import** of all settings and your places as one JSON file (Settings →
-  General); an import first saves the current settings, so it can be undone.
+  General); an import first saves the current settings, so it can be undone. An
+  export is written only to a file name ending in `.json`, and a file there that is not
+  an export of More Weather is replaced only when you press Export a second time.
 - **Sections your way:** Current weather, places, air quality, hourly, daily, rain,
   radar and wind can be put in any order. All but the current weather can also be
   shown as a tab; the tabs share one strip that has its own place in the order, and

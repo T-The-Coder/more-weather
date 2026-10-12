@@ -71,7 +71,10 @@ QtObject {
     jmaStep = step
     request.key = requestKey
     request.provider = "jma"
-    request.request = { url: url, timeoutMs: 8000, binary: binary }
+    // A tile is a few KiB; the cap bounds what the PNG reader gets
+    // (Model.pngPixelIndex refuses more anyway).
+    request.request = binary ? { url: url, timeoutMs: 8000, binary: true, maxBytes: Model.JMA_TILE_MAX_BYTES }
+      : { url: url, timeoutMs: 8000, binary: false }
     request.running = true
   }
 

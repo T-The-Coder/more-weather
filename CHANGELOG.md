@@ -179,6 +179,35 @@ In detail:
   check. The clipboard is read only when you paste. One shared field,
   `WeatherTextField.qml`, styled as the kit's and checked by
   `tests/text-fields.test.mjs`.
+- **Strict PNG reader for JMA tiles:** every chunk must lie within the
+  file, IHDR comes first and once, a tile is at most 2048 pixels a side
+  (4 Mi pixels), its compressed data at most 4 MiB, and the inflated rows
+  exactly as long as the header says; a tile download stops at 1 MiB. The
+  DEFLATE reader checks its stored blocks, tables, lengths and distances
+  and stops at an output cap, so a truncated or forged tile is refused at
+  once instead of filling memory (`tests/png-reader.test.mjs`, with a real
+  JMA tile).
+- **Bounded readers everywhere else:** JSON from services and files loses
+  any member called "length" (a loop over an array then never runs to a
+  number the answer chose); Bright Sky's radar grids are checked for their
+  shape and size before the drift search, whose reach no longer follows a
+  forged cell size; the CAP, RSS, Atom and WMS readers scan forward once,
+  also through unclosed tags; the globe keeps only data of the expected
+  shape (at most 16 days of hours) from an answer or its cache; and
+  `data/basemap.bin`'s table and cells must lie within the file
+  (`tests/bounded-parsers.test.mjs`).
+- **Hardening after review:** notifications end notify-send's options with
+  "--", and the bar's status notification can't start with "-". An export
+  goes only to a file ending in .json, and a file there that is not an
+  export of this plugin is replaced only on a second press. At most 50
+  saved places with names of up to 100 characters. JMA times must be
+  fourteen digits before they go into a URL. Warning feeds and documents
+  from the WMO alert hub are fetched only over https from named public
+  hosts (no bare IPs or local names). The IPC call `refresh` runs at most
+  once per 30 seconds. All requests are https only, and a header with a
+  line break is left out. The map-picture and globe caches keep at most
+  200 MB each, oldest first. Map pictures come only from the services'
+  own hosts (RainViewer, DWD, NWS, ECCC, FMI, KNMI, JMA).
 
 ## 3.1.0 — 2026-10-03
 

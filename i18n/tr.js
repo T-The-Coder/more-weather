@@ -323,6 +323,8 @@ var entries = {
   "settingsImportConfirm": "Ayarlar değiştirilsin mi?",
   "settingsExported": "{path} konumuna kaydedildi.",
   "settingsExportFailed": "{path} yazılamadı.",
+  "settingsExportNotJson": ".json ile biten bir dosya adı seçin.",
+  "settingsExportExists": "Bu dosya var ve bu eklentinin bir dışa aktarımı değil. Üzerine yazmak için yeniden basın.",
   "settingsBackupFailed": "Yedek kaydedilemedi; hiçbir şey içe aktarılmadı.",
   "settingsImportMissing": "{path} okunamadı.",
   "settingsImportInvalid": "{path} bir More Weather ayar dosyası değil.",

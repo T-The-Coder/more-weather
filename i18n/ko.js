@@ -323,6 +323,8 @@ var entries = {
   "settingsImportConfirm": "설정을 바꿀까요?",
   "settingsExported": "{path}에 저장했습니다.",
   "settingsExportFailed": "{path}에 쓸 수 없습니다.",
+  "settingsExportNotJson": ".json으로 끝나는 파일 이름을 고르세요.",
+  "settingsExportExists": "이 파일은 이미 있으며 이 플러그인의 내보내기가 아닙니다. 덮어쓰려면 다시 누르세요.",
   "settingsBackupFailed": "백업을 저장하지 못해 아무것도 가져오지 않았습니다.",
   "settingsImportMissing": "{path}을(를) 읽을 수 없습니다.",
   "settingsImportInvalid": "{path}은(는) More Weather 설정 파일이 아닙니다.",

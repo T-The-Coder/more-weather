@@ -323,6 +323,8 @@ var entries = {
   "settingsImportConfirm": "取代設定？",
   "settingsExported": "已儲存到 {path}。",
   "settingsExportFailed": "無法寫入 {path}。",
+  "settingsExportNotJson": "請選擇以 .json 結尾的檔名。",
+  "settingsExportExists": "此檔案已存在，且不是本外掛的匯出檔。再按一次以覆寫。",
   "settingsBackupFailed": "無法儲存備份；未匯入任何內容。",
   "settingsImportMissing": "無法讀取 {path}。",
   "settingsImportInvalid": "{path} 不是 More Weather 的設定檔。",

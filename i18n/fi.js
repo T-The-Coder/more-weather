@@ -323,6 +323,8 @@ var entries = {
   "settingsImportConfirm": "Korvataanko asetukset?",
   "settingsExported": "Tallennettu: {path}.",
   "settingsExportFailed": "Kohteeseen {path} ei voitu kirjoittaa.",
+  "settingsExportNotJson": "Valitse tiedostonimi, joka päättyy .json.",
+  "settingsExportExists": "Tiedosto on jo olemassa eikä ole tämän laajennuksen vienti. Paina uudelleen korvataksesi sen.",
   "settingsBackupFailed": "Varmuuskopiota ei voitu tallentaa; mitään ei tuotu.",
   "settingsImportMissing": "Tiedostoa {path} ei voitu lukea.",
   "settingsImportInvalid": "{path} ei ole More Weatherin asetustiedosto.",

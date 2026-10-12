@@ -197,7 +197,7 @@ Item {
     }
     onFinished: function(text) {
       try {
-        var parsed = JSON.parse(String(text || ""))
+        var parsed = Model.parseJson(String(text || ""))
         if ((Array.isArray(parsed) && parsed.length) || parsed.current) {
           panel.windGridResponseAccepted = true
           panel.windGridFailed = false

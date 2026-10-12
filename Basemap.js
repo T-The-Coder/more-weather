@@ -27,13 +27,19 @@ function load(buffer) {
     var view = new Uint8Array(buffer)
     if (view.length < 8 || String.fromCharCode(view[0], view[1], view[2], view[3]) !== "MWBM" || view[4] !== 2)
       return false
+    // A shipped file, still read strictly: the table and every cell must
+    // lie within it.
+    if (!(view[5] > 0 && 180 % view[5] === 0)) return false
     cellDegrees = view[5]
     var count = view[6] | (view[7] << 8)
+    if (8 + count * 10 > view.length) return false
     var table = {}
     var at = 8
+    var cells = 8 + count * 10
     for (var i = 0; i < count; ++i) {
       var offset = (view[at + 2] | (view[at + 3] << 8) | (view[at + 4] << 16)) + view[at + 5] * 16777216
       var length = (view[at + 6] | (view[at + 7] << 8) | (view[at + 8] << 16)) + view[at + 9] * 16777216
+      if (cells + offset + length > view.length) return false
       table[view[at] + "_" + view[at + 1]] = { offset: offset, length: length }
       at += 10
     }
@@ -93,7 +99,7 @@ function decodeCell(start, end, south, west) {
   function varint() {
     var value = 0
     var shift = 0
-    while (at < end) {
+    while (at < end && shift <= 49) {
       var byte = bytes[at++]
       value += (byte & 0x7F) * Math.pow(2, shift)
       if ((byte & 0x80) === 0) return value
@@ -109,19 +115,25 @@ function decodeCell(start, end, south, west) {
     var stop = at + length
     if (stop > end) throw new Error("basemap: name runs past its cell")
     var text = ""
+    function next() {
+      if (at >= stop) throw new Error("basemap: name runs past its cell")
+      return bytes[at++]
+    }
     while (at < stop) {
       var byte = bytes[at++]
       var code
       if (byte < 0x80) code = byte
-      else if (byte < 0xE0) code = ((byte & 0x1F) << 6) | (bytes[at++] & 0x3F)
-      else if (byte < 0xF0) code = ((byte & 0x0F) << 12) | ((bytes[at++] & 0x3F) << 6) | (bytes[at++] & 0x3F)
-      else code = ((byte & 0x07) << 18) | ((bytes[at++] & 0x3F) << 12) | ((bytes[at++] & 0x3F) << 6) | (bytes[at++] & 0x3F)
-      text += String.fromCodePoint(code)
+      else if (byte < 0xE0) code = ((byte & 0x1F) << 6) | (next() & 0x3F)
+      else if (byte < 0xF0) code = ((byte & 0x0F) << 12) | ((next() & 0x3F) << 6) | (next() & 0x3F)
+      else code = ((byte & 0x07) << 18) | ((next() & 0x3F) << 12) | ((next() & 0x3F) << 6) | (next() & 0x3F)
+      text += String.fromCodePoint(Math.min(code, 0x10FFFF))
     }
     return text
   }
   function pointList() {
     var count = varint()
+    // Each coordinate takes a byte at least.
+    if (count * 2 > end - at) throw new Error("basemap: points run past their cell")
     var list = new Int32Array(count * 2)
     for (var i = 0; i < count * 2; ++i) list[i] = signed()
     return list
@@ -150,6 +162,7 @@ function decodeCell(start, end, south, west) {
       var x = signed()
       var y = signed()
       var population = varint()
+      if (at >= end) throw new Error("basemap: place runs past its cell")
       var kind = bytes[at++]
       var name = utf8(varint())
       places.push({ name: name, latitude: south + y / 1000, longitude: west + x / 1000,

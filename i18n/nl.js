@@ -323,6 +323,8 @@ var entries = {
   "settingsImportConfirm": "Instellingen vervangen?",
   "settingsExported": "Opgeslagen in {path}.",
   "settingsExportFailed": "{path} kon niet worden geschreven.",
+  "settingsExportNotJson": "Kies een bestandsnaam die eindigt op .json.",
+  "settingsExportExists": "Dit bestand bestaat al en is geen export van deze plugin. Druk nogmaals om het te overschrijven.",
   "settingsBackupFailed": "De back-up kon niet worden opgeslagen; niets geïmporteerd.",
   "settingsImportMissing": "{path} kon niet worden gelezen.",
   "settingsImportInvalid": "{path} is geen instellingenbestand van More Weather.",

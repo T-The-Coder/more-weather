@@ -364,6 +364,8 @@ var catalog = {
   "settingsImportConfirm": "Einstellungen ersetzen?",
   "settingsExported": "Gespeichert in {path}.",
   "settingsExportFailed": "{path} konnte nicht geschrieben werden.",
+  "settingsExportNotJson": "Wähle einen Dateinamen, der auf .json endet.",
+  "settingsExportExists": "Diese Datei gibt es schon, und sie ist kein Export dieses Plugins. Drück noch einmal, um sie zu überschreiben.",
   "settingsBackupFailed": "Die Sicherung ließ sich nicht speichern; nichts wurde importiert.",
   "settingsImportMissing": "{path} ließ sich nicht lesen.",
   "settingsImportInvalid": "{path} ist keine Einstellungsdatei von More Weather.",

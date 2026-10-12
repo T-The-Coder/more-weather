@@ -12,6 +12,32 @@ var RADAR_MOTION_MIN_WET_CELLS = 40
 // structureless rain field matches every shift about equally.
 var RADAR_MOTION_MIN_GAIN = 0.15
 
+// The report's frames, or none when it is not what Bright Sky sends: a
+// list of at most RADAR_MAX_FRAMES frames whose grids (precipitation_5)
+// are arrays of rows of one length, at most RADAR_MAX_SIDE cells a side.
+// Every loop and allocation below is bounded by these.
+var RADAR_MAX_FRAMES = 64
+var RADAR_MAX_SIDE = 1200
+// The cell size the searches assume at most and at least, in km.
+var RADAR_MIN_CELL_KM = 0.25
+var RADAR_MAX_CELL_KM = 20
+export function radarFrames(report) {
+  var frames = report && Array.isArray(report.radar) ? report.radar : []
+  if (frames.length > RADAR_MAX_FRAMES) return []
+  var cols = -1
+  for (var f = 0; f < frames.length; ++f) {
+    var grid = frames[f] && frames[f].precipitation_5
+    if (grid === undefined || grid === null) continue
+    if (!Array.isArray(grid) || grid.length > RADAR_MAX_SIDE) return []
+    for (var r = 0; r < grid.length; ++r) {
+      if (!Array.isArray(grid[r]) || grid[r].length > RADAR_MAX_SIDE) return []
+      if (cols < 0) cols = grid[r].length
+      else if (grid[r].length !== cols) return []
+    }
+  }
+  return frames
+}
+
 // Cell size and rotation of Bright Sky's polar-stereographic grid, read
 // from the corner polygon (top-left, bottom-left, bottom-right, top-right).
 export function radarGridGeometry(report, rows, cols) {
@@ -25,9 +51,12 @@ export function radarGridGeometry(report, rows, cols) {
   }
   var up = offsetKm(ring[1], ring[0])
   var across = offsetKm(ring[1], ring[2])
+  var cellKm = (Math.sqrt(up.east * up.east + up.north * up.north) / rows
+    + Math.sqrt(across.east * across.east + across.north * across.north) / cols) / 2
   return {
-    cellKm: (Math.sqrt(up.east * up.east + up.north * up.north) / rows
-      + Math.sqrt(across.east * across.east + across.north * across.north) / cols) / 2,
+    // RADOLAN's cells are 1 km; a corner polygon that says otherwise by far
+    // cannot widen the searches below.
+    cellKm: isFinite(cellKm) ? Math.min(RADAR_MAX_CELL_KM, Math.max(RADAR_MIN_CELL_KM, cellKm)) : 1,
     // Clockwise angle from true north to grid north, in radians.
     rotation: Math.atan2(up.east, up.north)
   }
@@ -90,7 +119,7 @@ function radarBestShift(a, b, centerY, centerX, radius, minCount) {
 // [{ time (ms), directionFrom (degrees, meteorological), speedKmh }].
 // Only trackable steps are listed. Runs once per response, not per frame.
 export function radarMotionSeries(report) {
-  var frames = report && report.radar ? report.radar : []
+  var frames = radarFrames(report)
   var result = []
   if (frames.length < 2 || !frames[0].precipitation_5 || !frames[0].precipitation_5.length) return result
   var first = frames[0].precipitation_5
@@ -151,7 +180,7 @@ var RADAR_WET_RADII_KM = [1, 3, 5, 7, 10]
 // a probability; a wider neighbourhood stands for the nowcast's growing
 // position error at longer lead times.
 export function radarWetFractions(report) {
-  var frames = report && report.radar ? report.radar : []
+  var frames = radarFrames(report)
   var first = frames.length && frames[0].precipitation_5 ? frames[0].precipitation_5 : null
   if (!first || !first.length) return null
   var rows = first.length

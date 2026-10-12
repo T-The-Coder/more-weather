@@ -88,13 +88,53 @@ QtObject {
     busy = false
   }
 
+  // An export goes only to a file named *.json; a file there that is not
+  // an export of this plugin is replaced only on a second press (the
+  // status says so), with the same path.
+  property string overwriteArmed: ""
+
   function exportTo(path) {
     var target = expanded(path)
     if (!target || busy) return
+    if (!/\.json$/i.test(target)) {
+      overwriteArmed = ""
+      finish({ key: "settingsExportNotJson", path: target, error: true })
+      return
+    }
     busy = true
+    if (overwriteArmed === target) {
+      overwriteArmed = ""
+      write(target)
+      return
+    }
+    overwriteArmed = ""
+    // First a look at what is there (exportProbe decides).
+    exportProbe.path = ""
+    exportProbe.path = target
+  }
+
+  function write(target) {
     writer.purpose = "export"
     writer.path = target
     writer.setText(JSON.stringify(snapshot(), null, 2) + "\n")
+  }
+
+  // Reads the export's target before it is written: missing (or unreadable,
+  // which the write then reports) goes ahead, as does an earlier export of
+  // this plugin; anything else waits for a second press.
+  property FileView exportProbe: FileView {
+    printErrors: false
+    onLoaded: {
+      var data = null
+      try { data = Model.parseJson(String(text() || "")) } catch (e) { data = null }
+      if (data && typeof data === "object" && data.app === "more-weather") {
+        transfer.write(path)
+        return
+      }
+      transfer.overwriteArmed = path
+      transfer.finish({ key: "settingsExportExists", path: path, error: true })
+    }
+    onLoadFailed: transfer.write(path)
   }
 
   property string importPath: ""
@@ -131,7 +171,7 @@ QtObject {
 
   function apply(raw) {
     var data = null
-    try { data = JSON.parse(String(raw || "")) } catch (e) { data = null }
+    try { data = Model.parseJson(String(raw || "")) } catch (e) { data = null }
     if (!data || typeof data !== "object" || data.app !== "more-weather") {
       finish({ key: "settingsImportInvalid", path: importPath, error: true })
       return

@@ -67,3 +67,25 @@ test("the requests ask for eight places in the language", () => {
   assert.match(nm.url, /format=jsonv2&limit=8&addressdetails=1/)
   assert.equal(nm.headers["Accept-Language"], "pt")
 })
+
+// An answer is read up to MAX_ROWS rows and MAX_TEXT characters per name,
+// whatever else it holds.
+test("answers: rows and names are capped", () => {
+  const row = (i) => ({ name: "x".repeat(10000), admin1: "r", country: "c", country_code: "de",
+    latitude: 1, longitude: i / 1000, timezone: "Europe/Berlin" })
+  const rows = P.parseOpenMeteo(JSON.stringify({ results: Array.from({ length: 5000 }, (_, i) => row(i)) }))
+  assert.equal(rows.length, P.MAX_ROWS)
+  assert.equal(rows[0].name.length, P.MAX_TEXT)
+  assert.equal(P.parseOpenMeteo(JSON.stringify({ results: { length: 4e9 } })).length, 0)
+  assert.equal(P.parseNominatim(JSON.stringify({ length: 4e9 })).length, 0)
+})
+
+// A zone from an answer is kept only in IANA shape: no leading "-" or "/".
+test("answers: zone names in IANA shape only", () => {
+  const answer = (tz) => P.parseOpenMeteo(JSON.stringify({ results: [{ name: "X", latitude: 1, longitude: 1, timezone: tz }] }))[0].tz
+  assert.equal(answer("Europe/Berlin"), "Europe/Berlin")
+  assert.equal(answer("Etc/GMT-14"), "Etc/GMT-14")
+  assert.equal(answer("-c"), "")
+  assert.equal(answer("/dev/zero"), "")
+  assert.equal(answer("Europe//Berlin"), "")
+})

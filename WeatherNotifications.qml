@@ -95,9 +95,11 @@ Item {
       var rainBody = panel.i18n(["rainWeak", "rainMedium", "rainStrong"][rain.level])
         + " · " + panel.i18n("upToRate", { rate: panel.precipitationText(rain.peak, true) })
       if (panel.reportLocation) rainBody = panel.reportLocation + " · " + rainBody
+      // "--" ends notify-send's options: a title or body from a service
+      // that starts with "-" stays text.
       alertNotifyProc.command = ["notify-send", "--app-name=More Weather",
         "--icon=more-weather", "--urgency=normal",
-        plain(panel.i18n("rainNotificationTitle", { time: panel.placeClock(rain.date) })), plain(rainBody)]
+        "--", plain(panel.i18n("rainNotificationTitle", { time: panel.placeClock(rain.date) })), plain(rainBody)]
       alertNotifyProc.running = true
       return
     }
@@ -107,7 +109,7 @@ Item {
     alertNotifyProc.command = ["notify-send", "--app-name=More Weather",
       "--icon=more-weather",
       "--urgency=" + (pending.severity === "extreme" ? "critical" : "normal"),
-      plain(pending.headline), plain(body)]
+      "--", plain(pending.headline), plain(body)]
     alertNotifyProc.running = true
   }
 

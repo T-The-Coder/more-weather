@@ -36,7 +36,7 @@ Item {
   function loadSharedLiveData(raw) {
     var parsed = null
     try {
-      parsed = raw ? JSON.parse(String(raw)) : null
+      parsed = raw ? Model.parseJson(String(raw)) : null
     } catch (e) {
       parsed = null
     }

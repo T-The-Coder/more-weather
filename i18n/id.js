@@ -323,6 +323,8 @@ var entries = {
   "settingsImportConfirm": "Ganti pengaturan?",
   "settingsExported": "Disimpan ke {path}.",
   "settingsExportFailed": "Tidak dapat menulis {path}.",
+  "settingsExportNotJson": "Pilih nama berkas yang berakhiran .json.",
+  "settingsExportExists": "Berkas ini sudah ada dan bukan ekspor dari plugin ini. Tekan lagi untuk menimpanya.",
   "settingsBackupFailed": "Cadangan tidak dapat disimpan; tidak ada yang diimpor.",
   "settingsImportMissing": "{path} tidak dapat dibaca.",
   "settingsImportInvalid": "{path} bukan berkas pengaturan More Weather.",

@@ -323,6 +323,8 @@ var entries = {
   "settingsImportConfirm": "แทนที่การตั้งค่า?",
   "settingsExported": "บันทึกที่ {path} แล้ว",
   "settingsExportFailed": "เขียน {path} ไม่ได้",
+  "settingsExportNotJson": "เลือกชื่อไฟล์ที่ลงท้ายด้วย .json",
+  "settingsExportExists": "ไฟล์นี้มีอยู่แล้วและไม่ใช่ไฟล์ส่งออกของปลั๊กอินนี้ กดอีกครั้งเพื่อเขียนทับ",
   "settingsBackupFailed": "บันทึกสำรองไม่ได้ ไม่ได้นำเข้าอะไรเลย",
   "settingsImportMissing": "อ่าน {path} ไม่ได้",
   "settingsImportInvalid": "{path} ไม่ใช่ไฟล์การตั้งค่าของ More Weather",

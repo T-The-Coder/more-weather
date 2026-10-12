@@ -366,6 +366,9 @@ function touchedLru(list, key, max) {
   return { list: next.slice(0, max), evicted: next.slice(max) }
 }
 
+// The most time steps one answer may hold (16 days hourly).
+var ANSWER_MAX_TIMES = 16 * 24
+
 // ---- The compact form (cache files, the worker's store): points as
 // [lat, lon], times in unix seconds, each variable as integers point by
 // point (value · scale, null where missing).
@@ -373,7 +376,10 @@ function compactFromResponse(text, points, kind, key, nowMs, variables) {
   var data = JSON.parse(String(text))
   var list = Array.isArray(data) ? data : [data]
   if (!list.length || list.length !== points.length) return null
-  var times = list[0].hourly && list[0].hourly.time ? list[0].hourly.time : []
+  var times = list[0] && list[0].hourly && list[0].hourly.time
+  // Five days in 3-hour steps or two days hourly: an answer with an odd
+  // time list is refused before it sizes the arrays below.
+  if (!Array.isArray(times) || times.length > ANSWER_MAX_TIMES) return null
   var vars = {}
   var names = variables || VARIABLES
   for (var v = 0; v < names.length; v++) {

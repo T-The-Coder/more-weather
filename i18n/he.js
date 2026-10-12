@@ -323,6 +323,8 @@ var entries = {
   "settingsImportConfirm": "להחליף את ההגדרות?",
   "settingsExported": "נשמר ב־{path}.",
   "settingsExportFailed": "לא ניתן לכתוב את {path}.",
+  "settingsExportNotJson": "בחרו שם קובץ שמסתיים ב-‎.json.",
+  "settingsExportExists": "הקובץ קיים ואינו ייצוא של התוסף הזה. לחצו שוב כדי לדרוס אותו.",
   "settingsBackupFailed": "לא ניתן לשמור גיבוי; דבר לא יובא.",
   "settingsImportMissing": "לא ניתן לקרוא את {path}.",
   "settingsImportInvalid": "{path} אינו קובץ הגדרות של More Weather.",

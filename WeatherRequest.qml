@@ -80,7 +80,7 @@ QtObject {
     var maxBytes = Math.max(1, Math.floor(Number(spec.maxBytes) || defaultMaxBytes))
     // -q must come first: it keeps a user's ~/.curlrc out of the request.
     var args = ["-q", "-s", "--compressed",
-      "-L", "--max-redirs", "5", "--proto", "=https,http", "--proto-redir", "=https,http",
+      "-L", "--max-redirs", "5", "--proto", "=https", "--proto-redir", "=https",
       "--max-time", String(timeoutMs / 1000),
       "--max-filesize", String(maxBytes),
       "-A", userAgent,
@@ -88,8 +88,16 @@ QtObject {
     var method = String(spec.method || "GET").toUpperCase()
     if (spec.body) args.push("--data-raw", String(spec.body))
     if (method !== "GET" && !(method === "POST" && spec.body)) args.push("-X", method)
+    // A header with a line break would smuggle in another one: refused.
     var headers = spec.headers || {}
-    for (var name in headers) args.push("-H", name + ": " + headers[name])
+    for (var name in headers) {
+      var value = String(headers[name])
+      if (/[\r\n]/.test(name) || /[\r\n]/.test(value)) {
+        console.warn("more-weather: header", JSON.stringify(name), "with a line break left out")
+        continue
+      }
+      args.push("-H", name + ": " + value)
+    }
     args.push("--url", String(spec.url))
 
     ++generation

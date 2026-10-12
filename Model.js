@@ -1,10 +1,20 @@
+// JSON from a service or a file, without any member called "length": the
+// code loops over what should be arrays up to their length, and an object
+// with a "length" of its own would set that bound itself (a forged answer
+// asking for billions of steps). Arrays keep theirs.
+function parseJson(text) {
+  return JSON.parse(String(text), function(key, value) {
+    return key === "length" && !Array.isArray(this) ? undefined : value
+  })
+}
+
 // weather.json holds {"name": ..., "latitude": ..., "longitude": ...} (see
 // omarchy-weather-location, which owns the format). Missing, blank, or
 // unparseable means the location is auto-detected from the IP address.
 function parseLocationFile(raw) {
   var unset = { name: "", latitude: null, longitude: null }
   try {
-    var data = JSON.parse(String(raw || ""))
+    var data = parseJson(String(raw || ""))
     if (!data || typeof data !== "object") return unset
 
     var latitude = parseFloat(data.latitude)
@@ -25,12 +35,18 @@ function parseLocationFile(raw) {
 // owner (no CLI touches it) — the plugin reads and writes it directly.
 // Missing/blank/unparseable/wrong-shaped input yields an empty list rather
 // than throwing, mirroring parseLocationFile above.
+// At most SAVED_PLACES_MAX places (each is fetched about every half hour)
+// with names of at most SAVED_PLACE_NAME_MAX characters; the rest is cut
+// with a warning in the log.
+var SAVED_PLACES_MAX = 50
+var SAVED_PLACE_NAME_MAX = 100
 function parseSavedLocations(raw) {
   try {
-    var data = JSON.parse(String(raw || "[]"))
+    var data = parseJson(String(raw || "[]"))
     if (!Array.isArray(data)) return []
 
     var out = []
+    var cutNames = 0
     for (var i = 0; i < data.length; i++) {
       var entry = data[i]
       if (!entry || typeof entry !== "object") continue
@@ -38,8 +54,17 @@ function parseSavedLocations(raw) {
       var latitude = parseFloat(entry.latitude)
       var longitude = parseFloat(entry.longitude)
       if (name === "" || isNaN(latitude) || isNaN(longitude)) continue
+      if (out.length >= SAVED_PLACES_MAX) {
+        console.warn("more-weather: only the first " + SAVED_PLACES_MAX + " saved places are kept")
+        break
+      }
+      if (name.length > SAVED_PLACE_NAME_MAX) {
+        name = name.slice(0, SAVED_PLACE_NAME_MAX)
+        cutNames++
+      }
       out.push({ name: name, latitude: latitude, longitude: longitude })
     }
+    if (cutNames) console.warn("more-weather: " + cutNames + " place names cut to " + SAVED_PLACE_NAME_MAX + " characters")
     return out
   } catch (e) {
     return []
@@ -71,7 +96,11 @@ function addSavedLocation(list, entry) {
         current[i].latitude === latitude &&
         current[i].longitude === longitude) return current
   }
-  return current.concat([{ name: entry.name, latitude: latitude, longitude: longitude }])
+  if (current.length >= SAVED_PLACES_MAX) {
+    console.warn("more-weather: " + SAVED_PLACES_MAX + " saved places at most; not added")
+    return current
+  }
+  return current.concat([{ name: String(entry.name).slice(0, SAVED_PLACE_NAME_MAX), latitude: latitude, longitude: longitude }])
 }
 
 // More Time's cities ([{ name, country, tz, lat, lon }], its
@@ -82,7 +111,7 @@ function addSavedLocation(list, entry) {
 function importedCities(list, raw, samePlace) {
   var current = Array.isArray(list) ? list.slice() : []
   var cities
-  try { cities = JSON.parse(String(raw || "")) } catch (e) { cities = null }
+  try { cities = parseJson(String(raw || "")) } catch (e) { cities = null }
   if (!Array.isArray(cities)) return { list: current, added: 0, existing: 0, skipped: 0 }
   var known = current.map(function(saved) {
     return { name: saved.name, lat: Number(saved.latitude), lon: Number(saved.longitude) }
@@ -104,6 +133,10 @@ function importedCities(list, raw, samePlace) {
     }
     if (known.some(function(other) { return samePlace(other, place) })) {
       existing++
+      continue
+    }
+    if (current.length >= SAVED_PLACES_MAX) {
+      skipped++
       continue
     }
     current.push({ name: place.name, latitude: place.lat, longitude: place.lon })
@@ -148,7 +181,7 @@ function weatherCacheKey(name, latitude, longitude) {
 function parseWeatherDataCache(raw, now) {
   var empty = { version: 1, lastActiveKey: "", lastAutoKey: "", entries: {} }
   var data
-  try { data = JSON.parse(String(raw || "{}")) } catch (e) { return empty }
+  try { data = parseJson(String(raw || "{}")) } catch (e) { return empty }
   if (!data || typeof data !== "object") return empty
   var sourceEntries = data.entries && typeof data.entries === "object" ? data.entries : {}
   var entries = {}
@@ -345,7 +378,7 @@ function locationQueryKey(location, latitude, longitude) {
 // collapsed by name so a city is never drawn twice.
 function parseOverpassPlaces(raw, language) {
   var data
-  try { data = JSON.parse(String(raw || "{}")) } catch (e) { return [] }
+  try { data = parseJson(String(raw || "{}")) } catch (e) { return [] }
   var elements = data && Array.isArray(data.elements) ? data.elements : []
   var localeCode = String(language || "en").toLowerCase().split(/[_-]/)[0]
   var localeKey = "name:" + localeCode
@@ -377,7 +410,7 @@ function parseOverpassPlaces(raw, language) {
 
 function parseRadarPlaceCache(raw) {
   try {
-    var cache = JSON.parse(String(raw || "{}"))
+    var cache = parseJson(String(raw || "{}"))
     var latitude = parseFloat(cache.centerLatitude)
     var longitude = parseFloat(cache.centerLongitude)
     var radiusKm = parseFloat(cache.radiusKm)
@@ -1317,7 +1350,7 @@ function mergedModelForecast(response, primary, fallback, modelId) {
 // Nordic radar composite. Only used where MET reports radar coverage.
 function metNowcastPoints(raw) {
   var parsed
-  try { parsed = typeof raw === "string" ? JSON.parse(raw) : raw } catch (e) { return null }
+  try { parsed = typeof raw === "string" ? parseJson(raw) : raw } catch (e) { return null }
   var properties = parsed && parsed.properties
   if (!properties || !Array.isArray(properties.timeseries)) return null
   if (properties.meta && properties.meta.radar_coverage && properties.meta.radar_coverage !== "ok") return []
@@ -1337,7 +1370,7 @@ function metNowcastPoints(raw) {
 // the end of the quarter hour, over a 1 km grid.
 function geosphereNowcastPoints(raw) {
   var parsed
-  try { parsed = typeof raw === "string" ? JSON.parse(raw) : raw } catch (e) { return null }
+  try { parsed = typeof raw === "string" ? parseJson(raw) : raw } catch (e) { return null }
   if (!parsed || !Array.isArray(parsed.timestamps) || !Array.isArray(parsed.features) || !parsed.features.length)
     return null
   var parameters = parsed.features[0].properties && parsed.features[0].properties.parameters
@@ -1406,7 +1439,7 @@ function jmaTimeMs(text) {
 // targetTimes_N1.json (observed, newest first) or _N2.json (forecast).
 function jmaTargetTimes(raw) {
   var parsed
-  try { parsed = typeof raw === "string" ? JSON.parse(raw) : raw } catch (e) { return null }
+  try { parsed = typeof raw === "string" ? parseJson(raw) : raw } catch (e) { return null }
   if (!Array.isArray(parsed)) return null
   var times = []
   for (var i = 0; i < parsed.length; ++i) {
@@ -1414,7 +1447,9 @@ function jmaTargetTimes(raw) {
     var elements = Array.isArray(entry.elements) ? entry.elements : []
     if (elements.indexOf("hrpns") < 0) continue
     var valid = jmaTimeMs(entry.validtime)
-    if (!isNaN(valid)) times.push({ basetime: String(entry.basetime), validtime: String(entry.validtime), ms: valid })
+    // Both go into the tile's URL path: fourteen digits each, nothing else.
+    if (!isNaN(valid) && /^\d{14}$/.test(String(entry.basetime)))
+      times.push({ basetime: String(entry.basetime), validtime: String(entry.validtime), ms: valid })
   }
   times.sort(function(a, b) { return a.ms - b.ms })
   return times
@@ -1461,11 +1496,18 @@ function jmaTilesFor(west, east, south, north, latitude) {
 }
 
 // Raw DEFLATE (RFC 1951) from `start` in a byte array; returns the bytes.
-function inflateBytes(data, start) {
+// Throws on a malformed stream and once the output would pass `maxOutput`
+// bytes (8 MiB unless given): the work is bounded by the input and the cap.
+var INFLATE_MAX_OUTPUT = 8 * 1024 * 1024
+function inflateBytes(data, start, maxOutput) {
   var position = start || 0
   var bitBuffer = 0
   var bitCount = 0
   var out = []
+  var limit = maxOutput > 0 ? maxOutput : INFLATE_MAX_OUTPUT
+  function room(count) {
+    if (out.length + count > limit) throw new Error("inflate: output too large")
+  }
   function bits(count) {
     while (bitCount < count) {
       if (position >= data.length) throw new Error("inflate: out of data")
@@ -1496,7 +1538,11 @@ function inflateBytes(data, start) {
     for (var length = 1; length < 16; ++length) {
       code |= bits(1)
       var count = table.counts[length]
-      if (code - count < first) return table.symbols[index + (code - first)]
+      if (code - count < first) {
+        var symbol = table.symbols[index + (code - first)]
+        if (symbol === undefined) throw new Error("inflate: bad code")
+        return symbol
+      }
       index += count
       first = (first + count) << 1
       code <<= 1
@@ -1520,7 +1566,11 @@ function inflateBytes(data, start) {
       bitCount = 0
       if (position + 4 > data.length) throw new Error("inflate: short stored block")
       var storedLength = data[position] | (data[position + 1] << 8)
+      var storedCheck = data[position + 2] | (data[position + 3] << 8)
+      if ((storedLength ^ 0xffff) !== storedCheck) throw new Error("inflate: bad stored length")
       position += 4
+      if (position + storedLength > data.length) throw new Error("inflate: short stored block")
+      room(storedLength)
       for (var b = 0; b < storedLength; ++b) out.push(data[position++])
       continue
     }
@@ -1541,6 +1591,7 @@ function inflateBytes(data, start) {
       var literalCount = bits(5) + 257
       var distanceCount = bits(5) + 1
       var codeCount = bits(4) + 4
+      if (literalCount > 286 || distanceCount > 30) throw new Error("inflate: bad table size")
       var codeLengths = []
       for (var c = 0; c < 19; ++c) codeLengths.push(0)
       for (var k = 0; k < codeCount; ++k) codeLengths[order[k]] = bits(3)
@@ -1558,6 +1609,7 @@ function inflateBytes(data, start) {
             repeat = 3 + bits(2)
           } else if (symbol === 17) repeat = 3 + bits(3)
           else repeat = 11 + bits(7)
+          if (lengths.length + repeat > literalCount + distanceCount) throw new Error("inflate: bad repeat")
           for (var r = 0; r < repeat; ++r) lengths.push(value)
         }
       }
@@ -1568,15 +1620,19 @@ function inflateBytes(data, start) {
     }
     while (true) {
       var next = decode(lengthTable)
-      if (next < 256) out.push(next)
-      else if (next === 256) break
+      if (next < 256) {
+        room(1)
+        out.push(next)
+      } else if (next === 256) break
       else {
         next -= 257
-        if (next >= 29) throw new Error("inflate: bad length")
+        if (!(next >= 0 && next < 29)) throw new Error("inflate: bad length")
         var copyLength = lengthBase[next] + bits(lengthExtra[next])
         var distanceSymbol = decode(distanceTable)
+        if (!(distanceSymbol >= 0 && distanceSymbol < 30)) throw new Error("inflate: bad distance")
         var distance = distanceBase[distanceSymbol] + bits(distanceExtra[distanceSymbol])
         if (distance > out.length) throw new Error("inflate: distance too far")
+        room(copyLength)
         for (var d = 0; d < copyLength; ++d) out.push(out[out.length - distance])
       }
     }
@@ -1585,50 +1641,84 @@ function inflateBytes(data, start) {
 }
 
 // Palette index (colour type 3) or grey/red value of one pixel of a PNG
-// given as a string of byte values; null when it cannot be read.
+// given as a string of byte values; null when it cannot be read. Strict and
+// bounded, as the bytes come from the network: every chunk must lie within
+// the data, IHDR comes first and once, the picture is at most
+// PNG_MAX_SIDE pixels a side and PNG_MAX_PIXELS in all, the compressed data
+// at most PNG_MAX_IDAT bytes, and the inflated rows exactly as long as the
+// header says.
+var PNG_MAX_SIDE = 2048
+var PNG_MAX_PIXELS = 4 * 1024 * 1024
+var PNG_MAX_IDAT = 4 * 1024 * 1024
+// The whole file, as it arrives (the download stops at JMA_TILE_MAX_BYTES).
+var PNG_MAX_FILE = PNG_MAX_IDAT + 1024 * 1024
+// A JMA tile is a few KiB.
+var JMA_TILE_MAX_BYTES = 1024 * 1024
 function pngPixelIndex(binary, x, y) {
   var text = String(binary || "")
+  if (text.length < 8 + 25 + 12 || text.length > PNG_MAX_FILE) return null
   var bytes = []
   for (var i = 0; i < text.length; ++i) bytes.push(text.charCodeAt(i) & 0xff)
+  function uint32(at) {
+    return ((bytes[at] << 24) | (bytes[at + 1] << 16) | (bytes[at + 2] << 8) | bytes[at + 3]) >>> 0
+  }
   var signature = [137, 80, 78, 71, 13, 10, 26, 10]
   for (var s = 0; s < 8; ++s) if (bytes[s] !== signature[s]) return null
   var position = 8
   var width = 0
   var height = 0
   var depth = 0
-  var colourType = 0
+  var colourType = -1
   var compressed = []
-  while (position + 8 <= bytes.length) {
-    var length = ((bytes[position] << 24) | (bytes[position + 1] << 16) | (bytes[position + 2] << 8) | bytes[position + 3]) >>> 0
+  var ended = false
+  while (position + 12 <= bytes.length) {
+    var length = uint32(position)
     var type = String.fromCharCode(bytes[position + 4], bytes[position + 5], bytes[position + 6], bytes[position + 7])
     var dataStart = position + 8
-    if (type === "IHDR") {
-      width = ((bytes[dataStart] << 24) | (bytes[dataStart + 1] << 16) | (bytes[dataStart + 2] << 8) | bytes[dataStart + 3]) >>> 0
-      height = ((bytes[dataStart + 4] << 24) | (bytes[dataStart + 5] << 16) | (bytes[dataStart + 6] << 8) | bytes[dataStart + 7]) >>> 0
+    // The chunk's data and its CRC must be there.
+    if (length > bytes.length - dataStart - 4) return null
+    if (position === 8) {
+      if (type !== "IHDR" || length !== 13) return null
+      width = uint32(dataStart)
+      height = uint32(dataStart + 4)
       depth = bytes[dataStart + 8]
       colourType = bytes[dataStart + 9]
-      if (bytes[dataStart + 12] !== 0) return null
+      // Compression and filter method 0, no interlacing.
+      if (bytes[dataStart + 10] !== 0 || bytes[dataStart + 11] !== 0 || bytes[dataStart + 12] !== 0) return null
+      if (!width || !height || width > PNG_MAX_SIDE || height > PNG_MAX_SIDE || width * height > PNG_MAX_PIXELS)
+        return null
+    } else if (type === "IHDR") {
+      return null
     } else if (type === "IDAT") {
+      if (compressed.length + length > PNG_MAX_IDAT) return null
       for (var b = 0; b < length; ++b) compressed.push(bytes[dataStart + b])
     } else if (type === "IEND") {
+      ended = true
       break
     }
     position = dataStart + length + 4
   }
+  if (!ended) return null
   var channels = colourType === 3 || colourType === 0 ? 1 : (colourType === 2 ? 3 : (colourType === 6 ? 4 : (colourType === 4 ? 2 : 0)))
-  if (!width || !height || !channels || x < 0 || y < 0 || x >= width || y >= height || compressed.length < 3) return null
-  var raw
-  try { raw = inflateBytes(compressed, 2) } catch (e) { return null }
+  var depths = colourType === 3 ? [1, 2, 4, 8] : (colourType === 0 ? [1, 2, 4, 8, 16] : [8, 16])
+  if (!channels || depths.indexOf(depth) < 0) return null
+  x = Math.floor(Number(x))
+  y = Math.floor(Number(y))
+  if (!(x >= 0 && y >= 0 && x < width && y < height) || compressed.length < 3) return null
   var bitsPerPixel = depth * channels
   var rowBytes = Math.ceil(width * bitsPerPixel / 8)
+  var expected = height * (rowBytes + 1)
+  var raw
+  try { raw = inflateBytes(compressed, 2, expected) } catch (e) { return null }
+  if (raw.length !== expected) return null
   var step = Math.max(1, Math.floor(bitsPerPixel / 8))
   var previous = []
   for (var p = 0; p < rowBytes; ++p) previous.push(0)
   var row = previous
   for (var r = 0; r <= y; ++r) {
     var offset = r * (rowBytes + 1)
-    if (offset + rowBytes >= raw.length + 1) return null
     var filter = raw[offset]
+    if (filter > 4) return null
     row = []
     for (var c = 0; c < rowBytes; ++c) {
       var value = raw[offset + 1 + c]
@@ -2196,7 +2286,7 @@ function weatherAlerts(report, now, language) {
 
 function nwsAlertReport(raw) {
   var parsed
-  try { parsed = typeof raw === "string" ? JSON.parse(raw) : raw } catch (e) { return null }
+  try { parsed = typeof raw === "string" ? parseJson(raw) : raw } catch (e) { return null }
   if (!parsed || !Array.isArray(parsed.features)) return null
   var alerts = []
   for (var i = 0; i < parsed.features.length; ++i) {
@@ -2224,19 +2314,70 @@ function nwsAlertReport(raw) {
   return { alerts: alerts, _providerId: "nws" }
 }
 
+// The XML readers below scan forward only: a missing end (an unclosed
+// CDATA, tag or element, as a broken or forged answer may hold) stops the
+// scan instead of making every later start search to the end again, so the
+// work stays linear in the text.
 function decodeXml(value) {
-  return String(value || "")
-    .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1")
-    .replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+  var text = String(value || "")
+  // CDATA sections as their plain text.
+  var plain = ""
+  var at = 0
+  while (true) {
+    var open = text.indexOf("<![CDATA[", at)
+    if (open < 0) break
+    var close = text.indexOf("]]>", open + 9)
+    if (close < 0) break
+    plain += text.slice(at, open) + text.slice(open + 9, close)
+    at = close + 3
+  }
+  text = plain + text.slice(at)
+  text = text.replace(/&lt;/g, "<").replace(/&gt;/g, ">")
     .replace(/&quot;/g, "\"").replace(/&apos;/g, "'")
     .replace(/&amp;/g, "&")
-    .replace(/<[^>]+>/g, "").replace(/^\s+|\s+$/g, "")
+  // Tags left out.
+  var out = ""
+  at = 0
+  while (true) {
+    var start = text.indexOf("<", at)
+    if (start < 0) break
+    var end = text.indexOf(">", start + 1)
+    if (end < 0) break
+    out += text.slice(at, start)
+    at = end + 1
+  }
+  return (out + text.slice(at)).replace(/^\s+|\s+$/g, "")
 }
 
+// The elements `name` (with or without attributes) in `text`, whole, in
+// order; at most `limit` of them (all when not given).
+function xmlBlocks(text, name, limit) {
+  var source = String(text || "")
+  var escaped = String(name).replace(/[.*+?^${}()|[\]\\:]/g, "\\$&")
+  var opening = new RegExp("<" + escaped + "(?=[\\s>/])", "ig")
+  var closing = new RegExp("<\\/" + escaped + "\\s*>", "ig")
+  var blocks = []
+  var max = limit > 0 ? limit : Infinity
+  while (blocks.length < max) {
+    var open = opening.exec(source)
+    if (!open) break
+    var tagEnd = source.indexOf(">", open.index)
+    if (tagEnd < 0) break
+    closing.lastIndex = tagEnd + 1
+    var close = closing.exec(source)
+    if (!close) break
+    blocks.push(source.slice(open.index, close.index + close[0].length))
+    opening.lastIndex = close.index + close[0].length
+  }
+  return blocks
+}
+
+// The text of the first element `name` in `block`, decoded; "" without one.
 function xmlElement(block, name) {
-  var escaped = String(name).replace(/:/g, "\\:")
-  var match = String(block || "").match(new RegExp("<" + escaped + "(?:\\s[^>]*)?>([\\s\\S]*?)<\\/" + escaped + ">", "i"))
-  return match ? decodeXml(match[1]) : ""
+  var found = xmlBlocks(block, name, 1)[0]
+  if (!found) return ""
+  var inner = found.slice(found.indexOf(">") + 1)
+  return decodeXml(inner.slice(0, inner.lastIndexOf("<")))
 }
 
 function normalizedPlace(value) {
@@ -2262,7 +2403,7 @@ function meteoAlarmAlertReport(raw, locationAliases) {
     var alias = normalizedPlace(input[a])
     if (alias.length >= 3 && aliases.indexOf(alias) < 0) aliases.push(alias)
   }
-  var entries = xml.match(/<entry>[\s\S]*?<\/entry>/gi) || []
+  var entries = xmlBlocks(xml, "entry")
   var alerts = []
   for (var i = 0; i < entries.length; ++i) {
     var block = entries[i]
@@ -2306,7 +2447,7 @@ function meteoAlarmAlertReport(raw, locationAliases) {
 // info block, then English.
 function meteoAlarmApiAlertReport(raw, locationAliases, language) {
   var parsed
-  try { parsed = typeof raw === "string" ? JSON.parse(raw) : raw } catch (e) { return null }
+  try { parsed = typeof raw === "string" ? parseJson(raw) : raw } catch (e) { return null }
   if (!parsed || !Array.isArray(parsed.warnings)) return null
   var aliases = []
   var input = Array.isArray(locationAliases) ? locationAliases : []
@@ -2393,7 +2534,7 @@ function geometryContainsPoint(geometry, latitude, longitude) {
 // issued for several forecast regions is listed once.
 function ecccAlertReport(raw, latitude, longitude, language) {
   var parsed
-  try { parsed = typeof raw === "string" ? JSON.parse(raw) : raw } catch (e) { return null }
+  try { parsed = typeof raw === "string" ? parseJson(raw) : raw } catch (e) { return null }
   if (!parsed || !Array.isArray(parsed.features)) return null
   var french = String(language || "") === "fr"
   var lat = Number(latitude)
@@ -2473,7 +2614,7 @@ function capAlerts(raw, latitude, longitude, providerId, web) {
   if (xml.indexOf("<alert") < 0) return null
   var status = String(xmlElement(xml, "status") || "Actual").toLowerCase()
   var messageType = String(xmlElement(xml, "msgType") || "Alert").toLowerCase()
-  var infos = xml.match(/<info>[\s\S]*?<\/info>/gi) || []
+  var infos = xmlBlocks(xml, "info")
   var info = infos[0] || ""
   for (var i = 0; i < infos.length; ++i) {
     if (/^en/i.test(xmlElement(infos[i], "language"))) { info = infos[i]; break }
@@ -2481,12 +2622,12 @@ function capAlerts(raw, latitude, longitude, providerId, web) {
   if (!info) return []
   var lat = Number(latitude)
   var lon = Number(longitude)
-  var areas = info.match(/<area>[\s\S]*?<\/area>/gi) || []
+  var areas = xmlBlocks(info, "area")
   var located = !areas.length || !isFinite(lat) || !isFinite(lon)
   var areaNames = []
   for (var a = 0; a < areas.length; ++a) {
-    var polygons = areas[a].match(/<polygon>[\s\S]*?<\/polygon>/gi) || []
-    var circles = areas[a].match(/<circle>[\s\S]*?<\/circle>/gi) || []
+    var polygons = xmlBlocks(areas[a], "polygon")
+    var circles = xmlBlocks(areas[a], "circle")
     var inside = !polygons.length && !circles.length
     for (var p = 0; p < polygons.length && !inside; ++p)
       inside = capPolygonContains(decodeXml(polygons[p]), lat, lon)
@@ -2501,7 +2642,7 @@ function capAlerts(raw, latitude, longitude, providerId, web) {
   if (!located) return []
   // MetService adds its colour code as a parameter; it is the clearer scale.
   var colour = ""
-  var parameters = info.match(/<parameter>[\s\S]*?<\/parameter>/gi) || []
+  var parameters = xmlBlocks(info, "parameter")
   for (var q = 0; q < parameters.length; ++q)
     if (/colou?r/i.test(xmlElement(parameters[q], "valueName"))) colour = xmlElement(parameters[q], "value").toLowerCase()
   var colourSeverity = { yellow: "moderate", orange: "severe", red: "extreme" }
@@ -2510,7 +2651,7 @@ function capAlerts(raw, latitude, longitude, providerId, web) {
   var description = xmlElement(info, "description")
   if (areaNames.length) description = areaNames.join(", ") + (description ? "\n" + description : "")
   var instruction = xmlElement(info, "instruction")
-  var categories = (info.match(/<category>[\s\S]*?<\/category>/gi) || []).map(function(tag) {
+  var categories = xmlBlocks(info, "category").map(function(tag) {
     return decodeXml(tag).toLowerCase()
   })
   var weatherRelated = !categories.length || categories.some(function(category) {
@@ -2546,15 +2687,16 @@ function capFeedEntries(raw) {
   if (xml.indexOf("<rss") < 0 && xml.indexOf("<feed") < 0) return null
   var entries = []
   var seen = {}
-  var items = xml.match(/<(item|entry)(?:\s[^>]*)?>[\s\S]*?<\/\1>/gi) || []
+  var items = xmlBlocks(xml, "item").concat(xmlBlocks(xml, "entry"))
   for (var i = 0; i < items.length; ++i) {
     var link = xmlElement(items[i], "link")
     if (!link) {
-      var href = items[i].match(/<link[^>]*href="([^"]+)"/i)
+      var linkTag = items[i].slice(items[i].search(/<link[\s>\/]/i))
+      var href = linkTag.slice(0, linkTag.indexOf(">") + 1).match(/href="([^"]+)"/i)
       link = href ? decodeXml(href[1]) : ""
     }
-    // Some authorities serve their documents over plain HTTP only.
-    if (!/^https?:\/\//.test(link) || seen[link]) continue
+    // Documents only over https from a public host (publicHttpsUrl).
+    if (!publicHttpsUrl(link) || seen[link]) continue
     seen[link] = true
     var published = new Date(xmlElement(items[i], "pubDate") || xmlElement(items[i], "updated")
       || xmlElement(items[i], "published")).getTime()
@@ -2578,9 +2720,37 @@ function withoutSupersededAlerts(alerts) {
 //      of WMO-registered alerting authorities. The authorities' own feeds are
 //      used; the hub's mirror (cap-sources) lags years behind for many. The
 //      country's official feeds, weather services first.
+// A feed or document link from the alert hub's data, fetched as it stands:
+// https only, to a named host on the internet. Bare IP addresses (which
+// covers loopback, private 10/8, 172.16/12, 192.168/16 and link-local
+// 169.254/16, fe80::/10) and local names (localhost, *.local) are refused.
+function publicHttpsUrl(url) {
+  var match = String(url || "").match(/^https:\/\/([^\/?#]+)(?:[\/?#]|$)/i)
+  if (!match) return false
+  var authority = match[1]
+  if (authority.indexOf("@") >= 0) return false
+  var host = authority.replace(/:\d+$/, "").toLowerCase()
+  if (host === "" || host.charAt(0) === "[") return false
+  if (/^[\d.]+$/.test(host) || /^0x/i.test(host)) return false
+  if (host.indexOf(".") < 0 || host === "localhost" || /\.(localhost|local|internal|lan|home\.arpa)\.?$/.test(host)) return false
+  return /^[a-z0-9.-]+$/.test(host)
+}
+
+// The hosts map pictures come from (WeatherImageStore): RainViewer's tile
+// cache, the DWD's GeoServer (radar, satellite), NOAA/NWS, ECCC, FMI, KNMI
+// and JMA. A picture from any other host is not fetched.
+var IMAGE_HOSTS = ["tilecache.rainviewer.com", "maps.dwd.de", "opengeo.ncep.noaa.gov", "geo.weather.gc.ca",
+  "openwms.fmi.fi", "geoservices.knmi.nl", "www.jma.go.jp"]
+function imageHostAllowed(url) {
+  var match = String(url || "").match(/^https:\/\/([^\/?#:@]+)(?::443)?(?:[\/?#]|$)/i)
+  if (!match) return false
+  var host = match[1].toLowerCase()
+  return IMAGE_HOSTS.indexOf(host) >= 0 || /\.rainviewer\.com$/.test(host)
+}
+
 function alertHubFeeds(raw, countryCode) {
   var parsed
-  try { parsed = typeof raw === "string" ? JSON.parse(raw) : raw } catch (e) { return null }
+  try { parsed = typeof raw === "string" ? parseJson(raw) : raw } catch (e) { return null }
   if (!parsed || !Array.isArray(parsed.sources)) return null
   var code = String(countryCode || "").toLowerCase()
   var feeds = []
@@ -2591,6 +2761,7 @@ function alertHubFeeds(raw, countryCode) {
     var name = source.byLanguage && source.byLanguage[0] ? String(source.byLanguage[0].name || "") : ""
     var weatherService = /meteo|met\b|weather|hydromet|climat|senamhi|inamhi|ideam|inmet|smn|nms|dmn/i
       .test(String(source.sourceId || "") + " " + name)
+    if (!publicHttpsUrl(source.capAlertFeed)) continue
     feeds.push({ url: String(source.capAlertFeed), language: String(source.sourceId || "").split("-")[2] || "",
       weather: weatherService, name: name })
   }
@@ -2610,7 +2781,7 @@ function alertHubFeeds(raw, countryCode) {
 //      (apiprevmet3.inmet.gov.br/avisos/ativos), today's and upcoming.
 function inmetAlertReport(raw, latitude, longitude) {
   var parsed
-  try { parsed = typeof raw === "string" ? JSON.parse(raw) : raw } catch (e) { return null }
+  try { parsed = typeof raw === "string" ? parseJson(raw) : raw } catch (e) { return null }
   if (!parsed || (!Array.isArray(parsed.hoje) && !Array.isArray(parsed.futuro))) return null
   var rows = (parsed.hoje || []).concat(parsed.futuro || [])
   var lat = Number(latitude)
@@ -2632,7 +2803,7 @@ function inmetAlertReport(raw, latitude, longitude) {
     var row = rows[i] || {}
     if (String(row.encerrado) === "True") continue
     var geometry = null
-    try { geometry = typeof row.poligono === "string" ? JSON.parse(row.poligono) : row.poligono } catch (e) { geometry = null }
+    try { geometry = typeof row.poligono === "string" ? parseJson(row.poligono) : row.poligono } catch (e) { geometry = null }
     if (isFinite(lat) && isFinite(lon) && (!geometry || !geometryContainsPoint(geometry, lat, lon))) continue
     var id = String(row.codigo || row.id || i)
     if (seen[id]) continue
@@ -2666,7 +2837,7 @@ function inmetAlertReport(raw, latitude, longitude) {
 function bomAlertReport(raw) {
   var xml = String(raw || "")
   if (xml.indexOf("<rss") < 0) return null
-  var items = xml.match(/<item>[\s\S]*?<\/item>/gi) || []
+  var items = xmlBlocks(xml, "item")
   var alerts = []
   for (var i = 0; i < items.length; ++i) {
     var title = xmlElement(items[i], "title").replace(/^\d{1,2}\/\d{1,2}:\d{2}\s+[A-Z]{3,4}\s+/, "")
@@ -2703,7 +2874,7 @@ function bomAlertReport(raw) {
 // Municipalities whose bounding box holds the place, from class20relm.json.
 function jmaAreaCandidates(raw, latitude, longitude) {
   var parsed
-  try { parsed = typeof raw === "string" ? JSON.parse(raw) : raw } catch (e) { return [] }
+  try { parsed = typeof raw === "string" ? parseJson(raw) : raw } catch (e) { return [] }
   var lat = Number(latitude)
   var lon = Number(longitude)
   var codes = []
@@ -2718,7 +2889,7 @@ function jmaAreaCandidates(raw, latitude, longitude) {
 
 function jmaAreaContains(raw, latitude, longitude) {
   var parsed
-  try { parsed = typeof raw === "string" ? JSON.parse(raw) : raw } catch (e) { return false }
+  try { parsed = typeof raw === "string" ? parseJson(raw) : raw } catch (e) { return false }
   var features = parsed && Array.isArray(parsed.features) ? parsed.features : (parsed && parsed.geometry ? [parsed] : [])
   for (var i = 0; i < features.length; ++i)
     if (features[i] && features[i].geometry && geometryContainsPoint(features[i].geometry, Number(latitude), Number(longitude)))
@@ -2730,7 +2901,7 @@ function jmaAreaContains(raw, latitude, longitude) {
 // class15 and class10 levels of area.json.
 function jmaOfficeCode(raw, areaCode) {
   var parsed
-  try { parsed = typeof raw === "string" ? JSON.parse(raw) : raw } catch (e) { return "" }
+  try { parsed = typeof raw === "string" ? parseJson(raw) : raw } catch (e) { return "" }
   if (!parsed || !parsed.class20s || !parsed.class20s[areaCode]) return ""
   var class15 = parsed.class20s[areaCode].parent
   var class10 = parsed.class15s && parsed.class15s[class15] ? parsed.class15s[class15].parent : ""
@@ -2764,7 +2935,7 @@ var JMA_LEVELS = {
 // kind the latest report counts, issued (発表) or continued (継続).
 function jmaAlertReport(raw, areaCode) {
   var parsed
-  try { parsed = typeof raw === "string" ? JSON.parse(raw) : raw } catch (e) { return null }
+  try { parsed = typeof raw === "string" ? parseJson(raw) : raw } catch (e) { return null }
   var reports = Array.isArray(parsed) ? parsed : (parsed ? [parsed] : [])
   if (!reports.length) return null
   var latest = {}
@@ -2847,7 +3018,7 @@ function placeReport(place, sourceId) {
 // IP geolocation services, tried in order.
 function ipPlace(providerId, raw) {
   var data
-  try { data = JSON.parse(String(raw || "")) } catch (e) { return null }
+  try { data = parseJson(String(raw || "")) } catch (e) { return null }
   if (!data) return null
   if (providerId === "ipwho.is") {
     if (data.success === false) return null
@@ -2869,7 +3040,7 @@ function ipPlace(providerId, raw) {
 // Nominatim (OpenStreetMap) reverse geocoding: /reverse?format=jsonv2.
 function nominatimReversePlace(raw, latitude, longitude) {
   var data
-  try { data = JSON.parse(String(raw || "")) } catch (e) { return null }
+  try { data = parseJson(String(raw || "")) } catch (e) { return null }
   var address = data && data.address
   if (!address) return null
   return {
@@ -2888,7 +3059,7 @@ function nominatimReversePlace(raw, latitude, longitude) {
 // the top-ranked hit.
 function geocodingSearchPlace(raw, wantedName) {
   var data
-  try { data = JSON.parse(String(raw || "")) } catch (e) { return null }
+  try { data = parseJson(String(raw || "")) } catch (e) { return null }
   var results = data && Array.isArray(data.results) ? data.results : []
   var wanted = String(wantedName || "").split(",")[0].replace(/^\s+|\s+$/g, "").toLowerCase()
   var hit = null
@@ -2930,9 +3101,13 @@ function isoDurationMilliseconds(value) {
 
 function wmsRadarTimeline(raw, providerId, now, hours) {
   var xml = String(raw || "")
-  var dimension = xml.match(/<Dimension[^>]*name=["']time["'][^>]*>([^<]+)<\/Dimension>/i)
-  if (!dimension) return []
-  var specification = decodeXml(dimension[1])
+  var specification = ""
+  var dimensions = xmlBlocks(xml, "Dimension")
+  for (var d = 0; d < dimensions.length && !specification; ++d) {
+    var tag = dimensions[d].slice(0, dimensions[d].indexOf(">") + 1)
+    if (/\sname=["']time["']/i.test(tag)) specification = xmlElement(dimensions[d], "Dimension")
+  }
+  if (!specification) return []
   var currentTime = (now instanceof Date ? now : new Date(now || Date.now())).getTime()
   if (isNaN(currentTime)) currentTime = Date.now()
   var firstAllowed = currentTime - Math.max(1, parseFloat(hours) || 2) * 60 * 60 * 1000 - 10 * 60 * 1000
@@ -3561,6 +3736,7 @@ function compactMosmixReport(report) {
 
 if (typeof module !== "undefined") {
   module.exports = {
+    parseJson: parseJson,
     rainDriftAt: rainDriftAt,
     withPlaceOffsets: withPlaceOffsets,
     radarFrameAmount: radarFrameAmount,

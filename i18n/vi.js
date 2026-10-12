@@ -323,6 +323,8 @@ var entries = {
   "settingsImportConfirm": "Thay cài đặt?",
   "settingsExported": "Đã lưu vào {path}.",
   "settingsExportFailed": "Không ghi được {path}.",
+  "settingsExportNotJson": "Hãy chọn tên tệp kết thúc bằng .json.",
+  "settingsExportExists": "Tệp này đã tồn tại và không phải bản xuất của plugin này. Nhấn lần nữa để ghi đè.",
   "settingsBackupFailed": "Không lưu được bản sao lưu; chưa nhập gì.",
   "settingsImportMissing": "Không đọc được {path}.",
   "settingsImportInvalid": "{path} không phải là tệp cài đặt của More Weather.",

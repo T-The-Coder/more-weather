@@ -42,8 +42,25 @@ function compactFromMarine(text, points, key, nowMs) {
 function newStore() {
   return { batches: {}, tiles: {}, rain: {}, version: 0, cache: {} }
 }
+// A compact form fit to keep: what an answer gave or a cache file holds,
+// with arrays where the rest of the code loops over them, at most 16 days
+// of hours and 4,000 points, and every variable one value per point and
+// time.
+var COMPACT_MAX_TIMES = 16 * 24
+var COMPACT_MAX_POINTS = 4000
+function compactFits(compact) {
+  if (!compact || typeof compact !== "object") return false
+  var times = compact.times, points = compact.points, vars = compact.vars
+  if (!Array.isArray(times) || times.length > COMPACT_MAX_TIMES || !Array.isArray(points) || points.length > COMPACT_MAX_POINTS) return false
+  if (!vars || typeof vars !== "object") return false
+  for (var name in vars) {
+    var values = vars[name]
+    if (values !== null && (!Array.isArray(values) || values.length !== points.length * times.length)) return false
+  }
+  return true
+}
 function keep(store, compact) {
-  if (!compact || !compact.key) return false
+  if (!compact || !compact.key || !compactFits(compact)) return false
   var key = String(compact.key)
   if (key.indexOf("G9:") === 0 || key.indexOf("S9:") === 0) store.batches[key] = compact
   else if (key.indexOf("R9:") === 0) store.rain[key] = compact

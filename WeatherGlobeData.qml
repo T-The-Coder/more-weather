@@ -482,9 +482,16 @@ QtObject {
     }
   }
   property Process ensureDir: Process { command: ["mkdir", "-p", loader.dir] }
-  // Files older than the global data's six hours go.
+  // Files older than the global data's six hours go, then the oldest
+  // beyond maxCacheBytes.
+  property real maxCacheBytes: 200 * 1024 * 1024
   property Process sweep: Process {
-    command: ["find", loader.dir, "-maxdepth", "1", "-type", "f", "-name", "*.json", "-mmin", "+360", "-delete"]
+    command: ["bash", "-c", "dir=$1 cap=$2; "
+      + "find \"$dir\" -maxdepth 1 -type f -name '*.json' -mmin +360 -delete; "
+      + "find \"$dir\" -maxdepth 1 -type f -name '*.json' -printf '%T@ %s %p\\n' "
+      + "| sort -rn | awk -v cap=\"$cap\" '{ total += $2; if (total > cap) { sub(/^[^ ]+ [^ ]+ /, \"\"); print } }' "
+      + "| xargs -r -d '\\n' rm -f --",
+      "sweep", loader.dir, String(loader.maxCacheBytes)]
   }
   property Timer sweepTimer: Timer {
     interval: 60 * 60 * 1000

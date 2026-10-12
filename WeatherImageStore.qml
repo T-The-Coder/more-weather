@@ -1,6 +1,7 @@
 import QtQuick
 import Quickshell
 import Quickshell.Io
+import "Model.js" as Model
 
 // Downloads map pictures (radar frames, basemaps) to files before any Image
 // sees them. An Image with a remote source lets Qt buffer the whole response
@@ -48,7 +49,7 @@ QtObject {
     + "tmp=\"$out.$$.part\"\n"
     + "trap 'pkill -TERM -P $$; rm -f \"$tmp\"; exit 143' TERM\n"
     + "mkdir -p \"${out%/*}\" || exit 73\n"
-    + "curl -q -s -f -L --max-redirs 5 --proto =https,http --proto-redir =https,http "
+    + "curl -q -s -f -L --max-redirs 5 --proto =https --proto-redir =https "
     + "--max-time \"$secs\" --max-filesize \"$max\" -A \"$ua\" --url \"$url\" "
     + "| head -c \"$((max + 1))\" > \"$tmp\" & wait $!\n"
     + "rc=$?\n"
@@ -78,6 +79,14 @@ QtObject {
   // decode.
   function request(url, retry) {
     if (!url) return
+    // Only the map services' hosts (Model.IMAGE_HOSTS); anything else fails
+    // at once, without a download.
+    if (!Model.imageHostAllowed(url)) {
+      if (!records[url]) console.warn("more-weather: picture from an unknown host not fetched:", String(url).split("?")[0])
+      records[url] = { state: "failed", path: "", generation: 0, reuse: false }
+      revision++
+      return
+    }
     var record = records[url]
     if (record && (record.state === "queued" || record.state === "loading")) return
     if (record && !retry) return
@@ -145,10 +154,16 @@ QtObject {
   }
 
   // Frames are keyed by time, so files go stale within hours. Removes
-  // leftovers from earlier sessions at start and old pictures while running.
+  // leftovers from earlier sessions at start and old pictures while running,
+  // then the oldest beyond maxCacheBytes.
+  property real maxCacheBytes: 200 * 1024 * 1024
   property Process sweepProc: Process {
-    command: ["find", store.cacheDir, "-maxdepth", "1", "-type", "f",
-      "(", "-name", "*.png", "-o", "-name", "*.part", ")", "-mmin", "+180", "-delete"]
+    command: ["bash", "-c", "dir=$1 cap=$2; "
+      + "find \"$dir\" -maxdepth 1 -type f \\( -name '*.png' -o -name '*.part' \\) -mmin +180 -delete; "
+      + "find \"$dir\" -maxdepth 1 -type f \\( -name '*.png' -o -name '*.part' \\) -printf '%T@ %s %p\\n' "
+      + "| sort -rn | awk -v cap=\"$cap\" '{ total += $2; if (total > cap) { sub(/^[^ ]+ [^ ]+ /, \"\"); print } }' "
+      + "| xargs -r -d '\\n' rm -f --",
+      "sweep", store.cacheDir, String(store.maxCacheBytes)]
   }
 
   property Timer sweepTimer: Timer {

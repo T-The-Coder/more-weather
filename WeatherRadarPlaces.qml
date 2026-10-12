@@ -98,7 +98,7 @@ Item {
       var raw = String(text || "").trim()
       if (!raw) return
       try {
-        var response = JSON.parse(raw)
+        var response = Model.parseJson(raw)
         if (!response || !Array.isArray(response.elements)) {
           console.warn("more-weather: OSM place query returned no element list")
           return

@@ -48,6 +48,11 @@ function requests(points, perRequest) {
   return list
 }
 
+// At most this many hourly steps (16 days) and, without the points asked
+// for, this many places from one answer.
+var MARINE_MAX_TIMES = 16 * 24
+var MARINE_MAX_PLACES = 1000
+
 function number(v) {
   return typeof v === "number" && v === v ? v : NaN
 }
@@ -66,12 +71,18 @@ function parse(text, points) {
   var times = []
   for (var f = 0; f < list.length && !times.length; f++) {
     var hourly = list[f] && list[f].hourly
-    if (hourly && Array.isArray(hourly.time))
+    if (hourly && Array.isArray(hourly.time)) {
+      // At most 16 days hourly: the rows below are as long as the times.
+      if (hourly.time.length > MARINE_MAX_TIMES) return empty
       for (var t = 0; t < hourly.time.length; t++) times.push(Number(hourly.time[t]) * 1000)
+    }
   }
   if (!times.length) return empty
+  // One row per point asked for (or per answer when none were given, at
+  // most as many as a request asks for).
+  var rowCount = count || Math.min(list.length, MARINE_MAX_PLACES)
   var values = []
-  for (var p = 0; p < Math.max(count, list.length); p++) {
+  for (var p = 0; p < rowCount; p++) {
     var row = []
     for (var k = 0; k < times.length; k++) row.push(NaN)
     values.push(row)
@@ -79,6 +90,7 @@ function parse(text, points) {
   for (var i = 0; i < list.length; i++) {
     var entry = list[i]
     if (!entry || !entry.hourly || !Array.isArray(entry.hourly.sea_surface_temperature)) continue
+    if (i >= values.length && typeof entry.location_id !== "number") break
     var index = typeof entry.location_id === "number" ? entry.location_id : i
     if (index < 0 || index >= values.length) continue
     var sst = entry.hourly.sea_surface_temperature

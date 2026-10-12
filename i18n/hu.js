@@ -323,6 +323,8 @@ var entries = {
   "settingsImportConfirm": "Lecseréled a beállításokat?",
   "settingsExported": "Mentve ide: {path}.",
   "settingsExportFailed": "{path} nem írható.",
+  "settingsExportNotJson": "Válassz .json végződésű fájlnevet.",
+  "settingsExportExists": "Ez a fájl már létezik, és nem ennek a bővítménynek az exportja. Nyomd meg újra a felülíráshoz.",
   "settingsBackupFailed": "A biztonsági mentés nem sikerült; semmi sem lett importálva.",
   "settingsImportMissing": "{path} nem olvasható.",
   "settingsImportInvalid": "A(z) {path} nem More Weather beállításfájl.",

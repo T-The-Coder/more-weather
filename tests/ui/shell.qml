@@ -12,6 +12,13 @@ import "Weather" as Weather
 // expression) keeps only the matching ones.
 ShellRoot {
   id: harness
+  // A file that is not an export, for the export checks.
+  FileView {
+    id: foreignFile
+    path: Quickshell.env("HOME") + "/foreign.json"
+    printErrors: false
+    blockLoading: true
+  }
   readonly property string shots: Quickshell.env("MW_SHOTS") || "/tmp"
   readonly property var shotsOnly: Quickshell.env("MW_SHOTS_ONLY") ? new RegExp(Quickshell.env("MW_SHOTS_ONLY")) : null
   property int step: 0
@@ -164,6 +171,9 @@ ShellRoot {
   property var moonSavedBefore: []
   property var dpmsFile: null
   Process { id: rainFiles }
+  // The cache cap check: seeding the directories, then listing them.
+  Process { id: cacheFiles }
+  Process { id: cacheList; stdout: StdioCollector {} }
   property double moonNowBefore: 0
   function settingsSearchType(query) { panel.setSettingsSearch(query) }
   function press(key, text, modifiers) {
@@ -913,6 +923,30 @@ ShellRoot {
       press(Qt.Key_Escape)
       check("search-esc-clears", panel.settingsOpen && panel.settingsSearchCount === 0)
     },
+    // Export rules: a name not ending in .json is refused; an existing
+    // file that is not an export waits for a second press (not given here,
+    // so the file stays as it was). And IPC refresh at most once per 30 s.
+    function() {
+      foreignFile.setText("{\"other\": true}\n")
+      panel.settingsTransfer.exportTo("~/settings.txt")
+      check("export-not-json", panel.settingsTransfer.status && panel.settingsTransfer.status.key === "settingsExportNotJson")
+    },
+    function() { panel.settingsTransfer.exportTo("~/foreign.json") },
+    function() {},
+    function() {
+      check("export-foreign-asks", panel.settingsTransfer.status && panel.settingsTransfer.status.key === "settingsExportExists"
+        && panel.settingsTransfer.overwriteArmed !== "")
+      foreignFile.reload()
+    },
+    function() {
+      check("export-foreign-untouched", String(foreignFile.text()).indexOf("other") >= 0)
+      panel.settingsTransfer.overwriteArmed = ""
+      panel.settingsTransfer.status = null
+      panel.ipcRefresh()
+      var first = panel.lastIpcRefreshMs
+      panel.ipcRefresh()
+      check("ipc-refresh-throttled", first > 0 && panel.lastIpcRefreshMs === first)
+    },
     function() { panel.settingsPage = "shortcuts" },
     function() { shot("17-settings-shortcuts") },
     function() { press(Qt.Key_End) },
@@ -1020,6 +1054,41 @@ ShellRoot {
     function() { panel.openSettings("general"); panel.cityImport.run() },
     function() { press(Qt.Key_End) },
     function() { shot("26-settings-general-import") },
+    // The caches' size cap (WeatherImageStore, WeatherGlobeData), last as it
+    // clears the globe's cache: five 1000-byte files a minute apart and
+    // newer than anything else, a cap of 2500 bytes, so the two newest stay
+    // and the three older seeded ones go with everything older. A file of
+    // another kind in each directory and one beside them stay.
+    function() {
+      panel.mapImages.maxCacheBytes = 2500
+      panel.globeData.maxCacheBytes = 2500
+      cacheFiles.command = ["bash", "-c", "set -e; img=$1 globe=$2; mkdir -p \"$img\" \"$globe\"; "
+        + "for i in 1 2 3 4 5; do head -c 1000 /dev/zero > \"$img/seed$i.png\"; touch -d \"+$((10 - i)) min\" \"$img/seed$i.png\"; "
+        + "head -c 1000 /dev/zero > \"$globe/seed$i.json\"; touch -d \"+$((10 - i)) min\" \"$globe/seed$i.json\"; done; "
+        + "head -c 5000 /dev/zero > \"$img/notes.txt\"; head -c 5000 /dev/zero > \"$globe/notes.txt\"; "
+        + "head -c 5000 /dev/zero > \"$img/../beside.png\"; touch -d '-1 day' \"$img/../beside.png\"",
+        "seed", panel.mapImages.cacheDir, panel.globeData.dir]
+      cacheFiles.running = true
+    },
+    function() {},
+    function() {
+      panel.mapImages.sweepProc.running = true
+      panel.globeData.sweep.running = true
+    },
+    function() {}, function() {},
+    function() {
+      cacheList.command = ["bash", "-c", "cd \"$1\" && ls -p | grep -v / | sort | tr '\\n' ' '; echo '|'; cd \"$2\" && ls -p | grep -v / | sort | tr '\\n' ' '; "
+        + "echo '|'; ls \"$1/..\" | grep -c '^beside.png$'", "list", panel.mapImages.cacheDir, panel.globeData.dir]
+      cacheList.running = true
+    },
+    function() {},
+    function() {
+      var parts = String(cacheList.stdout.text || "").split("|").map(function(p) { return p.trim() })
+      console.log("CACHECAP", JSON.stringify(parts))
+      check("cache-cap-images", parts[0] === "notes.txt seed1.png seed2.png")
+      check("cache-cap-globe", parts[1] === "notes.txt seed1.json seed2.json")
+      check("cache-cap-beside-untouched", parts[2] === "1")
+    },
     function() { console.log("STATUS", panel.reportLocation, panel.displayTabs.join(",")); Qt.quit() }
   ])
 

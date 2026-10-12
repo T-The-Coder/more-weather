@@ -323,6 +323,8 @@ var entries = {
   "settingsImportConfirm": "設定を置き換えますか？",
   "settingsExported": "{path} に保存しました。",
   "settingsExportFailed": "{path} に書き込めませんでした。",
+  "settingsExportNotJson": "末尾が .json のファイル名を選んでください。",
+  "settingsExportExists": "このファイルは既にあり、このプラグインのエクスポートではありません。上書きするにはもう一度押してください。",
   "settingsBackupFailed": "バックアップを保存できなかったため、何も読み込んでいません。",
   "settingsImportMissing": "{path} を読み込めませんでした。",
   "settingsImportInvalid": "{path} は More Weather の設定ファイルではありません。",

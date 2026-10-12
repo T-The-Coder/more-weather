@@ -98,7 +98,7 @@ Item {
     property var report: null
     onFinished: function(text) {
       try {
-        var parsed = JSON.parse(String(text || ""))
+        var parsed = Model.parseJson(String(text || ""))
         report = parsed && parsed.weather && parsed.weather.length ? parsed : null
       } catch (e) { report = null }
     }
@@ -134,7 +134,7 @@ Item {
       var active = panel.savedCacheActive
       if (!active) return
       try {
-        var response = JSON.parse(String(text || ""))
+        var response = Model.parseJson(String(text || ""))
         var provider = providerChain[panel.savedCacheProviderIndex]
         var parsed = provider && provider.id === "met-no" ? Model.metNoToOpenMeteo(response) : Model.withPlaceOffsets(response)
         if (!parsed || !parsed.current || !parsed.daily || !parsed.hourly) return

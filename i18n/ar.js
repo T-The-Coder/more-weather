@@ -323,6 +323,8 @@ var entries = {
   "settingsImportConfirm": "استبدال الإعدادات؟",
   "settingsExported": "حُفظ في {path}.",
   "settingsExportFailed": "تعذّرت كتابة {path}.",
+  "settingsExportNotJson": "اختر اسم ملف ينتهي بـ ‎.json.",
+  "settingsExportExists": "هذا الملف موجود وليس تصديرًا من هذه الإضافة. اضغط مرة أخرى للكتابة فوقه.",
   "settingsBackupFailed": "تعذّر حفظ النسخة الاحتياطية؛ لم يُستورد شيء.",
   "settingsImportMissing": "تعذّرت قراءة {path}.",
   "settingsImportInvalid": "{path} ليس ملف إعدادات لـ More Weather.",

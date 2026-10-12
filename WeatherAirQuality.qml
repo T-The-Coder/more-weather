@@ -62,7 +62,7 @@ Item {
   property WeatherRequest airRequest: WeatherRequest {
     onFinished: function(text) {
       try {
-        var parsed = JSON.parse(String(text || ""))
+        var parsed = Model.parseJson(String(text || ""))
         if (parsed && parsed.current && requestKey === placeKey()) {
           report = parsed
           reportKey = requestKey

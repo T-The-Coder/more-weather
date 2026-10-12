@@ -323,6 +323,8 @@ var entries = {
   "settingsImportConfirm": "सेटिंग्स बदलें?",
   "settingsExported": "{path} में सहेजा गया।",
   "settingsExportFailed": "{path} लिखा नहीं जा सका।",
+  "settingsExportNotJson": "ऐसा फ़ाइल नाम चुनें जो .json पर समाप्त हो।",
+  "settingsExportExists": "यह फ़ाइल पहले से है और इस प्लगइन का निर्यात नहीं है। इसे बदलने के लिए फिर से दबाएँ।",
   "settingsBackupFailed": "बैकअप सहेजा नहीं जा सका; कुछ आयात नहीं हुआ।",
   "settingsImportMissing": "{path} पढ़ा नहीं जा सका।",
   "settingsImportInvalid": "{path} More Weather की सेटिंग्स फ़ाइल नहीं है।",

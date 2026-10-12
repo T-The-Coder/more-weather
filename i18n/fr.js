@@ -323,6 +323,8 @@ var entries = {
   "settingsImportConfirm": "Remplacer les réglages ?",
   "settingsExported": "Enregistré dans {path}.",
   "settingsExportFailed": "Impossible d’écrire {path}.",
+  "settingsExportNotJson": "Choisissez un nom de fichier se terminant par .json.",
+  "settingsExportExists": "Ce fichier existe et n’est pas un export de ce plugin. Appuyez de nouveau pour l’écraser.",
   "settingsBackupFailed": "Impossible d’enregistrer la sauvegarde ; rien n’a été importé.",
   "settingsImportMissing": "Impossible de lire {path}.",
   "settingsImportInvalid": "{path} n'est pas un fichier de paramètres de More Weather.",

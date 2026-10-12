@@ -323,6 +323,8 @@ var entries = {
   "settingsImportConfirm": "Nahradit nastavení?",
   "settingsExported": "Uloženo do {path}.",
   "settingsExportFailed": "{path} nelze zapsat.",
+  "settingsExportNotJson": "Zvolte název souboru končící na .json.",
+  "settingsExportExists": "Tento soubor existuje a není exportem tohoto pluginu. Stiskněte znovu pro přepsání.",
   "settingsBackupFailed": "Zálohu nelze uložit; nic nebylo importováno.",
   "settingsImportMissing": "{path} nelze přečíst.",
   "settingsImportInvalid": "{path} není soubor nastavení More Weather.",

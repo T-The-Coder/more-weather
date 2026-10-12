@@ -323,6 +323,8 @@ var entries = {
   "settingsImportConfirm": "Erstatte innstillingene?",
   "settingsExported": "Lagret i {path}.",
   "settingsExportFailed": "Kunne ikke skrive {path}.",
+  "settingsExportNotJson": "Velg et filnavn som slutter på .json.",
+  "settingsExportExists": "Filen finnes og er ikke en eksport fra denne utvidelsen. Trykk igjen for å overskrive den.",
   "settingsBackupFailed": "Kunne ikke lagre sikkerhetskopien; ingenting ble importert.",
   "settingsImportMissing": "Kunne ikke lese {path}.",
   "settingsImportInvalid": "{path} er ikke en innstillingsfil for More Weather.",

@@ -323,6 +323,8 @@ var entries = {
   "settingsImportConfirm": "Zastąpić ustawienia?",
   "settingsExported": "Zapisano w {path}.",
   "settingsExportFailed": "Nie można zapisać {path}.",
+  "settingsExportNotJson": "Wybierz nazwę pliku kończącą się na .json.",
+  "settingsExportExists": "Ten plik istnieje i nie jest eksportem tej wtyczki. Naciśnij ponownie, aby go nadpisać.",
   "settingsBackupFailed": "Nie można zapisać kopii; nic nie zaimportowano.",
   "settingsImportMissing": "Nie można odczytać {path}.",
   "settingsImportInvalid": "{path} nie jest plikiem ustawień More Weather.",

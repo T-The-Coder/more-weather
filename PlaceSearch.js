@@ -7,12 +7,25 @@
 // zone, each "" when the service names none (Nominatim has no zone).
 // Pure functions, so the tests can load them in Node.
 
+// An answer is read up to this many rows (both services are asked for 8)
+// and names up to this many characters, whatever else it holds.
+var MAX_ROWS = 50
+var MAX_TEXT = 200
+
+function rowsOf(value) {
+  return Array.isArray(value) ? value.slice(0, MAX_ROWS) : []
+}
+
+function textOf(value) {
+  return typeof value === "string" ? value.slice(0, MAX_TEXT) : (typeof value === "number" ? String(value) : "")
+}
+
 // Open-Meteo geocoding (/v1/search): { results: [{ name, admin1, country,
 // country_code, latitude, longitude, timezone }] }.
 function parseOpenMeteo(raw) {
   var data
   try { data = JSON.parse(String(raw || "")) } catch (e) { return [] }
-  var rows = data && Array.isArray(data.results) ? data.results : []
+  var rows = rowsOf(data && data.results)
   var out = []
   for (var i = 0; i < rows.length; i++) {
     var r = rows[i]
@@ -28,14 +41,14 @@ function parseOpenMeteo(raw) {
 function parseNominatim(raw) {
   var rows
   try { rows = JSON.parse(String(raw || "")) } catch (e) { return [] }
-  if (!Array.isArray(rows)) return []
+  rows = rowsOf(rows)
   var out = []
   for (var i = 0; i < rows.length; i++) {
     var r = rows[i]
     if (!r) continue
     var address = r.address || {}
     var name = r.name || address.city || address.town || address.village
-      || address.municipality || String(r.display_name || "").split(",")[0]
+      || address.municipality || textOf(r.display_name).split(",")[0]
     var region = address.state || address.region || address.county || ""
     var place = placeOf(name, region, address.country, address.country_code, r.lat, r.lon, "")
     if (place) out.push(place)
@@ -46,17 +59,18 @@ function parseNominatim(raw) {
 function placeOf(name, region, country, countryCode, lat, lon, tz) {
   var latitude = parseFloat(lat)
   var longitude = parseFloat(lon)
-  var label = String(name || "").trim()
+  var label = textOf(name).trim()
   if (label === "" || !isFinite(latitude) || !isFinite(longitude)) return null
   if (Math.abs(latitude) > 90 || Math.abs(longitude) > 180) return null
   return {
     name: label,
-    region: String(region || ""),
-    country: String(country || ""),
-    countryCode: /^[A-Za-z]{2}$/.test(String(countryCode || "")) ? String(countryCode).toLowerCase() : "",
+    region: textOf(region),
+    country: textOf(country),
+    countryCode: /^[A-Za-z]{2}$/.test(textOf(countryCode)) ? textOf(countryCode).toLowerCase() : "",
     lat: latitude,
     lon: longitude,
-    tz: /^[A-Za-z0-9_+\-\/]+$/.test(String(tz || "")) ? String(tz) : ""
+    // An IANA name: letters first, single slashes, no "-" or "/" in front.
+    tz: textOf(tz).length <= 64 && /^[A-Za-z][A-Za-z0-9_+-]*(\/[A-Za-z0-9_+-]+)*$/.test(textOf(tz)) ? textOf(tz) : ""
   }
 }
 
