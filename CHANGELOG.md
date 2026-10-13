@@ -208,6 +208,10 @@ In detail:
   line break is left out. The map-picture and globe caches keep at most
   200 MB each, oldest first. Map pictures come only from the services'
   own hosts (RainViewer, DWD, NWS, ECCC, FMI, KNMI, JMA).
+- **Pasting into a text field is bounded:** Ctrl+V, Shift+Insert and the
+  middle button read at most 4 KiB from the clipboard within one second,
+  through wl-paste (wl-clipboard), and insert it as typed text; Qt's own
+  paste, which has no byte limit, never runs.
 
 ## 3.1.0 — 2026-10-03
 

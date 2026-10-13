@@ -827,6 +827,11 @@ ShellRoot {
       // the wrapper).
       var f = panel.locationField
       check("place-field-read-only-idle", !!f && f.readOnly === !f.activeFocus && f.text !== undefined)
+      // Pasting goes through the bounded reader (wl-paste), never Qt's own:
+      // paste() changes nothing at once, and an idle field starts no reader.
+      var before = f.text
+      f.paste()
+      check("paste-bounded-idle", f.text === before && !f._paste.running)
       shot("10-search")
     },
     // "−" acts on the saved places only after Tab; in the results it is a

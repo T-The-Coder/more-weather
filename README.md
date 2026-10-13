@@ -172,6 +172,8 @@ runs as a standalone app window.
   Settings → Shortcuts, and the views and settings name their keys where they apply
   (Settings → General → App → **Control hints** turns those lines off; the Shortcuts
   page stays).
+  Pasting into a text field (Ctrl+V, Shift+Insert or the middle button) reads at
+  most 4 KiB from the clipboard within one second, through wl-paste (wl-clipboard).
 - **Settings → Sources** shows which service is serving each kind of data right now.
 
 ## Screenshots

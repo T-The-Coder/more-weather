@@ -1,8 +1,9 @@
 // Text fields rest while idle: every editable text in the plugin's QML is
 // the plugin's <Prefix>TextField.qml, built on TextEdit (whose clipboard
 // check only looks at the offered formats; Qt 6.11 and 6.12.0 read the
-// payload for TextInput's) and read-only without keyboard focus. The
-// clipboard is read only when you paste. Shared by the More plugins.
+// payload for TextInput's) and read-only without keyboard focus. Qt's own
+// paste never runs: pasting reads at most 4 KiB within one second through
+// wl-paste. Shared by the More plugins.
 import { test } from "node:test"
 import assert from "node:assert"
 import { readdirSync, readFileSync } from "node:fs"
@@ -27,6 +28,20 @@ test("one text field wrapper at the root, on TextEdit, read-only while idle", ()
   const source = readFileSync(wrappers[0], "utf8")
   assert.match(source, /^(T\.TextArea|TextEdit) \{\s*$/m)
   assert.match(source, /^\s*readOnly: !activeFocus\s*$/m)
+})
+
+test("the wrapper's paste is bounded: Qt's own never runs", () => {
+  const source = readFileSync(wrappers[0], "utf8")
+  // The paste keys are taken before TextEdit sees them.
+  assert.match(source, /event\.matches\(StandardKey\.Paste\)\)\s*\{\s*event\.accepted = true/)
+  // The middle button (primary selection) never reaches TextEdit.
+  assert.match(source, /MouseArea \{[^}]*acceptedButtons: Qt\.MiddleButton/)
+  // paste() itself is the bounded one.
+  assert.match(source, /function paste\(\) \{ pasteBounded\(false\) \}/)
+  // wl-paste under timeout, cut by head at the byte cap.
+  assert.match(source, /"set -o pipefail; timeout " \+ pasteSeconds[\s\S]*wl-paste --no-newline --type text[\s\S]*\| head -c " \+ pasteMaxBytes/)
+  assert.match(source, /readonly property int pasteMaxBytes: 4096/)
+  assert.match(source, /readonly property int pasteSeconds: 1\b/)
 })
 
 test("no other QML file declares a text input of its own", () => {

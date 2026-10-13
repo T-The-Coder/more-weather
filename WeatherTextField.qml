@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Templates as T
+import Quickshell.Io
 import qs.Commons
 import qs.Ui
 
@@ -7,9 +8,16 @@ import qs.Ui
 // kit's TextField but built on TextEdit, read-only while it has no keyboard
 // focus. Qt 6.11 and 6.12.0 read the clipboard payload for TextInput's
 // canPaste; TextEdit only checks the offered formats, and a read-only field
-// not even that. The payload is read only by paste(), when you paste into
-// the focused field. Use this instead of TextField, TextInput, TextEdit or
+// not even that. Use this instead of TextField, TextInput, TextEdit or
 // TextArea (tests/text-fields.test.mjs).
+//
+// Qt's own paste never runs: Qt's Wayland clipboard receiver reads the
+// offered text with a 1 s idle timeout and no byte limit, so an explicit
+// paste into the shell could be stalled or flooded by a foreign clipboard
+// owner. The paste keys (StandardKey.Paste) and the middle button (the
+// primary selection) go to pasteBounded() instead, which reads the
+// clipboard through wl-paste (wl-clipboard) for at most 1 s and 4 KiB and
+// inserts that as typed text.
 T.TextArea {
   id: field
 
@@ -95,7 +103,10 @@ T.TextArea {
   Keys.onPressed: function(event) {
     if (keyFilter) keyFilter(event)
     if (event.accepted) return
-    if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
+    if (event.matches(StandardKey.Paste)) {
+      event.accepted = true
+      pasteBounded(false)
+    } else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
       if (acceptableInput) {
         accepted()
         editingFinished()
@@ -106,6 +117,72 @@ T.TextArea {
       var next = nextItemInFocusChain(event.key === Qt.Key_Tab)
       if (next && next !== field) next.forceActiveFocus(event.key === Qt.Key_Tab ? Qt.TabFocusReason : Qt.BacktabFocusReason)
       event.accepted = true
+    }
+  }
+
+  // The middle button pastes the primary selection, bounded as well; the
+  // press never reaches TextEdit, whose release would read it itself.
+  MouseArea {
+    anchors.fill: parent
+    acceptedButtons: Qt.MiddleButton
+    cursorShape: Qt.IBeamCursor
+    onPressed: function(mouse) {
+      mouse.accepted = true
+      field.forceActiveFocus(Qt.MouseFocusReason)
+    }
+    onReleased: function(mouse) {
+      if (field.readOnly) return
+      field.cursorPosition = field.positionAt(mouse.x, mouse.y)
+      field.pasteBounded(true)
+    }
+  }
+
+  // ---- Bounded paste: wl-paste under `timeout`, its output cut by head,
+  //      one at a time; nothing is inserted when it fails or the field has
+  //      lost the focus meanwhile.
+  readonly property int pasteMaxBytes: 4096
+  readonly property int pasteSeconds: 1
+  property Process _paste: Process {
+    stdout: StdioCollector { id: pasteOut }
+    // 0: all of it; 141: cut at pasteMaxBytes (wl-paste got SIGPIPE from
+    // head). Anything else (124 timed out, 1 nothing to paste, 127 no
+    // wl-paste) pastes nothing.
+    onExited: function(exitCode) {
+      if (exitCode !== 0 && exitCode !== 141) {
+        console.debug("text field: nothing pasted, wl-paste exited with", exitCode)
+        return
+      }
+      field._insertPasted(String(pasteOut.text || ""))
+    }
+  }
+  // TextEdit's paste() for any caller, bounded the same way.
+  function paste() { pasteBounded(false) }
+  function pasteBounded(primary) {
+    if (_paste.running || readOnly) return
+    _paste.command = ["bash", "-c", "set -o pipefail; timeout " + pasteSeconds
+      + " wl-paste --no-newline --type text" + (primary ? " --primary" : "")
+      + " 2>/dev/null | head -c " + pasteMaxBytes]
+    _paste.running = true
+  }
+  function _insertPasted(raw) {
+    if (!activeFocus || readOnly) return
+    var text = String(raw)
+    var nul = text.indexOf("\u0000")
+    if (nul >= 0) text = text.slice(0, nul)
+    text = text.slice(0, pasteMaxBytes)
+    if (text === "") return
+    var at = cursorPosition
+    if (selectedText !== "") {
+      at = selectionStart
+      remove(selectionStart, selectionEnd)
+    }
+    var before = field.text
+    insert(at, text)
+    // As typed: the change path (line breaks, maximumLength, validator)
+    // has run; the cursor goes after what was kept.
+    if (field.text !== before) {
+      cursorPosition = Math.min(at + field.text.length - before.length, length)
+      textEdited()
     }
   }
 
