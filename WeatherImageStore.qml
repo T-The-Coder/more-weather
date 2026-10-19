@@ -6,9 +6,13 @@ import "Model.js" as Model
 // Downloads map pictures (radar frames, basemaps) to files before any Image
 // sees them. An Image with a remote source lets Qt buffer the whole response
 // and then decode a PNG of whatever dimensions it declares, both without a
-// ceiling. Here curl stops at `maxBytes`, `head -c` cuts just above it, and a
-// file only counts as ready once it starts with a PNG header whose width and
-// height are within `maxDimension`; the Image then loads that local file.
+// ceiling, and the decoder also inflates whatever metadata chunks the file
+// carries. Here curl stops at `maxBytes`, `head -c` cuts just above it, and
+// the raw download, kept under a temporary name, comes back as base64;
+// Model.pngSanitized rewrites it chunk by chunk to picture data only (header
+// within `maxDimension`, palette, transparency, image data, end), and only
+// that rewrite is written to the cache file the Image loads. The raw file is
+// deleted either way.
 //
 // Every picture is fetched once per store however many Images show it (the
 // background prefetch and the visible map share the same URLs), and at most
@@ -28,8 +32,11 @@ QtObject {
   readonly property string cacheDir: (Quickshell.env("XDG_CACHE_HOME") || (Quickshell.env("HOME") + "/.cache"))
     + "/more-weather/map-images"
 
-  // MORE_PLUGINS_OFFLINE=1 (the screenshot runs in tests/) downloads nothing.
+  // MORE_PLUGINS_OFFLINE=1 (the screenshot runs in tests/) downloads nothing;
+  // there "fixture:" URLs read MW_RADAR_FIXTURE instead (the globe's radar
+  // tiles), through the same rewrite.
   readonly property bool offline: Quickshell.env("MORE_PLUGINS_OFFLINE") === "1"
+  readonly property string fixtureFile: offline ? (Quickshell.env("MW_RADAR_FIXTURE") || "") : ""
 
   // Bumped whenever a picture's state changes; consumers bind to it.
   property int revision: 0
@@ -39,14 +46,15 @@ QtObject {
   property var queue: []
   property int active: 0
 
-  // argv: url, target file, byte ceiling, dimension ceiling, timeout, user
-  // agent, reuse (1: an existing file for this URL is used as it is).
-  // Exit codes are curl's, plus 65 for a file that is not an acceptable PNG.
-  // The trap passes a cancel on to curl and head (Process only signals bash).
+  // argv: url, target file, byte ceiling, timeout, user agent, reuse (1: an
+  // existing file for this URL is used as it is, and "-" printed).
+  // Prints the download as base64; exit codes are curl's, plus 63 for one
+  // over the ceiling. The trap passes a cancel on to curl and head (Process
+  // only signals bash).
   readonly property string script: "set -o pipefail\n"
-    + "url=$1 out=$2 max=$3 dim=$4 secs=$5 ua=$6 reuse=$7\n"
-    + "if [ \"$reuse\" = 1 ] && [ -s \"$out\" ]; then touch \"$out\"; exit 0; fi\n"
-    + "tmp=\"$out.$$.part\"\n"
+    + "url=$1 out=$2 max=$3 secs=$4 ua=$5 reuse=$6\n"
+    + "if [ \"$reuse\" = 1 ] && [ -s \"$out\" ]; then touch \"$out\"; echo -; exit 0; fi\n"
+    + "tmp=\"$out.$$.raw.part\"\n"
     + "trap 'pkill -TERM -P $$; rm -f \"$tmp\"; exit 143' TERM\n"
     + "mkdir -p \"${out%/*}\" || exit 73\n"
     + "curl -q -s -f -L --max-redirs 5 --proto =https --proto-redir =https "
@@ -55,11 +63,16 @@ QtObject {
     + "rc=$?\n"
     + "if [ $rc -ne 0 ]; then rm -f \"$tmp\"; exit $rc; fi\n"
     + "if [ \"$(stat -c %s \"$tmp\")\" -gt \"$max\" ]; then rm -f \"$tmp\"; exit 63; fi\n"
-    + "hdr=$(od -An -tx1 -N24 \"$tmp\" | tr -d ' \\n')\n"
-    + "case $hdr in 89504e470d0a1a0a0000000d49484452*) ;; *) rm -f \"$tmp\"; exit 65 ;; esac\n"
-    + "w=$((16#${hdr:32:8})) h=$((16#${hdr:40:8}))\n"
-    + "if [ \"$w\" -lt 1 ] || [ \"$h\" -lt 1 ] || [ \"$w\" -gt \"$dim\" ] || [ \"$h\" -gt \"$dim\" ]; then rm -f \"$tmp\"; exit 65; fi\n"
-    + "mv -f \"$tmp\" \"$out\"\n"
+    + "base64 -w0 \"$tmp\"; rc=$?\n"
+    + "rm -f \"$tmp\"\n"
+    + "exit $rc\n"
+  // The offline stand-in: argv fixture file, byte ceiling.
+  readonly property string fixtureScript: "set -o pipefail; head -c \"$(($2 + 1))\" -- \"$1\" | base64 -w0"
+  // argv: target file; stdin: the rewritten picture as base64.
+  readonly property string writeScript: "out=$1 tmp=\"$1.$$.part\"\n"
+    + "trap 'rm -f \"$tmp\"; exit 143' TERM\n"
+    + "mkdir -p \"${out%/*}\" || exit 73\n"
+    + "if base64 -d > \"$tmp\" && [ -s \"$tmp\" ]; then mv -f \"$tmp\" \"$out\"; else rm -f \"$tmp\"; exit 74; fi\n"
 
   function stateOf(url) {
     var record = records[url]
@@ -81,7 +94,7 @@ QtObject {
     if (!url) return
     // Only the map services' hosts (Model.IMAGE_HOSTS); anything else fails
     // at once, without a download.
-    if (!Model.imageHostAllowed(url)) {
+    if (!Model.imageHostAllowed(url) && !isFixture(url)) {
       if (!records[url]) console.warn("more-weather: picture from an unknown host not fetched:", String(url).split("?")[0])
       records[url] = { state: "failed", path: "", generation: 0, reuse: false }
       revision++
@@ -92,7 +105,9 @@ QtObject {
     if (record && !retry) return
     records[url] = {
       state: "queued",
-      path: cacheDir + "/" + Qt.md5(url) + ".png",
+      // "-p1": rewritten pictures; files of earlier versions, written
+      // as downloaded, are never loaded and age out in the sweep.
+      path: cacheDir + "/" + Qt.md5(url) + "-p1.png",
       generation: record ? record.generation + 1 : 0,
       reuse: !retry && reusableUrl(url)
     }
@@ -111,6 +126,10 @@ QtObject {
       || url.indexOf("layers=dwd:bluemarble&") >= 0
   }
 
+  function isFixture(url) {
+    return fixtureFile !== "" && String(url).indexOf("fixture:") === 0
+  }
+
   function pump() {
     while (active < maxParallel && queue.length) {
       var url = queue.shift()
@@ -120,12 +139,38 @@ QtObject {
       active++
       fetchComponent.createObject(store, {
         url: url,
-        command: offline ? ["bash", "-c", "exit 7"]
+        command: isFixture(url) ? ["bash", "-c", fixtureScript, "more-weather-image", fixtureFile, String(maxBytes)]
+          : offline ? ["bash", "-c", "exit 7"]
           : ["bash", "-c", script, "more-weather-image", url, record.path,
-            String(maxBytes), String(maxDimension), String(timeoutSeconds), userAgent,
-            record.reuse ? "1" : "0"]
+            String(maxBytes), String(timeoutSeconds), userAgent, record.reuse ? "1" : "0"]
       })
     }
+  }
+
+  // A download is in: "-" means the cached file was reused; else the
+  // picture is rewritten (Model.pngSanitized) and the rewrite written to the
+  // cache file, or the download refused (65).
+  function fetched(url, exitCode, output) {
+    var record = records[url]
+    if (exitCode !== 0 || !record || record.state !== "loading" || output === "-") {
+      settle(url, exitCode)
+      return
+    }
+    var raw = Model.base64Decoded(output)
+    if (raw.length > maxBytes) {
+      settle(url, 63)
+      return
+    }
+    var clean = Model.pngSanitized(raw, maxDimension, maxDimension * maxDimension, maxBytes)
+    if (clean === null) {
+      settle(url, 65)
+      return
+    }
+    writeComponent.createObject(store, {
+      url: url,
+      payload: Model.base64Encoded(clean),
+      command: ["bash", "-c", writeScript, "more-weather-image-write", record.path]
+    })
   }
 
   function settle(url, exitCode) {
@@ -141,14 +186,50 @@ QtObject {
     pump()
   }
 
+  // Waits for both the output and the exit, in whichever order they come.
   property Component fetchComponent: Component {
     Process {
       id: fetch
       property string url: ""
+      property bool streamDone: false
+      property int exitCode: -1
       running: true
+      stdout: StdioCollector {
+        id: collector
+        onStreamFinished: {
+          fetch.streamDone = true
+          fetch.finish()
+        }
+      }
       onExited: function(exitCode) {
-        store.settle(fetch.url, exitCode)
+        fetch.exitCode = exitCode
+        fetch.finish()
+      }
+      function finish() {
+        if (!streamDone || exitCode < 0 || !url) return
+        var done = url
+        url = ""
+        store.fetched(done, exitCode, String(collector.text || "").trim())
         fetch.destroy()
+      }
+    }
+  }
+
+  property Component writeComponent: Component {
+    Process {
+      id: writer
+      property string url: ""
+      property string payload: ""
+      stdinEnabled: true
+      running: true
+      onStarted: {
+        writer.write(payload)
+        writer.payload = ""
+        writer.stdinEnabled = false
+      }
+      onExited: function(exitCode) {
+        store.settle(writer.url, exitCode)
+        writer.destroy()
       }
     }
   }

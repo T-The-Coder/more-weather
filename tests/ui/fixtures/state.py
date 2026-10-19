@@ -275,7 +275,8 @@ for key, points in rain_cells.items():
                                  names=["precipitation", "rain", "showers", "snowfall", "weather_code"]), folder=globe_dir)
 
 # A radar tile (RainViewer's 512 px PNG, used for every tile offline,
-# MW_RADAR_FIXTURE): showers in radar colours on a transparent ground.
+# MW_RADAR_FIXTURE): showers in radar colours on a transparent ground, with
+# two text chunks the picture store must strip (WeatherImageStore).
 def radar_tile_png(path):
     import struct, zlib
     size = 512
@@ -290,6 +291,7 @@ def radar_tile_png(path):
     def chunk(kind, data):
         return struct.pack(">I", len(data)) + kind + data + struct.pack(">I", zlib.crc32(kind + data) & 0xffffffff)
     png = b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", struct.pack(">IIBBBBB", size, size, 8, 6, 0, 0, 0)) \
+        + chunk(b"tEXt", b"Comment\0fixture") + chunk(b"zTXt", b"Note\0\0" + zlib.compress(b"x" * 4096)) \
         + chunk(b"IDAT", zlib.compress(bytes(rows), 6)) + chunk(b"IEND", b"")
     with open(path, "wb") as out:
         out.write(png)

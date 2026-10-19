@@ -1754,6 +1754,137 @@ function jmaTileRainRate(binary, px, py) {
   return index < JMA_RAIN_RATES.length ? JMA_RAIN_RATES[index] : null
 }
 
+// A downloaded PNG rewritten to picture data only, as a string of byte
+// values; null when it is not a PNG within bounds. Only what the picture
+// needs is copied, chunk by chunk: IHDR (first, once, 13 bytes, at most
+// `maxSide` pixels a side and `maxPixels` in all), PLTE (once, at most 256
+// colours), tRNS (once, at most 256 bytes), the IDAT chunks (together at most
+// `maxIdat` bytes, in one run) and IEND. Text, colour profiles, animation and
+// any other chunk are left out, so the shell's image decoder never inflates
+// metadata. Chunks are walked as pngPixelIndex walks them (each within the
+// data, at most PNG_MAX_CHUNKS); CRCs are copied, not checked.
+var PNG_MAX_CHUNKS = 4096
+function pngSanitized(binary, maxSide, maxPixels, maxIdat) {
+  var text = String(binary || "")
+  maxSide = Math.min(Number(maxSide) || PNG_MAX_SIDE, PNG_MAX_SIDE)
+  maxPixels = Math.min(Number(maxPixels) || PNG_MAX_PIXELS, PNG_MAX_PIXELS)
+  maxIdat = Math.min(Number(maxIdat) || PNG_MAX_IDAT, PNG_MAX_IDAT)
+  if (text.length < 8 + 25 + 12 || text.length > PNG_MAX_FILE) return null
+  var signature = "\x89PNG\r\n\x1a\n"
+  for (var s = 0; s < 8; ++s) if ((text.charCodeAt(s) & 0xff) !== signature.charCodeAt(s)) return null
+  function byteAt(at) { return text.charCodeAt(at) & 0xff }
+  function uint32(at) {
+    return ((byteAt(at) << 24) | (byteAt(at + 1) << 16) | (byteAt(at + 2) << 8) | byteAt(at + 3)) >>> 0
+  }
+  function letter(code) { return (code >= 65 && code <= 90) || (code >= 97 && code <= 122) }
+  var kept = [signature]
+  var position = 8
+  var chunks = 0
+  var colourType = -1
+  var palette = false
+  var transparency = false
+  var idat = 0
+  var idatDone = false
+  var ended = false
+  while (position + 12 <= text.length) {
+    if (++chunks > PNG_MAX_CHUNKS) return null
+    var length = uint32(position)
+    var dataStart = position + 8
+    if (length > text.length - dataStart - 4) return null
+    var codes = [byteAt(position + 4), byteAt(position + 5), byteAt(position + 6), byteAt(position + 7)]
+    for (var l = 0; l < 4; ++l) if (!letter(codes[l])) return null
+    var type = String.fromCharCode(codes[0], codes[1], codes[2], codes[3])
+    var next = dataStart + length + 4
+    var keep = false
+    if (position === 8) {
+      if (type !== "IHDR" || length !== 13) return null
+      var width = uint32(dataStart)
+      var height = uint32(dataStart + 4)
+      var depth = byteAt(dataStart + 8)
+      colourType = byteAt(dataStart + 9)
+      // Compression and filter method 0; interlacing none or Adam7.
+      if (byteAt(dataStart + 10) !== 0 || byteAt(dataStart + 11) !== 0 || byteAt(dataStart + 12) > 1) return null
+      if (!width || !height || width > maxSide || height > maxSide || width * height > maxPixels) return null
+      var depths = colourType === 3 ? [1, 2, 4, 8] : (colourType === 0 ? [1, 2, 4, 8, 16]
+        : (colourType === 2 || colourType === 4 || colourType === 6 ? [8, 16] : []))
+      if (depths.indexOf(depth) < 0) return null
+      keep = true
+    } else if (type === "IHDR") {
+      return null
+    } else if (type === "PLTE") {
+      if (palette || idat || length === 0 || length > 768 || length % 3) return null
+      palette = keep = true
+    } else if (type === "tRNS") {
+      if (transparency || idat || length > 256) return null
+      transparency = keep = true
+    } else if (type === "IDAT") {
+      // In one run, as the decoder wants them.
+      if (idatDone || idat + length > maxIdat) return null
+      idat += length
+      keep = true
+    } else if (type === "IEND") {
+      if (length !== 0) return null
+      kept.push(text.substring(position, next))
+      ended = true
+      break
+    } else if (idat) {
+      idatDone = true
+    }
+    if (keep) kept.push(text.substring(position, next))
+    position = next
+  }
+  if (!ended || !idat || (colourType === 3 && !palette)) return null
+  return kept.join("")
+}
+
+// Base64 to a string of byte values (characters outside the alphabet are
+// skipped), and back.
+var BASE64_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+function base64Decoded(text) {
+  text = String(text || "")
+  var lookup = {}
+  for (var a = 0; a < 64; ++a) lookup[BASE64_ALPHABET.charAt(a)] = a
+  var bytes = []
+  var parts = []
+  var buffer = 0
+  var bits = 0
+  for (var i = 0; i < text.length; ++i) {
+    var value = lookup[text.charAt(i)]
+    if (value === undefined) continue
+    buffer = ((buffer << 6) | value) & 0xffffff
+    bits += 6
+    if (bits >= 8) {
+      bits -= 8
+      bytes.push((buffer >> bits) & 0xff)
+      if (bytes.length === 4096) {
+        parts.push(String.fromCharCode.apply(null, bytes))
+        bytes = []
+      }
+    }
+  }
+  if (bytes.length) parts.push(String.fromCharCode.apply(null, bytes))
+  return parts.join("")
+}
+function base64Encoded(binary) {
+  var text = String(binary || "")
+  var out = []
+  var parts = []
+  for (var i = 0; i < text.length; i += 3) {
+    var a = text.charCodeAt(i) & 0xff
+    var b = i + 1 < text.length ? text.charCodeAt(i + 1) & 0xff : 0
+    var c = i + 2 < text.length ? text.charCodeAt(i + 2) & 0xff : 0
+    out.push(BASE64_ALPHABET.charAt(a >> 2), BASE64_ALPHABET.charAt(((a & 3) << 4) | (b >> 4)),
+      i + 1 < text.length ? BASE64_ALPHABET.charAt(((b & 15) << 2) | (c >> 6)) : "=",
+      i + 2 < text.length ? BASE64_ALPHABET.charAt(c & 63) : "=")
+    if (out.length >= 8192) {
+      parts.push(out.join(""))
+      out = []
+    }
+  }
+  parts.push(out.join(""))
+  return parts.join("")
+}
+
 // ---- Wind in the unit of choice. Every source gives km/h; the general
 //      setting picks km/h, m/s, mph, knots or Beaufort ("auto" follows the
 //      unit system: mph for imperial, km/h otherwise).
@@ -3848,6 +3979,9 @@ if (typeof module !== "undefined") {
     jmaTilesFor: jmaTilesFor,
     inflateBytes: inflateBytes,
     pngPixelIndex: pngPixelIndex,
+    pngSanitized: pngSanitized,
+    base64Decoded: base64Decoded,
+    base64Encoded: base64Encoded,
     jmaTileRainRate: jmaTileRainRate,
     geometryContainsPoint: geometryContainsPoint,
     wmsRadarTimeline: wmsRadarTimeline,

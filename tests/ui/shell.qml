@@ -660,7 +660,21 @@ ShellRoot {
     function() { globeView(4, 47, 9) },
     function() {}, function() {}, function() {}, function() {}, function() {},
     function() { check("radar-tiles-z4", !!panel.globeItem.radarItem.raster); shot("09v5-radar-z4") },
+    // The fixture went through the picture store: its cache holds rewritten
+    // copies without the fixture's text chunks, and no raw download is left.
+    function() {
+      cacheList.command = ["bash", "-c", "cd \"$1\" || exit 1; ls | grep -c -- '-p1\\.png$'; echo '|'; "
+        + "grep -l -a -e tEXt -e zTXt -- *.png | wc -l; echo '|'; ls | grep -c 'part$'; echo '|'; "
+        + "grep -c -a -e tEXt -e zTXt -- \"$2\"", "list", panel.mapImages.cacheDir, panel.globeItem.radarItem.fixture]
+      cacheList.running = true
+    },
     function() {},
+    function() {
+      var parts = String(cacheList.stdout.text || "").split("|").map(function(p) { return p.trim() })
+      console.log("RADARCACHE", JSON.stringify(parts))
+      check("radar-fixture-through-store", Number(parts[0]) > 0 && parts[3] !== "0")
+      check("radar-cache-picture-data-only", parts[1] === "0" && parts[2] === "0")
+    },
     function() { panel.setViewDisplaySetting("globeRadar", false); globeView(0, 35, 0) },
     function() { layersOn(["temperature"]) },
     // The timeline: now, +24 h and +96 h on the whole disc (temperature

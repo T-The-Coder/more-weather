@@ -179,6 +179,10 @@ In detail:
   check. The clipboard is read only when you paste. One shared field,
   `WeatherTextField.qml`, styled as the kit's and checked by
   `tests/text-fields.test.mjs`.
+- **Downloaded images reach the decoder as picture data only:** radar
+  tiles are rewritten chunk by chunk (IHDR, palette, transparency, image
+  data, end) before they are cached and shown, so compressed PNG metadata
+  never reaches the shell's image decoder.
 - **Strict PNG reader for JMA tiles:** every chunk must lie within the
   file, IHDR comes first and once, a tile is at most 2048 pixels a side
   (4 Mi pixels), its compressed data at most 4 MiB, and the inflated rows

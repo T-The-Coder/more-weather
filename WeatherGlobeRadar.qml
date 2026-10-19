@@ -11,7 +11,7 @@ import "GlobeRadar.js" as GlobeRadar
 // surface's texture. The globe's time picks the frame while it lies within
 // the radar's span, else the latest shows (`inRange` false, said in the
 // legend). MW_RADAR_FIXTURE: a PNG used for every tile (the screenshot
-// harness, offline).
+// harness, offline), read through the store like a download.
 Item {
   id: radar
   required property var panel
@@ -47,7 +47,6 @@ Item {
     return GlobeRadar.tileUrl(chosen.frame.rainViewerHost, chosen.frame.rainViewerPath, tile.z, tile.x, tile.y)
   }
   function localOf(url) {
-    if (url.indexOf("fixture:") === 0) return "file://" + fixture
     return panel.mapImages.localUrl(url)
   }
 
@@ -65,7 +64,7 @@ Item {
     tiles = list
     for (var i = 0; i < list.length; i++) {
       var url = urlOf(list[i])
-      if (url.indexOf("fixture:") !== 0) panel.mapImages.request(url)
+      panel.mapImages.request(url)
     }
     collect()
   }

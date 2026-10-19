@@ -78,6 +78,8 @@ runs as a standalone app window.
     the pointer (a plain wheel scrolls the page), `0` or the crosshair button returns to
     the place. Town names come from OpenStreetMap in your language, with Natural Earth's
     larger towns filling in offline or where OpenStreetMap has none. The wind map shares the same view.
+  - Downloaded radar and map pictures are rewritten to picture data only before they are
+    cached and decoded: text, colour profiles and any other PNG metadata are left out.
   - City labels, plus a drift arrow at the map's true scale, marked in round steps from
     5 minutes up to two hours (three or four when zoomed far out), so it keeps its time
     labels at every zoom. It follows the frame on screen and is tracked from the radar itself in the
@@ -371,7 +373,7 @@ Omarchy's built-in weather widget and is left in place.
 | `~/.local/state/omarchy/settings/more-weather-*.json` | Display settings, favorites, cache, data shared between bar and app; `more-weather-settings-backup.json` holds the settings from before the last import |
 | `~/.local/state/omarchy/settings/more-time-cities.json` | More Time's cities; only read, when you import them under Settings → General → Back up and restore |
 | `~/Downloads/more-weather-settings.json` | Exported settings (the default path; any other can be typed in) |
-| `~/.cache/more-weather/map-images/` | Downloaded radar and map pictures, removed after three hours |
+| `~/.cache/more-weather/map-images/` | Downloaded radar and map pictures, rewritten to picture data only (header, palette, transparency, image data) before anything decodes them; removed after three hours |
 | `~/.cache/more-weather/globe/` | The World's model data, shared between bar and app, renewed every six hours |
 | `$XDG_RUNTIME_DIR/more-weather-app/` | Temporary app configuration (links to the plugin and the Omarchy shell) |
 | `~/.local/share/applications/more-weather.desktop`, `~/.local/share/more-weather/launch`, `~/.local/share/icons/hicolor/scalable/apps/more-weather.svg` | App launcher entry, only while **Show in app launcher** is on |
