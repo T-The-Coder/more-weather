@@ -1,5 +1,6 @@
 import QtQuick
 import qs.Commons
+import qs.Commons as Commons
 import qs.Ui
 import "GlobeFields.js" as GlobeFields
 import "Model.js" as Model
@@ -120,8 +121,8 @@ Item {
             radius: Style.cornerRadius
             // On: the selected fill and accent text (as More Time's chips);
             // hover: the hover fill; off: a faint border.
-            color: on ? Style.selectedFillFor(legend.panel.foreground, Color.accent)
-              : (chipMouse.containsMouse ? Style.hoverFillFor(legend.panel.foreground, Color.accent) : "transparent")
+            color: on ? Style.selectedFillFor(legend.panel.foreground, Commons.Color.accent)
+              : (chipMouse.containsMouse ? Style.hoverFillFor(legend.panel.foreground, Commons.Color.accent) : "transparent")
             border.color: on ? "transparent" : Qt.rgba(legend.panel.foreground.r, legend.panel.foreground.g,
               legend.panel.foreground.b, 0.18)
             border.width: Style.spacing.hairline
@@ -135,7 +136,7 @@ Item {
                 textFormat: Text.PlainText
                 anchors.verticalCenter: parent.verticalCenter
                 text: chipSlot.modelData.glyph
-                color: chip.on ? Color.accent : legend.panel.mutedText
+                color: chip.on ? Commons.Color.accent : legend.panel.mutedText
                 font.family: legend.panel.fontFamily
                 font.pixelSize: Style.font.body
               }
@@ -144,7 +145,7 @@ Item {
                 visible: !chip.glyphAlone
                 anchors.verticalCenter: parent.verticalCenter
                 text: legend.panel.i18n(chipSlot.modelData.label)
-                color: chip.on ? Color.accent : legend.panel.mutedText
+                color: chip.on ? Commons.Color.accent : legend.panel.mutedText
                 font.family: legend.panel.fontFamily
                 font.pixelSize: Style.font.caption
                 font.bold: chip.on
@@ -184,8 +185,8 @@ Item {
               width: tipText.implicitWidth + Style.space(10)
               height: tipText.implicitHeight + Style.space(4)
               radius: Style.cornerRadius
-              color: Color.popups.background
-              border.color: Color.popups.border
+              color: Commons.Color.popups.background
+              border.color: Commons.Color.popups.border
               border.width: Style.spacing.hairline
 
               Text {
@@ -193,7 +194,7 @@ Item {
                 textFormat: Text.PlainText
                 anchors.centerIn: parent
                 text: chip.fullText
-                color: Color.popups.text
+                color: Commons.Color.popups.text
                 font.family: legend.panel.fontFamily
                 font.pixelSize: Style.font.caption
               }
@@ -322,8 +323,8 @@ Item {
               width: modeText.implicitWidth + Style.space(12)
               height: Style.space(20)
               radius: Style.cornerRadius
-              color: on ? Style.selectedFillFor(legend.panel.foreground, Color.accent)
-                : (modeMouse.containsMouse ? Style.hoverFillFor(legend.panel.foreground, Color.accent) : "transparent")
+              color: on ? Style.selectedFillFor(legend.panel.foreground, Commons.Color.accent)
+                : (modeMouse.containsMouse ? Style.hoverFillFor(legend.panel.foreground, Commons.Color.accent) : "transparent")
               border.color: on ? "transparent" : Qt.rgba(legend.panel.foreground.r, legend.panel.foreground.g,
                 legend.panel.foreground.b, 0.18)
               border.width: Style.spacing.hairline
@@ -334,7 +335,7 @@ Item {
                 anchors.centerIn: parent
                 text: legend.panel.i18n(modeChip.modelData === "lines" ? "globeWindLines"
                   : (modeChip.modelData === "colour" ? "globeWindColour" : "globeWindBoth"))
-                color: modeChip.on ? Color.accent : legend.panel.mutedText
+                color: modeChip.on ? Commons.Color.accent : legend.panel.mutedText
                 font.family: legend.panel.fontFamily
                 font.pixelSize: Style.font.caption
                 font.bold: modeChip.on

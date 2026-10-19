@@ -1,5 +1,6 @@
 import QtQuick
 import qs.Commons
+import qs.Commons as Commons
 
 // Saved-locations dropdown, geocoding suggestions and the saved list shown
 // inside search. Only one of these states is ever visible at a time.
@@ -25,7 +26,7 @@ Column {
       width: parent.width
       height: autoRow.implicitHeight + Style.space(12)
       radius: Style.cornerRadius
-      color: autoRowArea.containsMouse ? Style.hoverFillFor(panel.foreground, Color.accent) : "transparent"
+      color: autoRowArea.containsMouse ? Style.hoverFillFor(panel.foreground, Commons.Color.accent) : "transparent"
 
       Row {
         id: autoRow
@@ -68,7 +69,7 @@ Column {
         width: parent.width
         height: savedRow.implicitHeight + Style.space(12)
         radius: Style.cornerRadius
-        color: savedRowArea.containsMouse ? Style.hoverFillFor(panel.foreground, Color.accent) : "transparent"
+        color: savedRowArea.containsMouse ? Style.hoverFillFor(panel.foreground, Commons.Color.accent) : "transparent"
 
         Row {
           id: savedRow
@@ -107,7 +108,7 @@ Column {
           anchors.rightMargin: Style.space(12)
           anchors.verticalCenter: parent.verticalCenter
           radius: Math.min(4, Style.cornerRadius)
-          color: removeButtonArea.containsMouse ? Style.hoverFillFor(panel.foreground, Color.accent) : "transparent"
+          color: removeButtonArea.containsMouse ? Style.hoverFillFor(panel.foreground, Commons.Color.accent) : "transparent"
 
           Text {
             textFormat: Text.PlainText
@@ -147,7 +148,7 @@ Column {
         radius: Style.cornerRadius
         color: panel.searchFocusSection === "suggestions"
           && index === panel.suggestionIndex
-          ? Style.hoverFillFor(panel.foreground, Color.accent) : "transparent"
+          ? Style.hoverFillFor(panel.foreground, Commons.Color.accent) : "transparent"
 
         Row {
           id: suggestionRow
@@ -161,7 +162,7 @@ Column {
             text: modelData.name
             color: panel.searchFocusSection === "suggestions"
               && index === panel.suggestionIndex
-              ? Style.hoverStateColor(panel.foreground, Color.accent) : panel.foreground
+              ? Style.hoverStateColor(panel.foreground, Commons.Color.accent) : panel.foreground
             font.family: panel.fontFamily
             font.pixelSize: Style.font.body
           }
@@ -201,7 +202,7 @@ Column {
           anchors.rightMargin: Style.space(12)
           anchors.verticalCenter: parent.verticalCenter
           radius: Math.min(4, Style.cornerRadius)
-          color: addSuggestionArea.containsMouse ? Style.hoverFillFor(panel.foreground, Color.accent) : "transparent"
+          color: addSuggestionArea.containsMouse ? Style.hoverFillFor(panel.foreground, Commons.Color.accent) : "transparent"
 
           Text {
             textFormat: Text.PlainText
@@ -243,7 +244,7 @@ Column {
       width: parent.width
       height: searchAutoRow.implicitHeight + Style.space(12)
       radius: Style.cornerRadius
-      color: searchAutoRowArea.containsMouse ? Style.hoverFillFor(panel.foreground, Color.accent) : "transparent"
+      color: searchAutoRowArea.containsMouse ? Style.hoverFillFor(panel.foreground, Commons.Color.accent) : "transparent"
 
       Row {
         id: searchAutoRow
@@ -288,9 +289,9 @@ Column {
         radius: Style.cornerRadius
         color: panel.searchFocusSection === "saved"
           && index === panel.savedLocationIndex
-          ? Style.hoverFillFor(panel.foreground, Color.accent)
+          ? Style.hoverFillFor(panel.foreground, Commons.Color.accent)
           : (searchSavedRowArea.containsMouse
-            ? Style.hoverFillFor(panel.foreground, Color.accent) : "transparent")
+            ? Style.hoverFillFor(panel.foreground, Commons.Color.accent) : "transparent")
 
         Row {
           id: searchSavedRow
@@ -304,7 +305,7 @@ Column {
             text: modelData.name
             color: panel.searchFocusSection === "saved"
               && index === panel.savedLocationIndex
-              ? Style.hoverStateColor(panel.foreground, Color.accent)
+              ? Style.hoverStateColor(panel.foreground, Commons.Color.accent)
               : panel.foreground
             font.family: panel.fontFamily
             font.pixelSize: Style.font.body
@@ -334,7 +335,7 @@ Column {
           anchors.rightMargin: Style.space(12)
           anchors.verticalCenter: parent.verticalCenter
           radius: Math.min(4, Style.cornerRadius)
-          color: searchRemoveButtonArea.containsMouse ? Style.hoverFillFor(panel.foreground, Color.accent) : "transparent"
+          color: searchRemoveButtonArea.containsMouse ? Style.hoverFillFor(panel.foreground, Commons.Color.accent) : "transparent"
 
           Text {
             textFormat: Text.PlainText

@@ -1,5 +1,6 @@
 import QtQuick
 import qs.Commons
+import qs.Commons as Commons
 import "Model.js" as Model
 
 // Two-hour rain intensity and probability chart. The Canvas draws only the
@@ -111,7 +112,7 @@ Item {
     height: Style.space(230)
     property var sourceData: panel.rainNowcast
     property color foregroundColor: panel.foreground
-    property color accentColor: Color.accent
+    property color accentColor: Commons.Color.accent
     property var layoutKey: [rainChart.gutter, rainChart.probabilityLegendX, rainChart.showIntensitySeries,
       rainChart.showProbabilitySeries]
     onSourceDataChanged: requestPaint()

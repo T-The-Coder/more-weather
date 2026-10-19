@@ -1,6 +1,7 @@
 import QtQuick
 import Quickshell
 import qs.Commons
+import qs.Commons as Commons
 import "Weather" as Weather
 
 // The README pictures (tests/ui-showcase.sh): live data, the app at
@@ -248,7 +249,7 @@ ShellRoot {
     implicitHeight: 1150
     Rectangle {
       anchors.fill: parent
-      color: Color.popups.background
+      color: Commons.Color.popups.background
       Item { id: appHost; anchors.fill: parent; anchors.margins: 14 }
     }
   }
@@ -260,7 +261,7 @@ ShellRoot {
     implicitHeight: 1000
     Rectangle {
       anchors.fill: parent
-      color: Color.popups.background
+      color: Commons.Color.popups.background
       Item { id: widgetHost; anchors.fill: parent; anchors.margins: 16 }
     }
   }
@@ -276,7 +277,7 @@ ShellRoot {
       id: barHost
       property alias active: barLoader.active
       anchors.fill: parent
-      color: Color.bar ? Color.bar.background : Color.popups.background
+      color: Commons.Color.bar ? Commons.Color.bar.background : Commons.Color.popups.background
 
       Loader {
         id: barLoader

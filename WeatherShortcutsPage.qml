@@ -1,5 +1,6 @@
 import QtQuick
 import qs.Commons
+import qs.Commons as Commons
 
 // Settings page listing every keyboard shortcut and the menu bar clicks.
 // Mirrors Panel.handlePanelKey and BarWidget.onPressed; keep them in sync.
@@ -160,7 +161,7 @@ Column {
                   width: keyLabel.implicitWidth + Style.space(12)
                   height: keyLabel.implicitHeight + Style.space(6)
                   radius: Math.min(4, Style.cornerRadius)
-                  color: Style.hoverFillFor(shortcutsPage.panel.foreground, Color.accent)
+                  color: Style.hoverFillFor(shortcutsPage.panel.foreground, Commons.Color.accent)
                   border.color: shortcutsPage.panel.subtleText
                   border.width: Style.spacing.hairline
 

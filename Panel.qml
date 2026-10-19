@@ -3,6 +3,7 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Hyprland
 import qs.Commons
+import qs.Commons as Commons
 import qs.Ui
 import "Model.js" as Model
 import "Basemap.js" as Basemap
@@ -84,7 +85,7 @@ Panel {
       displayOptionsStore.menubarDisplayOptionsFile.reload()
     })
   }
-  readonly property color foreground: root.bar ? root.bar.foreground : Color.popups.text
+  readonly property color foreground: root.bar ? root.bar.foreground : Commons.Color.popups.text
   readonly property string fontFamily: root.bar && root.bar.fontFamily
     ? root.bar.fontFamily : Style.font.family
   // The two secondary text tones used everywhere: muted for labels and
@@ -92,10 +93,10 @@ Panel {
   // a dark background the text darkened; on a light one darkening made
   // them darker than the text itself, so there it is faded towards the
   // background instead (muted keeps 4.5:1, subtle about 3:1).
-  readonly property bool lightBackground: (0.2126 * Color.popups.background.r + 0.7152 * Color.popups.background.g
-    + 0.0722 * Color.popups.background.b) > 0.5
+  readonly property bool lightBackground: (0.2126 * Commons.Color.popups.background.r + 0.7152 * Commons.Color.popups.background.g
+    + 0.0722 * Commons.Color.popups.background.b) > 0.5
   function fadedText(share) {
-    return Qt.tint(foreground, Qt.rgba(Color.popups.background.r, Color.popups.background.g, Color.popups.background.b, share))
+    return Qt.tint(foreground, Qt.rgba(Commons.Color.popups.background.r, Commons.Color.popups.background.g, Commons.Color.popups.background.b, share))
   }
   readonly property color mutedText: lightBackground ? fadedText(0.18) : Qt.darker(foreground, 1.35)
   readonly property color subtleText: lightBackground ? fadedText(0.34) : Qt.darker(foreground, 1.7)
@@ -479,7 +480,7 @@ Panel {
   function keepSeparators(text) {
     return String(text).split(" · ").map(function(group) { return group.replace(/ /g, "\u00a0") }).join("\u00a0· ")
   }
-  readonly property color sunColor: Sky.sunColor(rgbOf(foreground), rgbOf(Color.popups.background))
+  readonly property color sunColor: Sky.sunColor(rgbOf(foreground), rgbOf(Commons.Color.popups.background))
   // Rain probability: green, yellow, cyan, blue as it rises.
   // Rain chance from the text colour at 0 % through cyan, dark blue and
   // magenta to violet at 100 %, all from the theme (violet, which themes
@@ -4805,7 +4806,7 @@ Panel {
     id: standaloneWindow
     visible: root.standaloneMode && root.opened
     title: root.reportLocation !== "" ? root.i18n("weather") + " — " + root.reportLocation : root.i18n("weather")
-    color: Color.popups.background
+    color: Commons.Color.popups.background
     implicitWidth: Style.space(520)
     implicitHeight: Style.space(760)
     minimumSize: Qt.size(Style.space(420), Style.space(480))

@@ -1,6 +1,6 @@
 import QtQuick
 import qs.Commons
-
+import qs.Commons as Commons
 // The on/off pill used by WeatherSwitchRow.
 Rectangle {
   id: toggle
@@ -10,7 +10,7 @@ Rectangle {
   width: Style.space(32)
   height: Style.space(18)
   radius: height / 2
-  color: checked ? Color.accent : panel.subtleText
+  color: checked ? Commons.Color.accent : panel.subtleText
   opacity: checked ? 0.9 : 0.42
 
   Rectangle {
@@ -19,7 +19,7 @@ Rectangle {
     radius: width / 2
     y: (parent.height - height) / 2
     x: toggle.checked ? toggle.width - width - Style.space(2) : Style.space(2)
-    color: Color.popups.background
+    color: Commons.Color.popups.background
     Behavior on x { NumberAnimation { duration: 100 } }
   }
 }

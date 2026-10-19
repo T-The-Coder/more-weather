@@ -1,5 +1,6 @@
 import QtQuick
 import qs.Commons
+import qs.Commons as Commons
 import "Globe.js" as Globe
 import "GlobeSymbols.js" as GlobeSymbols
 import "EqualEarth.js" as EqualEarth
@@ -30,7 +31,7 @@ Canvas {
   property var bolts: []
   property var stats: ({ count: 0, total: 0, max: 0 })
   property color ink: panel.foreground
-  property color surface: Color.popups.background
+  property color surface: Commons.Color.popups.background
 
   onLayersChanged: { mapped = ({}); requestPaint() }
   // The isobars in Equal Earth units, per level and line (flat map).
@@ -176,7 +177,7 @@ Canvas {
         var rect = { x: at.x - w / 2, y: at.y - fontPx * 1.2, w: w, h: fontPx * 2.4 + 4 }
         if (!free(rect)) continue
         taken.push(rect)
-        ctx.fillStyle = high ? rgba(Color.accent, 0.95) : rgba(ink, 0.9)
+        ctx.fillStyle = high ? rgba(Commons.Color.accent, 0.95) : rgba(ink, 0.9)
         ctx.textAlign = "center"
         ctx.textBaseline = "middle"
         ctx.fillText(letter, at.x, at.y - fontPx * 0.3)

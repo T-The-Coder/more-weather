@@ -1,5 +1,6 @@
 import QtQuick
 import qs.Commons
+import qs.Commons as Commons
 import qs.Ui
 
 // Scale bar plus zoom out / in buttons, overlaid on the radar and wind maps.
@@ -10,8 +11,8 @@ BorderSurface {
   width: zoomRow.implicitWidth + Style.space(10)
   height: Style.space(28)
   radius: Style.cornerRadius
-  color: Color.popups.background
-  borderSpec: Border.surfaceSpec("popups", "border", Color.popups.border, Style.normalBorderWidth)
+  color: Commons.Color.popups.background
+  borderSpec: Border.surfaceSpec("popups", "border", Commons.Color.popups.border, Style.normalBorderWidth)
 
   Row {
     id: zoomRow
@@ -36,7 +37,7 @@ BorderSurface {
           textFormat: Text.PlainText
           anchors.horizontalCenter: parent.horizontalCenter
           text: panel.distanceText(mapScale.distanceKm)
-          color: Color.popups.text
+          color: Commons.Color.popups.text
           font.family: panel.fontFamily
           font.pixelSize: Style.font.caption
           font.bold: true
@@ -47,7 +48,7 @@ BorderSurface {
           anchors.horizontalCenter: parent.horizontalCenter
           width: mapScale.barPixelWidth
           height: Style.space(5)
-          property color lineColor: Color.popups.text
+          property color lineColor: Commons.Color.popups.text
           onLineColorChanged: requestPaint()
           onWidthChanged: requestPaint()
           onPaint: {
@@ -75,16 +76,16 @@ BorderSurface {
       width: Style.space(22)
       height: Style.space(20)
       radius: Style.cornerRadius
-      color: Style.controlFill(false, recentreMouse.containsMouse, Color.popups.text, Color.accent)
-      borderSpec: Border.controlSpec(recentreMouse.containsMouse ? "hover-cursor" : "normal", Color.popups.text, Color.accent)
+      color: Style.controlFill(false, recentreMouse.containsMouse, Commons.Color.popups.text, Commons.Color.accent)
+      borderSpec: Border.controlSpec(recentreMouse.containsMouse ? "hover-cursor" : "normal", Commons.Color.popups.text, Commons.Color.accent)
 
       Text {
         textFormat: Text.PlainText
         anchors.centerIn: parent
         text: "󰆤"
         color: recentreMouse.containsMouse
-          ? Style.hoverStateColor(Color.popups.text, Color.accent)
-          : Color.popups.text
+          ? Style.hoverStateColor(Commons.Color.popups.text, Commons.Color.accent)
+          : Commons.Color.popups.text
         font.family: panel.fontFamily
         font.pixelSize: Style.font.caption
       }
@@ -106,7 +107,7 @@ BorderSurface {
       anchors.verticalCenter: parent.verticalCenter
       width: Style.spacing.hairline
       height: Style.space(15)
-      color: Color.popups.text
+      color: Commons.Color.popups.text
       opacity: 0.18
     }
 
@@ -116,16 +117,16 @@ BorderSurface {
       radius: Style.cornerRadius
       enabled: panel.mapZoomLevel > panel.mapMinimumZoom
       opacity: enabled ? 1 : 0.38
-      color: Style.controlFill(false, zoomOutMouse.containsMouse, Color.popups.text, Color.accent)
-      borderSpec: Border.controlSpec(zoomOutMouse.containsMouse ? "hover-cursor" : "normal", Color.popups.text, Color.accent)
+      color: Style.controlFill(false, zoomOutMouse.containsMouse, Commons.Color.popups.text, Commons.Color.accent)
+      borderSpec: Border.controlSpec(zoomOutMouse.containsMouse ? "hover-cursor" : "normal", Commons.Color.popups.text, Commons.Color.accent)
 
       Text {
         textFormat: Text.PlainText
         anchors.centerIn: parent
         text: "−"
         color: zoomOutMouse.containsMouse
-          ? Style.hoverStateColor(Color.popups.text, Color.accent)
-          : Color.popups.text
+          ? Style.hoverStateColor(Commons.Color.popups.text, Commons.Color.accent)
+          : Commons.Color.popups.text
         font.family: panel.fontFamily
         font.pixelSize: Style.font.caption
         font.bold: true
@@ -147,16 +148,16 @@ BorderSurface {
       radius: Style.cornerRadius
       enabled: panel.mapZoomLevel < panel.mapMaximumZoom
       opacity: enabled ? 1 : 0.38
-      color: Style.controlFill(false, zoomInMouse.containsMouse, Color.popups.text, Color.accent)
-      borderSpec: Border.controlSpec(zoomInMouse.containsMouse ? "hover-cursor" : "normal", Color.popups.text, Color.accent)
+      color: Style.controlFill(false, zoomInMouse.containsMouse, Commons.Color.popups.text, Commons.Color.accent)
+      borderSpec: Border.controlSpec(zoomInMouse.containsMouse ? "hover-cursor" : "normal", Commons.Color.popups.text, Commons.Color.accent)
 
       Text {
         textFormat: Text.PlainText
         anchors.centerIn: parent
         text: "+"
         color: zoomInMouse.containsMouse
-          ? Style.hoverStateColor(Color.popups.text, Color.accent)
-          : Color.popups.text
+          ? Style.hoverStateColor(Commons.Color.popups.text, Commons.Color.accent)
+          : Commons.Color.popups.text
         font.family: panel.fontFamily
         font.pixelSize: Style.font.caption
         font.bold: true

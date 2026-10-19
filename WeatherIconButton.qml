@@ -1,5 +1,6 @@
 import QtQuick
 import qs.Commons
+import qs.Commons as Commons
 import qs.Ui
 
 // A glyph that acts: start, pause, lap, delete. `active` marks a switch that
@@ -24,18 +25,18 @@ Rectangle {
   implicitHeight: Style.space(28)
   radius: Style.cornerRadius
   opacity: enabled ? 1 : 0.42
-  color: armed ? Style.selectedFillFor(panel.foreground, Color.urgent)
-    : (active ? Style.selectedFillFor(panel.foreground, Color.accent)
-      : (iconMouse.containsMouse || kbFocused ? Style.hoverFillFor(panel.foreground, Color.accent) : "transparent"))
-  border.color: armed ? Color.urgent : (kbFocused ? Color.accent : "transparent")
+  color: armed ? Style.selectedFillFor(panel.foreground, Commons.Color.urgent)
+    : (active ? Style.selectedFillFor(panel.foreground, Commons.Color.accent)
+      : (iconMouse.containsMouse || kbFocused ? Style.hoverFillFor(panel.foreground, Commons.Color.accent) : "transparent"))
+  border.color: armed ? Commons.Color.urgent : (kbFocused ? Commons.Color.accent : "transparent")
   border.width: armed || kbFocused ? Style.spacing.hairline : 0
 
   Text {
     textFormat: Text.PlainText
     anchors.centerIn: parent
     text: iconButton.glyph
-    color: iconButton.armed ? Color.urgent
-      : (iconButton.active ? Style.selectedStateColor(iconButton.panel.foreground, Color.accent) : iconButton.panel.foreground)
+    color: iconButton.armed ? Commons.Color.urgent
+      : (iconButton.active ? Style.selectedStateColor(iconButton.panel.foreground, Commons.Color.accent) : iconButton.panel.foreground)
     font.family: iconButton.panel.fontFamily
     font.pixelSize: iconButton.glyphSize
   }

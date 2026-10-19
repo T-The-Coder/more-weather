@@ -41,3 +41,12 @@ echo "shots: $out"
 python3 "$root/tests/ui/rim-check.py" "$work/log.txt" "$out" >>"$work/log.txt"
 [ "${MW_AUDIT:-}" = glyphs ] && python3 "$root/tests/ui/glyph-check.py" "$work/log.txt" "$out" "${MW_GLYPH_BG:-#eff1f5}" | tee "$out/glyphs.txt" | grep " OFF "
 grep -E "SHOT|STATUS|CHECK|GLOBE|STEP FAILED|ERROR|WARN|Error|error" "$work/log.txt" | grep -v "^$" | head -80
+# Script errors fail the run: a TypeError, a ReferenceError or an undefined
+# assigned to a property (as when a type of a newer Qt hides a singleton)
+# is breakage even when every picture was taken.
+errors=$(grep -E "TypeError|ReferenceError|Unable to assign \[undefined\]" "$work/log.txt")
+if [ -n "$errors" ]; then
+  echo "SCRIPT ERRORS:"
+  echo "$errors" | sort | uniq -c | sort -rn | head -40
+  exit 1
+fi

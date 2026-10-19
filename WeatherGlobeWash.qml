@@ -1,5 +1,6 @@
 import QtQuick
 import qs.Commons
+import qs.Commons as Commons
 import "Globe.js" as Globe
 import "GlobeFields.js" as GlobeFields
 import "GlobeRadar.js" as GlobeRadar
@@ -70,7 +71,7 @@ Canvas {
           var t = panel.temperatureScaleColor(GlobeFields.bucketValue(kind, i))
           var c = t ? Qt.color(t) : panel.foreground
           var a = 0.8
-          var bg = Color.popups.background
+          var bg = Commons.Color.popups.background
           function over(target, under) { return Math.max(0, Math.min(1, (target - (1 - a) * under) / a)) }
           rgba = [Math.round(over(c.r, bg.r) * 255), Math.round(over(c.g, bg.g) * 255), Math.round(over(c.b, bg.b) * 255),
             Math.round(a * 255)]

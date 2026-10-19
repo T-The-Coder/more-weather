@@ -2,6 +2,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 import qs.Commons
+import qs.Commons as Commons
 import qs.Ui
 import "Globe.js" as Globe
 import "GlobeView.js" as GlobeView
@@ -329,7 +330,7 @@ Column {
     function rgbOf(color) { return [color.r, color.g, color.b] }
     readonly property var sky: {
       var sun = Sky.subsolarPoint(minuteMs)
-      var layers = Sky.twilightLayers({ golden: false, blue: false, night: showNight }, rgbOf(Color.popups.background))
+      var layers = Sky.twilightLayers({ golden: false, blue: false, night: showNight }, rgbOf(Commons.Color.popups.background))
       return {
         sun: sun,
         anti: { lat: -sun.lat, lon: Globe.wrapLon(sun.lon + 180) },
@@ -647,8 +648,8 @@ Column {
       highText: globe.panel.i18n("globeHigh")
       lowText: globe.panel.i18n("globeLow")
       ink: globe.panel.foreground
-      surfaceColor: Color.popups.background
-      highColor: Color.accent
+      surfaceColor: Commons.Color.popups.background
+      highColor: Commons.Color.accent
     }
     // The coasts and the grid, fixed on the earth: their own 2048 × 1024
     // picture, projected by a second surface without night or base.
@@ -661,7 +662,7 @@ Column {
     // The land's fill (Canvas path and texture alike): faint, but opaque
     // when the sea's temperature shows without the air's.
     readonly property color landColor: {
-      var layers = washLayers, ink = panel.foreground, surfaceBg = Color.popups.background
+      var layers = washLayers, ink = panel.foreground, surfaceBg = Commons.Color.popups.background
       if (layers.indexOf("sst") < 0 || layers.indexOf("temperature") >= 0) return Qt.rgba(ink.r, ink.g, ink.b, 0.08)
       return Qt.rgba(surfaceBg.r * 0.92 + ink.r * 0.08, surfaceBg.g * 0.92 + ink.g * 0.08, surfaceBg.b * 0.92 + ink.b * 0.08, 1)
     }
@@ -683,7 +684,7 @@ Column {
       centerY: globe.centerY
       displayMs: globe.minuteMs
       night: globe.showNight
-      background: Color.popups.background
+      background: Commons.Color.popups.background
       baseColor: globe.isMap ? "transparent" : Qt.rgba(globe.panel.foreground.r, globe.panel.foreground.g,
         globe.panel.foreground.b, 0.04)
       textureSource: surfaceTexture
@@ -883,8 +884,8 @@ Column {
       width: globe.width
       height: globe.height
       property color ink: globe.panel.foreground
-      property color accent: Color.accent
-      property color surface: Color.popups.background
+      property color accent: Commons.Color.accent
+      property color surface: Commons.Color.popups.background
       onInkChanged: requestPaint()
       onAccentChanged: requestPaint()
 
@@ -1037,7 +1038,7 @@ Column {
           ctx.fill()
         }
         var sun = screenPoint(sky.sun.lat, sky.sun.lon)
-        if (globe.showNight && sun.visible) Sky.paintSun(ctx, sun.x, sun.y, rgba(globe.panel.sunColor, 0.95), globe.rgbOf(Color.popups.background))
+        if (globe.showNight && sun.visible) Sky.paintSun(ctx, sun.x, sun.y, rgba(globe.panel.sunColor, 0.95), globe.rgbOf(Commons.Color.popups.background))
         // The moon floats above its sub-lunar point, its shadow on the
         // surface; on the whole disc only, hidden behind the globe.
         var moon = zoom <= 1 ? sky.moon : null
@@ -1059,7 +1060,7 @@ Column {
           ctx.save()
           ctx.globalAlpha = look ? look.opacity : 1
           Moon.paintMoon(ctx, mx, my, globe.moonRadius, angle, look ? look.illuminated : moon.illuminated, "238,236,226",
-            Moon.rgbText(Sky.nightFill(globe.rgbOf(Color.popups.background))), Moon.rgbText(ink), look ? look.earthshine : false)
+            Moon.rgbText(Sky.nightFill(globe.rgbOf(Commons.Color.popups.background))), Moon.rgbText(ink), look ? look.earthshine : false)
           ctx.restore()
           globe.moonHit = { x: mx, y: my, moon: moon, ms: globe.minuteMs }
         }
@@ -1368,7 +1369,7 @@ Column {
         font.pixelSize: Math.round(Style.font.caption * (place && place.strength >= 2 ? 1.35 : 1.15))
         color: globe.thunderColor
         style: Text.Outline
-        styleColor: Qt.rgba(Color.popups.background.r, Color.popups.background.g, Color.popups.background.b, 0.85)
+        styleColor: Qt.rgba(Commons.Color.popups.background.r, Commons.Color.popups.background.g, Commons.Color.popups.background.b, 0.85)
         onMayFlashChanged: if (!mayFlash) { flash.stop(); opacity = 1 }
         Timer {
           interval: 4000 + ((bolt.index * 2797) % 12000) + Math.random() * 4000
@@ -1555,8 +1556,8 @@ Column {
       width: zoomRow.implicitWidth + Style.space(10)
       height: Style.space(28)
       radius: Style.cornerRadius
-      color: Color.popups.background
-      borderSpec: Border.surfaceSpec("popups", "border", Color.popups.border, Style.normalBorderWidth)
+      color: Commons.Color.popups.background
+      borderSpec: Border.surfaceSpec("popups", "border", Commons.Color.popups.border, Style.normalBorderWidth)
 
       Row {
         id: zoomRow
@@ -1578,14 +1579,14 @@ Column {
             radius: Style.cornerRadius
             enabled: modelData.enabled
             opacity: enabled ? 1 : 0.38
-            color: Style.controlFill(false, buttonMouse.containsMouse, Color.popups.text, Color.accent)
-            borderSpec: Border.controlSpec(buttonMouse.containsMouse ? "hover-cursor" : "normal", Color.popups.text, Color.accent)
+            color: Style.controlFill(false, buttonMouse.containsMouse, Commons.Color.popups.text, Commons.Color.accent)
+            borderSpec: Border.controlSpec(buttonMouse.containsMouse ? "hover-cursor" : "normal", Commons.Color.popups.text, Commons.Color.accent)
 
             Text {
               textFormat: Text.PlainText
               anchors.centerIn: parent
               text: zoomButton.modelData.glyph
-              color: buttonMouse.containsMouse ? Style.hoverStateColor(Color.popups.text, Color.accent) : Color.popups.text
+              color: buttonMouse.containsMouse ? Style.hoverStateColor(Commons.Color.popups.text, Commons.Color.accent) : Commons.Color.popups.text
               font.family: globe.panel.fontFamily
               font.pixelSize: Style.font.caption
               font.bold: true

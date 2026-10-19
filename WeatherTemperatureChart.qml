@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Shapes
 import qs.Commons
+import qs.Commons as Commons
 import "Model.js" as Model
 
 // Temperature as a line chart across the forecast, after linecast: a thin
@@ -204,7 +205,7 @@ Item {
     y: chart.plotTop
     width: Style.spacing.hairline
     height: chart.plotHeight
-    color: Color.accent
+    color: Commons.Color.accent
   }
 
   // The lines, one Shape per segment so each wears its own colour.

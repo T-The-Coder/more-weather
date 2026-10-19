@@ -2,6 +2,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 import qs.Commons
+import qs.Commons as Commons
 import "Weather" as Weather
 
 // Screenshot run for tests/ui-shots.sh: the app view with the synthetic
@@ -536,7 +537,7 @@ ShellRoot {
     function() {
       var flat = panel.globeItem.washPalettes.temperature
       var i = Math.floor((14 + 40) / 85 * 34) * 4
-      var bg = Color.popups.background, a = flat[i + 3] / 255
+      var bg = Commons.Color.popups.background, a = flat[i + 3] / 255
       function hex(v) { var h = Math.round(Math.max(0, Math.min(1, v)) * 255).toString(16); return h.length < 2 ? "0" + h : h }
       var layer = "#" + [0, 1, 2].map(function(k) {
         return hex(flat[i + k] / 255 * a + [bg.r, bg.g, bg.b][k] * (1 - a)) }).join("")

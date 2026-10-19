@@ -1,5 +1,6 @@
 import QtQuick
 import qs.Commons
+import qs.Commons as Commons
 import qs.Ui
 
 // A button of the panel and the settings, reachable by keyboard
@@ -37,9 +38,9 @@ Rectangle {
   height: compact ? Style.spacing.controlHeight : Style.space(32)
   radius: Style.cornerRadius
   opacity: enabled ? 1 : 0.42
-  color: armed ? Style.selectedFillFor(panel.foreground, Color.accent)
-    : (buttonMouse.containsMouse || kbFocused ? Style.hoverFillFor(panel.foreground, Color.accent) : "transparent")
-  border.color: armed || kbFocused ? Color.accent : panel.subtleText
+  color: armed ? Style.selectedFillFor(panel.foreground, Commons.Color.accent)
+    : (buttonMouse.containsMouse || kbFocused ? Style.hoverFillFor(panel.foreground, Commons.Color.accent) : "transparent")
+  border.color: armed || kbFocused ? Commons.Color.accent : panel.subtleText
   border.width: Style.spacing.hairline
   onVisibleChanged: armed = false
   Accessible.role: Accessible.Button
@@ -63,7 +64,7 @@ Rectangle {
     horizontalAlignment: Text.AlignHCenter
     elide: Text.ElideRight
     text: button.armed ? button.confirmLabel : button.label
-    color: button.armed ? Style.selectedStateColor(button.panel.foreground, Color.accent) : button.panel.foreground
+    color: button.armed ? Style.selectedStateColor(button.panel.foreground, Commons.Color.accent) : button.panel.foreground
     font.family: button.panel.fontFamily
     font.pixelSize: button.labelSize
     font.bold: button.armed

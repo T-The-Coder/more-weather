@@ -1,5 +1,6 @@
 import QtQuick
 import qs.Commons
+import qs.Commons as Commons
 import qs.Ui
 
 // The sections set to "as tab" share this strip, in their chosen order; the
@@ -46,7 +47,7 @@ Column {
         height: Style.space(28)
         radius: Style.cornerRadius
         color: selected || tabMouse.containsMouse
-          ? Style.hoverFillFor(panel.foreground, Color.accent) : "transparent"
+          ? Style.hoverFillFor(panel.foreground, Commons.Color.accent) : "transparent"
 
         // The section's glyph, then its name (if there is room).
         Row {
@@ -60,7 +61,7 @@ Column {
             anchors.verticalCenter: parent.verticalCenter
             text: panel.sectionTabGlyph(parent.parent.modelData)
             color: parent.parent.selected
-              ? Style.hoverStateColor(panel.foreground, Color.accent)
+              ? Style.hoverStateColor(panel.foreground, Commons.Color.accent)
               : panel.mutedText
             font.family: panel.fontFamily
             font.pixelSize: Style.font.body
@@ -73,7 +74,7 @@ Column {
             width: Math.min(implicitWidth, parent.parent.width - Style.space(8) - tabGlyph.width - parent.spacing)
             text: panel.sectionTabLabel(parent.parent.modelData)
             color: parent.parent.selected
-              ? Style.hoverStateColor(panel.foreground, Color.accent)
+              ? Style.hoverStateColor(panel.foreground, Commons.Color.accent)
               : panel.mutedText
             font.family: panel.fontFamily
             font.pixelSize: Style.font.caption

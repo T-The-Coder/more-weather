@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Window
 import qs.Commons
+import qs.Commons as Commons
 import qs.Ui
 import "Providers.js" as Providers
 import "Model.js" as Model
@@ -171,7 +172,7 @@ Item {
           // drawn map takes the text colour over a halo of the background.
           var drawn = radarMapItem.drawnMap
           var ink = radarMapItem.panel.foreground
-          var surface = Color.popups.background
+          var surface = Commons.Color.popups.background
           ctx.lineWidth = 3
           ctx.strokeStyle = drawn ? Qt.rgba(surface.r, surface.g, surface.b, 0.5) : "rgba(0,0,0,0.25)"
           for (var s = 0; s < distanceRings.radii.length; ++s) {
@@ -203,7 +204,7 @@ Item {
           color: radarMapItem.drawnMap ? radarMapItem.panel.foreground : "white"
           opacity: 0.9
           style: Text.Outline
-          styleColor: radarMapItem.drawnMap ? Color.popups.background : "#99000000"
+          styleColor: radarMapItem.drawnMap ? Commons.Color.popups.background : "#99000000"
           font.family: radarMapItem.panel.fontFamily
           font.pixelSize: Style.font.caption
         }
@@ -273,7 +274,7 @@ Item {
       width: loadingText.implicitWidth + Style.space(14)
       height: loadingText.implicitHeight + Style.space(6)
       radius: Style.cornerRadius
-      color: Color.popups.background
+      color: Commons.Color.popups.background
       opacity: 0.9
       Text {
         textFormat: Text.PlainText
@@ -296,7 +297,7 @@ Item {
       onAnchorPointChanged: requestPaint()
       property string selectedName: panel.reportLocation
       property color labelColor: panel.foreground
-      property color labelBackgroundColor: Color.popups.background
+      property color labelBackgroundColor: Commons.Color.popups.background
       property real west: panel.mapWest
       property real east: panel.mapEast
       property real south: panel.mapSouth

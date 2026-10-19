@@ -76,3 +76,12 @@ env -u DBUS_SESSION_BUS_ADDRESS -u XDG_DATA_HOME -u XDG_CONFIG_HOME -u XDG_STATE
 echo "log: $work/log.txt"
 echo "shots: $out"
 grep -E "SHOT|STEP FAILED|GLOBE PATH" "$work/log.txt"
+# Script errors fail the run: a TypeError, a ReferenceError or an undefined
+# assigned to a property (as when a type of a newer Qt hides a singleton)
+# is breakage even when every picture was taken.
+errors=$(grep -E "TypeError|ReferenceError|Unable to assign \[undefined\]" "$work/log.txt")
+if [ -n "$errors" ]; then
+  echo "SCRIPT ERRORS:"
+  echo "$errors" | sort | uniq -c | sort -rn | head -40
+  exit 1
+fi

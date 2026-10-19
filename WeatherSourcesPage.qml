@@ -1,5 +1,6 @@
 import QtQuick
 import qs.Commons
+import qs.Commons as Commons
 import "Providers.js" as Providers
 
 // Settings page describing every data source, with the provider that is
@@ -189,7 +190,7 @@ Column {
               ? sourcesPage.panel.upperLabel(sourcesPage.label("sourceInUse")) + " · " + sourceCard.modelData.inUse
               : sourcesPage.panel.upperLabel(sourcesPage.label("sourceNotInUse"))
             color: sourceCard.modelData.inUse !== ""
-              ? Color.accent : sourcesPage.panel.subtleText
+              ? Commons.Color.accent : sourcesPage.panel.subtleText
             font.family: sourcesPage.panel.fontFamily
             font.pixelSize: Style.font.caption
             font.bold: sourceCard.modelData.inUse !== ""
@@ -234,7 +235,7 @@ Column {
               required property var modelData
               text: modelData[0] + " ↗"
               color: linkMouse.containsMouse
-                ? Style.hoverStateColor(sourcesPage.panel.foreground, Color.accent)
+                ? Style.hoverStateColor(sourcesPage.panel.foreground, Commons.Color.accent)
                 : sourcesPage.panel.subtleText
               font.family: sourcesPage.panel.fontFamily
               font.pixelSize: Style.font.caption

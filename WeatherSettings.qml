@@ -1,5 +1,6 @@
 import QtQuick
 import qs.Commons
+import qs.Commons as Commons
 import qs.Ui
 import "I18n.js" as I18n
 import "Model.js" as Model
@@ -12,7 +13,7 @@ Rectangle {
   required property var panel
   anchors.fill: parent
   z: 100
-  color: Color.popups.background
+  color: Commons.Color.popups.background
 
   MouseArea { anchors.fill: parent }
 
@@ -668,7 +669,7 @@ Rectangle {
       radius: Style.cornerRadius
       readonly property bool kbFocused: settingsView.focusId === "jump:" + (row.focusId || "")
       onKbFocusedChanged: if (kbFocused) settingsView.ensureVisible(this)
-      color: jumpMouse.containsMouse || kbFocused ? Style.hoverFillFor(panel.foreground, Color.accent) : "transparent"
+      color: jumpMouse.containsMouse || kbFocused ? Style.hoverFillFor(panel.foreground, Commons.Color.accent) : "transparent"
 
       Text {
         textFormat: Text.PlainText
@@ -1079,7 +1080,7 @@ Rectangle {
           height: width
           radius: Style.cornerRadius
           color: closeSettingsMouse.containsMouse
-            ? Style.hoverFillFor(panel.foreground, Color.accent)
+            ? Style.hoverFillFor(panel.foreground, Commons.Color.accent)
             : "transparent"
 
           Text {
@@ -1210,7 +1211,7 @@ Rectangle {
                 height: Style.space(28)
                 radius: Style.cornerRadius
                 color: selected || pageMouse.containsMouse
-                  ? Style.hoverFillFor(panel.foreground, Color.accent) : "transparent"
+                  ? Style.hoverFillFor(panel.foreground, Commons.Color.accent) : "transparent"
 
                 Text {
                   textFormat: Text.PlainText
@@ -1218,7 +1219,7 @@ Rectangle {
                   anchors.centerIn: parent
                   text: panel.upperLabel(panel.settingsPageName(parent.modelData.key))
                   color: parent.selected
-                    ? Style.hoverStateColor(panel.foreground, Color.accent)
+                    ? Style.hoverStateColor(panel.foreground, Commons.Color.accent)
                     : panel.mutedText
                   font.family: panel.fontFamily
                   font.pixelSize: Style.font.caption
@@ -1868,7 +1869,7 @@ Rectangle {
                 anchors.centerIn: parent
                 text: parent.modelData.title
                 color: parent.selected || surfaceTabMouse.containsMouse
-                  ? Style.hoverStateColor(panel.foreground, Color.accent)
+                  ? Style.hoverStateColor(panel.foreground, Commons.Color.accent)
                   : panel.mutedText
                 font.family: panel.fontFamily
                 font.pixelSize: Style.font.bodySmall
@@ -1881,7 +1882,7 @@ Rectangle {
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
                 height: Style.space(2)
-                color: Color.accent
+                color: Commons.Color.accent
               }
 
               MouseArea {
@@ -2132,7 +2133,7 @@ Rectangle {
                 anchors.fill: parent
                 radius: Style.cornerRadius
                 color: "transparent"
-                border.color: Color.accent
+                border.color: Commons.Color.accent
                 border.width: Style.spacing.hairline
               }
 
@@ -2166,9 +2167,9 @@ Rectangle {
                     height: Style.space(28)
                     radius: Style.cornerRadius
                     color: selected
-                      ? Style.selectedFillFor(panel.foreground, Color.accent)
+                      ? Style.selectedFillFor(panel.foreground, Commons.Color.accent)
                       : (placementMouse.containsMouse
-                        ? Style.hoverFillFor(panel.foreground, Color.accent)
+                        ? Style.hoverFillFor(panel.foreground, Commons.Color.accent)
                         : "transparent")
                     border.color: panel.subtleText
                     border.width: Style.spacing.hairline
@@ -2179,7 +2180,7 @@ Rectangle {
                       width: Math.min(implicitWidth, parent.width - Style.space(8))
                       text: panel.i18n(parent.modelData ? "placementTab" : "placementWindow")
                       color: parent.selected
-                        ? Style.selectedStateColor(panel.foreground, Color.accent)
+                        ? Style.selectedStateColor(panel.foreground, Commons.Color.accent)
                         : panel.foreground
                       font.family: panel.fontFamily
                       font.pixelSize: Style.font.caption
@@ -2296,7 +2297,7 @@ Rectangle {
                 anchors.fill: parent
                 radius: Style.cornerRadius
                 color: "transparent"
-                border.color: Color.accent
+                border.color: Commons.Color.accent
                 border.width: Style.spacing.hairline
               }
 
@@ -2331,9 +2332,9 @@ Rectangle {
                       height: Style.space(28)
                       radius: Style.cornerRadius
                       color: modelData === panel.settingsDefaultTab
-                        ? Style.selectedFillFor(panel.foreground, Color.accent)
+                        ? Style.selectedFillFor(panel.foreground, Commons.Color.accent)
                         : (defaultTabMouse.containsMouse
-                          ? Style.hoverFillFor(panel.foreground, Color.accent)
+                          ? Style.hoverFillFor(panel.foreground, Commons.Color.accent)
                           : "transparent")
                       border.color: panel.subtleText
                       border.width: Style.spacing.hairline
@@ -2344,7 +2345,7 @@ Rectangle {
                         width: Math.min(implicitWidth, parent.width - Style.space(6))
                         text: panel.sectionTabLabel(modelData)
                         color: modelData === panel.settingsDefaultTab
-                          ? Style.selectedStateColor(panel.foreground, Color.accent)
+                          ? Style.selectedStateColor(panel.foreground, Commons.Color.accent)
                           : panel.foreground
                         font.family: panel.fontFamily
                         font.pixelSize: Style.font.caption

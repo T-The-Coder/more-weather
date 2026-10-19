@@ -1,6 +1,6 @@
 import QtQuick
 import qs.Commons
-
+import qs.Commons as Commons
 // One labelled switch in the settings cards. Menu bar entries carry three of
 // them: shown always, only when the value stands out, or only on hover.
 Rectangle {
@@ -48,9 +48,9 @@ Rectangle {
   opacity: rowEnabled ? 1 : 0.42
   color: displaySettingMouse.containsMouse || relevantSettingMouse.containsMouse
       || hoverSettingMouse.containsMouse || kbFocused
-    ? Style.hoverFillFor(panel.foreground, Color.accent)
+    ? Style.hoverFillFor(panel.foreground, Commons.Color.accent)
     : "transparent"
-  border.color: kbFocused ? Color.accent : "transparent"
+  border.color: kbFocused ? Commons.Color.accent : "transparent"
   border.width: kbFocused ? Style.spacing.hairline : 0
 
   Row {
@@ -74,7 +74,7 @@ Rectangle {
         radius: Style.cornerRadius
         opacity: usable ? 1 : 0.3
         color: orderMouse.containsMouse && usable
-          ? Style.hoverFillFor(panel.foreground, Color.accent) : "transparent"
+          ? Style.hoverFillFor(panel.foreground, Commons.Color.accent) : "transparent"
 
         Text {
           textFormat: Text.PlainText
@@ -206,7 +206,7 @@ Rectangle {
     anchors.margins: Style.space(3)
     radius: Style.cornerRadius
     color: "transparent"
-    border.color: Color.accent
+    border.color: Commons.Color.accent
     border.width: Style.spacing.hairline
   }
 

@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Window
 import qs.Commons
+import qs.Commons as Commons
 import qs.Ui
 import "Providers.js" as Providers
 import "Model.js" as Model
@@ -45,7 +46,7 @@ Item {
 
     Rectangle {
       anchors.fill: parent
-      color: Color.popups.background
+      color: Commons.Color.popups.background
     }
 
     WeatherMapGround {
@@ -69,7 +70,7 @@ Item {
     Rectangle {
       visible: panel.windMapData.length === 0
       anchors.fill: parent
-      color: Color.popups.background
+      color: Commons.Color.popups.background
 
       Text {
         textFormat: Text.PlainText
@@ -121,7 +122,7 @@ Item {
         }
 
         function drawOutlinedText(text, x, y, foreground, opacity) {
-          var surface = Color.popups.background
+          var surface = Commons.Color.popups.background
           ctx.fillStyle = windMapItem.drawnMap ? Qt.rgba(surface.r, surface.g, surface.b, 0.8) : "rgba(0,0,0,0.72)"
           ctx.fillText(text, x + 1, y + 1)
           ctx.globalAlpha = opacity
@@ -239,8 +240,8 @@ Item {
     width: windLevelRow.implicitWidth + Style.space(10)
     height: Style.space(28)
     radius: Style.cornerRadius
-    color: Color.popups.background
-    borderSpec: Border.surfaceSpec("popups", "border", Color.popups.border, Style.normalBorderWidth)
+    color: Commons.Color.popups.background
+    borderSpec: Border.surfaceSpec("popups", "border", Commons.Color.popups.border, Style.normalBorderWidth)
 
     Row {
       id: windLevelRow
@@ -259,8 +260,8 @@ Item {
           radius: Style.cornerRadius
           enabled: modelData.delta < 0 ? panel.windLevelId !== "10m" : panel.windLevelId !== "250hPa"
           opacity: enabled ? 1 : 0.38
-          color: Style.controlFill(false, levelMouse.containsMouse, Color.popups.text, Color.accent)
-          borderSpec: Border.controlSpec(levelMouse.containsMouse ? "hover-cursor" : "normal", Color.popups.text, Color.accent)
+          color: Style.controlFill(false, levelMouse.containsMouse, Commons.Color.popups.text, Commons.Color.accent)
+          borderSpec: Border.controlSpec(levelMouse.containsMouse ? "hover-cursor" : "normal", Commons.Color.popups.text, Commons.Color.accent)
 
           Text {
             textFormat: Text.PlainText
@@ -268,7 +269,7 @@ Item {
             // ▼ is drawn about a pixel high (as in the settings' order arrows).
             anchors.verticalCenterOffset: levelButton.modelData.delta < 0 ? 1 : 0
             text: levelButton.modelData.glyph
-            color: levelMouse.containsMouse ? Style.hoverStateColor(Color.popups.text, Color.accent) : Color.popups.text
+            color: levelMouse.containsMouse ? Style.hoverStateColor(Commons.Color.popups.text, Commons.Color.accent) : Commons.Color.popups.text
             font.family: panel.fontFamily
             font.pixelSize: Style.font.caption
           }
@@ -291,7 +292,7 @@ Item {
         rightPadding: Style.space(4)
         text: panel.windLevelText(panel.windLevelInfo)
           + (panel.windLevelId.indexOf("hPa") > 0 ? " · " + panel.windLevelId.replace("hPa", " hPa") : "")
-        color: Color.popups.text
+        color: Commons.Color.popups.text
         font.family: panel.fontFamily
         font.pixelSize: Style.font.caption
         font.bold: true
@@ -330,8 +331,8 @@ Item {
     width: pointerWind.implicitWidth + Style.space(12)
     height: pointerWind.implicitHeight + Style.space(6)
     radius: Style.cornerRadius
-    color: Color.popups.background
-    border.color: Color.popups.border
+    color: Commons.Color.popups.background
+    border.color: Commons.Color.popups.border
     border.width: Style.spacing.hairline
     Text {
       textFormat: Text.PlainText
@@ -341,7 +342,7 @@ Item {
         ? panel.windMapSpeed(parent.wind.speed) + " " + panel.windMapUnit + " · "
           + panel.windDirectionName((Math.atan2(parent.wind.u, -parent.wind.v) * 180 / Math.PI + 540) % 360)
         : ""
-      color: Color.popups.text
+      color: Commons.Color.popups.text
       font.family: panel.fontFamily
       font.pixelSize: Style.font.caption
       font.bold: true
@@ -377,9 +378,9 @@ Item {
         textFormat: Text.PlainText
         id: legendZero
         text: panel.windMapSpeed(0)
-        color: Color.popups.text
+        color: Commons.Color.popups.text
         style: Text.Outline
-        styleColor: Color.popups.background
+        styleColor: Commons.Color.popups.background
         font.family: panel.fontFamily
         font.pixelSize: Style.font.caption
       }
@@ -387,9 +388,9 @@ Item {
         textFormat: Text.PlainText
         x: parent.width * 0.5 - implicitWidth / 2
         text: panel.windMapSpeed(panel.windLevelInfo.scaleKmh / 2)
-        color: Color.popups.text
+        color: Commons.Color.popups.text
         style: Text.Outline
-        styleColor: Color.popups.background
+        styleColor: Commons.Color.popups.background
         font.family: panel.fontFamily
         font.pixelSize: Style.font.caption
       }
@@ -397,9 +398,9 @@ Item {
         textFormat: Text.PlainText
         anchors.right: parent.right
         text: panel.windMapSpeed(panel.windLevelInfo.scaleKmh) + " " + panel.windMapUnit
-        color: Color.popups.text
+        color: Commons.Color.popups.text
         style: Text.Outline
-        styleColor: Color.popups.background
+        styleColor: Commons.Color.popups.background
         font.family: panel.fontFamily
         font.pixelSize: Style.font.caption
       }
@@ -420,8 +421,8 @@ Item {
     width: windMapLabel.implicitWidth + Style.space(12)
     height: Style.space(28)
     radius: Style.cornerRadius
-    color: Color.popups.background
-    borderSpec: Border.surfaceSpec("popups", "border", Color.popups.border, Style.normalBorderWidth)
+    color: Commons.Color.popups.background
+    borderSpec: Border.surfaceSpec("popups", "border", Commons.Color.popups.border, Style.normalBorderWidth)
 
     Text {
       textFormat: Text.PlainText
@@ -443,7 +444,7 @@ Item {
             unit: panel.windMapUnit
           })
         : panel.i18n("windDataLoading")
-      color: Color.popups.text
+      color: Commons.Color.popups.text
       font.family: panel.fontFamily
       font.pixelSize: Style.font.caption
       font.bold: true

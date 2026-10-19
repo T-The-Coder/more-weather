@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Templates as T
 import Quickshell.Io
 import qs.Commons
+import qs.Commons as Commons
 import qs.Ui
 
 // Every text field of the plugin: one line of plain text, styled as the
@@ -34,8 +35,8 @@ T.TextArea {
   readonly property bool acceptableInput: isAcceptable(text, true)
 
   // The kit's TextField (qs.Ui), drawn the same.
-  property color foreground: Color.foreground
-  property color accent: Color.accent
+  property color foreground: Commons.Color.foreground
+  property color accent: Commons.Color.accent
   property color selectionTint: Style.selectionFillFor(foreground, accent)
   property real horizontalPadding: Style.spacing.controlPaddingX
   property real verticalPadding: Style.spacing.inputPaddingY

@@ -1,5 +1,6 @@
 import QtQuick
 import qs.Commons
+import qs.Commons as Commons
 import qs.Ui
 
 // Current conditions: icon and temperature on the left, equal statistic
@@ -35,7 +36,7 @@ Column {
       anchors.centerIn: parent
       text: metaButton.glyph
       color: metaMouse.containsMouse
-        ? Style.hoverStateColor(metaButton.panel.foreground, Color.accent)
+        ? Style.hoverStateColor(metaButton.panel.foreground, Commons.Color.accent)
         : metaButton.panel.mutedText
       font.family: metaButton.panel.fontFamily
       font.pixelSize: Style.font.body
@@ -115,7 +116,7 @@ Column {
   // In the widget, symbol and temperature open the app; they light up on
   // hover like the clock panel's hero.
   readonly property color heroColor: heroOpenMouse.containsMouse
-    ? Style.hoverStateColor(panel.foreground, Color.accent) : panel.foreground
+    ? Style.hoverStateColor(panel.foreground, Commons.Color.accent) : panel.foreground
   // The temperature by warmth (colour accents); hover keeps its highlight.
   readonly property color temperatureColor: heroOpenMouse.containsMouse || !panel.current
     ? heroColor : (panel.absoluteTemperatureAccent(panel.heroTempCelsius) || heroColor)
@@ -411,7 +412,7 @@ Column {
           anchors.centerIn: parent
           text: ""  // nf-fa-map_marker
           color: locationPinMouse.containsMouse
-            ? Style.hoverStateColor(panel.foreground, Color.accent)
+            ? Style.hoverStateColor(panel.foreground, Commons.Color.accent)
             : panel.mutedText
           font.family: panel.fontFamily
           font.pixelSize: Style.font.bodySmall
@@ -433,7 +434,7 @@ Column {
           heroHeader.width - locationMetaRow.width - Style.space(60)))
         text: (panel.reportLocation || "").toUpperCase()
         color: locationNameHover.hovered
-          ? Style.hoverStateColor(panel.foreground, Color.accent)
+          ? Style.hoverStateColor(panel.foreground, Commons.Color.accent)
           : panel.mutedText
         font.family: panel.fontFamily
         font.pixelSize: Style.font.bodySmall
@@ -515,7 +516,7 @@ Column {
         height: Style.space(18)
         anchors.verticalCenter: parent.verticalCenter
         radius: Math.min(4, Style.cornerRadius)
-        color: !panel.savingLocation && clearLocationArea.containsMouse ? Style.hoverFillFor(panel.foreground, Color.accent) : "transparent"
+        color: !panel.savingLocation && clearLocationArea.containsMouse ? Style.hoverFillFor(panel.foreground, Commons.Color.accent) : "transparent"
 
         Text {
           textFormat: Text.PlainText
@@ -559,7 +560,7 @@ Column {
         text: panel.cursorHour
           ? panel.i18n("heroAtTime", { time: panel.hourCursorTime(panel.cursorHour) }).toUpperCase()
           : panel.lastUpdatedLabel(panel.relativeTimeNowMs, panel.displayedUpdateMs).toUpperCase()
-        color: panel.cursorHour ? Color.accent : panel.mutedText
+        color: panel.cursorHour ? Commons.Color.accent : panel.mutedText
         font.family: panel.fontFamily
         font.pixelSize: Style.font.caption
         font.letterSpacing: 1

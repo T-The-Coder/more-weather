@@ -2,6 +2,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 import qs.Commons
+import qs.Commons as Commons
 import "Weather" as Weather
 
 ShellRoot {
@@ -56,8 +57,8 @@ ShellRoot {
     id: themeReloadDebounce
     interval: 250
     onTriggered: {
-      Color.colorsFile.reload()
-      Color.shellFile.reload()
+      Commons.Color.colorsFile.reload()
+      Commons.Color.shellFile.reload()
       Style.scheduleRefresh()
     }
   }

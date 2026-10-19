@@ -1,5 +1,6 @@
 import QtQuick
 import qs.Commons
+import qs.Commons as Commons
 
 // Credits shown on the maps: OpenStreetMap for the place labels, plus the
 // radar provider when its terms ask for attribution (RainViewer's free API
@@ -22,7 +23,7 @@ Row {
       required property var modelData
       required property int index
       text: (index > 0 ? "· " : "") + modelData[0]
-      color: Color.popups.text
+      color: Commons.Color.popups.text
       opacity: creditMouse.containsMouse ? 0.78 : 0.48
       font.family: attribution.panel.fontFamily
       font.pixelSize: Math.max(8, Style.font.caption - 2)

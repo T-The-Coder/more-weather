@@ -216,6 +216,10 @@ In detail:
   middle button read at most 4 KiB from the clipboard within one second,
   through wl-paste (wl-clipboard), and insert it as typed text; Qt's own
   paste, which has no byte limit, never runs.
+- **Works with Qt 6.12 (Omarchy 4.0.5):** QtQuick 6.12 ships its own
+  `Color` type that hid the shell's theme colours; the plugin now
+  addresses them as `Commons.Color`, so controls are coloured again and
+  the standalone app follows theme switches.
 
 ## 3.1.0 — 2026-10-03
 

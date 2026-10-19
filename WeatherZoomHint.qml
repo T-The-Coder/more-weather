@@ -1,5 +1,6 @@
 import QtQuick
 import qs.Commons
+import qs.Commons as Commons
 
 // "Ctrl + wheel to zoom", briefly, when a plain wheel passes over a map or
 // the globe (show()); not while the control hints are off.
@@ -16,8 +17,8 @@ Rectangle {
   width: hintText.implicitWidth + Style.space(16)
   height: hintText.implicitHeight + Style.space(8)
   radius: Style.cornerRadius
-  color: Color.popups.background
-  border.color: Color.popups.border
+  color: Commons.Color.popups.background
+  border.color: Commons.Color.popups.border
   border.width: Style.spacing.hairline
   opacity: 0
   visible: opacity > 0
@@ -28,7 +29,7 @@ Rectangle {
     textFormat: Text.PlainText
     anchors.centerIn: parent
     text: zoomHint.panel.i18n("mapZoomHint")
-    color: Color.popups.text
+    color: Commons.Color.popups.text
     font.family: zoomHint.panel.fontFamily
     font.pixelSize: Style.font.caption
   }

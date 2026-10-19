@@ -1,5 +1,6 @@
 import QtQuick
 import qs.Commons
+import qs.Commons as Commons
 import "Model.js" as Model
 
 // Seven-day strip on the shared forecast column grid, scrollable sideways.
@@ -499,7 +500,7 @@ Column {
         height: parent.height
         radius: height / 2
         x: (parent.width - width) * forecastScroller.contentX / maximum
-        color: Color.accent
+        color: Commons.Color.accent
         opacity: 0.7
       }
     }

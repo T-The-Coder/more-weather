@@ -1,5 +1,6 @@
 import QtQuick
 import qs.Commons
+import qs.Commons as Commons
 import qs.Ui
 
 // Transport under the radar map, after the Weather Radar plugin: play /
@@ -58,18 +59,18 @@ Item {
     enabled: panel.radarPlayableFrameCount > 1
     opacity: enabled ? 1 : 0.38
     color: panel.radarPlaying
-      ? Style.selectedFillFor(Color.popups.text, Color.accent)
-      : Style.controlFill(false, playMouse.containsMouse, Color.popups.text, Color.accent)
+      ? Style.selectedFillFor(Commons.Color.popups.text, Commons.Color.accent)
+      : Style.controlFill(false, playMouse.containsMouse, Commons.Color.popups.text, Commons.Color.accent)
     borderSpec: Border.controlSpec(panel.radarPlaying
-      ? "selected" : (playMouse.containsMouse ? "hover-cursor" : "normal"), Color.popups.text, Color.accent)
+      ? "selected" : (playMouse.containsMouse ? "hover-cursor" : "normal"), Commons.Color.popups.text, Commons.Color.accent)
 
     Text {
       textFormat: Text.PlainText
       anchors.centerIn: parent
       text: panel.radarPlaying ? "❚❚" : "▶"
       color: panel.radarPlaying
-        ? Style.selectedStateColor(Color.popups.text, Color.accent)
-        : (playMouse.containsMouse ? Style.hoverStateColor(Color.popups.text, Color.accent) : Color.popups.text)
+        ? Style.selectedStateColor(Commons.Color.popups.text, Commons.Color.accent)
+        : (playMouse.containsMouse ? Style.hoverStateColor(Commons.Color.popups.text, Commons.Color.accent) : Commons.Color.popups.text)
       font.family: panel.fontFamily
       font.pixelSize: Style.font.caption
       font.bold: true
@@ -104,7 +105,7 @@ Item {
     text: timeline.frames.length
       ? panel.radarFrameClock(timeline.frames[timeline.shownIndex]) + " · " + panel.radarFrameLead(timeline.shownIndex)
       : "–"
-    color: Color.popups.text
+    color: Commons.Color.popups.text
     font.family: panel.fontFamily
     font.pixelSize: Style.font.caption
     font.bold: true
@@ -127,7 +128,7 @@ Item {
       width: parent.width
       height: track.lineHeight
       radius: height / 2
-      color: Color.popups.text
+      color: Commons.Color.popups.text
       opacity: 0.16
     }
     Rectangle {
@@ -137,7 +138,7 @@ Item {
       width: parent.width - x
       height: track.lineHeight
       radius: height / 2
-      color: Color.accent
+      color: Commons.Color.accent
       opacity: 0.3
     }
     // Played part up to the frame on screen.
@@ -146,7 +147,7 @@ Item {
       width: timeline.xFor(timeline.shownIndex)
       height: track.lineHeight
       radius: height / 2
-      color: Color.popups.text
+      color: Commons.Color.popups.text
       opacity: 0.55
       Behavior on width {
         enabled: timeline.dragIndex < 0
@@ -167,7 +168,7 @@ Item {
         width: Math.max(1, Style.space(2))
         height: isNow ? track.lineHeight + Style.space(10) : track.lineHeight + Style.space(4)
         radius: 1
-        color: isNow ? Color.popups.text : Color.popups.background
+        color: isNow ? Commons.Color.popups.text : Commons.Color.popups.background
         opacity: isNow ? 0.8 : (timeline.panel.radarFrameReady[frame] ? 1 : 0.45)
       }
     }
@@ -180,8 +181,8 @@ Item {
       radius: width / 2
       anchors.verticalCenter: parent.verticalCenter
       x: timeline.xFor(timeline.shownIndex) - width / 2
-      color: Color.popups.text
-      borderSpec: Border.flat(Color.popups.background, Math.max(1, Style.space(2)))
+      color: Commons.Color.popups.text
+      borderSpec: Border.flat(Commons.Color.popups.background, Math.max(1, Style.space(2)))
       scale: hot ? 1.15 : 1
       Behavior on x {
         enabled: timeline.dragIndex < 0
@@ -198,8 +199,8 @@ Item {
       width: hoverText.implicitWidth + Style.space(10)
       height: hoverText.implicitHeight + Style.space(4)
       radius: Style.cornerRadius
-      color: Color.popups.background
-      border.color: Color.popups.border
+      color: Commons.Color.popups.background
+      border.color: Commons.Color.popups.border
       border.width: Style.spacing.hairline
       Text {
         textFormat: Text.PlainText
@@ -208,7 +209,7 @@ Item {
         text: timeline.hoverIndex >= 0
           ? panel.radarFrameClock(timeline.frames[timeline.hoverIndex]) + " · " + panel.radarFrameLead(timeline.hoverIndex)
           : ""
-        color: Color.popups.text
+        color: Commons.Color.popups.text
         font.family: panel.fontFamily
         font.pixelSize: Style.font.caption
       }

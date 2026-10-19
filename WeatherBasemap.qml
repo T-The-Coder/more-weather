@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Window
 import Quickshell.Io
 import qs.Commons
+import qs.Commons as Commons
 import "Basemap.js" as Basemap
 
 // The drawn map under the radar and wind: land, lakes, towns, rivers and
@@ -48,8 +49,8 @@ Item {
   // which keeps the file and decoded cells for every map in this shell.
   property int loadedRevision: Basemap.loaded() ? 1 : 0
 
-  readonly property color surface: Color.popups.background
-  readonly property color ink: Color.popups.text
+  readonly property color surface: Commons.Color.popups.background
+  readonly property color ink: Commons.Color.popups.text
   function mix(amount) {
     return Qt.rgba(surface.r + (ink.r - surface.r) * amount, surface.g + (ink.g - surface.g) * amount,
       surface.b + (ink.b - surface.b) * amount, 1)

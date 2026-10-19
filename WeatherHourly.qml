@@ -1,5 +1,6 @@
 import QtQuick
 import qs.Commons
+import qs.Commons as Commons
 
 // Next hours on the shared forecast column grid.
 Column {
@@ -79,8 +80,8 @@ Column {
             anchors.margins: -Style.space(3)
             radius: Style.cornerRadius
             visible: hourCell.picked || hourMouse.containsMouse
-            color: Style.hoverFillFor(panel.foreground, Color.accent)
-            border.color: hourCell.picked ? Color.accent : "transparent"
+            color: Style.hoverFillFor(panel.foreground, Commons.Color.accent)
+            border.color: hourCell.picked ? Commons.Color.accent : "transparent"
             border.width: Style.spacing.hairline
           }
 

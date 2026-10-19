@@ -1,5 +1,6 @@
 import QtQuick
 import qs.Commons
+import qs.Commons as Commons
 import qs.Ui
 import "Model.js" as Model
 
@@ -187,7 +188,7 @@ Column {
         width: favoritesSection.blockWidth
         height: Math.max(Style.space(30), rowContent.implicitHeight + Style.space(8))
         radius: Style.cornerRadius
-        color: rowMouse.containsMouse ? Style.hoverFillFor(panel.foreground, Color.accent) : "transparent"
+        color: rowMouse.containsMouse ? Style.hoverFillFor(panel.foreground, Commons.Color.accent) : "transparent"
 
         // The shown place.
         Rectangle {
@@ -197,7 +198,7 @@ Column {
           width: Style.space(3)
           height: parent.height - Style.space(10)
           radius: width / 2
-          color: Color.accent
+          color: Commons.Color.accent
         }
 
         Row {
