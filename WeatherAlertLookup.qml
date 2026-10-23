@@ -6,8 +6,8 @@ import "Model.js" as Model
 //  - CAP feeds: MetService (New Zealand), SMN (Argentina) and, through the
 //    Alert Hub register, the official feeds of the place's country. Each
 //    feed lists one CAP document per alert; the documents are fetched and
-//    kept when their area holds the place. A document never changes under
-//    its address, so each is read once per place and remembered.
+//    reduced to bounded records when their area holds the place. Recently
+//    used records are cached only while the current feeds reference them.
 //  - JMA (Japan): the place is matched to its municipality through JMA's
 //    area boxes and outlines, the municipality to its forecast office, and
 //    the office's warning file read for that municipality. The matching is
@@ -22,8 +22,6 @@ QtObject {
 
   readonly property string jmaBase: "https://www.jma.go.jp/bosai/"
   readonly property string alertHubRegister: "https://alert-hub-sources.s3.amazonaws.com/json"
-  // New documents read per refresh; the rest follow on the next one.
-  readonly property int maxCapDocuments: 100
   // Feed entries older than this are past any warning's validity.
   readonly property double maxEntryAgeMs: 10 * 24 * 60 * 60 * 1000
 
@@ -35,8 +33,8 @@ QtObject {
   property var feedQueue: []
   property var collected: []
   property string countryCode: ""
-  // CAP documents already read: "url|place" → alerts for the place.
-  property var capDocuments: ({})
+  // Bounded URL cache of flat records, plus this refresh's download budget.
+  property var capRetention: Model.newAlertRetention()
   property string alertHubSources: ""
   // JMA lookups kept across refreshes.
   property string jmaBoxes: ""
@@ -73,6 +71,7 @@ QtObject {
     }
   }
 
+  // Panel begins the budget once per refresh, shared by provider fallbacks.
   function start(provider, lat, lon) {
     cancel()
     providerId = provider.id
@@ -103,11 +102,14 @@ QtObject {
   }
 
   function cancel() {
+    if (running) Model.endAlertRefresh(capRetention)
     generation++
     request.running = false
     step = ""
     queue = []
     feedQueue = []
+    collected = []
+    pendingCalls = ({})
   }
 
   function placeKey() {
@@ -116,16 +118,24 @@ QtObject {
 
   function fetch(nextStep, url, timeoutMs) {
     step = nextStep
-    request.request = { url: url, timeoutMs: timeoutMs || 10000, maxBytes: 8 * 1024 * 1024 }
+    // Individual CAP messages and RSS/Atom indexes fit a small ceiling.
+    // Registry and JMA geographic files keep their existing 8 MiB limit.
+    var maxBytes = nextStep === "cap" || nextStep === "feed"
+      ? Model.ALERT_CAP_RESPONSE_MAX_BYTES : 8 * 1024 * 1024
+    request.request = { url: url, timeoutMs: timeoutMs || 10000, maxBytes: maxBytes }
     request.running = true
   }
 
   function finish(report) {
+    Model.endAlertRefresh(capRetention)
+    collected = []
     step = ""
     panel.acceptAlertReport(report, providerId)
   }
 
   function fail() {
+    Model.endAlertRefresh(capRetention)
+    collected = []
     step = ""
     panel.alertLookupFailed(providerId)
   }
@@ -156,34 +166,19 @@ QtObject {
     fetch("feed", url, 15000)
   }
 
-  // Remembered documents count at once; unread ones join the queue.
+  // Cached hits count immediately; at most 32 unread URLs enter the queue.
   function takeFeedEntries(entries) {
-    var now = Date.now()
-    var pending = queue.slice()
-    for (var i = 0; i < entries.length; ++i) {
-      var entry = entries[i]
-      if (isFinite(entry.published) && now - entry.published > maxEntryAgeMs) continue
-      var known = capDocuments[entry.link + "|" + placeKey()]
-      if (known) collected = collected.concat(known)
-      else if (pending.indexOf(entry.link) < 0 && pending.length < maxCapDocuments) pending.push(entry.link)
-    }
-    queue = pending
+    var known = Model.takeAlertFeedEntries(capRetention, entries, Date.now(), maxEntryAgeMs)
+    collected = collected.concat(known).slice(0, Model.ALERT_MAX_PER_PLACE)
   }
 
   function nextCapDocument() {
-    if (!queue.length) {
+    var link = Model.nextAlertDownload(capRetention)
+    if (!link) {
       finish({ alerts: Model.withoutSupersededAlerts(collected), _providerId: providerId })
       return
     }
-    var link = queue[0]
-    queue = queue.slice(1)
     fetch("cap", link, 10000)
-  }
-
-  function rememberCapDocument(link, alerts) {
-    var documents = capDocuments
-    documents[link + "|" + placeKey()] = alerts
-    capDocuments = documents
   }
 
   function jmaMatchArea() {
@@ -245,9 +240,9 @@ QtObject {
         var link = String(request.request && request.request.url || "")
         lookup.parse("capAlerts", [raw, lookup.latitude, lookup.longitude, lookup.providerId, ""], function(alerts) {
           // Unreadable documents are remembered as empty, so they are not
-          // asked for again.
-          lookup.rememberCapDocument(link, alerts || [])
-          lookup.collected = lookup.collected.concat(alerts || [])
+          // asked for again while retained and referenced.
+          var records = Model.keepAlertDocument(lookup.capRetention, link, alerts || [])
+          lookup.collected = lookup.collected.concat(records).slice(0, Model.ALERT_MAX_PER_PLACE)
           lookup.nextCapDocument()
         })
       } else if (current === "jma-boxes") {

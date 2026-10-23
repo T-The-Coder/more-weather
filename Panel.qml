@@ -3074,13 +3074,20 @@ Panel {
     var lon = Number(forecastRequestLongitude || mapCenterLongitude)
     if (!isFinite(lat) || !isFinite(lon)) return
     var chain = Providers.alertProviders(providerCountry, lat, lon)
-    if (!chain.length) return
+    if (!chain.length) {
+      alertLookup.cancel()
+      Model.endAlertRefresh(alertLookup.capRetention)
+      return
+    }
     var key = chain.map(function(provider) { return provider.id }).join(",")
       + "@" + lat.toFixed(2) + "," + lon.toFixed(2)
     var now = Date.now()
     if (key === lastAlertRequestKey && now - lastAlertRequestMs < 60 * 1000) return
     lastAlertRequestKey = key
     lastAlertRequestMs = now
+    alertLookup.cancel()
+    Model.beginAlertRefresh(alertLookup.capRetention, lat.toFixed(3) + "," + lon.toFixed(3))
+    if (!chain[0].staged) Model.endAlertRefresh(alertLookup.capRetention)
     alertProviderChain = chain
     startAlertProvider(0)
   }
@@ -3088,7 +3095,7 @@ Panel {
   // A parsed warnings report from any provider becomes the shown one.
   function acceptAlertReport(parsed, providerId) {
     if (!parsed || !Array.isArray(parsed.alerts) || providerId !== alertProviderId) return
-    alertReport = parsed
+    alertReport = Model.normalizedAlertReport(parsed)
     alertResponseAccepted = true
     alertActiveProviderId = providerId
     console.info("more-weather: warning provider active:", alertActiveProviderId)

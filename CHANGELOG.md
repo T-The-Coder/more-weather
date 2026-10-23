@@ -220,6 +220,10 @@ In detail:
   `Color` type that hid the shell's theme colours; the plugin now
   addresses them as `Commons.Color`, so controls are coloured again and
   the standalone app follows theme switches.
+- **Alert documents are not kept:** CAP feeds are reduced to bounded alert
+  records after parsing (texts truncated, at most 64 documents and 4 MiB
+  retained, least recently used dropped), and a refresh downloads at most
+  32 new documents.
 
 ## 3.1.0 — 2026-10-03
 
