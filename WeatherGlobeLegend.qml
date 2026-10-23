@@ -353,6 +353,15 @@ Item {
       }
     }
 
+    WeatherRadarLegend {
+      panel: legend.panel
+      visible: legend.loader.radarReplaces
+      providerId: "rainviewer"
+      modelFallback: false
+      attribution: legend.panel.i18n("sourceRainViewer")
+      showTreatment: false
+    }
+
     // What the data is, once, and its source.
     Item {
       width: column.width

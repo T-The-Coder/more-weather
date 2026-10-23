@@ -1,4 +1,7 @@
 #version 440
+#extension GL_GOOGLE_include_directive : require
+// Adapted from Omastorm by Wes Grimes (https://github.com/wesleygrimes/omastorm), MIT licence; see THIRD-PARTY-NOTICES.md
+
 // The globe's radar picture on the GPU from z2 (WeatherGlobeRadarSurface.qml):
 // the radar tiles of the view painted into one picture of their
 // longitude/latitude box (`radar`: west..east across, north..south down, at
@@ -25,8 +28,12 @@ layout(std140, binding = 0) uniform buf {
     // The picture's box in degrees: west, east, south, north (west/east may
     // run past ±180°).
     vec4 box;
+    int treatment;
+    float weakBelow;
 };
 layout(binding = 1) uniform sampler2D radar;
+layout(binding = 2) uniform sampler2D swatches;
+#include "radar-paint.glsl"
 
 const float PI = 3.14159265358979;
 const float DEG = 57.2957795130823;
@@ -45,7 +52,8 @@ float below(float v, float edge, float fw) {
 }
 
 void main() {
-    vec2 p = qt_TexCoord0 * itemSize;
+    vec2 pixel = qt_TexCoord0 * itemSize;
+    vec2 p = pixel;
     vec3 v;
     float coverage;
     if (flatMap > 0.5) {
@@ -90,5 +98,5 @@ void main() {
     vec2 st = vec2((lon - box.x) / (box.y - box.x), (box.w - lat) / (box.w - box.z));
     float inside = step(0.0, st.x) * step(st.x, 1.0) * step(0.0, st.y) * step(st.y, 1.0);
     vec4 c = texture(radar, clamp(st, 0.0, 1.0)) * inside;
-    fragColor = c * (coverage * qt_Opacity);
+    fragColor = paintRadar(c, pixel, 1, treatment, weakBelow) * (coverage * qt_Opacity);
 }

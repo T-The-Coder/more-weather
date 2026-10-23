@@ -275,19 +275,25 @@ for key, points in rain_cells.items():
                                  names=["precipitation", "rain", "showers", "snowfall", "weather_code"]), folder=globe_dir)
 
 # A radar tile (RainViewer's 512 px PNG, used for every tile offline,
-# MW_RADAR_FIXTURE): showers in radar colours on a transparent ground, with
+# MW_RADAR_FIXTURE): showers encoded as monochrome dBZ + 32 on a transparent ground, with
 # two text chunks the picture store must strip (WeatherImageStore).
 def radar_tile_png(path):
     import struct, zlib
     size = 512
-    colours = [(0, 0, 0, 0), (136, 221, 238, 180), (0, 170, 0, 200), (255, 238, 0, 220), (255, 68, 0, 230)]
     rows = bytearray()
     for y in range(size):
         rows.append(0)
         for x in range(size):
-            v = (math.sin(x / 23.0) * math.cos(y / 31.0) + math.sin((x + y) / 47.0)) * 1.6
-            level = 0 if v < 0.9 else (1 if v < 1.4 else (2 if v < 1.9 else (3 if v < 2.4 else 4)))
-            rows.extend(colours[level])
+            # Native-pixel storm front: continuous intensity, narrow cores,
+            # small-scale structure and measured negative weak returns.
+            centre = 265 - 0.40 * (y - 256) + 24 * math.sin(y / 70)
+            across = abs(x - centre - 7 * math.sin(y / 13))
+            envelope = math.exp(-across * across / (2 * 27**2))
+            structure = 8 * math.sin(x / 6 + y / 11) + 5 * math.cos(y / 5)
+            dbz = -12 + envelope * (55 + 12 * math.sin(y / 57) + structure)
+            raw = max(1, min(127, round(dbz + 32)))
+            alpha = 255 if across < 100 else 0
+            rows.extend((raw, raw, raw, alpha))
     def chunk(kind, data):
         return struct.pack(">I", len(data)) + kind + data + struct.pack(">I", zlib.crc32(kind + data) & 0xffffffff)
     png = b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", struct.pack(">IIBBBBB", size, size, 8, 6, 0, 0, 0)) \

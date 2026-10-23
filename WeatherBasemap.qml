@@ -19,6 +19,7 @@ import "Basemap.js" as Basemap
 Item {
   id: basemap
   required property var panel
+  property bool quiet: false
   // The view's cropped map picture (Model.mapViewport) and its extent.
   required property var viewport
   property real west: panel.mapWest
@@ -60,13 +61,13 @@ Item {
   function tinted(color, amount) {
     return Qt.tint(color, Qt.rgba(water.r, water.g, water.b, amount))
   }
-  readonly property color seaColor: tinted(mix(0.05), 0.12)
-  readonly property color landColor: mix(0.13)
-  readonly property color urbanColor: mix(0.21)
-  readonly property color coastColor: mix(0.34)
-  readonly property color riverColor: tinted(mix(0.24), 0.35)
-  readonly property color admin1Color: mix(0.22)
-  readonly property color admin0Color: mix(0.42)
+  readonly property color seaColor: quiet ? surface : tinted(mix(0.05), 0.12)
+  readonly property color landColor: mix(quiet ? 0.015 : 0.13)
+  readonly property color urbanColor: mix(quiet ? 0.03 : 0.21)
+  readonly property color coastColor: mix(quiet ? 0.14 : 0.34)
+  readonly property color riverColor: quiet ? mix(0.08) : tinted(mix(0.24), 0.35)
+  readonly property color admin1Color: mix(quiet ? 0.08 : 0.22)
+  readonly property color admin0Color: mix(quiet ? 0.16 : 0.42)
 
   clip: false
 
@@ -102,6 +103,7 @@ Item {
   onSurfaceChanged: paintTimer.restart()
   onInkChanged: paintTimer.restart()
   onWaterChanged: paintTimer.restart()
+  onQuietChanged: paintTimer.restart()
 
   Canvas {
     id: canvas

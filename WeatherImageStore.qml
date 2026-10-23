@@ -22,7 +22,7 @@ QtObject {
   id: store
 
   readonly property int maxBytes: 4 * 1024 * 1024
-  // Real frames are 480x250 (WMS) and 512x512 (RainViewer).
+  // Viewport WMS images are at most 2048²; native tiles are 512² / 256².
   readonly property int maxDimension: 2048
   // DWD's GeoServer answers bursts with 502/503; the film now renews every few
   // minutes, so stay at three.
@@ -90,8 +90,9 @@ QtObject {
   // Starts a download unless the picture is ready or on its way. `retry`
   // also restarts a failed one and replaces a ready file an Image could not
   // decode.
-  function request(url, retry) {
+  function request(url, retry, byteLimit) {
     if (!url) return
+    byteLimit = Model.radarImageByteLimit(url, byteLimit)
     // Only the map services' hosts (Model.IMAGE_HOSTS); anything else fails
     // at once, without a download.
     if (!Model.imageHostAllowed(url) && !isFixture(url)) {
@@ -105,9 +106,10 @@ QtObject {
     if (record && !retry) return
     records[url] = {
       state: "queued",
-      // "-p1": rewritten pictures; files of earlier versions, written
-      // as downloaded, are never loaded and age out in the sweep.
-      path: cacheDir + "/" + Qt.md5(url) + "-p1.png",
+      byteLimit: Math.max(1, Math.min(maxBytes, Number(byteLimit) || maxBytes)),
+      // The cache key includes the byte budget; older/unbounded entries
+      // are not reused under a tighter tile limit.
+      path: cacheDir + "/" + Qt.md5(url) + "-p2-" + Math.max(1, Math.min(maxBytes, Number(byteLimit) || maxBytes)) + ".png",
       generation: record ? record.generation + 1 : 0,
       reuse: !retry && reusableUrl(url)
     }
@@ -139,10 +141,10 @@ QtObject {
       active++
       fetchComponent.createObject(store, {
         url: url,
-        command: isFixture(url) ? ["bash", "-c", fixtureScript, "more-weather-image", fixtureFile, String(maxBytes)]
+        command: isFixture(url) ? ["bash", "-c", fixtureScript, "more-weather-image", fixtureFile, String(record.byteLimit)]
           : offline ? ["bash", "-c", "exit 7"]
           : ["bash", "-c", script, "more-weather-image", url, record.path,
-            String(maxBytes), String(timeoutSeconds), userAgent, record.reuse ? "1" : "0"]
+            String(record.byteLimit), String(timeoutSeconds), userAgent, record.reuse ? "1" : "0"]
       })
     }
   }
@@ -157,11 +159,11 @@ QtObject {
       return
     }
     var raw = Model.base64Decoded(output)
-    if (raw.length > maxBytes) {
+    if (raw.length > record.byteLimit) {
       settle(url, 63)
       return
     }
-    var clean = Model.pngSanitized(raw, maxDimension, maxDimension * maxDimension, maxBytes)
+    var clean = Model.pngSanitized(raw, maxDimension, maxDimension * maxDimension, record.byteLimit)
     if (clean === null) {
       settle(url, 65)
       return

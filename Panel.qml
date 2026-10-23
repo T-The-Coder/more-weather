@@ -1,3 +1,4 @@
+// Adapted from Omastorm by Wes Grimes (https://github.com/wesleygrimes/omastorm), MIT licence; see THIRD-PARTY-NOTICES.md
 import QtQuick
 import Quickshell
 import Quickshell.Io
@@ -6,6 +7,7 @@ import qs.Commons
 import qs.Commons as Commons
 import qs.Ui
 import "Model.js" as Model
+import "RadarStyle.js" as RadarStyle
 import "Basemap.js" as Basemap
 import "I18n.js" as I18n
 import "Providers.js" as Providers
@@ -173,6 +175,7 @@ Panel {
   }
 
   function close() {
+    radarFocus = false
     hourCursor = -1
     setCenterHoverRevealSuppressed(false)
     if (root.editingLocation) root.cancelEditingLocation()
@@ -326,6 +329,7 @@ Panel {
     alertActiveProviderId = ""
     providerCountry = ""
     mosmixReport = null
+    radarViewReport = null
     radarReport = null
     radarMotion = []
     radarWet = null
@@ -1329,6 +1333,7 @@ Panel {
 
   function syncRadarFrames() {
     var next = computedRadarFrames
+    if (!next.length && radarFrames.length && (rainViewerFailed || regionalRadarFailed)) return
     if (JSON.stringify(radarFrames) === JSON.stringify(next)) {
       if (pendingRadarFrames.length) pendingRadarFrames = []
       return
@@ -1450,7 +1455,7 @@ Panel {
   // (WeatherJmaRadarLayer). Only the credit and the source label follow it.
   readonly property bool jmaRadarActive: !!regionalNowcast && regionalNowcast.providerId === "jma"
     && regionalNowcast.jmaObserved.length > 0 && radarFrames.length > 0 && !radarUsesModelFallback
-  readonly property string radarDisplayProviderId: jmaRadarActive ? "jma" : radarActiveProviderId
+  readonly property string radarDisplayProviderId: radarJmaCovering ? "jma" : (radarFramesSource(radarFrames) || radarActiveProviderId)
   readonly property string preferredRadarProviderId: Providers.primaryRadarProvider(
     providerCountry, mapCenterLatitude, mapCenterLongitude)
   readonly property var officialRadarFrames: preferredRadarProviderId === "dwd"
@@ -1459,7 +1464,9 @@ Panel {
       ? regionalRadarFrames : [])
   readonly property bool radarUsesRainViewer: officialRadarFrames.length === 0
     && !rainViewerFailed && rainViewerFrames.length > 0
-  readonly property var computedRadarFrames: officialRadarFrames.length > 0
+  property var radarFixtureFrames: []
+  readonly property var computedRadarFrames: Quickshell.env("MORE_PLUGINS_OFFLINE") === "1" && radarFixtureFrames.length
+    ? radarFixtureFrames : officialRadarFrames.length > 0
     ? officialRadarFrames : (radarUsesRainViewer ? rainViewerFrames : [])
   readonly property var sampledPrecipitationGrid: Model.precipitationGridSeries(
     cacheFallbackActive ? null : windGridReport)
@@ -1488,6 +1495,100 @@ Panel {
   property var radarFrameReady: []
   property bool radarHasDisplayedFrame: false
   property bool radarPlaying: false
+  property real radarStageWidth: 500
+  property real radarStageHeight: 260
+  property real radarDeviceRatio: 1
+  readonly property var radarStageViewport: Model.mapViewport(radarStageWidth, radarStageHeight, mapRadiusKm)
+  readonly property var radarVisibleBounds: Model.radarVisibleBounds(radarStageViewport, radarStageWidth, radarStageHeight, mapWest, mapEast, mapSouth, mapNorth)
+  readonly property var radarRasterSize: Model.radarRasterSize(radarStageWidth, radarStageHeight, radarDeviceRatio)
+  onRadarStageWidthChanged: if (radarGridDebounce) radarGridDebounce.restart()
+  onRadarStageHeightChanged: if (radarGridDebounce) radarGridDebounce.restart()
+  property var radarViewReport: null
+  property string radarViewQuery: ""
+  function requestRadarViewGrid() {
+    if (!radarShown || preferredRadarProviderId !== "dwd") return
+    var lat = mapViewLatitude, lon = mapViewLongitude
+    var distance = Model.radarGridDistance(radarVisibleBounds, lat, lon)
+    if (distance > Model.RADAR_GRID_RADIUS_M) { regionalRadarFailed = true; return }
+    var query = locationQuery + ":" + lat.toFixed(4) + ":" + lon.toFixed(4) + ":" + distance
+    if (radarViewProc.running) radarViewProc.running = false
+    radarViewQuery = query
+    var start = Math.floor(Date.now() / 300000) * 300000
+    radarViewProc.request = { url: "https://api.brightsky.dev/radar?lat=" + lat.toFixed(5) + "&lon=" + lon.toFixed(5)
+      + "&distance=" + distance + "&format=plain&date=" + encodeURIComponent(new Date(start).toISOString())
+      + "&last_date=" + encodeURIComponent(new Date(start + 7200000).toISOString()),
+      timeoutMs: 15000, maxBytes: Model.RADAR_GRID_MAX_BYTES }
+    radarViewProc.running = true
+  }
+  property Timer radarGridDebounce: Timer { interval: 250; onTriggered: root.requestRadarViewGrid() }
+  property WeatherRequest radarViewProc: WeatherRequest {
+    onFinished: function(text) {
+      radarViewWorker.sendMessage({ token: root.radarViewQuery, text: text })
+    }
+    onExited: function(exitCode) { if (exitCode !== 0 && exitCode !== 15 && exitCode !== 143) root.regionalRadarFailed = true }
+  }
+  property WorkerScript radarViewWorker: WorkerScript {
+    source: "RadarGridWorker.js"
+    onMessage: function(message) {
+      if (message.token !== root.radarViewQuery) return
+      if (message.report) { root.radarViewReport = message.report; root.regionalRadarFailed = false }
+      else root.regionalRadarFailed = true
+    }
+  }
+  onRadarFetchedAtMsChanged: radarGridDebounce.restart()
+  property bool radarFocus: false
+  property Item radarViewItem: null
+  property string radarLoopStartTimestamp: ""
+  property bool radarJmaCovering: false
+  property string radarJmaTimestamp: ""
+  readonly property string radarShownTimestamp: !radarHasDisplayedFrame ? ""
+    : radarJmaCovering && radarJmaTimestamp ? radarJmaTimestamp
+    : String((radarFrames[radarDisplayedFrameIndex] || {}).timestamp || "")
+  readonly property string radarAgeText: {
+    var age = RadarStyle.ageMinutes(radarShownTimestamp, relativeTimeNowMs)
+    if (age === null) return i18n(radarUsesModelFallback ? "precipitationModelCurrent" : "radarLoading")
+    return age < 0 ? i18n("radarForecastAge", { count: localizedNumber(-age) })
+      : age === 0 ? i18n("now") : i18n("radarAge", { count: localizedNumber(age) })
+  }
+  readonly property double radarObservationMs: {
+    if (radarJmaCovering && regionalNowcast) {
+      var times = regionalNowcast.jmaObserved
+      return times.length ? times[times.length - 1].ms : 0
+    }
+    var latest = 0
+    for (var i = 0; i < radarFrames.length; i++) {
+      var frame = radarFrames[i]
+      var reference = radarReferenceTime(frame)
+      var time = Date.parse(reference || frame.timestamp)
+      if ((!radarFrameIsForecast(frame) || reference) && isFinite(time)) latest = Math.max(latest, time)
+    }
+    return latest
+  }
+  readonly property string radarFeedState: RadarStyle.feedState(radarObservationMs, relativeTimeNowMs,
+    radarUsesModelFallback || (radarDisplayProviderId === "rainviewer" ? rainViewerFailed : regionalRadarFailed))
+  readonly property color radarStatusColor: radarFeedState === "radarUnreachable" ? Commons.Color.urgent
+    : radarFeedState === "radarStale" ? Commons.Color.pick("radar.stale", paletteColor("yellow")) : Commons.Color.accent
+  readonly property string radarProductText: radarUsesModelFallback ? i18n("precipitationModelCurrent")
+    : i18n("radar") + " · " + i18n(RadarStyle.sourceMode(radarDisplayProviderId) === 0 ? "radarProviderColors"
+      : radarDisplayProviderId === "rainviewer" ? "radarDbz" : "radarApproxDbz")
+  readonly property string radarStripStamp: {
+    var date = new Date(radarShownTimestamp)
+    if (isNaN(date.getTime())) return i18n(radarUsesModelFallback ? "noRadarData" : "radarLoading")
+    // The timestamp is the actual instant, with the computer's explicit zone.
+    // System locale selects date order and 12/24 h, independent of UI language.
+    var locale = Qt.locale()
+    return Qt.formatDate(date, locale.dateFormat(Locale.ShortFormat)) + " · "
+      + Qt.formatTime(date, locale.timeFormat(Locale.ShortFormat)) + " · " + Qt.formatTime(date, "t")
+  }
+  function radarFrameIsForecast(frame) {
+    if (!frame) return false
+    if (frame.rainViewer) return !!frame.forecast
+    if (frame.wmsProvider) return false
+    var reference = radarReferenceTime(frame)
+    return Date.parse(frame.timestamp) > Date.parse(reference || (radarFrames[0] || {}).timestamp)
+  }
+  property int radarTreatment: 1
+  property bool radarWeakReturns: false
   readonly property int defaultMapZoomLevel: 1
   property int mapZoomLevel: defaultMapZoomLevel
   readonly property int mapMinimumZoom: -2
@@ -1702,6 +1803,7 @@ Panel {
   }
   // A moved view needs its own pictures, place names and wind samples.
   function mapViewMoved() {
+    radarGridDebounce.restart()
     radarFrameReady = []
     radarHasDisplayedFrame = false
     radarPlaces.radarPlacesDebounce.restart()
@@ -1715,7 +1817,7 @@ Panel {
   onWindMapVisibleChanged: if (windMapVisible) windGridLoader.windGridDebounce.restart()
   // Switching views never starts the animation implicitly. Leaving the
   // radar pauses it; returning shows the retained frame until Play is used.
-  onRadarShownChanged: if (!radarShown) radarPlaying = false
+  onRadarShownChanged: { if (!radarShown) { radarPlaying = false; radarFocus = false } else radarGridDebounce.restart() }
   onRadarFramesChanged: {
     shownRadarPrefetched = []
     shownRadarPrefetchedCount = 0
@@ -1728,6 +1830,7 @@ Panel {
     if (radarFrames.length - radarFirstFrameIndexFor(radarFrames, nowDate) < 2) radarPlaying = false
   }
   onMapZoomLevelChanged: {
+    radarGridDebounce.restart()
     // Every Image source changes with mapBbox. Keep the selected timestamp,
     // but show the loading state until that frame is ready at the new scale.
     radarFrameReady = []
@@ -3113,6 +3216,7 @@ Panel {
   //      field; picking a geocoded suggestion persists name + coordinates to
   //      the module's shell.json entry. An empty commit returns to auto.
   function startEditingLocation(initialText) {
+    radarFocus = false
     var typedText = String(initialText || "")
     var startsWithTypedText = typedText.length > 0
     editingLocation = true
@@ -3414,6 +3518,36 @@ Panel {
     return false
   }
 
+  // Radar-local commands; global tabs, service link, search and settings retain their bindings.
+  function handleRadarKey(event, text) {
+    if (!radarShown || editingLocation || settingsOpen) return false
+    var shift = !!(event.modifiers & Qt.ShiftModifier)
+    var ctrl = !!(event.modifiers & Qt.ControlModifier)
+    if (event.modifiers & (Qt.AltModifier | Qt.MetaModifier)) return false
+    if (ctrl) {
+      if (!shift && event.key >= Qt.Key_1 && event.key <= Qt.Key_3) {
+        radarTreatment = event.key - Qt.Key_1
+        return true
+      }
+      return false
+    }
+    if (text === "W") { radarWeakReturns = !radarWeakReturns; return true }
+    if (text === "f") { radarFocus = !radarFocus; return true }
+    if (text === "?") { openSettings("shortcuts"); return true }
+    if (event.key === Qt.Key_Space) { toggleRadarPlayback(); return true }
+    if (text === "[") { stepRadarBackward(); return true }
+    if (text === "]") { stepRadarForward(); return true }
+    if (event.key === Qt.Key_Home || event.key === Qt.Key_End) {
+      scrubRadarFrame(event.key === Qt.Key_Home ? radarFirstFrameIndex : radarFrames.length - 1)
+      return true
+    }
+    if (shift) return false
+    var dx = event.key === Qt.Key_Left || text === "h" ? -1 : event.key === Qt.Key_Right || text === "l" ? 1 : 0
+    var dy = event.key === Qt.Key_Up || text === "k" ? 1 : event.key === Qt.Key_Down || text === "j" ? -1 : 0
+    if (dx || dy) { panMapBy(dx * 0.25, dy * 0.25); return true }
+    return false
+  }
+
   function handlePanelKey(event) {
     var control = !!(event.modifiers & Qt.ControlModifier)
     var command = !!(event.modifiers & Qt.MetaModifier)
@@ -3500,6 +3634,8 @@ Panel {
       }
       return
     }
+
+    if (handleRadarKey(event, text)) { event.accepted = true; return }
 
     // Alt+1…9: favourite 1–9; Alt+← / Alt+→: previous / next favourite.
     if (alternate && !control && !command && savedLocations.length > 0) {
@@ -4198,9 +4334,12 @@ Panel {
   }
 
   function radarFrameUrl(frame) {
+    if (Quickshell.env("MORE_PLUGINS_OFFLINE") === "1" && frame && frame.fixture) return "fixture:radar-map"
     if (!mapExtentKnown) return ""
     if (frame && frame.wmsProvider)
-      return Providers.radarMapUrl(frame.wmsProvider, root.mapBbox, mapImageWidth, mapImageHeight, frame.timestamp)
+      return Providers.radarMapUrl(frame.wmsProvider,
+        radarVisibleBounds.west + "," + radarVisibleBounds.south + "," + radarVisibleBounds.east + "," + radarVisibleBounds.north,
+        radarRasterSize.width, radarRasterSize.height, frame.timestamp)
     if (frame && frame.rainViewer) {
       // RainViewer's coordinate-tile form is explicitly intended for small
       // embedded maps. Its maximum supported zoom is 7; the view draws the
@@ -4210,7 +4349,7 @@ Panel {
         + "/512/" + zoom
         + "/" + Number(root.mapViewLatitude).toFixed(5)
         + "/" + Number(root.mapViewLongitude).toFixed(5)
-        + "/2/1_1.png"
+        + "/0/0_0.png"
     }
     var url = "https://maps.dwd.de/geoserver/dwd/ows?service=WMS&version=1.1.1&request=GetMap"
       // The radar layer alone (about 20 KB instead of 150 KB with the basemap
@@ -4269,14 +4408,18 @@ Panel {
   function toggleRadarPlayback() {
     if (radarPlayableFrameCount < 2) return
     radarUserNavigated = true
-    if (!radarPlaying && radarFrameIndex >= radarFrames.length - 1) selectRadarFrame(radarFirstFrameIndex)
+    if (!radarPlaying) {
+      var start = radarHasDisplayedFrame ? radarDisplayedFrameIndex : radarFrameIndex
+      radarLoopStartTimestamp = RadarStyle.loopStart(radarFrames, radarFirstFrameIndex, start)
+      selectRadarFrame(start >= radarFrames.length - 1 ? radarFirstFrameIndex : start)
+    }
     radarPlaying = !radarPlaying
     renewRadarOnInteraction()
   }
 
   function nextRadarFrameIndex() {
-    return radarFrameIndex + 1 < radarFrames.length ? radarFrameIndex + 1
-      : radarFirstFrameIndexFor(radarFrames, nowDate)
+    return RadarStyle.nextFrame(radarFrames, radarFirstFrameIndexFor(radarFrames, nowDate),
+      radarFrameIndex, radarLoopStartTimestamp)
   }
 
   function updateRadarFrameReady(index, ready) {
@@ -4863,6 +5006,7 @@ Panel {
 
     Flickable {
       id: weatherScroll
+      visible: !root.radarFocus
       anchors.fill: parent
       contentWidth: width
       contentHeight: weatherColumn.implicitHeight

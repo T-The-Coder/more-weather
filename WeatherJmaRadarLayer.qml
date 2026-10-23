@@ -1,3 +1,4 @@
+// Adapted from Omastorm by Wes Grimes (https://github.com/wesleygrimes/omastorm), MIT licence; see THIRD-PARTY-NOTICES.md
 import QtQuick
 import "Model.js" as Model
 
@@ -13,12 +14,13 @@ Item {
   required property var panel
   // The view's cropped map picture (Model.mapViewport), for placing tiles.
   required property var viewport
+  property var swatches
 
   readonly property bool active: panel.jmaRadarActive
   readonly property var times: active
     ? panel.regionalNowcast.jmaObserved.concat(panel.regionalNowcast.jmaForecast) : []
   readonly property var tiles: active
-    ? Model.jmaTilesFor(panel.mapWest, panel.mapEast, panel.mapSouth, panel.mapNorth, panel.mapCenterLatitude) : []
+    ? Model.radarTilesFor(panel.radarVisibleBounds, panel.mapViewLatitude, viewport.pixelsPerKm, "jma", panel.radarDeviceRatio) : []
 
   visible: active
   // The JMA picture of the frame on screen is complete: the frame underneath
@@ -29,6 +31,19 @@ Item {
     var layer = frameRepeater.itemAt(panel.radarDisplayedFrameIndex)
     return !!layer && layer.complete
   }
+
+  function publishPicture() {
+    panel.radarJmaCovering = covering
+    var frame = panel.radarFrames[panel.radarDisplayedFrameIndex]
+    var time = covering && frame ? timeFor(frame.timestamp) : null
+    panel.radarJmaTimestamp = time ? new Date(time.ms).toISOString() : ""
+  }
+  onCoveringChanged: publishPicture()
+  Connections {
+    target: jmaLayer.panel
+    function onRadarDisplayedFrameIndexChanged() { jmaLayer.publishPicture() }
+  }
+  Component.onDestruction: { panel.radarJmaCovering = false; panel.radarJmaTimestamp = "" }
 
   // JMA time for a frame: the nearest within half a step either side.
   function timeFor(timestamp) {
@@ -59,29 +74,37 @@ Item {
       Repeater {
         model: frameLayer.time ? jmaLayer.tiles : []
 
-        WeatherRemoteImage {
+        WeatherRadarFrame {
           required property var modelData
           readonly property var northWest: Model.mapPoint(jmaLayer.viewport, modelData.north, modelData.west,
             jmaLayer.panel.mapWest, jmaLayer.panel.mapEast, jmaLayer.panel.mapSouth, jmaLayer.panel.mapNorth)
           readonly property var southEast: Model.mapPoint(jmaLayer.viewport, modelData.south, modelData.east,
             jmaLayer.panel.mapWest, jmaLayer.panel.mapEast, jmaLayer.panel.mapSouth, jmaLayer.panel.mapNorth)
           property bool counted: false
-          x: northWest.x
-          y: northWest.y
-          width: southEast.x - northWest.x
-          height: southEast.y - northWest.y
-          // Stretched to the tile's extent; Mercator's bend within one tile
-          // is far below a pixel at these sizes.
+          x: Math.max(0, northWest.x)
+          y: Math.max(0, northWest.y)
+          width: Math.max(0, Math.min(jmaLayer.width, southEast.x) - x)
+          height: Math.max(0, Math.min(jmaLayer.height, southEast.y) - y)
+          sourceWindow: Qt.rect((x - northWest.x) / (southEast.x - northWest.x), (y - northWest.y) / (southEast.y - northWest.y),
+            width / (southEast.x - northWest.x), height / (southEast.y - northWest.y))
+          // Place the quad at its geographic extent; WeatherRadarFrame
+          // addresses the exact native Mercator row without interpolation.
+          tileLatitudes: Qt.point(modelData.north, modelData.south)
           fillMode: Image.Stretch
-          smooth: true
+          smooth: false
+          sourceMode: 3
+          swatches: jmaLayer.swatches
+          treatment: jmaLayer.panel.radarTreatment
+          weakReturns: jmaLayer.panel.radarWeakReturns
           store: jmaLayer.panel.mapImages
           remoteUrl: Model.jmaTileUrl(frameLayer.time, modelData.z, modelData.x, modelData.y)
+          byteLimit: Model.RADAR_JMA_TILE_MAX_BYTES
           load: jmaLayer.panel.radarFrameLoadAllowed(frameLayer.index)
           onStatusChanged: {
-            if (status === Image.Ready && !counted) {
-              counted = true
-              frameLayer.readyCount++
-            }
+            var ready = status === Image.Ready
+            if (ready === counted) return
+            counted = ready
+            frameLayer.readyCount += ready ? 1 : -1
           }
           Component.onCompleted: if (status === Image.Ready && !counted) {
             counted = true

@@ -8,7 +8,7 @@ import "Providers.js" as Providers
 // matters: once a view is torn down, Qt keeps only about 2 MB of pictures
 // nobody references, a few frames, and every other frame would have to be
 // decoded again from WeatherImageStore's files on the next tab switch. The
-// frame set follows panel.radarFrames, which is renewed hourly, on a manual
+// frame set follows panel.radarFrames, renewed on its bounded cadence, a manual
 // refresh and on a location or zoom change.
 Item {
   id: prefetch
@@ -24,9 +24,13 @@ Item {
 
   Repeater {
     model: prefetch.panel.radarFrames
-    WeatherRemoteImage {
-      store: prefetch.panel.mapImages
-      remoteUrl: prefetch.panel.radarFrameUrl(modelData)
+    WeatherRadarLayerFrame {
+      required property var modelData
+      required property int index
+      width: prefetch.panel.radarStageWidth; height: prefetch.panel.radarStageHeight
+      panel: prefetch.panel
+      frameData: modelData
+      viewport: panel.radarStageViewport
       load: prefetch.panel.radarFrameLoadAllowed(index)
       onStatusChanged: if (status === Image.Ready) prefetch.panel.noteShownRadarFramePrefetched(index)
       Component.onCompleted: if (status === Image.Ready) prefetch.panel.noteShownRadarFramePrefetched(index)
@@ -43,10 +47,14 @@ Item {
   // taken them over.
   Repeater {
     model: prefetch.panel.pendingRadarFrames
-    WeatherRemoteImage {
-      store: prefetch.panel.mapImages
+    WeatherRadarLayerFrame {
+      required property var modelData
+      required property int index
+      width: prefetch.panel.radarStageWidth; height: prefetch.panel.radarStageHeight
+      panel: prefetch.panel
+      frameData: modelData
+      viewport: panel.radarStageViewport
       readonly property int position: index - prefetch.panel.pendingRadarFirstIndex
-      remoteUrl: prefetch.panel.radarFrameUrl(modelData)
       load: position >= 0 && position < prefetch.panel.pendingRadarReadyCount + 3
       onStatusChanged: if (status === Image.Ready) prefetch.panel.pendingRadarFrameStatus(index, status)
       onFailed: prefetch.panel.pendingRadarFrameStatus(index, Image.Error)

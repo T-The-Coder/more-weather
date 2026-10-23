@@ -12,6 +12,7 @@ import QtQuick
 Image {
   id: remoteImage
   property string remoteUrl: ""
+  property int byteLimit: 4 * 1024 * 1024
   // Not required: a required property would stop Repeater delegates from
   // seeing index and modelData.
   property var store: null
@@ -57,7 +58,7 @@ Image {
     // Failed before this item asked (another copy, or the prefetch): count it
     // here too, since fetchState will not change again on its own.
     if (!retry && store.stateOf(remoteUrl) === "failed") noteFailure()
-    else store.request(remoteUrl, retry)
+    else store.request(remoteUrl, retry, byteLimit)
   }
 
   function noteFailure() {

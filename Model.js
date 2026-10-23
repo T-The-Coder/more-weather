@@ -3361,6 +3361,7 @@ function rainViewerTimeline(report, now, hours) {
   var host = String(report && report.host || "")
   if (!radar || host.indexOf("https://") !== 0) return []
   var rows = []
+  var observedCount = Array.isArray(radar.past) ? radar.past.length : 0
   if (Array.isArray(radar.past)) rows = rows.concat(radar.past)
   if (Array.isArray(radar.nowcast)) rows = rows.concat(radar.nowcast)
 
@@ -3380,6 +3381,7 @@ function rainViewerTimeline(report, now, hours) {
     result.push({
       timestamp: new Date(stamp).toISOString(),
       rainViewer: true,
+      forecast: i >= observedCount,
       rainViewerHost: host,
       rainViewerPath: path
     })
@@ -3616,6 +3618,134 @@ function iconForCode(code, night, date) {
 //      (RadarMotion.mjs, run by RadarMotionWorker.mjs off the GUI thread).
 //      Elsewhere, or with too little rain to track, the 700 hPa model wind
 //      stands in, and only without that (MET Norway) the surface wind.
+
+// Radar presentation budgets: unchanged 4 MiB total image bytes per frame,
+// 64 timeline entries, three simultaneous downloads; native grids are bounded
+// separately by the existing 16 MiB Bright Sky response ceiling. No decimation.
+var RADAR_FRAME_MAX_BYTES = 4 * 1024 * 1024
+var RADAR_TILE_MAX_COUNT = 32
+var RADAR_RV_MAX_TILES = 16
+var RADAR_JMA_MAX_TILES = 32
+var RADAR_TILE_MAX_BYTES = RADAR_FRAME_MAX_BYTES / RADAR_RV_MAX_TILES
+var RADAR_TILE_PIXELS = 512
+var RADAR_JMA_TILE_PIXELS = 256
+var RADAR_JMA_TILE_MAX_BYTES = RADAR_FRAME_MAX_BYTES / RADAR_JMA_MAX_TILES
+var RADAR_WMS_MAX_SIDE = 2048
+var RADAR_RV_MAX_ZOOM = 7 // public RainViewer service's maximum, not a renderer limit
+var RADAR_JMA_MAX_ZOOM = 10
+var RADAR_GRID_MAX_SIDE = 1024
+var RADAR_GRID_MAX_FRAMES = 32
+var RADAR_GRID_MAX_BYTES = 16 * 1024 * 1024
+var RADAR_GRID_RADIUS_M = 511000 // <=1024 native 1 km cells across, including endpoints
+
+function radarImageByteLimit(url, requested) {
+  var limit = Math.max(1, Math.min(RADAR_FRAME_MAX_BYTES, Number(requested) || RADAR_FRAME_MAX_BYTES))
+  if (url.indexOf("/jmatile/") >= 0) return Math.min(limit, RADAR_JMA_TILE_MAX_BYTES)
+  return /\/512\/.*\/0\/0_0\.png$/.test(url) ? Math.min(limit, RADAR_TILE_MAX_BYTES) : limit
+}
+function radarRasterSize(width, height, ratio) {
+  ratio = Math.max(1, Math.min(4, Number(ratio) || 1))
+  return { width: Math.max(1, Math.min(RADAR_WMS_MAX_SIDE, Math.ceil(width * ratio))),
+    height: Math.max(1, Math.min(RADAR_WMS_MAX_SIDE, Math.ceil(height * ratio))) }
+}
+function radarVisibleBounds(viewport, width, height, west, east, south, north) {
+  return { west: west - viewport.offsetX / viewport.renderedWidth * (east - west),
+    east: west + (width - viewport.offsetX) / viewport.renderedWidth * (east - west),
+    north: north + viewport.offsetY / viewport.renderedHeight * (north - south),
+    south: north - (height - viewport.offsetY) / viewport.renderedHeight * (north - south) }
+}
+function radarTilesFor(box, latitude, pixelsPerKm, provider, ratio) {
+  if (!box || !isFinite(latitude) || !isFinite(pixelsPerKm) || pixelsPerKm <= 0
+    || !isFinite(box.west) || !isFinite(box.east) || !isFinite(box.north) || !isFinite(box.south)
+    || box.east <= box.west || box.east - box.west > 360 || box.north <= box.south) return []
+  var tileSize = provider === "jma" ? RADAR_JMA_TILE_PIXELS : RADAR_TILE_PIXELS
+  var maxTiles = provider === "jma" ? RADAR_JMA_MAX_TILES : RADAR_RV_MAX_TILES
+  var maximum = provider === "jma" ? RADAR_JMA_MAX_ZOOM : RADAR_RV_MAX_ZOOM
+  var circumference = 40075.0167 * Math.max(0.087, Math.cos(latitude * Math.PI / 180))
+  var z = Math.max(0, Math.min(maximum, Math.ceil(Math.log(Math.max(1, circumference * pixelsPerKm * (ratio || 1) / tileSize)) / Math.LN2)))
+  if (provider === "jma") z = Math.min(maximum, Math.max(4, Math.ceil(z / 2) * 2))
+  var nw, se, count
+  while (true) {
+    nw = mercatorTile(Math.min(85, box.north), box.west, z)
+    se = mercatorTile(Math.max(-85, box.south), box.east - 1e-9, z)
+    count = (se.x - nw.x + 1) * (se.y - nw.y + 1)
+    if (count <= maxTiles || z <= (provider === "jma" ? 4 : 0)) break
+    z -= provider === "jma" ? 2 : 1
+  }
+  if (count > maxTiles || count <= 0) return []
+  var result = [], n = Math.pow(2, z)
+  for (var y = Math.max(0, nw.y); y <= Math.min(n - 1, se.y); ++y)
+    for (var x = nw.x; x <= se.x; ++x) {
+      var b = mercatorTileBounds(x, y, z)
+      result.push({ z: z, x: ((x % n) + n) % n, y: y, west: b.west, east: b.east, north: b.north, south: b.south })
+    }
+  return result
+}
+function radarMercatorY(latitude) {
+  var lat = Math.max(-85, Math.min(85, latitude)) * Math.PI / 180
+  return (1 - Math.log(Math.tan(lat) + 1 / Math.cos(lat)) / Math.PI) / 2
+}
+function radarTileV(north, south, fraction) {
+  var n = radarMercatorY(north), s = radarMercatorY(south)
+  return (radarMercatorY(north + fraction * (south - north)) - n) / (s - n)
+}
+function radarTileUrl(frame, tile) {
+  return String(frame.rainViewerHost) + String(frame.rainViewerPath) + "/512/" + tile.z + "/" + tile.x + "/" + tile.y + "/0/0_0.png"
+}
+// RADOLAN's native spherical polar stereographic CRS (DWD R=6370.04 km,
+// standard parallel 60 N, central meridian 10 E). Corner coordinates supply
+// the origin and rotation; texture indices stay native rows/columns.
+function radarStereo(latitude, longitude) {
+  var lat = latitude * Math.PI / 180, lon = (longitude - 10) * Math.PI / 180
+  var r = 6370.04 * (1 + Math.sin(Math.PI / 3)) * Math.cos(lat) / (1 + Math.sin(lat))
+  return { x: r * Math.sin(lon), y: -r * Math.cos(lon) }
+}
+function radarGridDistance(box, latitude, longitude) {
+  var centre = radarStereo(latitude, longitude), distance = 0
+  for (var y = 0; y < 2; y++) for (var x = 0; x < 2; x++) {
+    var p = radarStereo(y ? box.north : box.south, x ? box.east : box.west)
+    distance = Math.max(distance, Math.abs(p.x - centre.x), Math.abs(p.y - centre.y))
+  }
+  return Math.ceil(distance + 1) * 1000 // cover rotated corners plus one native cell
+}
+function radarGridReport(raw) {
+  if (typeof raw === "string" && raw.length > RADAR_GRID_MAX_BYTES) return null
+  var report
+  try { report = typeof raw === "string" ? parseJson(raw) : raw } catch (e) { return null }
+  if (!report || !Array.isArray(report.radar) || report.radar.length > RADAR_GRID_MAX_FRAMES) return null
+  var ring = report.geometry && report.geometry.coordinates
+  if (ring && Array.isArray(ring[0]) && Array.isArray(ring[0][0])) ring = ring[0]
+  if (!Array.isArray(ring) || ring.length < 4 || ring.length > 5) return null
+  for (var k = 0; k < 4; k++) if (!Array.isArray(ring[k]) || ring[k].length !== 2
+    || !isFinite(ring[k][0]) || !isFinite(ring[k][1]) || Math.abs(ring[k][1]) > 85 || Math.abs(ring[k][0]) > 180) return null
+  var rows = 0, cols = 0
+  for (var f = 0; f < report.radar.length; f++) {
+    var frame = report.radar[f], grid = frame && frame.precipitation_5
+    if (!Array.isArray(grid) || !grid.length || grid.length > RADAR_GRID_MAX_SIDE || !isFinite(Date.parse(frame.timestamp))) return null
+    if (!rows) { rows = grid.length; cols = Array.isArray(grid[0]) ? grid[0].length : 0 }
+    if (rows !== grid.length || !cols || cols > RADAR_GRID_MAX_SIDE) return null
+    for (var y = 0; y < rows; y++) {
+      if (!Array.isArray(grid[y]) || grid[y].length !== cols) return null
+      for (var x = 0; x < cols; x++) if (grid[y][x] !== null && (typeof grid[y][x] !== "number" || !isFinite(grid[y][x]) || grid[y][x] < -1 || grid[y][x] > 100000)) return null
+    }
+  }
+  if (!rows) return null
+  var a = radarStereo(ring[0][1], ring[0][0]), b = radarStereo(ring[1][1], ring[1][0]), c = radarStereo(ring[3][1], ring[3][0])
+  var col = { x: (c.x - a.x) / cols, y: (c.y - a.y) / cols }
+  var row = { x: (b.x - a.x) / rows, y: (b.y - a.y) / rows }
+  var det = col.x * row.y - col.y * row.x
+  if (Math.abs(det) < 0.01 || Math.abs(det) > 4) return null
+  return { radar: report.radar, rows: rows, cols: cols, origin: a, col: col, row: row, det: det }
+}
+function radarGridRate(report, frame, latitude, longitude) {
+  if (!report || !frame) return null
+  var p = radarStereo(latitude, longitude), dx = p.x - report.origin.x, dy = p.y - report.origin.y
+  var x = Math.floor((dx * report.row.y - dy * report.row.x) / report.det)
+  var y = Math.floor((dy * report.col.x - dx * report.col.y) / report.det)
+  if (x < 0 || x >= report.cols || y < 0 || y >= report.rows) return null
+  var value = frame.precipitation_5[y][x]
+  return value === null || value <= 0 ? null : value * 0.12 // hundredths of mm per 5 min -> mm/h
+}
 
 // ---- Map geometry. Every map picture is requested at MAP_IMAGE_WIDTH x
 //      MAP_IMAGE_HEIGHT for an extent with the same proportions in km, so one

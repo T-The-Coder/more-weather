@@ -4,6 +4,7 @@ import Quickshell.Io
 import qs.Commons
 import qs.Commons as Commons
 import "Weather" as Weather
+import "Weather/Model.js" as RadarModel
 
 // Screenshot run for tests/ui-shots.sh: the app view with the synthetic
 // weather from tests/ui/fixtures/state.py, every section as a tab, every
@@ -22,6 +23,7 @@ ShellRoot {
   }
   readonly property string shots: Quickshell.env("MW_SHOTS") || "/tmp"
   readonly property var shotsOnly: Quickshell.env("MW_SHOTS_ONLY") ? new RegExp(Quickshell.env("MW_SHOTS_ONLY")) : null
+  property var radarBeforeTest: []
   property int step: 0
   // MW_AUDIT=1: the interface audit instead (auditSteps): every view and
   // settings page at the popup's width and the app's, nothing else.
@@ -29,7 +31,7 @@ ShellRoot {
   // MW_AUDIT=glyphs: every glyph-only control's box logged with the shot it
   // is in (tests/ui/glyph-check.py measures the ink inside each box).
   readonly property bool glyphAudit: Quickshell.env("MW_AUDIT") === "glyphs"
-  readonly property var runSteps: glyphAudit ? glyphSteps : (audit ? auditSteps : steps)
+  readonly property var runSteps: Quickshell.env("MW_AUDIT") === "radar" ? fidelitySteps : glyphAudit ? glyphSteps : (audit ? auditSteps : steps)
   readonly property var tabs: ["favorites", "airQuality", "hourly", "daily", "rain", "radar", "wind", "globe"]
 
   function shot(name) { shotOf(panel.contentRoot, name) }
@@ -339,7 +341,61 @@ ShellRoot {
     function() { console.log("AUDIT DONE") }
   ])
 
-  readonly property var steps: [
+  function nativeRadarFixture() {
+    var centre = RadarModel.radarStereo(panel.mapCenterLatitude, panel.mapCenterLongitude)
+    function corner(x, y) {
+      return [10 + Math.atan2(x, -y) * 180 / Math.PI,
+        (Math.PI / 2 - 2 * Math.atan(Math.sqrt(x*x+y*y) / (6370.04 * (1 + Math.sin(Math.PI/3))))) * 180 / Math.PI]
+    }
+    var side = 64, grid = []
+    for (var y = 0; y < side; y++) {
+      var row = []
+      for (var x = 0; x < side; x++) row.push(Math.max(0, Math.round(600 * Math.exp(-Math.pow(x - 32 + (y-32)*0.4, 2) / 70) * (0.6 + 0.4 * Math.sin(y/8)))))
+      grid.push(row)
+    }
+    var timestamp = new Date().toISOString()
+    var frame = { timestamp: timestamp, precipitation_5: grid }
+    var x = centre.x - 32, y = centre.y + 32
+    var raw = { geometry: { coordinates: [[corner(x,y),corner(x,y-side),corner(x+side,y-side),corner(x+side,y)]] }, radar: [frame] }
+    panel.radarFixtureFrames = [frame]
+    panel.commitRadarFrames(panel.radarFixtureFrames)
+    panel.radarViewWorker.sendMessage({ token: panel.radarViewQuery, text: JSON.stringify(raw) })
+  }
+
+  // Also included in the complete run; the short mode supports visual iteration.
+  readonly property var fidelitySteps: [
+    function() {}, function() {},
+    function() {
+      for (var i = 0; i < tabs.length; i++) display(tabs[i] + "AsTab", true)
+      panel.activeTab = "radar"
+      panel.contentRoot.parent = fidelityHost
+      panel.radarFixtureFrames = [0, 5, 10].map(function(m) { return { timestamp: new Date(Date.now() + (m - 5) * 60000).toISOString(), rainViewer: true, fixture: true, forecast: m > 5 } })
+      panel.commitRadarFrames(panel.radarFixtureFrames)
+      panel.radarTreatment = 1
+    }, function() {}, function() {},
+    function() { check("radar-fidelity-ready-500", panel.radarHasDisplayedFrame); shotOf(panel.radarViewItem, "radar-fidelity-500-glyphs"); shotOf(panel.radarViewItem.map, "radar-fidelity-500-map-glyphs") },
+    function() { panel.radarTreatment = 0 },
+    function() { shotOf(panel.radarViewItem, "radar-fidelity-500-pixels"); shotOf(panel.radarViewItem.map, "radar-fidelity-500-map-pixels") },
+    function() { panel.radarTreatment = 2 },
+    function() { shotOf(panel.radarViewItem, "radar-fidelity-500-stipple"); shotOf(panel.radarViewItem.map, "radar-fidelity-500-map-stipple") },
+    function() { panel.radarTreatment = 1; panel.contentRoot.parent = appHost },
+    function() {},
+    function() { check("radar-fidelity-ready-840", panel.radarHasDisplayedFrame); shotOf(panel.radarViewItem, "radar-fidelity-840-glyphs"); shotOf(panel.radarViewItem.map, "radar-fidelity-840-map-glyphs") },
+    function() { panel.radarTreatment = 0 },
+    function() { shotOf(panel.radarViewItem, "radar-fidelity-840-pixels"); shotOf(panel.radarViewItem.map, "radar-fidelity-840-map-pixels") },
+    function() { panel.radarTreatment = 2 },
+    function() { shotOf(panel.radarViewItem, "radar-fidelity-840-stipple"); shotOf(panel.radarViewItem.map, "radar-fidelity-840-map-stipple") },
+    function() { panel.radarTreatment = 1; nativeRadarFixture() },
+    function() {}, function() {},
+    function() {
+      check("radar-native-grid-ready", panel.radarHasDisplayedFrame && !!panel.radarViewReport)
+      shotOf(panel.radarViewItem, "radar-fidelity-840-dwd-native")
+    },
+    function() { panel.radarTreatment = 1; panel.contentRoot.parent = widgetHost },
+    function() { panel.radarFixtureFrames = []; panel.radarFrames = []; if (Quickshell.env("MW_AUDIT") === "radar") { console.log("STATUS radar fidelity complete"); Qt.quit() } }
+  ]
+
+  readonly property var steps: fidelitySteps.concat([
     // The standalone panel waits 2.5 s for a bar instance before it takes
     // the shared (here: fixture) forecast.
     function() {},
@@ -402,7 +458,70 @@ ShellRoot {
     function() { panel.activeTab = "rain" },
     function() { shot("07-tab-rain") },
     function() { panel.activeTab = "radar" },
-    function() { shot("08-tab-radar") },
+    function() {
+      radarBeforeTest = panel.radarFrames
+      panel.radarFixtureFrames = [0, 5, 10].map(function(m) { return { timestamp: new Date(Date.now() + (m - 5) * 60000).toISOString(), rainViewer: true, fixture: true, forecast: m > 5 } })
+      panel.commitRadarFrames(panel.radarFixtureFrames)
+      panel.radarTreatment = 1
+    },
+    function() {},
+    function() {
+      check("radar-fixture-ready", panel.radarHasDisplayedFrame)
+      check("radar-default-glyphs", panel.radarTreatment === 1)
+      shot("08-tab-radar")
+    },
+    function() { panel.radarTreatment = 0 },
+    function() { panel.radarTreatment = 2; panel.radarWeakReturns = true },
+    function() {
+      panel.radarTreatment = 1; panel.radarWeakReturns = false
+      check("radar-chrome-present", !!panel.radarViewItem)
+      check("radar-tick-per-frame", panel.radarViewItem.timeline.tickCount === panel.radarPlayableFrameCount)
+      check("radar-displayed-stamp", panel.radarStripStamp.indexOf(" · ") >= 0)
+      check("radar-forecast-tick", panel.radarFrameIsForecast(panel.radarFrames[2]))
+      press(Qt.Key_1, "1", Qt.ControlModifier)
+      check("radar-pixels-key", panel.radarTreatment === 0 && panel.activeTab === "radar")
+      press(Qt.Key_3, "3", Qt.ControlModifier)
+      check("radar-stipple-key", panel.radarTreatment === 2)
+      press(Qt.Key_2, "2", Qt.ControlModifier)
+      press(Qt.Key_W, "W", Qt.ShiftModifier)
+      check("radar-weak-key", panel.radarWeakReturns)
+      press(Qt.Key_W, "W", Qt.ShiftModifier)
+      panel.scrubRadarFrame(1)
+      panel.toggleRadarPlayback()
+      check("radar-selected-loop", panel.radarLoopStartTimestamp === panel.radarFrames[1].timestamp)
+      panel.toggleRadarPlayback()
+      check("radar-pause-keeps-selection", panel.radarFrameIndex === 1)
+      press(Qt.Key_Home)
+      check("radar-first-key", panel.radarFrameIndex === panel.radarFirstFrameIndex)
+      press(Qt.Key_End)
+      check("radar-last-key", panel.radarFrameIndex === panel.radarFrames.length - 1)
+      press(Qt.Key_F, "f")
+    },
+    function() {
+      check("radar-focus-map-alone", panel.radarFocus && panel.radarViewItem.map.parent === panel.contentRoot)
+      shot("08b-radar-focus")
+    },
+    function() {
+      press(Qt.Key_Question, "?")
+      check("radar-help-keeps-global-settings", panel.settingsOpen && panel.settingsPage === "shortcuts")
+      panel.settingsOpen = false
+      press(Qt.Key_Slash, "/")
+      check("radar-focus-search-visible", panel.editingLocation && !panel.radarFocus)
+      panel.cancelEditingLocation()
+      press(Qt.Key_1, "1")
+      check("radar-global-tabs-kept", panel.activeTab === panel.displayTabs[0])
+      panel.activeTab = "radar"
+    },
+    function() { panel.contentRoot.parent = appHost },
+    function() {
+      check("radar-full-layout", panel.radarViewItem.layoutMode === "FULL")
+      shot("08c-radar-full")
+    },
+    function() { panel.contentRoot.parent = widgetHost },
+    function() {
+      check("radar-lean-layout", panel.radarViewItem.layoutMode === "LEAN")
+      panel.radarFixtureFrames = []; panel.radarFrames = radarBeforeTest
+    },
     function() { panel.activeTab = "wind" },
     function() { shot("09-tab-wind") },
     function() { panel.activeTab = "globe" },
@@ -438,7 +557,7 @@ ShellRoot {
       panel.setViewDisplaySetting("globeIsobars", true)
       panel.setViewDisplaySetting("globeStorms", true)
     }
-  ].concat(globeMeasures("500"), [
+  ]).concat(globeMeasures("500"), [
     function() { panel.contentRoot.parent = globeHostLarge }
   ], globeMeasures("840"), [
     // Auto-rotation's share of a core with everything on: four seconds of
@@ -664,7 +783,7 @@ ShellRoot {
     // The fixture went through the picture store: its cache holds rewritten
     // copies without the fixture's text chunks, and no raw download is left.
     function() {
-      cacheList.command = ["bash", "-c", "cd \"$1\" || exit 1; ls | grep -c -- '-p1\\.png$'; echo '|'; "
+      cacheList.command = ["bash", "-c", "cd \"$1\" || exit 1; ls | grep -c -- '-p2-[0-9]*\\.png$'; echo '|'; "
         + "grep -l -a -e tEXt -e zTXt -- *.png | wc -l; echo '|'; ls | grep -c 'part$'; echo '|'; "
         + "grep -c -a -e tEXt -e zTXt -- \"$2\"", "list", panel.mapImages.cacheDir, panel.globeItem.radarItem.fixture]
       cacheList.running = true
@@ -816,7 +935,7 @@ ShellRoot {
       var data = panel.globeData
       for (var i = 0; i < data.steps.length; i++) {
         var v = panel.moonViewAt(panel.mapCenterLatitude, panel.mapCenterLongitude, data.steps[i])
-        if (v && !v.aboveHorizon) { data.showStep(i); break }
+        if (i !== data.nowIndex && v && v.altitude < -5) { data.showStep(i); break }
       }
     },
     function() {}, function() {
@@ -1021,6 +1140,19 @@ ShellRoot {
       panel.contentRoot.parent = widgetHost
     },
     function() { shot("24-widget") },
+    function() {
+      panel.activeTab = "radar"
+      radarBeforeTest = panel.radarFrames
+      panel.radarFixtureFrames = [0, 5, 10].map(function(m) { return { timestamp: new Date(Date.now() + (m - 5) * 60000).toISOString(), rainViewer: true, fixture: true, forecast: m > 5 } })
+      panel.commitRadarFrames(panel.radarFixtureFrames)
+    },
+    function() {},
+    function() {
+      check("radar-popover-compact", panel.radarViewItem && panel.radarViewItem.compact)
+      check("radar-popover-transport", panel.radarViewItem.timeline.tickCount === 3)
+      shot("24b-widget-radar")
+    },
+    function() { panel.radarFixtureFrames = []; panel.radarFrames = radarBeforeTest; panel.activeTab = "daily" },
     // The menu bar with "Colour the values" set to always: a bar widget
     // of its own (with its own panel), which reads the stored settings.
     function() {
@@ -1144,6 +1276,13 @@ ShellRoot {
       height: 32
       sourceComponent: Component { Weather.BarWidget { height: 32 } }
     }
+  }
+
+  FloatingWindow {
+    visible: true
+    implicitWidth: 532
+    implicitHeight: 1100
+    Item { id: fidelityHost; anchors.fill: parent; anchors.margins: 16 }
   }
 
   // The app's width for the audit: 840 inside its padding.

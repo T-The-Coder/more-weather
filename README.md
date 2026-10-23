@@ -66,24 +66,40 @@ runs as a standalone app window.
   the Netherlands and Belgium from Buienradar, in Japan from JMA's one-hour radar
   nowcast.
 - **Rain radar:**
-  - Official radar in the DWD area, the USA, Canada, Finland, the Netherlands and
-    Japan; RainViewer elsewhere.
-  - Animated frames with a timeline under the map (after Weather Radar): play/pause, a
-    notched track to drag or click through the frames with a mark for now and the
-    forecast part tinted, and the frame's time. Plus zoom and distance rings around the
-    place.
-  - A map drawn in the theme's colours (land, lakes, towns, rivers, borders from Natural
-    Earth, shipped with the plugin, so it needs no network), or the satellite picture as
-    a map style. Drag it or use Ctrl + arrow keys to move it, Ctrl + wheel zooms towards
-    the pointer (a plain wheel scrolls the page), `0` or the crosshair button returns to
-    the place. Town names come from OpenStreetMap in your language, with Natural Earth's
-    larger towns filling in offline or where OpenStreetMap has none. The wind map shares the same view.
-  - Downloaded radar and map pictures are rewritten to picture data only before they are
-    cached and decoded: text, colour profiles and any other PNG metadata are left out.
-  - City labels, plus a drift arrow at the map's true scale, marked in round steps from
-    5 minutes up to two hours (three or four when zoomed far out), so it keeps its time
-    labels at every zoom. It follows the frame on screen and is tracked from the radar itself in the
-    DWD area; elsewhere it uses the model wind at about 3 km (700 hPa).
+  - Official sources in Germany (DWD), the USA (NWS), Canada (ECCC), Finland
+    (FMI), the Netherlands (KNMI) and Japan (JMA); RainViewer elsewhere.
+  - An Omastorm-inspired picture: quiet geography, sparse labels, range rings,
+    a crosshair at the place, a km/mi scale bar and on-screen attribution.
+    The optional satellite background and existing pan/zoom gestures remain.
+  - Pixels, Glyphs (default) and Stipple paint the same sampled cell and
+    palette. RainViewer uses encoded dBZ; DWD native 1 km grids and JMA rain-rate classes use
+    approximate dBZ (Z=200 R^1.6). NWS/ECCC/FMI/KNMI keep their **provider
+    colours**, explicitly named in the legend. The model fallback remains
+    labelled as model precipitation. These colours are not warning levels.
+  - Returns below 5 dBZ are hidden by default, named in the legend and
+    toggled with **Shift+W**. **Ctrl+1/2/3** selects the treatment. Bare
+    `1–9` still changes tabs and `w` still opens the weather service.
+  - Source, product, age of the displayed picture and feed health sit above
+    the map. The light turns yellow after ten minutes without a new observation
+    and red when the source is unreachable. Forecast frames cannot hide a stale
+    feed. The stamp shows the actual frame date, local time and explicit zone,
+    using the system locale's date order and 12/24-hour clock.
+  - First/previous/play/next/last controls and one tick per frame sit below
+    the legend. Outlined ticks are forecasts. Play loops from the selected
+    picture through the last available frame, including nowcasts, then wraps;
+    starting on the last picture loops the whole available series. Pause keeps
+    the picture. The frame count and stamp follow the picture actually ready.
+  - FULL shows all rows; LEAN drops the extra heading and colour strip at small
+    sizes, retaining the legend explanation. **f** gives the map the entire
+    content area, with its status/time/age stamp; press it again to return.
+    The popup uses compact source/status, map, product/time and transport.
+    **?** opens Settings → Shortcuts. Focus lasts only until the panel closes.
+  - Frames and tiles still pass through the bounded, sanitizing image store.
+    There are no new network hosts or runtime binaries. Viewport-sized WMS requests and bounded native tile mosaics avoid enlarging
+    a single low-resolution picture. Software rendering
+    uses the same palette and cell masks for radar frames; the globe's software
+    wash keeps its coarser sampling. See [the design](docs/radar-rebuild.md)
+    for source decisions and limits.
 - **Wind map:** After RegenVorschau: the wind speed as a colour wash (deep blue for calm
   through cyan, green and yellow to red and violet for storms, with a legend) and white
   streaks drifting with the wind, faster where it blows harder, from a 35-point model
@@ -210,15 +226,20 @@ too, and the settings name their keys where they apply.
 | `Alt ← →` | Previous / next favourite |
 | `/` / `Enter` | Search a place |
 | **Scrolling** | |
-| `↑ ↓` / `j k` | Scroll |
+| `↑ ↓` / `j k` | Scroll (pan while Radar is active) |
 | `PgUp` / `PgDn` | Scroll a page |
-| `Home` / `End` | To the top / bottom |
+| `Home` / `End` | To the top / bottom (first / last frame in Radar) |
 | `← →` / `h l` | Scroll the daily forecast |
 | `⇧ ← →` | Show another hour in the current weather |
 | `⌫` / `Esc` | Back to now |
 | **Tabs and maps** | |
 | `1`–`9` | The tabs, in their order |
-| `← →` / `h l` | Radar: previous / next frame |
+| `h j k l` / arrows | Radar: pan (Shift+←/→ keep the hour cursor) |
+| `[` / `]` | Radar: previous / next frame |
+| `Ctrl+1` / `Ctrl+2` / `Ctrl+3` | Radar: Pixels / Glyphs / Stipple |
+| `Shift+W` | Radar: show / hide weak returns |
+| `f` | Radar: Focus on / off |
+| `?` | Radar: open the shortcuts page |
 | `Space` | Radar: play / pause |
 | `+` / `−` | Map: zoom in / out |
 | `0` | Map: back to the place |
@@ -433,9 +454,12 @@ The version appears in `manifest.json` and in the user agent of
 `tests/ui-shots.sh` runs the app view offscreen with a throwaway home and
 runtime directory, synthetic weather for Tórshavn (`tests/ui/fixtures/state.py`)
 and no network (`MORE_PLUGINS_OFFLINE=1`), and saves a picture of every tab,
-the search, every settings page and the popup's view; radar pictures are not
-downloaded, so the radar tab shows its model fallback. Offscreen, Qt draws on
-its software scene graph, so this tests the globe's Canvas path.
+the search, every settings page and the popup's view. A synthetic monochrome
+radar fixture goes through the sanitizing image store; checks cover treatment
+keys, frame ticks, forecast distinction, selection playback, Focus and global
+key preservation. Offscreen, Qt uses its software scene graph, testing the
+radar fallback and globe Canvas path. Shader compilation checks all shipped
+variants; live GPU appearance still needs visual review.
 
 The globe's surface runs on the GPU up to z2 (`GLOBE-SHADER.md`: an
 equirectangular texture, `shaders/globe.frag`, rebuilt with
@@ -467,3 +491,7 @@ weather widget (MIT).
 
 Map data © OpenStreetMap contributors. Radar and map imagery © DWD, NOAA/NWS, ECCC,
 RainViewer and NASA Blue Marble. Weather data by Open-Meteo, MET Norway, Bright Sky/DWD and MeteoAlarm.
+
+## Credits
+
+The radar view follows [Omastorm by Wes Grimes](https://github.com/wesleygrimes/omastorm), MIT. Adapted code and the full licence are listed in [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).

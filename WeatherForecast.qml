@@ -21,7 +21,7 @@ Column {
   spacing: Style.space(10)
 
   Rectangle {
-    visible: !forecastSection.inTab && !forecastSection.leading
+    visible: !forecastSection.isRadar && !forecastSection.inTab && !forecastSection.leading
     width: parent.width
     height: Style.spacing.hairline
     color: panel.foreground
@@ -29,6 +29,7 @@ Column {
   }
 
   Row {
+    visible: !forecastSection.isRadar
     width: parent.width
 
     Text {
@@ -87,20 +88,11 @@ Column {
 
   Loader {
     width: parent.width
-    height: forecastSection.panel.mapViewHeight(width)
+    height: item ? item.implicitHeight : 0
     visible: active
     active: forecastSection.isRadar && forecastSection.panel.radarShown
     onActiveChanged: if (!active) forecastSection.panel.resetRadarDisplay()
-    sourceComponent: Component { WeatherRadarMap { panel: forecastSection.panel } }
-  }
-
-  // Play, scrub and the frame's time, under the map (after Weather Radar).
-  Loader {
-    width: parent.width
-    height: Style.space(34)
-    visible: active
-    active: forecastSection.isRadar && forecastSection.panel.radarShown
-    sourceComponent: Component { WeatherRadarTimeline { panel: forecastSection.panel } }
+    sourceComponent: Component { WeatherRadarView { panel: forecastSection.panel; compact: !forecastSection.panel.standaloneMode } }
   }
 
   Loader {

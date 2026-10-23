@@ -1,4 +1,5 @@
 import QtQuick
+import qs.Commons as Commons
 
 // The ground under the radar and wind maps: drawn in the theme's colours
 // (WeatherBasemap), or the satellite picture for the view. Until the picture
@@ -7,6 +8,7 @@ import QtQuick
 Item {
   id: ground
   required property var panel
+  property bool quiet: false
   // The view's cropped map picture (Model.mapViewport).
   required property var viewport
   readonly property bool drawn: panel.mapStyle !== "satellite"
@@ -29,6 +31,7 @@ Item {
     anchors.fill: parent
     visible: ground.drawn
     panel: ground.panel
+    quiet: ground.quiet
     viewport: ground.viewport
   }
   WeatherStalePicture {

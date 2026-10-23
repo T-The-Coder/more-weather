@@ -20,7 +20,11 @@ mkdir -p "$out" "$work/config" "$work/home/.local/state/omarchy/current" "$work/
 chmod 700 "$work/run"
 ln -s "$shell/Commons" "$work/config/Commons"
 ln -s "$shell/Ui" "$work/config/Ui"
-ln -s "$root" "$work/config/Weather"
+# Freeze the tested revision: Quickshell otherwise hot-reloads the symlinked
+# worktree during a long run, restarting its checks and invalidating results.
+mkdir -p "$work/config/Weather"
+cp "$root"/*.qml "$root"/*.js "$root"/*.mjs "$root"/manifest.json "$root"/CHANGELOG.md "$work/config/Weather/"
+cp -r "$root/i18n" "$root/shaders" "$root/data" "$root/app" "$work/config/Weather/"
 cp "$root/tests/ui/shell.qml" "$work/config/shell.qml"
 # MW_THEME=<theme directory> shoots in another theme than the current one.
 theme="${MW_THEME:-$HOME/.local/state/omarchy/current/theme}"
@@ -34,8 +38,9 @@ echo on > "$work/dpms"
 # No session bus: a warning that comes due during the run notifies no one.
 # The XDG directories default to the throwaway HOME.
 env -u DBUS_SESSION_BUS_ADDRESS -u XDG_DATA_HOME -u XDG_CONFIG_HOME -u XDG_STATE_HOME PATH="$work/bin:$PATH" FAKE_DPMS="$work/dpms" HOME="$work/home" XDG_RUNTIME_DIR="$work/run" XDG_CACHE_HOME="$work/home/.cache" \
-  MW_SHOTS="$out" MW_SHOTS_ONLY="${MW_SHOTS_ONLY:-}" MW_AUDIT="${MW_AUDIT:-}" MW_RADAR_FIXTURE="$work/home/radar-tile.png" MORE_PLUGINS_OFFLINE=1 QT_QPA_PLATFORM=offscreen \
+  MW_SHOTS="$out" MW_SHOTS_ONLY="${MW_SHOTS_ONLY:-}" MW_AUDIT="${MW_AUDIT:-}" MW_RADAR_FIXTURE="$work/home/radar-tile.png" MORE_PLUGINS_OFFLINE=1 QT_QPA_PLATFORMTHEME=generic QT_QPA_PLATFORM=offscreen \
   timeout 600 qs -n -p "$work/config" >"$work/log.txt" 2>&1
+run_status=$?
 echo "log: $work/log.txt"
 echo "shots: $out"
 python3 "$root/tests/ui/rim-check.py" "$work/log.txt" "$out" >>"$work/log.txt"
@@ -44,9 +49,18 @@ grep -E "SHOT|STATUS|CHECK|GLOBE|STEP FAILED|ERROR|WARN|Error|error" "$work/log.
 # Script errors fail the run: a TypeError, a ReferenceError or an undefined
 # assigned to a property (as when a type of a newer Qt hides a singleton)
 # is breakage even when every picture was taken.
-errors=$(grep -E "TypeError|ReferenceError|Unable to assign \[undefined\]" "$work/log.txt")
+errors=$(grep -E "TypeError|ReferenceError|Unable to assign \[undefined\]|CHECK FAILED|STEP FAILED|Shader baking failed|Radar paint shader:" "$work/log.txt")
 if [ -n "$errors" ]; then
   echo "SCRIPT ERRORS:"
   echo "$errors" | sort | uniq -c | sort -rn | head -40
   exit 1
+fi
+
+[ "$run_status" -eq 0 ] || { echo "UI harness exited $run_status"; exit 1; }
+if [ -z "${MW_AUDIT:-}" ]; then
+  grep -q "STATUS" "$work/log.txt" || { echo "UI harness did not finish"; exit 1; }
+fi
+
+if [ -z "${MW_SHOTS_ONLY:-}" ] && { [ -z "${MW_AUDIT:-}" ] || [ "${MW_AUDIT:-}" = radar ]; }; then
+  python3 "$root/tests/ui/radar-fidelity-check.py" "$out" || exit 1
 fi

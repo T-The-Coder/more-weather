@@ -1,3 +1,4 @@
+// Adapted from Omastorm by Wes Grimes (https://github.com/wesleygrimes/omastorm), MIT licence; see THIRD-PARTY-NOTICES.md
 import QtQuick
 import QtQuick.Window
 import qs.Commons
@@ -5,9 +6,10 @@ import qs.Commons as Commons
 import qs.Ui
 import "Providers.js" as Providers
 import "Model.js" as Model
+import "RadarStyle.js" as RadarStyle
 
-// Radar frames over the context basemap with place labels, the wind-drift
-// arrow and playback controls. Loaded only while the radar tab is shown; the
+// Native radar frames over quiet geography with place labels, rings,
+// a crosshair, scale and playback controls. Loaded only while the radar tab is shown; the
 // frame images are already fetched in the background by WeatherMapPrefetch.
 Item {
   id: radarMapItem
@@ -20,11 +22,14 @@ Item {
   height: panel.mapViewHeight(width)
   clip: true
 
+  WeatherRadarPalette { id: palette }
+
   // Where the cropped map picture lies in this view; every overlay uses it.
   readonly property var viewport: Model.mapViewport(width, height, panel.mapRadiusKm)
-  readonly property real rainViewerTilePixels:
-    Model.rainViewerTile(panel.mapRadiusKm, panel.mapViewLatitude).sizeKm * viewport.pixelsPerKm
-  // The place on the map: marker, drift arrow, rings and its label sit
+  Binding { target: panel; property: "radarStageWidth"; value: radarMapItem.width; restoreMode: Binding.RestoreNone }
+  Binding { target: panel; property: "radarStageHeight"; value: radarMapItem.height; restoreMode: Binding.RestoreNone }
+  Binding { target: panel; property: "radarDeviceRatio"; value: Screen.devicePixelRatio || 1; restoreMode: Binding.RestoreNone }
+  // The place on the map: crosshair, rings and its label sit
   // here, which is the centre until the map is moved.
   readonly property var placePoint: Model.mapPoint(viewport,
     panel.forecastRequestLatitude || panel.mapCenterLatitude,
@@ -58,7 +63,7 @@ Item {
   function keepPictures() {
     var frame = frameRepeater.itemAt(panel.radarDisplayedFrameIndex)
     if (frame && frame.status === Image.Ready && frame.visible)
-      staleFrame = { source: frame.source, extent: extentOf(frame) }
+      staleFrame = { source: frame.source, extent: extentOf(frame), mode: frame.paintMode }
     else if (!panel.radarHasDisplayedFrame && staleFrame) {
       // Still waiting since the last move: keep the older picture.
     } else staleFrame = null
@@ -85,15 +90,27 @@ Item {
     WeatherMapGround {
       anchors.fill: parent
       panel: radarMapItem.panel
+      quiet: true
       viewport: radarMapItem.viewport
     }
 
     // The last frame at its old place until the frame for the new view is in.
-    WeatherStalePicture {
-      picture: radarMapItem.staleFrame
+    WeatherRadarFrame {
+      readonly property var picture: radarMapItem.staleFrame
+      readonly property var northWest: picture ? Model.mapPoint(radarMapItem.viewport, picture.extent.north, picture.extent.west,
+        panel.mapWest, panel.mapEast, panel.mapSouth, panel.mapNorth) : ({ x: 0, y: 0 })
+      readonly property var southEast: picture ? Model.mapPoint(radarMapItem.viewport, picture.extent.south, picture.extent.east,
+        panel.mapWest, panel.mapEast, panel.mapSouth, panel.mapNorth) : ({ x: 0, y: 0 })
+      source: picture ? picture.source : ""
+      x: northWest.x; y: northWest.y
+      width: Math.max(0, southEast.x - northWest.x)
+      height: Math.max(0, southEast.y - northWest.y)
+      fillMode: Image.Stretch
       visible: !panel.radarHasDisplayedFrame
-      viewport: radarMapItem.viewport
-      panel: radarMapItem.panel
+      swatches: palette.texture
+      sourceMode: picture ? picture.mode : 0
+      treatment: panel.radarTreatment
+      weakReturns: panel.radarWeakReturns
     }
 
     // Keep every frame as a live Image item and only change which one
@@ -102,19 +119,17 @@ Item {
     Repeater {
       id: frameRepeater
       model: panel.radarFrames
-      WeatherRemoteImage {
-        // A RainViewer tile has its own scale and is square: it is drawn at
-        // that scale around the centre instead of being stretched over the
-        // view. Map pictures fill the view like the basemap.
-        readonly property bool tile: !!modelData.rainViewer
-        width: tile ? radarMapItem.rainViewerTilePixels : radarMapItem.width
-        height: tile ? radarMapItem.rainViewerTilePixels : radarMapItem.height
-        x: (radarMapItem.width - width) / 2
-        y: (radarMapItem.height - height) / 2
-        store: panel.mapImages
-        remoteUrl: panel.radarFrameUrl(modelData)
+      WeatherRadarLayerFrame {
+        required property var modelData
+        required property int index
+        anchors.fill: parent
+        panel: radarMapItem.panel
+        frameData: modelData
+        viewport: radarMapItem.viewport
+        swatches: palette.texture
         load: panel.radarFrameLoadAllowed(index)
         visible: index === panel.radarDisplayedFrameIndex && status === Image.Ready && !jmaLayer.covering
+        onRendered: panel.updateRadarFrameReady(index, true)
         onStatusChanged: if (status !== Image.Error) panel.updateRadarFrameStatus(index, status, modelData)
         onFailed: panel.updateRadarFrameStatus(index, Image.Error, modelData)
         Component.onCompleted: panel.updateRadarFrameStatus(index, status, modelData)
@@ -124,6 +139,7 @@ Item {
     // Japan: JMA's radar tiles over the frames above (WeatherJmaRadarLayer).
     WeatherJmaRadarLayer {
       id: jmaLayer
+      swatches: palette.texture
       anchors.fill: parent
       panel: radarMapItem.panel
       viewport: radarMapItem.viewport
@@ -174,7 +190,7 @@ Item {
           var ink = radarMapItem.panel.foreground
           var surface = Commons.Color.popups.background
           ctx.lineWidth = 3
-          ctx.strokeStyle = drawn ? Qt.rgba(surface.r, surface.g, surface.b, 0.5) : "rgba(0,0,0,0.25)"
+          ctx.strokeStyle = Qt.rgba(surface.r, surface.g, surface.b, 0.5)
           for (var s = 0; s < distanceRings.radii.length; ++s) {
             ctx.beginPath()
             ctx.arc(distanceRings.center.x, distanceRings.center.y,
@@ -182,7 +198,7 @@ Item {
             ctx.stroke()
           }
           ctx.lineWidth = 1
-          ctx.strokeStyle = drawn ? Qt.rgba(ink.r, ink.g, ink.b, 0.45) : "rgba(255,255,255,0.6)"
+          ctx.strokeStyle = Qt.rgba(ink.r, ink.g, ink.b, 0.18)
           for (var i = 0; i < distanceRings.radii.length; ++i) {
             ctx.beginPath()
             ctx.arc(distanceRings.center.x, distanceRings.center.y,
@@ -200,11 +216,11 @@ Item {
           required property real modelData
           x: distanceRings.center.x - implicitWidth / 2
           y: distanceRings.center.y - modelData * distanceRings.pixelsPerUnit - implicitHeight / 2
-          text: radarMapItem.panel.localizedNumber(modelData) + (distanceRings.imperial ? " mi" : " km")
-          color: radarMapItem.drawnMap ? radarMapItem.panel.foreground : "white"
-          opacity: 0.9
+          text: panel.i18n(distanceRings.imperial ? "radarDistanceMi" : "radarDistanceKm", { count: panel.localizedNumber(modelData) })
+          color: Commons.Color.popups.text
+          opacity: 0.45
           style: Text.Outline
-          styleColor: radarMapItem.drawnMap ? Commons.Color.popups.background : "#99000000"
+          styleColor: Commons.Color.popups.background
           font.family: radarMapItem.panel.fontFamily
           font.pixelSize: Style.font.caption
         }
@@ -218,7 +234,16 @@ Item {
     Canvas {
       anchors.fill: parent
       visible: panel.radarUsesModelFallback
+      layer.enabled: visible && GraphicsInfo.api !== GraphicsInfo.Software
+      layer.effect: WeatherRadarPaint {
+        swatches: palette.texture
+        sourceMode: 1
+        treatment: panel.radarTreatment
+        weakBelow: panel.radarWeakReturns ? -32 : 5
+      }
       property var gridData: panel.precipitationGrid
+      property bool weakReturns: panel.radarWeakReturns
+      onWeakReturnsChanged: requestPaint()
       property real west: panel.mapWest
       property real east: panel.mapEast
       property real south: panel.mapSouth
@@ -237,10 +262,10 @@ Item {
         if (!grid.length || panel.mapEast === panel.mapWest || panel.mapNorth === panel.mapSouth) return
         if (grid.length === 1) {
           var pointAmount = Math.max(0, Number(grid[0].precipitation || 0))
-          if (pointAmount >= 0.02) {
-            ctx.fillStyle = pointAmount >= 40 ? "rgba(188,46,219,0.52)"
-              : (pointAmount >= 4 ? "rgba(227,67,55,0.46)"
-                : (pointAmount >= 0.5 ? "rgba(246,183,52,0.40)" : "rgba(58,151,224,0.34)"))
+          if (pointAmount >= 0.02 && (weakReturns || RadarStyle.rateDbz(pointAmount) >= 5)) {
+            var code = Math.max(1, Math.min(127, Math.round(RadarStyle.rateDbz(pointAmount) + 32)))
+            ctx.fillStyle = GraphicsInfo.api === GraphicsInfo.Software ? RadarStyle.rateColor(pointAmount)
+              : "rgb(" + code + "," + code + "," + code + ")"
             ctx.fillRect(0, 0, width, height)
           }
           return
@@ -251,14 +276,14 @@ Item {
         var cellHeight = viewport.renderedHeight / 4 * 1.08
         for (var i = 0; i < grid.length; ++i) {
           var amount = Math.max(0, Number(grid[i].precipitation || 0))
-          if (amount < 0.02) continue
+          if (amount < 0.02 || (!weakReturns && RadarStyle.rateDbz(amount) < 5)) continue
           var point = Model.mapPoint(viewport, grid[i].latitude, grid[i].longitude,
             panel.mapWest, panel.mapEast, panel.mapSouth, panel.mapNorth)
           var x = point.x
           var y = point.y
-          ctx.fillStyle = amount >= 40 ? "rgba(188,46,219,0.82)"
-            : (amount >= 4 ? "rgba(227,67,55,0.76)"
-              : (amount >= 0.5 ? "rgba(246,183,52,0.70)" : "rgba(58,151,224,0.62)"))
+          var code = Math.max(1, Math.min(127, Math.round(RadarStyle.rateDbz(amount) + 32)))
+          ctx.fillStyle = GraphicsInfo.api === GraphicsInfo.Software ? RadarStyle.rateColor(amount)
+            : "rgb(" + code + "," + code + "," + code + ")"
           ctx.fillRect(x - cellWidth / 2, y - cellHeight / 2, cellWidth, cellHeight)
         }
       }
@@ -418,120 +443,22 @@ Item {
           }
           if (collides) continue
 
-          ctx.fillStyle = "rgba(244,246,248,0.60)"
+          ctx.fillStyle = String(labelColor)
           ctx.beginPath()
           ctx.arc(pointX, pointY, 1.6, 0, Math.PI * 2)
           ctx.fill()
-          drawMapLabel(name, textX, pointY, String(labelColor), 0.94, 0.76)
+          drawMapLabel(name, textX, pointY, String(labelColor), 0.65, 0.76)
           occupied.push(labelRect)
           drawn++
         }
       }
     }
 
-    Canvas {
-      id: frontArrowCanvas
-      anchors.fill: parent
-      property var motionData: panel.radarDrift
-      property color arrowColor: panel.foreground
-      property real pixelsPerKm: radarMapItem.viewport.pixelsPerKm
-      property var anchorPoint: radarMapItem.placePoint
-      onAnchorPointChanged: requestPaint()
-      onMotionDataChanged: requestPaint()
-      onArrowColorChanged: requestPaint()
-      onPixelsPerKmChanged: requestPaint()
-      onWidthChanged: requestPaint()
-      onHeightChanged: requestPaint()
-      onPaint: {
-        var ctx = getContext("2d")
-        ctx.clearRect(0, 0, width, height)
-        // Radar-tracked where possible, else the 700 hPa or surface wind
-        // (Model.rainDriftAt), for the time of the frame on screen. Drawn at
-        // the map's true scale: the tail is where the rain was the labelled
-        // time before it reaches the place (Model.driftArrow).
-        var arrow = Model.driftArrow(motionData, pixelsPerKm, width, height, 46, 22)
-        if (!arrow) return
-        var dx = arrow.dx
-        var dy = arrow.dy
-        // Slow rain still gets a visible arrow; its labels are dropped below.
-        var length = Math.max(18, arrow.length)
-        var headX = radarMapItem.placePoint.x
-        var headY = radarMapItem.placePoint.y
-        var tailX = headX - dx * length
-        var tailY = headY - dy * length
-        var normalX = -dy
-        var normalY = dx
-
-        ctx.lineCap = "round"
-        ctx.lineJoin = "round"
-        ctx.strokeStyle = "rgba(0,0,0,0.58)"
-        ctx.lineWidth = 5
-        ctx.beginPath(); ctx.moveTo(tailX, tailY); ctx.lineTo(headX, headY); ctx.stroke()
-        ctx.strokeStyle = String(arrowColor)
-        ctx.lineWidth = 2.5
-        ctx.beginPath(); ctx.moveTo(tailX, tailY); ctx.lineTo(headX, headY); ctx.stroke()
-
-        // Arrow head at the location and the T-shaped upstream origin,
-        // matching the RegenVorschau convention.
-        ctx.beginPath()
-        ctx.moveTo(headX, headY)
-        ctx.lineTo(headX - dx * 11 + normalX * 6, headY - dy * 11 + normalY * 6)
-        ctx.moveTo(headX, headY)
-        ctx.lineTo(headX - dx * 11 - normalX * 6, headY - dy * 11 - normalY * 6)
-        ctx.moveTo(tailX + normalX * 11, tailY + normalY * 11)
-        ctx.lineTo(tailX - normalX * 11, tailY - normalY * 11)
-        ctx.stroke()
-
-        // Middle waypoint with a shorter crossbar than the origin.
-        var middle = null
-        for (var m = 0; m < arrow.marks.length; ++m) if (arrow.marks[m].fraction < 1) middle = arrow.marks[m]
-        if (middle) {
-          var middleX = headX - dx * length * middle.fraction
-          var middleY = headY - dy * length * middle.fraction
-          ctx.beginPath()
-          ctx.moveTo(middleX + normalX * 7, middleY + normalY * 7)
-          ctx.lineTo(middleX - normalX * 7, middleY - normalY * 7)
-          ctx.stroke()
-        }
-
-        // In near-calm air, or when not even 5 minutes fit, the arrow is too
-        // short for honest time labels; the crossbars alone show the drift.
-        if (!arrow.minutes || arrow.length < 36) return
-
-        ctx.font = panel.canvasFont(Style.font.bodySmall, true)
-        ctx.textAlign = "center"
-        ctx.textBaseline = "middle"
-        function drawTimeLabel(text, x, y) {
-          var labelWidth = ctx.measureText(text).width + 12
-          var labelHeight = 20
-          var left = Math.max(2, Math.min(width - labelWidth - 2, x - labelWidth / 2))
-          var top = Math.max(2, Math.min(height - labelHeight - 2, y - labelHeight / 2))
-          ctx.fillStyle = "rgba(244,246,248,0.90)"
-          ctx.fillRect(left, top, labelWidth, labelHeight)
-          ctx.fillStyle = "#111820"
-          ctx.fillText(text, left + labelWidth / 2, top + labelHeight / 2 + 1)
-        }
-        // The two labels sit on opposite sides of the line so they cannot
-        // merge when the arrow is short.
-        drawTimeLabel(Model.driftTimeLabel(arrow.minutes), tailX - normalX * 34, tailY - normalY * 34)
-        // The middle label only where the two cannot crowd each other.
-        if (middle && arrow.length >= 80) {
-          var middleLabelX = headX - dx * length * middle.fraction + normalX * 34
-          var middleLabelY = headY - dy * length * middle.fraction + normalY * 34
-          drawTimeLabel(Model.driftTimeLabel(middle.minutes), middleLabelX, middleLabelY)
-        }
-      }
-    }
-
-    Rectangle {
-      x: radarMapItem.placePoint.x - width / 2
-      y: radarMapItem.placePoint.y - height / 2
-      width: 12
-      height: 12
-      radius: 6
-      color: "transparent"
-      border.color: "#ff3b30"
-      border.width: 3
+    Item {
+      x: radarMapItem.placePoint.x
+      y: radarMapItem.placePoint.y
+      Rectangle { x: -8; y: -0.5; width: 16; height: 1; color: Qt.alpha(Commons.Color.popups.text, 0.45) }
+      Rectangle { x: -0.5; y: -8; width: 1; height: 16; color: Qt.alpha(Commons.Color.popups.text, 0.45) }
     }
   }
 
@@ -544,6 +471,7 @@ Item {
 
   WeatherMapZoomControls {
     id: radarZoomControls
+    showScale: false
     panel: radarMapItem.panel
     mapItem: radarMapItem
     anchors.right: parent.right
@@ -551,13 +479,50 @@ Item {
     anchors.margins: Style.space(8)
   }
 
-  WeatherMapAttribution {
-    panel: radarMapItem.panel
-    credits: (radarMapItem.panel.radarDisplayProviderId === "jma"
-      ? [["Radar © JMA", "https://www.jma.go.jp/bosai/nowc/"]]
-      : (radarMapItem.panel.radarActiveProviderId === "rainviewer"
-        ? [["Radar © RainViewer", "https://www.rainviewer.com/"]] : []))
-      .concat(radarMapItem.drawnMap ? [["Natural Earth", "https://www.naturalearthdata.com/"]] : [])
+  Rectangle {
+    id: scaleBar
+    anchors.left: parent.left
+    anchors.bottom: parent.bottom
+    anchors.margins: Style.space(8)
+    readonly property var distance: RadarStyle.scaleBar(radarMapItem.viewport.pixelsPerKm, Style.space(80), panel.useImperial)
+    width: Style.space(94)
+    height: Style.space(28)
+    color: Commons.Color.popups.background
+    opacity: 0.9
+    Text {
+      textFormat: Text.PlainText
+      anchors.horizontalCenter: parent.horizontalCenter
+      text: panel.i18n(panel.useImperial ? "radarDistanceMi" : "radarDistanceKm", { count: panel.localizedNumber(scaleBar.distance.value) })
+      color: Commons.Color.popups.text
+      font.family: panel.fontFamily
+      font.pixelSize: Style.font.caption
+    }
+    Rectangle {
+      anchors.bottom: parent.bottom
+      anchors.bottomMargin: Style.space(4)
+      anchors.horizontalCenter: parent.horizontalCenter
+      width: scaleBar.distance.pixels
+      height: Style.spacing.hairline
+      color: Commons.Color.popups.text
+      Rectangle { width: Style.spacing.hairline; height: Style.space(5); anchors.bottom: parent.bottom; color: Qt.alpha(Commons.Color.popups.text, 0.45) }
+      Rectangle { width: Style.spacing.hairline; height: Style.space(5); anchors.right: parent.right; anchors.bottom: parent.bottom; color: Qt.alpha(Commons.Color.popups.text, 0.45) }
+    }
+  }
+  Text {
+    textFormat: Text.PlainText
+    id: mapCredit
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    anchors.margins: Style.space(8)
+    width: Math.max(1, parent.width - scaleBar.width - Style.space(32))
+    text: panel.i18n("radarMapCredit", { source: panel.i18n(Providers.radarLabelKey(panel.radarDisplayProviderId)) })
+    horizontalAlignment: Text.AlignRight
+    wrapMode: Text.WordWrap
+    color: Commons.Color.popups.text
+    style: Text.Outline
+    styleColor: Commons.Color.popups.background
+    font.family: panel.fontFamily
+    font.pixelSize: Style.font.caption - 2
   }
 
   Timer {

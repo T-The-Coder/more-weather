@@ -1,0 +1,36 @@
+# Third-party notices
+
+## Omastorm
+
+https://github.com/wesleygrimes/omastorm
+
+Adapted files: WeatherDwdRadarField.qml, shaders/radar-grid.frag,
+shaders/radar-grid.frag.qsb, WeatherGlobeRadarSurface.qml, shaders/radar.frag,
+shaders/radar.frag.qsb, Panel.qml (radar presentation/playback), WeatherRadarView.qml,
+WeatherRadarTimeline.qml, WeatherRadarFrame.qml, RadarStyle.js, WeatherRadarMap.qml, WeatherJmaRadarLayer.qml,
+WeatherRadarPalette.qml, WeatherRadarPaint.qml, WeatherRadarLegend.qml,
+shaders/radar-map.frag, shaders/radar-map.frag.qsb, shaders/radar-paint.glsl.
+The shader density mask, treatments, palette texture and presentation follow
+Omastorm. The design document describes the UI adaptation.
+
+MIT License
+
+Copyright (c) 2026 Wes Grimes
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

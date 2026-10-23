@@ -8,6 +8,7 @@ BorderSurface {
   id: zoomControls
   required property var panel
   required property Item mapItem
+  property bool showScale: true
   width: zoomRow.implicitWidth + Style.space(10)
   height: Style.space(28)
   radius: Style.cornerRadius
@@ -21,6 +22,7 @@ BorderSurface {
 
     Item {
       id: mapScale
+      visible: zoomControls.showScale
       width: Style.space(68)
       height: Style.space(19)
       // Measured on the map picture, which may be wider than the view when
