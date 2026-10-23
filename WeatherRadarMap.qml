@@ -8,7 +8,7 @@ import "Providers.js" as Providers
 import "Model.js" as Model
 import "RadarStyle.js" as RadarStyle
 
-// Native radar frames over quiet geography with place labels, rings,
+// Original radar pictures over quiet geography with place labels, rings,
 // a crosshair, scale and playback controls. Loaded only while the radar tab is shown; the
 // frame images are already fetched in the background by WeatherMapPrefetch.
 Item {
@@ -26,9 +26,8 @@ Item {
 
   // Where the cropped map picture lies in this view; every overlay uses it.
   readonly property var viewport: Model.mapViewport(width, height, panel.mapRadiusKm)
-  Binding { target: panel; property: "radarStageWidth"; value: radarMapItem.width; restoreMode: Binding.RestoreNone }
-  Binding { target: panel; property: "radarStageHeight"; value: radarMapItem.height; restoreMode: Binding.RestoreNone }
-  Binding { target: panel; property: "radarDeviceRatio"; value: Screen.devicePixelRatio || 1; restoreMode: Binding.RestoreNone }
+  readonly property real rainViewerTilePixels:
+    Model.rainViewerTile(panel.mapRadiusKm, panel.mapViewLatitude).sizeKm * viewport.pixelsPerKm
   // The place on the map: crosshair, rings and its label sit
   // here, which is the centre until the map is moved.
   readonly property var placePoint: Model.mapPoint(viewport,
@@ -122,14 +121,17 @@ Item {
       WeatherRadarLayerFrame {
         required property var modelData
         required property int index
-        anchors.fill: parent
+        readonly property bool tile: !!modelData.rainViewer
+        width: tile ? radarMapItem.rainViewerTilePixels : radarMapItem.width
+        height: tile ? radarMapItem.rainViewerTilePixels : radarMapItem.height
+        x: (radarMapItem.width - width) / 2
+        y: (radarMapItem.height - height) / 2
         panel: radarMapItem.panel
         frameData: modelData
         viewport: radarMapItem.viewport
         swatches: palette.texture
         load: panel.radarFrameLoadAllowed(index)
         visible: index === panel.radarDisplayedFrameIndex && status === Image.Ready && !jmaLayer.covering
-        onRendered: panel.updateRadarFrameReady(index, true)
         onStatusChanged: if (status !== Image.Error) panel.updateRadarFrameStatus(index, status, modelData)
         onFailed: panel.updateRadarFrameStatus(index, Image.Error, modelData)
         Component.onCompleted: panel.updateRadarFrameStatus(index, status, modelData)

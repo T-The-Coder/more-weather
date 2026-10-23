@@ -1,7 +1,6 @@
 import QtQuick
 import Quickshell
 import "GlobeRadar.js" as GlobeRadar
-import "RadarStyle.js" as RadarStyle
 
 // The globe's radar layer from z2 on (Settings → Display → Globe: Radar):
 // RainViewer's tiles of the frame shown (the Radar section's source and
@@ -70,10 +69,6 @@ Item {
     collect()
   }
   onWantedChanged: refresh()
-  Connections {
-    target: radar.panel
-    function onRadarWeakReturnsChanged() { radar.collect() }
-  }
   onFrameIdChanged: refresh()
   Connections {
     target: radar.globe
@@ -106,7 +101,7 @@ Item {
       if (done) { out[tiles[i].key] = done; any = true; continue }
       if (!next && localOf(url) !== "") next = { url: url, tile: tiles[i] }
     }
-    raster = any ? { z: tileZoom, tiles: out, weakReturns: panel.radarWeakReturns } : null
+    raster = any ? { z: tileZoom, tiles: out } : null
     if (next && decoding === "") {
       decoding = next.url
       decodingTile = next.tile

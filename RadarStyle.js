@@ -1,7 +1,7 @@
 .pragma library
 // Adapted from Omastorm by Wes Grimes (https://github.com/wesleygrimes/omastorm), MIT licence; see THIRD-PARTY-NOTICES.md
 
-// The single palette used by the legend, map and globe textures.
+// Shared output palette for the legend and value-aware radar painters.
 var bounds = [-32, 0, 10, 20, 30, 35, 40, 45, 50, 55, 60, 65, 70]
 // Omastorm's reflectivity ramp; 35 dBZ interpolates its 30/40 swatches.
 var colors = ["#34465f", "#426b88", "#4098a5", "#51b897", "#85c76b", "#a8d16b", "#cadb6b",
@@ -26,7 +26,18 @@ function rainViewerDbz(byte, alpha) {
   return raw > 0 ? raw - 32 : null
 }
 function sourceMode(provider) {
-  return provider === "rainviewer" ? 1 : provider === "dwd" ? 2 : provider === "jma" ? 3 : 0
+  return provider === "dwd" ? 2 : provider === "jma" ? 3 : 0
+}
+// Tick styling reads the existing catalogue response without annotating or
+// replacing the frames. Observations win duplicate times; unknowns stay observed.
+function rainViewerForecast(frame, report) {
+  var time = Date.parse(frame.timestamp)
+  var radar = report && report.radar
+  if (!radar || !isFinite(time)) return false
+  var past = radar.past || [], nowcast = radar.nowcast || []
+  for (var i = 0; i < Math.min(64, past.length); i++) if (Number(past[i].time) * 1000 === time) return false
+  for (var j = 0; j < Math.min(64, nowcast.length); j++) if (Number(nowcast[j].time) * 1000 === time) return true
+  return false
 }
 function scaleBar(pixelsPerKm, maxPixels, imperial) {
   if (!(pixelsPerKm > 0) || !(maxPixels > 0)) return { value: 0, pixels: 0 }

@@ -7,13 +7,17 @@ All notable changes to More Weather are documented here.
 - Rebuild the radar presentation after Omastorm by Wes Grimes (MIT): quiet
   geography, rings, crosshair, scale bar, shared palette and a labelled legend.
 - Add Pixels, Glyphs and Stipple, with a named weak-return floor. DWD/JMA
-  rain-rate classes use approximate dBZ; WMS providers retain their own colours.
+  rain-rate classes use approximate dBZ; RainViewer and other WMS providers
+  retain their original colours, labelled in the legend.
 - Add source/product/age and LIVE/stale/unreachable chrome, five transport
   controls, one tick per frame, forecast outlines and an absolute frame stamp.
 - Loop from the selected frame; add FULL/LEAN/Focus layouts and compact popup
   radar. Keep global keys; use Ctrl+1/2/3 and Shift+W for radar treatments.
-- Use the same RainViewer palette on the globe. Add translated strings in all
-  30 languages, pure logic tests and offline radar UI checks.
+- Keep data acquisition and computation exactly as in c6fcf53: original
+  catalogues, URLs, WMS dimensions/BBOX, tile sizes/zooms, Bright Sky grids,
+  prefetch, caches and limits. No new grid request, worker or tile planner.
+- Add translated strings in all 30 languages, presentation logic tests,
+  base-data parity checks and offline radar UI checks.
 
 ## 3.2.0 — 2026-10-11
 

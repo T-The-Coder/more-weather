@@ -1,4 +1,3 @@
-// Adapted from Omastorm by Wes Grimes (https://github.com/wesleygrimes/omastorm), MIT licence; see THIRD-PARTY-NOTICES.md
 import QtQuick
 import "Globe.js" as Globe
 import "GlobeRadar.js" as GlobeRadar
@@ -85,17 +84,12 @@ Item {
     height: 0
   }
 
-  WeatherRadarPalette { id: palette }
-
   ShaderEffect {
     anchors.fill: parent
     visible: radarSurface.available && !!radarSurface.box && !!radarSurface.globe
     blending: true
     fragmentShader: Qt.resolvedUrl("shaders/radar.frag.qsb")
     property var radar: capture
-    property var swatches: palette.texture
-    property int treatment: 0
-    property real weakBelow: radarSurface.globe && radarSurface.globe.panel.radarWeakReturns ? -32 : 5
     property size itemSize: Qt.size(width, height)
     property point center: Qt.point(radarSurface.globe ? radarSurface.globe.centerX : 0, radarSurface.globe ? radarSurface.globe.centerY : 0)
     property real radius: Math.max(1, radarSurface.globe ? radarSurface.globe.radius : 1)

@@ -341,27 +341,6 @@ ShellRoot {
     function() { console.log("AUDIT DONE") }
   ])
 
-  function nativeRadarFixture() {
-    var centre = RadarModel.radarStereo(panel.mapCenterLatitude, panel.mapCenterLongitude)
-    function corner(x, y) {
-      return [10 + Math.atan2(x, -y) * 180 / Math.PI,
-        (Math.PI / 2 - 2 * Math.atan(Math.sqrt(x*x+y*y) / (6370.04 * (1 + Math.sin(Math.PI/3))))) * 180 / Math.PI]
-    }
-    var side = 64, grid = []
-    for (var y = 0; y < side; y++) {
-      var row = []
-      for (var x = 0; x < side; x++) row.push(Math.max(0, Math.round(600 * Math.exp(-Math.pow(x - 32 + (y-32)*0.4, 2) / 70) * (0.6 + 0.4 * Math.sin(y/8)))))
-      grid.push(row)
-    }
-    var timestamp = new Date().toISOString()
-    var frame = { timestamp: timestamp, precipitation_5: grid }
-    var x = centre.x - 32, y = centre.y + 32
-    var raw = { geometry: { coordinates: [[corner(x,y),corner(x,y-side),corner(x+side,y-side),corner(x+side,y)]] }, radar: [frame] }
-    panel.radarFixtureFrames = [frame]
-    panel.commitRadarFrames(panel.radarFixtureFrames)
-    panel.radarViewWorker.sendMessage({ token: panel.radarViewQuery, text: JSON.stringify(raw) })
-  }
-
   // Also included in the complete run; the short mode supports visual iteration.
   readonly property var fidelitySteps: [
     function() {}, function() {},
@@ -369,7 +348,7 @@ ShellRoot {
       for (var i = 0; i < tabs.length; i++) display(tabs[i] + "AsTab", true)
       panel.activeTab = "radar"
       panel.contentRoot.parent = fidelityHost
-      panel.radarFixtureFrames = [0, 5, 10].map(function(m) { return { timestamp: new Date(Date.now() + (m - 5) * 60000).toISOString(), rainViewer: true, fixture: true, forecast: m > 5 } })
+      panel.radarFixtureFrames = [0, 5, 10].map(function(m) { return { timestamp: new Date(Date.now() + (m - 5) * 60000).toISOString(), rainViewer: true, rainViewerHost: "fixture:", rainViewerPath: "/radar", fixture: true, forecast: m > 5 } })
       panel.commitRadarFrames(panel.radarFixtureFrames)
       panel.radarTreatment = 1
     }, function() {}, function() {},
@@ -385,12 +364,6 @@ ShellRoot {
     function() { shotOf(panel.radarViewItem, "radar-fidelity-840-pixels"); shotOf(panel.radarViewItem.map, "radar-fidelity-840-map-pixels") },
     function() { panel.radarTreatment = 2 },
     function() { shotOf(panel.radarViewItem, "radar-fidelity-840-stipple"); shotOf(panel.radarViewItem.map, "radar-fidelity-840-map-stipple") },
-    function() { panel.radarTreatment = 1; nativeRadarFixture() },
-    function() {}, function() {},
-    function() {
-      check("radar-native-grid-ready", panel.radarHasDisplayedFrame && !!panel.radarViewReport)
-      shotOf(panel.radarViewItem, "radar-fidelity-840-dwd-native")
-    },
     function() { panel.radarTreatment = 1; panel.contentRoot.parent = widgetHost },
     function() { panel.radarFixtureFrames = []; panel.radarFrames = []; if (Quickshell.env("MW_AUDIT") === "radar") { console.log("STATUS radar fidelity complete"); Qt.quit() } }
   ]
@@ -460,7 +433,7 @@ ShellRoot {
     function() { panel.activeTab = "radar" },
     function() {
       radarBeforeTest = panel.radarFrames
-      panel.radarFixtureFrames = [0, 5, 10].map(function(m) { return { timestamp: new Date(Date.now() + (m - 5) * 60000).toISOString(), rainViewer: true, fixture: true, forecast: m > 5 } })
+      panel.radarFixtureFrames = [0, 5, 10].map(function(m) { return { timestamp: new Date(Date.now() + (m - 5) * 60000).toISOString(), rainViewer: true, rainViewerHost: "fixture:", rainViewerPath: "/radar", fixture: true, forecast: m > 5 } })
       panel.commitRadarFrames(panel.radarFixtureFrames)
       panel.radarTreatment = 1
     },
@@ -783,7 +756,7 @@ ShellRoot {
     // The fixture went through the picture store: its cache holds rewritten
     // copies without the fixture's text chunks, and no raw download is left.
     function() {
-      cacheList.command = ["bash", "-c", "cd \"$1\" || exit 1; ls | grep -c -- '-p2-[0-9]*\\.png$'; echo '|'; "
+      cacheList.command = ["bash", "-c", "cd \"$1\" || exit 1; ls | grep -c -- '-p1\\.png$'; echo '|'; "
         + "grep -l -a -e tEXt -e zTXt -- *.png | wc -l; echo '|'; ls | grep -c 'part$'; echo '|'; "
         + "grep -c -a -e tEXt -e zTXt -- \"$2\"", "list", panel.mapImages.cacheDir, panel.globeItem.radarItem.fixture]
       cacheList.running = true
@@ -1143,7 +1116,7 @@ ShellRoot {
     function() {
       panel.activeTab = "radar"
       radarBeforeTest = panel.radarFrames
-      panel.radarFixtureFrames = [0, 5, 10].map(function(m) { return { timestamp: new Date(Date.now() + (m - 5) * 60000).toISOString(), rainViewer: true, fixture: true, forecast: m > 5 } })
+      panel.radarFixtureFrames = [0, 5, 10].map(function(m) { return { timestamp: new Date(Date.now() + (m - 5) * 60000).toISOString(), rainViewer: true, rainViewerHost: "fixture:", rainViewerPath: "/radar", fixture: true, forecast: m > 5 } })
       panel.commitRadarFrames(panel.radarFixtureFrames)
     },
     function() {},

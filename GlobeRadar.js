@@ -1,5 +1,4 @@
 .pragma library
-.import "RadarStyle.js" as RadarStyle
 
 // The globe's radar layer (WeatherGlobeRadar.qml) from z2 on: RainViewer's
 // web-mercator tiles of the frame shown, laid onto the globe's plain
@@ -72,10 +71,10 @@ function tilesFor(box, z, max) {
   return []
 }
 
-// RainViewer's tile of a frame: <host><path>/512/z/x/y/0/0_0.png (colour
-// scheme 0, no smoothing or snow colouring), as the Radar section asks for its pictures.
+// RainViewer's tile of a frame: <host><path>/512/z/x/y/2/1_1.png (colour
+// scheme 2, smoothed, snow), as the Radar section asks for its pictures.
 function tileUrl(host, path, z, x, y) {
-  return String(host || "") + String(path || "") + "/512/" + z + "/" + x + "/" + y + "/0/0_0.png"
+  return String(host || "") + String(path || "") + "/512/" + z + "/" + x + "/" + y + "/2/1_1.png"
 }
 
 // For each of `rows` output rows of a tile reprojected to equal latitude
@@ -167,10 +166,6 @@ function sample(raster, lat, lon, out) {
   var col = Math.max(0, Math.min(size - 1, Math.floor(fx)))
   var row = Math.max(0, Math.min(size - 1, Math.floor((b.north - lat) / (b.north - b.south) * size)))
   var o = (row * size + col) * 4
-  var dbz = RadarStyle.decode(tile.rgba[o], tile.rgba[o + 1], tile.rgba[o + 2], tile.rgba[o + 3], 1)
-  if (dbz === null || (!raster.weakReturns && dbz < 5)) { out[0] = 0; out[1] = 0; out[2] = 0; out[3] = 0; return true }
-  var hex = RadarStyle.color(dbz)
-  out[0] = parseInt(hex.slice(1, 3), 16); out[1] = parseInt(hex.slice(3, 5), 16)
-  out[2] = parseInt(hex.slice(5, 7), 16); out[3] = 255
+  out[0] = tile.rgba[o]; out[1] = tile.rgba[o + 1]; out[2] = tile.rgba[o + 2]; out[3] = tile.rgba[o + 3]
   return true
 }

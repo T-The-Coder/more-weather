@@ -20,7 +20,7 @@ Item {
   readonly property var times: active
     ? panel.regionalNowcast.jmaObserved.concat(panel.regionalNowcast.jmaForecast) : []
   readonly property var tiles: active
-    ? Model.radarTilesFor(panel.radarVisibleBounds, panel.mapViewLatitude, viewport.pixelsPerKm, "jma", panel.radarDeviceRatio) : []
+    ? Model.jmaTilesFor(panel.mapWest, panel.mapEast, panel.mapSouth, panel.mapNorth, panel.mapCenterLatitude) : []
 
   visible: active
   // The JMA picture of the frame on screen is complete: the frame underneath
@@ -81,15 +81,10 @@ Item {
           readonly property var southEast: Model.mapPoint(jmaLayer.viewport, modelData.south, modelData.east,
             jmaLayer.panel.mapWest, jmaLayer.panel.mapEast, jmaLayer.panel.mapSouth, jmaLayer.panel.mapNorth)
           property bool counted: false
-          x: Math.max(0, northWest.x)
-          y: Math.max(0, northWest.y)
-          width: Math.max(0, Math.min(jmaLayer.width, southEast.x) - x)
-          height: Math.max(0, Math.min(jmaLayer.height, southEast.y) - y)
-          sourceWindow: Qt.rect((x - northWest.x) / (southEast.x - northWest.x), (y - northWest.y) / (southEast.y - northWest.y),
-            width / (southEast.x - northWest.x), height / (southEast.y - northWest.y))
-          // Place the quad at its geographic extent; WeatherRadarFrame
-          // addresses the exact native Mercator row without interpolation.
-          tileLatitudes: Qt.point(modelData.north, modelData.south)
+          x: northWest.x
+          y: northWest.y
+          width: southEast.x - northWest.x
+          height: southEast.y - northWest.y
           fillMode: Image.Stretch
           smooth: false
           sourceMode: 3
@@ -98,13 +93,12 @@ Item {
           weakReturns: jmaLayer.panel.radarWeakReturns
           store: jmaLayer.panel.mapImages
           remoteUrl: Model.jmaTileUrl(frameLayer.time, modelData.z, modelData.x, modelData.y)
-          byteLimit: Model.RADAR_JMA_TILE_MAX_BYTES
           load: jmaLayer.panel.radarFrameLoadAllowed(frameLayer.index)
           onStatusChanged: {
-            var ready = status === Image.Ready
-            if (ready === counted) return
-            counted = ready
-            frameLayer.readyCount += ready ? 1 : -1
+            if (status === Image.Ready && !counted) {
+              counted = true
+              frameLayer.readyCount++
+            }
           }
           Component.onCompleted: if (status === Image.Ready && !counted) {
             counted = true

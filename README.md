@@ -72,11 +72,11 @@ runs as a standalone app window.
     a crosshair at the place, a km/mi scale bar and on-screen attribution.
     The optional satellite background and existing pan/zoom gestures remain.
   - Pixels, Glyphs (default) and Stipple paint the same sampled cell and
-    palette. RainViewer uses encoded dBZ; DWD native 1 km grids and JMA rain-rate classes use
-    approximate dBZ (Z=200 R^1.6). NWS/ECCC/FMI/KNMI keep their **provider
-    colours**, explicitly named in the legend. The model fallback remains
+    palette for value-aware images. The original DWD WMS and JMA tile colour
+    classes use approximate dBZ (Z=200 R^1.6). RainViewer and
+    NWS/ECCC/FMI/KNMI keep their **provider colours**, explicitly named in the legend. The model fallback remains
     labelled as model precipitation. These colours are not warning levels.
-  - Returns below 5 dBZ are hidden by default, named in the legend and
+  - On value-aware images, returns below 5 dBZ are hidden by default, named in the legend and
     toggled with **Shift+W**. **Ctrl+1/2/3** selects the treatment. Bare
     `1–9` still changes tabs and `w` still opens the weather service.
   - Source, product, age of the displayed picture and feed health sit above
@@ -95,11 +95,12 @@ runs as a standalone app window.
     The popup uses compact source/status, map, product/time and transport.
     **?** opens Settings → Shortcuts. Focus lasts only until the panel closes.
   - Frames and tiles still pass through the bounded, sanitizing image store.
-    There are no new network hosts or runtime binaries. Viewport-sized WMS requests and bounded native tile mosaics avoid enlarging
-    a single low-resolution picture. Software rendering
-    uses the same palette and cell masks for radar frames; the globe's software
-    wash keeps its coarser sampling. See [the design](docs/radar-rebuild.md)
-    for source decisions and limits.
+    Data acquisition and computation are unchanged from c6fcf53: the same URLs,
+    WMS dimensions/BBOX, tile sizes/zooms, Bright Sky grids, prefetch, caches
+    and byte/count limits. There are no new network hosts or runtime binaries.
+    Software rendering uses the same palette and cell masks for value-aware
+    radar frames. The globe retains its original radar data and colours.
+    See [the design](docs/radar-rebuild.md) for source decisions and limits.
 - **Wind map:** After RegenVorschau: the wind speed as a colour wash (deep blue for calm
   through cyan, green and yellow to red and violet for storms, with a legend) and white
   streaks drifting with the wind, faster where it blows harder, from a 35-point model

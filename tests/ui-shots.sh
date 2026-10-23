@@ -26,6 +26,7 @@ mkdir -p "$work/config/Weather"
 cp "$root"/*.qml "$root"/*.js "$root"/*.mjs "$root"/manifest.json "$root"/CHANGELOG.md "$work/config/Weather/"
 cp -r "$root/i18n" "$root/shaders" "$root/data" "$root/app" "$work/config/Weather/"
 cp "$root/tests/ui/shell.qml" "$work/config/shell.qml"
+python3 "$root/tests/ui/inject-radar-fixture.py" "$work/config/Weather"
 # MW_THEME=<theme directory> shoots in another theme than the current one.
 theme="${MW_THEME:-$HOME/.local/state/omarchy/current/theme}"
 [ -e "$theme" ] && ln -s "$theme" "$work/home/.local/state/omarchy/current/theme"

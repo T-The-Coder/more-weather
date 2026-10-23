@@ -329,7 +329,6 @@ Panel {
     alertActiveProviderId = ""
     providerCountry = ""
     mosmixReport = null
-    radarViewReport = null
     radarReport = null
     radarMotion = []
     radarWet = null
@@ -1333,7 +1332,6 @@ Panel {
 
   function syncRadarFrames() {
     var next = computedRadarFrames
-    if (!next.length && radarFrames.length && (rainViewerFailed || regionalRadarFailed)) return
     if (JSON.stringify(radarFrames) === JSON.stringify(next)) {
       if (pendingRadarFrames.length) pendingRadarFrames = []
       return
@@ -1464,9 +1462,7 @@ Panel {
       ? regionalRadarFrames : [])
   readonly property bool radarUsesRainViewer: officialRadarFrames.length === 0
     && !rainViewerFailed && rainViewerFrames.length > 0
-  property var radarFixtureFrames: []
-  readonly property var computedRadarFrames: Quickshell.env("MORE_PLUGINS_OFFLINE") === "1" && radarFixtureFrames.length
-    ? radarFixtureFrames : officialRadarFrames.length > 0
+  readonly property var computedRadarFrames: officialRadarFrames.length > 0
     ? officialRadarFrames : (radarUsesRainViewer ? rainViewerFrames : [])
   readonly property var sampledPrecipitationGrid: Model.precipitationGridSeries(
     cacheFallbackActive ? null : windGridReport)
@@ -1495,47 +1491,6 @@ Panel {
   property var radarFrameReady: []
   property bool radarHasDisplayedFrame: false
   property bool radarPlaying: false
-  property real radarStageWidth: 500
-  property real radarStageHeight: 260
-  property real radarDeviceRatio: 1
-  readonly property var radarStageViewport: Model.mapViewport(radarStageWidth, radarStageHeight, mapRadiusKm)
-  readonly property var radarVisibleBounds: Model.radarVisibleBounds(radarStageViewport, radarStageWidth, radarStageHeight, mapWest, mapEast, mapSouth, mapNorth)
-  readonly property var radarRasterSize: Model.radarRasterSize(radarStageWidth, radarStageHeight, radarDeviceRatio)
-  onRadarStageWidthChanged: if (radarGridDebounce) radarGridDebounce.restart()
-  onRadarStageHeightChanged: if (radarGridDebounce) radarGridDebounce.restart()
-  property var radarViewReport: null
-  property string radarViewQuery: ""
-  function requestRadarViewGrid() {
-    if (!radarShown || preferredRadarProviderId !== "dwd") return
-    var lat = mapViewLatitude, lon = mapViewLongitude
-    var distance = Model.radarGridDistance(radarVisibleBounds, lat, lon)
-    if (distance > Model.RADAR_GRID_RADIUS_M) { regionalRadarFailed = true; return }
-    var query = locationQuery + ":" + lat.toFixed(4) + ":" + lon.toFixed(4) + ":" + distance
-    if (radarViewProc.running) radarViewProc.running = false
-    radarViewQuery = query
-    var start = Math.floor(Date.now() / 300000) * 300000
-    radarViewProc.request = { url: "https://api.brightsky.dev/radar?lat=" + lat.toFixed(5) + "&lon=" + lon.toFixed(5)
-      + "&distance=" + distance + "&format=plain&date=" + encodeURIComponent(new Date(start).toISOString())
-      + "&last_date=" + encodeURIComponent(new Date(start + 7200000).toISOString()),
-      timeoutMs: 15000, maxBytes: Model.RADAR_GRID_MAX_BYTES }
-    radarViewProc.running = true
-  }
-  property Timer radarGridDebounce: Timer { interval: 250; onTriggered: root.requestRadarViewGrid() }
-  property WeatherRequest radarViewProc: WeatherRequest {
-    onFinished: function(text) {
-      radarViewWorker.sendMessage({ token: root.radarViewQuery, text: text })
-    }
-    onExited: function(exitCode) { if (exitCode !== 0 && exitCode !== 15 && exitCode !== 143) root.regionalRadarFailed = true }
-  }
-  property WorkerScript radarViewWorker: WorkerScript {
-    source: "RadarGridWorker.js"
-    onMessage: function(message) {
-      if (message.token !== root.radarViewQuery) return
-      if (message.report) { root.radarViewReport = message.report; root.regionalRadarFailed = false }
-      else root.regionalRadarFailed = true
-    }
-  }
-  onRadarFetchedAtMsChanged: radarGridDebounce.restart()
   property bool radarFocus: false
   property Item radarViewItem: null
   property string radarLoopStartTimestamp: ""
@@ -1582,7 +1537,10 @@ Panel {
   }
   function radarFrameIsForecast(frame) {
     if (!frame) return false
-    if (frame.rainViewer) return !!frame.forecast
+    if (frame.rainViewer) {
+      if (Quickshell.env("MORE_PLUGINS_OFFLINE") === "1" && frame.fixture) return !!frame.forecast
+      return RadarStyle.rainViewerForecast(frame, rainViewerReport)
+    }
     if (frame.wmsProvider) return false
     var reference = radarReferenceTime(frame)
     return Date.parse(frame.timestamp) > Date.parse(reference || (radarFrames[0] || {}).timestamp)
@@ -1803,7 +1761,6 @@ Panel {
   }
   // A moved view needs its own pictures, place names and wind samples.
   function mapViewMoved() {
-    radarGridDebounce.restart()
     radarFrameReady = []
     radarHasDisplayedFrame = false
     radarPlaces.radarPlacesDebounce.restart()
@@ -1817,7 +1774,7 @@ Panel {
   onWindMapVisibleChanged: if (windMapVisible) windGridLoader.windGridDebounce.restart()
   // Switching views never starts the animation implicitly. Leaving the
   // radar pauses it; returning shows the retained frame until Play is used.
-  onRadarShownChanged: { if (!radarShown) { radarPlaying = false; radarFocus = false } else radarGridDebounce.restart() }
+  onRadarShownChanged: if (!radarShown) { radarPlaying = false; radarFocus = false }
   onRadarFramesChanged: {
     shownRadarPrefetched = []
     shownRadarPrefetchedCount = 0
@@ -1830,7 +1787,6 @@ Panel {
     if (radarFrames.length - radarFirstFrameIndexFor(radarFrames, nowDate) < 2) radarPlaying = false
   }
   onMapZoomLevelChanged: {
-    radarGridDebounce.restart()
     // Every Image source changes with mapBbox. Keep the selected timestamp,
     // but show the loading state until that frame is ready at the new scale.
     radarFrameReady = []
@@ -4334,12 +4290,9 @@ Panel {
   }
 
   function radarFrameUrl(frame) {
-    if (Quickshell.env("MORE_PLUGINS_OFFLINE") === "1" && frame && frame.fixture) return "fixture:radar-map"
     if (!mapExtentKnown) return ""
     if (frame && frame.wmsProvider)
-      return Providers.radarMapUrl(frame.wmsProvider,
-        radarVisibleBounds.west + "," + radarVisibleBounds.south + "," + radarVisibleBounds.east + "," + radarVisibleBounds.north,
-        radarRasterSize.width, radarRasterSize.height, frame.timestamp)
+      return Providers.radarMapUrl(frame.wmsProvider, root.mapBbox, mapImageWidth, mapImageHeight, frame.timestamp)
     if (frame && frame.rainViewer) {
       // RainViewer's coordinate-tile form is explicitly intended for small
       // embedded maps. Its maximum supported zoom is 7; the view draws the
@@ -4349,7 +4302,7 @@ Panel {
         + "/512/" + zoom
         + "/" + Number(root.mapViewLatitude).toFixed(5)
         + "/" + Number(root.mapViewLongitude).toFixed(5)
-        + "/0/0_0.png"
+        + "/2/1_1.png"
     }
     var url = "https://maps.dwd.de/geoserver/dwd/ows?service=WMS&version=1.1.1&request=GetMap"
       // The radar layer alone (about 20 KB instead of 150 KB with the basemap

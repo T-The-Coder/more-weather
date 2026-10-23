@@ -1,108 +1,126 @@
 # Radar rebuild report
 
-The worktree contains the Omastorm-inspired radar rebuild and the owner's
-resolution/fidelity corrections. The shared files and alert files are unchanged.
+The Omastorm-inspired presentation remains. The owner's correction supersedes
+the earlier resolution/fetching request: data acquisition and computation
+are restored to c6fcf53. Changes in this correction are left uncommitted on
+`radar-omastorm` (starting HEAD b8c4a64), as requested.
 
-## Built
+## What was NOT changed: data acquisition and computation are those of c6fcf53
 
-- Native-texture Pixels / Glyphs / Stipple, Glyphs default. Three logical-pixel
-  cells scale with the theme base font. Both renderers address source pixels
-  with nearest-neighbour sampling; the software renderer never samples an
-  enlarged image. A settled repaint handles Canvas initialization/resizing.
-- One continuous 13-stop dBZ palette, including 35 dBZ, shared with the legend,
-  map shader and globe. Marshall–Palmer Z=200 R^1.6 maps rain rates to approximate
-  reflectivity. Missing pixels stay transparent; measured negative returns have
-  their own colours when the named, default 5 dBZ floor is disabled.
-- Screen-scale RainViewer 512 px and JMA 256 px mosaics with full coverage and
-  explicit per-frame budgets. WMS requests use the visible BBOX and viewport
-  device dimensions, up to 2048 per side. Bright Sky view grids retain native
-  1 km cells and RADOLAN stereographic geometry; validation runs in a worker.
-- Thin, quiet theme geography, rings, crosshair, unit-aware scale and visible
-  corner attribution. Source/product/frame age, independent feed health,
-  first/previous/play/next/last, per-frame ticks, forecast outlines and actual
-  displayed-frame timestamp/index. Selection-based loops, FULL/LEAN/Focus,
-  compact popup, preserved global keys and translated shortcuts.
+Restored byte-for-byte:
+
+- `Model.js`: catalogues, geometry, parsers, grid calculations, original limits
+  and RainViewer/JMA zoom/tile choices. Presentation mappings remain in `RadarStyle.js`.
+- `WeatherMapPrefetch.qml`: original frame loading, three-at-a-time gating,
+  pending-series handling and reuse.
+- `WeatherImageStore.qml`, `WeatherRemoteImage.qml`: original bytes, cache keys,
+  sanitization, request/retry behaviour, image dimensions and download limits.
+- `GlobeRadar.js`, `WeatherGlobeRadar.qml`: original tile URLs, sampling,
+  reprojection, catalogue and loading. Globe shader/QSB restored too.
+
+Restored within mixed UI files:
+
+- `Panel.qml`: original `radarFrameUrl`, WMS BBOX/480×250 dimensions, RainViewer
+  512 px coordinate-tile URL/scheme 2 / 1_1 options, request scheduling,
+  catalogue selection, pending-frame handoff and fallback. Existing functions
+  match the base except the explicit UI/key/playback-loop functions.
+- `WeatherJmaRadarLayer.qml`: original `Model.jmaTilesFor`, URL construction,
+  time matching, tile geometry and load/completion gating; only painter and
+  displayed-source/time hooks remain new.
+- `WeatherRadarMap.qml` / `WeatherRadarLayerFrame.qml`: paint the original
+  fetched images at the original map crop/scale, not new mosaics or native grids.
+- `WeatherForecast.qml` and `WeatherBasemap.qml`: their remaining changes are
+  radar layout and quiet theme colours; no data logic changes.
+
+Removed: `RadarGridWorker.js`, `WeatherDwdRadarField.qml`,
+`WeatherRadarTileFrame.qml`, `shaders/radar-grid.frag` and its QSB. The separate
+Bright Sky view-grid request, native-grid reprojection and viewport/DPR request
+planning are gone. Bright Sky point/grid calculations, `RadarMotion.mjs`,
+source allowlists and all original network/count/cache bounds remain unchanged.
+No main-worktree source, shared file or alert file was edited.
+
+## Presentation retained
+
+Quiet geography, sparse labels, rings/crosshair, scale and attribution;
+source/product/frame age, LIVE/stale/unreachable light; legend, transport,
+ticks, forecast outlines, actual timestamp/index; selection-based playback,
+FULL/LEAN/Focus, compact popup, radar keys and translated shortcuts.
+
+`RadarStyle.js`, `WeatherRadarPalette.qml`, `WeatherRadarPaint.qml`,
+`WeatherRadarFrame.qml`, `WeatherRadarLayerFrame.qml`, `WeatherRadarLegend.qml`,
+`WeatherRadarView.qml`, `WeatherRadarTimeline.qml` and radar-map/paint shaders
+retain the treatments and shared continuous 13-stop reflectivity palette.
+DWD's original WMS palette and JMA's original tile classes map their rain-rate
+lower bounds through Marshall–Palmer Z=200 R^1.6 to approximate dBZ. This changes
+painting only. Model fallback uses the already-computed precipitation grid.
+
+RainViewer's original coloured/smoothed scheme-2 image is **provider colours**,
+as are NWS/ECCC/FMI/KNMI. Its red channel is never mistaken for monochrome dBZ.
+Treatments and weak filtering apply only where values are recoverable; they
+do not invent data from provider-coloured images. The globe preserves its
+original colours (nearest-neighbour capture is presentation only).
 
 ## Visual comparison with Omastorm
 
-Reference inspected: the read-only Omastorm `docs/media/readme/window.png`.
-The fixture is synthetic and is not the same storm or radar product as that
-reference. No reference image is copied into this repository.
+Reference: read-only Omastorm `docs/media/readme/window.png`. Synthetic fixtures
+are different weather, not the same product. No reference picture was copied.
 
-| Aspect | Side-by-side assessment |
+| Aspect | Assessment |
 | --- | --- |
-| Cell size | Both use approximately 3 logical px. The 500 and 840 px renders keep the same cell pitch; the larger view adds sampled detail instead of enlarging a 480 px picture. |
-| Crispness | Glyph density marks and Stipple squares have crisp source-cell boundaries. Native Image textures / integer CPU addresses replace the earlier enlarged, softened picture. |
-| Palette | Cool weak returns progress through green/yellow/orange/red to purple/pale strong returns, using Omastorm's reflectivity ramp. The owner-requested 35 dBZ stop interpolates its original 30/40 colours. Legend and output use the same stops. |
-| Geography | Sparse labels and low-alpha one-pixel lines/rings stay behind the returns, with a small crosshair and lower-left scale. |
-| Chrome | The same map → legend → transport/ticks hierarchy, actual stamp, frame index and status/age. More Weather retains its own source/place naming, theme and global navigation; no station lock is invented for mosaics. |
+| Cell size | Value-aware treatments retain an approximately 3 logical-px lattice at both 500 and 840 px. Source resolution remains the original fetched image; a larger view does not acquire more detail. |
+| Crispness | Nearest source-pixel sampling keeps treatment marks crisp. Existing RainViewer/provider-side smoothing cannot be undone by the painter. |
+| Palette | DWD/JMA value-aware paint and legend share Omastorm's continuous cool-to-warm/purple ramp, including interpolated 35 dBZ. Provider-coloured sources keep their own ramp, honestly labelled. |
+| Geography | Theme-coloured thin lines, low-alpha rings, sparse labels, crosshair and corner scale remain quiet behind weather. |
+| Chrome | Map → legend → transport/ticks hierarchy, source/product/status, frame age, locale stamp and index remain. More Weather keeps its theme, provider naming and global navigation. |
 
-Fidelity artifacts are generated by `tests/ui-shots.sh` as
-`radar-fidelity-{500,840}-{pixels,glyphs,stipple}.png`, with matching
-`-map-` crops. Automated image checks require real coloured returns at both
-widths and reduced coverage for Glyphs/Stipple versus Pixels.
-
-Remaining source differences are explicit: public RainViewer ends at zoom 7;
-JMA publishes supported even zoom levels through 10 and quantized rain-rate
-classes; DWD's native grid is 1 km; NWS/ECCC/FMI/KNMI supply provider-coloured
-WMS products whose original values cannot be recovered reliably. Those images
-are labelled “provider colours”. Tile/response budgets can require a lower
-source zoom or automatic fallback; the renderer does not blur or decimate
-native cells to hide these limits. The model fallback and globe software wash
-remain explicitly coarse model/wash presentations.
+Differences from Omastorm remain where the base data has less detail: fixed
+480×250 WMS pictures, the original single RainViewer coordinate image and its
+provider smoothing/palette, original JMA zoom/time/classes, and the existing
+coarse model fallback. No fetching or computation was changed to hide these
+limits. The monochrome fidelity fixture verifies the renderer only; it does
+not claim live RainViewer supplies monochrome cells.
 
 ## Adaptation and licence
 
-Omastorm: Copyright (c) 2026 Wes Grimes, MIT. Full notice and file list are in
-`THIRD-PARTY-NOTICES.md`. Adapted files: `RadarStyle.js`, `Panel.qml` (radar
-parts), `WeatherRadarMap.qml`, `WeatherJmaRadarLayer.qml`, `WeatherRadarView.qml`,
+Omastorm © 2026 Wes Grimes, MIT; full notice in `THIRD-PARTY-NOTICES.md`.
+Adapted files: `RadarStyle.js`, `Panel.qml` (radar presentation/playback),
+`WeatherRadarMap.qml`, `WeatherJmaRadarLayer.qml`, `WeatherRadarView.qml`,
 `WeatherRadarTimeline.qml`, `WeatherRadarFrame.qml`, `WeatherRadarPalette.qml`,
-`WeatherRadarPaint.qml`, `WeatherRadarLegend.qml`, `WeatherDwdRadarField.qml`,
-`WeatherGlobeRadarSurface.qml`, `shaders/radar-paint.glsl`, `shaders/radar-map.frag`,
-`shaders/radar-grid.frag`, `shaders/radar.frag` and their shipped QSB artifacts.
-Adaptations include the density mask, treatment coverage, palette texture,
-reflectivity ramp, presentation hierarchy and playback/layout semantics.
+`WeatherRadarPaint.qml`, `WeatherRadarLegend.qml`, `shaders/radar-paint.glsl`,
+`shaders/radar-map.frag` and its QSB. Adaptations include treatment masks,
+reflectivity palette, presentation hierarchy, layout and loop semantics.
+README credits and all 30 translations remain.
 
-## Verification and review
+## Verification
 
 | Offline check | Result |
 | --- | --- |
-| `tests/qml-syntax.sh` | PASS |
-| `mise x node@24.21.0 -- node --test tests/*.test.mjs` | PASS: 31 test files, 0 failures (including i18n, plain text, colour qualification and shared-file checks) |
-| `tests/ui-shots.sh /tmp/radar-rebuild-passing-shots` | PASS: complete run, no TypeError/ReferenceError/undefined colour or failed checks; log `/tmp/radar-passing-ui.log` |
-| `MW_AUDIT=radar tests/ui-shots.sh` | PASS: both widths, all treatments and native DWD worker/render path; latest source smoke log `/tmp/radar-final-source-ui.log` |
-| QSB compilation | PASS for all eight shipped shader variants of radar, radar-map and radar-grid |
+| `tests/qml-syntax.sh` | PASS; `/tmp/radar-revert-syntax.log` |
+| `mise x node@24.21.0 -- node --test tests/*.test.mjs` | PASS: 32 file tests, 0 failures; `/tmp/radar-revert-node-final.log` |
+| `tests/ui-shots.sh /tmp/radar-revert-shots` | PASS: complete run, no TypeError/ReferenceError/undefined assignments or failed checks; `/tmp/radar-revert-ui.log` |
+| `MW_AUDIT=radar tests/ui-shots.sh /tmp/radar-revert-final-shots` | PASS: latest presentation helpers, both widths and all three treatments; `/tmp/radar-revert-final-ui.log` |
 | `git diff --check` | PASS |
 
-The final Node run completed without concurrent rendering; earlier timing-only
-failures of the unchanged PNG sanitizer's 300 ms assertion did not recur.
-Earlier UI runs caught empty initial software paints and harness assumptions
-about refreshes, cache filenames and a Moon sample near the horizon; those
-were fixed before the passing run. The harness now runs a frozen copy and
-rejects startup failures, timeouts, failed checks and blank fixture maps.
+Full Qt log: `/tmp/more-weather-ui.4CnMJ0/log.txt`. All source, map/cache,
+settings, focus, translated UI and compact-popup checks completed.
 
-Measured coloured map pixels (Pixels / Glyphs / Stipple): 500 px:
-11,989 / 4,400 / 3,466; 840 px: 34,352 / 12,694 / 10,588. This verifies visible
-returns and differing paint coverage while preserving the native samples.
-Inspect the generated [500 px Glyphs](/tmp/radar-rebuild-passing-shots/radar-fidelity-500-glyphs.png),
-[840 px Glyphs](/tmp/radar-rebuild-passing-shots/radar-fidelity-840-glyphs.png), and
-[native DWD fixture](/tmp/radar-final-source-shots/radar-fidelity-840-dwd-native.png).
+Regenerated shots: `radar-fidelity-{500,840}-{pixels,glyphs,stipple}.png`
+and matching map crops, twelve files in each run's shot directory.
+Latest [500 px Glyphs](/tmp/radar-revert-final-shots/radar-fidelity-500-glyphs.png)
+and [840 px Glyphs](/tmp/radar-revert-final-shots/radar-fidelity-840-glyphs.png)
+were inspected alongside the Omastorm reference. Coloured map-pixel counts
+(Pixels / Glyphs / Stipple): 500 px 21,493 / 4,716 / 3,443; 840 px
+63,313 / 18,487 / 9,021. Checks reject blank radar maps and require reduced
+paint coverage for Glyphs/Stipple. The source remains the original fetched
+image geometry; these counts are rendering evidence, not new data resolution.
 
-An optional offscreen Vulkan attempt could not create a Vulkan instance in
-this environment; no GPU visual pass is claimed. Shader compilation and the
-software counterpart passed; live GPU review remains necessary.
+`tests/radar-acquisition.test.mjs` fingerprints the base data-only files and
+existing Panel functions, so regression coverage includes exact URL building,
+requests, computation and fallback. The stable synthetic catalogue is injected
+only into the harness's throwaway source copy; production catalogue selection
+is the original code.
 
-Maintainer visual review: live GPU rendering at fractional display scales,
-provider-coloured WMS products, JMA time/coverage handoff and live DWD grid
-availability. Offline fixtures prove rendering/controls; they do not contact
-providers or prove current remote service availability.
-
-## Commit limitation
-
-The requested WIP commit and phase commits could not be created: `git add`
-fails creating `/home/timo/Projects/more-weather/.git/worktrees/more-weather-radar/index.lock`
-with “Read-only file system”. That is the linked worktree's metadata, outside
-this session's writable roots. No sandbox workaround or main-tree edit was
-attempted. Cumulative phase patches are preserved in `/tmp/radar-phase1.patch` through
-`/tmp/radar-phase5.patch`;
-all implementation files remain in this worktree. Nothing was pushed.
+Maintainer review: live GPU/fractional-scale rendering, DWD/JMA class decoding,
+provider-coloured images and JMA source/time handoff. Offline tests do not
+contact providers or prove their current remote availability. No GPU visual
+pass is claimed by the software offscreen harness.

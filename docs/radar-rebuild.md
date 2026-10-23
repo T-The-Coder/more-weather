@@ -17,9 +17,9 @@ stage. `WeatherMapGround.qml` dims the drawn geography for radar only.
 those swatches to the shaders and `WeatherRadarLegend.qml` displays them.
 Bounds (dBZ): <0, 0, 10, 20, 30, 35, 40, 45, 50, 55, 60, 65, 70+.
 The Omastorm reflectivity ramp is interpolated continuously between those
-stops; 35 is interpolated between its original 30/40 stops. Both renderers
-sample the same native value and palette; no radar texture uses bilinear
-filtering or mipmaps. Cell size is 3 × max(1, Style.font.baseSize/12) logical px.
+stops; 35 is interpolated between its original 30/40 stops. Both value-aware renderers
+sample the same fetched image and palette with nearest-neighbour filtering.
+They do not recover detail or undo smoothing already present in provider images. Cell size is 3 × max(1, Style.font.baseSize/12) logical px.
 Rain rate maps to equivalent reflectivity with Z=200 R^1.6 (R in mm/h),
 explicitly labelled approximate dBZ, not a new measured reflectivity product.
 Missing/transparent cells remain missing; zero rain draws nothing. The floor
@@ -27,17 +27,18 @@ hides measured values below 5 dBZ by default and is named in the legend.
 
 | Source | Presentation decision |
 | --- | --- |
-| DWD | Native 1 km Bright Sky grid, separate bounded view request so rain totals and motion keep their point/grid semantics. Polar stereographic inverse cell addressing, no averaging; approximate dBZ. |
+| DWD | Decode the original DWD WMS image using the existing Model.DWD_RADAR_COLORS class lower bounds; approximate dBZ. Bright Sky grids, point calculations and motion stay exactly as before. No separate view grid request. |
 | JMA | Decode the existing JMA tile colour classes to lower rain-rate bounds; approximate dBZ. Unknown colours stay transparent. Keep nearest-time tile completion gating. |
-| RainViewer | 512 px monochrome scheme 0 tiles, z derived from viewport pixels/km and DPR. Byte minus 32 gives dBZ; alpha/no-data stays distinct from measured negative values. |
+| RainViewer | Original 512 px coordinate tile, Model.rainViewerTile zoom and scheme 2 / 1_1 options. Preserve provider colours, explicitly labelled; never interpret coloured RGB bytes as encoded dBZ. No new mosaic or viewport-based zoom. |
 | NWS, ECCC, FMI, KNMI | Preserve supplied WMS images; legend explicitly says “provider colours”. No invented numerical decoding or weak-return filter. |
 | Model fallback | Existing bounded precipitation cells use the shared rain-rate mapping, explicitly labelled model precipitation. |
 
 `WeatherRadarPaint.qml` / `shaders/radar-map.frag` paint the same sampled
 3-pixel cell as Pixels, Glyphs (default), or Stipple. Omastorm's density mask
-and soft-square treatment are adapted. `shaders/radar.frag` keeps the globe
-projection and shares the paint functions. No new hosts, binaries or runtime
-engine. Source budgets are explicit below. Precompiled QSBs are shipped as before.
+and soft-square treatment are adapted. Treatments and the weak-return floor
+apply to value-aware DWD/JMA images and model fallback, not provider-coloured
+products. The globe keeps its original coloured RainViewer pipeline and shader.
+No new hosts, binaries or runtime engine. Precompiled QSBs are shipped as before.
 `RadarMotion.mjs` and shared files remain unchanged. Existing image sanitization and allowlists apply.
 
 ## Chrome and behaviour
@@ -47,7 +48,9 @@ no fictional station lock), productLine (product + active attribution),
 metaLine (age of the picture), mapStage, legend, transport, tickStrip.
 Feed health is independent of selected-frame age: LIVE, stale at 10 minutes
 since the newest observation/reference, unreachable on active-source failure.
-Forecast times never make an old observation look fresh. Cached frames stay.
+Forecast times never make an old observation look fresh. Cache and catalogue
+replacement/failure semantics stay those of the base commit. Forecast tick
+identity is read from the existing RainViewer report without changing catalogue entries.
 `WeatherRadarTimeline.qml`: first/previous/play/next/last; stripStamp uses
 numeric locale date, locale 12/24-hour time and an explicit local zone;
 frameIndex reads N / total. One tick per playable frame; forecast ticks are
@@ -84,38 +87,39 @@ Ctrl+digits and Shift+W. No NEXRAD station picker/lock, aviation, archive,
 IP lookup or external engine: these are outside More Weather's providers and
 marketplace rules. Satellite remains an explicit existing map preference.
 
-## Implementation notes
+## What was NOT changed: data acquisition and computation are those of c6fcf53
 
-`WeatherRadarFrame.qml` samples the native Image texture directly on the GPU.
-Its software path reads a native-sized image once and addresses it with
-integer indices; it never samples an enlarged/resized picture. FULL/LEAN,
-Focus and compact popup use the same map. WMS WIDTH/HEIGHT follows the visible
-viewport × DPR, capped independently at 2048. Request BBOX is the actual
-visible viewport. `WeatherRadarTileFrame.qml` covers that viewport completely;
-it lowers z to meet a budget, never truncates the tile list. JMA uses its
-supported even zooms through 10; public RainViewer stops at z7. Native DWD
-validation runs in `RadarGridWorker.js`; `WeatherDwdRadarField.qml` projects
-native rows/columns with the RADOLAN spherical stereographic CRS.
+Restored byte-for-byte: `Model.js`, `WeatherMapPrefetch.qml`,
+`WeatherImageStore.qml`, `WeatherRemoteImage.qml`, `GlobeRadar.js`,
+`WeatherGlobeRadar.qml`, `shaders/radar.frag` and its QSB. Model's original
+catalogues, geometry, JMA/RainViewer zoom selection, parsers, limits and
+calculations are unchanged; all palette/Z–R helpers live in `RadarStyle.js`.
+`Panel.qml` retains its original request functions, `radarFrameUrl`, WMS
+BBOX/WIDTH/HEIGHT, source selection, pending-frame handoff and fallback.
+`WeatherJmaRadarLayer.qml` retains the original tile selection, nearest-time
+matching, placement and completion/load gating, with only painter/status hooks.
+`WeatherForecast.qml` changes only radar layout; `WeatherBasemap.qml` changes
+only radar colours. The original Bright Sky request, grid calculations and
+`RadarMotion.mjs` remain unchanged.
 
-| Model.js budget constant | Limit |
-| --- | --- |
-| RADAR_FRAME_MAX_BYTES | 4 MiB image bytes per frame, unchanged |
-| RADAR_RV_MAX_TILES / RADAR_TILE_MAX_BYTES | 16 × 256 KiB; 512 px tiles |
-| RADAR_JMA_MAX_TILES / RADAR_JMA_TILE_MAX_BYTES | 32 × 128 KiB; 256 px tiles (previous JMA cap 36) |
-| RADAR_WMS_MAX_SIDE | 2048 device pixels per side; existing store ceiling |
-| RADAR_GRID_MAX_SIDE / RADAR_GRID_MAX_FRAMES | 1024 native cells per side / 32 frames (existing parser ceilings 1200 / 64 tightened) |
-| RADAR_GRID_MAX_BYTES | 16 MiB total JSON response, existing Bright Sky ceiling |
+Removed additions: `RadarGridWorker.js`, `WeatherDwdRadarField.qml`,
+`WeatherRadarTileFrame.qml` and the unused radar-grid shader/QSB. There is no
+extra fetching, reprojection worker, viewport/DPR request planning, new
+per-frame budget or new network host. Existing base byte/count/cache limits
+apply unchanged (WMS 480×250, RainViewer 512×512 coordinate image, original
+JMA tile cap/zoom choices). `WeatherRadarLayerFrame.qml` is now just a painter
+adapter for the original `panel.radarFrameUrl` and original load allowance.
 
-Grid requests cover the projected viewport corners plus a one-cell margin, without resampling. If the view cannot fit the
-native grid/response budgets, automatic RainViewer fallback supplies the
-whole view rather than clipping or averaging DWD cells. Three downloads run
-at a time; existing image file/cache limits and timeline limits remain.
-The model fallback remains explicitly coarse model data; the globe's
-software wash also retains its existing coarser sampling. The globe uses
-Pixels with the shared continuous dBZ palette, keeping its rim antialiasing.
-JMA credit/time changes only when the complete matching tile mosaic is ready.
-The stamp names the computer's local zone, rather than silently showing the
-place's fixed forecast UTC offset with a misleading zone name.
+`WeatherRadarFrame.qml` reads each sanitized image at its source dimensions
+and samples integer pixels for value-aware paints. It does not enlarge an
+image to manufacture data. Original map crop/scale placement remains. The
+3 logical-pixel treatment lattice is a painting choice and cannot increase
+the resolution of the original fetched product. Provider-coloured products
+retain their original palette and any provider-side smoothing. The synthetic
+monochrome fixture is only a renderer test; production RainViewer never uses
+that decoder. The UI test's stable catalogue override is injected only into
+the throwaway test snapshot, never the production Panel.
 
-Git phase commits require writable linked-worktree metadata. This session's
-sandbox denies that metadata; cumulative phase patches are saved under /tmp.
+Regression fingerprints in `tests/radar-acquisition.test.mjs` check the base
+data files and existing Panel functions, excluding the explicit UI/key/loop
+functions. Shared files and alert files remain untouched.

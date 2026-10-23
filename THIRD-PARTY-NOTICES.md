@@ -4,9 +4,7 @@
 
 https://github.com/wesleygrimes/omastorm
 
-Adapted files: WeatherDwdRadarField.qml, shaders/radar-grid.frag,
-shaders/radar-grid.frag.qsb, WeatherGlobeRadarSurface.qml, shaders/radar.frag,
-shaders/radar.frag.qsb, Panel.qml (radar presentation/playback), WeatherRadarView.qml,
+Adapted files: Panel.qml (radar presentation/playback), WeatherRadarView.qml,
 WeatherRadarTimeline.qml, WeatherRadarFrame.qml, RadarStyle.js, WeatherRadarMap.qml, WeatherJmaRadarLayer.qml,
 WeatherRadarPalette.qml, WeatherRadarPaint.qml, WeatherRadarLegend.qml,
 shaders/radar-map.frag, shaders/radar-map.frag.qsb, shaders/radar-paint.glsl.

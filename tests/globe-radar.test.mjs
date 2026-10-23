@@ -34,7 +34,7 @@ test("tiles for a view: centre first, at most 16, wrapping at 180°, zooming out
   // A box too large for 16 tiles at zoom 6 comes at a lower zoom.
   const europe = plain(R.tilesFor({ south: 30, north: 70, west: -20, east: 40 }, 6))
   assert.ok(europe.length <= 16 && europe[0].z < 6)
-  assert.match(R.tileUrl("https://tilecache.rainviewer.com", "/v2/radar/123", 5, 16, 10), /^https:\/\/tilecache\.rainviewer\.com\/v2\/radar\/123\/512\/5\/16\/10\/0\/0_0\.png$/)
+  assert.match(R.tileUrl("https://tilecache.rainviewer.com", "/v2/radar/123", 5, 16, 10), /^https:\/\/tilecache\.rainviewer\.com\/v2\/radar\/123\/512\/5\/16\/10\/2\/1_1\.png$/)
 })
 
 test("reprojection: each output row reads the mercator row of its latitude", () => {
@@ -63,12 +63,11 @@ test("a place's colour from the reprojected tiles", () => {
   const z = 4, x = R.tileX(9, z), y = Math.floor(R.mercatorY(47, z))
   const size = 4
   const rgba = []
-  for (let i = 0; i < size * size; i++) rgba.push(72, 72, 72, 255)
+  for (let i = 0; i < size * size; i++) rgba.push(i, 0, 0, 255)
   const raster = { z, tiles: { [R.tileKey(z, x, y)]: { box: R.tileBox(z, x, y), size, rgba } } }
   const out = [0, 0, 0, 0]
   assert.ok(R.sample(raster, 47, 9, out))
   assert.equal(out[3], 255)
-  assert.deepEqual(out.slice(0,3), [202,219,107], "40 dBZ uses the shared palette")
   assert.ok(!R.sample(raster, -30, 100, out))
 })
 
