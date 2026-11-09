@@ -80,7 +80,7 @@ Panel {
   // xdg-toplevel window instead.
   property bool standaloneMode: false
   onStandaloneModeChanged: {
-    settingsTargetSurface = standaloneMode ? "app" : "widget"
+    settingsTargetSurface = settingsSurfaces.indexOf(settingsPage) >= 0 ? settingsPage : standaloneMode ? "app" : "widget"
     root.defer(function() {
       displayOptionsStore.appDisplayOptionsFile.reload()
       displayOptionsStore.widgetDisplayOptionsFile.reload()
@@ -185,9 +185,16 @@ Panel {
   }
 
   // Settings pages, in tab order; ← / → step through them.
-  readonly property var settingsPages: ["general", "display", "notifications", "shortcuts", "sources", "changes"]
+  // The three views (menu bar, widget, app) each have a page of their own.
+  readonly property var settingsPages: ["general", "menubar", "widget", "app", "notifications", "shortcuts", "sources", "changes"]
+  readonly property var settingsSurfaces: ["menubar", "widget", "app"]
+  // On one of the views' pages: settingsTargetSurface follows it.
+  readonly property bool settingsSurfacePage: settingsSurfaces.indexOf(settingsPage) >= 0
+  // Reads the list itself: settingsSurfacePage may not have caught up yet.
+  onSettingsPageChanged: if (settingsSurfaces.indexOf(settingsPage) >= 0) settingsTargetSurface = settingsPage
   // A settings page's name in the page strip (as in More Time).
   function settingsPageName(key) {
+    if (settingsSurfaces.indexOf(key) >= 0) return i18n(key)
     // settingsPageGeneral … settingsPageSources, settingsPageChanges
     var name = "settingsPage" + String(key).charAt(0).toUpperCase() + String(key).slice(1)
     return i18n(name)
@@ -201,7 +208,7 @@ Panel {
 
   function openSettings(page) {
     settingsPage = page || "general"
-    settingsTargetSurface = standaloneMode ? "app" : "widget"
+    settingsTargetSurface = settingsSurfaces.indexOf(settingsPage) >= 0 ? settingsPage : standaloneMode ? "app" : "widget"
     displayOptionsStore.appDisplayOptionsFile.reload()
     displayOptionsStore.widgetDisplayOptionsFile.reload()
     displayOptionsStore.menubarDisplayOptionsFile.reload()
@@ -1596,7 +1603,7 @@ Panel {
   function setGlobeLayer(kind, on) {
     setViewDisplaySetting(GlobeFields.SWITCH[kind], on)
   }
-  // The globe's own wind height (Settings → Display → Globe, Shift+↑/↓).
+  // The globe's own wind height (Settings → Widget/App → Globe, Shift+↑/↓).
   function stepGlobeWindLevel(delta) {
     var levels = Model.WIND_LEVELS
     var current = Model.windLevel(String(displaySetting("globeWindLevel", "10m"))).id
@@ -2067,6 +2074,7 @@ Panel {
       radarAsTab: true,
       windAsTab: true,
       globeAsTab: true,
+      rainChartStyle: "bars",
       forecastIntensity: true,
       forecastProbability: true,
       forecastTotal: true,
@@ -3133,13 +3141,20 @@ Panel {
     var lon = Number(forecastRequestLongitude || mapCenterLongitude)
     if (!isFinite(lat) || !isFinite(lon)) return
     var chain = Providers.alertProviders(providerCountry, lat, lon)
-    if (!chain.length) return
+    if (!chain.length) {
+      alertLookup.cancel()
+      Model.endAlertRefresh(alertLookup.capRetention)
+      return
+    }
     var key = chain.map(function(provider) { return provider.id }).join(",")
       + "@" + lat.toFixed(2) + "," + lon.toFixed(2)
     var now = Date.now()
     if (key === lastAlertRequestKey && now - lastAlertRequestMs < 60 * 1000) return
     lastAlertRequestKey = key
     lastAlertRequestMs = now
+    alertLookup.cancel()
+    Model.beginAlertRefresh(alertLookup.capRetention, lat.toFixed(3) + "," + lon.toFixed(3))
+    if (!chain[0].staged) Model.endAlertRefresh(alertLookup.capRetention)
     alertProviderChain = chain
     startAlertProvider(0)
   }
@@ -3147,7 +3162,7 @@ Panel {
   // A parsed warnings report from any provider becomes the shown one.
   function acceptAlertReport(parsed, providerId) {
     if (!parsed || !Array.isArray(parsed.alerts) || providerId !== alertProviderId) return
-    alertReport = parsed
+    alertReport = Model.normalizedAlertReport(parsed)
     alertResponseAccepted = true
     alertActiveProviderId = providerId
     console.info("more-weather: warning provider active:", alertActiveProviderId)
@@ -5023,7 +5038,7 @@ Panel {
         Component { id: globeSectionComponent; WeatherGlobe { panel: root } }
         Component { id: tabsSectionComponent; WeatherTabs { panel: root } }
 
-        // Sections in the order chosen under Settings → Display; the tabbed
+        // Sections in the order chosen under Settings → Widget/App; the tabbed
         // ones share one strip in the place of the first.
         Repeater {
           id: sectionRepeater

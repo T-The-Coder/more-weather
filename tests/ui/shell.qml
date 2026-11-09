@@ -225,12 +225,12 @@ ShellRoot {
     // The globe's chips and legend below it.
     list.push(function() { panel.activeTab = "globe"; panel.scrollWeatherBy(100000) }, function() {}, function() {},
       function() { shot("A" + tag + "-tab-globe-end") })
-    ;["general", "display", "notifications", "shortcuts", "sources", "changes"].forEach(function(page) {
+    ;["general", "menubar", "widget", "app", "notifications", "shortcuts", "sources", "changes"].forEach(function(page) {
       list.push(function() { panel.openSettings(page) }, function() {}, function() { shot("A" + tag + "-settings-" + page) })
     })
     list.push(function() { panel.openSettings("general"); press(Qt.Key_End) }, function() {},
       function() { shot("A" + tag + "-settings-general-end") })
-    list.push(function() { panel.openSettings("display"); panel.settingsTargetSurface = "app" }, function() {},
+    list.push(function() { panel.openSettings("app") }, function() {},
       function() { for (var i = 0; i < 200 && panel.settingsFocusId !== "globeStyle"; i++) press(Qt.Key_Down) },
       function() {}, function() { shot("A" + tag + "-settings-display-globe") }, function() { press(Qt.Key_Home) })
     list.push(function() { panel.openSettings("general"); panel.setSettingsSearch("temp") }, function() {},
@@ -324,8 +324,8 @@ ShellRoot {
   ], glyphShot("G-globe-end"), [
     function() { panel.scrollWeatherBy(-100000); panel.openSettings("general") }
   ], glyphShot("G-settings-general"), [
-    function() { panel.openSettings("display") }
-  ], glyphShot("G-settings-display"), [
+    function() { panel.openSettings("widget") }
+  ], glyphShot("G-settings-widget"), [
     function() { panel.settingsOpen = false; console.log("AUDIT DONE") }
   ])
 
@@ -417,7 +417,7 @@ ShellRoot {
     function() { shot("02c-tab-places-hints-off"); check("hints-off", panel.showHints === false) },
     function() { panel.activeTab = "globe" },
     function() {}, function() { shot("02d-tab-globe-hints-off") },
-    function() { panel.openSettings("display") },
+    function() { panel.openSettings("widget") },
     function() { shot("02e-settings-hints-off") },
     function() { panel.settingsOpen = false; general("showHints", true); panel.activeTab = "favorites" },
     function() { panel.activeTab = "airQuality" },
@@ -430,6 +430,13 @@ ShellRoot {
     function() { shot("06-tab-daily") },
     function() { panel.activeTab = "rain" },
     function() { shot("07-tab-rain") },
+    // The rain chart's pixel style, then back to the bars.
+    function() { panel.setViewDisplaySetting("rainChartStyle", "pixels") },
+    function() {
+      check("rain-pixel-style", panel.displaySetting("rainChartStyle", "bars") === "pixels")
+      shot("07b-tab-rain-pixels")
+    },
+    function() { panel.setViewDisplaySetting("rainChartStyle", "bars") },
     function() { panel.activeTab = "radar" },
     function() {
       radarBeforeTest = panel.radarFrames
@@ -956,7 +963,7 @@ ShellRoot {
     function() { shot("11-settings-general") },
     function() { press(Qt.Key_End) },
     function() { shot("12-settings-general-end") },
-    function() { panel.settingsPage = "display"; panel.settingsTargetSurface = "menubar"; press(Qt.Key_Home) },
+    function() { panel.settingsPage = "menubar"; press(Qt.Key_Home) },
     function() { shot("13-settings-menubar") },
     // Down the keyboard list to "Bold while hovered".
     function() {
@@ -966,9 +973,9 @@ ShellRoot {
     function() { shot("14-settings-menubar-bold") },
     function() { press(Qt.Key_Down); check("accents-dropdown-reached", panel.settingsFocusId === "barAccents") },
     function() { shot("14b-settings-menubar-accents") },
-    function() { press(Qt.Key_Home); panel.settingsTargetSurface = "widget" },
+    function() { press(Qt.Key_Home); panel.settingsPage = "widget" },
     function() { shot("15-settings-widget") },
-    function() { panel.settingsTargetSurface = "app" },
+    function() { panel.settingsPage = "app" },
     function() { shot("16-settings-app") },
     // The globe's card: its sky, layers and time sections.
     function() {
@@ -1014,7 +1021,7 @@ ShellRoot {
       press(Qt.Key_Space)
       check("tab-order", (function() {
         var pages = panel.settingsPages
-        return pages.indexOf("notifications") === 2 && pages.length === 6
+        return pages.indexOf("notifications") === 4 && pages.length === 8
       })())
     },
     // Search across the pages, with / and Esc.

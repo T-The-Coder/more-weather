@@ -109,8 +109,7 @@ ShellRoot {
       list.push(function() {
         inApp()
         units(unit)
-        panel.openSettings(kind === "settings" ? (o.page || "display") : kind)
-        if (kind === "settings") panel.settingsTargetSurface = o.surface || "menubar"
+        panel.openSettings(kind === "settings" ? (o.page || o.surface || "menubar") : kind)
       })
       wait(list, 2)
       // Down to the setting asked for (Menu bar: "Colour the values"), its

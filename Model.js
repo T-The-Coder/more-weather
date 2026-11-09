@@ -2378,14 +2378,161 @@ function precipitationGridSeries(report) {
   return result
 }
 
+// Retained warning data is a small, flat record, never provider objects or
+// XML blocks. Limits include the ellipsis; metadata uses the headline limit.
+var ALERT_HEADLINE_MAX = 300
+var ALERT_DESCRIPTION_MAX = 4000
+var ALERT_INSTRUCTION_MAX = 2000
+var ALERT_MAX_PER_DOC = 200
+var ALERT_MAX_PER_PLACE = 200
+var ALERT_MAX_DOCS = 64
+var ALERT_MAX_RETAINED_BYTES = 4 * 1024 * 1024
+var ALERT_MAX_DOWNLOADS_PER_REFRESH = 32
+var ALERT_CAP_RESPONSE_MAX_BYTES = 2 * 1024 * 1024
+
+function alertText(value, limit) {
+  var text = typeof value === "string" || typeof value === "number" ? String(value) : ""
+  var cut = text.length > limit
+  var length = cut ? limit - 1 : text.length
+  // Build an independent string: a substring can share the backing storage
+  // of a whole response, which would defeat accounting by retained length.
+  var parts = []
+  var units = []
+  for (var i = 0; i < length; ++i) {
+    units.push(text.charCodeAt(i))
+    if (units.length === 4096) {
+      parts.push(String.fromCharCode.apply(null, units))
+      units = []
+    }
+  }
+  if (cut) units.push(0x2026)
+  if (units.length) parts.push(String.fromCharCode.apply(null, units))
+  return parts.join("")
+}
+
+function normalizedAlertRecord(alert) {
+  var input = alert || {}
+  var result = {}
+  var fields = ["alert_id", "id", "status", "category", "severity", "event_en", "event_de",
+    "headline_en", "headline_de", "description_en", "description_de", "instruction_en",
+    "instruction_de", "onset", "effective", "expires", "web", "_references"]
+  for (var i = 0; i < fields.length; ++i) {
+    var field = fields[i]
+    var value = input[field]
+    // CAP references are identifiers separated by whitespace, not parsed blocks.
+    if (field === "_references" && Array.isArray(value))
+      value = value.slice(0, ALERT_MAX_PER_DOC).map(function(id) {
+        return alertText(id, ALERT_HEADLINE_MAX)
+      }).join("\n")
+    var limit = field.indexOf("description_") === 0 || field === "_references" ? ALERT_DESCRIPTION_MAX
+      : (field.indexOf("instruction_") === 0 || field === "web" ? ALERT_INSTRUCTION_MAX : ALERT_HEADLINE_MAX)
+    result[field] = alertText(value, limit)
+  }
+  if (isFinite(input._level)) result._level = Number(input._level)
+  return result
+}
+
+function normalizedAlertRecords(alerts, limit) {
+  var rows = Array.isArray(alerts) ? alerts : []
+  return rows.slice(0, limit).map(normalizedAlertRecord)
+}
+
+function normalizedAlertReport(report) {
+  return { alerts: normalizedAlertRecords(report && report.alerts, ALERT_MAX_PER_PLACE),
+    _providerId: alertText(report && report._providerId, ALERT_HEADLINE_MAX) }
+}
+
+function alertRecordBytes(alerts) {
+  var bytes = 0
+  for (var i = 0; i < alerts.length; ++i)
+    for (var key in alerts[i])
+      if (typeof alerts[i][key] === "string") bytes += 2 * alerts[i][key].length
+  return bytes
+}
+
+// One cache per lookup. Records are matched to just the current place; a
+// place change releases the old matches instead of retaining URL/place pairs.
+// Two bytes per string code unit conservatively accounts for UTF-16 storage.
+function newAlertRetention() {
+  return { documents: {}, bytes: 0, clock: 0, place: "", references: {}, queue: [], downloads: 0, cursor: 0 }
+}
+
+function beginAlertRefresh(store, place) {
+  // Rotate the feed scan so failures and LRU evictions cannot keep later
+  // entries permanently behind the same first 32 URLs.
+  store.cursor = store.place === place ? (store.cursor + store.downloads) % 2147483647 : 0
+  if (store.place !== place) {
+    store.documents = {}
+    store.bytes = 0
+  }
+  store.place = place
+  store.references = {}
+  store.queue = []
+  store.downloads = 0
+}
+
+function dropAlertDocument(store, url) {
+  store.bytes -= store.documents[url].bytes
+  delete store.documents[url]
+}
+
+function keepAlertDocument(store, url, alerts) {
+  if (store.documents[url]) dropAlertDocument(store, url)
+  var records = normalizedAlertRecords(alerts, ALERT_MAX_PER_DOC)
+  var bytes = alertRecordBytes(records) + 2 * (url.length + store.place.length)
+  store.documents[url] = { alerts: records, bytes: bytes, used: ++store.clock }
+  store.bytes += bytes
+  while (Object.keys(store.documents).length > ALERT_MAX_DOCS || store.bytes > ALERT_MAX_RETAINED_BYTES) {
+    var oldest = ""
+    for (var key in store.documents)
+      if (!oldest || store.documents[key].used < store.documents[oldest].used) oldest = key
+    dropAlertDocument(store, oldest)
+  }
+  return records
+}
+
+// Feed URLs, including those beyond this refresh's budget, are references.
+// Cached hits touch LRU order and are returned only once across overlapping feeds.
+function takeAlertFeedEntries(store, entries, now, maxAgeMs) {
+  var alerts = []
+  for (var i = 0; i < entries.length; ++i) {
+    var entry = entries[(i + store.cursor) % entries.length]
+    if (isFinite(entry.published) && now - entry.published > maxAgeMs) continue
+    var url = entry.link
+    if (store.references[url]) continue
+    store.references[url] = true
+    var known = store.documents[url]
+    if (known) {
+      known.used = ++store.clock
+      alerts = alerts.concat(known.alerts).slice(0, ALERT_MAX_PER_PLACE)
+    } else if (store.queue.length + store.downloads < ALERT_MAX_DOWNLOADS_PER_REFRESH) {
+      store.queue.push(url)
+    }
+  }
+  return alerts
+}
+
+function nextAlertDownload(store) {
+  if (!store.queue.length || store.downloads >= ALERT_MAX_DOWNLOADS_PER_REFRESH) return ""
+  ++store.downloads // Failed requests also spend the budget.
+  return store.queue.shift()
+}
+
+function endAlertRefresh(store) {
+  for (var url in store.documents)
+    if (!store.references[url]) dropAlertDocument(store, url)
+  store.references = {}
+  store.queue = []
+}
+
 function weatherAlerts(report, now, language) {
   var rows = report && report.alerts ? report.alerts : []
   var useGerman = language === "de"
   var currentTime = (now instanceof Date ? now : new Date(now || Date.now())).getTime()
   var severityRank = { minor: 1, moderate: 2, severe: 3, extreme: 4 }
   var result = []
-  for (var i = 0; i < rows.length; ++i) {
-    var alert = rows[i] || {}
+  for (var i = 0; i < rows.length && result.length < ALERT_MAX_PER_PLACE; ++i) {
+    var alert = normalizedAlertRecord(rows[i])
     if (alert.status && alert.status !== "actual") continue
     if (alert.category && alert.category !== "met") continue
     var expires = alert.expires ? new Date(alert.expires).getTime() : Infinity
@@ -2420,10 +2567,10 @@ function nwsAlertReport(raw) {
   try { parsed = typeof raw === "string" ? parseJson(raw) : raw } catch (e) { return null }
   if (!parsed || !Array.isArray(parsed.features)) return null
   var alerts = []
-  for (var i = 0; i < parsed.features.length; ++i) {
+  for (var i = 0; i < parsed.features.length && alerts.length < ALERT_MAX_PER_DOC; ++i) {
     var feature = parsed.features[i] || {}
     var p = feature.properties || {}
-    alerts.push({
+    alerts.push(normalizedAlertRecord({
       alert_id: feature.id || p.id || String(i),
       status: String(p.status || "Actual").toLowerCase(),
       category: "met",
@@ -2440,9 +2587,9 @@ function nwsAlertReport(raw) {
       effective: p.effective || "",
       expires: p.expires || p.ends || "",
       web: p.web || "https://www.weather.gov/"
-    })
+    }))
   }
-  return { alerts: alerts, _providerId: "nws" }
+  return { alerts: alerts.slice(0, ALERT_MAX_PER_DOC), _providerId: "nws" }
 }
 
 // The XML readers below scan forward only: a missing end (an unclosed
@@ -2536,7 +2683,7 @@ function meteoAlarmAlertReport(raw, locationAliases) {
   }
   var entries = xmlBlocks(xml, "entry")
   var alerts = []
-  for (var i = 0; i < entries.length; ++i) {
+  for (var i = 0; i < entries.length && alerts.length < ALERT_MAX_PER_DOC; ++i) {
     var block = entries[i]
     var area = xmlElement(block, "cap:areaDesc")
     var title = xmlElement(block, "title")
@@ -2551,7 +2698,7 @@ function meteoAlarmAlertReport(raw, locationAliases) {
     if (!matches) continue
     var severity = xmlElement(block, "cap:severity") || "Minor"
     var event = xmlElement(block, "cap:event") || "Weather warning"
-    alerts.push({
+    alerts.push(normalizedAlertRecord({
       alert_id: xmlElement(block, "cap:identifier") || xmlElement(block, "id") || String(i),
       status: String(xmlElement(block, "cap:status") || "Actual").toLowerCase(),
       category: "met",
@@ -2567,9 +2714,9 @@ function meteoAlarmAlertReport(raw, locationAliases) {
       onset: xmlElement(block, "cap:onset"),
       expires: xmlElement(block, "cap:expires"),
       web: "https://meteoalarm.org/"
-    })
+    }))
   }
-  return { alerts: alerts, _providerId: "meteoalarm" }
+  return { alerts: alerts.slice(0, ALERT_MAX_PER_DOC), _providerId: "meteoalarm" }
 }
 
 // MeteoAlarm JSON API (feeds.meteoalarm.org/api/v1): the same country-wide
@@ -2588,7 +2735,7 @@ function meteoAlarmApiAlertReport(raw, locationAliases, language) {
   }
   var wanted = String(language || "en").toLowerCase()
   var alerts = []
-  for (var i = 0; i < parsed.warnings.length; ++i) {
+  for (var i = 0; i < parsed.warnings.length && alerts.length < ALERT_MAX_PER_DOC; ++i) {
     var alert = parsed.warnings[i] && parsed.warnings[i].alert
     var infos = alert && Array.isArray(alert.info) ? alert.info : []
     if (!infos.length) continue
@@ -2610,7 +2757,7 @@ function meteoAlarmApiAlertReport(raw, locationAliases, language) {
     if (!matches) continue
     var event = String(info.event || "Weather warning")
     var headline = String(info.headline || event)
-    alerts.push({
+    alerts.push(normalizedAlertRecord({
       alert_id: String(alert.identifier || parsed.warnings[i].uuid || i),
       status: String(alert.status || "Actual").toLowerCase(),
       category: "met",
@@ -2626,9 +2773,9 @@ function meteoAlarmApiAlertReport(raw, locationAliases, language) {
       onset: String(info.onset || info.effective || ""),
       expires: String(info.expires || ""),
       web: "https://meteoalarm.org/"
-    })
+    }))
   }
-  return { alerts: alerts, _providerId: "meteoalarm-api" }
+  return { alerts: alerts.slice(0, ALERT_MAX_PER_DOC), _providerId: "meteoalarm-api" }
 }
 
 function pointInRing(latitude, longitude, ring) {
@@ -2674,7 +2821,7 @@ function ecccAlertReport(raw, latitude, longitude, language) {
   var typeSeverity = { warning: "severe", watch: "moderate", advisory: "minor", statement: "minor" }
   var seen = {}
   var alerts = []
-  for (var i = 0; i < parsed.features.length; ++i) {
+  for (var i = 0; i < parsed.features.length && alerts.length < ALERT_MAX_PER_DOC; ++i) {
     var feature = parsed.features[i] || {}
     var p = feature.properties || {}
     if (isFinite(lat) && isFinite(lon) && !geometryContainsPoint(feature.geometry, lat, lon)) continue
@@ -2685,7 +2832,7 @@ function ecccAlertReport(raw, latitude, longitude, language) {
     var event = String((french ? p.alert_short_name_fr : p.alert_short_name_en) || p.alert_short_name_en || "Weather alert")
     var headline = String((french ? p.alert_name_fr : p.alert_name_en) || p.alert_name_en || event)
     var text = String((french ? p.alert_text_fr : p.alert_text_en) || p.alert_text_en || "")
-    alerts.push({
+    alerts.push(normalizedAlertRecord({
       alert_id: String(feature.id || key),
       status: state === "cancelled" || state === "ended" ? "cancelled" : "actual",
       category: "met",
@@ -2702,9 +2849,9 @@ function ecccAlertReport(raw, latitude, longitude, language) {
       onset: String(p.validity_datetime || p.publication_datetime || ""),
       expires: String(p.event_end_datetime || p.expiration_datetime || ""),
       web: "https://weather.gc.ca/"
-    })
+    }))
   }
-  return { alerts: alerts, _providerId: "eccc" }
+  return { alerts: alerts.slice(0, ALERT_MAX_PER_DOC), _providerId: "eccc" }
 }
 
 // ---- CAP 1.2 (MetService New Zealand). One alert document; its info block
@@ -2791,7 +2938,7 @@ function capAlerts(raw, latitude, longitude, providerId, web) {
   // Identifiers this message updates or cancels ("sender,identifier,sent").
   var references = String(xmlElement(xml, "references") || "").trim().split(/\s+/).filter(Boolean)
     .map(function(entry) { return entry.split(",")[1] || entry })
-  return [{
+  return [normalizedAlertRecord({
     alert_id: xmlElement(xml, "identifier") || headline,
     status: messageType === "cancel" ? "cancelled" : status,
     category: weatherRelated ? "met" : "other",
@@ -2808,7 +2955,7 @@ function capAlerts(raw, latitude, longitude, providerId, web) {
     onset: xmlElement(info, "onset") || xmlElement(info, "effective") || xmlElement(xml, "sent"),
     expires: xmlElement(info, "expires"),
     web: xmlElement(info, "web") || web || ""
-  }]
+  })]
 }
 
 // A CAP feed (RSS or Atom) lists one CAP document per alert: its link and,
@@ -2828,6 +2975,8 @@ function capFeedEntries(raw) {
     }
     // Documents only over https from a public host (publicHttpsUrl).
     if (!publicHttpsUrl(link) || seen[link]) continue
+    // Cached URL keys must not share a whole feed's backing storage either.
+    link = alertText(link, link.length)
     seen[link] = true
     var published = new Date(xmlElement(items[i], "pubDate") || xmlElement(items[i], "updated")
       || xmlElement(items[i], "published")).getTime()
@@ -2842,6 +2991,7 @@ function withoutSupersededAlerts(alerts) {
   var superseded = {}
   for (var i = 0; i < list.length; ++i) {
     var references = list[i]._references || []
+    if (typeof references === "string") references = references.split(/\s+/).filter(Boolean)
     for (var r = 0; r < references.length; ++r) superseded[references[r]] = true
   }
   return list.filter(function(alert) { return !superseded[alert.alert_id] })
@@ -2930,7 +3080,7 @@ function inmetAlertReport(raw, latitude, longitude) {
   }
   var alerts = []
   var seen = {}
-  for (var i = 0; i < rows.length; ++i) {
+  for (var i = 0; i < rows.length && alerts.length < ALERT_MAX_PER_DOC; ++i) {
     var row = rows[i] || {}
     if (String(row.encerrado) === "True") continue
     var geometry = null
@@ -2941,7 +3091,7 @@ function inmetAlertReport(raw, latitude, longitude) {
     seen[id] = true
     var event = String(row.descricao || "Aviso")
     var headline = "Aviso de " + event + " · " + String(row.severidade || "")
-    alerts.push({
+    alerts.push(normalizedAlertRecord({
       alert_id: id,
       status: "actual",
       category: "met",
@@ -2957,9 +3107,9 @@ function inmetAlertReport(raw, latitude, longitude) {
       onset: brasilia(row.inicio),
       expires: brasilia(row.fim),
       web: "https://alertas2.inmet.gov.br/"
-    })
+    }))
   }
-  return { alerts: alerts, _providerId: "inmet" }
+  return { alerts: alerts.slice(0, ALERT_MAX_PER_DOC), _providerId: "inmet" }
 }
 
 // ---- Bureau of Meteorology: one RSS feed of current warnings per state.
@@ -2970,7 +3120,7 @@ function bomAlertReport(raw) {
   if (xml.indexOf("<rss") < 0) return null
   var items = xmlBlocks(xml, "item")
   var alerts = []
-  for (var i = 0; i < items.length; ++i) {
+  for (var i = 0; i < items.length && alerts.length < ALERT_MAX_PER_DOC; ++i) {
     var title = xmlElement(items[i], "title").replace(/^\d{1,2}\/\d{1,2}:\d{2}\s+[A-Z]{3,4}\s+/, "")
     if (!title || /marine|coastal waters|ocean wind|surf|tsunami (no threat|cancellation)/i.test(title)) continue
     var lower = title.toLowerCase()
@@ -2978,7 +3128,7 @@ function bomAlertReport(raw) {
       : (/severe|warning/.test(lower) && !/watch|advice/.test(lower) ? "severe"
         : (/watch|advice|minor/.test(lower) ? "moderate" : "minor"))
     var event = title.replace(/\s+for\s+.*$/i, "")
-    alerts.push({
+    alerts.push(normalizedAlertRecord({
       alert_id: xmlElement(items[i], "guid") || title,
       status: /cancel/i.test(title) ? "cancelled" : "actual",
       category: "met",
@@ -2994,9 +3144,9 @@ function bomAlertReport(raw) {
       onset: xmlElement(items[i], "pubDate") ? new Date(xmlElement(items[i], "pubDate")).toISOString() : "",
       expires: "",
       web: xmlElement(items[i], "link").replace(/^http:/, "https:")
-    })
+    }))
   }
-  return { alerts: alerts, _providerId: "bom" }
+  return { alerts: alerts.slice(0, ALERT_MAX_PER_DOC), _providerId: "bom" }
 }
 
 // ---- Japan Meteorological Agency (bosai JSON, warning system of 2026).
@@ -3098,7 +3248,7 @@ function jmaAlertReport(raw, areaCode) {
     var level = JMA_LEVELS[info[1]] || JMA_LEVELS[20]
     var english = names[0] + " " + level[0]
     var german = level[1] + " " + names[1]
-    alerts.push({
+    alerts.push(normalizedAlertRecord({
       alert_id: "jma-" + areaCode + "-" + kind,
       status: "actual",
       category: "met",
@@ -3115,10 +3265,10 @@ function jmaAlertReport(raw, areaCode) {
       expires: "",
       web: "https://www.jma.go.jp/bosai/warning/#area_type=class20s&area_code=" + areaCode + "&lang=en",
       _level: info[1]
-    })
+    }))
   }
   alerts.sort(function(a, b) { return b._level - a._level })
-  return { alerts: alerts, _providerId: "jma" }
+  return { alerts: alerts.slice(0, ALERT_MAX_PER_DOC), _providerId: "jma" }
 }
 
 // ---- Place lookup. Name, region and country for the forecast place, from

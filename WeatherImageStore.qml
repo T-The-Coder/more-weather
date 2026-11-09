@@ -28,7 +28,7 @@ QtObject {
   // minutes, so stay at three.
   readonly property int maxParallel: 3
   readonly property int timeoutSeconds: 20
-  readonly property string userAgent: "more-weather/3.2 (+https://github.com/T-The-Coder/more-weather)"
+  readonly property string userAgent: "more-weather/3.3 (+https://github.com/T-The-Coder/more-weather)"
   readonly property string cacheDir: (Quickshell.env("XDG_CACHE_HOME") || (Quickshell.env("HOME") + "/.cache"))
     + "/more-weather/map-images"
 
@@ -148,29 +148,44 @@ QtObject {
   }
 
   // A download is in: "-" means the cached file was reused; else the
-  // picture is rewritten (Model.pngSanitized) and the rewrite written to the
-  // cache file, or the download refused (65).
+  // picture is rewritten (Model.pngSanitized, on the worker thread so the
+  // shell keeps drawing) and the rewrite written to the cache file, or the
+  // download refused (63 too large, 65 not a valid PNG).
   function fetched(url, exitCode, output) {
     var record = records[url]
     if (exitCode !== 0 || !record || record.state !== "loading" || output === "-") {
       settle(url, exitCode)
       return
     }
-    var raw = Model.base64Decoded(output)
-    if (raw.length > maxBytes) {
-      settle(url, 63)
-      return
-    }
-    var clean = Model.pngSanitized(raw, maxDimension, maxDimension * maxDimension, maxBytes)
-    if (clean === null) {
-      settle(url, 65)
+    var id = ++nextJob
+    jobs[id] = url
+    sanitizer.sendMessage({ id: id, fn: "imagePayload",
+      args: [output, maxDimension, maxDimension * maxDimension, maxBytes] })
+  }
+
+  function sanitized(message) {
+    var url = jobs[message.id]
+    delete jobs[message.id]
+    if (!url) return
+    var record = records[url]
+    if (!record || record.state !== "loading") return
+    var result = message.result || { code: 65 }
+    if (result.code !== 0) {
+      settle(url, result.code)
       return
     }
     writeComponent.createObject(store, {
       url: url,
-      payload: Model.base64Encoded(clean),
+      payload: result.payload,
       command: ["bash", "-c", writeScript, "more-weather-image-write", record.path]
     })
+  }
+
+  property int nextJob: 0
+  property var jobs: ({})
+  property WorkerScript sanitizer: WorkerScript {
+    source: Qt.resolvedUrl("ModelWorker.js")
+    onMessage: function(message) { store.sanitized(message) }
   }
 
   function settle(url, exitCode) {

@@ -2,7 +2,7 @@ import QtQuick
 import Quickshell
 import "GlobeRadar.js" as GlobeRadar
 
-// The globe's radar layer from z2 on (Settings → Display → Globe: Radar):
+// The globe's radar layer from z2 on (Settings → Widget/App → Globe: Radar):
 // RainViewer's tiles of the frame shown (the Radar section's source and
 // catalogue, panel.rainViewerFrames), fetched through the map picture
 // store (panel.mapImages, its cache and size cap), each reprojected from

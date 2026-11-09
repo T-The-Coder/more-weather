@@ -57,7 +57,8 @@ runs as a standalone app window.
   and low (each switchable), rain, UV, wind, the day's mean air pressure (off by
   default), sunrise, sunset, moon phase,
   day length and its change against the day before.
-- **Rain nowcast:** Intensity in 15-minute steps and probability over the next two hours.
+- **Rain nowcast:** Intensity in 15-minute steps and probability over the next two hours,
+  as bars and a curve or, with Chart style "Pixels", as squares on a dot grid.
   In the DWD area both come from the DWD radar nowcast, renewed every five minutes: rain
   already falling, moved along its track, blended with DWD MOSMIX for the probability. The
   bars take the DWD radar colours, the probability is a thin line over a translucent
@@ -168,10 +169,10 @@ runs as a standalone app window.
   a weekly temperature bar and the air quality dot, and in the bar on request; one
   switch turns them off.
 - **Separate display settings** for the bar, the popup and the app (the popup's can be
-  copied to the app and back), and the widget's position in the bar (left, center or
-  right).
-- **Settings in six pages** (General, Display, Notifications, Shortcuts, Sources and
-  What's new, this change log by version) with
+  copied to the app and back), and the widget's position in the bar (left, left of
+  center, center, right of center or right, Omarchy 4.5's sections).
+- **Settings in eight pages** (General, Menu bar, Widget, App, Notifications, Shortcuts,
+  Sources and What's new, this change log by version) with
   a search over all of them (`/`): the rows found work right there, grouped by page,
   card and section.
 - **Export and import** of all settings and your places as one JSON file (Settings →
@@ -269,7 +270,7 @@ too, and the settings name their keys where they apply.
 | **Settings** | |
 | `Tab` / `⇧ Tab` | Next / previous settings page |
 | `/` | Search the settings (`Esc` clears the search) |
-| `1` `2` `3` | Menu bar / widget / app settings (Display) |
+| `1` `2` `3` | Menu bar / widget / app settings pages |
 | `↑ ↓` / `j k` | Previous / next setting |
 | `← →` / `h l` | Change the value or pick the switch column |
 | `Space` / `Enter` | Switch, open the list or press the button |

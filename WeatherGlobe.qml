@@ -92,7 +92,7 @@ Column {
     // be seen at once; a zoomed globe is cut to this square.
     readonly property real viewHeight: panel.contentRoot ? panel.contentRoot.height - Style.space(200) : Style.space(420)
     readonly property real viewSize: Math.max(Style.space(160), Math.min(width, viewHeight))
-    // Globe or flat map (Settings → Display → Globe: Map style); the map
+    // Globe or flat map (Settings → Widget/App → Globe: Map style); the map
     // as wide as the section, as tall as its proportions or the view allow.
     readonly property string style: String(panel.displaySetting("globeStyle", "globe"))
     readonly property bool isMap: style === "map"
@@ -495,7 +495,7 @@ Column {
     property var labelRects: []
     readonly property Item streaksItem: streaks
     readonly property Item washItem: wash
-    // The colour wash shown (Settings → Display → Globe, or v).
+    // The colour wash shown (Settings → Widget/App → Globe, or v).
     readonly property var washLayers: panel.globeData.washLayers
     onWidthChanged: canvas.requestPaint()
     onHeightChanged: canvas.requestPaint()
@@ -1053,7 +1053,7 @@ Column {
           var my = flat ? moonAt.y : globe.centerY + (moonAt.y - globe.centerY) * 1.15
           // Lit towards the sun as seen from space, or as it stands in the
           // shown place's sky: true tilt, earthshine on a thin crescent,
-          // dimmed below the horizon (Settings → Display → Globe: Moon view).
+          // dimmed below the horizon (Settings → Widget/App → Globe: Moon view).
           var look = globe.moonLook
           var angle = look ? look.angle
             : Moon.moonLitAngle(moon, sky.sun, function(lat, lon) { return screenPoint(lat, lon) })
@@ -1618,7 +1618,7 @@ Column {
     }
   }
 
-  // The forecast timeline, while a data layer shows (Settings → Display →
+  // The forecast timeline, while a data layer shows (Settings → Widget/App →
   // Globe: Timeline).
   WeatherGlobeTimeline {
     width: parent.width

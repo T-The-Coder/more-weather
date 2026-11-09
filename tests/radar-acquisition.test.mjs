@@ -4,19 +4,20 @@ import { readFileSync, existsSync } from 'node:fs'
 import { createHash } from 'node:crypto'
 import { root } from './load.mjs'
 
-// Base c6fcf53 fingerprints: fetching, parsing, budgets, projection and cache
+// Base fingerprints (main 3.3.0, which keeps c6fcf53's acquisition and adds
+// the picture check on the worker thread): fetching, parsing, budgets, projection and cache
 // files must remain identical. These checks work offline without Git metadata.
 const baseline = {
-  'Model.js': '8787f07467a4fb55881df2b99cda677104830abd804c0f9315458b1a6bcd7753',
+  'Model.js': '29fd666731f02486be071c97d95b4640d606997b57f06518017fd7335f2d6284',
   'WeatherMapPrefetch.qml': '90d8bee1829ab7e756fd21fd3ce90eba35cac4ee2100dfd7611d572e0ce750ba',
-  'WeatherImageStore.qml': '15a8ef8264245b13c2a0e704d115425ee2e030f6264f0bff2cac0cdc4c238d7f',
+  'WeatherImageStore.qml': '02d359f5b957ce5bef5461f5950d048d9d36eed43e703db90f9b827211fc7008',
   'WeatherRemoteImage.qml': 'da90b7bb52b7ee645a32ebe295be6adedced6a0f1296308eb6409c948e2f71f5',
   'GlobeRadar.js': '5149209decf4fa5372edc30b938c2539551109c4e579d9b6899480bb73a57482',
-  'WeatherGlobeRadar.qml': '72dc3210ac16f0409df8a6357e7a0a91485ed673d69ad83907a1729b174e8966',
+  'WeatherGlobeRadar.qml': '8c6792b1eb1f4ef042e02ea88538dd58d619500773cc31997aea69c927072bbc',
   'Providers.js': '553e7f018dbca607ed32210a972905f9fbe04d50462e530ac8f44cc334d1c0d2',
   'RadarMotion.mjs': '2f3cf008fc55d1b44aafffe75e9449df7af0ff2b9ca4bda873b7fc3892ad9f31',
 }
-test('data-only radar files retain c6fcf53 acquisition and computation exactly', () => {
+test('data-only radar files retain the main acquisition and computation exactly', () => {
   for (const [file, hash] of Object.entries(baseline)) {
     assert.equal(createHash('sha256').update(readFileSync(`${root}/${file}`)).digest('hex'), hash, file)
   }

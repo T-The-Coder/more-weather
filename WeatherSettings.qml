@@ -186,6 +186,7 @@ Rectangle {
       masterKey: "showRain",
       sectionKey: "rain",
       options: [
+        { key: "rainChartStyle", choiceOnly: true },
         { key: "forecastIntensity", title: panel.i18n("intensity") },
         { key: "forecastProbability", title: panel.i18n("probability") },
         { key: "forecastTotal", title: panel.i18n("twoHourTotal") }
@@ -270,11 +271,7 @@ Rectangle {
     .concat(I18n.supportedLanguages().map(function(code) {
       return { value: code, label: I18n.languageName(code) }
     }))
-  readonly property var barPositionOptions: [
-    { value: "left", label: panel.i18n(panel.barPlacement.verticalBar ? "barPositionTop" : "barPositionLeft") },
-    { value: "center", label: panel.i18n("barPositionCenter") },
-    { value: "right", label: panel.i18n(panel.barPlacement.verticalBar ? "barPositionBottom" : "barPositionRight") }
-  ]
+  readonly property var barPositionOptions: panel.barPlacement.options
   readonly property var hoverUnitOptions: [
     { value: "", label: panel.i18n("hoverUnitSystemOff") },
     { value: "metric", label: panel.i18n("metricUnits") + " · " + panel.i18n("metricUnitsSummary") },
@@ -395,6 +392,8 @@ Rectangle {
       { value: "lines", label: panel.i18n("globeWindLines") }, { value: "colour", label: panel.i18n("globeWindColour") },
       { value: "both", label: panel.i18n("globeWindBoth") }] },
     globeWindLevel: { title: "globeWindHeight", fallback: "10m", options: globeWindLevelOptions },
+    rainChartStyle: { title: "rainChartStyle", fallback: "bars", options: [
+      { value: "bars", label: panel.i18n("rainChartBars") }, { value: "pixels", label: panel.i18n("rainChartPixels") }] },
     globeStyle: { title: "optionMapStyle", fallback: "globe", options: [
       { value: "globe", label: panel.i18n("mapStyleGlobe") }, { value: "map", label: panel.i18n("mapStyleFlat") }] }
   })
@@ -582,15 +581,14 @@ Rectangle {
     list.push(entry(notificationsPage, t("notifications"), "", t("notifyRainSoon"), "generalSwitch", { key: "notifyRainSoon" }))
     list.push(entry(notificationsPage, t("notifications"), "", t("rainAlertThreshold"), "generalChoice", { choiceId: "rainThreshold" }))
     list.push(entry(notificationsPage, t("notifications"), "", t("rainAlertRadius"), "generalChoice", { choiceId: "rainRadius" }))
-    // Display: the cards of the view picked (menu bar, widget or app).
-    var surfaceName = t(panel.settingsTargetSurface === "menubar" ? "menubar"
-      : (panel.settingsTargetSurface === "widget" ? "widget" : "app"))
-    var display = t("settingsPageDisplay")
+    // The cards of the view picked last (menu bar, widget or app), under
+    // that view's page.
+    var display = t(panel.settingsTargetSurface)
     for (var c = 0; c < displayCards.length; c++) {
       var card = displayCards[c]
       var cardTitle = String(card.title || "")
       var section = ""
-      if (card.masterKey !== "") list.push(entry(display, cardTitle, "", cardTitle, "displaySwitch", { key: card.masterKey, surface: surfaceName }))
+      if (card.masterKey !== "") list.push(entry(display, cardTitle, "", cardTitle, "displaySwitch", { key: card.masterKey }))
       var options = card.options || []
       for (var o = 0; o < options.length; o++) {
         var option = options[o]
@@ -598,16 +596,16 @@ Rectangle {
         if (option.choiceOnly) {
           var spec = choiceSpecs[option.key]
           list.push(entry(display, cardTitle, section, spec ? t(spec.title) : option.key, "displayChoice",
-            { choiceId: option.key, surface: surfaceName }))
+            { choiceId: option.key }))
           continue
         }
         list.push(entry(display, cardTitle, section, String(option.title || ""), "displaySwitch",
-          { key: option.key, relevant: !!option.relevant, hover: !!option.hover, surface: surfaceName }))
+          { key: option.key, relevant: !!option.relevant, hover: !!option.hover }))
         var below = option.choicesBelow || []
         for (var b = 0; b < below.length; b++) {
           var belowSpec = choiceSpecs[below[b]]
           list.push(entry(display, cardTitle, section, belowSpec ? t(belowSpec.title) : below[b], "displayChoice",
-            { choiceId: below[b], surface: surfaceName }))
+            { choiceId: below[b] }))
         }
       }
     }
@@ -617,7 +615,7 @@ Rectangle {
   // Grouped under "Page › Card › Section".
   readonly property var searchGroups: SettingsSearch.grouped(searchResults.map(function(r) {
     var path = [r.page, r.card, r.section].filter(function(part) { return part !== "" }).join(" › ")
-    return Object.assign({ heading: path + (r.surface ? " · " + r.surface : "") }, r)
+    return Object.assign({ heading: path }, r)
   }))
   function jumpTo(row) {
     searchQuery = ""
@@ -738,7 +736,7 @@ Rectangle {
       if (panel.notifyRainSoon) notifications.push({ id: "rainThreshold", type: "dropdown" }, { id: "rainRadius", type: "dropdown" })
       return notifications
     }
-    if (panel.settingsPage !== "display") return []
+    if (!panel.settingsSurfacePage) return []
     var items = []
     var menubar = panel.settingsTargetSurface === "menubar"
     for (var c = 0; c < displayCards.length; c++) {
@@ -984,7 +982,7 @@ Rectangle {
     var down = key === Qt.Key_Down || text === "j" || text === "J"
     var up = key === Qt.Key_Up || text === "k" || text === "K"
     // Pages without settings just scroll.
-    if (panel.settingsPage !== "display" && panel.settingsPage !== "general" && panel.settingsPage !== "notifications") {
+    if (!panel.settingsSurfacePage && panel.settingsPage !== "general" && panel.settingsPage !== "notifications") {
       if (down || up) {
         scrollBy((down ? 1 : -1) * Style.space(48))
         return true
@@ -998,8 +996,8 @@ Rectangle {
       return false
     }
 
-    if (panel.settingsPage === "display" && (text === "1" || text === "2" || text === "3")) {
-      panel.settingsTargetSurface = ["menubar", "widget", "app"][Number(text) - 1]
+    if (panel.settingsSurfacePage && (text === "1" || text === "2" || text === "3")) {
+      panel.settingsPage = panel.settingsSurfaces[Number(text) - 1]
       focusId = ""
       return true
     }
@@ -1831,75 +1829,9 @@ Rectangle {
         }
       }
 
-      // Which part the cards below configure: the bar entry, its popup, or
-      // the full app. Underlined tabs, so they read as a sub-level of the
-      // page tabs above.
-      Item {
-        id: settingsSurfaceRow
-        visible: panel.settingsPage === "display" && !settingsView.searching
-        width: parent.width
-        height: Style.space(34)
-
-        Rectangle {
-          anchors.left: parent.left
-          anchors.right: parent.right
-          anchors.bottom: parent.bottom
-          height: Style.spacing.hairline
-          color: panel.subtleText
-        }
-
-        Row {
-          anchors.fill: parent
-
-          Repeater {
-            model: [
-              { surface: "menubar", title: panel.i18n("menubar") },
-              { surface: "widget", title: panel.i18n("widget") },
-              { surface: "app", title: panel.i18n("app") }
-            ]
-
-            Item {
-              required property var modelData
-              readonly property bool selected: panel.settingsTargetSurface === modelData.surface
-              width: settingsSurfaceRow.width / 3
-              height: settingsSurfaceRow.height
-
-              Text {
-                textFormat: Text.PlainText
-                anchors.centerIn: parent
-                text: parent.modelData.title
-                color: parent.selected || surfaceTabMouse.containsMouse
-                  ? Style.hoverStateColor(panel.foreground, Commons.Color.accent)
-                  : panel.mutedText
-                font.family: panel.fontFamily
-                font.pixelSize: Style.font.bodySmall
-                font.bold: parent.selected
-              }
-
-              Rectangle {
-                visible: parent.selected
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
-                height: Style.space(2)
-                color: Commons.Color.accent
-              }
-
-              MouseArea {
-                id: surfaceTabMouse
-                anchors.fill: parent
-                hoverEnabled: true
-                cursorShape: Qt.PointingHandCursor
-                onClicked: panel.settingsTargetSurface = parent.modelData.surface
-              }
-            }
-          }
-        }
-      }
-
       Text {
         textFormat: Text.PlainText
-        visible: panel.settingsPage === "display" && !settingsView.searching && panel.showHints
+        visible: panel.settingsSurfacePage && !settingsView.searching && panel.showHints
         width: parent.width
         text: panel.keepSeparators(panel.i18n("settingsKeysHint"))
         color: panel.hintText
@@ -1910,7 +1842,7 @@ Rectangle {
 
       Text {
         textFormat: Text.PlainText
-        visible: panel.settingsPage === "display" && !settingsView.searching
+        visible: panel.settingsSurfacePage && !settingsView.searching
         width: parent.width
         text: panel.i18n("displaySettingsHint")
           + (panel.settingsTargetSurface === "menubar" ? " " + panel.i18n("menubarHoverHint")
@@ -1927,7 +1859,7 @@ Rectangle {
         Rectangle {
           id: settingsCard
           required property var modelData
-          visible: panel.settingsPage === "display" && !settingsView.searching
+          visible: panel.settingsSurfacePage && !settingsView.searching
           property var groupData: modelData
           // Cards that only apply while another switch is on (dependsOn).
           readonly property bool cardEnabled: !groupData.dependsOn
@@ -2373,7 +2305,7 @@ Rectangle {
       // The resets side by side (order only, every switch), and the copy
       // to the other view.
       Row {
-        visible: panel.settingsPage === "display" && !settingsView.searching
+        visible: panel.settingsSurfacePage && !settingsView.searching
         anchors.horizontalCenter: parent.horizontalCenter
         spacing: Style.space(10)
 

@@ -26,6 +26,9 @@ Item {
   readonly property bool sourceUsesCache: Model.weatherSeriesUsesCache(panel.rainNowcast)
   readonly property string rainStartTime: panel.upcomingRainTime
   readonly property color probabilityColor: "#5aa9ff"
+  // "pixels": the same series as squares on a dot grid, in the same colours
+  // (Settings → Widget/App → Rain → Chart style).
+  readonly property bool pixelStyle: String(panel.displaySetting("rainChartStyle", "bars")) === "pixels"
 
   // DWD rain-intensity limits, condensed into the five levels used by this
   // compact chart: the level name and its hourly rate on two lines.
@@ -114,13 +117,106 @@ Item {
     property color foregroundColor: panel.foreground
     property color accentColor: Commons.Color.accent
     property var layoutKey: [rainChart.gutter, rainChart.probabilityLegendX, rainChart.showIntensitySeries,
-      rainChart.showProbabilitySeries]
+      rainChart.showProbabilitySeries, rainChart.pixelStyle]
     onSourceDataChanged: requestPaint()
     onForegroundColorChanged: requestPaint()
     onAccentColorChanged: requestPaint()
     onLayoutKeyChanged: requestPaint()
     onWidthChanged: requestPaint()
     onHeightChanged: requestPaint()
+    // Piecewise interpolation keeps light and moderate rain visible while
+    // preserving the DWD category boundaries at 0.5, 4 and 40 mm/h. The
+    // open-ended extreme band fills up to 80 mm/h. 0 … 4, one per level.
+    function intensityPosition(value) {
+      var amount = Math.max(0, Number(value) || 0)
+      if (amount <= 0) return 0
+      if (amount <= 0.5) return amount / 0.5
+      if (amount <= 4) return 1 + (amount - 0.5) / 3.5
+      if (amount <= 40) return 2 + (amount - 4) / 36
+      return 3 + Math.min(1, (amount - 40) / 40)
+    }
+
+    // The pixel style: the plot as a grid of squares, five rows per level.
+    // Every square is drawn faintly, so the grid reads as a dot display;
+    // each quarter hour lights the middle of its columns up to its
+    // intensity, in the bar's colour (the DWD radar colour while the radar
+    // backs it, else the accent). The probability lights one square per
+    // column at its height, with a faint fill below, under the bars as in
+    // the bar style.
+    function paintPixels(ctx, points, intensityValues, probabilityValues, fg, accent) {
+      var left = rainChart.plotLeft
+      var top = rainChart.plotTop
+      var plotW = rainChart.plotWidth
+      var plotH = rainChart.plotHeight
+      var rows = 20
+      var cellH = plotH / rows
+      var cols = Math.max(1, Math.floor(plotW / cellH))
+      var cellW = plotW / cols
+      var gap = Math.max(1, Math.round(Math.min(cellW, cellH) * 0.2))
+      var barCount = Math.max(1, intensityValues.length - 1)
+      var probColor = rainChart.probabilityColor
+      function cell(col, row) {
+        var x = Math.round(left + col * cellW)
+        var y = Math.round(top + plotH - (row + 1) * cellH)
+        ctx.fillRect(x, y, Math.max(1, Math.round(left + (col + 1) * cellW) - x - gap),
+          Math.max(1, Math.round(top + plotH - row * cellH) - y - gap))
+      }
+
+      ctx.fillStyle = fg
+      ctx.globalAlpha = 0.07
+      for (var c = 0; c < cols; ++c)
+        for (var r = 0; r < rows; ++r) cell(c, r)
+      ctx.globalAlpha = 1
+
+      // Legend swatches as single squares.
+      var side = Math.round(Math.min(cellW, cellH, 9))
+      if (rainChart.showIntensitySeries) {
+        ctx.fillStyle = accent
+        ctx.fillRect(left, 7, side, side)
+      }
+      if (rainChart.showProbabilitySeries) {
+        ctx.fillStyle = String(probColor)
+        ctx.fillRect(rainChart.probabilityLegendX, 7, side, side)
+      }
+
+      var probRows = []
+      if (rainChart.showProbabilitySeries) {
+        for (c = 0; c < cols; ++c) {
+          // The probability at the column's middle, between the samples.
+          var t = (c + 0.5) / cols * (probabilityValues.length - 1)
+          var i0 = Math.min(probabilityValues.length - 2, Math.floor(t))
+          var f = t - i0
+          var value = probabilityValues[i0] * (1 - f) + probabilityValues[i0 + 1] * f
+          var row = Math.round(Math.min(100, Math.max(0, value)) / 100 * rows) - 1
+          probRows.push(row)
+          ctx.fillStyle = Qt.rgba(probColor.r, probColor.g, probColor.b, 0.32)
+          for (r = 0; r < row; ++r) cell(c, r)
+        }
+      }
+
+      if (rainChart.showIntensitySeries) {
+        for (c = 0; c < cols; ++c) {
+          var within = (c + 0.5) / cols * barCount
+          var b = Math.min(barCount - 1, Math.floor(within))
+          var part = within - b
+          if (part < 0.2 || part >= 0.8) continue
+          var position = intensityPosition(intensityValues[b])
+          var lit = position > 0 ? Math.max(1, Math.round(position / 4 * rows)) : 0
+          var radarColor = points[b].precipitationSource === "radar"
+            ? Model.dwdRadarColor(intensityValues[b]) : ""
+          ctx.fillStyle = radarColor || accent
+          ctx.globalAlpha = 0.9
+          for (r = 0; r < lit; ++r) cell(c, r)
+          ctx.globalAlpha = 1
+        }
+      }
+
+      if (rainChart.showProbabilitySeries) {
+        ctx.fillStyle = String(probColor)
+        for (c = 0; c < probRows.length; ++c) if (probRows[c] >= 0) cell(c, probRows[c])
+      }
+    }
+
     onPaint: {
       var ctx = getContext("2d")
       ctx.clearRect(0, 0, width, height)
@@ -142,6 +238,10 @@ Item {
         probabilityValues.push(Number(points[i].probability || 0))
       }
       var barCount = Math.max(1, intensityValues.length - 1)
+      if (rainChart.pixelStyle) {
+        paintPixels(ctx, points, intensityValues, probabilityValues, fg, accent)
+        return
+      }
       ctx.strokeStyle = fg
       ctx.globalAlpha = 0.16
       ctx.lineWidth = 1
@@ -167,17 +267,6 @@ Item {
       }
 
       function pointX(index) { return left + plotW * index / (intensityValues.length - 1) }
-      function intensityPosition(value) {
-        // Piecewise interpolation keeps light and moderate rain visible
-        // while preserving the DWD category boundaries at 0.5, 4 and
-        // 40 mm/h. The open-ended extreme band fills up to 80 mm/h.
-        var amount = Math.max(0, Number(value) || 0)
-        if (amount <= 0) return 0
-        if (amount <= 0.5) return amount / 0.5
-        if (amount <= 4) return 1 + (amount - 0.5) / 3.5
-        if (amount <= 40) return 2 + (amount - 4) / 36
-        return 3 + Math.min(1, (amount - 40) / 40)
-      }
       function probabilityY(value) {
         var fraction = Math.min(100, Math.max(0, Number(value) || 0)) / 100
         return top + plotH * (1 - fraction)

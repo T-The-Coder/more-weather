@@ -88,7 +88,7 @@ Column {
             spacing: Style.space(3)
             width: panel.forecastColumnWidth(forecastScroller.width)
 
-            // Values in the order chosen under Settings → Display.
+            // Values in the order chosen under Settings → Widget/App.
             Repeater {
               model: panel.displayDailyOrder
 
