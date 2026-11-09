@@ -2,38 +2,25 @@
 
 All notable changes to More Weather are documented here.
 
-## Unreleased
+## 3.4.0 — 2026-11-09
 
-- Rebuild the radar presentation, inspired by Omastorm by Wes Grimes: quiet
-  geography, rings, crosshair, scale bar, shared palette and a labelled legend.
-- Add Pixels, Glyphs and Stipple, with a named weak-return floor. DWD/JMA
-  rain-rate classes use approximate dBZ; RainViewer and other WMS providers
-  retain their original colours, labelled in the legend.
-- Add source/product/age and LIVE/stale/unreachable chrome, five transport
-  controls, one tick per frame, forecast outlines and an absolute frame stamp.
-- Loop from the selected frame; add FULL/LEAN/Focus layouts and compact popup
-  radar. Keep global keys; use Ctrl+1/2/3 and Shift+W for radar treatments.
-- Keep data acquisition and computation exactly as in c6fcf53: original
-  catalogues, URLs, WMS dimensions/BBOX, tile sizes/zooms, Bright Sky grids,
-  prefetch, caches and limits. No new grid request, worker or tile planner.
-- Add translated strings in all 30 languages, presentation logic tests,
-  base-data parity checks and offline radar UI checks.
-- **Radar colours on the GPU.** The painter took its colours from a palette
-  texture captured from hidden items, which arrived black: rain showed as
-  black dots. The shader carries the 13 colours itself now (tested against
-  RadarStyle.colors).
-- **No more "application not responding".** The software painter's canvases
-  existed for all 24 frames on the GPU path too; once the window rendered
-  with keyboard focus, each decoded and painted its frame on the main thread
-  (0.6 s apiece), freezing the app and the bar popup for 10–15 s on opening
-  the radar. They are now created only on the software path and only for
-  the frame on screen.
-- **Faster first load.** DWD's GeoServer reads each radar time step once,
-  for up to several seconds; frames load eight at a time instead of three
-  (same URLs and data), so a cold timeline takes seconds instead of about
-  half a minute.
-- The frame stamp under the map follows the interface language's date and
-  clock format instead of the system locale's.
+- **A new radar view,** its look inspired by Omastorm by Wes Grimes: quiet
+  geography, range rings, a crosshair on your place, a scale bar and one
+  continuous colour scale with a legend. Rain is painted in 3 px cells as
+  **Pixels, Glyphs** (default) **or Stipple** (`Ctrl+1/2/3`); returns below
+  5 dBZ stay hidden unless you show them (`Shift+W`). DWD and JMA rain rates
+  are shown as approximate dBZ; RainViewer and the other services keep their
+  own colours, labelled as such.
+- **Feed status at a glance:** source and place, product, the age of the
+  picture and LIVE / stale / unreachable. Below the map: first, previous,
+  play, next and last, one tick per frame (forecast frames outlined) and the
+  frame's time. Playback loops from the frame you picked. Large windows get
+  a full layout, smaller ones a lean one; `f` shows the map alone.
+- **Faster first load:** radar frames load eight at a time instead of three;
+  DWD's server takes seconds per new time step, so a fresh timeline now
+  arrives in seconds instead of about half a minute.
+- The data behind the radar is unchanged: the same sources, requests and
+  limits as before.
 
 ## 3.3.0 — 2026-11-09
 

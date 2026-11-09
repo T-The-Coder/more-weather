@@ -10,7 +10,7 @@ import { root } from './load.mjs'
 const baseline = {
   'Model.js': '29fd666731f02486be071c97d95b4640d606997b57f06518017fd7335f2d6284',
   'WeatherMapPrefetch.qml': 'feec82d6fbcf1029dc8be740c7b1276a88dd467c606421f4fa2753c077e848ad',
-  'WeatherImageStore.qml': '79ac2b7c0990b71d8db1fb19df663ec66da871f2805dec64c855d4e1c1044de0',
+  'WeatherImageStore.qml': 'dc42be8012ab6b39b73d8d59a10a974cecbe0d673368208a93c676586a02e394',
   'WeatherRemoteImage.qml': 'da90b7bb52b7ee645a32ebe295be6adedced6a0f1296308eb6409c948e2f71f5',
   'GlobeRadar.js': '5149209decf4fa5372edc30b938c2539551109c4e579d9b6899480bb73a57482',
   'WeatherGlobeRadar.qml': '8c6792b1eb1f4ef042e02ea88538dd58d619500773cc31997aea69c927072bbc',

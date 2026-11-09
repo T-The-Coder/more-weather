@@ -30,7 +30,7 @@ QtObject {
   // answered, 12 lost one; three took about 30 s).
   readonly property int maxParallel: 8
   readonly property int timeoutSeconds: 20
-  readonly property string userAgent: "more-weather/3.3 (+https://github.com/T-The-Coder/more-weather)"
+  readonly property string userAgent: "more-weather/3.4 (+https://github.com/T-The-Coder/more-weather)"
   readonly property string cacheDir: (Quickshell.env("XDG_CACHE_HOME") || (Quickshell.env("HOME") + "/.cache"))
     + "/more-weather/map-images"
 
