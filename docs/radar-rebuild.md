@@ -13,8 +13,9 @@ and a crosshair mark the selected place. A true-length 1/2/5 scale bar uses
 More Weather's km/mi setting; map credit is bottom-right, always inside the
 stage. `WeatherMapGround.qml` dims the drawn geography for radar only.
 
-`RadarStyle.js` owns the palette; `WeatherRadarPalette.qml` uploads exactly
-those swatches to the shaders and `WeatherRadarLegend.qml` displays them.
+`RadarStyle.js` owns the palette; `shaders/radar-paint.glsl` carries the same
+13 colours (a captured palette texture arrived black on the GPU; a test keeps
+the two equal) and `WeatherRadarLegend.qml` displays them.
 Bounds (dBZ): <0, 0, 10, 20, 30, 35, 40, 45, 50, 55, 60, 65, 70+.
 The Omastorm reflectivity ramp is interpolated continuously between those
 stops; 35 is interpolated between its original 30/40 stops. Both value-aware renderers
@@ -52,7 +53,8 @@ Forecast times never make an old observation look fresh. Cache and catalogue
 replacement/failure semantics stay those of the base commit. Forecast tick
 identity is read from the existing RainViewer report without changing catalogue entries.
 `WeatherRadarTimeline.qml`: first/previous/play/next/last; stripStamp uses
-numeric locale date, locale 12/24-hour time and an explicit local zone;
+the interface language's numeric date, its 12/24-hour time and an explicit
+local zone;
 frameIndex reads N / total. One tick per playable frame; forecast ticks are
 outlined. No baseline or gap padding. Stamp/index follow the displayed frame.
 

@@ -8,7 +8,7 @@ Adapted files: Panel.qml (radar presentation/playback), WeatherRadarView.qml,
 WeatherRadarTimeline.qml, WeatherRadarFrame.qml, RadarStyle.js, WeatherRadarMap.qml, WeatherJmaRadarLayer.qml,
 WeatherRadarPalette.qml, WeatherRadarPaint.qml, WeatherRadarLegend.qml,
 shaders/radar-map.frag, shaders/radar-map.frag.qsb, shaders/radar-paint.glsl.
-The shader density mask, treatments, palette texture and presentation follow
+The shader density mask, treatments, palette and presentation follow
 Omastorm. The design document describes the UI adaptation.
 
 MIT License
