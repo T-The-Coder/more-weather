@@ -1,4 +1,3 @@
-// Adapted from Omastorm by Wes Grimes (https://github.com/wesleygrimes/omastorm), MIT licence; see THIRD-PARTY-NOTICES.md
 import QtQuick
 import "Model.js" as Model
 

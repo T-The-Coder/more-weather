@@ -1,9 +1,9 @@
 .pragma library
-// Adapted from Omastorm by Wes Grimes (https://github.com/wesleygrimes/omastorm), MIT licence; see THIRD-PARTY-NOTICES.md
 
 // Shared output palette for the legend and value-aware radar painters.
 var bounds = [-32, 0, 10, 20, 30, 35, 40, 45, 50, 55, 60, 65, 70]
-// Omastorm's reflectivity ramp; 35 dBZ interpolates its 30/40 swatches.
+// Reflectivity ramp after Omastorm's palette (a list of colours, credited in
+// the README); 35 dBZ interpolates its 30/40 swatches.
 var colors = ["#34465f", "#426b88", "#4098a5", "#51b897", "#85c76b", "#a8d16b", "#cadb6b",
   "#f0cd61", "#eda24c", "#e67349", "#d84c64", "#b55096", "#e2b4df"]
 var weakFloor = 5
@@ -92,12 +92,17 @@ function decode(red, green, blue, alpha, mode) {
   }
   return null
 }
-var density = [0,7,3,6,4,8,2,5,1]
+// Order in which the nine cells of a 3 x 3 block light up as the rain gets
+// stronger: (2 i + 1) mod 9 starts in the middle and spreads the next ones
+// over the block (same rule as fillRank in shaders/radar-paint.glsl).
+function fillRank(cell) { return (2 * cell + 1) % 9 }
+// Glyphs: 2, 4, 6 or all 9 cells lit, by intensity quarter. Stipple: a
+// centred dot growing from 1.6 to 2.8 cells across.
 function coverage(index, treatment, x, y) {
   var group = Math.min(3, Math.floor(index * 4 / colors.length))
-  if (treatment === 1) return density[y * 3 + x] < [2,4,7,9][group] ? 1 : 0
+  if (treatment === 1) return fillRank(y * 3 + x) < [2,4,6,9][group] ? 1 : 0
   if (treatment === 2) {
-    var half = [1.75,2,2.25,2.5][group] / 2 + 0.5
+    var half = 0.8 + 0.2 * group + 0.5
     return Math.max(0, Math.min(1, half - Math.abs(x + 0.5 - 1.5)))
       * Math.max(0, Math.min(1, half - Math.abs(y + 0.5 - 1.5)))
   }

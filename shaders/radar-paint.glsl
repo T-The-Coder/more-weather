@@ -1,4 +1,3 @@
-// Adapted from Omastorm by Wes Grimes (https://github.com/wesleygrimes/omastorm), MIT licence; see THIRD-PARTY-NOTICES.md
 // Input palettes are class decoders, not output colours. Unknowns stay missing.
 float classDbz(vec3 rgb, int mode) {
     vec3 b = floor(rgb * 255.0 + 0.5);
@@ -31,16 +30,11 @@ float classDbz(vec3 rgb, int mode) {
     }
     return -999.0;
 }
-int densityAt(int slot) {
-    if (slot == 0) return 0;
-    if (slot == 1) return 7;
-    if (slot == 2) return 3;
-    if (slot == 3) return 6;
-    if (slot == 4) return 4;
-    if (slot == 5) return 8;
-    if (slot == 6) return 2;
-    if (slot == 7) return 5;
-    return 1;
+// Order in which the nine cells of a 3 x 3 block light up as the rain gets
+// stronger: (2 i + 1) mod 9 starts in the middle and spreads the next ones
+// over the block (same rule as RadarStyle.fillRank).
+int fillRank(int cell) {
+    return int(mod(float(2 * cell + 1), 9.0));
 }
 float radarBand(float dbz) {
     if (dbz >= 70.0) return 12.0;
@@ -98,14 +92,15 @@ vec4 paintRadar(vec4 code, vec2 pixel, int mode, int treatment, float weakBelow)
     int group = int(band * 4.0 / 13.0);
     vec2 phase = mod(pixel, 3.0);
     float alpha = 1.0;
+    // Glyphs: 2, 4, 6 or all 9 cells of the block lit, by intensity quarter.
+    // Stipple: a centred dot growing from 1.6 to 2.8 cells across.
     if (treatment == 1) {
-        int count = group == 0 ? 2 : group == 1 ? 4 : group == 2 ? 7 : 9;
-        int slot = int(floor(phase.y)) * 3 + int(floor(phase.x));
-        alpha = densityAt(slot) < count ? 1.0 : 0.0;
+        int cell = int(floor(phase.y)) * 3 + int(floor(phase.x));
+        alpha = float(fillRank(cell) < 2 + group * 2 + (group == 3 ? 1 : 0));
     } else if (treatment == 2) {
-        float side = group == 0 ? 1.75 : group == 1 ? 2.0 : group == 2 ? 2.25 : 2.5;
-        vec2 coverage = clamp(vec2(side * 0.5 + 0.5) - abs(phase - 1.5), 0.0, 1.0);
-        alpha = coverage.x * coverage.y;
+        float half_ = 0.8 + 0.2 * float(group) + 0.5;
+        vec2 cover = clamp(vec2(half_) - abs(phase - 1.5), 0.0, 1.0);
+        alpha = cover.x * cover.y;
     }
     vec3 color = swatch(band);
     if (band > 0.0 && band < 12.0) {

@@ -496,4 +496,4 @@ RainViewer and NASA Blue Marble. Weather data by Open-Meteo, MET Norway, Bright 
 
 ## Credits
 
-The radar view follows [Omastorm by Wes Grimes](https://github.com/wesleygrimes/omastorm), MIT. Adapted code and the full licence are listed in [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
+The radar view's look was inspired by [Omastorm by Wes Grimes](https://github.com/wesleygrimes/omastorm); its code is More Weather's own.

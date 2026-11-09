@@ -1,9 +1,9 @@
 # Radar presentation (3.3)
 
-Reference: Omastorm by Wes Grimes, MIT, local reference DESIGN.md “Picture”,
-“Window chrome” and “Playback”; ui/RadarWindow.qml, RadarMap.qml, Popover.qml,
-Keys.js and shaders. Adaptations carry THIRD-PARTY-NOTICES.md and file headers.
-No branding or reference pictures are included.
+Inspired by the look of Omastorm by Wes Grimes. The code is More Weather's
+own: the one adapted piece, Omastorm's 3 x 3 density mask, was replaced by
+an own fill rule on 2026-11-09, so no third-party notice is needed. No
+branding or reference pictures are included.
 
 ## Picture and sources
 
@@ -17,7 +17,7 @@ stage. `WeatherMapGround.qml` dims the drawn geography for radar only.
 13 colours (a captured palette texture arrived black on the GPU; a test keeps
 the two equal) and `WeatherRadarLegend.qml` displays them.
 Bounds (dBZ): <0, 0, 10, 20, 30, 35, 40, 45, 50, 55, 60, 65, 70+.
-The Omastorm reflectivity ramp is interpolated continuously between those
+The reflectivity ramp is interpolated continuously between those
 stops; 35 is interpolated between its original 30/40 stops. Both value-aware renderers
 sample the same fetched image and palette with nearest-neighbour filtering.
 They do not recover detail or undo smoothing already present in provider images. Cell size is 3 × max(1, Style.font.baseSize/12) logical px.
@@ -35,8 +35,9 @@ hides measured values below 5 dBZ by default and is named in the legend.
 | Model fallback | Existing bounded precipitation cells use the shared rain-rate mapping, explicitly labelled model precipitation. |
 
 `WeatherRadarPaint.qml` / `shaders/radar-map.frag` paint the same sampled
-3-pixel cell as Pixels, Glyphs (default), or Stipple. Omastorm's density mask
-and soft-square treatment are adapted. Treatments and the weak-return floor
+3-pixel cell as Pixels, Glyphs (default), or Stipple. Glyphs light 2, 4, 6
+or 9 cells of each 3 x 3 block in the order (2 i + 1) mod 9; Stipple draws
+a centred soft square 1.6 to 2.8 cells across. Treatments and the weak-return floor
 apply to value-aware DWD/JMA images and model fallback, not provider-coloured
 products. The globe keeps its original coloured RainViewer pipeline and shader.
 No new hosts, binaries or runtime engine. Precompiled QSBs are shipped as before.

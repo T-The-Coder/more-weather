@@ -4,7 +4,7 @@ All notable changes to More Weather are documented here.
 
 ## Unreleased
 
-- Rebuild the radar presentation after Omastorm by Wes Grimes (MIT): quiet
+- Rebuild the radar presentation, inspired by Omastorm by Wes Grimes: quiet
   geography, rings, crosshair, scale bar, shared palette and a labelled legend.
 - Add Pixels, Glyphs and Stipple, with a named weak-return floor. DWD/JMA
   rain-rate classes use approximate dBZ; RainViewer and other WMS providers

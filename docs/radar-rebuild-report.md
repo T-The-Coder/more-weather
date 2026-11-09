@@ -1,5 +1,9 @@
 # Radar rebuild report
 
+> Historical (2026-11-03). Since 2026-11-09 no Omastorm code remains: the
+> density mask was replaced by an own fill rule and the third-party notice
+> removed (see radar-rebuild.md).
+
 The Omastorm-inspired presentation remains. The owner's correction supersedes
 the earlier resolution/fetching request: data acquisition and computation
 are restored to c6fcf53. Changes in this correction are left uncommitted on
