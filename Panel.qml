@@ -1276,7 +1276,7 @@ Panel {
   // With the radar numbers every five minutes, the film follows: with every
   // DWD run while the radar tab is open, every 15 minutes in the background
   // so an opened tab starts current. A new film is about 24 x 20 KB of radar
-  // layers, loaded three at a time to spare DWD's GeoServer bursts.
+  // layers, loaded eight at a time.
   readonly property int radarFilmRefreshMs: Math.max(radarShown ? 5 : 15, radarMinutes) * 60 * 1000
   property double mapRefreshWindowUntilMs: 0
   readonly property int mapRefreshWindowMs: 60 * 1000
@@ -1290,7 +1290,7 @@ Panel {
   property var pendingRadarReady: []
   property int pendingRadarReadyCount: 0
   readonly property int pendingRadarFirstIndex: radarFirstFrameIndexFor(pendingRadarFrames, nowDate)
-  // Loading 24 pictures from a slow server three at a time takes a while;
+  // Loading 24 pictures from a slow server eight at a time takes a while;
   // past this the pending set is taken as it is.
   readonly property int pendingRadarTimeoutMs: 3 * 60 * 1000
   onPendingRadarFramesChanged: {
@@ -1298,7 +1298,7 @@ Panel {
     pendingRadarReadyCount = 0
   }
 
-  // The shown set loads the same way: three pictures at a time from the
+  // The shown set loads the same way: eight pictures at a time from the
   // frame for now on, counted by WeatherMapPrefetch. The frame on screen may
   // always load, so stepping never waits for the queue.
   property var shownRadarPrefetched: []
@@ -1318,7 +1318,7 @@ Panel {
   function radarFrameLoadAllowed(index) {
     var position = index - radarFirstFrameIndex
     return index === radarFrameIndex
-      || (position >= 0 && position < shownRadarPrefetchedCount + 3)
+      || (position >= 0 && position < shownRadarPrefetchedCount + 8)
   }
   // The user stepped or played: keep their frame instead of following now.
   property bool radarUserNavigated: false
@@ -1536,9 +1536,10 @@ Panel {
   readonly property string radarStripStamp: {
     var date = new Date(radarShownTimestamp)
     if (isNaN(date.getTime())) return i18n(radarUsesModelFallback ? "noRadarData" : "radarLoading")
-    // The timestamp is the actual instant, with the computer's explicit zone.
-    // System locale selects date order and 12/24 h, independent of UI language.
-    var locale = Qt.locale()
+    // The timestamp is the actual instant, with the computer's explicit zone,
+    // in the interface language's date order and clock like the rest of the
+    // view (the system locale gave "11/9/26 · 9:55PM" in a German view).
+    var locale = interfaceLocale
     return Qt.formatDate(date, locale.dateFormat(Locale.ShortFormat)) + " · "
       + Qt.formatTime(date, locale.timeFormat(Locale.ShortFormat)) + " · " + Qt.formatTime(date, "t")
   }

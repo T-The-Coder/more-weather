@@ -18,6 +18,22 @@ All notable changes to More Weather are documented here.
   prefetch, caches and limits. No new grid request, worker or tile planner.
 - Add translated strings in all 30 languages, presentation logic tests,
   base-data parity checks and offline radar UI checks.
+- **Radar colours on the GPU.** The painter took its colours from a palette
+  texture captured from hidden items, which arrived black: rain showed as
+  black dots. The shader carries the 13 colours itself now (tested against
+  RadarStyle.colors).
+- **No more "application not responding".** The software painter's canvases
+  existed for all 24 frames on the GPU path too; once the window rendered
+  with keyboard focus, each decoded and painted its frame on the main thread
+  (0.6 s apiece), freezing the app and the bar popup for 10–15 s on opening
+  the radar. They are now created only on the software path and only for
+  the frame on screen.
+- **Faster first load.** DWD's GeoServer reads each radar time step once,
+  for up to several seconds; frames load eight at a time instead of three
+  (same URLs and data), so a cold timeline takes seconds instead of about
+  half a minute.
+- The frame stamp under the map follows the interface language's date and
+  clock format instead of the system locale's.
 
 ## 3.3.0 — 2026-11-09
 

@@ -9,8 +9,8 @@ import { root } from './load.mjs'
 // files must remain identical. These checks work offline without Git metadata.
 const baseline = {
   'Model.js': '29fd666731f02486be071c97d95b4640d606997b57f06518017fd7335f2d6284',
-  'WeatherMapPrefetch.qml': '90d8bee1829ab7e756fd21fd3ce90eba35cac4ee2100dfd7611d572e0ce750ba',
-  'WeatherImageStore.qml': '02d359f5b957ce5bef5461f5950d048d9d36eed43e703db90f9b827211fc7008',
+  'WeatherMapPrefetch.qml': 'feec82d6fbcf1029dc8be740c7b1276a88dd467c606421f4fa2753c077e848ad',
+  'WeatherImageStore.qml': '79ac2b7c0990b71d8db1fb19df663ec66da871f2805dec64c855d4e1c1044de0',
   'WeatherRemoteImage.qml': 'da90b7bb52b7ee645a32ebe295be6adedced6a0f1296308eb6409c948e2f71f5',
   'GlobeRadar.js': '5149209decf4fa5372edc30b938c2539551109c4e579d9b6899480bb73a57482',
   'WeatherGlobeRadar.qml': '8c6792b1eb1f4ef042e02ea88538dd58d619500773cc31997aea69c927072bbc',
@@ -29,7 +29,7 @@ test('data-only radar files retain the main acquisition and computation exactly'
 const panelFunctions = {
   syncStableSeries: '603e4ab76f65a32fbd922276e3cd024018f6d7efa62ea58bdceb166997779aae',
   noteShownRadarFramePrefetched: '141b16fcb570bcd0132820a0930f646e061a81e04d73de79f7596a9bb5e5cf56',
-  radarFrameLoadAllowed: '8fce427fd174158a8543f641455a816366270ba0294c7ba70302ebc422a026ff',
+  radarFrameLoadAllowed: '4452aef8f9c60175f0911b032285edc0523662bf122b9f59e8b1b112b9ebc6c1',
   radarFramesSource: '4518ddec9ba71dee5f00ea86e8406c1ae77951ea6edc3451999ad2d02a064506',
   openMapRefreshWindow: 'd51db88a8993f1c0d1f2161fd87c8ef9e90a1581dc578b56a381ca0d2a5ecc05',
   syncRadarFrames: 'be5629b6bda55368eeccfef1237eef5fb57a715a6c34772134a76e635a0dfe8b',

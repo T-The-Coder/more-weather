@@ -64,6 +64,23 @@ float bandFloor(float band) {
     if (band == 3.0) return 20.0;
     return 30.0 + (band - 4.0) * 5.0;
 }
+// RadarStyle.colors, in the shader itself: a palette texture captured from
+// hidden items came out black on the GPU path.
+vec3 swatch(float band) {
+    if (band < 0.5) return vec3(0.203922, 0.274510, 0.372549);
+    if (band < 1.5) return vec3(0.258824, 0.419608, 0.533333);
+    if (band < 2.5) return vec3(0.250980, 0.596078, 0.647059);
+    if (band < 3.5) return vec3(0.317647, 0.721569, 0.592157);
+    if (band < 4.5) return vec3(0.521569, 0.780392, 0.419608);
+    if (band < 5.5) return vec3(0.658824, 0.819608, 0.419608);
+    if (band < 6.5) return vec3(0.792157, 0.858824, 0.419608);
+    if (band < 7.5) return vec3(0.941176, 0.803922, 0.380392);
+    if (band < 8.5) return vec3(0.929412, 0.635294, 0.298039);
+    if (band < 9.5) return vec3(0.901961, 0.450980, 0.286275);
+    if (band < 10.5) return vec3(0.847059, 0.298039, 0.392157);
+    if (band < 11.5) return vec3(0.709804, 0.313725, 0.588235);
+    return vec3(0.886275, 0.705882, 0.874510);
+}
 vec4 paintRadar(vec4 code, vec2 pixel, int mode, int treatment, float weakBelow) {
     if (mode == 0) return code;
     if (code.a < 0.01) return vec4(0);
@@ -90,9 +107,9 @@ vec4 paintRadar(vec4 code, vec2 pixel, int mode, int treatment, float weakBelow)
         vec2 coverage = clamp(vec2(side * 0.5 + 0.5) - abs(phase - 1.5), 0.0, 1.0);
         alpha = coverage.x * coverage.y;
     }
-    vec3 color = texture(swatches, vec2((band + 0.5) / 13.0, 0.5)).rgb;
+    vec3 color = swatch(band);
     if (band > 0.0 && band < 12.0) {
-        vec3 nextColor = texture(swatches, vec2((band + 1.5) / 13.0, 0.5)).rgb;
+        vec3 nextColor = swatch(band + 1.0);
         float t = clamp((dbz - bandFloor(band)) / (bandFloor(band + 1.0) - bandFloor(band)), 0.0, 1.0);
         color = mix(color, nextColor, t);
     }

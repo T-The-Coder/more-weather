@@ -18,7 +18,6 @@ layout(std140, binding = 0) uniform buf {
     vec2 mercatorEdges;
 };
 layout(binding = 1) uniform sampler2D source;
-layout(binding = 2) uniform sampler2D swatches;
 #include "radar-paint.glsl"
 void main() {
     vec2 pixel = qt_TexCoord0 * itemSize + cellOrigin;

@@ -24,9 +24,11 @@ QtObject {
   readonly property int maxBytes: 4 * 1024 * 1024
   // Real frames are 480x250 (WMS) and 512x512 (RainViewer).
   readonly property int maxDimension: 2048
-  // DWD's GeoServer answers bursts with 502/503; the film now renews every few
-  // minutes, so stay at three.
-  readonly property int maxParallel: 3
+  // DWD's GeoServer reads each radar time step once (several seconds, after
+  // that any extent is fast), so a cold timeline of 24 needs them side by
+  // side: eight at a time (tested 2026-11-09: bursts of 6 and 8 all
+  // answered, 12 lost one; three took about 30 s).
+  readonly property int maxParallel: 8
   readonly property int timeoutSeconds: 20
   readonly property string userAgent: "more-weather/3.3 (+https://github.com/T-The-Coder/more-weather)"
   readonly property string cacheDir: (Quickshell.env("XDG_CACHE_HOME") || (Quickshell.env("HOME") + "/.cache"))

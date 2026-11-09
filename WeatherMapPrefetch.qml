@@ -36,8 +36,10 @@ Item {
     }
   }
 
-  // A renewed timeline waiting to replace the shown one. Loaded three
-  // pictures at a time, from the frame for now on (earlier frames are never
+  // A renewed timeline waiting to replace the shown one. Loaded eight
+  // pictures at a time (DWD's WMS renders each for up to several seconds;
+  // three at a time took half a minute for a cold timeline), from the frame
+  // for now on (earlier frames are never
   // shown); the panel switches once all of them are ready, so playback stays
   // smooth. These items keep the pictures referenced until the shown set has
   // taken them over.
@@ -47,7 +49,7 @@ Item {
       store: prefetch.panel.mapImages
       readonly property int position: index - prefetch.panel.pendingRadarFirstIndex
       remoteUrl: prefetch.panel.radarFrameUrl(modelData)
-      load: position >= 0 && position < prefetch.panel.pendingRadarReadyCount + 3
+      load: position >= 0 && position < prefetch.panel.pendingRadarReadyCount + 8
       onStatusChanged: if (status === Image.Ready) prefetch.panel.pendingRadarFrameStatus(index, status)
       onFailed: prefetch.panel.pendingRadarFrameStatus(index, Image.Error)
       Component.onCompleted: if (status === Image.Ready) prefetch.panel.pendingRadarFrameStatus(index, status)

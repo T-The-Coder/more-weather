@@ -28,16 +28,6 @@ Item {
     return Qt.rect((1 - u) / 2, (1 - v) / 2, u, v)
   }
   signal failed()
-  onWidthChanged: if (visible && software && sourceMode > 0) settle.restart()
-  onHeightChanged: if (visible && software && sourceMode > 0) settle.restart()
-  // Canvas can become available after the initial layout paint request.
-  // Repaint once after settling, including when the map is resized.
-  Timer {
-    id: settle
-    interval: 60
-    running: frame.visible && frame.software && frame.status === Image.Ready
-    onTriggered: { decoder.requestPaint(); cpu.requestPaint() }
-  }
   WeatherRemoteImage {
     id: picture
     anchors.fill: parent
@@ -60,52 +50,80 @@ Item {
     sampleRect: frame.sampleRect
 
   }
-  // Software renderer: read the native image once, then address native
-  // pixels with integer indices. Never draw a resized radar image to sample it.
-  Canvas {
-    id: decoder
-    visible: false
-    width: Math.max(1, picture.sourceSize.width)
-    height: Math.max(1, picture.sourceSize.height)
-    property string loaded: ""
-    property var pixelsData: null
-    property var key: [frame.source, frame.status, width, height]
-    onKeyChanged: if (frame.software && frame.sourceMode > 0 && frame.visible) requestPaint()
-    onImageLoaded: requestPaint()
-    onAvailableChanged: if (available) requestPaint()
-    onPaint: {
-      var url = String(frame.source)
-      if (loaded !== url) { if (loaded) unloadImage(loaded); loaded = url; pixelsData = null }
-      if (!url || frame.status !== Image.Ready || width > 2048 || height > 2048) return
-      if (!isImageLoaded(url)) { loadImage(url); return }
-      var ctx = getContext("2d")
-      ctx.reset(); ctx.drawImage(url, 0, 0, width, height)
-      pixelsData = ctx.getImageData(0, 0, width, height).data
-      cpu.requestPaint()
-    }
-  }
-  Canvas {
-    id: cpu
+  // Software renderer only (the offscreen harness, a machine without GPU):
+  // read the native image once, then address native pixels with integer
+  // indices. Never draw a resized radar image to sample it. Created only on
+  // that path and only for the frame on screen: the canvases used to exist
+  // for all 24 frames on the GPU path too, and once the window rendered
+  // (focused) each decoded and painted its frame on the main thread,
+  // 0.6 s apiece, freezing the app for 10-15 s ("not responding").
+  Loader {
+    id: softwarePaint
     anchors.fill: parent
-    smooth: false
-    visible: frame.software && frame.sourceMode > 0
-    property var key: [decoder.pixelsData, frame.visible, frame.treatment, frame.weakReturns, frame.sampleRect, frame.cellOrigin, width, height]
-    onKeyChanged: if (visible && frame.visible) requestPaint()
-    onVisibleChanged: if (visible) requestPaint()
-    onAvailableChanged: if (available && visible) requestPaint()
-    onPaint: {
-      var ctx = getContext("2d")
-      ctx.reset(); ctx.clearRect(0, 0, width, height)
-      if (!decoder.pixelsData) { decoder.requestPaint(); return }
-      var iw = decoder.width, ih = decoder.height, data = decoder.pixelsData, rect = frame.sampleRect
-      RadarStyle.paintCells(ctx, width, height, frame.cellSize, frame.treatment, frame.weakReturns, function(x, y) {
-        var sx = Math.max(0, Math.min(iw - 1, Math.floor((rect.x + x / width * rect.width) * iw)))
-        var v = rect.y + y / height * rect.height
-        var sy = Math.max(0, Math.min(ih - 1, Math.floor(v * ih)))
-        var at = (sy * iw + sx) * 4
-        var value = RadarStyle.decode(data[at], data[at + 1], data[at + 2], data[at + 3], frame.sourceMode)
-        return value
-      }, frame.cellOrigin.x, frame.cellOrigin.y)
+    active: frame.software && frame.sourceMode > 0 && frame.visible
+    sourceComponent: Component {
+      Item {
+        anchors.fill: parent
+        // Canvas can become available after the initial layout paint
+        // request. Repaint once after settling, including on a resize.
+        Timer {
+          id: settle
+          interval: 60
+          running: frame.status === Image.Ready
+          onTriggered: { decoder.requestPaint(); cpu.requestPaint() }
+        }
+        Connections {
+          target: frame
+          function onWidthChanged() { settle.restart() }
+          function onHeightChanged() { settle.restart() }
+        }
+        Canvas {
+          id: decoder
+          visible: false
+          width: Math.max(1, picture.sourceSize.width)
+          height: Math.max(1, picture.sourceSize.height)
+          property string loaded: ""
+          property var pixelsData: null
+          property var key: [frame.source, frame.status, width, height]
+          onKeyChanged: if (frame.software && frame.sourceMode > 0 && frame.visible) requestPaint()
+          onImageLoaded: requestPaint()
+          onAvailableChanged: if (available) requestPaint()
+          onPaint: {
+            var url = String(frame.source)
+            if (loaded !== url) { if (loaded) unloadImage(loaded); loaded = url; pixelsData = null }
+            if (!url || frame.status !== Image.Ready || width > 2048 || height > 2048) return
+            if (!isImageLoaded(url)) { loadImage(url); return }
+            var ctx = getContext("2d")
+            ctx.reset(); ctx.drawImage(url, 0, 0, width, height)
+            pixelsData = ctx.getImageData(0, 0, width, height).data
+            cpu.requestPaint()
+          }
+        }
+        Canvas {
+          id: cpu
+          anchors.fill: parent
+          smooth: false
+          visible: frame.software && frame.sourceMode > 0
+          property var key: [decoder.pixelsData, frame.visible, frame.treatment, frame.weakReturns, frame.sampleRect, frame.cellOrigin, width, height]
+          onKeyChanged: if (visible && frame.visible) requestPaint()
+          onVisibleChanged: if (visible) requestPaint()
+          onAvailableChanged: if (available && visible) requestPaint()
+          onPaint: {
+            var ctx = getContext("2d")
+            ctx.reset(); ctx.clearRect(0, 0, width, height)
+            if (!decoder.pixelsData) { decoder.requestPaint(); return }
+            var iw = decoder.width, ih = decoder.height, data = decoder.pixelsData, rect = frame.sampleRect
+            RadarStyle.paintCells(ctx, width, height, frame.cellSize, frame.treatment, frame.weakReturns, function(x, y) {
+              var sx = Math.max(0, Math.min(iw - 1, Math.floor((rect.x + x / width * rect.width) * iw)))
+              var v = rect.y + y / height * rect.height
+              var sy = Math.max(0, Math.min(ih - 1, Math.floor(v * ih)))
+              var at = (sy * iw + sx) * 4
+              var value = RadarStyle.decode(data[at], data[at + 1], data[at + 2], data[at + 3], frame.sourceMode)
+              return value
+            }, frame.cellOrigin.x, frame.cellOrigin.y)
+          }
+        }
+      }
     }
   }
 }

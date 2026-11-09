@@ -1,6 +1,7 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { load } from './load.mjs'
+import { readFileSync } from 'node:fs'
+import { load, root } from './load.mjs'
 const R = load('RadarStyle.js')
 test('palette: missing, rate conversion, exact boundaries and saturation', () => {
   assert.equal(R.colors.length, R.bounds.length)
@@ -101,4 +102,14 @@ test('forecast tick identity comes from the existing report without changing fra
   assert.equal(R.rainViewerForecast(frame, {radar:{past:[],nowcast:[]}}), false)
   assert.equal(R.rainViewerForecast(frame, null), false)
   assert.equal(JSON.stringify(frame), before)
+})
+
+// The shader carries the palette itself (a captured palette texture came out
+// black on the GPU); it must match RadarStyle.colors.
+test('radar shader palette matches RadarStyle.colors', () => {
+  const glsl = readFileSync(`${root}/shaders/radar-paint.glsl`, 'utf8')
+  const body = glsl.slice(glsl.indexOf('vec3 swatch('), glsl.indexOf('vec4 paintRadar('))
+  const found = [...body.matchAll(/vec3\(([\d.]+), ([\d.]+), ([\d.]+)\)/g)]
+    .map(m => '#' + m.slice(1).map(x => Math.round(Number(x) * 255).toString(16).padStart(2, '0')).join(''))
+  assert.deepEqual(found, [...R.colors])
 })
