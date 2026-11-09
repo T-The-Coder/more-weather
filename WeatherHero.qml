@@ -303,7 +303,7 @@ Column {
         font.pixelSize: Style.font.title
       }
 
-      // The values in the order chosen under Settings → Display.
+      // The values in the order chosen under Settings → Widget/App.
       Repeater {
         model: weatherStats.fittingKeys
 

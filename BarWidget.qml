@@ -128,7 +128,7 @@ BarWidget {
     fixedHeight: root.vertical ? Style.bar.iconSlot : -1
     horizontalMargin: 8.75
     verticalPadding: 8.75
-    // The bar's tooltip only when asked for (Settings → Display → Menu bar:
+    // The bar's tooltip only when asked for (Settings → Menu bar:
     // Tooltip on hover): the entries in words; otherwise the popup is the
     // detail view. Shown again as it changes while the pointer rests.
     tooltipText: panelLoader.item ? panelLoader.item.menubarTooltipText : ""
@@ -136,10 +136,13 @@ BarWidget {
 
     Row {
       id: weatherBarContent
+      // Omarchy 4.5 shrinks a held bar glyph a little; the content follows
+      // it (1 on older shells, which have no pressScale).
+      scale: button.pressScale || 1
       anchors.centerIn: parent
       spacing: Style.space(5)
 
-      // Entries in the order chosen under Settings → Display → Menu bar.
+      // Entries in the order chosen under Settings → Menu bar.
       Repeater {
         model: panelLoader.item ? panelLoader.item.menubarEntryOrder : []
 

@@ -99,7 +99,7 @@ Column {
             spacing: Style.space(3)
             width: parent.width
 
-            // Values in the order chosen under Settings → Display.
+            // Values in the order chosen under Settings → Widget/App.
             Repeater {
               model: panel.displayHourlyOrder
 

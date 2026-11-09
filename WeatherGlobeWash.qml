@@ -5,7 +5,7 @@ import "Globe.js" as Globe
 import "GlobeFields.js" as GlobeFields
 import "GlobeRadar.js" as GlobeRadar
 
-// The globe's colour layers in one picture (Settings → Display → Globe),
+// The globe's colour layers in one picture (Settings → Widget/App → Globe),
 // composed bottom to top in a fixed order:
 //   1. the base: the air's temperature; with the sea's temperature too,
 //      that over the ocean and the air's over land (a land mask lattice);

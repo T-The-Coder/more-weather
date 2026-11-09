@@ -4,7 +4,7 @@ import "GlobeView.js" as GlobeView
 import "GlobeStreaks.js" as GlobeStreaks
 import "GlobeFields.js" as GlobeFields
 
-// The wind on the globe as drifting streaks (Settings → Display → Globe):
+// The wind on the globe as drifting streaks (Settings → Widget/App → Globe):
 // about 300 particles in the part of the earth in view, moved by the
 // model's wind (GlobeStreaks.step on the u/v lattices the worker builds)
 // and drawn as short white segments on a canvas that fades a little each

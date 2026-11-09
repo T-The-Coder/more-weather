@@ -2,6 +2,26 @@
 
 All notable changes to More Weather are documented here.
 
+## 3.3.0 — 2026-11-09
+
+- **Omarchy 4.5's bar sections.** The bar now has five sections (left, left
+  of center, center, right of center, right); Settings → General → Position
+  in the bar offers all five and finds the widget in any of them, also in the
+  tray's drawer. Before, a widget right or left of the center box counted as
+  "not on the bar", and the standalone app missed its bar settings. The bar
+  content gives a little while pressed, as Omarchy 4.5's own icons do.
+- **Menu bar, Widget and App are settings pages of their own**, next to
+  General, instead of tabs inside a Display page. `1` `2` `3` still switch
+  between them; a search lists the rows of the view picked last under its
+  page.
+- **Rain chart in pixels.** Settings → Widget/App → Rain → Chart style:
+  "Pixels" draws the intensity and probability as squares on a dot grid, in
+  the same colours (radar quarters in the DWD radar colour).
+- **Smoother radar.** The check of every downloaded map picture (only
+  picture data reaches the decoder) runs on a worker thread now; on the main
+  thread it took 40–50 ms per radar frame and made playback stutter while
+  new frames came in.
+
 ## 3.2.0 — 2026-10-11
 
 Version 3.2 in short:
