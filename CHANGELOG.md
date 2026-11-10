@@ -2,7 +2,7 @@
 
 All notable changes to More Weather are documented here.
 
-## Unreleased
+## 3.5.0 — 2026-11-10
 
 - **Hourly and week charts in pixels.** Settings → Widget/App → Hourly and
   Daily → Chart style: "Pixels" draws the temperature line as squares on a
@@ -10,6 +10,10 @@ All notable changes to More Weather are documented here.
   temperature, rain as squares from the bottom, daylight as brighter dots.
   The week's squares line up with the day columns; the day's temperature
   bar becomes a row of squares, lit across the day's range.
+- **Radar timelines are capped at 64 frames.** A radar catalogue (RainViewer,
+  DWD or a national WMS service) listing thousands of times inside the
+  window is thinned evenly to 64 frames, the newest kept, before it reaches
+  the map's picture items; the real ones hold 13 to 40 and are unchanged.
 
 ## 3.4.0 — 2026-11-09
 

@@ -7,10 +7,13 @@ import { root } from './load.mjs'
 // Base fingerprints (main 3.3.0, which keeps c6fcf53's acquisition and adds
 // the picture check on the worker thread): fetching, parsing, budgets, projection and cache
 // files must remain identical. These checks work offline without Git metadata.
+// 3.5.0 changed them on purpose: timelines capped at 64 frames
+// (Model.boundedRadarFrames, after the marketplace review of 3.4.0) and the
+// user agent's version.
 const baseline = {
-  'Model.js': '29fd666731f02486be071c97d95b4640d606997b57f06518017fd7335f2d6284',
+  'Model.js': '04d53df987192ae55bd327c2377230ab7af0a0e23fae41c065473878b94870ba',
   'WeatherMapPrefetch.qml': 'feec82d6fbcf1029dc8be740c7b1276a88dd467c606421f4fa2753c077e848ad',
-  'WeatherImageStore.qml': 'dc42be8012ab6b39b73d8d59a10a974cecbe0d673368208a93c676586a02e394',
+  'WeatherImageStore.qml': '2fd4f3cb74d9a3ccfb60348f61f81d36eb8383568614852ac0859174d30580de',
   'WeatherRemoteImage.qml': 'da90b7bb52b7ee645a32ebe295be6adedced6a0f1296308eb6409c948e2f71f5',
   'GlobeRadar.js': '5149209decf4fa5372edc30b938c2539551109c4e579d9b6899480bb73a57482',
   'WeatherGlobeRadar.qml': '8c6792b1eb1f4ef042e02ea88538dd58d619500773cc31997aea69c927072bbc',

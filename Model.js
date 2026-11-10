@@ -3380,6 +3380,23 @@ function isoDurationMilliseconds(value) {
     + parseInt(match[3] || "0", 10)) * 1000
 }
 
+// At most this many radar frames in a timeline. Every frame becomes image
+// items in the shell (WeatherMapPrefetch), so a catalogue with thousands of
+// distinct times inside the window (still within the download ceiling) must
+// not reach them. The real ones hold 13 to 40.
+var RADAR_MAX_FRAMES = 64
+
+// A sorted timeline thinned evenly to RADAR_MAX_FRAMES, the newest frame
+// kept, so the whole window stays covered.
+function boundedRadarFrames(frames) {
+  var list = Array.isArray(frames) ? frames : []
+  if (list.length <= RADAR_MAX_FRAMES) return list
+  var stride = Math.ceil(list.length / RADAR_MAX_FRAMES)
+  var result = []
+  for (var i = list.length - 1; i >= 0 && result.length < RADAR_MAX_FRAMES; i -= stride) result.unshift(list[i])
+  return result
+}
+
 function wmsRadarTimeline(raw, providerId, now, hours) {
   var xml = String(raw || "")
   var specification = ""
@@ -3418,7 +3435,7 @@ function wmsRadarTimeline(raw, providerId, now, hours) {
     result.push({ timestamp: new Date(stamps[s]).toISOString(), wmsProvider: providerId })
   }
   result.sort(function(a, b) { return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime() })
-  return result
+  return boundedRadarFrames(result)
 }
 
 function numericValue(values, index) {
@@ -3499,7 +3516,7 @@ function radarTimeline(report, now, hours) {
   result.sort(function(a, b) {
     return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
   })
-  return result
+  return boundedRadarFrames(result)
 }
 
 // RainViewer's public global catalogue contains observed radar frames as
@@ -3537,7 +3554,7 @@ function rainViewerTimeline(report, now, hours) {
   result.sort(function(a, b) {
     return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
   })
-  return result
+  return boundedRadarFrames(result)
 }
 
 // Rain rate observed *right now* at the configured location, derived from
@@ -4139,6 +4156,8 @@ if (typeof module !== "undefined") {
     radarSnapshot: radarSnapshot,
     radarTimeline: radarTimeline,
     rainViewerTimeline: rainViewerTimeline,
+    boundedRadarFrames: boundedRadarFrames,
+    RADAR_MAX_FRAMES: RADAR_MAX_FRAMES,
     hourlyTemp: hourlyTemp,
     hourlyIcon: hourlyIcon,
     currentIcon: currentIcon,

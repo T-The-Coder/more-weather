@@ -207,3 +207,28 @@ test("Bright Sky's pressure in now, the hours, the days and the shared report", 
   const day = Model.hybridForecastDays(report, null, "2026-10-03", null)[0]
   assert.equal(day.pressureHpa, String(Math.round((1020 * 23 + 1021) / 24 * 10) / 10))
 })
+
+test("a radar catalogue with thousands of times in the window is thinned to the frame cap", () => {
+  // Marketplace review of 3.4.0: distinct in-range times were unbounded, and
+  // every frame becomes image items in the shell.
+  const now = new Date("2026-11-10T12:00:00Z")
+  const base = now.getTime() / 1000 - 3600
+  const past = []
+  for (let i = 0; i < 20000; ++i) past.push({ time: base + i * 0.25, path: "/v2/radar/" + i })
+  const frames = Model.rainViewerTimeline({ host: "https://tilecache.rainviewer.com", radar: { past } }, now, 2)
+  assert.equal(frames.length, Model.RADAR_MAX_FRAMES)
+  assert.equal(frames[frames.length - 1].rainViewerPath, "/v2/radar/19999")
+  const times = frames.map((frame) => new Date(frame.timestamp).getTime())
+  for (let i = 1; i < times.length; ++i) assert.ok(times[i] > times[i - 1])
+
+  const list = Array.from({ length: 5000 }, (_, i) => new Date(now.getTime() - i * 1000).toISOString()).join(",")
+  const wms = Model.wmsRadarTimeline('<Dimension name="time">' + list + "</Dimension>", "fmi", now, 2)
+  assert.equal(wms.length, Model.RADAR_MAX_FRAMES)
+
+  const dwd = Model.radarTimeline({ radar: Array.from({ length: 5000 }, (_, i) =>
+    ({ timestamp: new Date(now.getTime() + i * 1000).toISOString() })) }, now, 2)
+  assert.equal(dwd.length, Model.RADAR_MAX_FRAMES)
+  // Real timelines stay as they are.
+  const normal = Array.from({ length: 25 }, (_, i) => ({ timestamp: String(i) }))
+  assert.equal(Model.boundedRadarFrames(normal).length, 25)
+})
