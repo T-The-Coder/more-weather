@@ -199,6 +199,7 @@ var entries = {
   "rainChartStyle": "Diagramstil",
   "rainChartBars": "Søyler og kurve",
   "rainChartPixels": "Piksler",
+  "chartStyleLine": "Linje",
   "barPositionHint": "Flytter miniprogrammet i Omarchy-linjen.",
   "barPositionMissing": "Miniprogrammet er ikke i linjen.",
   "showAlways": "Alltid",

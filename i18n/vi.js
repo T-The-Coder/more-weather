@@ -199,6 +199,7 @@ var entries = {
   "rainChartStyle": "Kiểu biểu đồ",
   "rainChartBars": "Cột và đường cong",
   "rainChartPixels": "Điểm ảnh",
+  "chartStyleLine": "Đường",
   "barPositionHint": "Di chuyển tiện ích trong thanh Omarchy.",
   "barPositionMissing": "Tiện ích không có trên thanh.",
   "showAlways": "Luôn",

@@ -2,6 +2,15 @@
 
 All notable changes to More Weather are documented here.
 
+## Unreleased
+
+- **Hourly and week charts in pixels.** Settings → Widget/App → Hourly and
+  Daily → Chart style: "Pixels" draws the temperature line as squares on a
+  dot grid, as in the rain chart: each square in the warmth of its
+  temperature, rain as squares from the bottom, daylight as brighter dots.
+  The week's squares line up with the day columns; the day's temperature
+  bar becomes a row of squares, lit across the day's range.
+
 ## 3.4.0 — 2026-11-09
 
 - **A new radar view,** its look inspired by Omastorm by Wes Grimes: quiet

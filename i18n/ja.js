@@ -199,6 +199,7 @@ var entries = {
   "rainChartStyle": "グラフのスタイル",
   "rainChartBars": "棒と曲線",
   "rainChartPixels": "ピクセル",
+  "chartStyleLine": "線",
   "barPositionHint": "Omarchy のバー内でウィジェットを移動します。",
   "barPositionMissing": "ウィジェットはバーにありません。",
   "showAlways": "常に",

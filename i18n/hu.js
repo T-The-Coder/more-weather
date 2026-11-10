@@ -199,6 +199,7 @@ var entries = {
   "rainChartStyle": "Diagram stílusa",
   "rainChartBars": "Oszlopok és görbe",
   "rainChartPixels": "Pixelek",
+  "chartStyleLine": "Vonal",
   "barPositionHint": "Áthelyezi a minialkalmazást az Omarchy sávjában.",
   "barPositionMissing": "A minialkalmazás nincs a sávban.",
   "showAlways": "Mindig",

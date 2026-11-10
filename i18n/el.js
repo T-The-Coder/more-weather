@@ -199,6 +199,7 @@ var entries = {
   "rainChartStyle": "Στυλ γραφήματος",
   "rainChartBars": "Ράβδοι και καμπύλη",
   "rainChartPixels": "Pixel",
+  "chartStyleLine": "Γραμμή",
   "barPositionHint": "Μετακινεί το γραφικό στοιχείο μέσα στη γραμμή του Omarchy.",
   "barPositionMissing": "Το γραφικό στοιχείο δεν βρίσκεται στη γραμμή.",
   "showAlways": "Πάντα",

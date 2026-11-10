@@ -263,7 +263,44 @@ Column {
                 width: dayColumn.width * 0.8
                 height: Style.space(10)
 
+                // Chart style "Pixels": a row of squares, the day's range
+                // lit in the warmth at each square.
+                readonly property bool pixelStyle: String(panel.displaySetting("dailyChartStyle", "line")) === "pixels"
+                readonly property real cellSize: Style.space(5)
+                readonly property int cellCount: Math.max(1, Math.floor(width / cellSize))
+                readonly property real fromFraction: high > low ? (minimum - low) / (high - low) : 0
+                readonly property real toFraction: high > low ? (maximum - low) / (high - low) : 0
+                // The lit squares: those whose middle lies in the range, at
+                // least the one nearest to it.
+                readonly property int firstLit: Math.min(cellCount - 1, Math.max(0, Math.ceil(fromFraction * cellCount - 0.5)))
+                readonly property int lastLit: Math.max(firstLit, Math.min(cellCount - 1, Math.floor(toFraction * cellCount - 0.5)))
+
+                Row {
+                  visible: temperatureBar.pixelStyle
+                  anchors.centerIn: parent
+                  Repeater {
+                    model: temperatureBar.pixelStyle ? temperatureBar.cellCount : 0
+                    Item {
+                      required property int index
+                      readonly property bool lit: index >= temperatureBar.firstLit && index <= temperatureBar.lastLit
+                      readonly property real celsius: temperatureBar.low
+                        + (temperatureBar.high - temperatureBar.low) * (index + 0.5) / temperatureBar.cellCount
+                      // Whole pixels, so every gap is the same.
+                      width: Math.max(2, Math.floor(temperatureBar.width / temperatureBar.cellCount))
+                      height: width
+                      Rectangle {
+                        width: parent.width - Math.max(1, Math.round(parent.width * 0.2))
+                        height: width
+                        color: parent.lit ? (panel.absoluteTemperatureAccent(parent.celsius) || panel.mutedText)
+                          : panel.foreground
+                        opacity: parent.lit ? 1 : 0.1
+                      }
+                    }
+                  }
+                }
+
                 Rectangle {
+                  visible: !temperatureBar.pixelStyle
                   anchors.verticalCenter: parent.verticalCenter
                   width: parent.width
                   height: Style.space(4)
@@ -273,6 +310,7 @@ Column {
                 }
 
                 Rectangle {
+                  visible: !temperatureBar.pixelStyle
                   readonly property real from: (parent.minimum - parent.low) / (parent.high - parent.low)
                   readonly property real to: (parent.maximum - parent.low) / (parent.high - parent.low)
                   anchors.verticalCenter: parent.verticalCenter
@@ -445,6 +483,9 @@ Column {
         visibleFrom: forecastScroller.contentX
         visibleTo: forecastScroller.contentX + forecastScroller.width
         nowIndex: panel.weekHoursNowIndex
+        pixelStyle: String(panel.displaySetting("dailyChartStyle", "line")) === "pixels"
+        // The cells line up with the day columns.
+        pixelPeriod: step * 24
         // One label per high and per low of a day.
         extremaWindow: 8
         extremaGap: 12

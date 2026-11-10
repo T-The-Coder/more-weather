@@ -199,6 +199,7 @@ var entries = {
   "rainChartStyle": "Stile del grafico",
   "rainChartBars": "Barre e curva",
   "rainChartPixels": "Pixel",
+  "chartStyleLine": "Linea",
   "barPositionHint": "Sposta il widget nella barra di Omarchy.",
   "barPositionMissing": "Il widget non è nella barra.",
   "showAlways": "Sempre",

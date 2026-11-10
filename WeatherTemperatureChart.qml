@@ -56,6 +56,14 @@ Item {
     return Math.max(2, plotHeight * 0.5 * Math.min(1, Math.sqrt(value / rainFullMm)))
   }
   property real plotHeight: Style.space(100)
+  // "Pixels" (Settings → Widget/App → Hourly/Daily → Chart style): the plot
+  // as a dot grid as in the rain chart, the line as lit squares in the
+  // warmth of their temperature, rain as squares from the bottom and
+  // daylight as brighter dots.
+  property bool pixelStyle: false
+  // The cells fill each stretch of this width exactly, counted from
+  // xOffset: an hour for the hourly chart, a day's column for the week.
+  property real pixelPeriod: step
   signal picked(int index)
 
   readonly property real captionHeight: captionMetrics.height
@@ -115,7 +123,7 @@ Item {
     return runs
   }
   Repeater {
-    model: chart.daylightRuns
+    model: chart.pixelStyle ? [] : chart.daylightRuns
 
     Rectangle {
       required property var modelData
@@ -130,7 +138,7 @@ Item {
 
   // Rain bars.
   Repeater {
-    model: chart.rain.length === chart.count ? chart.count : 0
+    model: !chart.pixelStyle && chart.rain.length === chart.count ? chart.count : 0
 
     Rectangle {
       required property int index
@@ -143,6 +151,110 @@ Item {
       radius: Math.min(2, width / 2)
       color: chart.rainColor
       opacity: index < chart.nowIndex ? 0.12 : 0.28
+    }
+  }
+
+  Canvas {
+    id: pixelCanvas
+    visible: chart.pixelStyle
+    width: chart.width
+    height: chart.plotBottom
+    // Repaints on data, layout and colours, not while the week scrolls.
+    property var paintKey: chart.pixelStyle ? [chart.lines, chart.rain, chart.daylight, chart.nowIndex,
+      chart.step, chart.xOffset, chart.pixelPeriod, chart.plotTop, chart.plotHeight, chart.range,
+      chart.panel.foreground, chart.rainColor, chart.colorFor(-10, ""), chart.colorFor(30, "")] : []
+    onPaintKeyChanged: requestPaint()
+    onWidthChanged: requestPaint()
+    onHeightChanged: requestPaint()
+
+    // A line's value at x, between its points; NaN off the line or next to
+    // a missing value.
+    function valueAt(values, x) {
+      var t = (x - chart.xOffset) / chart.step - 0.5
+      if (t < -0.5 || t > chart.count - 0.5) return NaN
+      t = Math.max(0, Math.min(chart.count - 1, t))
+      var i0 = Math.min(Math.max(0, chart.count - 2), Math.floor(t))
+      var a = Number(values[i0])
+      if (chart.count < 2) return a
+      var b = Number(values[i0 + 1])
+      var f = t - i0
+      if (!isFinite(a) || !isFinite(b)) return f < 0.5 ? a : b
+      return a * (1 - f) + b * f
+    }
+
+    onPaint: {
+      var ctx = getContext("2d")
+      ctx.clearRect(0, 0, width, height)
+      if (!chart.pixelStyle || chart.count < 2 || chart.step <= 0) return
+      var top = chart.plotTop
+      var plotH = chart.plotHeight
+      var bottom = chart.plotBottom
+      var rows = 20
+      var cellH = plotH / rows
+      var period = chart.pixelPeriod > 0 ? chart.pixelPeriod : chart.step
+      var perPeriod = Math.max(1, Math.round(period / cellH))
+      var cellW = period / perPeriod
+      var gap = Math.max(1, Math.round(Math.min(cellW, cellH) * 0.2))
+      var firstCol = Math.floor(-chart.xOffset / cellW)
+      var lastCol = Math.ceil((width - chart.xOffset) / cellW)
+      function colX(col) { return chart.xOffset + col * cellW }
+      function cell(col, row) {
+        var x = Math.round(colX(col))
+        var y = Math.round(bottom - (row + 1) * cellH)
+        ctx.fillRect(x, y, Math.max(1, Math.round(colX(col + 1)) - x - gap),
+          Math.max(1, Math.round(bottom - row * cellH) - y - gap))
+      }
+      function indexAt(x) { return Math.floor((x - chart.xOffset) / chart.step) }
+      function rowOf(celsius) {
+        return Math.max(0, Math.min(rows - 1, Math.floor((bottom - chart.yAt(celsius)) / cellH)))
+      }
+      var fg = String(chart.panel.foreground)
+      var daylight = chart.daylight.length === chart.count ? chart.daylight : []
+      var rain = chart.rain.length === chart.count ? chart.rain : []
+
+      // The dot grid, brighter in daylight.
+      ctx.fillStyle = fg
+      for (var c = firstCol; c < lastCol; ++c) {
+        var index = indexAt(colX(c + 0.5))
+        if (index < 0 || index >= chart.count) continue
+        ctx.globalAlpha = daylight[index] === true ? 0.13 : 0.06
+        for (var r = 0; r < rows; ++r) cell(c, r)
+      }
+
+      // Rain from the bottom, the hour's amount in every column of it.
+      if (rain.length) {
+        var rainColor = String(chart.rainColor)
+        ctx.fillStyle = rainColor
+        for (c = firstCol; c < lastCol; ++c) {
+          index = indexAt(colX(c + 0.5))
+          if (index < 0 || index >= chart.count) continue
+          var barHeight = chart.rainHeight(rain[index])
+          if (barHeight <= 0) continue
+          var lit = Math.max(1, Math.round(barHeight / cellH))
+          ctx.globalAlpha = index < chart.nowIndex ? 0.2 : 0.5
+          for (r = 0; r < lit; ++r) cell(c, r)
+        }
+      }
+
+      // Each line: one square per column at its value, and the squares
+      // between it and the column before, so steep stretches stay joined.
+      for (var l = 0; l < chart.lines.length; ++l) {
+        var line = chart.lines[l]
+        var previous = -1
+        for (c = firstCol; c < lastCol; ++c) {
+          var cx = colX(c + 0.5)
+          var value = valueAt(line.values, cx)
+          if (!isFinite(value)) { previous = -1; continue }
+          var row = rowOf(value)
+          var from = previous < 0 ? row : (row > previous ? previous + 1 : row)
+          var to = previous < 0 ? row : (row < previous ? previous - 1 : row)
+          ctx.fillStyle = String(chart.colorFor(value, line.plainColor))
+          ctx.globalAlpha = indexAt(cx) < chart.nowIndex ? 0.4 : 1
+          for (r = from; r <= to; ++r) cell(c, r)
+          previous = row
+        }
+      }
+      ctx.globalAlpha = 1
     }
   }
 
@@ -229,7 +341,7 @@ Item {
           anchors.fill: parent
           // Only segments that reach into the view: curve-rendered Shapes
           // wholly outside a clipping Flickable were drawn past its edge.
-          visible: isFinite(from) && isFinite(to)
+          visible: !chart.pixelStyle && isFinite(from) && isFinite(to)
             && chart.xAt(index + 1) >= chart.visibleFrom && chart.xAt(index) <= chart.visibleTo
           opacity: segment.index < chart.nowIndex ? 0.4 : 1
           preferredRendererType: Shape.CurveRenderer
@@ -258,7 +370,7 @@ Item {
           y: chart.yAt(value) - height / 2
           width: Style.space(7)
           height: width
-          radius: width / 2
+          radius: chart.pixelStyle ? 0 : width / 2
           color: chart.colorFor(value, lineItem.modelData.plainColor)
         }
       }

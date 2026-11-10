@@ -2075,6 +2075,8 @@ Panel {
       windAsTab: true,
       globeAsTab: true,
       rainChartStyle: "bars",
+      hourlyChartStyle: "line",
+      dailyChartStyle: "line",
       forecastIntensity: true,
       forecastProbability: true,
       forecastTotal: true,
@@ -2276,8 +2278,10 @@ Panel {
 
   // Which list an entry in the settings belongs to.
   function orderListKeyForSetting(key) {
-    // The temperature charts sit under the columns, outside their order.
-    if (key === "hourlyTemperatureCurve" || key === "dailyTemperatureCurve") return ""
+    // The temperature charts and their style sit under the columns, outside
+    // their order.
+    if (key === "hourlyTemperatureCurve" || key === "dailyTemperatureCurve"
+        || key === "hourlyChartStyle" || key === "dailyChartStyle") return ""
     if (String(key).indexOf("current") === 0 || key === "showCurrent") return "entryOrder"
     if (String(key).indexOf("hero") === 0) return "heroOrder"
     if (String(key).indexOf("hourly") === 0 && key !== "showHourly") return "hourlyOrder"

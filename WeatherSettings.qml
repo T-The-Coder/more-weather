@@ -150,6 +150,7 @@ Rectangle {
         { key: "hourlyIcon", title: panel.i18n("weatherSymbol") },
         { key: "hourlyTemperature", title: panel.i18n("temperature") },
         { key: "hourlyTemperatureCurve", title: panel.i18n("temperatureCurve") },
+        { key: "hourlyChartStyle", choiceOnly: true },
         { key: "hourlyRainProbability", title: panel.i18n("rainProbability") },
         { key: "hourlyRainAmount", title: panel.i18n("rainAmount") },
         { key: "hourlyUv", title: panel.i18n("uvIndex") },
@@ -168,6 +169,7 @@ Rectangle {
         { key: "dailyTemperature", title: panel.i18n("temperatureRange") },
         { key: "dailyTemperatureBar", title: panel.i18n("temperatureBar") },
         { key: "dailyTemperatureCurve", title: panel.i18n("temperatureCurve") },
+        { key: "dailyChartStyle", choiceOnly: true },
         { key: "dailyRainProbability", title: panel.i18n("rainProbability") },
         { key: "dailyRainAmount", title: panel.i18n("rainAmount") },
         { key: "dailyUv", title: panel.i18n("uvIndex") },
@@ -394,6 +396,10 @@ Rectangle {
     globeWindLevel: { title: "globeWindHeight", fallback: "10m", options: globeWindLevelOptions },
     rainChartStyle: { title: "rainChartStyle", fallback: "bars", options: [
       { value: "bars", label: panel.i18n("rainChartBars") }, { value: "pixels", label: panel.i18n("rainChartPixels") }] },
+    hourlyChartStyle: { title: "rainChartStyle", fallback: "line", options: [
+      { value: "line", label: panel.i18n("chartStyleLine") }, { value: "pixels", label: panel.i18n("rainChartPixels") }] },
+    dailyChartStyle: { title: "rainChartStyle", fallback: "line", options: [
+      { value: "line", label: panel.i18n("chartStyleLine") }, { value: "pixels", label: panel.i18n("rainChartPixels") }] },
     globeStyle: { title: "optionMapStyle", fallback: "globe", options: [
       { value: "globe", label: panel.i18n("mapStyleGlobe") }, { value: "map", label: panel.i18n("mapStyleFlat") }] }
   })

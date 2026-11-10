@@ -424,6 +424,19 @@ ShellRoot {
     function() { shot("03-tab-air") },
     function() { panel.activeTab = "hourly" },
     function() { shot("04-tab-hourly") },
+    // The hourly and the week's chart in pixels, then back to the line.
+    function() { panel.setViewDisplaySetting("hourlyChartStyle", "pixels") },
+    function() {
+      check("hourly-pixel-style", panel.displaySetting("hourlyChartStyle", "line") === "pixels")
+      shot("04b-tab-hourly-pixels")
+    },
+    function() { panel.setViewDisplaySetting("hourlyChartStyle", "line"); panel.activeTab = "daily"
+      panel.setViewDisplaySetting("dailyChartStyle", "pixels") },
+    function() {
+      check("daily-pixel-style", panel.displaySetting("dailyChartStyle", "line") === "pixels")
+      shot("06b-tab-daily-pixels")
+    },
+    function() { panel.setViewDisplaySetting("dailyChartStyle", "line"); panel.activeTab = "hourly" },
     function() { press(Qt.Key_Right, "", Qt.ShiftModifier); press(Qt.Key_Right, "", Qt.ShiftModifier) },
     function() { shot("05-tab-hourly-cursor") },
     function() { press(Qt.Key_Backspace); panel.activeTab = "daily" },

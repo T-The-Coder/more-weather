@@ -199,6 +199,7 @@ var entries = {
   "rainChartStyle": "Gaya grafik",
   "rainChartBars": "Batang dan kurva",
   "rainChartPixels": "Piksel",
+  "chartStyleLine": "Garis",
   "barPositionHint": "Memindahkan widget di dalam bilah Omarchy.",
   "barPositionMissing": "Widget tidak ada di bilah.",
   "showAlways": "Selalu",

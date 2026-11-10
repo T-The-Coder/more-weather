@@ -199,6 +199,7 @@ var entries = {
   "rainChartStyle": "चार्ट शैली",
   "rainChartBars": "बार और वक्र",
   "rainChartPixels": "पिक्सेल",
+  "chartStyleLine": "रेखा",
   "barPositionHint": "विजेट को Omarchy बार के भीतर खिसकाता है।",
   "barPositionMissing": "विजेट बार में नहीं है।",
   "showAlways": "हमेशा",

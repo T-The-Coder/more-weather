@@ -199,6 +199,7 @@ var entries = {
   "rainChartStyle": "图表样式",
   "rainChartBars": "柱形和曲线",
   "rainChartPixels": "像素",
+  "chartStyleLine": "折线",
   "barPositionHint": "在 Omarchy 栏中移动小组件。",
   "barPositionMissing": "小组件不在栏中。",
   "showAlways": "始终",

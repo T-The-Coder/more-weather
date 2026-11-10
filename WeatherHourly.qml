@@ -197,6 +197,7 @@ Column {
       visible: panel.displaySetting("hourlyTemperatureCurve", true) && hours.length > 2
       width: parent.width
       panel: hourlySection.panel
+      pixelStyle: String(panel.displaySetting("hourlyChartStyle", "line")) === "pixels"
       lines: [{
         values: hours.map(function(hour) { return parseFloat(hour.tempC) }),
         texts: hours.map(function(hour) { return panel.hourlyTemp(hour) }),

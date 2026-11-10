@@ -199,6 +199,7 @@ var entries = {
   "rainChartStyle": "Styl wykresu",
   "rainChartBars": "Słupki i krzywa",
   "rainChartPixels": "Piksele",
+  "chartStyleLine": "Linia",
   "barPositionHint": "Przenosi widżet w obrębie paska Omarchy.",
   "barPositionMissing": "Widżetu nie ma na pasku.",
   "showAlways": "Zawsze",

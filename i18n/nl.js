@@ -199,6 +199,7 @@ var entries = {
   "rainChartStyle": "Grafiekstijl",
   "rainChartBars": "Staven en curve",
   "rainChartPixels": "Pixels",
+  "chartStyleLine": "Lijn",
   "barPositionHint": "Verplaatst de widget binnen de balk van Omarchy.",
   "barPositionMissing": "De widget staat niet in de balk.",
   "showAlways": "Altijd",

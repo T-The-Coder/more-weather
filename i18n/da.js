@@ -199,6 +199,7 @@ var entries = {
   "rainChartStyle": "Diagramstil",
   "rainChartBars": "Søjler og kurve",
   "rainChartPixels": "Pixels",
+  "chartStyleLine": "Linje",
   "barPositionHint": "Flytter widgetten i Omarchys linje.",
   "barPositionMissing": "Widgetten er ikke i linjen.",
   "showAlways": "Altid",

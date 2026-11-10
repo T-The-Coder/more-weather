@@ -199,6 +199,7 @@ var entries = {
   "rainChartStyle": "Styl grafu",
   "rainChartBars": "Sloupce a křivka",
   "rainChartPixels": "Pixely",
+  "chartStyleLine": "Čára",
   "barPositionHint": "Přesune widget v rámci lišty Omarchy.",
   "barPositionMissing": "Widget není na liště.",
   "showAlways": "Vždy",

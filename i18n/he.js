@@ -199,6 +199,7 @@ var entries = {
   "rainChartStyle": "סגנון התרשים",
   "rainChartBars": "עמודות ועקומה",
   "rainChartPixels": "פיקסלים",
+  "chartStyleLine": "קו",
   "barPositionHint": "מעביר את היישומון בתוך הסרגל של Omarchy.",
   "barPositionMissing": "היישומון אינו בסרגל.",
   "showAlways": "תמיד",

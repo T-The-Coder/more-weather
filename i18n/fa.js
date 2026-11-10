@@ -199,6 +199,7 @@ var entries = {
   "rainChartStyle": "سبک نمودار",
   "rainChartBars": "ستون و منحنی",
   "rainChartPixels": "پیکسلی",
+  "chartStyleLine": "خط",
   "barPositionHint": "ویجت را درون نوار Omarchy جابه‌جا می‌کند.",
   "barPositionMissing": "ویجت در نوار نیست.",
   "showAlways": "همیشه",

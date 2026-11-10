@@ -199,6 +199,7 @@ var entries = {
   "rainChartStyle": "Стиль графика",
   "rainChartBars": "Столбцы и кривая",
   "rainChartPixels": "Пиксели",
+  "chartStyleLine": "Линия",
   "barPositionHint": "Перемещает виджет на панели Omarchy.",
   "barPositionMissing": "Виджета нет на панели.",
   "showAlways": "Всегда",

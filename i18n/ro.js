@@ -199,6 +199,7 @@ var entries = {
   "rainChartStyle": "Stilul graficului",
   "rainChartBars": "Bare și curbă",
   "rainChartPixels": "Pixeli",
+  "chartStyleLine": "Linie",
   "barPositionHint": "Mută widgetul în bara Omarchy.",
   "barPositionMissing": "Widgetul nu este în bară.",
   "showAlways": "Mereu",

@@ -199,6 +199,7 @@ var entries = {
   "rainChartStyle": "차트 스타일",
   "rainChartBars": "막대와 곡선",
   "rainChartPixels": "픽셀",
+  "chartStyleLine": "선",
   "barPositionHint": "Omarchy 막대 안에서 위젯을 옮깁니다.",
   "barPositionMissing": "위젯이 막대에 없습니다.",
   "showAlways": "항상",

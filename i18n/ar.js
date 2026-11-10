@@ -199,6 +199,7 @@ var entries = {
   "rainChartStyle": "نمط المخطط",
   "rainChartBars": "أعمدة ومنحنى",
   "rainChartPixels": "بكسلات",
+  "chartStyleLine": "خط",
   "barPositionHint": "ينقل الأداة داخل شريط Omarchy.",
   "barPositionMissing": "الأداة ليست في الشريط.",
   "showAlways": "دائمًا",

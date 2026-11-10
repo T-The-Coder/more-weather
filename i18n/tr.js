@@ -199,6 +199,7 @@ var entries = {
   "rainChartStyle": "Grafik stili",
   "rainChartBars": "Çubuklar ve eğri",
   "rainChartPixels": "Pikseller",
+  "chartStyleLine": "Çizgi",
   "barPositionHint": "Bileşeni Omarchy çubuğunda taşır.",
   "barPositionMissing": "Bileşen çubukta değil.",
   "showAlways": "Her zaman",

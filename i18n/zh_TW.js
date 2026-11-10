@@ -199,6 +199,7 @@ var entries = {
   "rainChartStyle": "圖表樣式",
   "rainChartBars": "長條與曲線",
   "rainChartPixels": "像素",
+  "chartStyleLine": "折線",
   "barPositionHint": "在 Omarchy 列中移動小工具。",
   "barPositionMissing": "小工具不在列中。",
   "showAlways": "永遠",

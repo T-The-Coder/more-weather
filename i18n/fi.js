@@ -199,6 +199,7 @@ var entries = {
   "rainChartStyle": "Kaavion tyyli",
   "rainChartBars": "Pylväät ja käyrä",
   "rainChartPixels": "Pikselit",
+  "chartStyleLine": "Viiva",
   "barPositionHint": "Siirtää pienoissovellusta Omarchyn palkissa.",
   "barPositionMissing": "Pienoissovellus ei ole palkissa.",
   "showAlways": "Aina",

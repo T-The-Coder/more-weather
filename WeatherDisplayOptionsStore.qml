@@ -288,6 +288,8 @@ Item {
     globeWindMode: ["lines", "colour", "both"],
     globeStyle: ["globe", "map"],
     rainChartStyle: ["bars", "pixels"],
+    hourlyChartStyle: ["line", "pixels"],
+    dailyChartStyle: ["line", "pixels"],
     globeWindLevel: ["10m", "120m", "850hPa", "700hPa", "500hPa", "250hPa"]
   })
   function normalizedChoice(key, value, fallback) {

@@ -199,6 +199,7 @@ var entries = {
   "rainChartStyle": "รูปแบบแผนภูมิ",
   "rainChartBars": "แท่งและเส้นโค้ง",
   "rainChartPixels": "พิกเซล",
+  "chartStyleLine": "เส้น",
   "barPositionHint": "ย้ายวิดเจ็ตภายในแถบของ Omarchy",
   "barPositionMissing": "วิดเจ็ตไม่ได้อยู่ในแถบ",
   "showAlways": "เสมอ",

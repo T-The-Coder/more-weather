@@ -88,6 +88,7 @@ var catalog = {
   "rainChartStyle": "Diagrammstil",
   "rainChartBars": "Balken und Kurve",
   "rainChartPixels": "Pixel",
+  "chartStyleLine": "Linie",
   "defaultTab": "Tab beim Öffnen",
   "rainForecastTwoHours": "Regenvorschau · 2 Stunden",
   "rainRadarPastTwoHours": "Regenradar · letzte 2 Stunden",
